@@ -1,0 +1,137 @@
+# Copyright 2022 Tim Duesterhus <tim@bastelstu.be>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version
+# 2 of the License, or (at your option) any later version.
+
+name: Deploy
+
+on:
+  push:
+    branches:
+    - gh-pages
+  schedule:
+  - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    concurrency:
+      group: target
+      cancel-in-progress: true
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      BRANCHES: "dev 2.5 2.4 2.3 2.2 2.1 2.0 1.9 1.8 1.7 1.6"
+    steps:
+    - name: Clone the docs.
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Prepare git.
+      run: |
+        git config --global user.name "HAProxy Community"
+        git config --global user.email "haproxy@formilux.org"
+    - name: Install Python.
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Clone dconv.
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        repository: cbonte/haproxy-dconv
+        path: dconv
+    - name: Install dconv dependencies.
+      run: |
+        pip3 install -r dconv/requirements.txt
+    - name: Get current date for cache.
+      id: date
+      run: echo "::set-output name=date::$(date -Iseconds)"
+    - name: Download the HAProxy repository cache.
+      uses: actions/cache@v3
+      with:
+        path: |
+          haproxy/
+        key: haproxy-${{ steps.date.outputs.date }}
+        restore-keys: |
+          haproxy-
+    - name: Update the HAProxy repository.
+      run: |
+        set -x
+
+        if [ ! -d haproxy/.git ]; then
+          git clone https://github.com/haproxy/haproxy.git haproxy
+        fi
+
+        for branch in $BRANCHES; do
+          if [ "$branch" = "dev" ]; then
+            suffix=""
+          else
+            suffix="-$branch"
+          fi
+
+          if ! git -C haproxy remote |grep -q "haproxy$suffix"; then
+            git -C haproxy remote add "haproxy$suffix" "http://git.haproxy.org/git/haproxy$suffix.git/"
+          fi
+        done
+
+        for remote in $(git remote); do
+          if [ "$remote" != "origin" ]; then
+            found=
+            for branch in $BRANCHES; do
+              if [ "$branch" = "dev" ]; then
+                suffix=""
+              else
+                suffix="-$branch"
+              fi
+
+              if [ "$remote" = "haproxy$suffix" ]; then
+                found=1
+              fi
+            done
+
+            if [ -z "$found" ]; then
+              git -C haproxy remote rm "$remote"
+            fi
+          fi
+        done
+
+        git -C haproxy remote update --prune
+    - name: Rebuild the docs.
+      run: |
+        set -x
+
+        for branch in $BRANCHES; do
+          printf "::group::Building %s\n" "$branch"
+          if [ "$branch" = "dev" ]; then
+            suffix=""
+          else
+            suffix="-$branch"
+          fi
+
+          git -C haproxy checkout "haproxy$suffix/master"
+
+          rm -rf "$branch/"
+          mkdir "$branch/"
+
+          cp -r dconv/css/ dconv/img/ "$branch/"
+          python3 dconv/dconv.py -g $(pwd)/haproxy/ -o "$(pwd)/$branch/" \
+            $(pwd)/haproxy/doc/intro.txt \
+            $(pwd)/haproxy/doc/configuration.txt \
+            $(pwd)/haproxy/doc/management.txt
+
+          git add "$branch/"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update docs for $branch"
+          fi
+
+          printf "::endgroup::\n"
+        done
+    - name: Push the changes.
+      run: |
+        git push
