@@ -117,10 +117,10 @@ jobs:
           mkdir "docs/$branch/"
 
           cp -r dconv/css/ dconv/img/ "docs/$branch/"
-          python3 dconv/dconv.py -g $(pwd)/haproxy/ -o "$(pwd)/docs/$branch/" \
-            $(pwd)/haproxy/doc/intro.txt \
-            $(pwd)/haproxy/doc/configuration.txt \
-            $(pwd)/haproxy/doc/management.txt
+          python3 dconv/dconv.py -g "$(pwd)/haproxy/" -o "$(pwd)/docs/$branch/" \
+            "$(pwd)/haproxy/doc/intro.txt" \
+            "$(pwd)/haproxy/doc/configuration.txt" \
+            "$(pwd)/haproxy/doc/management.txt"
 
           git add "docs/$branch/"
           if ! git diff --cached --quiet; then
