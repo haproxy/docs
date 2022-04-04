@@ -10,7 +10,7 @@ name: Deploy
 on:
   push:
     branches:
-    - gh-pages
+    - master
   schedule:
   - cron: "0 0 * * *"
   workflow_dispatch:
@@ -116,16 +116,16 @@ jobs:
 
           git -C haproxy checkout "haproxy$suffix/master"
 
-          rm -rf "$branch/"
-          mkdir "$branch/"
+          rm -rf "docs/$branch/"
+          mkdir "docs/$branch/"
 
-          cp -r dconv/css/ dconv/img/ "$branch/"
-          python3 dconv/dconv.py -g $(pwd)/haproxy/ -o "$(pwd)/$branch/" \
+          cp -r dconv/css/ dconv/img/ "docs/$branch/"
+          python3 dconv/dconv.py -g $(pwd)/haproxy/ -o "$(pwd)/docs/$branch/" \
             $(pwd)/haproxy/doc/intro.txt \
             $(pwd)/haproxy/doc/configuration.txt \
             $(pwd)/haproxy/doc/management.txt
 
-          git add "$branch/"
+          git add "docs/$branch/"
           if ! git diff --cached --quiet; then
             git commit -m "Update docs for $branch"
           fi
