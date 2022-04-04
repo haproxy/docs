@@ -49,15 +49,12 @@ jobs:
     - name: Install dconv dependencies.
       run: |
         pip3 install -r dconv/requirements.txt
-    - name: Get current date for cache.
-      id: date
-      run: echo "::set-output name=date::$(date -Iseconds)"
     - name: Download the HAProxy repository cache.
       uses: actions/cache@v3
       with:
         path: |
           haproxy/
-        key: haproxy-${{ steps.date.outputs.date }}
+        key: haproxy-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: |
           haproxy-
     - name: Update the HAProxy repository.
