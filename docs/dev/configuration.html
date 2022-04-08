@@ -2,10 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev4-92 - Configuration Manual</title>
-		<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="//raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
-		<link href="css/page.css?0.4.2-6" rel="stylesheet" />
+		<title>HAProxy version 2.6-dev4-120 - Configuration Manual</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
+		<link href="css/page.css?0.4.2-10" rel="stylesheet" />
 	</head>
 	<body>
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -1371,6 +1371,8 @@
 							<a class="list-group-item" href="#clitcpka-idle">clitcpka-idle</a>
 							
 							<a class="list-group-item" href="#clitcpka-intvl">clitcpka-intvl</a>
+							
+							<a class="list-group-item" href="#close-spread-time">close-spread-time</a>
 							
 							<a class="list-group-item" href="#command">command</a>
 							
@@ -4013,7 +4015,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-6</b> on <b>2022/04/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4022,9 +4024,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-center">
-                            <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="img/HAProxyCommunityEdition_60px.png?0.4.2-6" /></a></h1>
+                            <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev4-92</strong></p>
+							<p><strong>version 2.6-dev4-120</strong></p>
 							<p>
 								willy tarreau<br>
 								2022/03/26
@@ -6014,7 +6016,23 @@ vulnerability would be exploited, since it would make it very hard for the
 attacker to exploit the system. This only works when the process is started
 with superuser privileges. It is important to ensure that &lt;jail_dir&gt; is both
 empty and non-writable to anyone.
-</pre><a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a process or a thread to a
+</pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global parameters)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
+closing is spread in case of soft-stop. After a SIGUSR1 is received and the
+grace period is over (if any), the idle connections will all be closed at
+once if this option is not set, and active HTTP or HTTP2 connections will be
+ended after the next request is received, either by appending a &quot;Connection:
+close&quot; line to the HTTP response, or by sending a GOAWAY frame in case of
+HTTP2. When this option is set, connection closing will be spread over this
+set &lt;time&gt;.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;  is a time window (by default in milliseconds) during which
+        connection closing will be spread during a soft-stop operation.</pre>
+</div>
+<pre class="text">It is recommended to set this setting to a value lower than the one used in
+the &quot;<a href="#hard-stop-after">hard-stop-after</a>&quot; option if this one is used, so that all connections
+have a chance to gracefully close before the process stops.
+</pre><div class="page-header"><b>See also:</b> grace, hard-stop-after</div>
+<a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a process or a thread to a
 specific CPU set. This means that the process or the thread will never run on
 other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for process or thread
 sets. The first argument is a process set, eventually followed by a thread
@@ -25477,7 +25495,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev4-92 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev4-120 &ndash; Configuration Manual<br>
 							<small>2022/03/26, willy tarreau</small>
 						</div>
 					</div>
@@ -25490,8 +25508,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 		</div>
 		<!-- /#wrapper -->
 
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		<script>
 			function filterKeywords(text) {
 				$('.letter').each(function(idx1, letter) {
