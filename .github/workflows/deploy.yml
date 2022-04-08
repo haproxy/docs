@@ -114,14 +114,19 @@ jobs:
 
           git -C haproxy checkout "haproxy$suffix/master"
 
+          files=(
+            "$PWD/haproxy/doc/intro.txt"
+            "$PWD/haproxy/doc/configuration.txt"
+            "$PWD/haproxy/doc/management.txt"
+          )
+
+          LASTCHANGE="$(git log -1 --pretty="%ct" -- ${files[@]})"
+
           rm -rf "docs/$branch/"
           mkdir "docs/$branch/"
 
           cp -r dconv/css/ dconv/img/ "docs/$branch/"
-          python3 dconv/dconv.py -g "$PWD/haproxy/" -o "$PWD/docs/$branch/" \
-            "$PWD/haproxy/doc/intro.txt" \
-            "$PWD/haproxy/doc/configuration.txt" \
-            "$PWD/haproxy/doc/management.txt"
+          env SOURCE_DATE_EPOCH="$LASTCHANGE" python3 dconv/dconv.py -g "$PWD/haproxy/" -o "$PWD/docs/$branch/" ${files[@]}
 
           git add "docs/$branch/"
           if ! git diff --cached --quiet; then
