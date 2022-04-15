@@ -126,7 +126,7 @@ jobs:
           mkdir "docs/$branch/"
 
           cp -r dconv/css/ dconv/img/ "docs/$branch/"
-          env SOURCE_DATE_EPOCH="$LASTCHANGE" python3 dconv/dconv.py -g "$PWD/haproxy/" -o "$PWD/docs/$branch/" ${files[@]}
+          env SOURCE_DATE_EPOCH="$LASTCHANGE" python3 dconv/dconv.py -g "$PWD/haproxy/" -o "$PWD/docs/$branch/" --base=.. ${files[@]}
 
           git add "docs/$branch/"
           if ! git diff --cached --quiet; then
