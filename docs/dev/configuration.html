@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev6-4 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev6-18 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3834,6 +3834,8 @@
 							
 							<a class="list-group-item" href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
 							
+							<a class="list-group-item" href="#tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a>
+							
 							<a class="list-group-item" href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
@@ -4015,7 +4017,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4026,7 +4028,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev6-4</strong></p>
+							<p><strong>version 2.6-dev6-18</strong></p>
 							<p>
 								willy tarreau<br>
 								2022/04/16
@@ -5976,6 +5978,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.pipesize">tune.pipesize</a>
    - <a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>
    - <a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
+   - <a href="#tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
    - <a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
    - <a href="#tune.recv_enough">tune.recv_enough</a>
@@ -7398,6 +7401,14 @@ much sense in the general case when targeting connection reuse).
 HAProxy globally against the maximum number of file descriptors HAProxy can
 use before we stop putting connection into the idle pool for reuse. The
 default is 20.
+</pre><a class="anchor" name="tune.quic.conn-buf-limit"></a><a class="anchor" name="3-tune.quic.conn-buf-limit"></a><a class="anchor" name="3.2-tune.quic.conn-buf-limit"></a><a class="anchor" name="tune.quic.conn-buf-limit (Global parameters)"></a><a class="anchor" name="tune.quic.conn-buf-limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.conn-buf-limit"></a><a href="#3.2-tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+This settings defines the maximum number of buffers allocated for a QUIC
+connection on data emission. By default, it is set to 30. QUIC buffers are
+drained on ACK reception. This setting has a direct impact on the throughput
+and memory consumption and can be adjusted according to an estimated round
+time-trip.
 </pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
 to the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
@@ -25496,7 +25507,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev6-4 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev6-18 &ndash; Configuration Manual<br>
 							<small>2022/04/16, willy tarreau</small>
 						</div>
 					</div>
