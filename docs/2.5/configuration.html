@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.5.5-23 - Configuration Manual</title>
+		<title>HAProxy version 2.5.5-82 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1369,6 +1369,8 @@
 							<a class="list-group-item" href="#clitcpka-idle">clitcpka-idle</a>
 							
 							<a class="list-group-item" href="#clitcpka-intvl">clitcpka-intvl</a>
+							
+							<a class="list-group-item" href="#close-spread-time">close-spread-time</a>
 							
 							<a class="list-group-item" href="#command">command</a>
 							
@@ -3656,6 +3658,8 @@
 							
 							<a class="list-group-item" href="#tcp-request content unset-var">tcp-request content unset-var</a>
 							
+							<a class="list-group-item" href="#tcp-request content use-service">tcp-request content use-service</a>
+							
 							<a class="list-group-item" href="#tcp-request inspect-delay">tcp-request inspect-delay</a>
 							
 							<a class="list-group-item" href="#tcp-request session">tcp-request session</a>
@@ -4047,7 +4051,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/03/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4058,10 +4062,10 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.5.5-23</strong></p>
+							<p><strong>version 2.5.5-82</strong></p>
 							<p>
-								willy tarreau<br>
-								2022/03/14
+								2022/03/14<br>
+								
 							</p>
 						</div>
 
@@ -6048,7 +6052,23 @@ vulnerability would be exploited, since it would make it very hard for the
 attacker to exploit the system. This only works when the process is started
 with superuser privileges. It is important to ensure that &lt;jail_dir&gt; is both
 empty and non-writable to anyone.
-</pre><a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a process or a thread to a
+</pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global parameters)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
+closing is spread in case of soft-stop. After a SIGUSR1 is received and the
+grace period is over (if any), the idle connections will all be closed at
+once if this option is not set, and active HTTP or HTTP2 connections will be
+ended after the next request is received, either by appending a &quot;Connection:
+close&quot; line to the HTTP response, or by sending a GOAWAY frame in case of
+HTTP2. When this option is set, connection closing will be spread over this
+set &lt;time&gt;.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;  is a time window (by default in milliseconds) during which
+        connection closing will be spread during a soft-stop operation.</pre>
+</div>
+<pre class="text">It is recommended to set this setting to a value lower than the one used in
+the &quot;<a href="#hard-stop-after">hard-stop-after</a>&quot; option if this one is used, so that all connections
+have a chance to gracefully close before the process stops.
+</pre><div class="page-header"><b>See also:</b> grace, hard-stop-after</div>
+<a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a process or a thread to a
 specific CPU set. This means that the process or the thread will never run on
 other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for process or thread
 sets. The first argument is a process set, eventually followed by a thread
@@ -7694,7 +7714,7 @@ Note: &quot;<a href="#peer">peer</a>&quot; keyword may transparently be replaced
 </pre><a class="anchor" name="server"></a><a class="anchor" name="3-server"></a><a class="anchor" name="3.5-server"></a><a class="anchor" name="server (Global parameters)"></a><a class="anchor" name="server (Peers)"></a><div class="keyword"><b><a class="anchor" name="server"></a><a href="#3.5-server">server</a></b> <span style="color: #080">&lt;peername&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;ip&gt;</span>:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">As previously mentioned, &quot;<a href="#peer">peer</a>&quot; keyword may be replaced by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
 with a support for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph.
 If the underlying peer is local, &lt;ip&gt;:&lt;port&gt; parameters must not be present.
-These parameters must  be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
+These parameters must be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
 of this &quot;<a href="#peers">peers</a>&quot; section).
 Some of these parameters are irrelevant for &quot;<a href="#peers">peers</a>&quot; sections.
 </pre><div class="separator">
@@ -16438,16 +16458,13 @@ See <a href="#4">section 4</a> about Proxies for more details on HTTP upgrades.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content track-sc0"></a><a class="anchor" name="4-tcp-request content track-sc0"></a><a class="anchor" name="4.2-tcp-request content track-sc0"></a><a class="anchor" name="tcp-request content track-sc0 (Proxies)"></a><a class="anchor" name="tcp-request content track-sc0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content track-sc0"></a><a href="#4.2-tcp-request%20content%20track-sc0">tcp-request content track-sc0</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content track-sc1"></a><a class="anchor" name="4-tcp-request content track-sc1"></a><a class="anchor" name="4.2-tcp-request content track-sc1"></a><a class="anchor" name="tcp-request content track-sc1 (Proxies)"></a><a class="anchor" name="tcp-request content track-sc1 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content track-sc1"></a><a href="#4.2-tcp-request%20content%20track-sc1">tcp-request content track-sc1</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content track-sc2"></a><a class="anchor" name="4-tcp-request content track-sc2"></a><a class="anchor" name="4.2-tcp-request content track-sc2"></a><a class="anchor" name="tcp-request content track-sc2 (Proxies)"></a><a class="anchor" name="tcp-request content track-sc2 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content track-sc2"></a><a href="#4.2-tcp-request%20content%20track-sc2">tcp-request content track-sc2</a></b>  <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This enables tracking of sticky counters from current connection. Please
 refer to &quot;<a href="#http-request%20track-sc0">http-request track-sc0</a>&quot;, &quot;<a href="#http-request%20track-sc1">http-request track-sc1</a>&quot; and &quot;http-request
 track-sc2&quot; for a complete description.
-</pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content unset-var"></a><a class="anchor" name="4-tcp-request content unset-var"></a><a class="anchor" name="4.2-tcp-request content unset-var"></a><a class="anchor" name="tcp-request content unset-var (Proxies)"></a><a class="anchor" name="tcp-request content unset-var (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content unset-var"></a><a href="#4.2-tcp-request%20content%20unset-var">tcp-request content unset-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">  This is used to unset a variable. Please refer to &quot;<a href="#http-request%20set-var">http-request set-var</a>&quot; for
-  details about variables.
-
-tcp-request content  use-service &lt;service-name&gt;  [ { if | unless } &lt;condition&gt; ]
-
-  This action is used to executes a TCP service which will reply to the request
-  and stop the evaluation of the rules. This service may choose to reply by
-  sending any valid response or it may immediately close the connection without
-  sending anything. Outside natives services, it is possible to write your own
-  services in Lua. No further &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot; rules are evaluated.
+</pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content unset-var"></a><a class="anchor" name="4-tcp-request content unset-var"></a><a class="anchor" name="4.2-tcp-request content unset-var"></a><a class="anchor" name="tcp-request content unset-var (Proxies)"></a><a class="anchor" name="tcp-request content unset-var (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content unset-var"></a><a href="#4.2-tcp-request%20content%20unset-var">tcp-request content unset-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to unset a variable. Please refer to &quot;<a href="#http-request%20set-var">http-request set-var</a>&quot; for
+details about variables.
+</pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content use-service"></a><a class="anchor" name="4-tcp-request content use-service"></a><a class="anchor" name="4.2-tcp-request content use-service"></a><a class="anchor" name="tcp-request content use-service (Proxies)"></a><a class="anchor" name="tcp-request content use-service (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content use-service"></a><a href="#4.2-tcp-request%20content%20use-service">tcp-request content use-service</a></b> <span style="color: #080">&lt;service-name&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to executes a TCP service which will reply to the request
+and stop the evaluation of the rules. This service may choose to reply by
+sending any valid response or it may immediately close the connection without
+sending anything. Outside natives services, it is possible to write your own
+services in Lua. No further &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot; rules are evaluated.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request inspect-delay"></a><a class="anchor" name="4-tcp-request inspect-delay"></a><a class="anchor" name="4.2-tcp-request inspect-delay"></a><a class="anchor" name="tcp-request inspect-delay (Proxies)"></a><a class="anchor" name="tcp-request inspect-delay (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request inspect-delay"></a><a href="#4.2-tcp-request%20inspect-delay">tcp-request inspect-delay</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum allowed time to wait for data during content inspection
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -25369,8 +25386,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.5.5-23 &ndash; Configuration Manual<br>
-							<small>2022/03/14, willy tarreau</small>
+							HAProxy 2.5.5-82 &ndash; Configuration Manual<br>
+							<small>, 2022/03/14</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
