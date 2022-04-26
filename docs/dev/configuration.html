@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev7 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev7-16 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1616,6 +1616,8 @@
 							<a class="list-group-item" href="#fc_unacked">fc_unacked</a>
 							
 							<a class="list-group-item" href="#fcgi-app">fcgi-app</a>
+							
+							<a class="list-group-item" href="#fd-hard-limit">fd-hard-limit</a>
 							
 							<a class="list-group-item" href="#fe_client_timeout">fe_client_timeout</a>
 							
@@ -4017,7 +4019,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4028,7 +4030,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev7</strong></p>
+							<p><strong>version 2.6-dev7-16</strong></p>
 							<p>
 								2022/04/23<br>
 								
@@ -5873,6 +5875,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#deviceatlas-properties-cookie">deviceatlas-properties-cookie</a>
    - <a href="#expose-experimental-directives">expose-experimental-directives</a>
    - <a href="#external-check">external-check</a>
+   - <a href="#fd-hard-limit">fd-hard-limit</a>
    - <a href="#gid">gid</a>
    - <a href="#grace">grace</a>
    - <a href="#group">group</a>
@@ -6176,7 +6179,24 @@ program launched makes use of a setuid executable (it should really not),
 you may also need to set &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot; in the global section.
 See &quot;<a href="#option%20external-check">option external-check</a>&quot;, and &quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot;, and
 &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot;.
-</pre><a class="anchor" name="gid"></a><a class="anchor" name="3-gid"></a><a class="anchor" name="3.1-gid"></a><a class="anchor" name="gid (Global parameters)"></a><a class="anchor" name="gid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="gid"></a><a href="#3.1-gid">gid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process&#x27;s group ID to &lt;number&gt;. It is recommended that the group
+</pre><a class="anchor" name="fd-hard-limit"></a><a class="anchor" name="3-fd-hard-limit"></a><a class="anchor" name="3.1-fd-hard-limit"></a><a class="anchor" name="fd-hard-limit (Global parameters)"></a><a class="anchor" name="fd-hard-limit (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="fd-hard-limit"></a><a href="#3.1-fd-hard-limit">fd-hard-limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets an upper bound to the maximum number of file descriptors that the
+process will use, regardless of system limits. While &quot;<a href="#ulimit-n">ulimit-n</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+may be used to enforce a value, when they are not set, the process will be
+limited to the hard limit of the RLIMIT_NOFILE setting as reported by
+&quot;ulimit -n -H&quot;. But some modern operating systems are now allowing extremely
+large values here (in the order of 1 billion), which will consume way too
+much RAM for regular usage. The fd-hard-limit setting is provided to enforce
+a possibly lower bound to this limit. This means that it will always respect
+the system-imposed limits when they are below &lt;number&gt; but the specified
+value will be used if system-imposed limits are higher. In the example below,
+no other setting is specified and the maxconn value will automatically adapt
+to the lower of &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and the system-imposed limit:
+
+    global
+        # use as many FDs as possible but no more than 50000
+        fd-hard-limit 50000
+</pre><div class="page-header"><b>See also:</b> ulimit-n, maxconn</div>
+<a class="anchor" name="gid"></a><a class="anchor" name="3-gid"></a><a class="anchor" name="3.1-gid"></a><a class="anchor" name="gid (Global parameters)"></a><a class="anchor" name="gid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="gid"></a><a href="#3.1-gid">gid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process&#x27;s group ID to &lt;number&gt;. It is recommended that the group
 ID is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with a user belonging to this group, or with superuser privileges.
 Note that if HAProxy is started from a user having supplementary groups, it
@@ -6870,12 +6890,14 @@ be started with superuser privileges in order to be able to switch to another
 one. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%29">Programs</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="ulimit-n"></a><a class="anchor" name="3-ulimit-n"></a><a class="anchor" name="3.1-ulimit-n"></a><a class="anchor" name="ulimit-n (Global parameters)"></a><a class="anchor" name="ulimit-n (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ulimit-n"></a><a href="#3.1-ulimit-n">ulimit-n</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of per-process file-descriptors to &lt;number&gt;. By
 default, it is automatically computed, so it is recommended not to use this
-option.
+option. If the intent is only to limit the number of file descriptors, better
+use &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; instead.
 
 Note that the dynamic servers are not taken into account in this automatic
 resource calculation. If using a large number of them, it may be needed to
 manually specify this value.
-</pre><a class="anchor" name="unix-bind"></a><a class="anchor" name="3-unix-bind"></a><a class="anchor" name="3.1-unix-bind"></a><a class="anchor" name="unix-bind (Global parameters)"></a><a class="anchor" name="unix-bind (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unix-bind"></a><a href="#3.1-unix-bind">unix-bind</a></b> <span style="color: #008">[ prefix <span style="color: #080">&lt;prefix&gt;</span> ]</span> <span style="color: #008">[ mode <span style="color: #080">&lt;mode&gt;</span> ]</span> <span style="color: #008">[ user <span style="color: #080">&lt;user&gt;</span> ]</span> <span style="color: #008">[ uid <span style="color: #080">&lt;uid&gt;</span> ]</span>
+</pre><div class="page-header"><b>See also:</b> fd-hard-limit, maxconn</div>
+<a class="anchor" name="unix-bind"></a><a class="anchor" name="3-unix-bind"></a><a class="anchor" name="3.1-unix-bind"></a><a class="anchor" name="unix-bind (Global parameters)"></a><a class="anchor" name="unix-bind (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unix-bind"></a><a href="#3.1-unix-bind">unix-bind</a></b> <span style="color: #008">[ prefix <span style="color: #080">&lt;prefix&gt;</span> ]</span> <span style="color: #008">[ mode <span style="color: #080">&lt;mode&gt;</span> ]</span> <span style="color: #008">[ user <span style="color: #080">&lt;user&gt;</span> ]</span> <span style="color: #008">[ uid <span style="color: #080">&lt;uid&gt;</span> ]</span>
           <span style="color: #008">[ group <span style="color: #080">&lt;group&gt;</span> ]</span> <span style="color: #008">[ gid <span style="color: #080">&lt;gid&gt;</span> ]</span></div><pre class="text">Fixes common settings to UNIX listening sockets declared in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statements.
 This is mainly used to simplify declaration of those UNIX sockets and reduce
 the risk of errors, since those settings are most commonly required but are
@@ -7030,8 +7052,9 @@ calculated based on the current file descriptors limit reported by the
 &quot;ulimit -n&quot; command, possibly reduced to a lower value if a memory limit
 is enforced, based on the buffer size, memory allocated to compression, SSL
 cache size, and use or not of SSL and the associated maxsslconn (which can
-also be automatic).
-</pre><a class="anchor" name="maxconnrate"></a><a class="anchor" name="3-maxconnrate"></a><a class="anchor" name="3.2-maxconnrate"></a><a class="anchor" name="maxconnrate (Global parameters)"></a><a class="anchor" name="maxconnrate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconnrate"></a><a href="#3.2-maxconnrate">maxconnrate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of connections per second to &lt;number&gt;.
+also be automatic). In any case, the fd-hard-limit applies if set.
+</pre><div class="page-header"><b>See also:</b> fd-hard-limit, ulimit-n</div>
+<a class="anchor" name="maxconnrate"></a><a class="anchor" name="3-maxconnrate"></a><a class="anchor" name="3.2-maxconnrate"></a><a class="anchor" name="maxconnrate (Global parameters)"></a><a class="anchor" name="maxconnrate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconnrate"></a><a href="#3.2-maxconnrate">maxconnrate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of connections per second to &lt;number&gt;.
 Proxies will stop accepting connections when this limit is reached. It can be
 used to limit the global capacity regardless of each frontend capacity. It is
 important to note that this can only be used as a service protection measure,
@@ -8468,6 +8491,19 @@ two, and never more than some limits (usually 32768).
               turn new servers on when the queue inflates. Alternatively,
               using &quot;<a href="#http-check%20send-state">http-check send-state</a>&quot; may inform servers on the load.
 
+  hash        Takes a regular sample expression in argument. The expression
+              is evaluated for each request and hashed according to the
+              configured hash-type. The result of the hash is divided by
+              the total weight of the running servers to designate which
+              server will receive the request. This can be used in place of
+              &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;uri&quot;, &quot;hdr()&quot;, &quot;url_param()&quot;, &quot;rdp-cookie&quot; to make
+              use of a converter, refine the evaluation, or be used to
+              extract data from local variables for example. When the data
+              is not available, round robin will apply. This algorithm is
+              static by default, which means that changing a server&#x27;s
+              weight on the fly will have no effect, but this can be
+              changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+
   source      The source IP address is hashed and divided by the total
               weight of the running servers to designate which server will
               receive the request. This ensures that the same client IP
@@ -8480,7 +8516,7 @@ two, and never more than some limits (usually 32768).
               to clients which refuse session cookies. This algorithm is
               static by default, which means that changing a server&#x27;s
               weight on the fly will have no effect, but this can be
-              changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+              changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also the &quot;hash&quot; option above.
 
   uri         This algorithm hashes either the left part of the URI (before
               the question mark) or the whole URI (if the &quot;whole&quot; parameter
@@ -8512,7 +8548,8 @@ two, and never more than some limits (usually 32768).
               A &quot;path-only&quot; parameter indicates that the hashing key starts
               at the first &#x27;/&#x27; of the path. This can be used to ignore the
               authority part of absolute URIs, and to make sure that HTTP/1
-              and HTTP/2 URIs will provide the same hash.
+              and HTTP/2 URIs will provide the same hash. See also the
+              &quot;hash&quot; option above.
 
   url_param   The URL parameter specified in argument will be looked up in
               the query string of each HTTP GET request.
@@ -8540,7 +8577,8 @@ two, and never more than some limits (usually 32768).
               applied. Note that this algorithm may only be used in an HTTP
               backend. This algorithm is static by default, which means
               that changing a server&#x27;s weight on the fly will have no
-              effect, but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+              effect, but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also
+              the &quot;hash&quot; option above.
 
   hdr(&lt;name&gt;) The HTTP header &lt;name&gt; will be looked up in each HTTP
               request. Just as with the equivalent ACL &#x27;hdr()&#x27; function,
@@ -8555,7 +8593,8 @@ two, and never more than some limits (usually 32768).
 
               This algorithm is static by default, which means that
               changing a server&#x27;s weight on the fly will have no effect,
-              but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+              but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also the
+              &quot;hash&quot; option above.
 
   random
   random(&lt;draws&gt;)
@@ -8603,7 +8642,8 @@ two, and never more than some limits (usually 32768).
 
               This algorithm is static by default, which means that
               changing a server&#x27;s weight on the fly will have no effect,
-              but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+              but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also the
+              &quot;hash&quot; option above.
 
 &lt;arguments&gt; is an optional list of arguments which may be needed by some
             algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot; and &quot;uri&quot; support an
@@ -8626,6 +8666,9 @@ balance url_param session_id check_post 64
 balance hdr(User-Agent)
 balance hdr(host)
 balance hdr(Host) use_domain_only
+balance hash req.cookie(clientid)
+balance hash var(req.client_id)
+balance hash req.hdr_ip(x-forwarded-for,-1),ipmask(24)
 </code></pre>
 </div><pre class="text">Note: the following caveats and limitations on using the &quot;check_post&quot;
 extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered :
@@ -25507,7 +25550,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev7 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev7-16 &ndash; Configuration Manual<br>
 							<small>, 2022/04/23</small>
 						</div>
 					</div>
