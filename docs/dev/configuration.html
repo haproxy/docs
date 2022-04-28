@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev7-33 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev7-43 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3862,6 +3862,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
 							
+							<a class="list-group-item" href="#tune.ssl.hard-maxrecord">tune.ssl.hard-maxrecord</a>
+							
 							<a class="list-group-item" href="#tune.ssl.keylog">tune.ssl.keylog</a>
 							
 							<a class="list-group-item" href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
@@ -4019,7 +4021,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4030,7 +4032,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev7-33</strong></p>
+							<p><strong>version 2.6-dev7-43</strong></p>
 							<p>
 								2022/04/23<br>
 								
@@ -5990,9 +5992,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
    - <a href="#tune.sndbuf.server">tune.sndbuf.server</a>
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
+   - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
+   - <a href="#tune.ssl.hard-maxrecord">tune.ssl.hard-maxrecord</a>
    - <a href="#tune.ssl.keylog">tune.ssl.keylog</a>
    - <a href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
-   - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
    - <a href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
    - <a href="#tune.ssl.default-dh-param">tune.ssl.default-dh-param</a>
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
@@ -7495,6 +7498,10 @@ clients hitting a random process. But it may be required on some operating
 systems where none of the SSL cache synchronization method may be used. In
 this case, adding a first layer of hash-based load balancing before the SSL
 layer might limit the impact of the lack of session sharing.
+</pre><a class="anchor" name="tune.ssl.hard-maxrecord"></a><a class="anchor" name="3-tune.ssl.hard-maxrecord"></a><a class="anchor" name="3.2-tune.ssl.hard-maxrecord"></a><a class="anchor" name="tune.ssl.hard-maxrecord (Global parameters)"></a><a class="anchor" name="tune.ssl.hard-maxrecord (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.hard-maxrecord"></a><a href="#3.2-tune.ssl.hard-maxrecord">tune.ssl.hard-maxrecord</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of bytes passed to SSL_write() at any time. Default
+value 0 means there is no limit. In contrast to tune.ssl.maxrecord this
+settings will not be adjusted dynamically. Smaller records may decrease
+throughput, but may be required when dealing with low-footprint clients.
 </pre><a class="anchor" name="tune.ssl.keylog"></a><a class="anchor" name="3-tune.ssl.keylog"></a><a class="anchor" name="3.2-tune.ssl.keylog"></a><a class="anchor" name="tune.ssl.keylog (Global parameters)"></a><a class="anchor" name="tune.ssl.keylog (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.keylog"></a><a href="#3.2-tune.ssl.keylog">tune.ssl.keylog</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">This option activates the logging of the TLS keys. It should be used with
 care as it will consume more memory per SSL session and could decrease
 performances. This is disabled by default.
@@ -7537,18 +7544,19 @@ does not guarantee that sessions will last that long, because if the cache is
 full, the longest idle sessions will be purged despite their configured
 lifetime. The real usefulness of this setting is to prevent sessions from
 being used for too long.
-</pre><a class="anchor" name="tune.ssl.maxrecord"></a><a class="anchor" name="3-tune.ssl.maxrecord"></a><a class="anchor" name="3.2-tune.ssl.maxrecord"></a><a class="anchor" name="tune.ssl.maxrecord (Global parameters)"></a><a class="anchor" name="tune.ssl.maxrecord (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.maxrecord"></a><a href="#3.2-tune.ssl.maxrecord">tune.ssl.maxrecord</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of bytes passed to SSL_write() at a time. Default
-value 0 means there is no limit. Over SSL/TLS, the client can decipher the
-data only once it has received a full record. With large records, it means
-that clients might have to download up to 16kB of data before starting to
-process them. Limiting the value can improve page load times on browsers
-located over high latency or low bandwidth networks. It is suggested to find
-optimal values which fit into 1 or 2 TCP segments (generally 1448 bytes over
-Ethernet with TCP timestamps enabled, or 1460 when timestamps are disabled),
-keeping in mind that SSL/TLS add some overhead. Typical values of 1419 and
-2859 gave good results during tests. Use &quot;strace -e trace=write&quot; to find the
-best value. HAProxy will automatically switch to this setting after an idle
-stream has been detected (see tune.idletimer above).
+</pre><a class="anchor" name="tune.ssl.maxrecord"></a><a class="anchor" name="3-tune.ssl.maxrecord"></a><a class="anchor" name="3.2-tune.ssl.maxrecord"></a><a class="anchor" name="tune.ssl.maxrecord (Global parameters)"></a><a class="anchor" name="tune.ssl.maxrecord (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.maxrecord"></a><a href="#3.2-tune.ssl.maxrecord">tune.ssl.maxrecord</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of bytes passed to SSL_write() at the beginning of
+the data transfer. Default value 0 means there is no limit. Over SSL/TLS,
+the client can decipher the data only once it has received a full record.
+With large records, it means that clients might have to download up to 16kB
+of data before starting to process them. Limiting the value can improve page
+load times on browsers located over high latency or low bandwidth networks.
+It is suggested to find optimal values which fit into 1 or 2 TCP segments
+(generally 1448 bytes over Ethernet with TCP timestamps enabled, or 1460 when
+timestamps are disabled), keeping in mind that SSL/TLS add some overhead.
+Typical values of 1419 and 2859 gave good results during tests. Use
+&quot;strace -e trace=write&quot; to find the best value. HAProxy will automatically
+switch to this setting after an idle stream has been detected (see
+tune.idletimer above). See also tune.ssl.hard-maxrecord.
 </pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global parameters)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
 the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange. The
 final size will try to match the size of the server&#x27;s RSA (or DSA) key (e.g,
@@ -25556,7 +25564,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev7-33 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev7-43 &ndash; Configuration Manual<br>
 							<small>, 2022/04/23</small>
 						</div>
 					</div>
