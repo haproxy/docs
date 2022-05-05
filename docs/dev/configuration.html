@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev8-12 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev8-25 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -2004,6 +2004,14 @@
 							<a class="list-group-item" href="#http_date">http_date</a>
 							
 							<a class="list-group-item" href="#http_first_req">http_first_req</a>
+							
+							<a class="list-group-item" href="#httpclient.resolvers.id">httpclient.resolvers.id</a>
+							
+							<a class="list-group-item" href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
+							
+							<a class="list-group-item" href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
+							
+							<a class="list-group-item" href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-I"><h4>I</h4>
@@ -4021,7 +4029,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4032,7 +4040,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev8-12</strong></p>
+							<p><strong>version 2.6-dev8-25</strong></p>
 							<p>
 								2022/04/30<br>
 								
@@ -6318,6 +6326,35 @@ to be adjusted. Please read the risks associated with using this.
 
 See &quot;<a href="#h1-case-adjust">h1-case-adjust</a>&quot;, &quot;<a href="#option%20h1-case-adjust-bogus-client">option h1-case-adjust-bogus-client</a>&quot; and
 &quot;<a href="#option%20h1-case-adjust-bogus-server">option h1-case-adjust-bogus-server</a>&quot;.
+</pre><a class="anchor" name="httpclient.ssl.ca-file"></a><a class="anchor" name="3-httpclient.ssl.ca-file"></a><a class="anchor" name="3.1-httpclient.ssl.ca-file"></a><a class="anchor" name="httpclient.ssl.ca-file (Global parameters)"></a><a class="anchor" name="httpclient.ssl.ca-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.ssl.ca-file"></a><a href="#3.1-httpclient.ssl.ca-file">httpclient.ssl.ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">This option defines the ca-file which should be used to verify the server
+certificate. It takes the same parameters as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option on the
+server line.
+
+By default and when this option is not used, the value is
+&quot;@system-ca&quot; which tries to load the CA of the system. If it fails the SSL
+will be disabled for the httpclient.
+
+However, when this option is explicitly enabled it will trigger a
+configuration error if it fails.
+</pre><a class="anchor" name="httpclient.ssl.verify"></a><a class="anchor" name="3-httpclient.ssl.verify"></a><a class="anchor" name="3.1-httpclient.ssl.verify"></a><a class="anchor" name="httpclient.ssl.verify (Global parameters)"></a><a class="anchor" name="httpclient.ssl.verify (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.ssl.verify"></a><a href="#3.1-httpclient.ssl.verify">httpclient.ssl.verify</a></b> <span style="color: #008">[none|required]</span></div><pre class="text">Works the same way as the verify option on server lines. If specified to &#x27;none&#x27;,
+servers certificates are not verified. Default option is &quot;required&quot;.
+
+By default and when this option is not used, the value is
+&quot;required&quot;. If it fails the SSL will be disabled for the httpclient.
+
+However, when this option is explicitly enabled it will trigger a
+configuration error if it fails.
+</pre><a class="anchor" name="httpclient.resolvers.id"></a><a class="anchor" name="3-httpclient.resolvers.id"></a><a class="anchor" name="3.1-httpclient.resolvers.id"></a><a class="anchor" name="httpclient.resolvers.id (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.id (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.id"></a><a href="#3.1-httpclient.resolvers.id">httpclient.resolvers.id</a></b> <span style="color: #080">&lt;resolvers id&gt;</span></div><pre class="text">This option defines the resolvers section with which the httpclient will try
+to resolve.
+
+Default option is the &quot;default&quot; resolvers ID. By default, if this option is
+not used, it will simply disable the resolving if the section is not found.
+
+However, when this option is explicitly enabled it will trigger a
+configuration error if it fails to load.
+</pre><a class="anchor" name="httpclient.resolvers.prefer"></a><a class="anchor" name="3-httpclient.resolvers.prefer"></a><a class="anchor" name="3.1-httpclient.resolvers.prefer"></a><a class="anchor" name="httpclient.resolvers.prefer (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.prefer (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.prefer"></a><a href="#3.1-httpclient.resolvers.prefer">httpclient.resolvers.prefer</a></b> <span style="color: #080">&lt;ipv4|ipv6&gt;</span></div><pre class="text">This option allows to chose which family of IP you want when resolving,
+which is convenient when IPv6 is not available on your network. Default
+option is &quot;<a href="#ipv6">ipv6</a>&quot;.
 </pre><a class="anchor" name="insecure-fork-wanted"></a><a class="anchor" name="3-insecure-fork-wanted"></a><a class="anchor" name="3.1-insecure-fork-wanted"></a><a class="anchor" name="insecure-fork-wanted (Global parameters)"></a><a class="anchor" name="insecure-fork-wanted (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="insecure-fork-wanted"></a><a href="#3.1-insecure-fork-wanted">insecure-fork-wanted</a></b></div><pre class="text">By default HAProxy tries hard to prevent any thread and process creation
 after it starts. Doing so is particularly important when using Lua files of
 uncertain origin, and when experimenting with development versions which may
@@ -25564,7 +25601,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev8-12 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev8-25 &ndash; Configuration Manual<br>
 							<small>, 2022/04/30</small>
 						</div>
 					</div>
