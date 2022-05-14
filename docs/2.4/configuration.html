@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.16-7 - Configuration Manual</title>
+		<title>HAProxy version 2.4.17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3750,7 +3750,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3761,9 +3761,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.16-7</strong></p>
+							<p><strong>version 2.4.17</strong></p>
 							<p>
-								2022/04/29<br>
+								2022/05/13<br>
 								
 							</p>
 						</div>
@@ -23682,12 +23682,18 @@ easier finding and understanding.
           rare, that the proxy blocked a chunked-encoding request from the
           client due to an invalid syntax, before the server responded. In this
           case, an HTTP 400 error is sent to the client and reported in the
-          logs.
+          logs. Finally, it may be due to an HTTP header rewrite failure on the
+          response. In this case, an HTTP 500 error is sent (see
+          &quot;<a href="#tune.maxrewrite">tune.maxrewrite</a>&quot; and &quot;<a href="#http-response%20strict-mode">http-response strict-mode</a>&quot; for more
+          inforomation).
 
      PR   The proxy blocked the client&#x27;s HTTP request, either because of an
           invalid HTTP syntax, in which case it returned an HTTP 400 error to
           the client, or because a deny filter matched, in which case it
-          returned an HTTP 403 error.
+          returned an HTTP 403 error.  It may also be due to an HTTP header
+          rewrite failure on the request. In this case, an HTTP 500 error is
+          sent (see &quot;<a href="#tune.maxrewrite">tune.maxrewrite</a>&quot; and &quot;<a href="#http-request%20strict-mode">http-request strict-mode</a>&quot; for more
+          inforomation).
 
      PT   The proxy blocked the client&#x27;s request and has tarpitted its
           connection before returning it a 500 server error. Nothing was sent
@@ -24503,8 +24509,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.16-7 &ndash; Configuration Manual<br>
-							<small>, 2022/04/29</small>
+							HAProxy 2.4.17 &ndash; Configuration Manual<br>
+							<small>, 2022/05/13</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
