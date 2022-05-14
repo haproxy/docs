@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev9-39 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev9-74 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1705,6 +1705,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-H"><h4>H</h4>
 								
+							<a class="list-group-item" href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>
+							
 							<a class="list-group-item" href="#h1-case-adjust">h1-case-adjust</a>
 							
 							<a class="list-group-item" href="#h1-case-adjust-file">h1-case-adjust-file</a>
@@ -4031,7 +4033,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4042,7 +4044,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev9-39</strong></p>
+							<p><strong>version 2.6-dev9-74</strong></p>
 							<p>
 								2022/05/08<br>
 								
@@ -5897,6 +5899,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
    - <a href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
    - <a href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
+   - <a href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>
    - <a href="#h1-case-adjust">h1-case-adjust</a>
    - <a href="#h1-case-adjust-file">h1-case-adjust-file</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
@@ -6292,7 +6295,19 @@ in tcp mode). It applies both in TCP and HTTP mode.
   hard-stop-after 30s
 </code></pre>
 </div><div class="page-header"><b>See also:</b> grace</div>
-<a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
+<a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global parameters)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+
+While It is explicitly allowed in HTTP/1.1, HTTP/1.0 is not clear on this
+point and some old servers don&#x27;t expect any payload and never look for body
+length (via Content-Length or Transfer-Encoding headers). It means that some
+intermediaries may properly handle the payload for HTTP/1.0 GET/HEAD/DELETE
+requests, while some others may totally ignore it. That may lead to security
+issues because a request smuggling attack is possible. Thus, by default,
+HAProxy rejects HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+
+However, it may be an issue with some old clients. In this case, this global
+option may be set.
+</pre><a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
 &lt;from&gt;, to change it to &lt;to&gt; before sending it to HTTP/1 clients or
 servers. &lt;from&gt; must be in lower case, and &lt;from&gt; and &lt;to&gt; must not differ
 except for their case. It may be repeated if several header names need to be
@@ -14101,6 +14116,14 @@ Environment variables :
 
   HAPROXY_SERVER_PORT     The server port if available (or empty for a UNIX
                           socket).
+
+  HAPROXY_SERVER_SSL      &quot;0&quot; when SSL is not used, &quot;1&quot; when it is used
+
+  HAPROXY_SERVER_PROTO    The protocol used by this server, which can be one
+                          of &quot;cli&quot; (the haproxy CLI), &quot;syslog&quot; (syslog TCP
+                          server), &quot;<a href="#peers">peers</a>&quot; (peers TCP server), &quot;h1&quot; (HTTP/1.x
+                          server), &quot;h2&quot; (HTTP/2 server), or &quot;tcp&quot; (any other
+                          TCP server).
 
   PATH                    The PATH environment variable used when executing
                           the command may be set using &quot;<a href="#external-check%20path">external-check path</a>&quot;.
@@ -25625,7 +25648,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev9-39 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev9-74 &ndash; Configuration Manual<br>
 							<small>, 2022/05/08</small>
 						</div>
 					</div>
