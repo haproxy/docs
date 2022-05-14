@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.5.6-14 - Configuration Manual</title>
+		<title>HAProxy version 2.5.7 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1699,6 +1699,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-H"><h4>H</h4>
 								
+							<a class="list-group-item" href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>
+							
 							<a class="list-group-item" href="#h1-case-adjust">h1-case-adjust</a>
 							
 							<a class="list-group-item" href="#h1-case-adjust-file">h1-case-adjust-file</a>
@@ -4053,7 +4055,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/04/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4064,9 +4066,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.5.6-14</strong></p>
+							<p><strong>version 2.5.7</strong></p>
 							<p>
-								2022/04/26<br>
+								2022/05/13<br>
 								
 							</p>
 						</div>
@@ -5913,6 +5915,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#grace">grace</a>
    - <a href="#group">group</a>
    - <a href="#hard-stop-after">hard-stop-after</a>
+   - <a href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>
    - <a href="#h1-case-adjust">h1-case-adjust</a>
    - <a href="#h1-case-adjust-file">h1-case-adjust-file</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
@@ -6285,7 +6288,19 @@ in tcp mode). It applies both in TCP and HTTP mode.
   hard-stop-after 30s
 </code></pre>
 </div><div class="page-header"><b>See also:</b> grace</div>
-<a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
+<a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global parameters)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+
+While It is explicitly allowed in HTTP/1.1, HTTP/1.0 is not clear on this
+point and some old servers don&#x27;t expect any payload and never look for body
+length (via Content-Length or Transfer-Encoding headers). It means that some
+intermediaries may properly handle the payload for HTTP/1.0 GET/HEAD/DELETE
+requests, while some others may totally ignore it. That may lead to security
+issues because a request smuggling attack is possible. Thus, by default,
+HAProxy rejects HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+
+However, it may be an issue with some old clients. In this case, this global
+option may be set.
+</pre><a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
 &lt;from&gt;, to change it to &lt;to&gt; before sending it to HTTP/1 clients or
 servers. &lt;from&gt; must be in lower case, and &lt;from&gt; and &lt;to&gt; must not differ
 except for their case. It may be repeated if several header names need to be
@@ -24579,12 +24594,18 @@ easier finding and understanding.
           rare, that the proxy blocked a chunked-encoding request from the
           client due to an invalid syntax, before the server responded. In this
           case, an HTTP 400 error is sent to the client and reported in the
-          logs.
+          logs. Finally, it may be due to an HTTP header rewrite failure on the
+          response. In this case, an HTTP 500 error is sent (see
+          &quot;<a href="#tune.maxrewrite">tune.maxrewrite</a>&quot; and &quot;<a href="#http-response%20strict-mode">http-response strict-mode</a>&quot; for more
+          inforomation).
 
      PR   The proxy blocked the client&#x27;s HTTP request, either because of an
           invalid HTTP syntax, in which case it returned an HTTP 400 error to
           the client, or because a deny filter matched, in which case it
-          returned an HTTP 403 error.
+          returned an HTTP 403 error.  It may also be due to an HTTP header
+          rewrite failure on the request. In this case, an HTTP 500 error is
+          sent (see &quot;<a href="#tune.maxrewrite">tune.maxrewrite</a>&quot; and &quot;<a href="#http-request%20strict-mode">http-request strict-mode</a>&quot; for more
+          inforomation).
 
      PT   The proxy blocked the client&#x27;s request and has tarpitted its
           connection before returning it a 500 server error. Nothing was sent
@@ -25400,8 +25421,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.5.6-14 &ndash; Configuration Manual<br>
-							<small>, 2022/04/26</small>
+							HAProxy 2.5.7 &ndash; Configuration Manual<br>
+							<small>, 2022/05/13</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
