@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev12 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev12-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -2100,6 +2100,10 @@
 								
 							<a class="list-group-item" href="#language">language</a>
 							
+							<a class="list-group-item" href="#last_rule_file">last_rule_file</a>
+							
+							<a class="list-group-item" href="#last_rule_line">last_rule_line</a>
+							
 							<a class="list-group-item" href="#lat_ns_avg">lat_ns_avg</a>
 							
 							<a class="list-group-item" href="#lat_ns_tot">lat_ns_tot</a>
@@ -4041,7 +4045,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4052,7 +4056,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev12</strong></p>
+							<p><strong>version 2.6-dev12-1</strong></p>
 							<p>
 								2022/05/27<br>
 								
@@ -21279,35 +21283,31 @@ frontend mail
 </div><a class="anchor" name="hostname"></a><a class="anchor" name="7-hostname"></a><a class="anchor" name="7.3.2-hostname"></a><a class="anchor" name="hostname (Using ACLs and fetching samples)"></a><a class="anchor" name="hostname (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="hostname"></a><a href="#7.3.2-hostname">hostname</a></b> : string</div><pre class="text">Returns the system hostname.
 </pre><a class="anchor" name="int"></a><a class="anchor" name="7-int"></a><a class="anchor" name="7.3.2-int"></a><a class="anchor" name="int (Using ACLs and fetching samples)"></a><a class="anchor" name="int (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="int"></a><a href="#7.3.2-int">int</a></b>(<span style="color: #080">&lt;integer&gt;</span>) : signed integer</div><pre class="text">Returns a signed integer.
 </pre><a class="anchor" name="ipv4"></a><a class="anchor" name="7-ipv4"></a><a class="anchor" name="7.3.2-ipv4"></a><a class="anchor" name="ipv4 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv4 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv4"></a><a href="#7.3.2-ipv4">ipv4</a></b>(<span style="color: #080">&lt;ipv4&gt;</span>) : ipv4</div><pre class="text">Returns an ipv4.
-</pre><a class="anchor" name="ipv6"></a><a class="anchor" name="7-ipv6"></a><a class="anchor" name="7.3.2-ipv6"></a><a class="anchor" name="ipv6 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv6 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv6"></a><a href="#7.3.2-ipv6">ipv6</a></b>(<span style="color: #080">&lt;ipv6&gt;</span>) : ipv6</div><pre class="text">  Returns an ipv6.
-
-last_rule_file: string
-  This returns the name of the configuration file containing the last final
-  rule that was matched during stream analysis. A final rule is one that
-  terminates the evaluation of the rule set (like an &quot;accept&quot;, &quot;deny&quot; or
-  &quot;<a href="#redirect">redirect</a>&quot;). This works for TCP request and response rules acting on the
-  &quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
-  and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<a href="#redirect">redirect</a>&quot; rulesets are not
-  supported (such information is not stored there), and neither &quot;tcp-request
-  connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
-  information is stored at the stream level and streams do not exist during
-  these rules. The main purpose of this function is to be able to report in
-  logs where was the rule that gave the final verdict, in order to help
-  figure why a request was denied for example. See also &quot;last_rule_line&quot;.
-
-last_rule_line: integer
-  This returns the line number in the configuration file where is located the
-  last final rule that was matched during stream analysis. A final rule is one
-  that terminates the evaluation of the rule set (like an &quot;accept&quot;, &quot;deny&quot; or
-  &quot;<a href="#redirect">redirect</a>&quot;). This works for TCP request and response rules acting on the
-  &quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
-  and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<a href="#redirect">redirect</a>&quot; rulesets are not
-  supported (such information is not stored there), and neither &quot;tcp-request
-  connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
-  information is stored at the stream level and streams do not exist during
-  these rules. The main purpose of this function is to be able to report in
-  logs where was the rule that gave the final verdict, in order to help
-  figure why a request was denied for example. See also &quot;last_rule_file&quot;.
+</pre><a class="anchor" name="ipv6"></a><a class="anchor" name="7-ipv6"></a><a class="anchor" name="7.3.2-ipv6"></a><a class="anchor" name="ipv6 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv6 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv6"></a><a href="#7.3.2-ipv6">ipv6</a></b>(<span style="color: #080">&lt;ipv6&gt;</span>) : ipv6</div><pre class="text">Returns an ipv6.
+</pre><a class="anchor" name="last_rule_file"></a><a class="anchor" name="7-last_rule_file"></a><a class="anchor" name="7.3.2-last_rule_file"></a><a class="anchor" name="last_rule_file (Using ACLs and fetching samples)"></a><a class="anchor" name="last_rule_file (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="last_rule_file"></a><a href="#7.3.2-last_rule_file">last_rule_file</a></b> : string</div><pre class="text">This returns the name of the configuration file containing the last final
+rule that was matched during stream analysis. A final rule is one that
+terminates the evaluation of the rule set (like an &quot;accept&quot;, &quot;deny&quot; or
+&quot;<a href="#redirect">redirect</a>&quot;). This works for TCP request and response rules acting on the
+&quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<a href="#redirect">redirect</a>&quot; rulesets are not
+supported (such information is not stored there), and neither &quot;tcp-request
+connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
+information is stored at the stream level and streams do not exist during
+these rules. The main purpose of this function is to be able to report in
+logs where was the rule that gave the final verdict, in order to help
+figure why a request was denied for example. See also &quot;<a href="#last_rule_line">last_rule_line</a>&quot;.
+</pre><a class="anchor" name="last_rule_line"></a><a class="anchor" name="7-last_rule_line"></a><a class="anchor" name="7.3.2-last_rule_line"></a><a class="anchor" name="last_rule_line (Using ACLs and fetching samples)"></a><a class="anchor" name="last_rule_line (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="last_rule_line"></a><a href="#7.3.2-last_rule_line">last_rule_line</a></b> : integer</div><pre class="text">This returns the line number in the configuration file where is located the
+last final rule that was matched during stream analysis. A final rule is one
+that terminates the evaluation of the rule set (like an &quot;accept&quot;, &quot;deny&quot; or
+&quot;<a href="#redirect">redirect</a>&quot;). This works for TCP request and response rules acting on the
+&quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<a href="#redirect">redirect</a>&quot; rulesets are not
+supported (such information is not stored there), and neither &quot;tcp-request
+connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
+information is stored at the stream level and streams do not exist during
+these rules. The main purpose of this function is to be able to report in
+logs where was the rule that gave the final verdict, in order to help
+figure why a request was denied for example. See also &quot;<a href="#last_rule_file">last_rule_file</a>&quot;.
 </pre><a class="anchor" name="lat_ns_avg"></a><a class="anchor" name="7-lat_ns_avg"></a><a class="anchor" name="7.3.2-lat_ns_avg"></a><a class="anchor" name="lat_ns_avg (Using ACLs and fetching samples)"></a><a class="anchor" name="lat_ns_avg (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="lat_ns_avg"></a><a href="#7.3.2-lat_ns_avg">lat_ns_avg</a></b> : integer</div><pre class="text">Returns the average number of nanoseconds spent between the moment the task
 handling the stream is woken up and the moment it is effectively called. This
 number is reset for each new request on the same connections in case of HTTP
@@ -25729,7 +25729,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev12 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev12-1 &ndash; Configuration Manual<br>
 							<small>, 2022/05/27</small>
 						</div>
 					</div>
