@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev12-37 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev0 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -4053,7 +4053,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4064,9 +4064,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev12-37</strong></p>
+							<p><strong>version 2.7-dev0</strong></p>
 							<p>
-								2022/05/27<br>
+								2022/05/31<br>
 								
 							</p>
 						</div>
@@ -5260,7 +5260,7 @@ carry the stream identifier.
 
 
 HTTP/3 is implemented over QUIC, itself implemented over UDP. QUIC solves the
-head of line blocking at transport level by means of independantly treated
+head of line blocking at transport level by means of independently treated
 streams. Indeed, when experiencing loss, an impacted stream does not affect the
 other streams.
 
@@ -6877,16 +6877,19 @@ If loading is successful, any capabilities provided by the loaded provider
 might be used by HAProxy. Multiple &#x27;ssl-provider&#x27; options can be specified in
 a configuration file. The providers will be loaded in their order of
 appearance.
-Please note that loading a provider explicitely prevents OpenSSL from loading
+
+Please note that loading a provider explicitly prevents OpenSSL from loading
 the &#x27;default&#x27; provider automatically. OpenSSL also allows to define the
 providers that should be loaded directly in its configuration file
 (openssl.cnf for instance) so it is not necessary to use this &#x27;ssl-provider&#x27;
 option to load providers. The &quot;show ssl providers&quot; CLI command can be used to
 show all the providers that were successfully loaded.
+
 The default search path of OpenSSL provider can be found in the output of the
 &quot;openssl version -a&quot; command. If the provider is in another directory, you
 can set the OPENSSL_MODULES environment variable, which takes the directory
 where your provider can be found.
+
 See also &quot;<a href="#ssl-propquery">ssl-propquery</a>&quot; and &quot;<a href="#ssl-provider-path">ssl-provider-path</a>&quot;.
 </pre><a class="anchor" name="ssl-provider-path"></a><a class="anchor" name="3-ssl-provider-path"></a><a class="anchor" name="3.1-ssl-provider-path"></a><a class="anchor" name="ssl-provider-path (Global parameters)"></a><a class="anchor" name="ssl-provider-path (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-provider-path"></a><a href="#3.1-ssl-provider-path">ssl-provider-path</a></b> <span style="color: #080">&lt;path&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in and when
 OpenSSL&#x27;s version is at least 3.0. It allows to specify the search path that
@@ -7600,8 +7603,8 @@ as soon as this number of half open connections is reached. A half open
 connection is a connection whose handshake has not already successfully
 completed or failed. To be functional this setting needs a cluster secret to
 be set, if not it will be silently ignored (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot; setting).
-This setting will be also silenty ignored if the use of QUIC Retry was forced
-(see &quot;<a href="#quic-force-retry">quic-force-retry</a>&quot;).
+This setting will be also silently ignored if the use of QUIC Retry was
+forced (see &quot;<a href="#quic-force-retry">quic-force-retry</a>&quot;).
 
 The default value is 100.
 
@@ -7863,8 +7866,10 @@ tables without having to comment out all &quot;<a href="#peers">peers</a>&quot; 
 </pre><div class="separator">
 <span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;param*&gt;  is a list of parameters for this server. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
           keyword accepts an important number of options and has a complete
-          section dedicated to it. Please refer to <a href="#5">section 5</a> for more
-          details.</pre>
+          section dedicated to it. In a peers section, the transport
+          parameters of a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line are supported. Please refer
+          to <a href="#5">section 5</a> for more details, and the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword below in
+          this section for some of the restrictions.</pre>
 </div>
 <div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and <a href="#5">section 5</a> about server options</div>
 <a class="anchor" name="enabled"></a><a class="anchor" name="3-enabled"></a><a class="anchor" name="3.5-enabled"></a><a class="anchor" name="enabled (Global parameters)"></a><a class="anchor" name="enabled (Peers)"></a><div class="keyword"><b><a class="anchor" name="enabled"></a><a href="#3.5-enabled">enabled</a></b></div><pre class="text">This re-enables a peers section which was previously disabled via the
@@ -7895,11 +7900,16 @@ parameter, see <a href="#2.3">section 2.3</a> about environment variables.
 Note: &quot;<a href="#peer">peer</a>&quot; keyword may transparently be replaced by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword (see
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword explanation below).
 </pre><a class="anchor" name="server"></a><a class="anchor" name="3-server"></a><a class="anchor" name="3.5-server"></a><a class="anchor" name="server (Global parameters)"></a><a class="anchor" name="server (Peers)"></a><div class="keyword"><b><a class="anchor" name="server"></a><a href="#3.5-server">server</a></b> <span style="color: #080">&lt;peername&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;ip&gt;</span>:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">As previously mentioned, &quot;<a href="#peer">peer</a>&quot; keyword may be replaced by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
-with a support for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph.
-If the underlying peer is local, &lt;ip&gt;:&lt;port&gt; parameters must not be present.
-These parameters must be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
-of this &quot;<a href="#peers">peers</a>&quot; section).
-Some of these parameters are irrelevant for &quot;<a href="#peers">peers</a>&quot; sections.
+with a support for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph that are
+related to transport settings. If the underlying peer is local, &lt;ip&gt;:&lt;port&gt;
+parameters must not be present; these parameters must be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword of this &quot;<a href="#peers">peers</a>&quot; section).
+
+A number of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters are irrelevant for &quot;<a href="#peers">peers</a>&quot; sections. Peers by
+nature do not support dynamic host name resolution nor health checks, hence
+parameters like &quot;init_addr&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">resolvers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#resolvers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#resolvers%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot;, &quot;<a href="#check">check</a>&quot;, &quot;<a href="#agent-check">agent-check</a>&quot;, or &quot;<a href="#track">track</a>&quot;
+are not supported. Similarly, there is no load balancing nor stickiness, thus
+parameters such as &quot;<a href="#weight">weight</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cookie<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cookie%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#cookie%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#cookie%20%28Fetching%20HTTP%20samples%20%28Layer%207%29%29">Fetching HTTP samples (Layer 7)</a></li></ul></span>&quot; have no effect.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -7920,10 +7930,11 @@ Some of these parameters are irrelevant for &quot;<a href="#peers">peers</a>&quo
 
 Example:
   peers mypeers
-      bind 127.0.0.11:10001 ssl crt mycerts/pem
-      default-server ssl verify none
-      server hostA  127.0.0.10:10000
-      server hostB  <span class="comment">#local peer</span>
+     bind 192.168.0.1:1024 ssl crt mycerts/pem
+     default-server ssl verify none
+     server haproxy1 <span class="comment">#local peer</span>
+     server haproxy2 192.168.0.2:1024
+     server haproxy3 10.2.0.1:1024
 </code></pre>
 </div><a class="anchor" name="table"></a><a class="anchor" name="3-table"></a><a class="anchor" name="3.5-table"></a><a class="anchor" name="table (Global parameters)"></a><a class="anchor" name="table (Peers)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#3.5-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
       size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure a stickiness table for the current section. This line is parsed
@@ -15629,13 +15640,16 @@ backend smtp
             soft restart.
 
  &lt;expire&gt;   defines the maximum duration of an entry in the table since it
-            was last created, refreshed or matched. The expiration delay is
+            was last created, refreshed using &#x27;track-sc&#x27; or matched using
+            &#x27;stick match&#x27; or &#x27;stick on&#x27; rule. The expiration delay is
             defined using the standard time format, similarly as the various
             timeouts. The maximum duration is slightly above 24 days. See
             <a href="#2.5">section 2.5</a> for more information. If this delay is not specified,
             the session won&#x27;t automatically expire, but older entries will
             be removed once full. Be sure not to use the &quot;nopurge&quot; parameter
             if not expiration delay is specified.
+            Note: &#x27;table_*&#x27; converters performs lookups but won&#x27;t update touch
+            expire since they don&#x27;t require &#x27;track-sc&#x27;.
 
  &lt;srvkey&gt;   specifies how each server is identified for the purposes of the
             stick table. The valid values are &quot;<a href="#name">name</a>&quot; and &quot;<a href="#addr">addr</a>&quot;. If &quot;<a href="#name">name</a>&quot; is
@@ -15689,9 +15703,12 @@ backend smtp
     of keeping a cumulative number, they maintain the rate at which the
     counter is incremented. Most of the time it will be used to measure the
     frequency of occurrence of certain events (e.g. requests to a specific
-    URL). This array is limited to a maximum of 100 elements: gpc0 to gpc99,
-    to ensure that the build of a peer update message can fit into the
-    buffer. Users should take in consideration that a large amount of
+    URL). This array is limited to a maximum of 100 elements: gpt(100)
+    allowing the storage of gpc0 to gpc99, to ensure that the build of a peer
+    update message can fit into the buffer.
+    The array cannot contain less than 1 element: use gpc(1) if you want to
+    store only the counter gpc0.
+    Users should take in consideration that a large amount of
     counters will increase the data size and the traffic load using peers
     protocol since all data/counters are pushed each time any of them is
     updated.
@@ -15729,11 +15746,13 @@ backend smtp
     Most of the time they will be used to put a special tags on some entries,
     for instance to note that a specific behavior was detected and must be
     known for future matches. This array is limited to a maximum of 100
-    elements: gpt0 to gpt99, to ensure that the build of a peer update
-    message can fit into the buffer. Users should take in consideration
-    that a large amount of counters will increase the data size and the
-    traffic load using peers protocol since all data/counters are pushed
-    each time any of them is updated.
+    elements: gpt(100) allowing the storage of gpt0 to gpt99, to ensure that
+    the build of a peer update message can fit into the buffer.
+    The array cannot contain less than 1 element: use gpt(1) if you want to
+    to store only the tag gpt0.
+    Users should take in consideration that a large amount of counters will
+    increase the data size and the traffic load using peers protocol since
+    all data/counters are pushed each time any of them is updated.
     This data_type will exclude the usage of the legacy data_type &#x27;gpt0&#x27;
     on the same table. Using the &#x27;gpt&#x27; array data_type, all &#x27;gpt0&#x27; related
     fetches and actions will apply to the first element of this array.
@@ -18403,7 +18422,7 @@ parameters are not reused. One must explicitly set &quot;<a href="#check-send-pr
 connection headers, &quot;<a href="#check-ssl">check-ssl</a>&quot; to use SSL/TLS.
 
 Note that the implicit configuration of ssl and PROXY protocol is not
-performed for dynamic servers. In this case, it is required to explicitely
+performed for dynamic servers. In this case, it is required to explicitly
 use &quot;<a href="#check-ssl">check-ssl</a>&quot; and &quot;<a href="#check-send-proxy">check-send-proxy</a>&quot; when wanted, even if the check port is
 not overridden.
 
@@ -25813,8 +25832,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev12-37 &ndash; Configuration Manual<br>
-							<small>, 2022/05/27</small>
+							HAProxy 2.7-dev0 &ndash; Configuration Manual<br>
+							<small>, 2022/05/31</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
