@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6-dev12-1 - Configuration Manual</title>
+		<title>HAProxy version 2.6-dev12-37 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -2621,6 +2621,8 @@
 							
 							<a class="list-group-item" href="#queue">queue</a>
 							
+							<a class="list-group-item" href="#quic-force-retry">quic-force-retry</a>
+							
 							<a class="list-group-item" href="#quiet">quiet</a>
 							
                                                                 </div> <!-- /letter -->
@@ -3860,7 +3862,13 @@
 							
 							<a class="list-group-item" href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
 							
-							<a class="list-group-item" href="#tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a>
+							<a class="list-group-item" href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
+							
+							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
+							
+							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+							
+							<a class="list-group-item" href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
 							
@@ -4045,7 +4053,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4056,7 +4064,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6-dev12-1</strong></p>
+							<p><strong>version 2.6-dev12-37</strong></p>
 							<p>
 								2022/05/27<br>
 								
@@ -5244,11 +5252,17 @@ correctly support pipelining since there is no way to associate a response with
 the corresponding request in HTTP. For this reason, it is mandatory for the
 server to reply in the exact same order as the requests were received.
 
-The next improvement is the multiplexed mode, as implemented in HTTP/2. This
-time, each transaction is assigned a single stream identifier, and all streams
-are multiplexed over an existing connection. Many requests can be sent in
+The next improvement is the multiplexed mode, as implemented in HTTP/2 and HTTP/3.
+This time, each transaction is assigned a single stream identifier, and all
+streams are multiplexed over an existing connection. Many requests can be sent in
 parallel by the client, and responses can arrive in any order since they also
 carry the stream identifier.
+
+
+HTTP/3 is implemented over QUIC, itself implemented over UDP. QUIC solves the
+head of line blocking at transport level by means of independantly treated
+streams. Indeed, when experiencing loss, an impacted stream does not affect the
+other streams.
 
 By default HAProxy operates in keep-alive mode with regards to persistent
 connections: for each connection it processes each request and response, and
@@ -6016,7 +6030,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.pipesize">tune.pipesize</a>
    - <a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>
    - <a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
-   - <a href="#tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a>
+   - <a href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
+   - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
+   - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+   - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
    - <a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
    - <a href="#tune.recv_enough">tune.recv_enough</a>
@@ -7546,14 +7563,50 @@ much sense in the general case when targeting connection reuse).
 HAProxy globally against the maximum number of file descriptors HAProxy can
 use before we stop putting connection into the idle pool for reuse. The
 default is 20.
-</pre><a class="anchor" name="tune.quic.conn-buf-limit"></a><a class="anchor" name="3-tune.quic.conn-buf-limit"></a><a class="anchor" name="3.2-tune.quic.conn-buf-limit"></a><a class="anchor" name="tune.quic.conn-buf-limit (Global parameters)"></a><a class="anchor" name="tune.quic.conn-buf-limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.conn-buf-limit"></a><a href="#3.2-tune.quic.conn-buf-limit">tune.quic.conn-buf-limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+</pre><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
 change without deprecation in the future.
 
 This settings defines the maximum number of buffers allocated for a QUIC
 connection on data emission. By default, it is set to 30. QUIC buffers are
 drained on ACK reception. This setting has a direct impact on the throughput
 and memory consumption and can be adjusted according to an estimated round
-time-trip.
+time-trip. Each buffer is tune.bufsize.
+</pre><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3.2-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a href="#3.2-tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+Sets the QUIC max_idle_timeout transport parameters in milliseconds for
+frontends which determines the period of time after which a connection silently
+closes if it has remained inactive during an effective period of time deduced
+from the two max_idle_timeout values announced by the two endpoints:
+  - the minimum of the two values if both are not null,
+  - the maximum if only one of them is not null,
+  - if both values are null, this feature is disabled.
+
+The default value is 30000.
+</pre><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+Sets the QUIC initial_max_streams_bidi transport parameter for frontends.
+This is the initial maximum number of bidirectional streams the remote peer
+will be authorized to open. This determines the number of concurrent client
+requests.
+
+The default value is 100.
+</pre><a class="anchor" name="tune.quic.retry-threshold"></a><a class="anchor" name="3-tune.quic.retry-threshold"></a><a class="anchor" name="3.2-tune.quic.retry-threshold"></a><a class="anchor" name="tune.quic.retry-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.retry-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.retry-threshold"></a><a href="#3.2-tune.quic.retry-threshold">tune.quic.retry-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+Dynamically enables the Retry feature for all the configured QUIC listeners
+as soon as this number of half open connections is reached. A half open
+connection is a connection whose handshake has not already successfully
+completed or failed. To be functional this setting needs a cluster secret to
+be set, if not it will be silently ignored (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot; setting).
+This setting will be also silenty ignored if the use of QUIC Retry was forced
+(see &quot;<a href="#quic-force-retry">quic-force-retry</a>&quot;).
+
+The default value is 100.
+
+See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
+information about QUIC retry.
 </pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
 to the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
@@ -8840,7 +8893,11 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
               address, or &#x27;*&#x27;. It designates the address the frontend will
               listen on. If unset, all IPv4 addresses of the system will be
               listened on. The same will apply for &#x27;*&#x27; or the system&#x27;s
-              special address &quot;0.0.0.0&quot;. The IPv6 equivalent is &#x27;::&#x27;.
+              special address &quot;0.0.0.0&quot;. The IPv6 equivalent is &#x27;::&#x27;. Note
+              that if you bind a frontend to multiple UDP addresses you have
+              no guarantee about the address which will be used to respond.
+              This is why &quot;0.0.0.0&quot; addresses and lists of comma-separated
+              IP addresses have been forbidden to bind QUIC addresses.
               Optionally, an address family prefix may be used before the
               address to force the family regardless of the address format,
               which can be useful to specify a path to a unix socket with
@@ -8865,6 +8922,11 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                   connected unix socket or of a socketpair. The bind waits
                   to receive a FD over the unix socket and uses it as if it
                   was the FD of an accept(). Should be used carefully.
+                - &#x27;quicv4@&#x27; -&gt; address is resolved as IPv4 and protocol
+                  UDP is used.
+                - &#x27;quicv6@&#x27; -&gt; address is resolved as IPv6 and protocol
+                  UDP is used.
+
               You may want to reference some environment variables in the
               address parameter, see <a href="#2.3">section 2.3</a> about environment
               variables.
@@ -8927,6 +8989,9 @@ listen http_https_proxy_explicit
 
 listen external_bind_app1
     bind &quot;fd@${FD_APP1}&quot;
+
+listen h3_quic_proxy
+    bind quic@10.0.0.1:8888 ssl crt /etc/mycrt alpn h3
 </code></pre>
 </div><pre class="text">Note: regarding Linux&#x27;s abstract namespace sockets, HAProxy uses the whole
       sun_path length is used for the address length. Some other programs
@@ -17609,6 +17674,9 @@ are expected to be supported, both versions can be advertised, in order of
 preference, like below :
 
      bind :443 ssl crt pub.pem alpn h2,http/1.1
+
+QUIC supports only h3 and hq-interop as ALPN. h3 is for HTTP/3 and hq-interop
+is used for http/0.9 and QUIC interop runner (see https://interop.seemann.io).
 </pre><a class="anchor" name="backlog"></a><a class="anchor" name="5-backlog"></a><a class="anchor" name="5.1-backlog"></a><a class="anchor" name="backlog (Bind and server options)"></a><a class="anchor" name="backlog (Bind options)"></a><div class="keyword"><b><a class="anchor" name="backlog"></a><a href="#5.1-backlog">backlog</a></b> <span style="color: #080">&lt;backlog&gt;</span></div><pre class="text">Sets the socket&#x27;s backlog to this value. If unspecified or 0, the frontend&#x27;s
 backlog is used instead, which generally defaults to the maxconn value.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
@@ -18017,6 +18085,22 @@ Idea behind this option is to bypass the selection of the best multiplexer&#x27;
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
+</pre><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+This is a QUIC specific setting which forces the use of the QUIC Retry feature
+for all the connection attempts to the configured QUIC listeners. It consists
+in veryfying the peers are able to receive packets at the transport address
+they used to initiate a new connection, sending them a Retry packet which
+contains a token. This token must be sent back to the Retry packet sender,
+this latter being the only one to be able to validate the token. Note that QUIC
+Retry will always be used even if a Retry threshold was set (see
+&quot;<a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>&quot; setting). To be functional this setting needs a
+cluster secret to be set, if not it will be silently ignored (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot;
+setting).
+
+See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
+information about QUIC retry.
 </pre><a class="anchor" name="shards"></a><a class="anchor" name="5-shards"></a><a class="anchor" name="5.1-shards"></a><a class="anchor" name="shards (Bind and server options)"></a><a class="anchor" name="shards (Bind options)"></a><div class="keyword"><b><a class="anchor" name="shards"></a><a href="#5.1-shards">shards</a></b> <span style="color: #080">&lt;number&gt;</span> | by-thread</div><pre class="text">In multi-threaded mode, on operating systems supporting multiple listeners on
 the same IP:port, this will automatically create this number of multiple
 identical listeners for the same line, all bound to a fair share of the number
@@ -25729,7 +25813,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6-dev12-1 &ndash; Configuration Manual<br>
+							HAProxy 2.6-dev12-37 &ndash; Configuration Manual<br>
 							<small>, 2022/05/27</small>
 						</div>
 					</div>
