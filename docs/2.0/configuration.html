@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.0.29 - Configuration Manual</title>
+		<title>HAProxy version 2.0.29-13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3172,7 +3172,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/05/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/06/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3183,7 +3183,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.0.29</strong></p>
+							<p><strong>version 2.0.29-13</strong></p>
 							<p>
 								2022/05/13<br>
 								
@@ -5813,8 +5813,10 @@ tables without having to comment out all &quot;<a href="#peers">peers</a>&quot; 
 </pre><div class="separator">
 <span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;param*&gt;  is a list of parameters for this server. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
           keyword accepts an important number of options and has a complete
-          section dedicated to it. Please refer to <a href="#5">section 5</a> for more
-          details.</pre>
+          section dedicated to it. In a peers section, the transport
+          parameters of a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line are supported. Please refer
+          to <a href="#5">section 5</a> for more details, and the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword below in
+          this section for some of the restrictions.</pre>
 </div>
 <div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and <a href="#5">section 5</a> about server options</div>
 <a class="anchor" name="enabled"></a><a class="anchor" name="3-enabled"></a><a class="anchor" name="3.5-enabled"></a><a class="anchor" name="enabled (Global parameters)"></a><a class="anchor" name="enabled (Peers)"></a><div class="keyword"><b><a class="anchor" name="enabled"></a><a href="#3.5-enabled">enabled</a></b></div><pre class="text">This re-enables a peers section which was previously disabled via the
@@ -5840,11 +5842,16 @@ parameter, see <a href="#2.3">section 2.3</a> about environment variables.
 Note: &quot;<a href="#peer">peer</a>&quot; keyword may transparently be replaced by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword (see
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword explanation below).
 </pre><a class="anchor" name="server"></a><a class="anchor" name="3-server"></a><a class="anchor" name="3.5-server"></a><a class="anchor" name="server (Global parameters)"></a><a class="anchor" name="server (Peers)"></a><div class="keyword"><b><a class="anchor" name="server"></a><a href="#3.5-server">server</a></b> <span style="color: #080">&lt;peername&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;ip&gt;</span>:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">As previously mentioned, &quot;<a href="#peer">peer</a>&quot; keyword may be replaced by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
-with a support for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph.
-If the underlying peer is local, &lt;ip&gt;:&lt;port&gt; parameters must not be present.
-These parameters must  be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
-of this &quot;<a href="#peers">peers</a>&quot; section).
-Some of these parameters are irrelevant for &quot;<a href="#peers">peers</a>&quot; sections.
+with a support for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph that are
+related to transport settings. If the underlying peer is local, &lt;ip&gt;:&lt;port&gt;
+parameters must not be present; these parameters must be provided on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+line (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword of this &quot;<a href="#peers">peers</a>&quot; section).
+
+A number of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters are irrelevant for &quot;<a href="#peers">peers</a>&quot; sections. Peers by
+nature do not support dynamic host name resolution nor health checks, hence
+parameters like &quot;init_addr&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">resolvers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#resolvers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#resolvers%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot;, &quot;<a href="#check">check</a>&quot;, &quot;<a href="#agent-check">agent-check</a>&quot;, or &quot;<a href="#track">track</a>&quot;
+are not supported. Similarly, there is no load balancing nor stickiness, thus
+parameters such as &quot;<a href="#weight">weight</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cookie<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cookie%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#cookie%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#cookie%20%28Fetching%20HTTP%20samples%20%28Layer%207%29%29">Fetching HTTP samples (Layer 7)</a></li></ul></span>&quot; have no effect.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -5865,10 +5872,11 @@ Some of these parameters are irrelevant for &quot;<a href="#peers">peers</a>&quo
 
 Example:
   peers mypeers
-      bind 127.0.0.11:10001 ssl crt mycerts/pem
-      default-server ssl verify none
-      server hostA  127.0.0.10:10000
-      server hostB  <span class="comment">#local peer</span>
+     bind 192.168.0.1:1024 ssl crt mycerts/pem
+     default-server ssl verify none
+     server haproxy1 <span class="comment">#local peer</span>
+     server haproxy2 192.168.0.2:1024
+     server haproxy3 10.2.0.1:1024
 </code></pre>
 </div><a class="anchor" name="table"></a><a class="anchor" name="3-table"></a><a class="anchor" name="3.5-table"></a><a class="anchor" name="table (Global parameters)"></a><a class="anchor" name="table (Peers)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#3.5-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
       size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure a stickiness table for the current section. This line is parsed
@@ -12856,13 +12864,16 @@ backend smtp
                    belonging to the same unique process.
 
  &lt;expire&gt;   defines the maximum duration of an entry in the table since it
-            was last created, refreshed or matched. The expiration delay is
+            was last created, refreshed using &#x27;track-sc&#x27; or matched using
+            &#x27;stick match&#x27; or &#x27;stick on&#x27; rule. The expiration delay is
             defined using the standard time format, similarly as the various
             timeouts. The maximum duration is slightly above 24 days. See
             <a href="#2.4">section 2.4</a> for more information. If this delay is not specified,
             the session won&#x27;t automatically expire, but older entries will
             be removed once full. Be sure not to use the &quot;nopurge&quot; parameter
             if not expiration delay is specified.
+            Note: &#x27;table_*&#x27; converters performs lookups but won&#x27;t update touch
+            expire since they don&#x27;t require &#x27;track-sc&#x27;.
 
 &lt;data_type&gt; is used to store additional information in the stick-table. This
             may be used by ACLs in order to control various criteria related
@@ -20820,7 +20831,7 @@ cache foobar
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.0.29 &ndash; Configuration Manual<br>
+							HAProxy 2.0.29-13 &ndash; Configuration Manual<br>
 							<small>, 2022/05/13</small>
 						</div>
 					</div>
