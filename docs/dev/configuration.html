@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev0-129 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1028,6 +1028,17 @@
 			
 				
 				<tr>
+					<td><small>9.7.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#9.7">Bandwidth limitation</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
 					<td><br><b><small>10.</small></b></td>
 					<td>
 							<a href="#10"><br><b>FastCGI applications</b></a>
@@ -1651,6 +1662,12 @@
 							
 							<a class="list-group-item" href="#filter (OpenTracing)">filter (OpenTracing)</a>
 							
+							<a class="list-group-item" href="#filter (Bandwidth limitation)">filter (Bandwidth limitation)</a>
+							
+							<a class="list-group-item" href="#filter bwlim-in">filter bwlim-in</a>
+							
+							<a class="list-group-item" href="#filter bwlim-out">filter bwlim-out</a>
+							
 							<a class="list-group-item" href="#filter cache">filter cache</a>
 							
 							<a class="list-group-item" href="#filter compression">filter compression</a>
@@ -1859,6 +1876,8 @@
 							
 							<a class="list-group-item" href="#http-request send-spoe-group">http-request send-spoe-group</a>
 							
+							<a class="list-group-item" href="#http-request set-bandwidth-limit">http-request set-bandwidth-limit</a>
+							
 							<a class="list-group-item" href="#http-request set-dst">http-request set-dst</a>
 							
 							<a class="list-group-item" href="#http-request set-dst-port">http-request set-dst-port</a>
@@ -1958,6 +1977,8 @@
 							<a class="list-group-item" href="#http-response sc-set-gpt0">http-response sc-set-gpt0</a>
 							
 							<a class="list-group-item" href="#http-response send-spoe-group">http-response send-spoe-group</a>
+							
+							<a class="list-group-item" href="#http-response set-bandwidth-limit">http-response set-bandwidth-limit</a>
 							
 							<a class="list-group-item" href="#http-response set-header">http-response set-header</a>
 							
@@ -3624,6 +3645,8 @@
 							
 							<a class="list-group-item" href="#tcp-request content send-spoe-group">tcp-request content send-spoe-group</a>
 							
+							<a class="list-group-item" href="#tcp-request content set-bandwidth-limit">tcp-request content set-bandwidth-limit</a>
+							
 							<a class="list-group-item" href="#tcp-request content set-dst">tcp-request content set-dst</a>
 							
 							<a class="list-group-item" href="#tcp-request content set-dst-port">tcp-request content set-dst-port</a>
@@ -3719,6 +3742,8 @@
 							<a class="list-group-item" href="#tcp-response content sc-set-gpt">tcp-response content sc-set-gpt</a>
 							
 							<a class="list-group-item" href="#tcp-response content send-spoe-group">tcp-response content send-spoe-group</a>
+							
+							<a class="list-group-item" href="#tcp-response content set-bandwidth-limit">tcp-response content set-bandwidth-limit</a>
 							
 							<a class="list-group-item" href="#tcp-response content set-log-level">tcp-response content set-log-level</a>
 							
@@ -4053,7 +4078,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/06/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/06/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4064,9 +4089,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev0-129</strong></p>
+							<p><strong>version 2.7-dev1</strong></p>
 							<p>
-								2022/05/31<br>
+								2022/06/24<br>
 								
 							</p>
 						</div>
@@ -5070,6 +5095,17 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<a href="#9.6">OpenTracing</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>9.7.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#9.7">Bandwidth limitation</a>
 							</div>
 					<td>
 				</tr>
@@ -10701,6 +10737,7 @@ supported:
   - sc-inc-gpc1(&lt;sc-id&gt;)
   - sc-set-gpt(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - sc-set-gpt0(&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
+  - set-bandwidth-limit &lt;name&gt; [limit &lt;expr&gt;] [period &lt;expr&gt;]
   - set-dst &lt;expr&gt;
   - set-dst-port &lt;expr&gt;
   - set-header &lt;name&gt; &lt;fmt&gt;
@@ -11311,7 +11348,32 @@ agent name must be used.
 &lt;group-name&gt;   The SPOE group name as specified in the engine
                configuration.</pre>
 </div>
-<a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-dst"></a><a class="anchor" name="4-http-request set-dst"></a><a class="anchor" name="4.2-http-request set-dst"></a><a class="anchor" name="http-request set-dst (Proxies)"></a><a class="anchor" name="http-request set-dst (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-dst"></a><a href="#4.2-http-request%20set-dst">http-request set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to set the destination IP address to the value of specified
+<a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-bandwidth-limit"></a><a class="anchor" name="4-http-request set-bandwidth-limit"></a><a class="anchor" name="4.2-http-request set-bandwidth-limit"></a><a class="anchor" name="http-request set-bandwidth-limit (Proxies)"></a><a class="anchor" name="http-request set-bandwidth-limit (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-bandwidth-limit"></a><a href="#4.2-http-request%20set-bandwidth-limit">http-request set-bandwidth-limit</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[limit <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[period <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to enable the bandwidth limitation filter &lt;name&gt;, either
+on the upload or download direction depending on the filter type. Custom
+limit and period may be defined, if and only if &lt;name&gt; references a
+per-stream bandwidth limitation filter. When a set-bandwidth-limit rule is
+executed, it first resets all settings of the filter to their defaults prior
+to enabling it. As a consequence, if several &quot;set-bandwidth-limit&quot; actions
+are executed for the same filter, only the last one is considered. Several
+bandwidth limitation filters can be enabled on the same stream.
+
+Note that this action cannot be used in a defaults section because bandwidth
+limitation filters cannot be defined in defaults sections. In addition, only
+the HTTP payload transfer is limited. The HTTP headers are not considered.
+</pre><div class="separator">
+<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;expr&gt;  Is a standard HAProxy expression formed by a sample-fetch followed
+        by some converters. The result is converted to an integer. It is
+        interpreted as a size in bytes for the &quot;limit&quot; parameter and as a
+        duration in milliseconds for the &quot;period&quot; parameter.</pre>
+</div>
+<div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-request set-bandwidth-limit global-limit
+http-request set-bandwidth-limit my-limit limit 1m period 10s
+</code></pre>
+</div><pre class="text">See <a href="#9.7">section 9.7</a> about bandwidth limitation filter setup.
+</pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-dst"></a><a class="anchor" name="4-http-request set-dst"></a><a class="anchor" name="4.2-http-request set-dst"></a><a class="anchor" name="http-request set-dst (Proxies)"></a><a class="anchor" name="http-request set-dst (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-dst"></a><a href="#4.2-http-request%20set-dst">http-request set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to set the destination IP address to the value of specified
 expression. Useful when a proxy in front of HAProxy rewrites destination IP,
 but provides the correct IP in a HTTP header; or you want to mask the IP for
 privacy. If you want to connect to the new address/port, use &#x27;0.0.0.0:0&#x27; as a
@@ -11716,6 +11778,7 @@ supported:
   - sc-set-gpt(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - sc-set-gpt0(&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - send-spoe-group &lt;engine-name&gt; &lt;group-name&gt;
+  - set-bandwidth-limit &lt;name&gt; [limit &lt;expr&gt;] [period &lt;expr&gt;]
   - set-header &lt;name&gt; &lt;fmt&gt;
   - set-log-level &lt;level&gt;
   - set-map(&lt;file-name&gt;) &lt;key fmt&gt; &lt;value fmt&gt;
@@ -11865,6 +11928,9 @@ sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete descrip
 </pre><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response send-spoe-group"></a><a class="anchor" name="4-http-response send-spoe-group"></a><a class="anchor" name="4.2-http-response send-spoe-group"></a><a class="anchor" name="http-response send-spoe-group (Proxies)"></a><a class="anchor" name="http-response send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response send-spoe-group"></a><a href="#4.2-http-response%20send-spoe-group">http-response send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                               <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
+</pre><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response set-bandwidth-limit"></a><a class="anchor" name="4-http-response set-bandwidth-limit"></a><a class="anchor" name="4.2-http-response set-bandwidth-limit"></a><a class="anchor" name="http-response set-bandwidth-limit (Proxies)"></a><a class="anchor" name="http-response set-bandwidth-limit (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response set-bandwidth-limit"></a><a href="#4.2-http-response%20set-bandwidth-limit">http-response set-bandwidth-limit</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[limit <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[period <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to enable the bandwidth limitation filter &lt;name&gt;, either
+on the upload or download direction depending on the filter type. Please
+refer to &quot;<a href="#http-request%20set-bandwidth-limit">http-request set-bandwidth-limit</a>&quot; for a complete description.
 </pre><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response set-header"></a><a class="anchor" name="4-http-response set-header"></a><a class="anchor" name="4.2-http-response set-header"></a><a class="anchor" name="http-response set-header (Proxies)"></a><a class="anchor" name="http-response set-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response set-header"></a><a href="#4.2-http-response%20set-header">http-response set-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This does the same as &quot;<a href="#http-response%20add-header">http-response add-header</a>&quot; except that the header name
 is first removed if it existed. This is useful when passing security
 information to the server, where the header must not be manipulated by
@@ -16544,6 +16610,7 @@ supported:
   - sc-set-gpt(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - sc-set-gpt0(&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - send-spoe-group &lt;engine-name&gt; &lt;group-name&gt;
+  - set-bandwidth-limit &lt;name&gt; [limit &lt;expr&gt;] [period &lt;expr&gt;]
   - set-dst &lt;expr&gt;
   - set-dst-port &lt;expr&gt;
   - set-log-level &lt;level&gt;
@@ -16720,6 +16787,10 @@ sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete descrip
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content send-spoe-group"></a><a class="anchor" name="4-tcp-request content send-spoe-group"></a><a class="anchor" name="4.2-tcp-request content send-spoe-group"></a><a class="anchor" name="tcp-request content send-spoe-group (Proxies)"></a><a class="anchor" name="tcp-request content send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content send-spoe-group"></a><a href="#4.2-tcp-request%20content%20send-spoe-group">tcp-request content send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Thaction is is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
+</pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content set-bandwidth-limit"></a><a class="anchor" name="4-tcp-request content set-bandwidth-limit"></a><a class="anchor" name="4.2-tcp-request content set-bandwidth-limit"></a><a class="anchor" name="tcp-request content set-bandwidth-limit (Proxies)"></a><a class="anchor" name="tcp-request content set-bandwidth-limit (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content set-bandwidth-limit"></a><a href="#4.2-tcp-request%20content%20set-bandwidth-limit">tcp-request content set-bandwidth-limit</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[limit <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[period <span style="color: #080">&lt;expr&gt;</span>]</span>
+                    <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to enable the bandwidth limitation filter &lt;name&gt;, either
+on the upload or download direction depending on the filter type. Please
+refer to &quot;<a href="#http-request%20set-bandwidth-limit">http-request set-bandwidth-limit</a>&quot; for a complete description.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content set-dst"></a><a class="anchor" name="4-tcp-request content set-dst"></a><a class="anchor" name="4.2-tcp-request content set-dst"></a><a class="anchor" name="tcp-request content set-dst (Proxies)"></a><a class="anchor" name="tcp-request content set-dst (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content set-dst"></a><a href="#4.2-tcp-request%20content%20set-dst">tcp-request content set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content set-dst-port"></a><a class="anchor" name="4-tcp-request content set-dst-port"></a><a class="anchor" name="4.2-tcp-request content set-dst-port"></a><a class="anchor" name="tcp-request content set-dst-port (Proxies)"></a><a class="anchor" name="tcp-request content set-dst-port (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content set-dst-port"></a><a href="#4.2-tcp-request%20content%20set-dst-port">tcp-request content set-dst-port</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions are used to set the destination IP/Port address to the value of
 specified expression. Please refer to &quot;<a href="#http-request%20set-dst">http-request set-dst</a>&quot; and
 &quot;<a href="#http-request%20set-dst-port">http-request set-dst-port</a>&quot; for a complete description.
@@ -16993,6 +17064,7 @@ supported:
   - sc-set-gpt(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - sc-set-gpt0(&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - send-spoe-group &lt;engine-name&gt; &lt;group-name&gt;
+  - set-bandwidth-limit &lt;name&gt; [limit &lt;expr&gt;] [period &lt;expr&gt;]
   - set-log-level &lt;level&gt;
   - set-mark &lt;mark&gt;
   - set-nice &lt;nice&gt;
@@ -17047,6 +17119,10 @@ sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete descrip
 </pre><a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content send-spoe-group"></a><a class="anchor" name="4-tcp-response content send-spoe-group"></a><a class="anchor" name="4.2-tcp-response content send-spoe-group"></a><a class="anchor" name="tcp-response content send-spoe-group (Proxies)"></a><a class="anchor" name="tcp-response content send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content send-spoe-group"></a><a href="#4.2-tcp-response%20content%20send-spoe-group">tcp-response content send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                      <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Thaction is is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
+</pre><a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content set-bandwidth-limit"></a><a class="anchor" name="4-tcp-response content set-bandwidth-limit"></a><a class="anchor" name="4.2-tcp-response content set-bandwidth-limit"></a><a class="anchor" name="tcp-response content set-bandwidth-limit (Proxies)"></a><a class="anchor" name="tcp-response content set-bandwidth-limit (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content set-bandwidth-limit"></a><a href="#4.2-tcp-response%20content%20set-bandwidth-limit">tcp-response content set-bandwidth-limit</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[limit <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[period <span style="color: #080">&lt;expr&gt;</span>]</span>
+                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to enable the bandwidth limitation filter &lt;name&gt;, either
+on the upload or download direction depending on the filter type. Please
+refer to &quot;<a href="#http-request%20set-bandwidth-limit">http-request set-bandwidth-limit</a>&quot; for a complete description.
 </pre><a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content set-log-level"></a><a class="anchor" name="4-tcp-response content set-log-level"></a><a class="anchor" name="4.2-tcp-response content set-log-level"></a><a class="anchor" name="tcp-response content set-log-level (Proxies)"></a><a class="anchor" name="tcp-response content set-log-level (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content set-log-level"></a><a href="#4.2-tcp-response%20content%20set-log-level">tcp-response content set-log-level</a></b> <span style="color: #080">&lt;level&gt;</span>  <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to set the log level of the current session. Please refer
 to &quot;<a href="#http-request%20set-log-level">http-request set-log-level</a>&quot;. for a complete description.
 </pre><a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content set-mark"></a><a class="anchor" name="4-tcp-response content set-mark"></a><a class="anchor" name="4.2-tcp-response content set-mark"></a><a class="anchor" name="tcp-response content set-mark (Proxies)"></a><a class="anchor" name="tcp-response content set-mark (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content set-mark"></a><a href="#4.2-tcp-response%20content%20set-mark">tcp-response content set-mark</a></b> <span style="color: #080">&lt;mark&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to set the Netfilter/IPFW MARK in all packets sent to the
@@ -25271,7 +25347,7 @@ reading. Their sole purpose is to explain how to decipher them.
 </div><div><pre class="text">Here are listed officially supported filters with the list of parameters they
 accept. Depending on compile options, some of these filters might be
 unavailable. The list of available filters is reported in haproxy -vv.
-</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28OpenTracing%29">OpenTracing</a></li></ul></span>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28OpenTracing%29">OpenTracing</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;</div>
 </div>
 <a class="anchor" id="9.1" name="9.1"></a>
 <h2 id="chapter-9.1" data-target="9.1"><small><a class="small" href="#9.1">9.1.</a></small> Trace</h2>
@@ -25393,6 +25469,121 @@ participates in the work of HAProxy.
 <pre class="text">More detailed documentation related to the operation, configuration and use
 of the filter can be found in the addons/ot directory.
 </pre></div>
+<a class="anchor" id="9.7" name="9.7"></a>
+<h2 id="chapter-9.7" data-target="9.7"><small><a class="small" href="#9.7">9.7.</a></small> Bandwidth limitation</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.7-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.7-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.7-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.7-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.7-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.7-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.7-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.7-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is the filter name that will be used by &#x27;set-bandwidth-limit&#x27;
+            actions to reference a specific bandwidth limitation filter.
+
+&lt;size&gt;      is max number of bytes that can be forwarded over the period.
+            The value must be specified for per-stream and shared bandwidth
+            limitation filters. It follows the HAProxy size format and is
+            expressed in bytes.
+
+&lt;pattern&gt;   is a sample expression rule as described in <a href="#7.3">section 7.3</a>. It
+            describes what elements will be analyzed, extracted, combined,
+            and used to select which table entry to update the counters. It
+            must be specified for shared bandwidth limitation filters only.
+
+&lt;table&gt;     is an optional table to be used instead of the default one,
+            which is the stick-table declared in the current proxy. It can
+            be specified for shared bandwidth limitation filters only.
+
+&lt;time&gt;      is the default time period used to evaluate the bandwidth
+            limitation rate. It can be speficied for per-stream bandwidth
+            limitation filters only. It follows the HAProxy time format and
+            is expressed in milliseconds.
+
+&lt;min-size&gt;  is the optional minimum number of bytes forwarded at a time by
+            a stream excluding the last packet that may be smaller. This
+            value can be specified for per-stream and shared bandwidth
+            limitation filters. It follows the HAProxy size format and is
+            expressed in bytes.</pre>
+</div>
+<pre class="text">Bandwidth limitation filters should be used to restrict the data forwarding
+speed at the stream level. By extension, such filters limit the network
+bandwidth consumed by a resource. Several bandwidth limitation filters can be
+used. For instance, it is possible to define a limit per source address to be
+sure a client will never consume all the network bandwidth, thereby penalizing
+other clients, and another one per stream to be able to fairly handle several
+connections for a given client.
+
+The definition order of these filters is important. If several bandwidth
+filters are enabled on a stream, the filtering will be applied in their
+definition order. It is also important to understand the definition order of
+the other filters have an influence. For instance, depending on the HTTP
+compression filter is defined before or after a bandwidth limitation filter,
+the limit will be applied on the compressed payload or not. The same is true
+for the cache filter.
+
+There are two kinds of bandwidth limitation filters. The first one enforces a
+default limit and is applied per stream. The second one uses a stickiness table
+to enfore a limit equally divided between all streams sharing the same entry in
+the table.
+
+In addition, for a given filter, depending on the filter keyword used, the
+limitation can be applied on incoming data, received from the client and
+forwarded to a server, or on outgoing data, received from a server and sent to
+the client. To apply a limit on incoming data, &quot;bwlim-in&quot; keyword must be
+used. To apply it on outgoing data, &quot;bwlim-out&quot; keyword must be used. In both
+cases, the bandwidth limitation is applied on forwarded data, at the stream
+level.
+
+The bandwidth limitation is applied at the stream level and not at the
+connection level. For multiplexed protocols (H2, H3 and FastCGI), the streams
+of the same connection may have different limits.
+
+For a per-stream bandwidth limitation filter, default period and limit must be
+defined. As their names suggest, they are the default values used to setup the
+bandwidth limitation rate for a stream. However, for this kind of filter and
+only this one, it is possible to redefine these values using sample expressions
+when the filter is enabled with a TCP/HTTP &quot;set-bandwidth-limit&quot; action.
+
+For a shared bandwidth limitation filter, depending on whether it is applied on
+incoming or outgoing data, the stickiness table used must store the
+corresponding bytes rate information. &quot;bytes_in_rate(&lt;period&gt;)&quot; counter must be
+stored to limit incoming data and &quot;bytes_out_rate(&lt;period&gt;)&quot; counter must be
+used to limit outgoing data.
+
+Finally, it is possible to set the minimum number of bytes that a bandwidth
+limitation filter can forward at a time for a given stream. It should be used
+to not forward too small amount of data, to reduce the CPU usage. It must
+carefully be defined. Too small, a value can increase the CPU usage. Too high,
+it can increase the latency. It is also highly linked to the defined bandwidth
+limit. If it is too close to the bandwidth limit, some pauses may be
+experienced to not exceed the limit because too many bytes will be consumed at
+a time. It is highly dependent on the filter configuration. A good idea is to
+start with something around 2 TCP MSS, typically 2896 bytes, and tune it after
+some experimentations.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>frontend http
+    bind *:80
+    mode http
+
+    <span class="comment"># If this filter is enabled, the stream will share the download limit</span>
+    <span class="comment"># of 10m/s with all other streams with the same source address.</span>
+    filter bwlim-out limit-by-src key src table limit-by-src limit 10m
+
+    <span class="comment"># If this filter is enalbed, the stream will be limited to download at 1m/s,</span>
+    <span class="comment"># independently of all other streams.</span>
+    filter bwlim-out limit-by-strm default-limit 1m default-period 1s
+
+    <span class="comment"># Limit all streams to 1m/s (the default limit) and those accessing the</span>
+    <span class="comment"># internal API to 100k/s. Limit each source address to 10m/s. The shared</span>
+    <span class="comment"># limit is applied first. Both are limiting the download rate.</span>
+    http-request set-bandwidth-limit limit-by-strm
+    http-request set-bandwidth-limit limit-by-strm limit 100k if { path_beg /internal }
+    http-request set-bandwidth-limit limit-by-src
+    ...
+
+backend limit-by-src
+    <span class="comment"># The stickiness table used by &lt;limit-by-src&gt; filter</span>
+    stick-table type ip size 1m expire 3600s store bytes_out_rate(1s)
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20content%20set-bandwidth-limit">tcp-request content set-bandwidth-limit</a>&quot;, &quot;<a href="#tcp-response%20content%20set-bandwidth-limit">tcp-response content set-bandwidth-limit</a>&quot;, &quot;<a href="#http-request%20set-bandwidth-limit">http-request set-bandwidth-limit</a>&quot; and &quot;<a href="#http-response%20set-bandwidth-limit">http-response set-bandwidth-limit</a>&quot;.</div>
+</div>
 <a class="anchor" id="10" name="10"></a>
 <div class="page-header"><h1 id="chapter-10" data-target="10"><small><a class="small" href="#10">10.</a></small> FastCGI applications</h1>
 </div><div><pre class="text">HAProxy is able to send HTTP requests to Responder FastCGI applications. This
@@ -25832,8 +26023,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev0-129 &ndash; Configuration Manual<br>
-							<small>, 2022/05/31</small>
+							HAProxy 2.7-dev1 &ndash; Configuration Manual<br>
+							<small>, 2022/06/24</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
