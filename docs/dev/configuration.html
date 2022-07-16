@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev1-113 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev1-175 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1295,8 +1295,6 @@
 							<a class="list-group-item" href="#bind (Peers)">bind (Peers)</a>
 							
 							<a class="list-group-item" href="#bind (Alphabetically sorted keywords reference)">bind (Alphabetically sorted keywords reference)</a>
-							
-							<a class="list-group-item" href="#bind-process">bind-process</a>
 							
 							<a class="list-group-item" href="#bool (Converters)">bool (Converters)</a>
 							
@@ -2617,8 +2615,6 @@
 							
 							<a class="list-group-item" href="#proc">proc</a>
 							
-							<a class="list-group-item" href="#process">process</a>
-							
 							<a class="list-group-item" href="#process-vary">process-vary</a>
 							
 							<a class="list-group-item" href="#profiling.memory">profiling.memory</a>
@@ -3438,8 +3434,6 @@
 							
 							<a class="list-group-item" href="#stats auth">stats auth</a>
 							
-							<a class="list-group-item" href="#stats bind-process">stats bind-process</a>
-							
 							<a class="list-group-item" href="#stats enable">stats enable</a>
 							
 							<a class="list-group-item" href="#stats hide-version">stats hide-version</a>
@@ -4078,7 +4072,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/06/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/07/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4089,7 +4083,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev1-113</strong></p>
+							<p><strong>version 2.7-dev1-175</strong></p>
 							<p>
 								2022/06/24<br>
 								
@@ -6139,58 +6133,57 @@ timeouts set in the configuration).
 the &quot;<a href="#hard-stop-after">hard-stop-after</a>&quot; option if this one is used, so that all connections
 have a chance to gracefully close before the process stops.
 </pre><div class="page-header"><b>See also:</b> grace, hard-stop-after, idle-close-on-response</div>
-<a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a process or a thread to a
-specific CPU set. This means that the process or the thread will never run on
-other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for process or thread
-sets. The first argument is a process set, eventually followed by a thread
-set. These sets have the format
+<a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;thread-group&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a thread group or a thread
+to a specific CPU set. This means that the designated threads will never run
+on other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for individual
+threads or thread groups. The first argument is a thread group range,
+optionally followed by a thread set. These ranges have the following format:
 
     all | odd | even | number[-[number]]
 
 &lt;number&gt; must be a number between 1 and 32 or 64, depending on the machine&#x27;s
-word size. Any process IDs above 1 and any thread IDs above nbthread are
-ignored. It is possible to specify a range with two such number delimited by
-a dash (&#x27;-&#x27;). It also is possible to specify all thraeds at once using
-&quot;all&quot;, only odd numbers using &quot;<a href="#odd">odd</a>&quot; or even numbers using &quot;<a href="#even">even</a>&quot;, just like
-with the &quot;<a href="#bind-process">bind-process</a>&quot; directive. The second and forthcoming arguments are
-CPU sets. Each CPU set is either a unique number starting at 0 for the first
-CPU or a range with two such numbers delimited by a dash (&#x27;-&#x27;). Outside of
-Linux and BSDs, there may be a limitation on the maximum CPU index to either
-31 or 63. Multiple CPU numbers or ranges may be specified, and the processes
-or threads will be allowed to bind to all of them. Obviously, multiple
-&quot;<a href="#cpu-map">cpu-map</a>&quot; directives may be specified. Each &quot;<a href="#cpu-map">cpu-map</a>&quot; directive will replace
-the previous ones when they overlap. A thread will be bound on the
-intersection of its mapping and the one of the process on which it is
-attached. If the intersection is null, no specific binding will be set for
-the thread.
+word size. Any group IDs above &#x27;thread-groups&#x27; and any thread IDs above the
+machine&#x27;s word size are ignored. All thread numbers are relative to the group
+they belong to. It is possible to specify a range with two such number
+delimited by a dash (&#x27;-&#x27;). It also is possible to specify all threads at once
+using &quot;all&quot;, only odd numbers using &quot;<a href="#odd">odd</a>&quot; or even numbers using &quot;<a href="#even">even</a>&quot;, just
+like with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">thread<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#thread%20%28Bind%20options%29">Bind options</a></li><li><a href="#thread%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; bind directive. The second and forthcoming arguments
+are CPU sets. Each CPU set is either a unique number starting at 0 for the
+first CPU or a range with two such numbers delimited by a dash (&#x27;-&#x27;). Outside
+of Linux and BSDs, there may be a limitation on the maximum CPU index to
+either 31 or 63. Multiple CPU numbers or ranges may be specified, and the
+processes or threads will be allowed to bind to all of them. Obviously,
+multiple &quot;<a href="#cpu-map">cpu-map</a>&quot; directives may be specified. Each &quot;<a href="#cpu-map">cpu-map</a>&quot; directive will
+replace the previous ones when they overlap.
 
 Ranges can be partially defined. The higher bound can be omitted. In such
 case, it is replaced by the corresponding maximum value, 32 or 64 depending
 on the machine&#x27;s word size.
 
-The prefix &quot;auto:&quot; can be added before the process set to let HAProxy
-automatically bind a process or a thread to a CPU by incrementing threads and
+The prefix &quot;auto:&quot; can be added before the thread set to let HAProxy
+automatically bind a set of threads to a CPU by incrementing threads and
 CPU sets. To be valid, both sets must have the same size. No matter the
 declaration order of the CPU sets, it will be bound from the lowest to the
-highest bound. Having both a process and a thread range with the &quot;auto:&quot;
+highest bound. Having both a group and a thread range with the &quot;auto:&quot;
 prefix is not supported. Only one range is supported, the other one must be
 a fixed number.
 
-Note that process ranges are supported for historical reasons. Nowadays, a
-lone number designates a process and must be 1, and specifying a thread range
-or number requires to prepend &quot;1/&quot; in front of it. Finally, &quot;1&quot; is strictly
-equivalent to &quot;1/all&quot; and designates all threads on the process.
+Note that group ranges are supported for historical reasons. Nowadays, a lone
+number designates a thread group and must be 1 if thread-groups are not used,
+and specifying a thread range or number requires to prepend &quot;1/&quot; in front of
+it if thread groups are not used. Finally, &quot;1&quot; is strictly equivalent to
+&quot;1/all&quot; and designates all threads in the group.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
-<code>cpu-map 1/all 0-3 <span class="comment"># bind all threads of the first process on the</span>
+<code>cpu-map 1/all 0-3 <span class="comment"># bind all threads of the first group on the</span>
                   <span class="comment"># first 4 CPUs</span>
 
 cpu-map 1/1- 0-   <span class="comment"># will be replaced by &quot;cpu-map 1/1-64 0-63&quot;</span>
                   <span class="comment"># or &quot;cpu-map 1/1-32 0-31&quot; depending on the machine&#x27;s</span>
                   <span class="comment"># word size.</span>
 
-<span class="comment"># all these lines bind the thread 1 to the cpu 0, the thread 2 to cpu 1</span>
+<span class="comment"># all these lines bind thread 1 to the cpu 0, the thread 2 to cpu 1</span>
 <span class="comment"># and so on.</span>
 cpu-map auto:1/1-4   0-3
 cpu-map auto:1/1-4   0-1 2-3
@@ -6204,6 +6197,20 @@ cpu-map auto:1/odd   32-63
 <span class="comment"># invalid cpu-map because thread and CPU sets have different sizes.</span>
 cpu-map auto:1/1-4   0    <span class="comment"># invalid</span>
 cpu-map auto:1/1     0-3  <span class="comment"># invalid</span>
+
+<span class="comment"># map 40 threads of those 4 groups to individual CPUs</span>
+cpu-map auto:1/1-10   0-9
+cpu-map auto:2/1-10   10-19
+cpu-map auto:3/1-10   20-29
+cpu-map auto:4/1-10   30-39
+
+<span class="comment"># Map 80 threads to one physical socket and 80 others to another socket</span>
+<span class="comment"># without forcing assignment. These are split into 4 groups since no</span>
+<span class="comment"># group may have more than 64 threads.</span>
+cpu-map 1/1-40   0-39 80-119    <span class="comment"># node0, siblings 0 &amp; 1</span>
+cpu-map 2/1-40   0-39 80-119
+cpu-map 3/1-40   40-79 120-159  <span class="comment"># node1, siblings 0 &amp; 1</span>
+cpu-map 4/1-40   40-79 120-159
 </code></pre>
 </div><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
 path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
@@ -6757,9 +6764,6 @@ OpenSSL or even external checks. This must be used with extreme care and only
 after complete validation. The changes immediately take effect so that the
 next line in the configuration file sees the new environment. See also
 &quot;<a href="#setenv">setenv</a>&quot;, &quot;<a href="#presetenv">presetenv</a>&quot;, and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
-</pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats bind-process"></a><a class="anchor" name="3-stats bind-process"></a><a class="anchor" name="3.1-stats bind-process"></a><a class="anchor" name="stats bind-process (Global parameters)"></a><a class="anchor" name="stats bind-process (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats bind-process"></a><a href="#3.1-stats%20bind-process">stats bind-process</a></b> <span style="color: #008">[ all | odd | even | <span style="color: #080">&lt;process_num&gt;</span><span style="color: #008">[-<span style="color: #008">[process_num</span></span></span>&gt;]] ] ...</div><pre class="text">Deprecated. Before threads were supported, this was used to force some stats
-instances on certain processes only. The default and only accepted value is
-&quot;1&quot; (along with &quot;all&quot; and &quot;<a href="#odd">odd</a>&quot; which alias it). Do not use this setting.
 </pre><a class="anchor" name="server-state-base"></a><a class="anchor" name="3-server-state-base"></a><a class="anchor" name="3.1-server-state-base"></a><a class="anchor" name="server-state-base (Global parameters)"></a><a class="anchor" name="server-state-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="server-state-base"></a><a href="#3.1-server-state-base">server-state-base</a></b> <span style="color: #080">&lt;directory&gt;</span></div><pre class="text">Specifies the directory prefix to be prepended in front of all servers state
 file names which do not start with a &#x27;/&#x27;. See also &quot;<a href="#server-state-file">server-state-file</a>&quot;,
 &quot;<a href="#load-server-state-from-file">load-server-state-from-file</a>&quot; and &quot;<a href="#server-state-file-name">server-state-file-name</a>&quot;.
@@ -7061,7 +7065,11 @@ defined. Defining the same group multiple times overrides previous
 definitions with the new one. See also &quot;<a href="#nbthread">nbthread</a>&quot; and &quot;<a href="#thread-groups">thread-groups</a>&quot;.
 </pre><a class="anchor" name="thread-groups"></a><a class="anchor" name="3-thread-groups"></a><a class="anchor" name="3.1-thread-groups"></a><a class="anchor" name="thread-groups (Global parameters)"></a><a class="anchor" name="thread-groups (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="thread-groups"></a><a href="#3.1-thread-groups">thread-groups</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This setting is only available when support for threads was built in. It
 makes HAProxy split its threads into &lt;number&gt; independent groups. At the
-moment, the limit is 1 and is also the default value. See also &quot;<a href="#nbthread">nbthread</a>&quot;.
+moment, the default value is 1. Thread groups make it possible to reduce
+sharing between threads to limit contention, at the expense of some extra
+configuration efforts. It is also the only way to use more than 64 threads
+since up to 64 threads per group may be configured. The maximum number of
+groups is configured at compile time and defaults to 16. See also &quot;<a href="#nbthread">nbthread</a>&quot;.
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="3-uid"></a><a class="anchor" name="3.1-uid"></a><a class="anchor" name="uid (Global parameters)"></a><a class="anchor" name="uid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#3.1-uid">uid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process&#x27;s user ID to &lt;number&gt;. It is recommended that the user ID
 is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with superuser privileges in order to be able to switch to another
@@ -8433,7 +8441,6 @@ anonymous ones.
 <tr><td ><a href="#4-backlog">backlog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-balance">balance</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-bind">bind</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-bind-process">bind-process</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-capture%20cookie">capture cookie</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20request%20header">capture request header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20response%20header">capture response header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -8449,8 +8456,8 @@ anonymous ones.
 <tr><td ><a href="#4-disabled">disabled</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-dispatch">dispatch</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-email-alert%20level">email-alert level</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-email-alert%20mailers">email-alert mailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20myhostname">email-alert myhostname</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20to">email-alert to</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8470,8 +8477,8 @@ anonymous ones.
 <tr><td ><a href="#4-http-check%20connect">http-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20disable-on-404">http-check disable-on-404</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20expect">http-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-http-check%20send">http-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-http-check%20send-state">http-check send-state</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20set-var">http-check set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20unset-var">http-check unset-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8491,8 +8498,8 @@ anonymous ones.
 <tr><td ><a href="#4-maxconn">maxconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-mode">mode</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-monitor%20fail">monitor fail</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-monitor-uri">monitor-uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20abortonclose"><span class="pull-right"><span>(*)</span></span>option abortonclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20accept-invalid-http-request"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20accept-invalid-http-response"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8512,8 +8519,8 @@ anonymous ones.
 <tr><td ><a href="#4-option%20http-no-delay"><span class="pull-right"><span>(*)</span></span>option http-no-delay</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-pretend-keepalive"><span class="pull-right"><span>(*)</span></span>option http-pretend-keepalive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-restrict-req-hdr-names">option http-restrict-req-hdr-names</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20http-server-close"><span class="pull-right"><span>(*)</span></span>option http-server-close</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20http-use-proxy-header"><span class="pull-right"><span>(*)</span></span>option http-use-proxy-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20httpchk">option httpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20httpclose"><span class="pull-right"><span>(*)</span></span>option httpclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8533,8 +8540,8 @@ anonymous ones.
 <tr><td ><a href="#4-option%20prefer-last-server"><span class="pull-right"><span>(*)</span></span>option prefer-last-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redispatch"><span class="pull-right"><span>(*)</span></span>option redispatch</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redis-check">option redis-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20smtpchk">option smtpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20socket-stats"><span class="pull-right"><span>(*)</span></span>option socket-stats</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20splice-auto"><span class="pull-right"><span>(*)</span></span>option splice-auto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20splice-request"><span class="pull-right"><span>(*)</span></span>option splice-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8554,8 +8561,8 @@ anonymous ones.
 <tr><td ><a href="#4-persist%20rdp-cookie">persist rdp-cookie</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-rate-limit%20sessions">rate-limit sessions</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-redirect">redirect</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-retries">retries</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-retry-on">retry-on</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-server">server</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-server-state-file-name">server-state-file-name</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8575,8 +8582,8 @@ anonymous ones.
 <tr><td ><a href="#4-stats%20show-desc">stats show-desc</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-legends">stats show-legends</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stick%20match">stick match</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20on">stick on</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20store-request">stick store-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8596,8 +8603,8 @@ anonymous ones.
 <tr><td ><a href="#4-tcp-request%20inspect-delay">tcp-request inspect-delay</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20session">tcp-request session</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-tcp-response%20content">tcp-response content</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-response%20inspect-delay">tcp-response inspect-delay</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-timeout%20check">timeout check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20client">timeout client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20client-fin">timeout client-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -9046,17 +9053,6 @@ listen h3_quic_proxy
       &quot;,unix-tightsocklen=0&quot; to any abstract socket definition in socat to
       make it compatible with HAProxy&#x27;s.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#option%20forwardfor">option forwardfor</a>&quot;, &quot;<a href="#unix-bind">unix-bind</a>&quot; and the PROXY protocol documentation, and <a href="#5">section 5</a> about bind options.</div>
-<a class="anchor" name="bind-process"></a><a class="anchor" name="4-bind-process"></a><a class="anchor" name="4.2-bind-process"></a><a class="anchor" name="bind-process (Proxies)"></a><a class="anchor" name="bind-process (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="bind-process"></a><a href="#4.2-bind-process">bind-process</a></b> <span style="color: #008">[ all | odd | even | <span style="color: #080">&lt;process_num&gt;</span><span style="color: #008">[-<span style="color: #008">[<span style="color: #080">&lt;process_num&gt;</span>]</span>]</span> ]</span> ...</div><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
-<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
-</table></div>
-<pre class="text">Deprecated. Before threads were supported, this was used to force some
-frontends on certain processes only, or to adjust backends so that they
-could match the frontends that used them. The default and only accepted
-value is &quot;1&quot; (along with &quot;all&quot; and &quot;<a href="#odd">odd</a>&quot; which alias it). Do not use this
-setting. Threads can still be bound per-socket using the &quot;<a href="#process">process</a>&quot; bind
-keyword.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#process">process</a>&quot; in <a href="#5.1">section 5.1</a>.</div>
 <a class="anchor" name="capture"></a><a class="anchor" name="4-capture"></a><a class="anchor" name="4.2-capture"></a><a class="anchor" name="capture (Proxies)"></a><a class="anchor" name="capture (Alphabetically sorted keywords reference)"></a><a class="anchor" name="capture cookie"></a><a class="anchor" name="4-capture cookie"></a><a class="anchor" name="4.2-capture cookie"></a><a class="anchor" name="capture cookie (Proxies)"></a><a class="anchor" name="capture cookie (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="capture cookie"></a><a href="#4.2-capture%20cookie">capture cookie</a></b> <span style="color: #080">&lt;name&gt;</span> len <span style="color: #080">&lt;length&gt;</span></div><pre class="text">Capture and log a cookie in the request and in the response.
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -18141,24 +18137,6 @@ global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-opti
 Note that with OpenSSL &gt;= 1.1.1 ChaCha20-Poly1305 is reprioritized anyway
 (without setting this option), if a ChaCha20-Poly1305 cipher is at the top of
 the client cipher list.
-</pre><a class="anchor" name="process"></a><a class="anchor" name="5-process"></a><a class="anchor" name="5.1-process"></a><a class="anchor" name="process (Bind and server options)"></a><a class="anchor" name="process (Bind options)"></a><div class="keyword"><b><a class="anchor" name="process"></a><a href="#5.1-process">process</a></b> <span style="color: #080">&lt;process-set&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span></div><pre class="text">This restricts the list of threads on which this listener is allowed to run.
-It does not enforce any of them but eliminates those which do not match. Note
-that only process number 1 is permitted. If a thread set is specified, it
-limits the threads allowed to process incoming connections for this listener.
-For the unlikely case where several ranges are needed, this directive may be
-repeated. &lt;process-set&gt; and &lt;thread-set&gt; must use the format
-
-    all | odd | even | number[-[number]]
-
-Ranges can be partially defined. The higher bound can be omitted. In such a
-case, it is replaced by the corresponding maximum value. The main purpose is
-to have multiple bind lines sharing the same IP:port but not the same thread
-in a listener, so that the system can distribute the incoming connections
-into multiple queues, bypassing haproxy&#x27;s internal queue load balancing.
-Currently Linux 3.9 and above is known for supporting this.
-
-This directive is deprecated in favor of the more suited &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">thread<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#thread%20%28Bind%20options%29">Bind options</a></li><li><a href="#thread%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; directive
-below, and will be removed in 2.7.
 </pre><a class="anchor" name="proto"></a><a class="anchor" name="5-proto"></a><a class="anchor" name="5.1-proto"></a><a class="anchor" name="proto (Bind and server options)"></a><a class="anchor" name="proto (Bind options)"></a><div class="keyword"><b><a class="anchor" name="proto"></a><a href="#5.1-proto">proto</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Forces the multiplexer&#x27;s protocol to use for the incoming connections. It
 must be compatible with the mode of the frontend (TCP or HTTP). It must also
 be usable on the frontend side. The list of available protocols is reported
@@ -26023,7 +26001,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev1-113 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev1-175 &ndash; Configuration Manual<br>
 							<small>, 2022/06/24</small>
 						</div>
 					</div>
