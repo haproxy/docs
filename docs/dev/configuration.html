@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev3-32 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev3-41 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1233,6 +1233,8 @@
 								<div class="letter" id="letter-B"><h4>B</h4>
 								
 							<a class="list-group-item" href="#b64dec">b64dec</a>
+							
+							<a class="list-group-item" href="#backing-file">backing-file</a>
 							
 							<a class="list-group-item" href="#backlog (Log forwarding)">backlog (Log forwarding)</a>
 							
@@ -4074,7 +4076,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4085,7 +4087,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev3-32</strong></p>
+							<p><strong>version 2.7-dev3-41</strong></p>
 							<p>
 								2022/08/07<br>
 								
@@ -8136,6 +8138,36 @@ http-errors website-2
 <div><pre class="text">It is possible to globally declare ring-buffers, to be used as target for log
 servers or traces.
 </pre><a class="anchor" name="ring"></a><a class="anchor" name="3-ring"></a><a class="anchor" name="3.9-ring"></a><a class="anchor" name="ring (Global parameters)"></a><a class="anchor" name="ring (Rings)"></a><div class="keyword"><b><a class="anchor" name="ring"></a><a href="#3.9-ring">ring</a></b> <span style="color: #080">&lt;ringname&gt;</span></div><pre class="text">Creates a new ring-buffer with name &lt;ringname&gt;.
+</pre><a class="anchor" name="backing-file"></a><a class="anchor" name="3-backing-file"></a><a class="anchor" name="3.9-backing-file"></a><a class="anchor" name="backing-file (Global parameters)"></a><a class="anchor" name="backing-file (Rings)"></a><div class="keyword"><b><a class="anchor" name="backing-file"></a><a href="#3.9-backing-file">backing-file</a></b> <span style="color: #080">&lt;path&gt;</span></div><pre class="text">This replaces the regular memory allocation by a RAM-mapped file to store the
+ring. This can be useful for collecting traces or logs for post-mortem
+analysis, without having to attach a slow client to the CLI. Newer contents
+will automatically replace older ones so that the latest contents are always
+available. The contents written to the ring will be visible in that file once
+the process stops (most often they will even be seen very soon after but
+there is no such guarantee since writes are not synchronous).
+
+When this option is used, the total storage area is reduced by the size of
+the &quot;struct ring&quot; that starts at the beginning of the area, and that is
+required to recover the area&#x27;s contents. The file will be created with the
+starting user&#x27;s ownership, with mode 0600 and will be of the size configured
+by the &quot;<a href="#size">size</a>&quot; directive. Any previously existing file will be renamed with
+the extra suffix &quot;.bak&quot;, and any previously existing file with suffix &quot;.bak&quot;
+will be removed. This ensures that instant restart of the process will not
+wipe precious debugging information, and will leave time for an admin to spot
+this new &quot;.bak&quot; file and to archive it if needed. This means that the total
+storage capacity required will be double of the ring size.
+
+WARNING: there are stability and security implications in using this feature.
+First, backing the ring to a slow device (e.g. physical hard drive) may cause
+perceptible slowdowns during accesses, and possibly even panics if too many
+threads compete for accesses. Second, an external process modifying the area
+could cause the haproxy process to crash or to overwrite some of its own
+memory with traces. Third, if the file system fills up before the ring,
+writes to the ring may cause the process to crash.
+
+The information present in this ring are structured and are NOT directly
+readable using a text editor (even though most of it looks barely readable).
+The output of this file is only intended for developers.
 </pre><a class="anchor" name="description"></a><a class="anchor" name="3-description"></a><a class="anchor" name="3.9-description"></a><a class="anchor" name="description (Global parameters)"></a><a class="anchor" name="description (Rings)"></a><div class="keyword"><b><a class="anchor" name="description"></a><a href="#3.9-description">description</a></b> <span style="color: #080">&lt;text&gt;</span></div><pre class="text">The description is an optional description string of the ring. It will
 appear on CLI. By default, &lt;name&gt; is reused to fill this field.
 </pre><a class="anchor" name="format"></a><a class="anchor" name="3-format"></a><a class="anchor" name="3.9-format"></a><a class="anchor" name="format (Global parameters)"></a><a class="anchor" name="format (Rings)"></a><div class="keyword"><b><a class="anchor" name="format"></a><a href="#3.9-format">format</a></b> <span style="color: #080">&lt;format&gt;</span></div><pre class="text">Format used to store events into the ring buffer.
@@ -26010,7 +26042,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev3-32 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev3-41 &ndash; Configuration Manual<br>
 							<small>, 2022/08/07</small>
 						</div>
 					</div>
