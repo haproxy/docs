@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev4-6 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev4-12 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3883,6 +3883,8 @@
 							
 							<a class="list-group-item" href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
 							
+							<a class="list-group-item" href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
+							
 							<a class="list-group-item" href="#tune.pipesize">tune.pipesize</a>
 							
 							<a class="list-group-item" href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>
@@ -4080,7 +4082,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4091,7 +4093,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev4-6</strong></p>
+							<p><strong>version 2.7-dev4-12</strong></p>
 							<p>
 								2022/08/20<br>
 								
@@ -6065,6 +6067,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
    - <a href="#tune.maxrewrite">tune.maxrewrite</a>
    - <a href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
+   - <a href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
    - <a href="#tune.pipesize">tune.pipesize</a>
    - <a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>
    - <a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
@@ -7601,6 +7604,13 @@ attack could cause a single collision after 60 years, or 0.1% after 6 years.
 This is considered much lower than the risk of a memory corruption caused by
 aging components. If this is not acceptable, the cache can be disabled by
 setting this parameter to 0.
+</pre><a class="anchor" name="tune.peers.max-updates-at-once"></a><a class="anchor" name="3-tune.peers.max-updates-at-once"></a><a class="anchor" name="3.2-tune.peers.max-updates-at-once"></a><a class="anchor" name="tune.peers.max-updates-at-once (Global parameters)"></a><a class="anchor" name="tune.peers.max-updates-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.peers.max-updates-at-once"></a><a href="#3.2-tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of stick-table updates that haproxy will try to
+process at once when sending messages. Retrieving the data for these updates
+requires some locking operations which can be CPU intensive on highly
+threaded machines if unbound, and may also increase the traffic latency
+during the initial batched transfer between an older and a newer process.
+Conversely low values may also incur higher CPU overhead, and take longer
+to complete. The default value is 200 and it is suggested not to change it.
 </pre><a class="anchor" name="tune.pipesize"></a><a class="anchor" name="3-tune.pipesize"></a><a class="anchor" name="3.2-tune.pipesize"></a><a class="anchor" name="tune.pipesize (Global parameters)"></a><a class="anchor" name="tune.pipesize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pipesize"></a><a href="#3.2-tune.pipesize">tune.pipesize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the kernel pipe buffer size to this size (in bytes). By default, pipes
 are the default size for the system. But sometimes when using TCP splicing,
 it can improve performance to increase pipe sizes, especially if it is
@@ -26059,7 +26069,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev4-6 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev4-12 &ndash; Configuration Manual<br>
 							<small>, 2022/08/20</small>
 						</div>
 					</div>
