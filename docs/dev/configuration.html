@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev4-25 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev4-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -1752,6 +1752,8 @@
 							
 							<a class="list-group-item" href="#hold">hold</a>
 							
+							<a class="list-group-item" href="#host_only">host_only</a>
+							
 							<a class="list-group-item" href="#hostname">hostname</a>
 							
 							<a class="list-group-item" href="#htonl">htonl</a>
@@ -2604,6 +2606,8 @@
 							<a class="list-group-item" href="#pool-purge-delay">pool-purge-delay</a>
 							
 							<a class="list-group-item" href="#port">port</a>
+							
+							<a class="list-group-item" href="#port_only">port_only</a>
 							
 							<a class="list-group-item" href="#pp2-never-send-local">pp2-never-send-local</a>
 							
@@ -4082,7 +4086,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4093,7 +4097,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev4-25</strong></p>
+							<p><strong>version 2.7-dev4-29</strong></p>
 							<p>
 								2022/08/20<br>
 								
@@ -10967,7 +10971,8 @@ One can use this action to discover a server IP address at run time and
 based on information found in the request (IE a Host header).
 If this action is used to find the server&#x27;s IP address (using the
 &quot;set-dst&quot; action), then the server IP address in the backend must be set
-to 0.0.0.0.
+to 0.0.0.0. The do-resolve action takes an host-only parameter, any port must
+be removed from the string.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -10983,7 +10988,7 @@ to 0.0.0.0.
 
 frontend fe
   bind 10.42.0.1:80
-  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),host_only
   http-request capture var(txn.myip) len 40
 
   <span class="comment"># return 503 when the variable is not set,</span>
@@ -20428,7 +20433,14 @@ be base64 encoded and can either be a string or a variable.
 
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
-</pre><a class="anchor" name="http_date"></a><a class="anchor" name="7-http_date"></a><a class="anchor" name="7.3.1-http_date"></a><a class="anchor" name="http_date (Using ACLs and fetching samples)"></a><a class="anchor" name="http_date (Converters)"></a><div class="keyword"><b><a class="anchor" name="http_date"></a><a href="#7.3.1-http_date">http_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
+</pre><a class="anchor" name="host_only"></a><a class="anchor" name="7-host_only"></a><a class="anchor" name="7.3.1-host_only"></a><a class="anchor" name="host_only (Using ACLs and fetching samples)"></a><a class="anchor" name="host_only (Converters)"></a><div class="keyword"><b><a class="anchor" name="host_only"></a><a href="#7.3.1-host_only">host_only</a></b></div><pre class="text">Converts a string which contains a Host header value and removes its port.
+The input must respect the format of the host header value
+(rfc9110#section-7.2). It will support that kind of input: hostname,
+hostname:80, 127.0.0.1, 127.0.0.1:80, [::1], [::1]:80.
+
+This converter also sets the string in lowercase.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#port_only">port_only</a>&quot; converter which will return the port.</div>
+<a class="anchor" name="http_date"></a><a class="anchor" name="7-http_date"></a><a class="anchor" name="7.3.1-http_date"></a><a class="anchor" name="http_date (Using ACLs and fetching samples)"></a><a class="anchor" name="http_date (Converters)"></a><div class="keyword"><b><a class="anchor" name="http_date"></a><a href="#7.3.1-http_date">http_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
 representing this date in a format suitable for use in HTTP header fields. If
 an offset value is specified, then it is added to the date before the
 conversion is operated. This is particularly useful to emit Date header fields,
@@ -20822,7 +20834,15 @@ indication about its scope. The scopes allowed are:
   &quot;res&quot;  : the variable is shared only during response processing
 This prefix is followed by a name. The separator is a &#x27;.&#x27;. The name may only
 contain characters &#x27;a-z&#x27;, &#x27;A-Z&#x27;, &#x27;0-9&#x27;, &#x27;.&#x27; and &#x27;_&#x27;.
-</pre><a class="anchor" name="protobuf"></a><a class="anchor" name="7-protobuf"></a><a class="anchor" name="7.3.1-protobuf"></a><a class="anchor" name="protobuf (Using ACLs and fetching samples)"></a><a class="anchor" name="protobuf (Converters)"></a><div class="keyword"><b><a class="anchor" name="protobuf"></a><a href="#7.3.1-protobuf">protobuf</a></b>(<span style="color: #080">&lt;field_number&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;field_type&gt;</span>]</span>)</div><pre class="text">This extracts the protocol buffers message field in raw mode of an input binary
+</pre><a class="anchor" name="port_only"></a><a class="anchor" name="7-port_only"></a><a class="anchor" name="7.3.1-port_only"></a><a class="anchor" name="port_only (Using ACLs and fetching samples)"></a><a class="anchor" name="port_only (Converters)"></a><div class="keyword"><b><a class="anchor" name="port_only"></a><a href="#7.3.1-port_only">port_only</a></b></div><pre class="text">Converts a string which contains a Host header value into an integer by
+returning its port.
+The input must respect the format of the host header value
+(rfc9110#section-7.2). It will support that kind of input: hostname,
+hostname:80, 127.0.0.1, 127.0.0.1:80, [::1], [::1]:80.
+
+If no port were provided in the input, it will return 0.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#host_only">host_only</a>&quot; converter which will return the host.</div>
+<a class="anchor" name="protobuf"></a><a class="anchor" name="7-protobuf"></a><a class="anchor" name="7.3.1-protobuf"></a><a class="anchor" name="protobuf (Using ACLs and fetching samples)"></a><a class="anchor" name="protobuf (Converters)"></a><div class="keyword"><b><a class="anchor" name="protobuf"></a><a href="#7.3.1-protobuf">protobuf</a></b>(<span style="color: #080">&lt;field_number&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;field_type&gt;</span>]</span>)</div><pre class="text">This extracts the protocol buffers message field in raw mode of an input binary
 sample representation of a protocol buffer message with &lt;field_number&gt; as field
 number (dotted notation) if &lt;field_type&gt; is not present, or as an integer sample
 if this field is present (see also &quot;<a href="#ungrpc">ungrpc</a>&quot; below).
@@ -26069,7 +26089,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev4-25 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev4-29 &ndash; Configuration Manual<br>
 							<small>, 2022/08/20</small>
 						</div>
 					</div>
