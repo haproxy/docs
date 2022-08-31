@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.0.29-24 - Configuration Manual</title>
+		<title>HAProxy version 2.0.29-39 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -3172,7 +3172,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/06/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/08/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3183,7 +3183,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.0.29-24</strong></p>
+							<p><strong>version 2.0.29-39</strong></p>
 							<p>
 								2022/05/13<br>
 								
@@ -8052,7 +8052,8 @@ One can use this action to discover a server IP address at run time and
 based on information found in the request (IE a Host header).
 If this action is used to find the server&#x27;s IP address (using the
 &quot;set-dst&quot; action), then the server IP address in the backend must be set
-to 0.0.0.0.
+to 0.0.0.0. The do-resolve action takes an host-only parameter, any port must
+be removed from the string.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -8068,7 +8069,7 @@ to 0.0.0.0.
 
 frontend fe
   bind 10.42.0.1:80
-  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower,regsub(:[0-9]*$,)
   http-request capture var(txn.myip) len 40
 
   <span class="comment"># return 503 when the variable is not set,</span>
@@ -20831,7 +20832,7 @@ cache foobar
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.0.29-24 &ndash; Configuration Manual<br>
+							HAProxy 2.0.29-39 &ndash; Configuration Manual<br>
 							<small>, 2022/05/13</small>
 						</div>
 					</div>
