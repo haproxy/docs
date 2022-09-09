@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev5-17 - Management Guide</title>
+		<title>HAProxy version 2.7-dev5-50 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -592,7 +592,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -603,7 +603,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev5-17</strong></p>
+							<p><strong>version 2.7-dev5-50</strong></p>
 							<p>
 								<br>
 								
@@ -3429,7 +3429,7 @@ $ echo &quot;<a href="#show%20peers">show peers</a>&quot; | socat - /tmp/hostB
 usage when suspecting a memory leak for example. It does exactly the same
 as the SIGQUIT when running in foreground except that it does not flush
 the pools.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show profiling"></a><a class="anchor" name="9-show profiling"></a><a class="anchor" name="9.3-show profiling"></a><a class="anchor" name="show profiling (Statistics and monitoring)"></a><a class="anchor" name="show profiling (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show profiling"></a><a href="#9.3-show%20profiling">show profiling</a></b> <span style="color: #008">[<span style="color: #800">{all | status | tasks | memory}</span>]</span> <span style="color: #008">[byaddr]</span> <span style="color: #008">[<span style="color: #080">&lt;max_lines&gt;</span>]</span></div><pre class="text">Dumps the current profiling settings, one per line, as well as the command
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show profiling"></a><a class="anchor" name="9-show profiling"></a><a class="anchor" name="9.3-show profiling"></a><a class="anchor" name="show profiling (Statistics and monitoring)"></a><a class="anchor" name="show profiling (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show profiling"></a><a href="#9.3-show%20profiling">show profiling</a></b> <span style="color: #008">[<span style="color: #800">{all | status | tasks | memory}</span>]</span> <span style="color: #008">[byaddr|bytime|aggr|<span style="color: #080">&lt;max_lines&gt;</span>]</span>*</div><pre class="text">Dumps the current profiling settings, one per line, as well as the command
 needed to change them. When tasks profiling is enabled, some per-function
 statistics collected by the scheduler will also be emitted, with a summary
 covering the number of calls, total/avg CPU time and total/avg latency. When
@@ -3439,8 +3439,10 @@ limit the dump to only the profiling status, the tasks, or the memory
 profiling by specifying the respective keywords; by default all profiling
 information are dumped. It is also possible to limit the number of lines
 of output of each category by specifying a numeric limit. If is possible to
-request that the output is sorted by address instead of usage, e.g. to ease
-comparisons between subsequent calls. Please note that profiling is
+request that the output is sorted by address or by total execution time
+instead of usage, e.g. to ease comparisons between subsequent calls or to
+check what needs to be optimized, and to aggregate task activity by called
+function instead of seeing the details. Please note that profiling is
 essentially aimed at developers since it gives hints about where CPU cycles
 or memory are wasted in the code. There is nothing useful to monitor there.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show resolvers"></a><a class="anchor" name="9-show resolvers"></a><a class="anchor" name="9.3-show resolvers"></a><a class="anchor" name="show resolvers (Statistics and monitoring)"></a><a class="anchor" name="show resolvers (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show resolvers"></a><a href="#9.3-show%20resolvers">show resolvers</a></b> <span style="color: #008">[<span style="color: #080">&lt;resolvers section id&gt;</span>]</span></div><pre class="text">Dump statistics for the given resolvers section, or all resolvers sections
@@ -4709,7 +4711,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev5-17 &ndash; Management Guide<br>
+							HAProxy 2.7-dev5-50 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
