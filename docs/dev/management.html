@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev5-97 - Management Guide</title>
+		<title>HAProxy version 2.7-dev6 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -415,9 +415,13 @@
 								
 							<a class="list-group-item" href="#set">set</a>
 							
+							<a class="list-group-item" href="#set anon">set anon</a>
+							
 							<a class="list-group-item" href="#set dynamic-cookie-key">set dynamic-cookie-key</a>
 							
 							<a class="list-group-item" href="#set dynamic-cookie-key backend">set dynamic-cookie-key backend</a>
+							
+							<a class="list-group-item" href="#set global-key">set global-key</a>
 							
 							<a class="list-group-item" href="#set map">set map</a>
 							
@@ -480,6 +484,8 @@
 							<a class="list-group-item" href="#show acl">show acl</a>
 							
 							<a class="list-group-item" href="#show activity">show activity</a>
+							
+							<a class="list-group-item" href="#show anon">show anon</a>
 							
 							<a class="list-group-item" href="#show backend">show backend</a>
 							
@@ -592,7 +598,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -603,7 +609,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev5-97</strong></p>
+							<p><strong>version 2.7-dev6</strong></p>
 							<p>
 								<br>
 								
@@ -959,6 +965,15 @@ list of options is :
   -d : enable debug mode. This disables daemon mode, forces the process to stay
     in foreground and to show incoming and outgoing events. It must never be
     used in an init script.
+
+  -dC[key] : dump the configuration file. It is performed after the lines are
+    tokenized, so comments are stripped and indenting is forced. If a non-zero
+    key is specified, lines are truncated before sensitive/confidential fields,
+    and identifiers and addresses are emitted hashed with this key using the
+    same algorithmm as the one used by the anonymized mode on the CLI. This
+    means that the output may safely be shared with a developer who needs it
+    to figure what&#x27;s happening in a dump that was anonymized using the same
+    key. Please also see the CLI&#x27;s &quot;<a href="#set%20anon">set anon</a>&quot; command.
 
   -dD : enable diagnostic mode. This mode will output extra warnings about
     suspicious configuration statements. This will never prevent startup even in
@@ -2842,8 +2857,25 @@ when one wants to periodically check information such as stats or errors.
 It is also a good idea to enter interactive mode before issuing a &quot;<a href="#help">help</a>&quot;
 command.
 </pre><a class="anchor" name="quit"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="quit"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon"></a><a href="#9.3-set%20anon">set anon</a></b> <span style="color: #008">[on|off]</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>]</span></div><pre class="text">This command enables or disables the &quot;anonymized mode&quot; for the current CLI
+session, which replaces certain fields considered sensitive or confidential
+in command outputs with hashes that preserve sufficient consistency between
+elements to help developers identify relations between elements when trying
+to spot bugs, but a low enough bit count (24) to make them non-reversible due
+to the high number of possible matches. When turned on, if no key is
+specified, the global key will be used (either specified in the configuration
+file by &quot;anonkey&quot; or set via the CLI command &quot;<a href="#set%20global-key">set global-key</a>&quot;). If no such
+key was set, a random one will be generated. Otherwise it&#x27;s possible to
+specify the 32-bit key to be used for the current session, for example, to
+reuse the key that was used in a previous dump to help compare outputs.
+Developers will never need this key and it&#x27;s recommended never to share it as
+it could allow to confirm/infirm some guesses about what certain hashes could
+be hiding.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set dynamic-cookie-key"></a><a class="anchor" name="9-set dynamic-cookie-key"></a><a class="anchor" name="9.3-set dynamic-cookie-key"></a><a class="anchor" name="set dynamic-cookie-key (Statistics and monitoring)"></a><a class="anchor" name="set dynamic-cookie-key (Unix Socket commands)"></a><a class="anchor" name="set dynamic-cookie-key backend"></a><a class="anchor" name="9-set dynamic-cookie-key backend"></a><a class="anchor" name="9.3-set dynamic-cookie-key backend"></a><a class="anchor" name="set dynamic-cookie-key backend (Statistics and monitoring)"></a><a class="anchor" name="set dynamic-cookie-key backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set dynamic-cookie-key backend"></a><a href="#9.3-set%20dynamic-cookie-key%20backend">set dynamic-cookie-key backend</a></b> <span style="color: #080">&lt;backend&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the secret key used to generate the dynamic persistent cookies.
 This will break the existing sessions.
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set global-key"></a><a class="anchor" name="9-set global-key"></a><a class="anchor" name="9.3-set global-key"></a><a class="anchor" name="set global-key (Statistics and monitoring)"></a><a class="anchor" name="set global-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set global-key"></a><a href="#9.3-set%20global-key">set global-key</a></b> <span style="color: #080">&lt;key&gt;</span></div><pre class="text">This sets the global anonymizing key to &lt;key&gt;, which must be a 32-bit
+integer between 0 and 4294967295 (0 disables the global key). This command
+requires admin privilege.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set map"></a><a class="anchor" name="9-set map"></a><a class="anchor" name="9.3-set map"></a><a class="anchor" name="set map (Statistics and monitoring)"></a><a class="anchor" name="set map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set map"></a><a href="#9.3-set%20map">set map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the value corresponding to each key &lt;key&gt; in a map &lt;map&gt;. &lt;map&gt; is the
 #&lt;id&gt; or &lt;file&gt; returned by &quot;<a href="#show%20map">show map</a>&quot;. If the &lt;ref&gt; is used in place of
 &lt;key&gt;, only the entry pointed by &lt;ref&gt; is changed. The new value is &lt;value&gt;.
@@ -3064,6 +3096,8 @@ available ACL, but are the list of all patterns composing any ACL. Many of
 these patterns can be shared with maps. The &#x27;entry_cnt&#x27; value represents the
 count of all the ACL entries, not just the active ones, which means that it
 also includes entries currently being added.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show anon"></a><a class="anchor" name="9-show anon"></a><a class="anchor" name="9.3-show anon"></a><a class="anchor" name="show anon (Statistics and monitoring)"></a><a class="anchor" name="show anon (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show anon"></a><a href="#9.3-show%20anon">show anon</a></b></div><pre class="text">Display the current state of the anonymized mode (enabled or disabled) and
+the current session&#x27;s key.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show backend"></a><a class="anchor" name="9-show backend"></a><a class="anchor" name="9.3-show backend"></a><a class="anchor" name="show backend (Statistics and monitoring)"></a><a class="anchor" name="show backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show backend"></a><a href="#9.3-show%20backend">show backend</a></b></div><pre class="text">Dump the list of backends available in the running process
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show cli"></a><a class="anchor" name="9-show cli"></a><a class="anchor" name="9.3-show cli"></a><a class="anchor" name="show cli (Statistics and monitoring)"></a><a class="anchor" name="show cli (Unix Socket commands)"></a><a class="anchor" name="show cli level"></a><a class="anchor" name="9-show cli level"></a><a class="anchor" name="9.3-show cli level"></a><a class="anchor" name="show cli level (Statistics and monitoring)"></a><a class="anchor" name="show cli level (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show cli level"></a><a href="#9.3-show%20cli%20level">show cli level</a></b></div><pre class="text">Display the CLI level of the current CLI session. The result could be
 &#x27;admin&#x27;, &#x27;operator&#x27; or &#x27;user&#x27;. See also the &#x27;operator&#x27; and &#x27;user&#x27; commands.
@@ -4711,7 +4745,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev5-97 &ndash; Management Guide<br>
+							HAProxy 2.7-dev6 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
