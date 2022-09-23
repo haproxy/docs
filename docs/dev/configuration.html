@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev6-15 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev6-24 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -4088,7 +4088,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4099,7 +4099,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev6-15</strong></p>
+							<p><strong>version 2.7-dev6-24</strong></p>
 							<p>
 								2022/09/17<br>
 								
@@ -6674,14 +6674,21 @@ the logs.
 program name as launched from the command line, which usually is &quot;haproxy&quot;.
 Sometimes it can be useful to differentiate between multiple processes
 running on the same host. See also the per-proxy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive.
-</pre><a class="anchor" name="lua-load"></a><a class="anchor" name="3-lua-load"></a><a class="anchor" name="3.1-lua-load"></a><a class="anchor" name="lua-load (Global parameters)"></a><a class="anchor" name="lua-load (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-load"></a><a href="#3.1-lua-load">lua-load</a></b> <span style="color: #080">&lt;file&gt;</span></div><pre class="text">This global directive loads and executes a Lua file in the shared context
+</pre><a class="anchor" name="lua-load"></a><a class="anchor" name="3-lua-load"></a><a class="anchor" name="3.1-lua-load"></a><a class="anchor" name="lua-load (Global parameters)"></a><a class="anchor" name="lua-load (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-load"></a><a href="#3.1-lua-load">lua-load</a></b> <span style="color: #080">&lt;file&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg1&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg2&gt;</span> <span style="color: #008">[ ... ]</span> ]</span> ]</span></div><pre class="text">This global directive loads and executes a Lua file in the shared context
 that is visible to all threads. Any variable set in such a context is visible
 from any thread. This is the easiest and recommended way to load Lua programs
 but it will not scale well if a lot of Lua calls are performed, as only one
 thread may be running on the global state at a time. A program loaded this
 way will always see 0 in the &quot;core.thread&quot; variable. This directive can be
 used multiple times.
-</pre><a class="anchor" name="lua-load-per-thread"></a><a class="anchor" name="3-lua-load-per-thread"></a><a class="anchor" name="3.1-lua-load-per-thread"></a><a class="anchor" name="lua-load-per-thread (Global parameters)"></a><a class="anchor" name="lua-load-per-thread (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-load-per-thread"></a><a href="#3.1-lua-load-per-thread">lua-load-per-thread</a></b> <span style="color: #080">&lt;file&gt;</span></div><pre class="text">This global directive loads and executes a Lua file into each started thread.
+
+args are avalaible in the lua file using the code below in the body of the
+file. Do not forget that Lua arrays start at index 1. A &quot;local&quot; variable
+declared in a file is avalaible in the entire file and not avalaible on
+other files.
+
+   local args = table.pack(...)
+</pre><a class="anchor" name="lua-load-per-thread"></a><a class="anchor" name="3-lua-load-per-thread"></a><a class="anchor" name="3.1-lua-load-per-thread"></a><a class="anchor" name="lua-load-per-thread (Global parameters)"></a><a class="anchor" name="lua-load-per-thread (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-load-per-thread"></a><a href="#3.1-lua-load-per-thread">lua-load-per-thread</a></b> <span style="color: #080">&lt;file&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg1&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg2&gt;</span> <span style="color: #008">[ ... ]</span> ]</span> ]</span></div><pre class="text">This global directive loads and executes a Lua file into each started thread.
 Any global variable has a thread-local visibility so that each thread could
 see a different value. As such it is strongly recommended not to use global
 variables in programs loaded this way. An independent copy is loaded and
@@ -6696,6 +6703,8 @@ on global variables. For the sake of simplicity, the directive is available
 even if only one thread is used and even if threads are disabled (in which
 case it will be equivalent to lua-load). This directive can be used multiple
 times.
+
+See lua-load for usage of args.
 </pre><a class="anchor" name="lua-prepend-path"></a><a class="anchor" name="3-lua-prepend-path"></a><a class="anchor" name="3.1-lua-prepend-path"></a><a class="anchor" name="lua-prepend-path (Global parameters)"></a><a class="anchor" name="lua-prepend-path (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-prepend-path"></a><a href="#3.1-lua-prepend-path">lua-prepend-path</a></b> <span style="color: #080">&lt;string&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;type&gt;</span>]</span></div><pre class="text">Prepends the given string followed by a semicolon to Lua&#x27;s package.&lt;type&gt;
 variable.
 &lt;type&gt; must either be &quot;<a href="#path">path</a>&quot; or &quot;cpath&quot;. If &lt;type&gt; is not given it defaults
@@ -26098,7 +26107,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev6-15 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev6-24 &ndash; Configuration Manual<br>
 							<small>, 2022/09/17</small>
 						</div>
 					</div>
