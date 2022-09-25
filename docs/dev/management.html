@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev6-26 - Management Guide</title>
+		<title>HAProxy version 2.7-dev6-31 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -598,7 +598,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -609,7 +609,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev6-26</strong></p>
+							<p><strong>version 2.7-dev6-31</strong></p>
 							<p>
 								<br>
 								
@@ -4392,12 +4392,25 @@ master(xed)&gt; @1
 </div><a class="anchor" name="reload"></a><a class="anchor" name="9-reload"></a><a class="anchor" name="9.4.1-reload"></a><a class="anchor" name="reload (Statistics and monitoring)"></a><a class="anchor" name="reload (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="reload"></a><a href="#9.4.1-reload">reload</a></b></div><pre class="text">You can also reload the HAProxy master process with the &quot;<a href="#reload">reload</a>&quot; command which
 does the same as a `kill -USR2` on the master process, provided that the user
 has at least &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot; privileges.
+
+This command allows you to perform a synchronous reload, the command will
+return a reload status, once the reload was performed. Be careful with the
+timeout if a tool is used to parse it, it is only returned once the
+configuration is parsed and the new worker is forked.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>$ echo &quot;<a href="#reload">reload</a>&quot; | socat /var/run/haproxy-master.sock stdin
+Loading success.
+
+$ echo &quot;<a href="#reload">reload</a>&quot; | socat /var/run/haproxy-master.sock stdin
+Loading failure!
 </code></pre>
-</div><pre class="text">Note that a reload will close the connection to the master CLI.
+</div><pre class="text">The reload command is the last executed on the master CLI, every other
+command after it are ignored. Once the reload command returns its status, it
+will close the connection to the CLI.
+
+Note that a reload will close all connections to the master CLI.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.4.1-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Master CLI commands)"></a><a class="anchor" name="show proc"></a><a class="anchor" name="9-show proc"></a><a class="anchor" name="9.4.1-show proc"></a><a class="anchor" name="show proc (Statistics and monitoring)"></a><a class="anchor" name="show proc (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="show proc"></a><a href="#9.4.1-show%20proc">show proc</a></b></div><pre class="text">The master CLI introduces a &#x27;show proc&#x27; command to surpervise the
 processe.
 </pre><div class="separator">
@@ -4745,7 +4758,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev6-26 &ndash; Management Guide<br>
+							HAProxy 2.7-dev6-31 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
