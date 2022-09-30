@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev6-41 - Management Guide</title>
+		<title>HAProxy version 2.7-dev6-53 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -417,11 +417,11 @@
 							
 							<a class="list-group-item" href="#set anon">set anon</a>
 							
+							<a class="list-group-item" href="#set anon global-key">set anon global-key</a>
+							
 							<a class="list-group-item" href="#set dynamic-cookie-key">set dynamic-cookie-key</a>
 							
 							<a class="list-group-item" href="#set dynamic-cookie-key backend">set dynamic-cookie-key backend</a>
-							
-							<a class="list-group-item" href="#set global-key">set global-key</a>
 							
 							<a class="list-group-item" href="#set map">set map</a>
 							
@@ -598,7 +598,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -609,7 +609,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev6-41</strong></p>
+							<p><strong>version 2.7-dev6-53</strong></p>
 							<p>
 								<br>
 								
@@ -2864,7 +2864,7 @@ elements to help developers identify relations between elements when trying
 to spot bugs, but a low enough bit count (24) to make them non-reversible due
 to the high number of possible matches. When turned on, if no key is
 specified, the global key will be used (either specified in the configuration
-file by &quot;anonkey&quot; or set via the CLI command &quot;<a href="#set%20global-key">set global-key</a>&quot;). If no such
+file by &quot;anonkey&quot; or set via the CLI command &quot;<a href="#set%20anon%20global-key">set anon global-key</a>&quot;). If no such
 key was set, a random one will be generated. Otherwise it&#x27;s possible to
 specify the 32-bit key to be used for the current session, for example, to
 reuse the key that was used in a previous dump to help compare outputs.
@@ -2873,7 +2873,7 @@ it could allow to confirm/infirm some guesses about what certain hashes could
 be hiding.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set dynamic-cookie-key"></a><a class="anchor" name="9-set dynamic-cookie-key"></a><a class="anchor" name="9.3-set dynamic-cookie-key"></a><a class="anchor" name="set dynamic-cookie-key (Statistics and monitoring)"></a><a class="anchor" name="set dynamic-cookie-key (Unix Socket commands)"></a><a class="anchor" name="set dynamic-cookie-key backend"></a><a class="anchor" name="9-set dynamic-cookie-key backend"></a><a class="anchor" name="9.3-set dynamic-cookie-key backend"></a><a class="anchor" name="set dynamic-cookie-key backend (Statistics and monitoring)"></a><a class="anchor" name="set dynamic-cookie-key backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set dynamic-cookie-key backend"></a><a href="#9.3-set%20dynamic-cookie-key%20backend">set dynamic-cookie-key backend</a></b> <span style="color: #080">&lt;backend&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the secret key used to generate the dynamic persistent cookies.
 This will break the existing sessions.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set global-key"></a><a class="anchor" name="9-set global-key"></a><a class="anchor" name="9.3-set global-key"></a><a class="anchor" name="set global-key (Statistics and monitoring)"></a><a class="anchor" name="set global-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set global-key"></a><a href="#9.3-set%20global-key">set global-key</a></b> <span style="color: #080">&lt;key&gt;</span></div><pre class="text">This sets the global anonymizing key to &lt;key&gt;, which must be a 32-bit
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><a class="anchor" name="set anon global-key"></a><a class="anchor" name="9-set anon global-key"></a><a class="anchor" name="9.3-set anon global-key"></a><a class="anchor" name="set anon global-key (Statistics and monitoring)"></a><a class="anchor" name="set anon global-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon global-key"></a><a href="#9.3-set%20anon%20global-key">set anon global-key</a></b> <span style="color: #080">&lt;key&gt;</span></div><pre class="text">This sets the global anonymizing key to &lt;key&gt;, which must be a 32-bit
 integer between 0 and 4294967295 (0 disables the global key). This command
 requires admin privilege.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set map"></a><a class="anchor" name="9-set map"></a><a class="anchor" name="9.3-set map"></a><a class="anchor" name="set map (Statistics and monitoring)"></a><a class="anchor" name="set map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set map"></a><a href="#9.3-set%20map">set map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the value corresponding to each key &lt;key&gt; in a map &lt;map&gt;. &lt;map&gt; is the
@@ -4760,7 +4760,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev6-41 &ndash; Management Guide<br>
+							HAProxy 2.7-dev6-53 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
