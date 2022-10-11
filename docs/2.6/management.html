@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6.6-5 - Management Guide</title>
+		<title>HAProxy version 2.6.6-35 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -590,7 +590,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/09/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/10/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -601,7 +601,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.6.6-5</strong></p>
+							<p><strong>version 2.6.6-35</strong></p>
 							<p>
 								<br>
 								
@@ -2785,8 +2785,11 @@ the requested one. The same help screen is also displayed for unknown
 commands.
 </pre><a class="anchor" name="httpclient"></a><a class="anchor" name="9-httpclient"></a><a class="anchor" name="9.3-httpclient"></a><a class="anchor" name="httpclient (Statistics and monitoring)"></a><a class="anchor" name="httpclient (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="httpclient"></a><a href="#9.3-httpclient">httpclient</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;URI&gt;</span></div><pre class="text">Launch an HTTP client request and print the response on the CLI. Only
 supported on a CLI connection running in expert mode (see &quot;expert-mode on&quot;).
-It&#x27;s only meant for debugging. It currently can&#x27;t resolve FQDN so your URI must
-contains an IP.
+It&#x27;s only meant for debugging. The httpclient is able to resolve a server
+name in the URL using the &quot;default&quot; resolvers section, which is populated
+with the DNS servers of your /etc/resolv.conf by default. However it won&#x27;t be
+able to resolve an host from /etc/hosts if you don&#x27;t use a local dns daemon
+which can resolve those.
 </pre><a class="anchor" name="new"></a><a class="anchor" name="9-new"></a><a class="anchor" name="9.3-new"></a><a class="anchor" name="new (Statistics and monitoring)"></a><a class="anchor" name="new (Unix Socket commands)"></a><a class="anchor" name="new ssl"></a><a class="anchor" name="9-new ssl"></a><a class="anchor" name="9.3-new ssl"></a><a class="anchor" name="new ssl (Statistics and monitoring)"></a><a class="anchor" name="new ssl (Unix Socket commands)"></a><a class="anchor" name="new ssl ca-file"></a><a class="anchor" name="9-new ssl ca-file"></a><a class="anchor" name="9.3-new ssl ca-file"></a><a class="anchor" name="new ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="new ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="new ssl ca-file"></a><a href="#9.3-new%20ssl%20ca-file">new ssl ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">Create a new empty CA file tree entry to be filled with a set of CA
 certificates and added to a crt-list. This command should be used in
 combination with &quot;<a href="#set%20ssl%20ca-file">set ssl ca-file</a>&quot; and &quot;<a href="#add%20ssl%20crt-list">add ssl crt-list</a>&quot;.
@@ -4684,7 +4687,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6.6-5 &ndash; Management Guide<br>
+							HAProxy 2.6.6-35 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
