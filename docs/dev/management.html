@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev7-55 - Management Guide</title>
+		<title>HAProxy version 2.7-dev7-71 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -598,7 +598,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/10/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/10/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -609,7 +609,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev7-55</strong></p>
+							<p><strong>version 2.7-dev7-71</strong></p>
 							<p>
 								<br>
 								
@@ -4402,14 +4402,30 @@ timeout if a tool is used to parse it, it is only returned once the
 configuration is parsed and the new worker is forked. The &quot;socat&quot; command uses
 a timeout of 0.5s by default so it will quits before showing the message if
 the reload is too long. &quot;ncat&quot; does not have a timeout by default.
+When compiled with USE_SHM_OPEN=1, the reload command is also able to dump
+the startup-logs of the master.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>$ echo &quot;<a href="#reload">reload</a>&quot; | socat -t300 /var/run/haproxy-master.sock stdin
-Loading success.
+Success=1
+--
+[NOTICE]   (482713) : haproxy version is 2.7-dev7-4827fb-69
+[NOTICE]   (482713) : path to executable is ./haproxy
+[WARNING]  (482713) : config : &<span class="comment">#x27;http-request&#x27; rules ignored for proxy &#x27;frt1&#x27; as they require HTTP mode.</span>
+[NOTICE]   (482713) : New worker (482720) forked
+[NOTICE]   (482713) : Loading success.
 
 $ echo &quot;<a href="#reload">reload</a>&quot; | socat -t300 /var/run/haproxy-master.sock stdin
-Loading failure!
+Success=0
+--
+[NOTICE]   (482886) : haproxy version is 2.7-dev7-4827fb-69
+[NOTICE]   (482886) : path to executable is ./haproxy
+[ALERT]    (482886) : config : parsing [test3.cfg:1]: unknown keyword &<span class="comment">#x27;Aglobal&#x27; out of section.</span>
+[ALERT]    (482886) : config : Fatal errors found in configuration.
+[WARNING]  (482886) : Loading failure!
+
+$
 </code></pre>
 </div><pre class="text">The reload command is the last executed on the master CLI, every other
 command after it are ignored. Once the reload command returns its status, it
@@ -4763,7 +4779,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev7-55 &ndash; Management Guide<br>
+							HAProxy 2.7-dev7-71 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
