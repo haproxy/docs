@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev7-71 - Management Guide</title>
+		<title>HAProxy version 2.7-dev8-1 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-10" rel="stylesheet" />
@@ -547,6 +547,8 @@
 							
 							<a class="list-group-item" href="#show ssl providers">show ssl providers</a>
 							
+							<a class="list-group-item" href="#show startup-logs">show startup-logs</a>
+							
 							<a class="list-group-item" href="#show stat">show stat</a>
 							
 							<a class="list-group-item" href="#show table">show table</a>
@@ -598,7 +600,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/10/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-10</b> on <b>2022/10/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -609,7 +611,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-10" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev7-71</strong></p>
+							<p><strong>version 2.7-dev8-1</strong></p>
 							<p>
 								<br>
 								
@@ -3981,7 +3983,12 @@ Loaded providers :
     - fips
     - base
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b></div><pre class="text">Dump general information on all known stick-tables. Their name is returned
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show startup-logs"></a><a class="anchor" name="9-show startup-logs"></a><a class="anchor" name="9.3-show startup-logs"></a><a class="anchor" name="show startup-logs (Statistics and monitoring)"></a><a class="anchor" name="show startup-logs (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show startup-logs"></a><a href="#9.3-show%20startup-logs">show startup-logs</a></b></div><pre class="text">Dump all messages emitted during the startup of the current haproxy process,
+each startup-logs buffer is unique to its haproxy worker.
+
+This keyword also exists on the master CLI, which shows the latest startup or
+reload tentative.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b></div><pre class="text">Dump general information on all known stick-tables. Their name is returned
 (the name of the proxy which holds them), their type (currently zero, always
 IP), their size in maximum possible number of entries, and the number of
 entries currently in use.
@@ -4451,6 +4458,16 @@ processe.
 </div><pre class="text">In this example, the master has been reloaded 5 times but one of the old
 worker is still running and survived 3 reloads. You could access the CLI of
 this worker to understand what&#x27;s going on.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.4.1-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Master CLI commands)"></a><a class="anchor" name="show startup-logs"></a><a class="anchor" name="9-show startup-logs"></a><a class="anchor" name="9.4.1-show startup-logs"></a><a class="anchor" name="show startup-logs (Statistics and monitoring)"></a><a class="anchor" name="show startup-logs (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="show startup-logs"></a><a href="#9.4.1-show%20startup-logs">show startup-logs</a></b></div><pre class="text">HAProxy needs to be compiled with USE_SHM_OPEN=1 to be used correctly on the
+master CLI or all messages won&#x27;t be visible.
+
+Like its counterpart on the stats socket, this command is able to show the
+startup messages of HAProxy. However it does not dump the startup messages
+of the current worker, but the startup messages of the latest startup or
+reload, which means it is able to dump the parsing messages of a failed
+reload.
+
+Those messages are also dumped with the &quot;<a href="#reload">reload</a>&quot; command.
 </pre></div>
 <a class="anchor" id="10" name="10"></a>
 <div class="page-header"><h1 id="chapter-10" data-target="10"><small><a class="small" href="#10">10.</a></small> Tricks for easier configuration management</h1>
@@ -4779,7 +4796,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev7-71 &ndash; Management Guide<br>
+							HAProxy 2.7-dev8-1 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
