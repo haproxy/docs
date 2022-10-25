@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev8-27 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev8-34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-11" rel="stylesheet" />
@@ -3096,7 +3096,11 @@
 							
 							<a class="list-group-item" href="#sha2">sha2</a>
 							
-							<a class="list-group-item" href="#shards">shards</a>
+							<a class="list-group-item" href="#shard">shard</a>
+							
+							<a class="list-group-item" href="#shards (Peers)">shards (Peers)</a>
+							
+							<a class="list-group-item" href="#shards (Bind options)">shards (Bind options)</a>
 							
 							<a class="list-group-item" href="#shdr">shdr</a>
 							
@@ -4090,7 +4094,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-11</b> on <b>2022/10/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-11</b> on <b>2022/10/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4101,7 +4105,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-11" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev8-27</strong></p>
+							<p><strong>version 2.7-dev8-34</strong></p>
 							<p>
 								2022/10/14<br>
 								
@@ -8021,7 +8025,12 @@ Example:
      server haproxy2 192.168.0.2:1024
      server haproxy3 10.2.0.1:1024
 </code></pre>
-</div><a class="anchor" name="table"></a><a class="anchor" name="3-table"></a><a class="anchor" name="3.5-table"></a><a class="anchor" name="table (Global parameters)"></a><a class="anchor" name="table (Peers)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#3.5-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
+</div><a class="anchor" name="shards"></a><a class="anchor" name="3-shards"></a><a class="anchor" name="3.5-shards"></a><a class="anchor" name="shards (Global parameters)"></a><a class="anchor" name="shards (Peers)"></a><div class="keyword"><b><a class="anchor" name="shards"></a><a href="#3.5-shards">shards</a></b> <span style="color: #080">&lt;shards&gt;</span></div><pre class="text">In some configurations, one would like to distribute the stick-table contents
+to some peers in place of sending all the stick-table contents to each peer
+declared in the &quot;<a href="#peers">peers</a>&quot; section. In such cases, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; specifies the
+number of peer involved in this stick-table contents distribution.
+See also &quot;<a href="#shard">shard</a>&quot; server parameter.
+</pre><a class="anchor" name="table"></a><a class="anchor" name="3-table"></a><a class="anchor" name="3.5-table"></a><a class="anchor" name="table (Global parameters)"></a><a class="anchor" name="table (Peers)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#3.5-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
       size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure a stickiness table for the current section. This line is parsed
 exactly the same way as the &quot;<a href="#stick-table">stick-table</a>&quot; keyword in others section, except
 for the &quot;<a href="#peers">peers</a>&quot; argument which is not required here and with an additional
@@ -19163,7 +19172,24 @@ the client certificate (if any), is added to the PROXY protocol header. This
 setting must not be used if the server isn&#x27;t aware of this version of the
 protocol. See also the &quot;<a href="#no-send-proxy-v2-ssl-cn">no-send-proxy-v2-ssl-cn</a>&quot; option of this section and
 the &quot;<a href="#send-proxy-v2">send-proxy-v2</a>&quot; option of the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword.
-</pre><a class="anchor" name="slowstart"></a><a class="anchor" name="5-slowstart"></a><a class="anchor" name="5.2-slowstart"></a><a class="anchor" name="slowstart (Bind and server options)"></a><a class="anchor" name="slowstart (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="slowstart"></a><a href="#5.2-slowstart">slowstart</a></b> <span style="color: #080">&lt;start_time_in_ms&gt;</span></div><pre class="text">The &quot;<a href="#slowstart">slowstart</a>&quot; parameter for a server accepts a value in milliseconds which
+</pre><a class="anchor" name="shard"></a><a class="anchor" name="5-shard"></a><a class="anchor" name="5.2-shard"></a><a class="anchor" name="shard (Bind and server options)"></a><a class="anchor" name="shard (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="shard"></a><a href="#5.2-shard">shard</a></b> <span style="color: #080">&lt;shard&gt;</span></div><pre class="text">This parameter in used only in the context of stick-tables synchronisation
+with peers protocol. The &quot;<a href="#shard">shard</a>&quot; parameter identifies the peers which will
+receive all the stick-table updates for keys with this shard as distribution
+hash. The accepted values are 0 up to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; parameter value specified in
+the &quot;<a href="#peers">peers</a>&quot; section. 0 value is the default value meaning that the peer will
+receive all the key updates. Greater values than &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; will be ignored.
+This is also the case for any value provided to the local peer.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>peers mypeers
+     shards 3
+     peer A 127.0.0.1:40001 # local peer without shard value (0 internally)
+     peer B 127.0.0.1:40002 shard 1
+     peer C 127.0.0.1:40003 shard 2
+     peer D 127.0.0.1:40004 shard 3
+</code></pre>
+</div><a class="anchor" name="slowstart"></a><a class="anchor" name="5-slowstart"></a><a class="anchor" name="5.2-slowstart"></a><a class="anchor" name="slowstart (Bind and server options)"></a><a class="anchor" name="slowstart (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="slowstart"></a><a href="#5.2-slowstart">slowstart</a></b> <span style="color: #080">&lt;start_time_in_ms&gt;</span></div><pre class="text">The &quot;<a href="#slowstart">slowstart</a>&quot; parameter for a server accepts a value in milliseconds which
 indicates after how long a server which has just come back up will run at
 full speed. Just as with every other time-based parameter, it can be entered
 in any other explicit unit among { us, ms, s, m, h, d }. The speed grows
@@ -26109,7 +26135,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev8-27 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev8-34 &ndash; Configuration Manual<br>
 							<small>, 2022/10/14</small>
 						</div>
 					</div>
