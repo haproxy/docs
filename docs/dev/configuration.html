@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev8-53 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev8-60 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4071,6 +4071,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-X"><h4>X</h4>
 								
+							<a class="list-group-item" href="#x509_v_err_str">x509_v_err_str</a>
+							
 							<a class="list-group-item" href="#xor">xor</a>
 							
 							<a class="list-group-item" href="#xxh3">xxh3</a>
@@ -4094,7 +4096,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/10/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4105,7 +4107,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev8-53</strong></p>
+							<p><strong>version 2.7-dev8-60</strong></p>
 							<p>
 								2022/10/14<br>
 								
@@ -17878,6 +17880,11 @@ certificate generated from one of the CA present on your system, which is
 extremely unsecure.
 </pre><a class="anchor" name="ca-ignore-err"></a><a class="anchor" name="5-ca-ignore-err"></a><a class="anchor" name="5.1-ca-ignore-err"></a><a class="anchor" name="ca-ignore-err (Bind and server options)"></a><a class="anchor" name="ca-ignore-err (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ca-ignore-err"></a><a href="#5.1-ca-ignore-err">ca-ignore-err</a></b> <span style="color: #008">[all|<span style="color: #080">&lt;errorID&gt;</span>,...]</span></div><pre class="text">This setting is only available when support for OpenSSL was built in.
 Sets a comma separated list of errorIDs to ignore during verify at depth &gt; 0.
+It could be a numerical ID, or the constant name (X509_V_ERR) which is
+available in the OpenSSL documentation:
+https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
+It is recommended to use the constant name as the numerical value can change
+in new version of OpenSSL.
 If set to 'all', all errors are ignored. SSL handshake is not aborted if an
 error is ignored.
 </pre><a class="anchor" name="ca-sign-file"></a><a class="anchor" name="5-ca-sign-file"></a><a class="anchor" name="5.1-ca-sign-file"></a><a class="anchor" name="ca-sign-file (Bind and server options)"></a><a class="anchor" name="ca-sign-file (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ca-sign-file"></a><a href="#5.1-ca-sign-file">ca-sign-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
@@ -17982,9 +17989,14 @@ To achieve this, OpenSSL 1.1.1 is required, you can configure this behavior
 by providing one crt entry per certificate type, or by configuring a &quot;cert
 bundle&quot; like it was required before HAProxy 1.8. See &quot;<a href="#ssl-load-extra-files">ssl-load-extra-files</a>&quot;.
 </pre><a class="anchor" name="crt-ignore-err"></a><a class="anchor" name="5-crt-ignore-err"></a><a class="anchor" name="5.1-crt-ignore-err"></a><a class="anchor" name="crt-ignore-err (Bind and server options)"></a><a class="anchor" name="crt-ignore-err (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crt-ignore-err"></a><a href="#5.1-crt-ignore-err">crt-ignore-err</a></b> <span style="color: #080">&lt;errors&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. Sets a
-comma separated list of errorIDs to ignore during verify at depth == 0. If
-set to 'all', all errors are ignored. SSL handshake is not aborted if an error
-is ignored.
+comma separated list of errorIDs to ignore during verify at depth == 0.
+It could be a numerical ID, or the constant name (X509_V_ERR) which is
+available in the OpenSSL documentation:
+https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
+It is recommended to use the constant name as the numerical value can change
+in new version of OpenSSL.
+If set to 'all', all errors are ignored. SSL handshake is not aborted if an
+error is ignored.
 </pre><a class="anchor" name="crt-list"></a><a class="anchor" name="5-crt-list"></a><a class="anchor" name="5.1-crt-list"></a><a class="anchor" name="crt-list (Bind and server options)"></a><a class="anchor" name="crt-list (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crt-list"></a><a href="#5.1-crt-list">crt-list</a></b> <span style="color: #080">&lt;file&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 designates a list of PEM file with an optional ssl configuration and a SNI
 filter per certificate, with the following format for each line :
@@ -21383,7 +21395,27 @@ is known to be very good and very fast so it can be used to hash URLs and/or
 URL parameters for use as stick-table keys to collect statistics with a low
 collision rate, though care must be taken as the algorithm is not considered
 as cryptographically secure.
-</pre></div>
+</pre><a class="anchor" name="x509_v_err_str"></a><a class="anchor" name="7-x509_v_err_str"></a><a class="anchor" name="7.3.1-x509_v_err_str"></a><a class="anchor" name="x509_v_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="x509_v_err_str (Converters)"></a><div class="keyword"><b><a class="anchor" name="x509_v_err_str"></a><a href="#7.3.1-x509_v_err_str">x509_v_err_str</a></b></div><pre class="text">Convert a numerical value to its corresponding X509_V_ERR constant name. It
+is useful in ACL in order to have a configuration which works with multiple
+version of OpenSSL since some codes might change when changing version.
+
+The list of constant provided by OpenSSL can be found at
+https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
+Be careful to read the page for the right version of OpenSSL.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>bind :443 ssl crt common.pem ca-file ca-auth.crt verify optional crt-ignore-err X509_V_ERR_CERT_REVOKED,X509_V_ERR_CERT_HAS_EXPIRED
+
+acl cert_expired ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_HAS_EXPIRED
+acl cert_revoked ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_REVOKED
+acl cert_ok      ssl_c_verify,x509_v_err_str -m str X509_V_OK
+
+http-response add-header X-SSL Ok if cert_ok
+http-response add-header X-SSL Expired if cert_expired
+http-response add-header X-SSL Revoked if cert_revoked
+</code></pre>
+</div></div>
 <a class="anchor" id="7.3.2" name="7.3.2"></a>
 <h3 id="chapter-7.3.2" data-target="7.3.2"><small><a class="small" href="#7.3.2">7.3.2.</a></small> Fetching samples from internal states</h3>
 <div><pre class="text">A first set of sample fetch methods applies to internal information which does
@@ -26135,7 +26167,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev8-53 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev8-60 &ndash; Configuration Manual<br>
 							<small>, 2022/10/14</small>
 						</div>
 					</div>
