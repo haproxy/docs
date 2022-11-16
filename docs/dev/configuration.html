@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev8-102 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev8-107 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2652,6 +2652,8 @@
 							
 							<a class="list-group-item" href="#quic-force-retry">quic-force-retry</a>
 							
+							<a class="list-group-item" href="#quick-exit">quick-exit</a>
+							
 							<a class="list-group-item" href="#quiet">quiet</a>
 							
                                                                 </div> <!-- /letter -->
@@ -4096,7 +4098,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4107,7 +4109,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev8-102</strong></p>
+							<p><strong>version 2.7-dev8-107</strong></p>
 							<p>
 								2022/10/14<br>
 								
@@ -7865,6 +7867,13 @@ between 0 and 4294967295. This is the key that will be used by default by CLI
 commands when anonymized mode is enabled. This key may also be set at runtime
 from the CLI command &quot;set global-key&quot;. See also command line argument &quot;-dC&quot;
 in the management manual.
+</pre><a class="anchor" name="quick-exit"></a><a class="anchor" name="3-quick-exit"></a><a class="anchor" name="3.3-quick-exit"></a><a class="anchor" name="quick-exit (Global parameters)"></a><a class="anchor" name="quick-exit (Debugging)"></a><div class="keyword"><b><a class="anchor" name="quick-exit"></a><a href="#3.3-quick-exit">quick-exit</a></b></div><pre class="text">This speeds up the old process exit upon reload by skipping the releasing of
+memory objects and listeners, since all of these are reclaimed by the
+operating system at the process' death. The gains are only marginal (in the
+order of a few hundred milliseconds for huge configurations at most). The
+main target usage in fact is when a bug is spotted in the deinit() code, as
+this allows to bypass it. It is better not to use this unless instructed to
+do so by developers.
 </pre><a class="anchor" name="quiet"></a><a class="anchor" name="3-quiet"></a><a class="anchor" name="3.3-quiet"></a><a class="anchor" name="quiet (Global parameters)"></a><a class="anchor" name="quiet (Debugging)"></a><div class="keyword"><b><a class="anchor" name="quiet"></a><a href="#3.3-quiet">quiet</a></b></div><pre class="text">Do not display any message during startup. It is equivalent to the command-
 line argument &quot;-q&quot;.
 </pre><a class="anchor" name="zero-warning"></a><a class="anchor" name="3-zero-warning"></a><a class="anchor" name="3.3-zero-warning"></a><a class="anchor" name="zero-warning (Global parameters)"></a><a class="anchor" name="zero-warning (Debugging)"></a><div class="keyword"><b><a class="anchor" name="zero-warning"></a><a href="#3.3-zero-warning">zero-warning</a></b></div><pre class="text">When this option is set, HAProxy will refuse to start if any warning was
@@ -26167,7 +26176,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev8-102 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev8-107 &ndash; Configuration Manual<br>
 							<small>, 2022/10/14</small>
 						</div>
 					</div>
