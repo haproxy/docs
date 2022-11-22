@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev9-3 - Configuration Manual</title>
+		<title>HAProxy version 2.7-dev9-14 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4100,7 +4100,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4111,7 +4111,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7-dev9-3</strong></p>
+							<p><strong>version 2.7-dev9-14</strong></p>
 							<p>
 								2022/11/18<br>
 								
@@ -6183,8 +6183,11 @@ have a chance to gracefully close before the process stops.
 same cluster. It could be used for different usages. It is at least used to
 derive stateless reset tokens for all the QUIC connections instantiated by
 this process. This is also the case to derive secrets used to encrypt Retry
-tokens. If you do not set this parameter, the stateless reset and Retry QUIC
-features will be both silently disabled.
+tokens.
+
+If this parameter is not set, a random value will be selected on process
+startup. This allows to use features which rely on it, albeit with some
+limitations.
 </pre><a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;thread-group&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a thread group or a thread
 to a specific CPU set. This means that the designated threads will never run
 on other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for individual
@@ -9092,10 +9095,10 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                   connected unix socket or of a socketpair. The bind waits
                   to receive a FD over the unix socket and uses it as if it
                   was the FD of an accept(). Should be used carefully.
-                - 'quicv4@' -&gt; address is resolved as IPv4 and protocol
-                  UDP is used.
-                - 'quicv6@' -&gt; address is resolved as IPv6 and protocol
-                  UDP is used.
+                - 'quic4@' -&gt; address is resolved as IPv4 and protocol UDP
+                  is used.
+                - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
+                  is used.
 
               You may want to reference some environment variables in the
               address parameter, see <a href="#2.3">section 2.3</a> about environment
@@ -9161,7 +9164,7 @@ listen external_bind_app1
     bind &quot;fd@${FD_APP1}&quot;
 
 listen h3_quic_proxy
-    bind quic@10.0.0.1:8888 ssl crt /etc/mycrt alpn h3
+    bind quic4@10.0.0.1:8888 ssl crt /etc/mycrt alpn h3
 </code></pre>
 </div><pre class="text">Note: regarding Linux's abstract namespace sockets, HAProxy uses the whole
       sun_path length is used for the address length. Some other programs
@@ -18300,9 +18303,10 @@ they used to initiate a new connection, sending them a Retry packet which
 contains a token. This token must be sent back to the Retry packet sender,
 this latter being the only one to be able to validate the token. Note that QUIC
 Retry will always be used even if a Retry threshold was set (see
-&quot;<a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>&quot; setting). To be functional this setting needs a
-cluster secret to be set, if not it will be silently ignored (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot;
-setting).
+&quot;<a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>&quot; setting).
+
+This setting requires the cluster secret to be set or else an error will be
+reported on startup (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot;).
 
 See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
 information about QUIC retry.
@@ -26198,7 +26202,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev9-3 &ndash; Configuration Manual<br>
+							HAProxy 2.7-dev9-14 &ndash; Configuration Manual<br>
 							<small>, 2022/11/18</small>
 						</div>
 					</div>
