@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.19-26 - Configuration Manual</title>
+		<title>HAProxy version 2.4.19-55 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3754,7 +3754,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/10/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3765,7 +3765,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.19-26</strong></p>
+							<p><strong>version 2.4.19-55</strong></p>
 							<p>
 								2022/09/28<br>
 								
@@ -5560,32 +5560,36 @@ of them have command-line equivalents.
 The following keywords are supported in the &quot;global&quot; section :
 
  * Process management and security
+   - <a href="#51degrees-cache-size">51degrees-cache-size</a>
+   - <a href="#51degrees-data-file">51degrees-data-file</a>
+   - <a href="#51degrees-property-name-list">51degrees-property-name-list</a>
+   - <a href="#51degrees-property-separator">51degrees-property-separator</a>
    - <a href="#ca-base">ca-base</a>
    - <a href="#chroot">chroot</a>
-   - <a href="#crt-base">crt-base</a>
    - <a href="#cpu-map">cpu-map</a>
+   - <a href="#crt-base">crt-base</a>
    - <a href="#daemon">daemon</a>
    - <a href="#default-path">default-path</a>
    - <a href="#description">description</a>
    - <a href="#deviceatlas-json-file">deviceatlas-json-file</a>
    - <a href="#deviceatlas-log-level">deviceatlas-log-level</a>
-   - <a href="#deviceatlas-separator">deviceatlas-separator</a>
    - <a href="#deviceatlas-properties-cookie">deviceatlas-properties-cookie</a>
+   - <a href="#deviceatlas-separator">deviceatlas-separator</a>
    - <a href="#expose-experimental-directives">expose-experimental-directives</a>
    - <a href="#external-check">external-check</a>
    - <a href="#gid">gid</a>
    - <a href="#group">group</a>
-   - <a href="#hard-stop-after">hard-stop-after</a>
    - <a href="#h1-case-adjust">h1-case-adjust</a>
    - <a href="#h1-case-adjust-file">h1-case-adjust-file</a>
+   - <a href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
+   - <a href="#hard-stop-after">hard-stop-after</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
-   - <a href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
    - <a href="#localpeer">localpeer</a>
    - <a href="#log">log</a>
-   - <a href="#log-tag">log-tag</a>
    - <a href="#log-send-hostname">log-send-hostname</a>
+   - <a href="#log-tag">log-tag</a>
    - <a href="#lua-load">lua-load</a>
    - <a href="#lua-load-per-thread">lua-load-per-thread</a>
    - <a href="#lua-prepend-path">lua-prepend-path</a>
@@ -5598,13 +5602,9 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#pp2-never-send-local">pp2-never-send-local</a>
    - <a href="#presetenv">presetenv</a>
    - <a href="#resetenv">resetenv</a>
-   - <a href="#uid">uid</a>
-   - <a href="#ulimit-n">ulimit-n</a>
-   - <a href="#user">user</a>
    - <a href="#set-dumpable">set-dumpable</a>
    - <a href="#set-var">set-var</a>
    - <a href="#setenv">setenv</a>
-   - <a href="#stats">stats</a>
    - <a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>
    - <a href="#ssl-default-bind-ciphersuites">ssl-default-bind-ciphersuites</a>
    - <a href="#ssl-default-bind-curves">ssl-default-bind-curves</a>
@@ -5615,25 +5615,25 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ssl-dh-param-file">ssl-dh-param-file</a>
    - <a href="#ssl-server-verify">ssl-server-verify</a>
    - <a href="#ssl-skip-self-issued-ca">ssl-skip-self-issued-ca</a>
+   - <a href="#stats">stats</a>
+   - <a href="#strict-limits">strict-limits</a>
+   - <a href="#uid">uid</a>
+   - <a href="#ulimit-n">ulimit-n</a>
    - <a href="#unix-bind">unix-bind</a>
    - <a href="#unsetenv">unsetenv</a>
-   - <a href="#51degrees-data-file">51degrees-data-file</a>
-   - <a href="#51degrees-property-name-list">51degrees-property-name-list</a>
-   - <a href="#51degrees-property-separator">51degrees-property-separator</a>
-   - <a href="#51degrees-cache-size">51degrees-cache-size</a>
+   - <a href="#user">user</a>
+   - <a href="#wurfl-cache-size">wurfl-cache-size</a>
    - <a href="#wurfl-data-file">wurfl-data-file</a>
    - <a href="#wurfl-information-list">wurfl-information-list</a>
    - <a href="#wurfl-information-list-separator">wurfl-information-list-separator</a>
-   - <a href="#wurfl-cache-size">wurfl-cache-size</a>
-   - <a href="#strict-limits">strict-limits</a>
 
  * Performance tuning
    - <a href="#busy-polling">busy-polling</a>
    - <a href="#max-spread-checks">max-spread-checks</a>
+   - <a href="#maxcompcpuusage">maxcompcpuusage</a>
+   - <a href="#maxcomprate">maxcomprate</a>
    - <a href="#maxconn">maxconn</a>
    - <a href="#maxconnrate">maxconnrate</a>
-   - <a href="#maxcomprate">maxcomprate</a>
-   - <a href="#maxcompcpuusage">maxcompcpuusage</a>
    - <a href="#maxpipes">maxpipes</a>
    - <a href="#maxsessrate">maxsessrate</a>
    - <a href="#maxsslconn">maxsslconn</a>
@@ -5641,16 +5641,16 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#maxzlibmem">maxzlibmem</a>
    - <a href="#no-memory-trimming">no-memory-trimming</a>
    - <a href="#noepoll">noepoll</a>
-   - <a href="#nokqueue">nokqueue</a>
    - <a href="#noevports">noevports</a>
-   - <a href="#nopoll">nopoll</a>
-   - <a href="#nosplice">nosplice</a>
    - <a href="#nogetaddrinfo">nogetaddrinfo</a>
+   - <a href="#nokqueue">nokqueue</a>
+   - <a href="#nopoll">nopoll</a>
    - <a href="#noreuseport">noreuseport</a>
+   - <a href="#nosplice">nosplice</a>
    - <a href="#profiling.tasks">profiling.tasks</a>
-   - <a href="#spread-checks">spread-checks</a>
    - <a href="#server-state-base">server-state-base</a>
    - <a href="#server-state-file">server-state-file</a>
+   - <a href="#spread-checks">spread-checks</a>
    - <a href="#ssl-engine">ssl-engine</a>
    - <a href="#ssl-mode-async">ssl-mode-async</a>
    - <a href="#tune.buffers.limit">tune.buffers.limit</a>
@@ -5669,9 +5669,9 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.idletimer">tune.idletimer</a>
    - <a href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
    - <a href="#tune.lua.maxmem">tune.lua.maxmem</a>
+   - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
-   - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
    - <a href="#tune.maxrewrite">tune.maxrewrite</a>
@@ -5687,13 +5687,13 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
    - <a href="#tune.sndbuf.server">tune.sndbuf.server</a>
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
+   - <a href="#tune.ssl.capture-cipherlist-size">tune.ssl.capture-cipherlist-size</a>
+   - <a href="#tune.ssl.default-dh-param">tune.ssl.default-dh-param</a>
+   - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
    - <a href="#tune.ssl.keylog">tune.ssl.keylog</a>
    - <a href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
-   - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
    - <a href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
-   - <a href="#tune.ssl.default-dh-param">tune.ssl.default-dh-param</a>
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
-   - <a href="#tune.ssl.capture-cipherlist-size">tune.ssl.capture-cipherlist-size</a>
    - <a href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
    - <a href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
    - <a href="#tune.vars.reqres-max-size">tune.vars.reqres-max-size</a>
@@ -5708,7 +5708,29 @@ The following keywords are supported in the &quot;global&quot; section :
 </pre></div>
 <a class="anchor" id="3.1" name="3.1"></a>
 <h2 id="chapter-3.1" data-target="3.1"><small><a class="small" href="#3.1">3.1.</a></small> Process management and security</h2>
-<div><a class="anchor" name="ca-base"></a><a class="anchor" name="3-ca-base"></a><a class="anchor" name="3.1-ca-base"></a><a class="anchor" name="ca-base (Global parameters)"></a><a class="anchor" name="ca-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ca-base"></a><a href="#3.1-ca-base">ca-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL CA certificates and CRLs from when a
+<div><a class="anchor" name="51degrees-data-file"></a><a class="anchor" name="3-51degrees-data-file"></a><a class="anchor" name="3.1-51degrees-data-file"></a><a class="anchor" name="51degrees-data-file (Global parameters)"></a><a class="anchor" name="51degrees-data-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-data-file"></a><a href="#3.1-51degrees-data-file">51degrees-data-file</a></b> <span style="color: #080">&lt;file path&gt;</span></div><pre class="text">The path of the 51Degrees data file to provide device detection services. The
+file should be unzipped and accessible by HAProxy with relevant permissions.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES.
+</pre><a class="anchor" name="51degrees-property-name-list"></a><a class="anchor" name="3-51degrees-property-name-list"></a><a class="anchor" name="3.1-51degrees-property-name-list"></a><a class="anchor" name="51degrees-property-name-list (Global parameters)"></a><a class="anchor" name="51degrees-property-name-list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-name-list"></a><a href="#3.1-51degrees-property-name-list">51degrees-property-name-list</a></b> <span style="color: #008">[<span style="color: #080">&lt;string&gt;</span> ...]</span></div><pre class="text">A list of 51Degrees property names to be load from the dataset. A full list
+of names is available on the 51Degrees website:
+https://51degrees.com/resources/property-dictionary
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES.
+</pre><a class="anchor" name="51degrees-property-separator"></a><a class="anchor" name="3-51degrees-property-separator"></a><a class="anchor" name="3.1-51degrees-property-separator"></a><a class="anchor" name="51degrees-property-separator (Global parameters)"></a><a class="anchor" name="51degrees-property-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-separator"></a><a href="#3.1-51degrees-property-separator">51degrees-property-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">A char that will be appended to every property value in a response header
+containing 51Degrees results. If not set that will be set as ','.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES.
+</pre><a class="anchor" name="51degrees-cache-size"></a><a class="anchor" name="3-51degrees-cache-size"></a><a class="anchor" name="3.1-51degrees-cache-size"></a><a class="anchor" name="51degrees-cache-size (Global parameters)"></a><a class="anchor" name="51degrees-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-cache-size"></a><a href="#3.1-51degrees-cache-size">51degrees-cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the 51Degrees converter cache to &lt;number&gt; entries. This
+is an LRU cache which reminds previous device detections and their results.
+By default, this cache is disabled.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES.
+</pre><a class="anchor" name="ca-base"></a><a class="anchor" name="3-ca-base"></a><a class="anchor" name="3.1-ca-base"></a><a class="anchor" name="ca-base (Global parameters)"></a><a class="anchor" name="ca-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ca-base"></a><a href="#3.1-ca-base">ca-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL CA certificates and CRLs from when a
 relative path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 directives. Absolute locations specified in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; prevail and ignore &quot;<a href="#ca-base">ca-base</a>&quot;.
@@ -5850,15 +5872,20 @@ configuration files are loaded from different directories. It is essential to
 observe a strict collision-free file naming scheme before adopting relative
 paths. A robust approach could consist in prefixing all files names with
 their respective site name, or in doing so at the directory level.
+</pre><a class="anchor" name="description"></a><a class="anchor" name="3-description"></a><a class="anchor" name="3.1-description"></a><a class="anchor" name="description (Global parameters)"></a><a class="anchor" name="description (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="description"></a><a href="#3.1-description">description</a></b> <span style="color: #080">&lt;text&gt;</span></div><pre class="text">Add a text that describes the instance.
+
+Please note that it is required to escape certain characters (# for example)
+and this text is inserted into a html page so you should avoid using
+&quot;&lt;&quot; and &quot;&gt;&quot; characters.
 </pre><a class="anchor" name="deviceatlas-json-file"></a><a class="anchor" name="3-deviceatlas-json-file"></a><a class="anchor" name="3.1-deviceatlas-json-file"></a><a class="anchor" name="deviceatlas-json-file (Global parameters)"></a><a class="anchor" name="deviceatlas-json-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-json-file"></a><a href="#3.1-deviceatlas-json-file">deviceatlas-json-file</a></b> <span style="color: #080">&lt;path&gt;</span></div><pre class="text">Sets the path of the DeviceAtlas JSON data file to be loaded by the API.
 The path must be a valid JSON data file and accessible by HAProxy process.
 </pre><a class="anchor" name="deviceatlas-log-level"></a><a class="anchor" name="3-deviceatlas-log-level"></a><a class="anchor" name="3.1-deviceatlas-log-level"></a><a class="anchor" name="deviceatlas-log-level (Global parameters)"></a><a class="anchor" name="deviceatlas-log-level (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-log-level"></a><a href="#3.1-deviceatlas-log-level">deviceatlas-log-level</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Sets the level of information returned by the API. This directive is
 optional and set to 0 by default if not set.
-</pre><a class="anchor" name="deviceatlas-separator"></a><a class="anchor" name="3-deviceatlas-separator"></a><a class="anchor" name="3.1-deviceatlas-separator"></a><a class="anchor" name="deviceatlas-separator (Global parameters)"></a><a class="anchor" name="deviceatlas-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-separator"></a><a href="#3.1-deviceatlas-separator">deviceatlas-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">Sets the character separator for the API properties results. This directive
-is optional and set to | by default if not set.
 </pre><a class="anchor" name="deviceatlas-properties-cookie"></a><a class="anchor" name="3-deviceatlas-properties-cookie"></a><a class="anchor" name="3.1-deviceatlas-properties-cookie"></a><a class="anchor" name="deviceatlas-properties-cookie (Global parameters)"></a><a class="anchor" name="deviceatlas-properties-cookie (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-properties-cookie"></a><a href="#3.1-deviceatlas-properties-cookie">deviceatlas-properties-cookie</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Sets the client cookie's name used for the detection if the DeviceAtlas
 Client-side component was used during the request. This directive is optional
 and set to DAPROPS by default if not set.
+</pre><a class="anchor" name="deviceatlas-separator"></a><a class="anchor" name="3-deviceatlas-separator"></a><a class="anchor" name="3.1-deviceatlas-separator"></a><a class="anchor" name="deviceatlas-separator (Global parameters)"></a><a class="anchor" name="deviceatlas-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-separator"></a><a href="#3.1-deviceatlas-separator">deviceatlas-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">Sets the character separator for the API properties results. This directive
+is optional and set to | by default if not set.
 </pre><a class="anchor" name="expose-experimental-directives"></a><a class="anchor" name="3-expose-experimental-directives"></a><a class="anchor" name="3.1-expose-experimental-directives"></a><a class="anchor" name="expose-experimental-directives (Global parameters)"></a><a class="anchor" name="expose-experimental-directives (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="expose-experimental-directives"></a><a href="#3.1-expose-experimental-directives">expose-experimental-directives</a></b></div><pre class="text">This statement must appear before using directives tagged as experimental or
 the config file will be rejected.
 </pre><a class="anchor" name="external-check"></a><a class="anchor" name="3-external-check"></a><a class="anchor" name="3.1-external-check"></a><a class="anchor" name="external-check (Global parameters)"></a><a class="anchor" name="external-check (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="external-check"></a><a href="#3.1-external-check">external-check</a></b></div><pre class="text">Allows the use of an external agent to perform health checks. This is
@@ -5876,22 +5903,7 @@ will only be able to drop these groups if started with superuser privileges.
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Programs%29">Programs</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="group"></a><a class="anchor" name="3-group"></a><a class="anchor" name="3.1-group"></a><a class="anchor" name="group (Global parameters)"></a><a class="anchor" name="group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#3.1-group">group</a></b> <span style="color: #080">&lt;group name&gt;</span></div><pre class="text">Similar to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; but uses the GID of group name &lt;group name&gt; from /etc/group.
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%29">Programs</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
-</pre><a class="anchor" name="hard-stop-after"></a><a class="anchor" name="3-hard-stop-after"></a><a class="anchor" name="3.1-hard-stop-after"></a><a class="anchor" name="hard-stop-after (Global parameters)"></a><a class="anchor" name="hard-stop-after (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="hard-stop-after"></a><a href="#3.1-hard-stop-after">hard-stop-after</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Defines the maximum time allowed to perform a clean soft-stop.
-</pre><div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;  is the maximum time (by default in milliseconds) for which the
-        instance will remain alive when a soft-stop is received via the
-        SIGUSR1 signal.</pre>
-</div>
-<pre class="text">This may be used to ensure that the instance will quit even if connections
-remain opened during a soft-stop (for example with long timeouts for a proxy
-in tcp mode). It applies both in TCP and HTTP mode.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code>global
-  hard-stop-after 30s
-</code></pre>
-</div><a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
+</pre><a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
 &lt;from&gt;, to change it to &lt;to&gt; before sending it to HTTP/1 clients or
 servers. &lt;from&gt; must be in lower case, and &lt;from&gt; and &lt;to&gt; must not differ
 except for their case. It may be repeated if several header names need to be
@@ -5937,7 +5949,30 @@ to be adjusted. Please read the risks associated with using this.
 
 See &quot;<a href="#h1-case-adjust">h1-case-adjust</a>&quot;, &quot;<a href="#option%20h1-case-adjust-bogus-client">option h1-case-adjust-bogus-client</a>&quot; and
 &quot;<a href="#option%20h1-case-adjust-bogus-server">option h1-case-adjust-bogus-server</a>&quot;.
-</pre><a class="anchor" name="insecure-fork-wanted"></a><a class="anchor" name="3-insecure-fork-wanted"></a><a class="anchor" name="3.1-insecure-fork-wanted"></a><a class="anchor" name="insecure-fork-wanted (Global parameters)"></a><a class="anchor" name="insecure-fork-wanted (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="insecure-fork-wanted"></a><a href="#3.1-insecure-fork-wanted">insecure-fork-wanted</a></b></div><pre class="text">By default HAProxy tries hard to prevent any thread and process creation
+</pre><a class="anchor" name="h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="3-h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="3.1-h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="h2-workaround-bogus-websocket-clients (Global parameters)"></a><a class="anchor" name="h2-workaround-bogus-websocket-clients (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h2-workaround-bogus-websocket-clients"></a><a href="#3.1-h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a></b></div><pre class="text">This disables the announcement of the support for h2 websockets to clients.
+This can be use to overcome clients which have issues when implementing the
+relatively fresh RFC8441, such as Firefox 88. To allow clients to
+automatically downgrade to http/1.1 for the websocket tunnel, specify h2
+support on the bind line using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; without an explicit &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword. If
+this statement was previously activated, this can be disabled by prefixing
+the keyword with &quot;no'.
+</pre><a class="anchor" name="hard-stop-after"></a><a class="anchor" name="3-hard-stop-after"></a><a class="anchor" name="3.1-hard-stop-after"></a><a class="anchor" name="hard-stop-after (Global parameters)"></a><a class="anchor" name="hard-stop-after (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="hard-stop-after"></a><a href="#3.1-hard-stop-after">hard-stop-after</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Defines the maximum time allowed to perform a clean soft-stop.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;  is the maximum time (by default in milliseconds) for which the
+        instance will remain alive when a soft-stop is received via the
+        SIGUSR1 signal.</pre>
+</div>
+<pre class="text">This may be used to ensure that the instance will quit even if connections
+remain opened during a soft-stop (for example with long timeouts for a proxy
+in tcp mode). It applies both in TCP and HTTP mode.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>global
+  hard-stop-after 30s
+</code></pre>
+</div><div class="page-header"><b>See also:</b> grace</div>
+<a class="anchor" name="insecure-fork-wanted"></a><a class="anchor" name="3-insecure-fork-wanted"></a><a class="anchor" name="3.1-insecure-fork-wanted"></a><a class="anchor" name="insecure-fork-wanted (Global parameters)"></a><a class="anchor" name="insecure-fork-wanted (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="insecure-fork-wanted"></a><a href="#3.1-insecure-fork-wanted">insecure-fork-wanted</a></b></div><pre class="text">By default HAProxy tries hard to prevent any thread and process creation
 after it starts. Doing so is particularly important when using Lua files of
 uncertain origin, and when experimenting with development versions which may
 still contain bugs whose exploitability is uncertain. And generally speaking
@@ -5978,13 +6013,6 @@ could be replaced with PrivateKey+Certificate. HAProxy will complete the
 chain if a file with IntermediateCA2+IntermediateCA1 is present in
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot; directory. All other certificates with the same issuer
 will share the chain in memory.
-</pre><a class="anchor" name="h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="3-h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="3.1-h2-workaround-bogus-websocket-clients"></a><a class="anchor" name="h2-workaround-bogus-websocket-clients (Global parameters)"></a><a class="anchor" name="h2-workaround-bogus-websocket-clients (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h2-workaround-bogus-websocket-clients"></a><a href="#3.1-h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a></b></div><pre class="text">This disables the announcement of the support for h2 websockets to clients.
-This can be use to overcome clients which have issues when implementing the
-relatively fresh RFC8441, such as Firefox 88. To allow clients to
-automatically downgrade to http/1.1 for the websocket tunnel, specify h2
-support on the bind line using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; without an explicit &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword. If
-this statement was previously activated, this can be disabled by prefixing
-the keyword with &quot;no'.
 </pre><a class="anchor" name="localpeer"></a><a class="anchor" name="3-localpeer"></a><a class="anchor" name="3.1-localpeer"></a><a class="anchor" name="localpeer (Global parameters)"></a><a class="anchor" name="localpeer (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="localpeer"></a><a href="#3.1-localpeer">localpeer</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Sets the local instance's peer name. It will be ignored if the &quot;-L&quot;
 command line argument is specified or if used after &quot;<a href="#peers">peers</a>&quot; section
 definitions. In such cases, a warning message will be emitted during
@@ -6279,6 +6307,24 @@ starting up, before handling traffic, HAProxy will read, load and apply state
 for each server found in the file and available in its current running
 configuration. See also &quot;<a href="#server-state-base">server-state-base</a>&quot; and &quot;show servers state&quot;,
 &quot;<a href="#load-server-state-from-file">load-server-state-from-file</a>&quot; and &quot;<a href="#server-state-file-name">server-state-file-name</a>&quot;
+</pre><a class="anchor" name="set-dumpable"></a><a class="anchor" name="3-set-dumpable"></a><a class="anchor" name="3.1-set-dumpable"></a><a class="anchor" name="set-dumpable (Global parameters)"></a><a class="anchor" name="set-dumpable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-dumpable"></a><a href="#3.1-set-dumpable">set-dumpable</a></b></div><pre class="text">This option is better left disabled by default and enabled only upon a
+developer's request. If it has been enabled, it may still be forcibly
+disabled by prefixing it with the &quot;no&quot; keyword. It has no impact on
+performance nor stability but will try hard to re-enable core dumps that were
+possibly disabled by file size limitations (ulimit -f), core size limitations
+(ulimit -c), or &quot;dumpability&quot; of a process after changing its UID/GID (such
+as /proc/sys/fs/suid_dumpable on Linux). Core dumps might still be limited by
+the current directory's permissions (check what directory the file is started
+from), the chroot directory's permission (it may be needed to temporarily
+disable the chroot directive or to move it to a dedicated writable location),
+or any other system-specific constraint. For example, some Linux flavours are
+notorious for replacing the default core file with a path to an executable
+not even installed on the system (check /proc/sys/kernel/core_pattern). Often,
+simply writing &quot;core&quot;, &quot;core.%p&quot; or &quot;/var/log/core/core.%p&quot; addresses the
+issue. When trying to enable this option waiting for a rare issue to
+re-appear, it's often a good idea to first try to obtain such a dump by
+issuing, for example, &quot;kill -11&quot; to the &quot;haproxy&quot; process and verify that it
+leaves a core where expected when dying.
 </pre><a class="anchor" name="set-var"></a><a class="anchor" name="3-set-var"></a><a class="anchor" name="3.1-set-var"></a><a class="anchor" name="set-var (Global parameters)"></a><a class="anchor" name="set-var (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-var"></a><a href="#3.1-set-var">set-var</a></b> <span style="color: #080">&lt;var-name&gt;</span> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">Sets the process-wide variable '&lt;var-name&gt;' to the result of the evaluation
 of the sample expression &lt;expr&gt;. The variable '&lt;var-name&gt;' may only be a
 process-wide variable (using the 'proc.' prefix). It works exactly like the
@@ -6300,24 +6346,6 @@ will then be readable (and modifiable) from the regular rule sets.
 is overwritten. The changes immediately take effect so that the next line in
 the configuration file sees the new value. See also &quot;<a href="#presetenv">presetenv</a>&quot;, &quot;<a href="#resetenv">resetenv</a>&quot;,
 and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
-</pre><a class="anchor" name="set-dumpable"></a><a class="anchor" name="3-set-dumpable"></a><a class="anchor" name="3.1-set-dumpable"></a><a class="anchor" name="set-dumpable (Global parameters)"></a><a class="anchor" name="set-dumpable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-dumpable"></a><a href="#3.1-set-dumpable">set-dumpable</a></b></div><pre class="text">This option is better left disabled by default and enabled only upon a
-developer's request. If it has been enabled, it may still be forcibly
-disabled by prefixing it with the &quot;no&quot; keyword. It has no impact on
-performance nor stability but will try hard to re-enable core dumps that were
-possibly disabled by file size limitations (ulimit -f), core size limitations
-(ulimit -c), or &quot;dumpability&quot; of a process after changing its UID/GID (such
-as /proc/sys/fs/suid_dumpable on Linux). Core dumps might still be limited by
-the current directory's permissions (check what directory the file is started
-from), the chroot directory's permission (it may be needed to temporarily
-disable the chroot directive or to move it to a dedicated writable location),
-or any other system-specific constraint. For example, some Linux flavours are
-notorious for replacing the default core file with a path to an executable
-not even installed on the system (check /proc/sys/kernel/core_pattern). Often,
-simply writing &quot;core&quot;, &quot;core.%p&quot; or &quot;/var/log/core/core.%p&quot; addresses the
-issue. When trying to enable this option waiting for a rare issue to
-re-appear, it's often a good idea to first try to obtain such a dump by
-issuing, for example, &quot;kill -11&quot; to the &quot;haproxy&quot; process and verify that it
-leaves a core where expected when dying.
 </pre><a class="anchor" name="ssl-default-bind-ciphers"></a><a class="anchor" name="3-ssl-default-bind-ciphers"></a><a class="anchor" name="3.1-ssl-default-bind-ciphers"></a><a class="anchor" name="ssl-default-bind-ciphers (Global parameters)"></a><a class="anchor" name="ssl-default-bind-ciphers (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-ciphers"></a><a href="#3.1-ssl-default-bind-ciphers">ssl-default-bind-ciphers</a></b> <span style="color: #080">&lt;ciphers&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of cipher algorithms (&quot;cipher suite&quot;)
 that are negotiated during the SSL/TLS handshake up to TLSv1.2 for all
@@ -6488,6 +6516,8 @@ issuer for ocsp without the need for '.issuer' file and be able to share it
 with 'issuers-chain-path'. This concerns all certificates without intermediate
 certificates. It's useless for BoringSSL, .issuer is ignored because ocsp
 bits does not need it. Requires at least OpenSSL 1.0.2.
+</pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats maxconn"></a><a class="anchor" name="3-stats maxconn"></a><a class="anchor" name="3.1-stats maxconn"></a><a class="anchor" name="stats maxconn (Global parameters)"></a><a class="anchor" name="stats maxconn (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats maxconn"></a><a href="#3.1-stats%20maxconn">stats maxconn</a></b> <span style="color: #080">&lt;connections&gt;</span></div><pre class="text">By default, the stats socket is limited to 10 concurrent connections. It is
+possible to change this value with &quot;<a href="#stats%20maxconn">stats maxconn</a>&quot;.
 </pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats socket"></a><a class="anchor" name="3-stats socket"></a><a class="anchor" name="3.1-stats socket"></a><a class="anchor" name="stats socket (Global parameters)"></a><a class="anchor" name="stats socket (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats socket"></a><a href="#3.1-stats%20socket">stats socket</a></b> <span style="color: #008">[<span style="color: #080">&lt;address:port&gt;</span>|<span style="color: #080">&lt;path&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Binds a UNIX socket to &lt;path&gt; or a TCPv4/v6 address to &lt;address:port&gt;.
 Connections to this socket will return various statistics outputs and even
 allow some commands to be issued to change some runtime settings. Please
@@ -6500,8 +6530,11 @@ restrict access to some users or their access rights. Please consult
 </pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats timeout"></a><a class="anchor" name="3-stats timeout"></a><a class="anchor" name="3.1-stats timeout"></a><a class="anchor" name="stats timeout (Global parameters)"></a><a class="anchor" name="stats timeout (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats timeout"></a><a href="#3.1-stats%20timeout">stats timeout</a></b> <span style="color: #080">&lt;timeout, in milliseconds&gt;</span></div><pre class="text">The default timeout on the stats socket is set to 10 seconds. It is possible
 to change this value with &quot;<a href="#stats%20timeout">stats timeout</a>&quot;. The value must be passed in
 milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
-</pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats maxconn"></a><a class="anchor" name="3-stats maxconn"></a><a class="anchor" name="3.1-stats maxconn"></a><a class="anchor" name="stats maxconn (Global parameters)"></a><a class="anchor" name="stats maxconn (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats maxconn"></a><a href="#3.1-stats%20maxconn">stats maxconn</a></b> <span style="color: #080">&lt;connections&gt;</span></div><pre class="text">By default, the stats socket is limited to 10 concurrent connections. It is
-possible to change this value with &quot;<a href="#stats%20maxconn">stats maxconn</a>&quot;.
+</pre><a class="anchor" name="strict-limits"></a><a class="anchor" name="3-strict-limits"></a><a class="anchor" name="3.1-strict-limits"></a><a class="anchor" name="strict-limits (Global parameters)"></a><a class="anchor" name="strict-limits (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="strict-limits"></a><a href="#3.1-strict-limits">strict-limits</a></b></div><pre class="text">Makes process fail at startup when a setrlimit fails. HAProxy tries to set the
+best setrlimit according to what has been calculated. If it fails, it will
+emit a warning. This option is here to guarantee an explicit failure of
+HAProxy when those limits fail. It is enabled by default. It may still be
+forcibly disabled by prefixing it with the &quot;no&quot; keyword.
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="3-uid"></a><a class="anchor" name="3.1-uid"></a><a class="anchor" name="uid (Global parameters)"></a><a class="anchor" name="uid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#3.1-uid">uid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process's user ID to &lt;number&gt;. It is recommended that the user ID
 is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with superuser privileges in order to be able to switch to another
@@ -6535,33 +6568,13 @@ This statement is useful in HA configurations where two or more processes or
 servers share the same IP address. By setting a different node-name on all
 nodes, it becomes easy to immediately spot what server is handling the
 traffic.
-</pre><a class="anchor" name="description"></a><a class="anchor" name="3-description"></a><a class="anchor" name="3.1-description"></a><a class="anchor" name="description (Global parameters)"></a><a class="anchor" name="description (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="description"></a><a href="#3.1-description">description</a></b> <span style="color: #080">&lt;text&gt;</span></div><pre class="text">Add a text that describes the instance.
+</pre><a class="anchor" name="wurfl-cache-size"></a><a class="anchor" name="3-wurfl-cache-size"></a><a class="anchor" name="3.1-wurfl-cache-size"></a><a class="anchor" name="wurfl-cache-size (Global parameters)"></a><a class="anchor" name="wurfl-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="wurfl-cache-size"></a><a href="#3.1-wurfl-cache-size">wurfl-cache-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the WURFL Useragent cache size. For faster lookups, already processed user
+agents are kept in a LRU cache :
+- &quot;0&quot;     : no cache is used.
+- &lt;size&gt;  : size of lru cache in elements.
 
-Please note that it is required to escape certain characters (# for example)
-and this text is inserted into a html page so you should avoid using
-&quot;&lt;&quot; and &quot;&gt;&quot; characters.
-</pre><a class="anchor" name="51degrees-data-file"></a><a class="anchor" name="3-51degrees-data-file"></a><a class="anchor" name="3.1-51degrees-data-file"></a><a class="anchor" name="51degrees-data-file (Global parameters)"></a><a class="anchor" name="51degrees-data-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-data-file"></a><a href="#3.1-51degrees-data-file">51degrees-data-file</a></b> <span style="color: #080">&lt;file path&gt;</span></div><pre class="text">The path of the 51Degrees data file to provide device detection services. The
-file should be unzipped and accessible by HAProxy with relevant permissions.
-
-Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
-</pre><a class="anchor" name="51degrees-property-name-list"></a><a class="anchor" name="3-51degrees-property-name-list"></a><a class="anchor" name="3.1-51degrees-property-name-list"></a><a class="anchor" name="51degrees-property-name-list (Global parameters)"></a><a class="anchor" name="51degrees-property-name-list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-name-list"></a><a href="#3.1-51degrees-property-name-list">51degrees-property-name-list</a></b> <span style="color: #008">[<span style="color: #080">&lt;string&gt;</span> ...]</span></div><pre class="text">A list of 51Degrees property names to be load from the dataset. A full list
-of names is available on the 51Degrees website:
-https://51degrees.com/resources/property-dictionary
-
-Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
-</pre><a class="anchor" name="51degrees-property-separator"></a><a class="anchor" name="3-51degrees-property-separator"></a><a class="anchor" name="3.1-51degrees-property-separator"></a><a class="anchor" name="51degrees-property-separator (Global parameters)"></a><a class="anchor" name="51degrees-property-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-separator"></a><a href="#3.1-51degrees-property-separator">51degrees-property-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">A char that will be appended to every property value in a response header
-containing 51Degrees results. If not set that will be set as ','.
-
-Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
-</pre><a class="anchor" name="51degrees-cache-size"></a><a class="anchor" name="3-51degrees-cache-size"></a><a class="anchor" name="3.1-51degrees-cache-size"></a><a class="anchor" name="51degrees-cache-size (Global parameters)"></a><a class="anchor" name="51degrees-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-cache-size"></a><a href="#3.1-51degrees-cache-size">51degrees-cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the 51Degrees converter cache to &lt;number&gt; entries. This
-is an LRU cache which reminds previous device detections and their results.
-By default, this cache is disabled.
-
-Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
+Please note that this option is only available when HAProxy has been compiled
+with USE_WURFL=1.
 </pre><a class="anchor" name="wurfl-data-file"></a><a class="anchor" name="3-wurfl-data-file"></a><a class="anchor" name="3.1-wurfl-data-file"></a><a class="anchor" name="wurfl-data-file (Global parameters)"></a><a class="anchor" name="wurfl-data-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="wurfl-data-file"></a><a href="#3.1-wurfl-data-file">wurfl-data-file</a></b> <span style="color: #080">&lt;file path&gt;</span></div><pre class="text">The path of the WURFL data file to provide device detection services. The
 file should be accessible by HAProxy with relevant permissions.
 
@@ -6608,18 +6621,6 @@ thus before the chroot.
 
 Please note that this option is only available when HAProxy has been compiled
 with USE_WURFL=1.
-</pre><a class="anchor" name="wurfl-cache-size"></a><a class="anchor" name="3-wurfl-cache-size"></a><a class="anchor" name="3.1-wurfl-cache-size"></a><a class="anchor" name="wurfl-cache-size (Global parameters)"></a><a class="anchor" name="wurfl-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="wurfl-cache-size"></a><a href="#3.1-wurfl-cache-size">wurfl-cache-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the WURFL Useragent cache size. For faster lookups, already processed user
-agents are kept in a LRU cache :
-- &quot;0&quot;     : no cache is used.
-- &lt;size&gt;  : size of lru cache in elements.
-
-Please note that this option is only available when HAProxy has been compiled
-with USE_WURFL=1.
-</pre><a class="anchor" name="strict-limits"></a><a class="anchor" name="3-strict-limits"></a><a class="anchor" name="3.1-strict-limits"></a><a class="anchor" name="strict-limits (Global parameters)"></a><a class="anchor" name="strict-limits (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="strict-limits"></a><a href="#3.1-strict-limits">strict-limits</a></b></div><pre class="text">Makes process fail at startup when a setrlimit fails. HAProxy tries to set the
-best setrlimit according to what has been calculated. If it fails, it will
-emit a warning. This option is here to guarantee an explicit failure of
-HAProxy when those limits fail. It is enabled by default. It may still be
-forcibly disabled by prefixing it with the &quot;no&quot; keyword.
 </pre></div>
 <a class="anchor" id="3.2" name="3.2"></a>
 <h2 id="chapter-3.2" data-target="3.2"><small><a class="small" href="#3.2">3.2.</a></small> Performance tuning</h2>
@@ -6652,6 +6653,20 @@ time before starting to be tested, which can be a problem. This parameter is
 used to enforce an upper bound on delay between the first and the last check,
 even if the servers' check intervals are larger. When servers run with
 shorter intervals, their intervals will be respected though.
+</pre><a class="anchor" name="maxcompcpuusage"></a><a class="anchor" name="3-maxcompcpuusage"></a><a class="anchor" name="3.2-maxcompcpuusage"></a><a class="anchor" name="maxcompcpuusage (Global parameters)"></a><a class="anchor" name="maxcompcpuusage (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxcompcpuusage"></a><a href="#3.2-maxcompcpuusage">maxcompcpuusage</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum CPU usage HAProxy can reach before stopping the compression
+for new requests or decreasing the compression level of current requests.
+It works like 'maxcomprate' but measures CPU usage instead of incoming data
+bandwidth. The value is expressed in percent of the CPU used by HAProxy. A
+value of 100 disable the limit. The default value is 100. Setting a lower
+value will prevent the compression work from slowing the whole process down
+and from introducing high latencies.
+</pre><a class="anchor" name="maxcomprate"></a><a class="anchor" name="3-maxcomprate"></a><a class="anchor" name="3.2-maxcomprate"></a><a class="anchor" name="maxcomprate (Global parameters)"></a><a class="anchor" name="maxcomprate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxcomprate"></a><a href="#3.2-maxcomprate">maxcomprate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process input compression rate to &lt;number&gt; kilobytes
+per second. For each session, if the maximum is reached, the compression
+level will be decreased during the session. If the maximum is reached at the
+beginning of a session, the session will not compress at all. If the maximum
+is not reached, the compression level will be increased up to
+tune.comp.maxlevel. A value of zero means there is no limit, this is the
+default value.
 </pre><a class="anchor" name="maxconn"></a><a class="anchor" name="3-maxconn"></a><a class="anchor" name="3.2-maxconn"></a><a class="anchor" name="maxconn (Global parameters)"></a><a class="anchor" name="maxconn (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#3.2-maxconn">maxconn</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of concurrent connections to &lt;number&gt;. It
 is equivalent to the command-line argument &quot;-n&quot;. Proxies will stop accepting
 connections when this limit is reached. The &quot;<a href="#ulimit-n">ulimit-n</a>&quot; parameter is
@@ -6673,21 +6688,6 @@ as there will not necessarily be a fair share between frontends when the
 limit is reached, so it's a good idea to also limit each frontend to some
 value close to its expected share. Also, lowering tune.maxaccept can improve
 fairness.
-</pre><a class="anchor" name="maxcomprate"></a><a class="anchor" name="3-maxcomprate"></a><a class="anchor" name="3.2-maxcomprate"></a><a class="anchor" name="maxcomprate (Global parameters)"></a><a class="anchor" name="maxcomprate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxcomprate"></a><a href="#3.2-maxcomprate">maxcomprate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process input compression rate to &lt;number&gt; kilobytes
-per second. For each session, if the maximum is reached, the compression
-level will be decreased during the session. If the maximum is reached at the
-beginning of a session, the session will not compress at all. If the maximum
-is not reached, the compression level will be increased up to
-tune.comp.maxlevel. A value of zero means there is no limit, this is the
-default value.
-</pre><a class="anchor" name="maxcompcpuusage"></a><a class="anchor" name="3-maxcompcpuusage"></a><a class="anchor" name="3.2-maxcompcpuusage"></a><a class="anchor" name="maxcompcpuusage (Global parameters)"></a><a class="anchor" name="maxcompcpuusage (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxcompcpuusage"></a><a href="#3.2-maxcompcpuusage">maxcompcpuusage</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum CPU usage HAProxy can reach before stopping the compression
-for new requests or decreasing the compression level of current requests.
-It works like 'maxcomprate' but measures CPU usage instead of incoming data
-bandwidth. The value is expressed in percent of the CPU used by HAProxy. In
-case of multiple processes (nbproc &gt; 1), each process manages its individual
-usage. A value of 100 disable the limit. The default value is 100. Setting
-a lower value will prevent the compression work from slowing the whole
-process down and from introducing high latencies.
 </pre><a class="anchor" name="maxpipes"></a><a class="anchor" name="3-maxpipes"></a><a class="anchor" name="3.2-maxpipes"></a><a class="anchor" name="maxpipes (Global parameters)"></a><a class="anchor" name="maxpipes (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxpipes"></a><a href="#3.2-maxpipes">maxpipes</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of pipes to &lt;number&gt;. Currently, pipes
 are only used by kernel-based tcp splicing. Since a pipe contains two file
 descriptors, the &quot;<a href="#ulimit-n">ulimit-n</a>&quot; value will be increased accordingly. The default
@@ -6749,18 +6749,22 @@ not suffer from such a problem.
 </pre><a class="anchor" name="noepoll"></a><a class="anchor" name="3-noepoll"></a><a class="anchor" name="3.2-noepoll"></a><a class="anchor" name="noepoll (Global parameters)"></a><a class="anchor" name="noepoll (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="noepoll"></a><a href="#3.2-noepoll">noepoll</a></b></div><pre class="text">Disables the use of the &quot;epoll&quot; event polling system on Linux. It is
 equivalent to the command-line argument &quot;-de&quot;. The next polling system
 used will generally be &quot;poll&quot;. See also &quot;<a href="#nopoll">nopoll</a>&quot;.
-</pre><a class="anchor" name="nokqueue"></a><a class="anchor" name="3-nokqueue"></a><a class="anchor" name="3.2-nokqueue"></a><a class="anchor" name="nokqueue (Global parameters)"></a><a class="anchor" name="nokqueue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nokqueue"></a><a href="#3.2-nokqueue">nokqueue</a></b></div><pre class="text">Disables the use of the &quot;kqueue&quot; event polling system on BSD. It is
-equivalent to the command-line argument &quot;-dk&quot;. The next polling system
-used will generally be &quot;poll&quot;. See also &quot;<a href="#nopoll">nopoll</a>&quot;.
 </pre><a class="anchor" name="noevports"></a><a class="anchor" name="3-noevports"></a><a class="anchor" name="3.2-noevports"></a><a class="anchor" name="noevports (Global parameters)"></a><a class="anchor" name="noevports (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="noevports"></a><a href="#3.2-noevports">noevports</a></b></div><pre class="text">Disables the use of the event ports event polling system on SunOS systems
 derived from Solaris 10 and later. It is equivalent to the command-line
 argument &quot;-dv&quot;. The next polling system used will generally be &quot;poll&quot;. See
 also &quot;<a href="#nopoll">nopoll</a>&quot;.
+</pre><a class="anchor" name="nogetaddrinfo"></a><a class="anchor" name="3-nogetaddrinfo"></a><a class="anchor" name="3.2-nogetaddrinfo"></a><a class="anchor" name="nogetaddrinfo (Global parameters)"></a><a class="anchor" name="nogetaddrinfo (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nogetaddrinfo"></a><a href="#3.2-nogetaddrinfo">nogetaddrinfo</a></b></div><pre class="text">Disables the use of getaddrinfo(3) for name resolving. It is equivalent to
+the command line argument &quot;-dG&quot;. Deprecated gethostbyname(3) will be used.
+</pre><a class="anchor" name="nokqueue"></a><a class="anchor" name="3-nokqueue"></a><a class="anchor" name="3.2-nokqueue"></a><a class="anchor" name="nokqueue (Global parameters)"></a><a class="anchor" name="nokqueue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nokqueue"></a><a href="#3.2-nokqueue">nokqueue</a></b></div><pre class="text">Disables the use of the &quot;kqueue&quot; event polling system on BSD. It is
+equivalent to the command-line argument &quot;-dk&quot;. The next polling system
+used will generally be &quot;poll&quot;. See also &quot;<a href="#nopoll">nopoll</a>&quot;.
 </pre><a class="anchor" name="nopoll"></a><a class="anchor" name="3-nopoll"></a><a class="anchor" name="3.2-nopoll"></a><a class="anchor" name="nopoll (Global parameters)"></a><a class="anchor" name="nopoll (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nopoll"></a><a href="#3.2-nopoll">nopoll</a></b></div><pre class="text">Disables the use of the &quot;poll&quot; event polling system. It is equivalent to the
 command-line argument &quot;-dp&quot;. The next polling system used will be &quot;select&quot;.
 It should never be needed to disable &quot;poll&quot; since it's available on all
 platforms supported by HAProxy. See also &quot;<a href="#nokqueue">nokqueue</a>&quot;, &quot;<a href="#noepoll">noepoll</a>&quot; and
 &quot;<a href="#noevports">noevports</a>&quot;.
+</pre><a class="anchor" name="noreuseport"></a><a class="anchor" name="3-noreuseport"></a><a class="anchor" name="3.2-noreuseport"></a><a class="anchor" name="noreuseport (Global parameters)"></a><a class="anchor" name="noreuseport (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="noreuseport"></a><a href="#3.2-noreuseport">noreuseport</a></b></div><pre class="text">Disables the use of SO_REUSEPORT - see socket(7). It is equivalent to the
+command line argument &quot;-dR&quot;.
 </pre><a class="anchor" name="nosplice"></a><a class="anchor" name="3-nosplice"></a><a class="anchor" name="3.2-nosplice"></a><a class="anchor" name="nosplice (Global parameters)"></a><a class="anchor" name="nosplice (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nosplice"></a><a href="#3.2-nosplice">nosplice</a></b></div><pre class="text">Disables the use of kernel tcp splicing between sockets on Linux. It is
 equivalent to the command line argument &quot;-dS&quot;. Data will then be copied
 using conventional and more portable recv/send calls. Kernel tcp splicing is
@@ -6769,10 +6773,6 @@ limited to some very recent instances of kernel 2.6. Most versions between
 be used. This option makes it easier to globally disable kernel splicing in
 case of doubt. See also &quot;<a href="#option%20splice-auto">option splice-auto</a>&quot;, &quot;<a href="#option%20splice-request">option splice-request</a>&quot; and
 &quot;<a href="#option%20splice-response">option splice-response</a>&quot;.
-</pre><a class="anchor" name="nogetaddrinfo"></a><a class="anchor" name="3-nogetaddrinfo"></a><a class="anchor" name="3.2-nogetaddrinfo"></a><a class="anchor" name="nogetaddrinfo (Global parameters)"></a><a class="anchor" name="nogetaddrinfo (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nogetaddrinfo"></a><a href="#3.2-nogetaddrinfo">nogetaddrinfo</a></b></div><pre class="text">Disables the use of getaddrinfo(3) for name resolving. It is equivalent to
-the command line argument &quot;-dG&quot;. Deprecated gethostbyname(3) will be used.
-</pre><a class="anchor" name="noreuseport"></a><a class="anchor" name="3-noreuseport"></a><a class="anchor" name="3.2-noreuseport"></a><a class="anchor" name="noreuseport (Global parameters)"></a><a class="anchor" name="noreuseport (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="noreuseport"></a><a href="#3.2-noreuseport">noreuseport</a></b></div><pre class="text">Disables the use of SO_REUSEPORT - see socket(7). It is equivalent to the
-command line argument &quot;-dR&quot;.
 </pre><a class="anchor" name="profiling.memory"></a><a class="anchor" name="3-profiling.memory"></a><a class="anchor" name="3.2-profiling.memory"></a><a class="anchor" name="profiling.memory (Global parameters)"></a><a class="anchor" name="profiling.memory (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="profiling.memory"></a><a href="#3.2-profiling.memory">profiling.memory</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') per-function memory profiling. This will
 keep usage statistics of malloc/calloc/realloc/free calls anywhere in the
 process (including libraries) which will be reported on the CLI using the
@@ -6968,14 +6968,14 @@ memory.
 preventing infinite loops or spending too much time in Lua. This timeout
 counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
 not taken in account. The default timeout is 4s.
-</pre><a class="anchor" name="tune.lua.task-timeout"></a><a class="anchor" name="3-tune.lua.task-timeout"></a><a class="anchor" name="3.2-tune.lua.task-timeout"></a><a class="anchor" name="tune.lua.task-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.task-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.task-timeout"></a><a href="#3.2-tune.lua.task-timeout">tune.lua.task-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Purpose is the same as &quot;<a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>&quot;, but this timeout is
-dedicated to the tasks. By default, this timeout isn't set because a task may
-remain alive during of the lifetime of HAProxy. For example, a task used to
-check servers.
 </pre><a class="anchor" name="tune.lua.service-timeout"></a><a class="anchor" name="3-tune.lua.service-timeout"></a><a class="anchor" name="3.2-tune.lua.service-timeout"></a><a class="anchor" name="tune.lua.service-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.service-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.service-timeout"></a><a href="#3.2-tune.lua.service-timeout">tune.lua.service-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua services. This is useful for
 preventing infinite loops or spending too much time in Lua. This timeout
 counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
 not taken in account. The default timeout is 4s.
+</pre><a class="anchor" name="tune.lua.task-timeout"></a><a class="anchor" name="3-tune.lua.task-timeout"></a><a class="anchor" name="3.2-tune.lua.task-timeout"></a><a class="anchor" name="tune.lua.task-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.task-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.task-timeout"></a><a href="#3.2-tune.lua.task-timeout">tune.lua.task-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Purpose is the same as &quot;<a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>&quot;, but this timeout is
+dedicated to the tasks. By default, this timeout isn't set because a task may
+remain alive during of the lifetime of HAProxy. For example, a task used to
+check servers.
 </pre><a class="anchor" name="tune.maxaccept"></a><a class="anchor" name="3-tune.maxaccept"></a><a class="anchor" name="3.2-tune.maxaccept"></a><a class="anchor" name="tune.maxaccept (Global parameters)"></a><a class="anchor" name="tune.maxaccept (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.maxaccept"></a><a href="#3.2-tune.maxaccept">tune.maxaccept</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of consecutive connections a process may accept in a
 row before switching to other work. In single process mode, higher numbers
 used to give better performance at high connection rates, though this is not
@@ -7088,6 +7088,22 @@ of such a purge, hence the number of CPU-intensive SSL handshakes by ensuring
 that all users keep their session as long as possible. All entries are
 pre-allocated upon startup and are shared between all processes if &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">nbproc<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#nbproc%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#nbproc%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot;
 is greater than 1. Setting this value to 0 disables the SSL session cache.
+</pre><a class="anchor" name="tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="3-tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="3.2-tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="tune.ssl.capture-cipherlist-size (Global parameters)"></a><a class="anchor" name="tune.ssl.capture-cipherlist-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.capture-cipherlist-size"></a><a href="#3.2-tune.ssl.capture-cipherlist-size">tune.ssl.capture-cipherlist-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the buffer used for capturing client hello cipher
+list, extensions list, elliptic curves list and elliptic curve point
+formats. If the value is 0 (default value) the capture is disabled,
+otherwise a buffer is allocated for each SSL/TLS connection.
+</pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global parameters)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
+the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange. The
+final size will try to match the size of the server's RSA (or DSA) key (e.g,
+a 2048 bits temporary DH key for a 2048 bits RSA key), but will not exceed
+this maximum value. Only 1024 or higher values are allowed. Higher values
+will increase the CPU load, and values greater than 1024 bits are not
+supported by Java 7 and earlier clients. This value is not used if static
+Diffie-Hellman parameters are supplied either directly in the certificate
+file or by using the ssl-dh-param-file parameter.
+If there is neither a default-dh-param nor a ssl-dh-param-file defined, and
+if the server's PEM file of a given frontend does not specify its own DH
+parameters, then DHE ciphers will be unavailable for this frontend.
 </pre><a class="anchor" name="tune.ssl.force-private-cache"></a><a class="anchor" name="3-tune.ssl.force-private-cache"></a><a class="anchor" name="3.2-tune.ssl.force-private-cache"></a><a class="anchor" name="tune.ssl.force-private-cache (Global parameters)"></a><a class="anchor" name="tune.ssl.force-private-cache (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.force-private-cache"></a><a href="#3.2-tune.ssl.force-private-cache">tune.ssl.force-private-cache</a></b></div><pre class="text">This option disables SSL session cache sharing between all processes. It
 should normally not be used since it will force many renegotiations due to
 clients hitting a random process. But it may be required on some operating
@@ -7148,22 +7164,10 @@ keeping in mind that SSL/TLS add some overhead. Typical values of 1419 and
 2859 gave good results during tests. Use &quot;strace -e trace=write&quot; to find the
 best value. HAProxy will automatically switch to this setting after an idle
 stream has been detected (see tune.idletimer above).
-</pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global parameters)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
-the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange. The
-final size will try to match the size of the server's RSA (or DSA) key (e.g,
-a 2048 bits temporary DH key for a 2048 bits RSA key), but will not exceed
-this maximum value. Default value if 2048. Only 1024 or higher values are
-allowed. Higher values will increase the CPU load, and values greater than
-1024 bits are not supported by Java 7 and earlier clients. This value is not
-used if static Diffie-Hellman parameters are supplied either directly
-in the certificate file or by using the ssl-dh-param-file parameter.
 </pre><a class="anchor" name="tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="3-tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="3.2-tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="tune.ssl.ssl-ctx-cache-size (Global parameters)"></a><a class="anchor" name="tune.ssl.ssl-ctx-cache-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ssl-ctx-cache-size"></a><a href="#3.2-tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the cache used to store generated certificates to &lt;number&gt;
 entries. This is a LRU cache. Because generating a SSL certificate
 dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
-</pre><a class="anchor" name="tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="3-tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="3.2-tune.ssl.capture-cipherlist-size"></a><a class="anchor" name="tune.ssl.capture-cipherlist-size (Global parameters)"></a><a class="anchor" name="tune.ssl.capture-cipherlist-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.capture-cipherlist-size"></a><a href="#3.2-tune.ssl.capture-cipherlist-size">tune.ssl.capture-cipherlist-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the buffer used for capturing client-hello cipher
-list. If the value is 0 (default value) the capture is disabled, otherwise
-a buffer is allocated for each SSL/TLS connection.
 </pre><a class="anchor" name="tune.vars.global-max-size"></a><a class="anchor" name="3-tune.vars.global-max-size"></a><a class="anchor" name="3.2-tune.vars.global-max-size"></a><a class="anchor" name="tune.vars.global-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.global-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.global-max-size"></a><a href="#3.2-tune.vars.global-max-size">tune.vars.global-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.proc-max-size"></a><a class="anchor" name="3-tune.vars.proc-max-size"></a><a class="anchor" name="3.2-tune.vars.proc-max-size"></a><a class="anchor" name="tune.vars.proc-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.proc-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.proc-max-size"></a><a href="#3.2-tune.vars.proc-max-size">tune.vars.proc-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.reqres-max-size"></a><a class="anchor" name="3-tune.vars.reqres-max-size"></a><a class="anchor" name="3.2-tune.vars.reqres-max-size"></a><a class="anchor" name="tune.vars.reqres-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.reqres-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.reqres-max-size"></a><a href="#3.2-tune.vars.reqres-max-size">tune.vars.reqres-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.sess-max-size"></a><a class="anchor" name="3-tune.vars.sess-max-size"></a><a class="anchor" name="3.2-tune.vars.sess-max-size"></a><a class="anchor" name="tune.vars.sess-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.sess-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.sess-max-size"></a><a href="#3.2-tune.vars.sess-max-size">tune.vars.sess-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.txn-max-size"></a><a class="anchor" name="3-tune.vars.txn-max-size"></a><a class="anchor" name="3.2-tune.vars.txn-max-size"></a><a class="anchor" name="tune.vars.txn-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.txn-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.txn-max-size"></a><a href="#3.2-tune.vars.txn-max-size">tune.vars.txn-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">These five tunes help to manage the maximum amount of memory used by the
 variables system. &quot;global&quot; limits the overall amount of memory available for
 all scopes. &quot;<a href="#proc">proc</a>&quot; limits the memory for the process scope, &quot;sess&quot; limits the
@@ -10844,9 +10848,11 @@ information from the request.
 See RFC 2474, 2597, 3260 and 4594 for more information.
 </pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-uri"></a><a class="anchor" name="4-http-request set-uri"></a><a class="anchor" name="4.2-http-request set-uri"></a><a class="anchor" name="http-request set-uri (Proxies)"></a><a class="anchor" name="http-request set-uri (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-uri"></a><a href="#4.2-http-request%20set-uri">http-request set-uri</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This rewrites the request URI with the result of the evaluation of format
 string &lt;fmt&gt;. The scheme, authority, path and query string are all replaced
-at once. This can be used to rewrite hosts in front of proxies, or to
-perform complex modifications to the URI such as moving parts between the
-path and the query string.
+at once. This can be used to rewrite hosts in front of proxies, or to perform
+complex modifications to the URI such as moving parts between the path and
+the query string. If an absolute URI is set, it will be sent as is to
+HTTP/1.1 servers. If it is not the desired behavior, the host, the path
+and/or the query string should be set separately.
 See also &quot;<a href="#http-request%20set-path">http-request set-path</a>&quot; and &quot;<a href="#http-request%20set-query">http-request set-query</a>&quot;.
 </pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-var"></a><a class="anchor" name="4-http-request set-var"></a><a class="anchor" name="4.2-http-request set-var"></a><a class="anchor" name="http-request set-var (Proxies)"></a><a class="anchor" name="http-request set-var (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-var"></a><a href="#4.2-http-request%20set-var">http-request set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>) <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to set the contents of a variable. The variable is declared
 inline.
@@ -24554,7 +24560,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.19-26 &ndash; Configuration Manual<br>
+							HAProxy 2.4.19-55 &ndash; Configuration Manual<br>
 							<small>, 2022/09/28</small>
 						</div>
 					</div>
