@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7-dev10-21 - Management Guide</title>
+		<title>HAProxy version 2.7-dev10-33 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -600,7 +600,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/11/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -611,7 +611,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7-dev10-21</strong></p>
+							<p><strong>version 2.7-dev10-33</strong></p>
 							<p>
 								<br>
 								
@@ -4092,6 +4092,18 @@ service, in order to monitor them or even blacklist them in a firewall.
   | fgrep 'key=' | cut -d' ' -f2 | cut -d= -f2 &gt; abusers-ip.txt
   ( or | awk '/key/{ print a[split($2,a,&quot;=&quot;)]; }' )
 </code></pre>
+</div><pre class="text">When the stick-table is synchronized to a peers section supporting sharding,
+the shard number will be displayed for each key (otherwise '0' is reported).
+This allows to know which peers will receive this key.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1 | fgrep shard=
+  0x7f23b0c822a8: key=10.0.0.2 use=0 exp=296398 shard=9 gpc0=0
+  0x7f23a063f948: key=10.0.0.6 use=0 exp=296075 shard=12 gpc0=0
+  0x7f23b03920b8: key=10.0.0.8 use=0 exp=296766 shard=1 gpc0=0
+  0x7f23a43c09e8: key=10.0.0.12 use=0 exp=295368 shard=8 gpc0=0
+</code></pre>
 </div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show tasks"></a><a class="anchor" name="9-show tasks"></a><a class="anchor" name="9.3-show tasks"></a><a class="anchor" name="show tasks (Statistics and monitoring)"></a><a class="anchor" name="show tasks (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show tasks"></a><a href="#9.3-show%20tasks">show tasks</a></b></div><pre class="text">Dumps the number of tasks currently in the run queue, with the number of
 occurrences for each function, and their average latency when it's known
 (for pure tasks with task profiling enabled). The dump is a snapshot of the
@@ -4822,7 +4834,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7-dev10-21 &ndash; Management Guide<br>
+							HAProxy 2.7-dev10-33 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
