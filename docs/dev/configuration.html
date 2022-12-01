@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-3 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1174,13 +1174,23 @@
 							
 							<a class="list-group-item" href="#51d.single">51d.single</a>
 							
+							<a class="list-group-item" href="#51degrees-allow-unmatched">51degrees-allow-unmatched</a>
+							
 							<a class="list-group-item" href="#51degrees-cache-size">51degrees-cache-size</a>
 							
 							<a class="list-group-item" href="#51degrees-data-file">51degrees-data-file</a>
 							
+							<a class="list-group-item" href="#51degrees-difference">51degrees-difference</a>
+							
+							<a class="list-group-item" href="#51degrees-drift">51degrees-drift</a>
+							
 							<a class="list-group-item" href="#51degrees-property-name-list">51degrees-property-name-list</a>
 							
 							<a class="list-group-item" href="#51degrees-property-separator">51degrees-property-separator</a>
+							
+							<a class="list-group-item" href="#51degrees-use-performance-graph">51degrees-use-performance-graph</a>
+							
+							<a class="list-group-item" href="#51degrees-use-predictive-graph">51degrees-use-predictive-graph</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-A"><h4>A</h4>
@@ -4111,7 +4121,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0</strong></p>
+							<p><strong>version 2.8-dev0-3</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -5960,10 +5970,15 @@ of them have command-line equivalents.
 The following keywords are supported in the &quot;global&quot; section :
 
  * Process management and security
+   - <a href="#51degrees-allow-unmatched">51degrees-allow-unmatched</a>
    - <a href="#51degrees-cache-size">51degrees-cache-size</a>
    - <a href="#51degrees-data-file">51degrees-data-file</a>
+   - <a href="#51degrees-difference">51degrees-difference</a>
+   - <a href="#51degrees-drift">51degrees-drift</a>
    - <a href="#51degrees-property-name-list">51degrees-property-name-list</a>
    - <a href="#51degrees-property-separator">51degrees-property-separator</a>
+   - <a href="#51degrees-use-performance-graph">51degrees-use-performance-graph</a>
+   - <a href="#51degrees-use-predictive-graph">51degrees-use-predictive-graph</a>
    - <a href="#ca-base">ca-base</a>
    - <a href="#chroot">chroot</a>
    - <a href="#cluster-secret">cluster-secret</a>
@@ -6129,24 +6144,47 @@ The following keywords are supported in the &quot;global&quot; section :
 file should be unzipped and accessible by HAProxy with relevant permissions.
 
 Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
+compiled with USE_51DEGREES or USE_51DEGREES_V4.
 </pre><a class="anchor" name="51degrees-property-name-list"></a><a class="anchor" name="3-51degrees-property-name-list"></a><a class="anchor" name="3.1-51degrees-property-name-list"></a><a class="anchor" name="51degrees-property-name-list (Global parameters)"></a><a class="anchor" name="51degrees-property-name-list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-name-list"></a><a href="#3.1-51degrees-property-name-list">51degrees-property-name-list</a></b> <span style="color: #008">[<span style="color: #080">&lt;string&gt;</span> ...]</span></div><pre class="text">A list of 51Degrees property names to be load from the dataset. A full list
 of names is available on the 51Degrees website:
 https://51degrees.com/resources/property-dictionary
 
 Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
+compiled with USE_51DEGREES or USE_51DEGREES_V4.
 </pre><a class="anchor" name="51degrees-property-separator"></a><a class="anchor" name="3-51degrees-property-separator"></a><a class="anchor" name="3.1-51degrees-property-separator"></a><a class="anchor" name="51degrees-property-separator (Global parameters)"></a><a class="anchor" name="51degrees-property-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-property-separator"></a><a href="#3.1-51degrees-property-separator">51degrees-property-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">A char that will be appended to every property value in a response header
 containing 51Degrees results. If not set that will be set as ','.
 
 Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
+compiled with USE_51DEGREES or USE_51DEGREES_V4.
 </pre><a class="anchor" name="51degrees-cache-size"></a><a class="anchor" name="3-51degrees-cache-size"></a><a class="anchor" name="3.1-51degrees-cache-size"></a><a class="anchor" name="51degrees-cache-size (Global parameters)"></a><a class="anchor" name="51degrees-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-cache-size"></a><a href="#3.1-51degrees-cache-size">51degrees-cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the 51Degrees converter cache to &lt;number&gt; entries. This
 is an LRU cache which reminds previous device detections and their results.
 By default, this cache is disabled.
 
 Please note that this option is only available when HAProxy has been
-compiled with USE_51DEGREES.
+compiled with USE_51DEGREES or USE_51DEGREES_V4.
+</pre><a class="anchor" name="51degrees-use-performance-graph"></a><a class="anchor" name="3-51degrees-use-performance-graph"></a><a class="anchor" name="3.1-51degrees-use-performance-graph"></a><a class="anchor" name="51degrees-use-performance-graph (Global parameters)"></a><a class="anchor" name="51degrees-use-performance-graph (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-use-performance-graph"></a><a href="#3.1-51degrees-use-performance-graph">51degrees-use-performance-graph</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the use of the performance graph in
+the detection process. The default value depends on 51Degrees library.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES_V4.
+</pre><a class="anchor" name="51degrees-use-predictive-graph"></a><a class="anchor" name="3-51degrees-use-predictive-graph"></a><a class="anchor" name="3.1-51degrees-use-predictive-graph"></a><a class="anchor" name="51degrees-use-predictive-graph (Global parameters)"></a><a class="anchor" name="51degrees-use-predictive-graph (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-use-predictive-graph"></a><a href="#3.1-51degrees-use-predictive-graph">51degrees-use-predictive-graph</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the use of the predictive graph in
+the detection process. The default value depends on 51Degrees library.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES_V4.
+</pre><a class="anchor" name="51degrees-drift"></a><a class="anchor" name="3-51degrees-drift"></a><a class="anchor" name="3.1-51degrees-drift"></a><a class="anchor" name="51degrees-drift (Global parameters)"></a><a class="anchor" name="51degrees-drift (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-drift"></a><a href="#3.1-51degrees-drift">51degrees-drift</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the drift value that a detection can allow.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES_V4.
+</pre><a class="anchor" name="51degrees-difference"></a><a class="anchor" name="3-51degrees-difference"></a><a class="anchor" name="3.1-51degrees-difference"></a><a class="anchor" name="51degrees-difference (Global parameters)"></a><a class="anchor" name="51degrees-difference (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-difference"></a><a href="#3.1-51degrees-difference">51degrees-difference</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the difference value that a detection can allow.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES_V4.
+</pre><a class="anchor" name="51degrees-allow-unmatched"></a><a class="anchor" name="3-51degrees-allow-unmatched"></a><a class="anchor" name="3.1-51degrees-allow-unmatched"></a><a class="anchor" name="51degrees-allow-unmatched (Global parameters)"></a><a class="anchor" name="51degrees-allow-unmatched (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="51degrees-allow-unmatched"></a><a href="#3.1-51degrees-allow-unmatched">51degrees-allow-unmatched</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the use of unmatched nodes in the
+detection process. The default value depends on 51Degrees library.
+
+Please note that this option is only available when HAProxy has been
+compiled with USE_51DEGREES_V4.
 </pre><a class="anchor" name="ca-base"></a><a class="anchor" name="3-ca-base"></a><a class="anchor" name="3.1-ca-base"></a><a class="anchor" name="ca-base (Global parameters)"></a><a class="anchor" name="ca-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ca-base"></a><a href="#3.1-ca-base">ca-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL CA certificates and CRLs from when a
 relative path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 directives. Absolute locations specified in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; and
@@ -26260,7 +26298,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-3 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
