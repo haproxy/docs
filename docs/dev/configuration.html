@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-3 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-26 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3925,6 +3925,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
 							
+							<a class="list-group-item" href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
+							
 							<a class="list-group-item" href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
@@ -4110,7 +4112,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4121,7 +4123,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-3</strong></p>
+							<p><strong>version 2.8-dev0-26</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -6108,6 +6110,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
+   - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
    - <a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
    - <a href="#tune.recv_enough">tune.recv_enough</a>
@@ -7758,6 +7761,24 @@ The default value is 100.
 
 See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
 information about QUIC retry.
+</pre><a class="anchor" name="tune.quic.socket-owner"></a><a class="anchor" name="3-tune.quic.socket-owner"></a><a class="anchor" name="3.2-tune.quic.socket-owner"></a><a class="anchor" name="tune.quic.socket-owner (Global parameters)"></a><a class="anchor" name="tune.quic.socket-owner (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.socket-owner"></a><a href="#3.2-tune.quic.socket-owner">tune.quic.socket-owner</a></b> <span style="color: #800">{ listener | connection }</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+Specifies how QUIC connections will use socket for receive/send operations.
+Connections can share listener socket or each connection can allocate its
+own socket.
+
+When default &quot;connection&quot; value is set, a dedicated socket will be allocated
+by every QUIC connections. This option is the preferred one to achieve the
+best performance with a large QUIC traffic. However, this relies on some
+advanced features from the UDP network stack. If your platform is deemed not
+compatible, haproxy will automatically switch to &quot;listener&quot; mode on startup.
+
+The &quot;listener&quot; value indicates that QUIC transfers will occur on the shared
+listener socket. This option can be a good compromise for small traffic as it
+allows to reduce FD consumption. However, performance won't be optimal due to
+a higher CPU usage if listeners are shared accross a lot of threads or a
+large number of QUIC connections can be used simultaneously.
 </pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
 to the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
@@ -9134,12 +9155,13 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                   to receive a FD over the unix socket and uses it as if it
                   was the FD of an accept(). Should be used carefully.
                 - 'quic4@' -&gt; address is resolved as IPv4 and protocol UDP
-                  is used. Note that QUIC connections attached to a
-                  listener will be multiplexed over the listener socket.
-                  With a large traffic this has a noticeable impact on
-                  performance and CPU consumption. To improve this, you
-                  should duplicate QUIC listener instances over several
-                  threads, for example using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; keyword.
+                  is used. Note that to achieve the best performance with a
+                  large traffic you should keep &quot;tune.quic.conn-owner&quot; on
+                  connection. Else QUIC connections will be multiplexed
+                  over the listener socket. Another alternative would be to
+                  duplicate QUIC listener instances over several threads,
+                  for example using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; keyword to at least reduce
+                  thread contention.
                 - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
                   is used. The performance note for QUIC over IPv4 applies
                   as well.
@@ -26298,7 +26320,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-3 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-26 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
