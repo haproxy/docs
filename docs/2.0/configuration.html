@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.0.29-66 - Configuration Manual</title>
+		<title>HAProxy version 2.0.30 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3172,7 +3172,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/10/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3183,9 +3183,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.0.29-66</strong></p>
+							<p><strong>version 2.0.30</strong></p>
 							<p>
-								2022/05/13<br>
+								2022/12/09<br>
 								
 							</p>
 						</div>
@@ -8853,7 +8853,25 @@ A connection pool is involved and configurable with &quot;<a href="#pool-max-con
 Note: connection reuse improves the accuracy of the &quot;server maxconn&quot; setting,
 because almost no new connection will be established while idle connections
 remain available. This is particularly true with the &quot;always&quot; strategy.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;, &quot;server maxconn&quot;</div>
+
+The rules to decide to keep an idle connection opened or to close it after
+processing are also governed by the &quot;<a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>&quot; (default: 20%)
+and &quot;<a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>&quot; (default: 25%). These correspond to the
+percentage of total file descriptors spent in idle connections above which
+haproxy will respectively refrain from keeping a connection opened after a
+response, and actively kill idle connections. Some setups using a very high
+ratio of idle connections, either because of too low a global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, or
+due to a lot of HTTP/2 or HTTP/3 traffic on the frontend (few connections)
+but HTTP/1 connections on the backend, may observe a lower reuse rate because
+too few connections are kept open. It may be desirable in this case to adjust
+such thresholds or simply to increase the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; value.
+
+Similarly, when thread groups are explicitly enabled, it is important to
+understand that idle connections are only usable between threads from a same
+group. As such it may happen that unfair load between groups leads to more
+idle connections being needed, causing a lower reuse rate. The same solution
+may then be applied (increase global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or increase pool ratios).
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;, &quot;server maxconn&quot;, &quot;thread-groups&quot;, &quot;<a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>&quot;, &quot;<a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>&quot;</div>
 <a class="anchor" name="http-send-name-header"></a><a class="anchor" name="4-http-send-name-header"></a><a class="anchor" name="4.2-http-send-name-header"></a><a class="anchor" name="http-send-name-header (Proxies)"></a><a class="anchor" name="http-send-name-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-send-name-header"></a><a href="#4.2-http-send-name-header">http-send-name-header</a></b> <span style="color: #008">[<span style="color: #080">&lt;header&gt;</span>]</span></div><pre class="text">Add the server name to a request. Use the header string given by &lt;header&gt;
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -11622,26 +11640,28 @@ acl badguys src 10.1.0.3 172.16.13.20/28
 reqitarpit . if badguys
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#reqallow">reqallow</a>&quot;, &quot;<a href="#reqdeny">reqdeny</a>&quot;, &quot;<a href="#reqpass">reqpass</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;,  <a href="#6">section 6</a> about HTTP header manipulation, and <a href="#7">section 7</a> about ACLs.</div>
-<a class="anchor" name="retries"></a><a class="anchor" name="4-retries"></a><a class="anchor" name="4.2-retries"></a><a class="anchor" name="retries (Proxies)"></a><a class="anchor" name="retries (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="retries"></a><a href="#4.2-retries">retries</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Set the number of retries to perform on a server after a connection failure
+<a class="anchor" name="retries"></a><a class="anchor" name="4-retries"></a><a class="anchor" name="4.2-retries"></a><a class="anchor" name="retries (Proxies)"></a><a class="anchor" name="retries (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="retries"></a><a href="#4.2-retries">retries</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Set the number of retries to perform on a server after a failure
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
 <div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;value&gt;   is the number of times a connection attempt should be retried on
-          a server when a connection either is refused or times out. The
-          default value is 3.</pre>
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;value&gt;   is the number of times a request or connection attempt should be
+          retried on a server after a failure.</pre>
 </div>
-<pre class="text">It is important to understand that this value applies to the number of
-connection attempts, not full requests. When a connection has effectively
-been established to a server, there will be no more retry.
+<pre class="text">By default, retries apply only to new connection attempts. However, when
+the &quot;<a href="#retry-on">retry-on</a>&quot; directive is used, other conditions might trigger a retry
+(e.g. empty response, undesired status code), and each of them will count
+one attempt, and when the total number attempts reaches the value here, an
+error will be returned.
 
 In order to avoid immediate reconnections to a server which is restarting,
 a turn-around timer of min(&quot;<a href="#timeout%20connect">timeout connect</a>&quot;, one second) is applied before
-a retry occurs.
+a retry occurs on the same server.
 
-When &quot;<a href="#option%20redispatch">option redispatch</a>&quot; is set, the last retry may be performed on another
-server even if a cookie references a different server.
+When &quot;<a href="#option%20redispatch">option redispatch</a>&quot; is set, some retries may be performed on another
+server even if a cookie references a different server. By default this will
+only be the last retry unless an argument is passed to &quot;<a href="#option%20redispatch">option redispatch</a>&quot;.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20redispatch">option redispatch</a>&quot;</div>
 <a class="anchor" name="retry-on"></a><a class="anchor" name="4-retry-on"></a><a class="anchor" name="4.2-retry-on"></a><a class="anchor" name="retry-on (Proxies)"></a><a class="anchor" name="retry-on (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="retry-on"></a><a href="#4.2-retry-on">retry-on</a></b> <span style="color: #008">[list of keywords]</span></div><pre class="text">Specify when to attempt to automatically retry a failed request
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -15801,8 +15821,10 @@ seen as failed.
 </pre><a class="anchor" name="sni"></a><a class="anchor" name="5-sni"></a><a class="anchor" name="5.2-sni"></a><a class="anchor" name="sni (Bind and server options)"></a><a class="anchor" name="sni (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="sni"></a><a href="#5.2-sni">sni</a></b> <span style="color: #080">&lt;expression&gt;</span></div><pre class="text">The &quot;<a href="#sni">sni</a>&quot; parameter evaluates the sample fetch expression, converts it to a
 string and uses the result as the host name sent in the SNI TLS extension to
 the server. A typical use case is to send the SNI received from the client in
-a bridged HTTPS scenario, using the &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot; sample fetch for the
-expression, though alternatives such as req.hdr(host) can also make sense. If
+a bridged TCP/SSL scenario, using the &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot; sample fetch for the
+expression. THIS MUST NOT BE USED FOR HTTPS, where req.hdr(host) should be
+used instead, since SNI in HTTPS must always match the Host field and clients
+are allowed to use different host names over the same connection). If
 &quot;verify required&quot; is set (which is the recommended setting), the resulting
 name will also be matched against the server certificate's names. See the
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">verify<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#verify%20%28Bind%20options%29">Bind options</a></li><li><a href="#verify%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directive for more details. If you want to set a SNI for health
@@ -16382,7 +16404,11 @@ possible to convert the sample to lowercase before matching, like this :
 All ACL-specific criteria imply a default matching method. Most often, these
 criteria are composed by concatenating the name of the original sample fetch
 method and the matching method. For example, &quot;hdr_beg&quot; applies the &quot;beg&quot; match
-to samples retrieved using the &quot;<a href="#hdr">hdr</a>&quot; fetch method. Since all ACL-specific
+to samples retrieved using the &quot;<a href="#hdr">hdr</a>&quot; fetch method. This matching method is only
+usable when the keyword is used alone, without any converter. In case any such
+converter were to be applied after such an ACL keyword, the default matching
+method from the ACL keyword is simply ignored since what will matter for the
+matching is the output type of the last converter. Since all ACL-specific
 criteria rely on a sample fetch method, it is always possible instead to use
 the original sample fetch method and the explicit matching method using &quot;-m&quot;.
 
@@ -16502,13 +16528,24 @@ different forms :
   - suffix match    (-m end) : the patterns are compared with the end of the
     extracted string, and the ACL matches if any of them matches.
 
-  - subdir match    (-m dir) : the patterns are looked up inside the extracted
-    string, delimited with slashes (&quot;/&quot;), and the ACL matches if any of them
-    matches.
+  - subdir match    (-m dir) : the patterns are looked up anywhere inside the
+    extracted string, delimited with slashes (&quot;/&quot;), the beginning or the end
+    of the string. The ACL matches if any of them matches. As such, the string
+    &quot;/images/png/logo/32x32.png&quot;, would match &quot;/images&quot;, &quot;/images/png&quot;,
+    &quot;images/png&quot;, &quot;/png/logo&quot;, &quot;logo/32x32.png&quot; or &quot;32x32.png&quot; but not &quot;png&quot;
+    nor &quot;32x32&quot;.
 
-  - domain match    (-m dom) : the patterns are looked up inside the extracted
-    string, delimited with dots (&quot;.&quot;), and the ACL matches if any of them
-    matches.
+  - domain match    (-m dom) : the patterns are looked up anywhere inside the
+    extracted string, delimited with dots (&quot;.&quot;), colons (&quot;:&quot;), slashes (&quot;/&quot;),
+    question marks (&quot;?&quot;), the beginning or the end of the string. This is made
+    to be used with URLs. Leading and trailing delimiters in the pattern are
+    ignored. The ACL matches if any of them matches. As such, in the example
+    string &quot;http://www1.dc-eu.example.com:80/blah&quot;, the patterns &quot;http&quot;,
+    &quot;www1&quot;, &quot;.www1&quot;, &quot;dc-eu&quot;, &quot;example&quot;, &quot;com&quot;, &quot;80&quot;, &quot;dc-eu.example&quot;,
+    &quot;blah&quot;, &quot;:www1:&quot;, &quot;dc-eu.example:80&quot; would match, but not &quot;eu&quot; nor &quot;dc&quot;.
+    Using it to match domain suffixes for filtering or routing is generally
+    not a good idea, as the routing could easily be fooled by prepending the
+    matching prefix in front of another domain for example.
 
 String matching applies to verbatim strings as they are passed, with the
 exception of the backslash (&quot;\&quot;) which makes it possible to escape some
@@ -18465,6 +18502,16 @@ connection being deciphered by haproxy and not to SSL contents being blindly
 forwarded. See also &quot;ssl_fc_sni_end&quot; and &quot;ssl_fc_sni_reg&quot; below. This
 requires that the SSL library is built with support for TLS extensions
 enabled (check haproxy -vv).
+
+CAUTION! Except under very specific conditions, it is normally not correct to
+use this field as a substitute for the HTTP &quot;Host&quot; header field. For example,
+when forwarding an HTTPS connection to a server, the SNI field must be set
+from the HTTP Host header field using &quot;req.hdr(host)&quot; and not from the front
+SNI value. The reason is that SNI is solely used to select the certificate
+the server side will present, and that clients are then allowed to send
+requests with different Host values as long as they match the names in the
+certificate. As such, &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot; should normally not be used as an argument
+to the &quot;<a href="#sni">sni</a>&quot; server keyword, unless the backend works in TCP mode.
 
 ACL derivatives :
   ssl_fc_sni_end : suffix match
@@ -20832,8 +20879,8 @@ cache foobar
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.0.29-66 &ndash; Configuration Manual<br>
-							<small>, 2022/05/13</small>
+							HAProxy 2.0.30 &ndash; Configuration Manual<br>
+							<small>, 2022/12/09</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
