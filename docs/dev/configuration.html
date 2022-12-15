@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-71 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-82 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2589,6 +2589,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-P"><h4>P</h4>
 								
+							<a class="list-group-item" href="#param">param</a>
+							
 							<a class="list-group-item" href="#parse-resolv-conf">parse-resolv-conf</a>
 							
 							<a class="list-group-item" href="#pass-header">pass-header</a>
@@ -4112,7 +4114,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4123,7 +4125,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-71</strong></p>
+							<p><strong>version 2.8-dev0-82</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -21035,7 +21037,33 @@ indication about its scope. The scopes allowed are:
   &quot;res&quot;  : the variable is shared only during response processing
 This prefix is followed by a name. The separator is a '.'. The name may only
 contain characters 'a-z', 'A-Z', '0-9', '.' and '_'.
-</pre><a class="anchor" name="port_only"></a><a class="anchor" name="7-port_only"></a><a class="anchor" name="7.3.1-port_only"></a><a class="anchor" name="port_only (Using ACLs and fetching samples)"></a><a class="anchor" name="port_only (Converters)"></a><div class="keyword"><b><a class="anchor" name="port_only"></a><a href="#7.3.1-port_only">port_only</a></b></div><pre class="text">Converts a string which contains a Host header value into an integer by
+</pre><a class="anchor" name="param"></a><a class="anchor" name="7-param"></a><a class="anchor" name="7.3.1-param"></a><a class="anchor" name="param (Using ACLs and fetching samples)"></a><a class="anchor" name="param (Converters)"></a><div class="keyword"><b><a class="anchor" name="param"></a><a href="#7.3.1-param">param</a></b>(<span style="color: #080">&lt;name&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;delim&gt;</span>]</span>)</div><pre class="text">This extracts the first occurrence of the parameter &lt;name&gt; in the input string
+where parameters are delimited by &lt;delim&gt;, which defaults to &quot;&amp;&quot;, and the name
+and value of the parameter are separated by a &quot;=&quot;. If there is no &quot;=&quot; and
+value before the end of the parameter segment, it is treated as equivalent to
+a value of an empty string.
+
+This can be useful for extracting parameters from a query string, or possibly
+a x-www-form-urlencoded body. In particular, `query,param(&lt;name&gt;)` can be used
+as an alternative to `urlp(&lt;name&gt;)` which only uses &quot;&amp;&quot; as a delimiter,
+whereas &quot;<a href="#urlp">urlp</a>&quot; also uses &quot;?&quot; and &quot;;&quot;.
+
+Note that this converter doesn't do anything special with url encoded
+characters. If you want to decode the value, you can use the url_dec converter
+on the output. If the name of the parameter in the input might contain encoded
+characters, you'll probably want do normalize the input before calling
+&quot;<a href="#param">param</a>&quot;. This can be done using &quot;<a href="#http-request%20normalize-uri">http-request normalize-uri</a>&quot;, in particular
+the percent-decode-unreserved and percent-to-uppercase options.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>str(a=b&amp;c=d&amp;a=r),param(a)   <span class="comment"># b</span>
+str(a&amp;b=c),param(a)         <span class="comment"># &quot;&quot;</span>
+str(a=&amp;b&amp;c=a),param(b)      <span class="comment"># &quot;&quot;</span>
+str(a=1;b=2;c=4),param(b,;) <span class="comment"># 2</span>
+query,param(redirect_uri),urldec()
+</code></pre>
+</div><a class="anchor" name="port_only"></a><a class="anchor" name="7-port_only"></a><a class="anchor" name="7.3.1-port_only"></a><a class="anchor" name="port_only (Using ACLs and fetching samples)"></a><a class="anchor" name="port_only (Converters)"></a><div class="keyword"><b><a class="anchor" name="port_only"></a><a href="#7.3.1-port_only">port_only</a></b></div><pre class="text">Converts a string which contains a Host header value into an integer by
 returning its port.
 The input must respect the format of the host header value
 (rfc9110#section-7.2). It will support that kind of input: hostname,
@@ -26320,7 +26348,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-71 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-82 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
