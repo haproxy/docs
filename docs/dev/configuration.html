@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-103 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-108 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3909,6 +3909,8 @@
 							
 							<a class="list-group-item" href="#tune.maxrewrite">tune.maxrewrite</a>
 							
+							<a class="list-group-item" href="#tune.memory.hot-size">tune.memory.hot-size</a>
+							
 							<a class="list-group-item" href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
 							
 							<a class="list-group-item" href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
@@ -4114,7 +4116,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4125,7 +4127,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-103</strong></p>
+							<p><strong>version 2.8-dev0-108</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -6103,6 +6105,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
    - <a href="#tune.maxrewrite">tune.maxrewrite</a>
+   - <a href="#tune.memory.hot-size">tune.memory.hot-size</a>
    - <a href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
    - <a href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
    - <a href="#tune.pipesize">tune.pipesize</a>
@@ -7677,6 +7680,20 @@ to already large requests or to POST requests. It is generally wise to set it
 to about 1024. It is automatically readjusted to half of bufsize if it is
 larger than that. This means you don't have to worry about it when changing
 bufsize.
+</pre><a class="anchor" name="tune.memory.hot-size"></a><a class="anchor" name="3-tune.memory.hot-size"></a><a class="anchor" name="3.2-tune.memory.hot-size"></a><a class="anchor" name="tune.memory.hot-size (Global parameters)"></a><a class="anchor" name="tune.memory.hot-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.memory.hot-size"></a><a href="#3.2-tune.memory.hot-size">tune.memory.hot-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the per-thread amount of memory that will be kept hot in the local cache
+and will never be recoverable by other threads. Access to this memory is very
+fast (lockless), and having enough is critical to maintain a good performance
+level under extreme thread contention. The value is expressed in bytes, and
+the default value is configured at build time via CONFIG_HAP_POOL_CACHE_SIZE
+which defaults to 524288 (512 kB). A larger value may increase performance in
+some usage scenarios, especially when performance profiles show that memory
+allocation is stressed a lot. Experience shows that a good value sits between
+once to twice the per CPU core L2 cache size. Too large values will have a
+negative impact on performance by making inefficient use of the L3 caches in
+the CPUs, and will consume larger amounts of memory. It is recommended not to
+change this value, or to proceed in small increments. In order to completely
+disable the per-thread CPU caches, using a very small value could work, but
+it is better to use &quot;-dMno-cache&quot; on the command-line.
 </pre><a class="anchor" name="tune.pattern.cache-size"></a><a class="anchor" name="3-tune.pattern.cache-size"></a><a class="anchor" name="3.2-tune.pattern.cache-size"></a><a class="anchor" name="tune.pattern.cache-size (Global parameters)"></a><a class="anchor" name="tune.pattern.cache-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pattern.cache-size"></a><a href="#3.2-tune.pattern.cache-size">tune.pattern.cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the pattern lookup cache to &lt;number&gt; entries. This is an LRU
 cache which reminds previous lookups and their results. It is used by ACLs
 and maps on slow pattern lookups, namely the ones using the &quot;<a href="#sub">sub</a>&quot;, &quot;reg&quot;,
@@ -26348,7 +26365,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-103 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-108 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
