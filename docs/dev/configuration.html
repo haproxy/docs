@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-108 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-127 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2454,6 +2454,8 @@
 								
 							<a class="list-group-item" href="#observe">observe</a>
 							
+							<a class="list-group-item" href="#ocsp-update">ocsp-update</a>
+							
 							<a class="list-group-item" href="#odd">odd</a>
 							
 							<a class="list-group-item" href="#on-error">on-error</a>
@@ -4116,7 +4118,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4127,7 +4129,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-108</strong></p>
+							<p><strong>version 2.8-dev0-127</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -18368,6 +18370,30 @@ only available starting with OpenSSL 1.0.2. If HTTP/2 is desired on an older
 version of OpenSSL, NPN might still be used as most clients still support it
 at the time of writing this. It is possible to enable both NPN and ALPN
 though it probably doesn't make any sense out of testing.
+</pre><a class="anchor" name="ocsp-update"></a><a class="anchor" name="5-ocsp-update"></a><a class="anchor" name="5.1-ocsp-update"></a><a class="anchor" name="ocsp-update (Bind and server options)"></a><a class="anchor" name="ocsp-update (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update"></a><a href="#5.1-ocsp-update">ocsp-update</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Enable automatic OCSP response update when set to 'on', disable it otherwise.
+Its value defaults to 'off'.
+This option can only be used in a crt-list line so that is applies to only
+one certificate at a time. If a given certificate is used in multiple
+crt-lists with different values of the 'ocsp-update' set, an error will be
+raised.
+When the option is set to 'on', we will try to get an ocsp response whenever
+an ocsp uri is found in the frontend's certificate. The only limitation of
+this mode is that the certificate's issuer will have to be known in order for
+the OCSP certid to be built.
+Each OCSP response will be updated at least once an hour, and even more
+frequently if a given OCSP response has an expire date earlier than this one
+hour limit. A minimum update interval of 5 minutes will still exist in order
+to avoid updating too often responses that have a really short expire time or
+even no 'Next Update' at all. Because of this hard limit, please note that
+when auto update is set to 'on' or 'auto', any OCSP response loaded during
+init will not be updated until at least 5 minutes, even if its expire time
+ends before now+5m. This should not be too much of a hassle since an OCSP
+response must be valid when it gets loaded during init (its expire time must
+be in the future) so it is unlikely that this response expires in such a
+short time after init.
+On the other hand, if a certificate has an OCSP uri specified and no OCSP
+response, setting this option to 'on' for the given certificate will ensure
+that the OCSP response gets fetched automatically right after init.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
@@ -26365,7 +26391,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-108 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-127 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-108 - Management Guide</title>
+		<title>HAProxy version 2.8-dev0-127 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -583,6 +583,12 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-U"><h4>U</h4>
 								
+							<a class="list-group-item" href="#update">update</a>
+							
+							<a class="list-group-item" href="#update ssl">update ssl</a>
+							
+							<a class="list-group-item" href="#update ssl ocsp-response">update ssl ocsp-response</a>
+							
 							<a class="list-group-item" href="#user">user</a>
 							
                                                                 </div> <!-- /letter -->
@@ -600,7 +606,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -611,7 +617,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.8-dev0-108</strong></p>
+							<p><strong>version 2.8-dev0-127</strong></p>
 							<p>
 								<br>
 								
@@ -4338,6 +4344,17 @@ a description of what they correspond to. In this case the trace decoder
 provided by the source will be as accurate as possible based on the
 information available at the trace point. The first level above &quot;quiet&quot; is
 set by default.
+</pre><a class="anchor" name="update"></a><a class="anchor" name="9-update"></a><a class="anchor" name="9.3-update"></a><a class="anchor" name="update (Statistics and monitoring)"></a><a class="anchor" name="update (Unix Socket commands)"></a><a class="anchor" name="update ssl"></a><a class="anchor" name="9-update ssl"></a><a class="anchor" name="9.3-update ssl"></a><a class="anchor" name="update ssl (Statistics and monitoring)"></a><a class="anchor" name="update ssl (Unix Socket commands)"></a><a class="anchor" name="update ssl ocsp-response"></a><a class="anchor" name="9-update ssl ocsp-response"></a><a class="anchor" name="9.3-update ssl ocsp-response"></a><a class="anchor" name="update ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="update ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="update ssl ocsp-response"></a><a href="#9.3-update%20ssl%20ocsp-response">update ssl ocsp-response</a></b> <span style="color: #080">&lt;certfile&gt;</span></div><pre class="text">Create an OCSP request for the specified &lt;certfile&gt; and send it to the OCSP
+responder whose URI should be specified in the &quot;Authority Information Access&quot;
+section of the certificate. Only the first URI is taken into account. The
+OCSP response that we should receive in return is then checked and inserted
+in the local OCSP response tree. This command will only work for certificates
+that already had a stored OCSP response, either because it was provided
+during init or if it was previously set through the &quot;<a href="#set%20ssl%20cert">set ssl cert</a>&quot; or &quot;set
+ssl ocsp-response&quot; commands.
+If the received OCSP response is valid and was properly inserted into the
+local tree, its contents will be displayed on the standard output. The format
+is the same as the one described in &quot;<a href="#show%20ssl%20ocsp-response">show ssl ocsp-response</a>&quot;.
 </pre></div>
 <a class="anchor" id="9.4" name="9.4"></a>
 <h2 id="chapter-9.4" data-target="9.4"><small><a class="small" href="#9.4">9.4.</a></small> Master CLI</h2>
@@ -4834,7 +4851,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-108 &ndash; Management Guide<br>
+							HAProxy 2.8-dev0-127 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
