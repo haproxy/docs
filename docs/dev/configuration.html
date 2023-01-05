@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-188 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-189 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4118,7 +4118,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4129,7 +4129,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-188</strong></p>
+							<p><strong>version 2.8-dev0-189</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -5743,6 +5743,21 @@ file, or could be inherited by a program (See 3.7. Programs):
 * HAPROXY_CFGFILES: list of the configuration files loaded by HAProxy,
   separated by semicolons. Can be useful in the case you specified a
   directory.
+
+* HAPROXY_HTTP_LOG_FMT: contains the value of the default HTTP log format as
+  defined in <a href="#8.2.3">section 8.2.3</a> &quot;HTTP log format&quot;. It can be used to override the
+  default log format without having to copy the whole original definition.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Add the rule that gave the final verdict to the log</span>
+log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=last_rule_file:last_rule_line&quot;
+</code></pre>
+</div><pre class="text">* HAPROXY_HTTPS_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for HTTPS log
+  format as defined in <a href="#8.2.4">section 8.2.4</a> &quot;HTTPS log format&quot;.
+
+* HAPROXY_TCP_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for TCP log format
+  as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
 
 * HAPROXY_MWORKER: In master-worker mode, this variable is set to 1.
 
@@ -24202,11 +24217,14 @@ not be logged if &quot;<a href="#option%20dontlog-normal">option dontlog-normal<
 
 The TCP log format is internally declared as a custom log format based on the
 exact following string, which may also be used as a basis to extend the format
-if required. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
+if required. Additionally the HAPROXY_TCP_LOG_FMT variable can be used instead.
+Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
 
     # strict equivalent of &quot;<a href="#option%20tcplog">option tcplog</a>&quot;
     log-format &quot;%ci:%cp [%t] %ft %b/%s %Tw/%Tc/%Tt %B %ts \
                 %ac/%fc/%bc/%sc/%rc %sq/%bq&quot;
+    # or using the HAPROXY_TCP_LOG_FMT variable
+    log-format &quot;${HAPROXY_TCP_LOG_FMT}&quot;
 
 A few fields may slightly vary depending on some configuration options, those
 are marked with a star ('*') after the field name below.
@@ -24384,7 +24402,8 @@ is specified in the frontend.
 
 The HTTP log format is internally declared as a custom log format based on the
 exact following string, which may also be used as a basis to extend the format
-if required. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
+if required. Additionally the HAPROXY_HTTP_LOG_FMT variable can be used
+instead. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
 
     # strict equivalent of &quot;<a href="#option%20httplog">option httplog</a>&quot;
     log-format &quot;%ci:%cp [%tr] %ft %b/%s %TR/%Tw/%Tc/%Tr/%Ta %ST %B %CC \
@@ -24397,6 +24416,8 @@ this exact string:
     log-format &quot;%{+Q}o %{-Q}ci - - [%trg] %r %ST %B \&quot;\&quot; \&quot;\&quot; %cp \
                 %ms %ft %b %s %TR %Tw %Tc %Tr %Ta %tsc %ac %fc \
                 %bc %sc %rc %sq %bq %CC %CS %hrl %hsl&quot;
+    # or using the HAPROXY_HTTP_LOG_FMT variable
+    log-format &quot;${HAPROXY_HTTP_LOG_FMT}&quot;
 
 Most fields are shared with the TCP log, some being different. A few fields may
 slightly vary depending on some configuration options. Those ones are marked
@@ -24647,13 +24668,16 @@ dontlognull&quot; in the frontend. Successful connections will not be logged if
 
 The HTTPS log format is internally declared as a custom log format based on the
 exact following string, which may also be used as a basis to extend the format
-if required. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
+if required. Additionally the HAPROXY_HTTPS_LOG_FMT variable can be used
+instead. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see how to use this:
 
     # strict equivalent of &quot;<a href="#option%20httpslog">option httpslog</a>&quot;
     log-format &quot;%ci:%cp [%tr] %ft %b/%s %TR/%Tw/%Tc/%Tr/%Ta %ST %B %CC \
                %CS %tsc %ac/%fc/%bc/%sc/%rc %sq/%bq %hr %hs %{+Q}r \
                %[fc_err]/%[ssl_fc_err,hex]/%[ssl_c_err]/\
                %[ssl_c_ca_err]/%[ssl_fc_is_resumed] %[ssl_fc_sni]/%sslv/%sslc&quot;
+    # or using the HAPROXY_HTTPS_LOG_FMT variable
+    log-format &quot;${HAPROXY_HTTPS_LOG_FMT}&quot;
 
 This format is basically the HTTP one (see <a href="#8.2.3">section 8.2.3</a>) with new fields
 appended to it. The new fields (lines 17 and 18) will be detailed here. For the
@@ -26391,7 +26415,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-188 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-189 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
