@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-203 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev0-205 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3985,6 +3985,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
 							
+							<a class="list-group-item" href="#tune.stick-counters">tune.stick-counters</a>
+							
 							<a class="list-group-item" href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
 							
 							<a class="list-group-item" href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
@@ -4136,7 +4138,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4147,7 +4149,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-203</strong></p>
+							<p><strong>version 2.8-dev0-205</strong></p>
 							<p>
 								2022/12/01<br>
 								
@@ -6158,6 +6160,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.sched.low-latency">tune.sched.low-latency</a>
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
    - <a href="#tune.sndbuf.server">tune.sndbuf.server</a>
+   - <a href="#tune.stick-counters">tune.stick-counters</a>
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
    - <a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>
    - tune.ssl.capture-cipherlist-size (deprecated)
@@ -7969,6 +7972,19 @@ tune.idletimer above). See also tune.ssl.hard-maxrecord.
 entries. This is a LRU cache. Because generating a SSL certificate
 dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
+</pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global parameters)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
+connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules. The defaut value is set at build time by the macro
+MAX_SESS_STK_CTR, and defaults to 3. With this setting it is possible to
+change the value and ignore the one passed at build time. Increasing this
+value may be needed when porting complex configurations to haproxy, but users
+are warned against the costs: each entry takes 16 bytes per connection and
+16 bytes per request, all of which need to be allocated and zeroed for all
+requests even when not used. As such a value of 10 will inflate the memory
+consumption per request by 320 bytes and will cause this memory to be erased
+for each request, which does have measurable CPU impacts. Conversely, when
+no &quot;track-sc&quot; rules are used, the value may be lowered (0 being valid to
+entirely disable stick-counters).
 </pre><a class="anchor" name="tune.vars.global-max-size"></a><a class="anchor" name="3-tune.vars.global-max-size"></a><a class="anchor" name="3.2-tune.vars.global-max-size"></a><a class="anchor" name="tune.vars.global-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.global-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.global-max-size"></a><a href="#3.2-tune.vars.global-max-size">tune.vars.global-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.proc-max-size"></a><a class="anchor" name="3-tune.vars.proc-max-size"></a><a class="anchor" name="3.2-tune.vars.proc-max-size"></a><a class="anchor" name="tune.vars.proc-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.proc-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.proc-max-size"></a><a href="#3.2-tune.vars.proc-max-size">tune.vars.proc-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.reqres-max-size"></a><a class="anchor" name="3-tune.vars.reqres-max-size"></a><a class="anchor" name="3.2-tune.vars.reqres-max-size"></a><a class="anchor" name="tune.vars.reqres-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.reqres-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.reqres-max-size"></a><a href="#3.2-tune.vars.reqres-max-size">tune.vars.reqres-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.sess-max-size"></a><a class="anchor" name="3-tune.vars.sess-max-size"></a><a class="anchor" name="3.2-tune.vars.sess-max-size"></a><a class="anchor" name="tune.vars.sess-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.sess-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.sess-max-size"></a><a href="#3.2-tune.vars.sess-max-size">tune.vars.sess-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.txn-max-size"></a><a class="anchor" name="3-tune.vars.txn-max-size"></a><a class="anchor" name="3.2-tune.vars.txn-max-size"></a><a class="anchor" name="tune.vars.txn-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.txn-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.txn-max-size"></a><a href="#3.2-tune.vars.txn-max-size">tune.vars.txn-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">These five tunes help to manage the maximum amount of memory used by the
 variables system. &quot;global&quot; limits the overall amount of memory available for
 all scopes. &quot;<a href="#proc">proc</a>&quot; limits the memory for the process scope, &quot;sess&quot; limits the
@@ -11932,9 +11948,10 @@ No further &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="
 See also &quot;<a href="#http-request%20return">http-request return</a>&quot; and &quot;<a href="#http-request%20silent-drop">http-request silent-drop</a>&quot;.
 </pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request track-sc0"></a><a class="anchor" name="4-http-request track-sc0"></a><a class="anchor" name="4.2-http-request track-sc0"></a><a class="anchor" name="http-request track-sc0 (Proxies)"></a><a class="anchor" name="http-request track-sc0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request track-sc0"></a><a href="#4.2-http-request%20track-sc0">http-request track-sc0</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request track-sc1"></a><a class="anchor" name="4-http-request track-sc1"></a><a class="anchor" name="4.2-http-request track-sc1"></a><a class="anchor" name="http-request track-sc1 (Proxies)"></a><a class="anchor" name="http-request track-sc1 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request track-sc1"></a><a href="#4.2-http-request%20track-sc1">http-request track-sc1</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request track-sc2"></a><a class="anchor" name="4-http-request track-sc2"></a><a class="anchor" name="4.2-http-request track-sc2"></a><a class="anchor" name="http-request track-sc2 (Proxies)"></a><a class="anchor" name="http-request track-sc2 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request track-sc2"></a><a href="#4.2-http-request%20track-sc2">http-request track-sc2</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This enables tracking of sticky counters from current request. These rules do
 not stop evaluation and do not change default action. The number of counters
-that may be simultaneously tracked by the same connection is set in
-MAX_SESS_STKCTR at build time (reported in haproxy -vv) which defaults to 3,
-so the track-sc number is between 0 and (MAX_SESS_STKCTR-1). The first
+that may be simultaneously tracked by the same connection is set by the
+global &quot;<a href="#tune.stick-counters">tune.stick-counters</a>&quot; setting, which defaults to MAX_SESS_STKCTR if
+set at build time (it is reported in haproxy -vv) and which defaults to 3,
+so the track-sc number is between 0 and (tune.stick-counters-1). The first
 &quot;track-sc0&quot; rule executed enables tracking of the counters of the specified
 table as the first set. The first &quot;track-sc1&quot; rule executed enables tracking
 of the counters of the specified table as the second set. The first
@@ -22059,12 +22076,12 @@ TCP/IP addresses and ports, as well as elements from stick-tables related to
 the incoming connection. For retrieving a value from a sticky counters, the
 counter number can be explicitly set as 0, 1, or 2 using the pre-defined
 &quot;sc0_&quot;, &quot;sc1_&quot;, or &quot;sc2_&quot; prefix. These three pre-defined prefixes can only be
-used if MAX_SESS_STKCTR value does not exceed 3, otherwise the counter number
-can be specified as the first integer argument when using the &quot;sc_&quot; prefix.
-Starting from &quot;sc_0&quot; to &quot;sc_N&quot; where N is (MAX_SESS_STKCTR-1). An optional
-table may be specified with the &quot;sc*&quot; form, in which case the currently
-tracked key will be looked up into this alternate table instead of the table
-currently being tracked.
+used if the global &quot;<a href="#tune.stick-counters">tune.stick-counters</a>&quot; value does not exceed 3, otherwise the
+counter number can be specified as the first integer argument when using the
+&quot;sc_&quot; prefix starting from &quot;sc_0&quot; to &quot;sc_N&quot; where N is (tune.stick-counters-1).
+An optional table may be specified with the &quot;sc*&quot; form, in which case the
+currently tracked key will be looked up into this alternate table instead of
+the table currently being tracked.
 </pre><a class="anchor" name="bc_dst"></a><a class="anchor" name="7-bc_dst"></a><a class="anchor" name="7.3.3-bc_dst"></a><a class="anchor" name="bc_dst (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_dst"></a><a href="#7.3.3-bc_dst">bc_dst</a></b> : ip</div><pre class="text">This is the destination ip address of the connection on the server side,
 which is the server address HAProxy connected to. It is of type IP and works
 on both IPv4 and IPv6 tables.  On IPv6 tables, IPv4 address is mapped to its
@@ -26458,7 +26475,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-203 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev0-205 &ndash; Configuration Manual<br>
 							<small>, 2022/12/01</small>
 						</div>
 					</div>
