@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev0-205 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1895,6 +1895,8 @@
 							<a class="list-group-item" href="#http-request replace-value">http-request replace-value</a>
 							
 							<a class="list-group-item" href="#http-request return">http-request return</a>
+							
+							<a class="list-group-item" href="#http-request sc-add-gpc">http-request sc-add-gpc</a>
 							
 							<a class="list-group-item" href="#http-request sc-inc-gpc">http-request sc-inc-gpc</a>
 							
@@ -4138,7 +4140,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4149,9 +4151,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev0-205</strong></p>
+							<p><strong>version 2.8-dev1</strong></p>
 							<p>
-								2022/12/01<br>
+								2023/01/07<br>
 								
 							</p>
 						</div>
@@ -11588,7 +11590,28 @@ http-request return status 403 content-type text/plain    \
     lf-string &quot;Access denied. IP %[src] is blacklisted.&quot;  \
     if { src -f /etc/haproxy/blacklist.lst }
 </code></pre>
-</div><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request sc-inc-gpc"></a><a class="anchor" name="4-http-request sc-inc-gpc"></a><a class="anchor" name="4.2-http-request sc-inc-gpc"></a><a class="anchor" name="http-request sc-inc-gpc (Proxies)"></a><a class="anchor" name="http-request sc-inc-gpc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request sc-inc-gpc"></a><a href="#4.2-http-request%20sc-inc-gpc">http-request sc-inc-gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This actions increments the General Purpose Counter at the index &lt;idx&gt;
+</div><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request sc-add-gpc"></a><a class="anchor" name="4-http-request sc-add-gpc"></a><a class="anchor" name="4.2-http-request sc-add-gpc"></a><a class="anchor" name="http-request sc-add-gpc (Proxies)"></a><a class="anchor" name="http-request sc-add-gpc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request sc-add-gpc"></a><a href="#4.2-http-request%20sc-add-gpc">http-request sc-add-gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
+                                           <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action increments the General Purpose Counter at the index &lt;idx&gt; of the
+array associated to the sticky counter designated by &lt;sc-id&gt; by the value of
+either integer &lt;int&gt; or the integer evaluation of expression &lt;expr&gt;. Integers
+and expressions are limited to unsigned 32-bit values. If an error occurs,
+this action silently fails and the actions evaluation continues. &lt;idx&gt; is an
+integer between 0 and 99 and &lt;sc-id&gt; is an integer between 0 and 2. It also
+silently fails if the there is no GPC stored at this index. The entry in the
+table is refreshed even if the value is zero. The 'gpc_rate' is automatically
+adjusted to reflect the average growth rate of the gpc value.
+
+This action applies only to the 'gpc' and 'gpc_rate' array data_types (and
+not to the legacy 'gpc0', 'gpc1', 'gpc0_rate' nor 'gpc1_rate' data_types).
+There is no equivalent function for legacy data types, but if the value is
+always 1, please see 'sc-inc-gpc()', 'sc-inc-gpc0()' and 'sc-inc-gpc1()'.
+There is no way to decrement the value either, but it is possible to store
+exact values in a General Purpose Tag using 'sc-set-gpt()' instead.
+
+The main use of this action is to count scores or total volumes (e.g.
+estimated danger per source IP reported by the server or a WAF, total
+uploaded bytes, etc).
+</pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request sc-inc-gpc"></a><a class="anchor" name="4-http-request sc-inc-gpc"></a><a class="anchor" name="4.2-http-request sc-inc-gpc"></a><a class="anchor" name="http-request sc-inc-gpc (Proxies)"></a><a class="anchor" name="http-request sc-inc-gpc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request sc-inc-gpc"></a><a href="#4.2-http-request%20sc-inc-gpc">http-request sc-inc-gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This actions increments the General Purpose Counter at the index &lt;idx&gt;
 of the array associated to the sticky counter designated by &lt;sc-id&gt;.
 If an error occurs, this action silently fails and the actions evaluation
 continues. &lt;idx&gt; is an integer between 0 and 99 and &lt;sc-id&gt; is an integer
@@ -26475,8 +26498,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev0-205 &ndash; Configuration Manual<br>
-							<small>, 2022/12/01</small>
+							HAProxy 2.8-dev1 &ndash; Configuration Manual<br>
+							<small>, 2023/01/07</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
