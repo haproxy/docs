@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev1-55 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev1-60 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4140,7 +4140,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4151,7 +4151,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev1-55</strong></p>
+							<p><strong>version 2.8-dev1-60</strong></p>
 							<p>
 								2023/01/07<br>
 								
@@ -26423,8 +26423,11 @@ this address but in some cases the user may force it to a different one.
 This is the case for &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement where the default is syslog over UDP
 but we could force to use syslog over TCP.
 
-Those prefixes were designed for internal purpose and users should
-instead use aliases of the next section &quot;11.5.3 Protocol prefixes&quot;.
+Those prefixes were designed for internal purpose and users should instead use
+use aliases of the next section &quot;11.3 Protocol prefixes&quot;. However these can
+sometimes be convenient, for example in combination with inherited sockets
+known by their file descriptor number, in which case the address family is &quot;fd&quot;
+and the socket type must be declared.
 
 If users need one those prefixes to perform what they expect because
 they can not configure the same using the protocol prefixes, they should
@@ -26435,10 +26438,29 @@ report this to the maintainers.
 
 'dgram+&lt;family&gt;@&lt;address&gt;'  forces socket type and transport method
                             to &quot;datagram&quot;.
+
+'quic+&lt;family&gt;@&lt;address&gt;'   forces socket type to &quot;datagram&quot; and transport
+                            method to &quot;stream&quot;.
 </pre></div>
 <a class="anchor" id="11" name="11"></a>
 <div class="page-header"><h1 id="chapter-11" data-target="11"><small><a class="small" href="#11">11.</a></small> 3 Protocol prefixes</h1>
-</div><div><pre class="text">'tcp@&lt;address&gt;[:port1[-port2]]' following &lt;address&gt; is considered as an IPv4
+</div><div><pre class="text">'quic4@&lt;address&gt;[:port1[-port2]]' following &lt;address&gt; is always considered as
+                                  an IPv4 address but socket type is forced to
+                                  &quot;datagram&quot; and the transport method is forced
+                                  to &quot;stream&quot;. Depending on the statement using
+                                  this address, a UDP port or port range can or
+                                  must be specified. It is equivalent to
+                                  &quot;quic+ipv4@&quot;.
+
+'quic6@&lt;address&gt;[:port1[-port2]]' following &lt;address&gt; is always considered as
+                                  an IPv6 address but socket type is forced to
+                                  &quot;datagram&quot; and the transport method is forced
+                                  to &quot;stream&quot;. Depending on the statement using
+                                  this address, a UDP port or port range can or
+                                  must be specified. It is equivalent to
+                                  &quot;quic+ipv6@&quot;.
+
+'tcp@&lt;address&gt;[:port1[-port2]]' following &lt;address&gt; is considered as an IPv4
                                 or IPv6 address depending of the syntax but
                                 socket type and transport method is forced to
                                 &quot;stream&quot;. Depending on the statement using
@@ -26473,14 +26495,14 @@ report this to the maintainers.
                                  method is forced to &quot;datagram&quot;. Depending on
                                  the statement using this address, a port or
                                  port range can or must be specified.
-                                 It is considered as an alias of 'stream+ipv4@'.
+                                 It is considered as an alias of 'dgram+ipv4@'.
 
 'udp6@&lt;address&gt;[:port1[-port2]]' following &lt;address&gt; is always considered as
                                  an IPv6 address but socket type and transport
                                  method is forced to &quot;datagram&quot;. Depending on
                                  the statement using this address, a port or
                                  port range can or must be specified.
-                                 It is considered as an alias of 'stream+ipv4@'.
+                                 It is considered as an alias of 'dgram+ipv4@'.
 
 'uxdg@&lt;path&gt;'    following string is considered as a unix socket &lt;path&gt; but
                  transport method is forced to &quot;datagram&quot;. It is considered as
@@ -26498,7 +26520,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev1-55 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev1-60 &ndash; Configuration Manual<br>
 							<small>, 2023/01/07</small>
 						</div>
 					</div>
