@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7.1 - Management Guide</title>
+		<title>HAProxy version 2.7.1-75 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -600,7 +600,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2022/12/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -611,7 +611,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.7.1</strong></p>
+							<p><strong>version 2.7.1-75</strong></p>
 							<p>
 								<br>
 								
@@ -3824,8 +3824,13 @@ pretty printer may be helpful. Example :
 
 $ echo &quot;show stat json&quot; | socat /var/run/haproxy.sock stdio | \
   python -m json.tool
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ca-file"></a><a class="anchor" name="9-show ssl ca-file"></a><a class="anchor" name="9.3-show ssl ca-file"></a><a class="anchor" name="show ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ca-file"></a><a href="#9.3-show%20ssl%20ca-file">show ssl ca-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;cafile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CA files used by HAProxy and their respective certificate
-counts. If a filename is prefixed by an asterisk, it is a transaction which
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ca-file"></a><a class="anchor" name="9-show ssl ca-file"></a><a class="anchor" name="9.3-show ssl ca-file"></a><a class="anchor" name="show ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ca-file"></a><a href="#9.3-show%20ssl%20ca-file">show ssl ca-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;cafile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CA files loaded into the process and their respective
+certificate counts. The certificates are not used by any frontend or backend
+until their status is &quot;Used&quot;.
+A &quot;@system-ca&quot; entry can appear in the list, it is loaded by the httpclient
+by default. It contains the list of trusted CA of your system returned by
+OpenSSL.
+If a filename is prefixed by an asterisk, it is a transaction which
 is not committed yet. If a &lt;cafile&gt; is specified without &lt;index&gt;, it will show
 the status of the CA file (&quot;Used&quot;/&quot;Unused&quot;) followed by details about all the
 certificates contained in the CA file. The details displayed for every
@@ -3867,7 +3872,8 @@ Certificate <span class="comment">#2:</span>
 Serial: 587A1CE5ED855040A0C82BF255FF300ADB7C8136
 [...]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl cert"></a><a class="anchor" name="9-show ssl cert"></a><a class="anchor" name="9.3-show ssl cert"></a><a class="anchor" name="show ssl cert (Statistics and monitoring)"></a><a class="anchor" name="show ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl cert"></a><a href="#9.3-show%20ssl%20cert">show ssl cert</a></b> <span style="color: #008">[<span style="color: #080">&lt;filename&gt;</span>]</span></div><pre class="text">Display the list of certificates used on frontends and backends.
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl cert"></a><a class="anchor" name="9-show ssl cert"></a><a class="anchor" name="9.3-show ssl cert"></a><a class="anchor" name="show ssl cert (Statistics and monitoring)"></a><a class="anchor" name="show ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl cert"></a><a href="#9.3-show%20ssl%20cert">show ssl cert</a></b> <span style="color: #008">[<span style="color: #080">&lt;filename&gt;</span>]</span></div><pre class="text">Display the list of certificates loaded into the process. They are not used
+by any frontend or backend until their status is &quot;Used&quot;.
 If a filename is prefixed by an asterisk, it is a transaction which is not
 committed yet. If a filename is specified, it will show details about the
 certificate. This command can be useful to check if a certificate was well
@@ -3889,6 +3895,7 @@ test.local.pem
 
 $ echo &quot;@1 show ssl cert test.local.pem&quot; | socat /var/run/haproxy.master -
 Filename: test.local.pem
+Status: Used
 Serial: 03ECC19BA54B25E85ABA46EE561B9A10D26F
 notBefore: Sep 13 21:20:24 2019 GMT
 notAfter: Dec 12 21:20:24 2019 GMT
@@ -3900,9 +3907,11 @@ SHA1 FingerPrint: 417A11CAE25F607B24F638B4A8AEE51D1E211477
 
 $ echo &quot;@1 show ssl cert *test.local.pem&quot; | socat /var/run/haproxy.master -
 Filename: *test.local.pem
+Status: Unused
 [...]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl crl-file"></a><a class="anchor" name="9-show ssl crl-file"></a><a class="anchor" name="9.3-show ssl crl-file"></a><a class="anchor" name="show ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl crl-file"></a><a href="#9.3-show%20ssl%20crl-file">show ssl crl-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;crlfile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CRL files used by HAProxy.
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl crl-file"></a><a class="anchor" name="9-show ssl crl-file"></a><a class="anchor" name="9.3-show ssl crl-file"></a><a class="anchor" name="show ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl crl-file"></a><a href="#9.3-show%20ssl%20crl-file">show ssl crl-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;crlfile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CRL files loaded into the process. They are not used
+by any frontend or backend until their status is &quot;Used&quot;.
 If a filename is prefixed by an asterisk, it is a transaction which is not
 committed yet. If a &lt;crlfile&gt; is specified without &lt;index&gt;, it will show the
 status of the CRL file (&quot;Used&quot;/&quot;Unused&quot;) followed by details about all the
@@ -4834,7 +4843,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7.1 &ndash; Management Guide<br>
+							HAProxy 2.7.1-75 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
