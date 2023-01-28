@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev2-19 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev2-41 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2339,6 +2339,8 @@
 							
 							<a class="list-group-item" href="#no option dontlognull">no option dontlognull</a>
 							
+							<a class="list-group-item" href="#no option forwarded">no option forwarded</a>
+							
 							<a class="list-group-item" href="#no option get-values">no option get-values</a>
 							
 							<a class="list-group-item" href="#no option h1-case-adjust-bogus-client">no option h1-case-adjust-bogus-client</a>
@@ -2509,6 +2511,8 @@
 							<a class="list-group-item" href="#option dontlognull">option dontlognull</a>
 							
 							<a class="list-group-item" href="#option external-check">option external-check</a>
+							
+							<a class="list-group-item" href="#option forwarded">option forwarded</a>
 							
 							<a class="list-group-item" href="#option forwardfor">option forwardfor</a>
 							
@@ -2858,6 +2862,14 @@
 							<a class="list-group-item" href="#retries">retries</a>
 							
 							<a class="list-group-item" href="#retry-on">retry-on</a>
+							
+							<a class="list-group-item" href="#rfc7239_field">rfc7239_field</a>
+							
+							<a class="list-group-item" href="#rfc7239_is_valid">rfc7239_is_valid</a>
+							
+							<a class="list-group-item" href="#rfc7239_n2nn">rfc7239_n2nn</a>
+							
+							<a class="list-group-item" href="#rfc7239_n2np">rfc7239_n2np</a>
 							
 							<a class="list-group-item" href="#ring">ring</a>
 							
@@ -4144,7 +4156,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4155,7 +4167,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev2-19</strong></p>
+							<p><strong>version 2.8-dev2-41</strong></p>
 							<p>
 								2023/01/22<br>
 								
@@ -8746,7 +8758,7 @@ anonymous ones.
 <tr><td ><a href="#4-http-request">http-request</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-response">http-response</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-reuse">http-reuse</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-http-send-name-header">http-send-name-header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-http-send-name-header">http-send-name-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-id">id</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8771,6 +8783,7 @@ anonymous ones.
 <tr><td ><a href="#4-option%20dontlog-normal"><span class="pull-right"><span>(*)</span></span>option dontlog-normal</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-buffer-request"><span class="pull-right"><span>(*)</span></span>option http-buffer-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8779,8 +8792,8 @@ anonymous ones.
 <tr><td ><a href="#4-option%20http-no-delay"><span class="pull-right"><span>(*)</span></span>option http-no-delay</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-pretend-keepalive"><span class="pull-right"><span>(*)</span></span>option http-pretend-keepalive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-restrict-req-hdr-names">option http-restrict-req-hdr-names</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20http-server-close"><span class="pull-right"><span>(*)</span></span>option http-server-close</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20http-server-close"><span class="pull-right"><span>(*)</span></span>option http-server-close</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-use-proxy-header"><span class="pull-right"><span>(*)</span></span>option http-use-proxy-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20httpchk">option httpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20httpclose"><span class="pull-right"><span>(*)</span></span>option httpclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8800,13 +8813,13 @@ anonymous ones.
 <tr><td ><a href="#4-option%20prefer-last-server"><span class="pull-right"><span>(*)</span></span>option prefer-last-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redispatch"><span class="pull-right"><span>(*)</span></span>option redispatch</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redis-check">option redis-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20smtpchk">option smtpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20smtpchk">option smtpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20socket-stats"><span class="pull-right"><span>(*)</span></span>option socket-stats</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20splice-auto"><span class="pull-right"><span>(*)</span></span>option splice-auto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20splice-request"><span class="pull-right"><span>(*)</span></span>option splice-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20splice-response"><span class="pull-right"><span>(*)</span></span>option splice-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8821,8 +8834,8 @@ anonymous ones.
 <tr><td ><a href="#4-persist%20rdp-cookie">persist rdp-cookie</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-rate-limit%20sessions">rate-limit sessions</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-redirect">redirect</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-retries">retries</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-retries">retries</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-retry-on">retry-on</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-server">server</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-server-state-file-name">server-state-file-name</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8842,8 +8855,8 @@ anonymous ones.
 <tr><td ><a href="#4-stats%20show-desc">stats show-desc</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-legends">stats show-legends</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20match">stick match</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20on">stick on</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20store-request">stick store-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -8863,8 +8876,8 @@ anonymous ones.
 <tr><td ><a href="#4-tcp-request%20inspect-delay">tcp-request inspect-delay</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20session">tcp-request session</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-tcp-response%20content">tcp-response content</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-response%20inspect-delay">tcp-response inspect-delay</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-response%20inspect-delay">tcp-response inspect-delay</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20check">timeout check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20client">timeout client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20client-fin">timeout client-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -13236,6 +13249,140 @@ would not be logged.
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#option%20http-ignore-probes">http-ignore-probes</a>&quot;, &quot;<a href="#monitor-uri">monitor-uri</a>&quot;, and <a href="#8">section 8</a> about logging.</div>
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option forwarded"></a><a class="anchor" name="4-option forwarded"></a><a class="anchor" name="4.2-option forwarded"></a><a class="anchor" name="option forwarded (Proxies)"></a><a class="anchor" name="option forwarded (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option forwarded"></a><a href="#4.2-option%20forwarded">option forwarded</a></b> <span style="color: #008">[ proto ]</span>
+                 <span style="color: #008">[ host | host-expr <span style="color: #080">&lt;host_expr&gt;</span> ]</span>
+                 <span style="color: #008">[ by | by-expr <span style="color: #080">&lt;by_expr&gt;</span> ]</span> <span style="color: #008">[ by_port | by_port-expr <span style="color: #080">&lt;by_port_expr&gt;</span>]</span>
+                 <span style="color: #008">[ for | for-expr <span style="color: #080">&lt;for_expr&gt;</span> ]</span> <span style="color: #008">[ for_port | for_port-expr <span style="color: #080">&lt;for_port_expr&gt;</span>]</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option forwarded"></a><a class="anchor" name="4-no option forwarded"></a><a class="anchor" name="4.2-no option forwarded"></a><a class="anchor" name="no option forwarded (Proxies)"></a><a class="anchor" name="no option forwarded (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option forwarded"></a><a href="#4.2-no%20option%20forwarded">no option forwarded</a></b></div><pre class="text">Enable insertion of the rfc 7239 forwarded header in requests sent to servers
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;host_expr&gt;     optional argument to specify a custom sample expression
+                those result will be used as 'host' parameter value
+
+&lt;by_expr&gt;       optional argument to specicy a custom sample expression
+                those result will be used as 'by' parameter nodename value
+
+&lt;for_expr&gt;      optional argument to specicy a custom sample expression
+                those result will be used as 'for' parameter nodename value
+
+&lt;by_port_expr&gt;  optional argument to specicy a custom sample expression
+                those result will be used as 'by' parameter nodeport value
+
+&lt;for_port_expr&gt; optional argument to specicy a custom sample expression
+                those result will be used as 'for' parameter nodeport value</pre>
+</div>
+<pre class="text">Since HAProxy works in reverse-proxy mode, servers are loosing some request
+context (request origin: client ip address, protocol used...)
+
+A common way to address this limitation is to use the well known
+x-forward-for and x-forward-* friends to expose some of this context to the
+underlying servers/applications.
+While this use to work and is widely deployed, it is not officially supported
+by the IETF and can be the root of some interoperability as well as security
+issues.
+
+To solve this, a new HTTP extension has been described by the IETF:
+forwarded header (RFC7239).
+More information here: https://www.rfc-editor.org/rfc/rfc7239.html
+
+The use of this single header allow to convey multiple informations
+within the same header, and most importantly, fixes the proxy chaining
+issue. (the rfc allows for multiple chained proxies to append their own
+values to an already existing header).
+
+This option may be specified in defaults, listen or backend section, but it
+will be ignored for frontend sections.
+
+Setting option forwarded without arguments results in using default implicit
+behavior.
+Default behavior enables proto parameter and injects original client ip.
+
+The equivalent explicit/manual configuration would be:
+      option forwarded proto for
+
+The keyword 'by' is used to enable 'by' parameter (&quot;nodename&quot;) in
+forwarded header. It allows to embed request proxy information.
+'by' value will be set to proxy ip (destination address)
+If not available (ie: UNIX listener), 'by' will be set to
+&quot;unknown&quot;.
+
+The keyword 'by-expr' is used to enable 'by' parameter (&quot;nodename&quot;) in
+forwarded header. It allows to embed request proxy information.
+'by' value will be set to the result of the sample expression
+&lt;by_expr&gt;, if valid, otherwise it will be set to &quot;unknown&quot;.
+
+The keyword 'for' is used to enable 'for' parameter (&quot;nodename&quot;) in
+forwarded header. It allows to embed request client information.
+'for' value will be set to client ip (source address)
+If not available (ie: UNIX listener), 'for' will be set to
+&quot;unknown&quot;.
+
+The keyword 'for-expr' is used to enable 'for' parameter (&quot;nodename&quot;) in
+forwarded header. It allows to embed request client information.
+'for' value will be set to the result of the sample expression
+&lt;for_expr&gt;, if valid, otherwise it will be set to &quot;unknown&quot;.
+
+The keyword 'by_port' is used to provide &quot;nodeport&quot; info to
+'by' parameter. 'by_port' requires 'by' or 'by-expr' to be set or
+it will be ignored.
+&quot;nodeport&quot; will be set to proxy (destination) port if available,
+otherwise it will be ignored.
+
+The keyword 'by_port-expr' is used to provide &quot;nodeport&quot; info to
+'by' parameter. 'by_port-expr' requires 'by' or 'by-expr' to be set or
+it will be ignored.
+&quot;nodeport&quot; will be set to the result of the sample expression
+&lt;by_port_expr&gt;, if valid, otherwise it will be ignored.
+
+The keyword 'for_port' is used to provide &quot;nodeport&quot; info to
+'for' parameter. 'for_port' requires 'for' or 'for-expr' to be set or
+it will be ignored.
+&quot;nodeport&quot; will be set to client (source) port if available,
+otherwise it will be ignored.
+
+The keyword 'for_port-expr' is used to provide &quot;nodeport&quot; info to
+'for' parameter. 'for_port-expr' requires 'for' or 'for-expr' to be set or
+it will be ignored.
+&quot;nodeport&quot; will be set to the result of the sample expression
+&lt;for_port_expr&gt;, if valid, otherwise it will be ignored.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Those servers want the ip address and protocol of the client request</span>
+<span class="comment"># Resulting header would look like this:</span>
+<span class="comment">#   forwarded: proto=http;for=127.0.0.1</span>
+backend www_default
+    mode http
+    option forwarded
+    <span class="comment">#equivalent to: option forwarded proto for</span>
+
+<span class="comment"># Those servers want the requested host and hashed client ip address</span>
+<span class="comment"># as well as client source port (you should use seed for xxh32 if ensuring</span>
+<span class="comment"># ip privacy is a concern)</span>
+<span class="comment"># Resulting header would look like this:</span>
+<span class="comment">#   forwarded: host=&quot;haproxy.org&quot;;for=&quot;_000000007F2F367E:60138&quot;</span>
+backend www_host
+    mode http
+    option forwarded host for-expr src,xxh32,hex for_port
+
+<span class="comment"># Those servers want custom data in host, for and by parameters</span>
+<span class="comment"># Resulting header would look like this:</span>
+<span class="comment">#   forwarded: host=&quot;host.com&quot;;by=_haproxy;for=&quot;[::1]:10&quot;</span>
+backend www_custom
+    mode http
+    option forwarded host-expr str(host.com) by-expr str(_haproxy) for for_port-expr int(10)
+
+<span class="comment"># Those servers want random 'for' obfuscated identifiers for request</span>
+<span class="comment"># tracing purposes while protecting sensitive IP information</span>
+<span class="comment"># Resulting header would look like this:</span>
+<span class="comment">#   forwarded: for=_000000002B1F4D63</span>
+backend www_for_hide
+    mode http
+    option forwarded for-expr rand,hex
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20forwardfor">option forwardfor</a>&quot;, &quot;<a href="#option%20originalto">option originalto</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option forwardfor"></a><a class="anchor" name="4-option forwardfor"></a><a class="anchor" name="4.2-option forwardfor"></a><a class="anchor" name="option forwardfor (Proxies)"></a><a class="anchor" name="option forwardfor (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option forwardfor"></a><a href="#4.2-option%20forwardfor">option forwardfor</a></b> <span style="color: #008">[ except <span style="color: #080">&lt;network&gt;</span> ]</span> <span style="color: #008">[ header <span style="color: #080">&lt;name&gt;</span> ]</span> <span style="color: #008">[ if-none ]</span></div><pre class="text">Enable insertion of the X-Forwarded-For header to requests sent to servers
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -14344,7 +14491,7 @@ in a specific instance by prepending the &quot;no&quot; keyword before it.
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option spop-check"></a><a class="anchor" name="4-option spop-check"></a><a class="anchor" name="4.2-option spop-check"></a><a class="anchor" name="option spop-check (Proxies)"></a><a class="anchor" name="option spop-check (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option spop-check"></a><a href="#4.2-option%20spop-check">option spop-check</a></b></div><pre class="text">Use SPOP health checks for server testing
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
-<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
 <div class="separator">
 <span class="label label-info">Arguments :</span> none
@@ -20504,6 +20651,72 @@ frontend http-in
   http-request set-header X-51D-DeviceTypeMobileTablet \
     %[req.fhdr(User-Agent),51d.single(DeviceType,IsMobile,IsTablet)]
 </code></pre>
+</div><a class="anchor" name="rfc7239_is_valid"></a><a class="anchor" name="7-rfc7239_is_valid"></a><a class="anchor" name="7.3.1-rfc7239_is_valid"></a><a class="anchor" name="rfc7239_is_valid (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_is_valid (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_is_valid"></a><a href="#7.3.1-rfc7239_is_valid">rfc7239_is_valid</a></b></div><pre class="text">Returns true if input header is RFC 7239 compliant header value and false
+otherwise.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>acl valid req.hdr(forwarded),rfc7239_is_valid
+<span class="comment">#input: &quot;for=127.0.0.1;proto=http&quot;</span>
+<span class="comment">#  output: TRUE</span>
+<span class="comment">#input: &quot;proto=custom&quot;</span>
+<span class="comment">#  output: FALSE</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_field"></a><a class="anchor" name="7-rfc7239_field"></a><a class="anchor" name="7.3.1-rfc7239_field"></a><a class="anchor" name="rfc7239_field (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_field (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_field"></a><a href="#7.3.1-rfc7239_field">rfc7239_field</a></b>(<span style="color: #080">&lt;field&gt;</span>)</div><pre class="text">Extracts a single field/parameter from RFC 7239 compliant header value input.
+
+Supported fields are:
+  - proto: either 'http' or 'https'
+  - host: http compliant host
+  - for: RFC7239 node
+  - by: RFC7239 node
+
+More info here:
+  https://www.rfc-editor.org/rfc/rfc7239.html#section-6
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract host field from forwarded header and store it in req.fhost var</span>
+http-request set-var(req.fhost) req.hdr(forwarded),rfc7239_field(host)
+<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;&quot;</span>
+<span class="comment">#  output: &quot;haproxy.org:80&quot;</span>
+
+<span class="comment"># extract for field from forwarded header and store it in req.ffor var</span>
+http-request set-var(req.ffor) req.hdr(forwarded),rfc7239_field(for)
+<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;;for=\&quot;127.0.0.1:9999\&quot;&quot;</span>
+<span class="comment">#  output: &quot;127.0.0.1:9999&quot;</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_n2nn"></a><a class="anchor" name="7-rfc7239_n2nn"></a><a class="anchor" name="7.3.1-rfc7239_n2nn"></a><a class="anchor" name="rfc7239_n2nn (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2nn (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2nn"></a><a href="#7.3.1-rfc7239_n2nn">rfc7239_n2nn</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
+into its corresponding nodename final form:
+  - ipv4 address
+  - ipv6 address
+  - 'unknown'
+  - '_obfs' identifier
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract 'for' field from forwarded header, extract nodename from</span>
+<span class="comment"># resulting node identifier and store the result in req.fnn</span>
+http-request set-var(req.fnn) req.hdr(forwarded),rfc7239_field(for),rfc7239_n2nn
+<span class="comment">#input: &quot;for=\&quot;127.0.0.1:9999\&quot;&quot;</span>
+<span class="comment">#  output: 127.0.0.1</span>
+<span class="comment">#input: &quot;for=\&quot;_name:_port\&quot;&quot;</span>
+<span class="comment">#  output: &quot;_name&quot;</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_n2np"></a><a class="anchor" name="7-rfc7239_n2np"></a><a class="anchor" name="7.3.1-rfc7239_n2np"></a><a class="anchor" name="rfc7239_n2np (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2np (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2np"></a><a href="#7.3.1-rfc7239_n2np">rfc7239_n2np</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
+into its corresponding nodeport final form:
+  - unsigned integer
+  - '_obfs' identifier
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract 'by' field from forwarded header, extract node port from</span>
+<span class="comment"># resulting node identifier and store the result in req.fnp</span>
+http-request set-var(req.fnp) req.hdr(forwarded),rfc7239_field(by),rfc7239_n2np
+<span class="comment">#input: &quot;by=\&quot;127.0.0.1:9999\&quot;&quot;</span>
+<span class="comment">#  output: 9999</span>
+<span class="comment">#input: &quot;by=\&quot;_name:_port\&quot;&quot;</span>
+<span class="comment">#  output: &quot;_port&quot;</span>
+</code></pre>
 </div><a class="anchor" name="add"></a><a class="anchor" name="7-add"></a><a class="anchor" name="7.3.1-add"></a><a class="anchor" name="add (Using ACLs and fetching samples)"></a><a class="anchor" name="add (Converters)"></a><div class="keyword"><b><a class="anchor" name="add"></a><a href="#7.3.1-add">add</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Adds &lt;value&gt; to the input value of type signed integer, and returns the
 result as a signed integer. &lt;value&gt; can be a numeric value or a variable
 name. The name of the variable starts with an indication about its scope. The
@@ -26544,7 +26757,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev2-19 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev2-41 &ndash; Configuration Manual<br>
 							<small>, 2023/01/22</small>
 						</div>
 					</div>
