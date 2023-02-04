@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev2-54 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev2-97 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3965,6 +3965,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
 							
+							<a class="list-group-item" href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
+							
 							<a class="list-group-item" href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
 							
 							<a class="list-group-item" href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
@@ -4156,7 +4158,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/01/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4167,7 +4169,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev2-54</strong></p>
+							<p><strong>version 2.8-dev2-97</strong></p>
 							<p>
 								2023/01/22<br>
 								
@@ -6169,6 +6171,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+   - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
@@ -7827,6 +7830,13 @@ will be authorized to open. This determines the number of concurrent client
 requests.
 
 The default value is 100.
+</pre><a class="anchor" name="tune.quic.max-frame-loss"></a><a class="anchor" name="3-tune.quic.max-frame-loss"></a><a class="anchor" name="3.2-tune.quic.max-frame-loss"></a><a class="anchor" name="tune.quic.max-frame-loss (Global parameters)"></a><a class="anchor" name="tune.quic.max-frame-loss (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.max-frame-loss"></a><a href="#3.2-tune.quic.max-frame-loss">tune.quic.max-frame-loss</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
+change without deprecation in the future.
+
+Sets the limit for which a single QUIC frame can be marked as lost. If
+exceeded, the connection is considered as failing and is closed immediately.
+
+The default value is 10.
 </pre><a class="anchor" name="tune.quic.retry-threshold"></a><a class="anchor" name="3-tune.quic.retry-threshold"></a><a class="anchor" name="3.2-tune.quic.retry-threshold"></a><a class="anchor" name="tune.quic.retry-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.retry-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.retry-threshold"></a><a href="#3.2-tune.quic.retry-threshold">tune.quic.retry-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
 change without deprecation in the future.
 
@@ -18765,32 +18775,50 @@ packets, so this option should only be enabled once well tested. This option
 is only supported on TCPv4/TCPv6 sockets and ignored by other ones. You may
 need to build HAProxy with USE_TFO=1 if your libc doesn't define
 TCP_FASTOPEN.
-</pre><a class="anchor" name="thread"></a><a class="anchor" name="5-thread"></a><a class="anchor" name="5.1-thread"></a><a class="anchor" name="thread (Bind and server options)"></a><a class="anchor" name="thread (Bind options)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#5.1-thread">thread</a></b> <span style="color: #008">[<span style="color: #080">&lt;thread-group&gt;</span>/]</span><span style="color: #080">&lt;thread-set&gt;</span></div><pre class="text">This restricts the list of threads on which this listener is allowed to run.
+</pre><a class="anchor" name="thread"></a><a class="anchor" name="5-thread"></a><a class="anchor" name="5.1-thread"></a><a class="anchor" name="thread (Bind and server options)"></a><a class="anchor" name="thread (Bind options)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#5.1-thread">thread</a></b> <span style="color: #008">[<span style="color: #080">&lt;thread-group&gt;</span>/]</span><span style="color: #080">&lt;thread-set&gt;</span><span style="color: #008">[,...]</span></div><pre class="text">This restricts the list of threads on which this listener is allowed to run.
 It does not enforce any of them but eliminates those which do not match. It
 limits the threads allowed to process incoming connections for this listener.
 
 There are two numbering schemes. By default, thread numbers are absolute in
 the process, comprised between 1 and the value specified in global.nbthread.
-When thread groups are enabled, the number of a single desired thread group
-(starting at 1) may be specified before a slash ('/') before the thread
-range. In this case, the thread numbers in the range are relative to the
-thread group instead, and start at 1 for each thread group. Absolute and
-relative thread numbers may be used interchangeably but they must not be
-mixed on a single &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line, as those not set will be resolved at the end
-of the parsing.
+It is also possible to designate a thread number using its relative number
+inside its thread group, by specifying the thread group number first, then a
+slash ('/') and the relative thread number(s). In this case thread numbers
+also start at 1 and end at 32 or 64 depending on the platform. When absolute
+thread numbers are specified, they will be automatically translated to
+relative numbers once thread groups are known. Usually, absolute numbers are
+preferred for simple configurations, and relative ones are preferred for
+complex configurations where CPU arrangement matters for performance.
 
-For the unlikely case where several ranges are needed, this directive may be
-repeated. It is not permitted to use different thread groups even when using
-multiple directives. The &lt;thread-set&gt; specification must use the format:
+After the optional thread group number, the &quot;thread-set&quot; specification must
+use the following format:
 
-    all | odd | even | number[-[number]]
+    &quot;all&quot; | &quot;<a href="#odd">odd</a>&quot; | &quot;<a href="#even">even</a>&quot; | [number][-[number]]
 
-Ranges can be partially defined. The higher bound can be omitted. In such a
-case, it is replaced by the corresponding maximum value. The main purpose is
-to have multiple bind lines sharing the same IP:port but not the same thread
-in a listener, so that the system can distribute the incoming connections
-into multiple queues, bypassing haproxy's internal queue load balancing.
-Currently Linux 3.9 and above is known for supporting this.
+As their names imply, &quot;all&quot; validates all threads within the set (either all
+of the group's when a group is specified, or all of the process' threads),
+&quot;<a href="#odd">odd</a>&quot; validates all odd-numberred threads (every other thread starting at 1)
+either for the process or the group, and &quot;<a href="#even">even</a>&quot; validates all even-numberred
+threads (every other thread starting at 2). If instead thread number ranges
+are used, then all threads included in the range from the first to the last
+thread number are validated. The numbers are either relative to the group
+or absolute dependeing on the presence of a thread group number. If the first
+thread number is omitted, &quot;1&quot; is used, representing either the first thread
+of the group or the first thread of the process. If the last thread number is
+omitted, either the last thread number of the group (32 or 64) is used, or
+the last thread number of the process (global.nbthread).
+
+These ranges may be repeated and delimited by a comma, so that non-contiguous
+thread sets can be specified, and the group, if present, must be specified
+again for each new range. Note that it is not permitted to mix group-relative
+and absolute specifications because the whole &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line must use either
+an absolute notation or a relative one, as those not set will be resolved at
+the end of the parsing.
+
+The main purpose is to have multiple bind lines sharing the same IP:port but
+not the same thread in a listener, so that the system can distribute the
+incoming connections into multiple queues, bypassing haproxy's internal queue
+load balancing. Currently Linux 3.9 and above is known for supporting this.
 </pre><a class="anchor" name="tls-ticket-keys"></a><a class="anchor" name="5-tls-ticket-keys"></a><a class="anchor" name="5.1-tls-ticket-keys"></a><a class="anchor" name="tls-ticket-keys (Bind and server options)"></a><a class="anchor" name="tls-ticket-keys (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-ticket-keys"></a><a href="#5.1-tls-ticket-keys">tls-ticket-keys</a></b> <span style="color: #080">&lt;keyfile&gt;</span></div><pre class="text">Sets the TLS ticket keys file to load the keys from. The keys need to be 48
 or 80 bytes long, depending if aes128 or aes256 is used, encoded with base64
 with one line per key (ex. openssl rand 80 | openssl base64 -A | xargs echo).
@@ -26757,7 +26785,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev2-54 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev2-97 &ndash; Configuration Manual<br>
 							<small>, 2023/01/22</small>
 						</div>
 					</div>
