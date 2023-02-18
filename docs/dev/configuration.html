@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev4-2 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev4-30 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3909,6 +3909,8 @@
 							
 							<a class="list-group-item" href="#tune.fail-alloc">tune.fail-alloc</a>
 							
+							<a class="list-group-item" href="#tune.fast-forward">tune.fast-forward</a>
+							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
 							
 							<a class="list-group-item" href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
@@ -4158,7 +4160,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4169,7 +4171,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev4-2</strong></p>
+							<p><strong>version 2.8-dev4-30</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -6145,6 +6147,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.buffers.reserve">tune.buffers.reserve</a>
    - <a href="#tune.bufsize">tune.bufsize</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
+   - <a href="#tune.fast-forward">tune.fast-forward</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
    - <a href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
@@ -7612,6 +7615,14 @@ this value. The default value is 1.
 percentage of chances an allocation attempt fails. Must be between 0 (no
 failure) and 100 (no success). This is useful to debug and make sure memory
 failures are handled gracefully.
+</pre><a class="anchor" name="tune.fast-forward"></a><a class="anchor" name="3-tune.fast-forward"></a><a class="anchor" name="3.2-tune.fast-forward"></a><a class="anchor" name="tune.fast-forward (Global parameters)"></a><a class="anchor" name="tune.fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.fast-forward"></a><a href="#3.2-tune.fast-forward">tune.fast-forward</a></b> <span style="color: #800">{ on | off }</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enabled ('on') or disables ('off') the data fast-forwarding. It is a
+mechanism to optimize the data forwarding by passing data directly from a
+side to the other one without waking the stream up. Thanks to this directive,
+it is possible to disable this optimization. Note it also disable any kernel
+tcp splicing. This command is not meant for regular use, it will generally
+only be suggested by developers along complex debugging sessions. For this
+reason it is internally marked as experimental, meaning that
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on a line before this directive.
 </pre><a class="anchor" name="tune.fd.edge-triggered"></a><a class="anchor" name="3-tune.fd.edge-triggered"></a><a class="anchor" name="3.2-tune.fd.edge-triggered"></a><a class="anchor" name="tune.fd.edge-triggered (Global parameters)"></a><a class="anchor" name="tune.fd.edge-triggered (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.fd.edge-triggered"></a><a href="#3.2-tune.fd.edge-triggered">tune.fd.edge-triggered</a></b> <span style="color: #800">{ on | off }</span>  <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enables ('on') or disables ('off') the edge-triggered polling mode for FDs
 that support it. This is currently only support with epoll. It may noticeably
 reduce the number of epoll_ctl() calls and slightly improve performance in
@@ -26785,7 +26796,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev4-2 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev4-30 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
