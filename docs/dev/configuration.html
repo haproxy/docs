@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev4-30 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev4-43 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4160,7 +4160,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4171,7 +4171,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev4-30</strong></p>
+							<p><strong>version 2.8-dev4-43</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -7872,9 +7872,11 @@ own socket.
 
 When default &quot;connection&quot; value is set, a dedicated socket will be allocated
 by every QUIC connections. This option is the preferred one to achieve the
-best performance with a large QUIC traffic. However, this relies on some
-advanced features from the UDP network stack. If your platform is deemed not
-compatible, haproxy will automatically switch to &quot;listener&quot; mode on startup.
+best performance with a large QUIC traffic. This is also the only way to
+ensure soft-stop is conducted properly without data loss for QUIC
+connections. However, this relies on some advanced features from the UDP
+network stack. If your platform is deemed not compatible, haproxy will
+automatically switch to &quot;listener&quot; mode on startup.
 
 The &quot;listener&quot; value indicates that QUIC transfers will occur on the shared
 listener socket. This option can be a good compromise for small traffic as it
@@ -26796,7 +26798,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev4-30 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev4-43 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
