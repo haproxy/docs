@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev4-103 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev4-117 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3847,15 +3847,7 @@
 							
 							<a class="list-group-item" href="#thread-groups">thread-groups</a>
 							
-							<a class="list-group-item" href="#timeout (Log forwarding)">timeout (Log forwarding)</a>
-							
-							<a class="list-group-item" href="#timeout (Mailers)">timeout (Mailers)</a>
-							
-							<a class="list-group-item" href="#timeout (Rings)">timeout (Rings)</a>
-							
-							<a class="list-group-item" href="#timeout (Alphabetically sorted keywords reference)">timeout (Alphabetically sorted keywords reference)</a>
-							
-							<a class="list-group-item" href="#timeout (The resolvers section)">timeout (The resolvers section)</a>
+							<a class="list-group-item" href="#timeout">timeout</a>
 							
 							<a class="list-group-item" href="#timeout check">timeout check</a>
 							
@@ -4160,7 +4152,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4171,7 +4163,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev4-103</strong></p>
+							<p><strong>version 2.8-dev4-117</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -19952,15 +19944,53 @@ concurrent connections and TLS should also usable if the server supports.
 </pre><a class="anchor" name="parse-resolv-conf"></a><a class="anchor" name="5-parse-resolv-conf"></a><a class="anchor" name="5.3.2-parse-resolv-conf"></a><a class="anchor" name="parse-resolv-conf (Bind and server options)"></a><a class="anchor" name="parse-resolv-conf (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="parse-resolv-conf"></a><a href="#5.3.2-parse-resolv-conf">parse-resolv-conf</a></b></div><pre class="text">Adds all nameservers found in /etc/resolv.conf to this resolvers nameservers
 list. Ordered as if each nameserver in /etc/resolv.conf was individually
 placed in the resolvers section in place of this directive.
-</pre><a class="anchor" name="hold"></a><a class="anchor" name="5-hold"></a><a class="anchor" name="5.3.2-hold"></a><a class="anchor" name="hold (Bind and server options)"></a><a class="anchor" name="hold (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="hold"></a><a href="#5.3.2-hold">hold</a></b> <span style="color: #080">&lt;status&gt;</span> <span style="color: #080">&lt;period&gt;</span></div><pre class="text">Defines &lt;period&gt; during which the last name resolution should be kept based
-on last resolution &lt;status&gt;
-  &lt;status&gt; : last name resolution status. Acceptable values are &quot;nx&quot;,
-             &quot;other&quot;, &quot;refused&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20%28Mailers%29">Mailers</a></li><li><a href="#timeout%20%28Rings%29">Rings</a></li><li><a href="#timeout%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#timeout%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot;, &quot;valid&quot;, &quot;obsolete&quot;.
-  &lt;period&gt; : interval between two successive name resolution when the last
-             answer was in &lt;status&gt;. It follows the HAProxy time format.
-             &lt;period&gt; is in milliseconds by default.
+</pre><a class="anchor" name="hold"></a><a class="anchor" name="5-hold"></a><a class="anchor" name="5.3.2-hold"></a><a class="anchor" name="hold (Bind and server options)"></a><a class="anchor" name="hold (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="hold"></a><a href="#5.3.2-hold">hold</a></b> <span style="color: #080">&lt;status&gt;</span> <span style="color: #080">&lt;period&gt;</span></div><pre class="text">Upon receiving the DNS response &lt;status&gt;, determines whether a server's state
+should change from UP to DOWN. To make that determination, it checks whether
+any valid status has been received during the past &lt;period&gt; in order to
+counteract the just received invalid status.
 
-Default value is 10s for &quot;valid&quot;, 0s for &quot;obsolete&quot; and 30s for others.
+  &lt;status&gt; : last name resolution status.
+         nx        After receiving an NXDOMAIN status, check for any valid
+                   status during the concluding period.
+
+         refused   After receiving a REFUSED status, check for any valid
+                   status during the concluding period.
+
+         timeout   After the &quot;timeout retry&quot; has struck, check for any
+                   valid status during the concluding period.
+
+         other     After receiving any other invalid status, check for any
+                   valid status during the concluding period.
+
+         valid     Applies only to &quot;<a href="#http-request%20do-resolve">http-request do-resolve</a>&quot; and
+                   &quot;<a href="#tcp-request%20content%20do-resolve">tcp-request content do-resolve</a>&quot; actions. It defines the
+                   period for which the server will maintain a valid response
+                   before triggering another resolution. It does not affect
+                   dynamic resolution of servers.
+
+         obsolete  Defines how long to wait before removing obsolete DNS
+                   records after an updated answer record is received. It
+                   applies to SRV records.
+
+  &lt;period&gt; : Amount of time into the past during which a valid response must
+             have been received. It follows the HAProxy time format and is in
+             milliseconds by default.
+
+For a server that relies on dynamic DNS resolution to determine its IP
+address, receiving an invalid DNS response, such as NXDOMAIN, will lead to
+changing the server's state from UP to DOWN. The hold directives define how
+far into the past to look for a valid response. If a valid response has been
+received within &lt;period&gt;, the just received invalid status will be ignored.
+
+Unless a valid response has been receiving during the concluding period, the
+server will be marked as DOWN. For example, if &quot;hold nx 30s&quot; is set and the
+last received DNS response was NXDOMAIN, the server will be marked DOWN
+unless a valid response has been received during the last 30 seconds.
+
+A server in the DOWN state will be marked UP immediately upon receiving a
+valid status from the DNS server.
+
+A separate behavior exists for &quot;hold valid&quot; and &quot;hold obsolete&quot;.
 </pre><a class="anchor" name="resolve_retries"></a><a class="anchor" name="5-resolve_retries"></a><a class="anchor" name="5.3.2-resolve_retries"></a><a class="anchor" name="resolve_retries (Bind and server options)"></a><a class="anchor" name="resolve_retries (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolve_retries"></a><a href="#5.3.2-resolve_retries">resolve_retries</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the number &lt;nb&gt; of queries to send to resolve a server name before
 giving up.
 Default value: 3
@@ -26800,7 +26830,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev4-103 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev4-117 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
