@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev4-132 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev4-154 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3997,6 +3997,10 @@
 							
 							<a class="list-group-item" href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
 							
+							<a class="list-group-item" href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>
+							
+							<a class="list-group-item" href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>
+							
 							<a class="list-group-item" href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
 							
 							<a class="list-group-item" href="#tune.stick-counters">tune.stick-counters</a>
@@ -4152,7 +4156,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4163,7 +4167,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev4-132</strong></p>
+							<p><strong>version 2.8-dev4-154</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -6204,6 +6208,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
    - <a href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
+   - <a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>
+   - <a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>
    - <a href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
    - <a href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
    - <a href="#tune.vars.reqres-max-size">tune.vars.reqres-max-size</a>
@@ -8026,6 +8032,21 @@ Typical values of 1419 and 2859 gave good results during tests. Use
 switch to this setting after an idle stream has been detected (see
 tune.idletimer above). See also tune.ssl.hard-maxrecord.
 </pre><a class="anchor" name="tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="3-tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="3.2-tune.ssl.ssl-ctx-cache-size"></a><a class="anchor" name="tune.ssl.ssl-ctx-cache-size (Global parameters)"></a><a class="anchor" name="tune.ssl.ssl-ctx-cache-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ssl-ctx-cache-size"></a><a href="#3.2-tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the cache used to store generated certificates to &lt;number&gt;
+entries. This is a LRU cache. Because generating a SSL certificate
+dynamically is expensive, they are cached. The default cache size is set to
+1000 entries.
+</pre><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3.2-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a href="#3.2-tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum interval between two automatic updates of the same OCSP
+response. This time is expressed in seconds and defaults to 3600 (1 hour). It
+must be set to a higher value than &quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot;. See
+option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update mechanism.
+</pre><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3.2-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a href="#3.2-tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the minimum interval between two automatic updates of the same OCSP
+response. This time is expressed in seconds and defaults to 300 (5 minutes).
+It is particularly useful for OCSP response that do not have explicit
+expiration times. It must be set to a lower value than
+&quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot;. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
+information about the auto update mechanism.
+
+Sets the size of the cache used to store generated certificates to &lt;number&gt;
 entries. This is a LRU cache. Because generating a SSL certificate
 dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
@@ -18674,7 +18695,23 @@ be in the future) so it is unlikely that this response expires in such a
 short time after init.
 On the other hand, if a certificate has an OCSP uri specified and no OCSP
 response, setting this option to 'on' for the given certificate will ensure
-that the OCSP response gets fetched automatically right after init.
+that the OCSP response gets fetched automatically right after init.  The
+default minimum and maximum delays (5 minutes and 1 hour respectively) can be
+configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
+&quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
+
+Whenever an OCSP response is updated by the auto update task, a dedicated log
+line is emitted. It will follow a dedicated log-format that looks like the
+following &quot;%ci:%cp [%tr] %ft %[ssl_ocsp_certid] %[ssl_ocsp_status]
+%{+Q}[ssl_ocsp_status_str] %[ssl_ocsp_fail_cnt] %[ssl_ocsp_success_cnt]&quot;. The
+specified &quot;ssl_ocsp&quot; sample fetches are not &quot;public&quot; because they cannot have
+valid values when fetched out of the OCSP auto update process. Here is an
+example of such a log line (with the longer outputs truncated for
+readability):
+  &lt;134&gt;Feb 13 16:20:21 haproxy[37352]: -:- [13/Feb/2023:16:20:20.311] &lt;HC_OCSP&gt; \
+  303B30090[...] 2 &quot;HTTP error&quot; 0 0
+See &quot;show ssl ocsp-updates&quot; CLI command for a full list of error codes and
+error messages.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
@@ -26831,7 +26868,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev4-132 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev4-154 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
