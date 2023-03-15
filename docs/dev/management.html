@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev5-1 - Management Guide</title>
+		<title>HAProxy version 2.8-dev5-8 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -610,7 +610,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -621,7 +621,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.8-dev5-1</strong></p>
+							<p><strong>version 2.8-dev5-8</strong></p>
 							<p>
 								<br>
 								
@@ -3989,21 +3989,24 @@ common.pem:2
 ecdsa.pem:3 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3] localhost !www.test1.com
 ecdsa.pem:4 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ocsp-response"></a><a class="anchor" name="9-show ssl ocsp-response"></a><a class="anchor" name="9.3-show ssl ocsp-response"></a><a class="anchor" name="show ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="show ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ocsp-response"></a><a href="#9.3-show%20ssl%20ocsp-response">show ssl ocsp-response</a></b> <span style="color: #008">[<span style="color: #008">[text|base64]</span> <span style="color: #080">&lt;id&gt;</span>]</span></div><pre class="text">Display the IDs of the OCSP tree entries corresponding to all the OCSP
-responses used in HAProxy, as well as the issuer's name and key hash and the
-serial number of the certificate for which the OCSP response was built.  If a
-valid &lt;id&gt; is provided, display the contents of the corresponding OCSP
-response. When an &lt;id&gt; is provided, it it possible to format in which the
-data is dumped. The 'text' option is the default one and it allows to display
-detailed information about the OCSP response the same way as in an &quot;openssl
-ocsp -respin &lt;ocsp-response&gt; -text&quot; call. The 'base64' format allows to dump
-the contents of an OCSP response in base64.
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ocsp-response"></a><a class="anchor" name="9-show ssl ocsp-response"></a><a class="anchor" name="9.3-show ssl ocsp-response"></a><a class="anchor" name="show ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="show ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ocsp-response"></a><a href="#9.3-show%20ssl%20ocsp-response">show ssl ocsp-response</a></b> <span style="color: #008">[<span style="color: #008">[text|base64]</span> <span style="color: #080">&lt;id|path&gt;</span>]</span></div><pre class="text">Display the IDs of the OCSP tree entries corresponding to all the OCSP
+responses used in HAProxy, as well as the corresponding frontend
+certificate's path, the issuer's name and key hash and the serial number of
+the certificate for which the OCSP response was built.
+If a valid &lt;id&gt; or the &lt;path&gt; of a valid frontend certificate is provided,
+display the contents of the corresponding OCSP response. When an &lt;id&gt; is
+provided, it it possible to define the format in which the data is dumped.
+The 'text' option is the default one and it allows to display detailed
+information about the OCSP response the same way as in an &quot;openssl ocsp
+-respin &lt;ocsp-response&gt; -text&quot; call. The 'base64' format allows to dump the
+contents of an OCSP response in base64.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
 <code>$ echo &quot;<a href="#show%20ssl%20ocsp-response">show ssl ocsp-response</a>&quot; | socat /var/run/haproxy.master -
 <span class="comment"># Certificate IDs</span>
   Certificate ID key : 303b300906052b0e03021a050004148a83e0060faff709ca7e9b95522a2e81635fda0a0414f652b0e435d5ea923851508f0adbe92d85de007a0202100a
+  Certificate path : /path_to_cert/foo.pem
     Certificate ID:
       Issuer Name Hash: 8A83E0060FAFF709CA7E9B95522A2E81635FDA0A
       Issuer Key Hash: F652B0E435D5EA923851508F0ADBE92D85DE007A
@@ -4027,7 +4030,7 @@ OCSP Response Data:
   Next Update: Oct 12 15:43:38 2048 GMT
   [...]
 
-$ echo &quot;show ssl ocsp-response base64 304b300906052b0e03021a0500041448dac[...]&quot; | socat /var/run/haproxy.sock -
+$ echo &quot;show ssl ocsp-response base64 /path_to_cert/foo.pem&quot; | socat /var/run/haproxy.sock -
   MIIB8woBAKCCAewwggHoBgkrBgEFBQcwAQEEggHZMIIB1TCBvqE[...]
 </code></pre>
 </div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ocsp-updates"></a><a class="anchor" name="9-show ssl ocsp-updates"></a><a class="anchor" name="9.3-show ssl ocsp-updates"></a><a class="anchor" name="show ssl ocsp-updates (Statistics and monitoring)"></a><a class="anchor" name="show ssl ocsp-updates (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ocsp-updates"></a><a href="#9.3-show%20ssl%20ocsp-updates">show ssl ocsp-updates</a></b></div><pre class="text">Display information about the entries concerned by the OCSP update mechanism.
@@ -4909,7 +4912,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev5-1 &ndash; Management Guide<br>
+							HAProxy 2.8-dev5-8 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

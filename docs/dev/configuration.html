@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev5-1 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev5-8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4156,7 +4156,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4167,7 +4167,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev5-1</strong></p>
+							<p><strong>version 2.8-dev5-8</strong></p>
 							<p>
 								2023/03/10<br>
 								
@@ -18700,18 +18700,34 @@ default minimum and maximum delays (5 minutes and 1 hour respectively) can be
 configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
 &quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
 
-Whenever an OCSP response is updated by the auto update task, a dedicated log
-line is emitted. It will follow a dedicated log-format that looks like the
-following &quot;%ci:%cp [%tr] %ft %[ssl_ocsp_certid] %[ssl_ocsp_status]
-%{+Q}[ssl_ocsp_status_str] %[ssl_ocsp_fail_cnt] %[ssl_ocsp_success_cnt]&quot;. The
-specified &quot;ssl_ocsp&quot; sample fetches are not &quot;public&quot; because they cannot have
-valid values when fetched out of the OCSP auto update process. Here is an
-example of such a log line (with the longer outputs truncated for
-readability):
-  &lt;134&gt;Feb 13 16:20:21 haproxy[37352]: -:- [13/Feb/2023:16:20:20.311] &lt;HC_OCSP&gt; \
-  303B30090[...] 2 &quot;HTTP error&quot; 0 0
+Whenever an OCSP response is updated by the auto update task or following a
+call to the &quot;update ssl ocsp-response&quot; CLI command, a dedicated log line is
+emitted. It follows a dedicated log-format that contains the following header
+&quot;%ci:%cp [%tr] %ft&quot; and is followed by specific OCSP-related information:
+  - the path of the corresponding frontend certificate
+  - a numerical update status
+  - a textual update status
+  - the number of update failures for the given response
+  - the number of update successes for the givan response
 See &quot;show ssl ocsp-updates&quot; CLI command for a full list of error codes and
-error messages.
+error messages. This line is emitted regardless of the success or failure of
+the concerned OCSP response update.
+The OCSP request/response is sent and received through an http_client
+instance that has the dontlog-normal option set and that uses the regular
+HTTP log format in case of error (unreachable OCSP responder for instance).
+If such an error occurs, another log line that contains HTTP-related
+information will then be emitted alongside the &quot;regular&quot; OCSP one (which will
+likely have &quot;HTTP error&quot; as text status).
+
+but if a purely HTTP error happens
+(unreachable OCSP responder for instance), an extra log line that follows the
+regular HTTP log-format will be emitted.
+Here are two examples of such log lines, with a successful OCSP update log line first
+and then an example of an HTTP error with the two different lines:
+  &lt;134&gt;Mar  6 11:16:53 haproxy[14872]: -:- [06/Mar/2023:11:16:52.808] &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 &quot;Update successful&quot; 0 1
+
+  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:54.207] &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 &quot;HTTP error&quot; 1 0
+  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} &quot;GET http://127.0.0.1:12345/MEMwQTA%2FMD0wOzAJBgUrDgMCGgUABBSKg%2BAGD6%2F3Ccp%2Bm5VSKi6BY1%2FaCgQU9lKw5DXV6pI4UVCPCtvpLYXeAHoCAhAV HTTP/1.1&quot;
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
@@ -26867,7 +26883,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev5-1 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev5-8 &ndash; Configuration Manual<br>
 							<small>, 2023/03/10</small>
 						</div>
 					</div>
