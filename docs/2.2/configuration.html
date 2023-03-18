@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.2.29 - Configuration Manual</title>
+		<title>HAProxy version 2.2.29-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3503,7 +3503,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3514,7 +3514,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.2.29</strong></p>
+							<p><strong>version 2.2.29-1</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -4985,10 +4985,133 @@ As a result, here is the matrix indicating how special characters can be
 entered in different contexts (unprintable characters are replaced with their
 name within angle brackets). Note that some characters that may only be
 represented escaped have no possible representation inside single quotes,
-hence the '-' there:
+hence its absence there:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>Character</th><th>Unquoted</th><th>Weakly quoted</th><th>Strongly quoted</th></tr></thead>
-</table></div>
+<tr><td >&lt;TAB&gt;</td><td >\&lt;TAB&gt;, \x09</td><td >&quot;&lt;TAB&gt;&quot;, &quot;\&lt;TAB&gt;&quot;, &quot;\x09&quot;</td><td >'&lt;TAB&gt;'</td></tr>
+<tr><td >&lt;LF&gt;</td><td >\n, \x0a</td><td >&quot;\n&quot;, &quot;\x0a&quot;</td><td ></td></tr>
+<tr><td >&lt;CR&gt;</td><td >\r, \x0d</td><td >&quot;\r&quot;, &quot;\x0d&quot;</td><td ></td></tr>
+<tr><td >&lt;SPC&gt;</td><td >\&lt;SPC&gt;, \x20</td><td >&quot;&lt;SPC&gt;&quot;, &quot;\&lt;SPC&gt;&quot;, &quot;\x20&quot;</td><td >'&lt;SPC&gt;'</td></tr>
+<tr><td >&quot;</td><td >\&quot;, \x22</td><td >&quot;\&quot;&quot;, &quot;\x22&quot;</td><td >'&quot;'</td></tr>
+<tr><td >#</td><td >\#, \x23</td><td >&quot;#&quot;, &quot;\#&quot;, &quot;\x23&quot;</td><td >'#'</td></tr>
+<tr><td >$</td><td >$, \$, \x24</td><td >&quot;\$&quot;, &quot;\x24&quot;</td><td >'$'</td></tr>
+<tr><td >'</td><td >\', \x27</td><td >&quot;'&quot;, &quot;\'&quot;, &quot;\x27&quot;</td><td ></td></tr>
+<tr><td >\</td><td >\\, \x5c</td><td >&quot;\\&quot;, &quot;\x5c&quot;</td><td >'\'</td></tr>
+</table><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># those are all strictly equivalent:</span>
+log-format %{+Q}o\ %t\ %s\ %{-Q}r
+log-format &quot;%{+Q}o %t %s %{-Q}r&quot;
+log-format '%{+Q}o %t %s %{-Q}r'
+log-format &quot;%{+Q}o %t&quot;' %s %{-Q}r'
+log-format &quot;%{+Q}o %t&quot;' %s'\ %{-Q}r
+</code></pre>
+</div><pre class="text">There is one particular case where a second level of quoting or escaping may be
+necessary. Some keywords take arguments within parenthesis, sometimes delimited
+by commas. These arguments are commonly integers or predefined words, but when
+they are arbitrary strings, it may be required to perform a separate level of
+escaping to disambiguate the characters that belong to the argument from the
+characters that are used to delimit the arguments themselves. A pretty common
+case is the &quot;<a href="#regsub">regsub</a>&quot; converter. It takes a regular expression in argument, and
+if a closing parenthesis is needed inside, this one will require to have its
+own quotes.
+
+The keyword argument parser is exactly the same as the top-level one regarding
+quotes, except that is will not make special cases of backslashes. But what is
+not always obvious is that the delimitors used inside must first be escaped or
+quoted so that they are not resolved at the top level.
+
+Let's take this example making use of the &quot;<a href="#regsub">regsub</a>&quot; converter which takes 3
+arguments, one regular expression, one replacement string and one set of flags:
+
+    # replace all occurrences of &quot;foo&quot; with &quot;blah&quot; in the path:
+    http-request set-path %[path,regsub(foo,blah,g)]
+
+Here no special quoting was necessary. But if now we want to replace either
+&quot;foo&quot; or &quot;bar&quot; with &quot;blah&quot;, we'll need the regular expression &quot;(foo|bar)&quot;. We
+cannot write:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+
+because we would like the string to cut like this:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+                                       |---------|----|-|
+                                 arg1 _/         /    /
+                                 arg2 __________/    /
+                                 arg3 ______________/
+
+but actually what is passed is a string between the opening and closing
+parenthesis then garbage:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+                                       |--------|--------|
+                        arg1=(foo|bar _/        /
+                    trailing garbage  _________/
+
+The obvious solution here seems to be that the closing parenthesis needs to be
+quoted, but alone this will not work, because as mentioned above, quotes are
+processed by the top-level parser which will resolve them before processing
+this word:
+
+    http-request set-path %[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+    ------------ -------- ----------------------------------
+       word1       word2    word3=%[path,regsub((foo|bar),blah,g)]
+
+So we didn't change anything for the argument parser at the second level which
+still sees a truncated regular expression as the only argument, and garbage at
+the end of the string. By escaping the quotes they will be passed unmodified to
+the second level:
+
+    http-request set-path %[path,regsub(\&quot;(foo|bar)\&quot;,blah,g)]
+    ------------ -------- ------------------------------------
+       word1       word2    word3=%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+                                                |---------||----|-|
+                                arg1=(foo|bar) _/          /    /
+                                    arg2=blah  ___________/    /
+                                        arg3=g _______________/
+
+Another approch consists in using single quotes outside the whole string and
+double quotes inside (so that the double quotes are not stripped again):
+
+    http-request set-path '%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]'
+    ------------ --------  ----------------------------------
+       word1       word2    word3=%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+                                                |---------||----|-|
+                                arg1=(foo|bar) _/          /    /
+                                          arg2 ___________/    /
+                                          arg3 _______________/
+
+When using regular expressions, it can happen that the dollar ('$') character
+appears in the expression or that a backslash ('\') is used in the replacement
+string. In this case these ones will also be processed inside the double quotes
+thus single quotes are preferred (or double escaping). Example:
+
+    http-request set-path '%[path,regsub(&quot;^/(here)(/|$)&quot;,&quot;my/\1&quot;,g)]'
+    ------------ --------  -----------------------------------------
+       word1       word2    word3=%[path,regsub(&quot;^/(here)(/|$)&quot;,&quot;my/\1&quot;,g)]
+                                                |-------------| |-----||-|
+                              arg1=(here)(/|$) _/               /      /
+                                    arg2=my/\1 ________________/      /
+                                          arg3 ______________________/
+
+Remember that backslahes are not escape characters withing single quotes and
+that the whole word3 above is already protected against them using the single
+quotes. Conversely, if double quotes had been used around the whole expression,
+single the dollar character and the backslashes would have been resolved at top
+level, breaking the argument contents at the second level.
+
+When in doubt, simply do not use quotes anywhere, and start to place single or
+double quotes around arguments that require a comma or a closing parenthesis,
+and think about escaping these quotes using a backslash of the string contains
+a dollar or a backslash. Again, this is pretty similar to what is used under
+a Bourne shell when double-escaping a command passed to &quot;eval&quot;. For API writers
+the best is probably to place escaped quotes around each and every argument,
+regardless of their contents. Users will probably find that using single quotes
+around the whole expression and double quotes around each argument provides
+more readable configurations.
+</pre></div>
 <a class="anchor" id="2.3" name="2.3"></a>
 <h2 id="chapter-2.3" data-target="2.3"><small><a class="small" href="#2.3">2.3.</a></small> Environment variables</h2>
 <div><pre class="text">HAProxy's configuration supports environment variables. Those variables are
@@ -22885,7 +23008,7 @@ here.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.2.29 &ndash; Configuration Manual<br>
+							HAProxy 2.2.29-1 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
