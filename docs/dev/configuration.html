@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev6-6 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev6-10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4206,7 +4206,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4217,7 +4217,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev6-6</strong></p>
+							<p><strong>version 2.8-dev6-10</strong></p>
 							<p>
 								2023/03/28<br>
 								
@@ -24153,16 +24153,16 @@ persistent flag.
 </pre><a class="anchor" name="req.body"></a><a class="anchor" name="7-req.body"></a><a class="anchor" name="7.3.6-req.body"></a><a class="anchor" name="req.body (Using ACLs and fetching samples)"></a><a class="anchor" name="req.body (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.body"></a><a href="#7.3.6-req.body">req.body</a></b> : binary</div><pre class="text">This returns the HTTP request's available body as a block of data. It is
 recommended to use &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot; to be sure to wait, as much
 as possible, for the request's body.
-</pre><a class="anchor" name="req.body_param"></a><a class="anchor" name="7-req.body_param"></a><a class="anchor" name="7.3.6-req.body_param"></a><a class="anchor" name="req.body_param (Using ACLs and fetching samples)"></a><a class="anchor" name="req.body_param (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.body_param"></a><a href="#7.3.6-req.body_param">req.body_param</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>) : string</span></div><pre class="text">This fetch assumes that the body of the POST request is url-encoded. The user
+</pre><a class="anchor" name="req.body_param"></a><a class="anchor" name="7-req.body_param"></a><a class="anchor" name="7.3.6-req.body_param"></a><a class="anchor" name="req.body_param (Using ACLs and fetching samples)"></a><a class="anchor" name="req.body_param (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.body_param"></a><a href="#7.3.6-req.body_param">req.body_param</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,i]</span>]</span>) : string</div><pre class="text">This fetch assumes that the body of the POST request is url-encoded. The user
 can check if the &quot;content-type&quot; contains the value
 &quot;application/x-www-form-urlencoded&quot;. This extracts the first occurrence of the
 parameter &lt;name&gt; in the body, which ends before '&amp;'. The parameter name is
-case-sensitive. If no name is given, any parameter will match, and the first
-one will be returned. The result is a string corresponding to the value of the
-parameter &lt;name&gt; as presented in the request body (no URL decoding is
-performed). Note that the ACL version of this fetch iterates over multiple
-parameters and will iteratively report all parameters values if no name is
-given.
+case-sensitive, unless &quot;i&quot; is added as a second argument. If no name is
+given, any parameter will match, and the first one will be returned. The
+result is a string corresponding to the value of the parameter &lt;name&gt; as
+presented in the request body (no URL decoding is performed). Note that the
+ACL version of this fetch iterates over multiple parameters and will
+iteratively report all parameters values if no name is given.
 </pre><a class="anchor" name="req.body_len"></a><a class="anchor" name="7-req.body_len"></a><a class="anchor" name="7.3.6-req.body_len"></a><a class="anchor" name="req.body_len (Using ACLs and fetching samples)"></a><a class="anchor" name="req.body_len (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.body_len"></a><a href="#7.3.6-req.body_len">req.body_len</a></b> : integer</div><pre class="text">This returns the length of the HTTP request's available body in bytes. It may
 be lower than the advertised length if the body is larger than the buffer. It
 is recommended to use &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot; to be sure to wait, as
@@ -24559,16 +24559,16 @@ entry in a table for a given source address. It may be used in combination
 with 'http-request set-dst' to emulate the older 'option http_proxy'.
 </pre><a class="anchor" name="url_port"></a><a class="anchor" name="7-url_port"></a><a class="anchor" name="7.3.6-url_port"></a><a class="anchor" name="url_port (Using ACLs and fetching samples)"></a><a class="anchor" name="url_port (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_port"></a><a href="#7.3.6-url_port">url_port</a></b> : integer</div><pre class="text">This extracts the port part from the request's URL. Note that if the port is
 not specified in the request, port 80 is assumed..
-</pre><a class="anchor" name="urlp"></a><a class="anchor" name="7-urlp"></a><a class="anchor" name="7.3.6-urlp"></a><a class="anchor" name="urlp (Using ACLs and fetching samples)"></a><a class="anchor" name="urlp (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="urlp"></a><a href="#7.3.6-urlp">urlp</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span>]</span>]</span>) : string</div><a class="anchor" name="url_param"></a><a class="anchor" name="7-url_param"></a><a class="anchor" name="7.3.6-url_param"></a><a class="anchor" name="url_param (Using ACLs and fetching samples)"></a><a class="anchor" name="url_param (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_param"></a><a href="#7.3.6-url_param">url_param</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span>]</span>]</span>) : string</div><pre class="text">This extracts the first occurrence of the parameter &lt;name&gt; in the query
+</pre><a class="anchor" name="urlp"></a><a class="anchor" name="7-urlp"></a><a class="anchor" name="7.3.6-urlp"></a><a class="anchor" name="urlp (Using ACLs and fetching samples)"></a><a class="anchor" name="urlp (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="urlp"></a><a href="#7.3.6-urlp">urlp</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span><span style="color: #008">[,i]</span>]</span>]</span>) : string</div><a class="anchor" name="url_param"></a><a class="anchor" name="7-url_param"></a><a class="anchor" name="7.3.6-url_param"></a><a class="anchor" name="url_param (Using ACLs and fetching samples)"></a><a class="anchor" name="url_param (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_param"></a><a href="#7.3.6-url_param">url_param</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span><span style="color: #008">[,i]</span>]</span>]</span>) : string</div><pre class="text">This extracts the first occurrence of the parameter &lt;name&gt; in the query
 string, which begins after either '?' or &lt;delim&gt;, and which ends before '&amp;',
-';' or &lt;delim&gt;. The parameter name is case-sensitive. If no name is given,
-any parameter will match, and the first one will be returned. The result is
-a string corresponding to the value of the parameter &lt;name&gt; as presented in
-the request (no URL decoding is performed). This can be used for session
-stickiness based on a client ID, to extract an application cookie passed as a
-URL parameter, or in ACLs to apply some checks. Note that the ACL version of
-this fetch iterates over multiple parameters and will iteratively report all
-parameters values if no name is given
+';' or &lt;delim&gt;. The parameter name is case-sensitive, unless&quot;i&quot; is added as a
+third argument. If no name is given, any parameter will match, and the first
+one will be returned. The result is a string corresponding to the value of the
+parameter &lt;name&gt; as presented in the request (no URL decoding is performed).
+This can be used for session stickiness based on a client ID, to extract an
+application cookie passed as a URL parameter, or in ACLs to apply some checks.
+Note that the ACL version of this fetch iterates over multiple parameters and
+will iteratively report all parameters values if no name is given
 
 ACL derivatives :
   urlp(&lt;name&gt;[,&lt;delim&gt;])     : exact string match
@@ -24587,7 +24587,7 @@ stick on urlp(PHPSESSIONID)
 <span class="comment"># match http://example.com/foo;JSESSIONID=some_id</span>
 stick on urlp(JSESSIONID,;)
 </code></pre>
-</div><a class="anchor" name="urlp_val"></a><a class="anchor" name="7-urlp_val"></a><a class="anchor" name="7.3.6-urlp_val"></a><a class="anchor" name="urlp_val (Using ACLs and fetching samples)"></a><a class="anchor" name="urlp_val (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="urlp_val"></a><a href="#7.3.6-urlp_val">urlp_val</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span>]</span>]</span>) : integer</div><pre class="text">See &quot;<a href="#urlp">urlp</a>&quot; above. This one extracts the URL parameter &lt;name&gt; in the request
+</div><a class="anchor" name="urlp_val"></a><a class="anchor" name="7-urlp_val"></a><a class="anchor" name="7.3.6-urlp_val"></a><a class="anchor" name="urlp_val (Using ACLs and fetching samples)"></a><a class="anchor" name="urlp_val (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="urlp_val"></a><a href="#7.3.6-urlp_val">urlp_val</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span><span style="color: #008">[,i]</span>]</span>]</span>) : integer</div><pre class="text">See &quot;<a href="#urlp">urlp</a>&quot; above. This one extracts the URL parameter &lt;name&gt; in the request
 and converts it to an integer value. This can be used for session stickiness
 based on a user ID for example, or with ACLs to match a page number or price.
 </pre><a class="anchor" name="url32"></a><a class="anchor" name="7-url32"></a><a class="anchor" name="7.3.6-url32"></a><a class="anchor" name="url32 (Using ACLs and fetching samples)"></a><a class="anchor" name="url32 (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url32"></a><a href="#7.3.6-url32">url32</a></b> : integer</div><pre class="text">This returns a 32-bit hash of the value obtained by concatenating the first
@@ -27064,7 +27064,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev6-6 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev6-10 &ndash; Configuration Manual<br>
 							<small>, 2023/03/28</small>
 						</div>
 					</div>
