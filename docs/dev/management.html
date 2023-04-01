@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev6-10 - Management Guide</title>
+		<title>HAProxy version 2.8-dev6-26 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -610,7 +610,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -621,7 +621,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.8-dev6-10</strong></p>
+							<p><strong>version 2.8-dev6-26</strong></p>
 							<p>
 								<br>
 								
@@ -3271,8 +3271,18 @@ be discarded) or by closing the session. Finally, option &quot;-n&quot; is used 
 directly seek to the end of the buffer, which is often convenient when
 combined with &quot;-w&quot; to only report new events. For convenience, &quot;-wn&quot; or &quot;-nw&quot;
 may be used to enable both options at once.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show fd"></a><a class="anchor" name="9-show fd"></a><a class="anchor" name="9.3-show fd"></a><a class="anchor" name="show fd (Statistics and monitoring)"></a><a class="anchor" name="show fd (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show fd"></a><a href="#9.3-show%20fd">show fd</a></b> <span style="color: #008">[<span style="color: #080">&lt;fd&gt;</span>]</span></div><pre class="text">Dump the list of either all open file descriptors or just the one number &lt;fd&gt;
-if specified. This is only aimed at developers who need to observe internal
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show fd"></a><a class="anchor" name="9-show fd"></a><a class="anchor" name="9.3-show fd"></a><a class="anchor" name="show fd (Statistics and monitoring)"></a><a class="anchor" name="show fd (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show fd"></a><a href="#9.3-show%20fd">show fd</a></b> <span style="color: #008">[-!plcfbsd]</span>* <span style="color: #008">[<span style="color: #080">&lt;fd&gt;</span>]</span></div><pre class="text">Dump the list of either all open file descriptors or just the one number &lt;fd&gt;
+if specified. A set of flags may optionally be passed to restrict the dump
+only to certain FD types or to omit certain FD types. When '-' or '!' are
+encountered, the selection is inverted for the following characters in the
+same argument. The inversion is reset before each argument word delimited by
+white spaces. Selectable FD types include 'p' for pipes, 'l' for listeners,
+'c' for connections (any type), 'f' for frontend connections, 'b' for backend
+connections (any type), 's' for connections to servers, 'd' for connections
+to the &quot;dispatch&quot; address or the backend's transparent address. With this,
+'b' is a shortcut for 'sd' and 'c' for 'fb' or 'fsd'. 'c!f' is equivalent to
+'b' (&quot;any connections except frontend connections&quot; are indeed backend
+connections). This is only aimed at developers who need to observe internal
 states in order to debug complex issues such as abnormal CPU usages. One fd
 is reported per lines, and for each of them, its state in the poller using
 upper case letters for enabled flags and lower case for disabled flags, using
@@ -4916,7 +4926,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev6-10 &ndash; Management Guide<br>
+							HAProxy 2.8-dev6-26 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
