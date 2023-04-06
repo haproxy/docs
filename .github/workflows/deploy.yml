@@ -106,6 +106,13 @@ jobs:
       run: |
         set -x
 
+        echo "User-agent: *" >/tmp/robot.txt 
+        echo "Disallow:" >>/tmp/robot.txt
+        echo "Sitemap: https://docs.haproxy.org/sitemap.xml" >>/tmp/robot.txt
+
+        echo "<?xml version="1.0" encoding="UTF-8"?>" >/tmp/sitemap.xml
+        echo "<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">" >>/tmp/sitemap.xml
+
         for branch in $BRANCHES; do
           printf "::group::Building %s\n" "$branch"
           if [ "$branch" = "dev" ]; then
@@ -127,6 +134,13 @@ jobs:
           rm -rf "docs/$branch/"
           mkdir "docs/$branch/"
 
+          for n in "${files[@]}"
+          do
+             file=$(basename $n)
+             file=${file#*.txt}
+             echo "<url><loc>https://docs.haproxy.org/${$branch}/${file}</loc></url>" >>/tmp/sitemap.xml
+          done
+          
           env SOURCE_DATE_EPOCH="$LASTCHANGE" python3 dconv/dconv.py -g "$PWD/haproxy/" -o "$PWD/docs/$branch/" --base=.. ${files[@]}
 
           git add "docs/$branch/"
@@ -136,6 +150,20 @@ jobs:
 
           printf "::endgroup::\n"
         done
+        echo "</urlset>" >>/tmp/sitemap.xml
+        
+        cp /tmp/sitemap.xml docs/sitemap.txt
+        git add "docs/sitemap.txt"
+        if ! git diff --cached --quiet; then
+            git commit -m "Update sitemap.txt"
+        fi
+
+        cp /tmp/robot.txt docs/robot.txt
+        git add "docs/robot.txt"
+        if ! git diff --cached --quiet; then
+            git commit -m "Update robot.txt"
+        fi
+        
     - name: Push the changes.
       run: |
         git push
