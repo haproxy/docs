@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev7-17 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev7-34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4212,7 +4212,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4223,7 +4223,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev7-17</strong></p>
+							<p><strong>version 2.8-dev7-34</strong></p>
 							<p>
 								2023/04/08<br>
 								
@@ -18983,7 +18983,7 @@ reported on startup (see &quot;<a href="#cluster-secret">cluster-secret</a>&quot
 
 See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
 information about QUIC retry.
-</pre><a class="anchor" name="shards"></a><a class="anchor" name="5-shards"></a><a class="anchor" name="5.1-shards"></a><a class="anchor" name="shards (Bind and server options)"></a><a class="anchor" name="shards (Bind options)"></a><div class="keyword"><b><a class="anchor" name="shards"></a><a href="#5.1-shards">shards</a></b> <span style="color: #080">&lt;number&gt;</span> | by-thread</div><pre class="text">In multi-threaded mode, on operating systems supporting multiple listeners on
+</pre><a class="anchor" name="shards"></a><a class="anchor" name="5-shards"></a><a class="anchor" name="5.1-shards"></a><a class="anchor" name="shards (Bind and server options)"></a><a class="anchor" name="shards (Bind options)"></a><div class="keyword"><b><a class="anchor" name="shards"></a><a href="#5.1-shards">shards</a></b> <span style="color: #080">&lt;number&gt;</span> | by-thread | by-group</div><pre class="text">In multi-threaded mode, on operating systems supporting multiple listeners on
 the same IP:port, this will automatically create this number of multiple
 identical listeners for the same line, all bound to a fair share of the number
 of the threads attached to this listener. This can sometimes be useful when
@@ -18998,7 +18998,11 @@ will automatically be trimmed to the number of threads (i.e. one shard per
 thread). The special &quot;by-thread&quot; value also creates as many shards as there
 are threads on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line. Since the system will evenly distribute the
 incoming traffic between all these shards, it is important that this number
-is an integral divisor of the number of threads.
+is an integral divisor of the number of threads. Alternately, the other
+special value &quot;by-group&quot; will create one shard per thread group. This can
+be useful when dealing with many threads and not wanting to create too many
+sockets. The load distribution will be a bit less optimal but the contention
+(especially in the system) will still be lower than with a single socket.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
 certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
@@ -27089,7 +27093,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev7-17 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev7-34 &ndash; Configuration Manual<br>
 							<small>, 2023/04/08</small>
 						</div>
 					</div>
