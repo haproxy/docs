@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev7-102 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev7-117 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2431,6 +2431,8 @@
 							
 							<a class="list-group-item" href="#no-agent-check">no-agent-check</a>
 							
+							<a class="list-group-item" href="#no-alpn">no-alpn</a>
+							
 							<a class="list-group-item" href="#no-backup">no-backup</a>
 							
 							<a class="list-group-item" href="#no-ca-names">no-ca-names</a>
@@ -3989,6 +3991,8 @@
 							
 							<a class="list-group-item" href="#tune.listener.multi-queue">tune.listener.multi-queue</a>
 							
+							<a class="list-group-item" href="#tune.lua.burst-timeout">tune.lua.burst-timeout</a>
+							
 							<a class="list-group-item" href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
 							
 							<a class="list-group-item" href="#tune.lua.maxmem">tune.lua.maxmem</a>
@@ -4220,7 +4224,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4231,7 +4235,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev7-102</strong></p>
+							<p><strong>version 2.8-dev7-117</strong></p>
 							<p>
 								2023/04/08<br>
 								
@@ -7976,6 +7980,54 @@ memory.
 preventing infinite loops or spending too much time in Lua. This timeout
 counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
 not taken in account. The default timeout is 4s.
+</pre><a class="anchor" name="tune.lua.burst-timeout"></a><a class="anchor" name="3-tune.lua.burst-timeout"></a><a class="anchor" name="3.2-tune.lua.burst-timeout"></a><a class="anchor" name="tune.lua.burst-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.burst-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.burst-timeout"></a><a href="#3.2-tune.lua.burst-timeout">tune.lua.burst-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">The &quot;burst&quot; execution timeout applies to any Lua handler. If the handler
+fails to finish or yield before timeout is reached, it will be aborted to
+prevent thread contention, to prevent traffic from not being served for too
+long, and ultimately to prevent the process from crashing because of the
+watchdog kicking in. Unlike other lua timeouts which are yield-cumulative,
+burst-timeout will ensure that the time spent in a single lua execution
+window does not exceed the configured timeout.
+
+Yielding here means that the lua execution is effectively interrupted
+either through an explicit call to lua-yielding function such as
+core.(m)sleep() or core.yield(), or following an automatic forced-yield
+(see tune.lua.forced-yield) and that it will be resumed later when the
+related task is set for rescheduling. Not all lua handlers may yield: we have
+to make a distinction between yieldable handlers and unyieldable handlers.
+
+For yieldable handlers (tasks, actions..), reaching the timeout means
+&quot;<a href="#tune.lua.forced-yield">tune.lua.forced-yield</a>&quot; might be too high for the system, reducing it
+could improve the situation, but it could also be a good idea to check if
+adding manual yields at some key points within the lua function helps or not.
+It may also indicate that the handler is spending too much time in a specific
+lua library function that cannot be interrupted.
+
+For unyieldable handlers (lua converters, sample fetches), it could simply
+indicate that the handler is doing too much computation, which could result
+from an improper design given that such handlers, which often block the
+request execution flow, are expected to terminate quickly to allow the
+request processing to go through. A common resolution approach here would be
+to try to better optimize the lua function for speed since decreasing
+&quot;<a href="#tune.lua.forced-yield">tune.lua.forced-yield</a>&quot; won't help.
+
+This timeout only counts the pure Lua runtime. If the Lua does a core.sleep,
+the sleeping time is not taken in account. The default timeout is 1000ms.
+
+Note: if a lua GC cycle is initiated from the handler (either explicitly
+requested or automatically triggered by lua after some time), the GC cycle
+time will also be accounted for.
+
+Indeed, there is no way to deduce the GC cycle time, so this could lead to
+some false positives on saturated systems (where GC is having hard time to
+catch up and consumes most of the available execution runtime). If it were
+to be the case, here are some resolution leads:
+
+  - checking if the script could be optimized to reduce lua memory footprint
+  - fine-tuning lua GC parameters and / or requesting manual GC cycles
+    (see: https://www.lua.org/manual/5.4/manual.html#pdf-collectgarbage)
+  - increasing tune.lua.burst-timeout
+
+Setting value to 0 completely disables this protection.
 </pre><a class="anchor" name="tune.lua.service-timeout"></a><a class="anchor" name="3-tune.lua.service-timeout"></a><a class="anchor" name="3.2-tune.lua.service-timeout"></a><a class="anchor" name="tune.lua.service-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.service-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.service-timeout"></a><a href="#3.2-tune.lua.service-timeout">tune.lua.service-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua services. This is useful for
 preventing infinite loops or spending too much time in Lua. This timeout
 counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
@@ -9618,7 +9670,7 @@ listen external_bind_app1
     bind &quot;fd@${FD_APP1}&quot;
 
 listen h3_quic_proxy
-    bind quic4@10.0.0.1:8888 ssl crt /etc/mycrt alpn h3
+    bind quic4@10.0.0.1:8888 ssl crt /etc/mycrt
 </code></pre>
 </div><pre class="text">Note: regarding Linux's abstract namespace sockets, HAProxy uses the whole
       sun_path length is used for the address length. Some other programs
@@ -18540,18 +18592,29 @@ list as supported on top of ALPN. The protocol list consists in a comma-
 delimited list of protocol names, for instance: &quot;http/1.1,http/1.0&quot; (without
 quotes). This requires that the SSL library is built with support for TLS
 extensions enabled (check with haproxy -vv). The ALPN extension replaces the
-initial NPN extension. ALPN is required to enable HTTP/2 on an HTTP frontend.
-Versions of OpenSSL prior to 1.0.2 didn't support ALPN and only supposed the
-now obsolete NPN extension. At the time of writing this, most browsers still
-support both ALPN and NPN for HTTP/2 so a fallback to NPN may still work for
-a while. But ALPN must be used whenever possible. If both HTTP/2 and HTTP/1.1
-are expected to be supported, both versions can be advertised, in order of
-preference, like below :
+initial NPN extension. At the protocol layer, ALPN is required to enable
+HTTP/2 on an HTTPS frontend and HTTP/3 on a QUIC frontend. However, when such
+frontends have none of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<a href="#no-alpn">no-alpn</a>&quot; set, a default value of
+&quot;h2,http/1.1&quot; will be used for a regular HTTPS frontend, and &quot;h3&quot; for a QUIC
+frontend. Versions of OpenSSL prior to 1.0.2 didn't support ALPN and only
+supposed the now obsolete NPN extension. At the time of writing this, most
+browsers still support both ALPN and NPN for HTTP/2 so a fallback to NPN may
+still work for a while. But ALPN must be used whenever possible. Protocols
+not advertised are not negotiated. For example it is possible to only accept
+HTTP/2 connections with this:
 
-     bind :443 ssl crt pub.pem alpn h2,http/1.1
+     bind :443 ssl crt pub.pem alpn h2  # explicitly disable HTTP/1.1
 
 QUIC supports only h3 and hq-interop as ALPN. h3 is for HTTP/3 and hq-interop
 is used for http/0.9 and QUIC interop runner (see https://interop.seemann.io).
+Each &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; statement will replace a previous one. In order to remove them,
+use &quot;<a href="#no-alpn">no-alpn</a>&quot;.
+
+Note that some old browsers such as Firefox 88 used to experience issues with
+WebSocket over H2, and in case such a setup is encountered, it may be needed
+to either explicitly disable HTTP/2 in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; string by forcing it to
+&quot;http/1.1&quot; or &quot;<a href="#no-alpn">no-alpn</a>&quot;, or to enable &quot;<a href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>&quot;
+globally.
 </pre><a class="anchor" name="backlog"></a><a class="anchor" name="5-backlog"></a><a class="anchor" name="5.1-backlog"></a><a class="anchor" name="backlog (Bind and server options)"></a><a class="anchor" name="backlog (Bind options)"></a><div class="keyword"><b><a class="anchor" name="backlog"></a><a href="#5.1-backlog">backlog</a></b> <span style="color: #080">&lt;backlog&gt;</span></div><pre class="text">Sets the socket's backlog to this value. If unspecified or 0, the frontend's
 backlog is used instead, which generally defaults to the maxconn value.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
@@ -18735,6 +18798,12 @@ declared certificate to not include its CN and SAN in the SNI tree, so it will
 never match except if no other certificate matches. This way the first
 declared certificate act as a fallback.
 
+When no ALPN is set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line's default one is used. If a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line
+has no &quot;<a href="#no-alpn">no-alpn</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; nor &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; set, a default value will be used
+depending on the protocol (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). However if the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line has
+a different default, or explicitly disables ALPN using &quot;<a href="#no-alpn">no-alpn</a>&quot;, it is
+possible to force a specific value for a certificate.
+
 crt-list file example:
       cert1.pem !*
       # comment
@@ -18875,6 +18944,14 @@ and high values are generally recommended for CPU intensive tasks such as SSL
 processing or bulk transfers which are less sensible to latency. For example,
 it may make sense to use a positive value for an SMTP socket and a negative
 one for an RDP socket.
+</pre><a class="anchor" name="no-alpn"></a><a class="anchor" name="5-no-alpn"></a><a class="anchor" name="5.1-no-alpn"></a><a class="anchor" name="no-alpn (Bind and server options)"></a><a class="anchor" name="no-alpn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="no-alpn"></a><a href="#5.1-no-alpn">no-alpn</a></b></div><pre class="text">Disables ALPN processing (technically speaking this sets the ALPN string to
+an empty string that will not be advertised). It permits to cancel a previous
+occurrence of an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting and to disable application protocol
+negotiation. It may also be used to prevent a listener from negotiating ALPN
+with a client on an HTTPS or QUIC listener; by default, HTTPS listeners will
+advertise &quot;h2,http/1.1&quot; and QUIC listeners will advertise &quot;h3&quot;. See also
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bove. Note that when using &quot;<a href="#crt-list">crt-list</a>&quot;, a certificate may override the
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting and re-enable its processing.
 </pre><a class="anchor" name="no-ca-names"></a><a class="anchor" name="5-no-ca-names"></a><a class="anchor" name="5.1-no-ca-names"></a><a class="anchor" name="no-ca-names (Bind and server options)"></a><a class="anchor" name="no-ca-names (Bind options)"></a><div class="keyword"><b><a class="anchor" name="no-ca-names"></a><a href="#5.1-no-ca-names">no-ca-names</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 prevents from send CA names in server hello message when ca-file is used.
 Use &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; instead of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; with &quot;<a href="#no-ca-names">no-ca-names</a>&quot;.
@@ -27143,7 +27220,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev7-102 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev7-117 &ndash; Configuration Manual<br>
 							<small>, 2023/04/08</small>
 						</div>
 					</div>
