@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7.6-2 - Configuration Manual</title>
+		<title>HAProxy version 2.7.6-103 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4138,7 +4138,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4149,7 +4149,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7.6-2</strong></p>
+							<p><strong>version 2.7.6-103</strong></p>
 							<p>
 								2023/03/28<br>
 								
@@ -5727,10 +5727,141 @@ As a result, here is the matrix indicating how special characters can be
 entered in different contexts (unprintable characters are replaced with their
 name within angle brackets). Note that some characters that may only be
 represented escaped have no possible representation inside single quotes,
-hence the '-' there:
+hence its absence there:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>Character</th><th>Unquoted</th><th>Weakly quoted</th><th>Strongly quoted</th></tr></thead>
-</table></div>
+<tr><td >&lt;TAB&gt;</td><td >\&lt;TAB&gt;, \x09</td><td >&quot;&lt;TAB&gt;&quot;, &quot;\&lt;TAB&gt;&quot;, &quot;\x09&quot;</td><td >'&lt;TAB&gt;'</td></tr>
+<tr><td >&lt;LF&gt;</td><td >\n, \x0a</td><td >&quot;\n&quot;, &quot;\x0a&quot;</td><td ></td></tr>
+<tr><td >&lt;CR&gt;</td><td >\r, \x0d</td><td >&quot;\r&quot;, &quot;\x0d&quot;</td><td ></td></tr>
+<tr><td >&lt;SPC&gt;</td><td >\&lt;SPC&gt;, \x20</td><td >&quot;&lt;SPC&gt;&quot;, &quot;\&lt;SPC&gt;&quot;, &quot;\x20&quot;</td><td >'&lt;SPC&gt;'</td></tr>
+<tr><td >&quot;</td><td >\&quot;, \x22</td><td >&quot;\&quot;&quot;, &quot;\x22&quot;</td><td >'&quot;'</td></tr>
+<tr><td >#</td><td >\#, \x23</td><td >&quot;#&quot;, &quot;\#&quot;, &quot;\x23&quot;</td><td >'#'</td></tr>
+<tr><td >$</td><td >$, \$, \x24</td><td >&quot;\$&quot;, &quot;\x24&quot;</td><td >'$'</td></tr>
+<tr><td >'</td><td >\', \x27</td><td >&quot;'&quot;, &quot;\'&quot;, &quot;\x27&quot;</td><td ></td></tr>
+<tr><td >\</td><td >\\, \x5c</td><td >&quot;\\&quot;, &quot;\x5c&quot;</td><td >'\'</td></tr>
+</table><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># those are all strictly equivalent:</span>
+log-format %{+Q}o\ %t\ %s\ %{-Q}r
+log-format &quot;%{+Q}o %t %s %{-Q}r&quot;
+log-format '%{+Q}o %t %s %{-Q}r'
+log-format &quot;%{+Q}o %t&quot;' %s %{-Q}r'
+log-format &quot;%{+Q}o %t&quot;' %s'\ %{-Q}r
+</code></pre>
+</div><pre class="text">There is one particular case where a second level of quoting or escaping may be
+necessary. Some keywords take arguments within parenthesis, sometimes delimited
+by commas. These arguments are commonly integers or predefined words, but when
+they are arbitrary strings, it may be required to perform a separate level of
+escaping to disambiguate the characters that belong to the argument from the
+characters that are used to delimit the arguments themselves. A pretty common
+case is the &quot;<a href="#regsub">regsub</a>&quot; converter. It takes a regular expression in argument, and
+if a closing parenthesis is needed inside, this one will require to have its
+own quotes.
+
+The keyword argument parser is exactly the same as the top-level one regarding
+quotes, except that the \#, \$, and \xNN escapes are not processed. But what is
+not always obvious is that the delimiters used inside must first be escaped or
+quoted so that they are not resolved at the top level.
+
+Let's take this example making use of the &quot;<a href="#regsub">regsub</a>&quot; converter which takes 3
+arguments, one regular expression, one replacement string and one set of flags:
+
+    # replace all occurrences of &quot;foo&quot; with &quot;blah&quot; in the path:
+    http-request set-path %[path,regsub(foo,blah,g)]
+
+Here no special quoting was necessary. But if now we want to replace either
+&quot;foo&quot; or &quot;bar&quot; with &quot;blah&quot;, we'll need the regular expression &quot;(foo|bar)&quot;. We
+cannot write:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+
+because we would like the string to cut like this:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+                                       |---------|----|-|
+                                 arg1 _/         /    /
+                                 arg2 __________/    /
+                                 arg3 ______________/
+
+but actually what is passed is a string between the opening and closing
+parenthesis then garbage:
+
+    http-request set-path %[path,regsub((foo|bar),blah,g)]
+                                       |--------|--------|
+                        arg1=(foo|bar _/        /
+                    trailing garbage  _________/
+
+The obvious solution here seems to be that the closing parenthesis needs to be
+quoted, but alone this will not work, because as mentioned above, quotes are
+processed by the top-level parser which will resolve them before processing
+this word:
+
+    http-request set-path %[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+    ------------ -------- ----------------------------------
+       word1       word2    word3=%[path,regsub((foo|bar),blah,g)]
+
+So we didn't change anything for the argument parser at the second level which
+still sees a truncated regular expression as the only argument, and garbage at
+the end of the string. By escaping the quotes they will be passed unmodified to
+the second level:
+
+    http-request set-path %[path,regsub(\&quot;(foo|bar)\&quot;,blah,g)]
+    ------------ -------- ------------------------------------
+       word1       word2    word3=%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+                                                |---------||----|-|
+                                arg1=(foo|bar) _/          /    /
+                                    arg2=blah  ___________/    /
+                                        arg3=g _______________/
+
+Another approach consists in using single quotes outside the whole string and
+double quotes inside (so that the double quotes are not stripped again):
+
+    http-request set-path '%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]'
+    ------------ --------  ----------------------------------
+       word1       word2    word3=%[path,regsub(&quot;(foo|bar)&quot;,blah,g)]
+                                                |---------||----|-|
+                                arg1=(foo|bar) _/          /    /
+                                          arg2 ___________/    /
+                                          arg3 _______________/
+
+When using regular expressions, it can happen that the dollar ('$') character
+appears in the expression or that a backslash ('\') is used in the replacement
+string. In this case these ones will also be processed inside the double quotes
+thus single quotes are preferred (or double escaping). Example:
+
+    http-request set-path '%[path,regsub(&quot;^/(here)(/|$)&quot;,&quot;my/\1&quot;,g)]'
+    ------------ --------  -----------------------------------------
+       word1       word2    word3=%[path,regsub(&quot;^/(here)(/|$)&quot;,&quot;my/\1&quot;,g)]
+                                                |-------------| |-----||-|
+                              arg1=(here)(/|$) _/               /      /
+                                    arg2=my/\1 ________________/      /
+                                          arg3 ______________________/
+
+Remember that backslashes are not escape characters within single quotes and
+that the whole word above is already protected against them using the single
+quotes. Conversely, if double quotes had been used around the whole expression,
+single the dollar character and the backslashes would have been resolved at top
+level, breaking the argument contents at the second level.
+
+Unfortunately, since single quotes can't be escaped inside of strong quoting,
+if you need to include single quotes in your argument, you will need to escape
+or quote them twice. There are a few ways to do this:
+
+    http-request set-var(txn.foo) str(&quot;\\'foo\\'&quot;)
+    http-request set-var(txn.foo) str(\&quot;\'foo\'\&quot;)
+    http-request set-var(txn.foo) str(\\\'foo\\\')
+
+When in doubt, simply do not use quotes anywhere, and start to place single or
+double quotes around arguments that require a comma or a closing parenthesis,
+and think about escaping these quotes using a backslash if the string contains
+a dollar or a backslash. Again, this is pretty similar to what is used under
+a Bourne shell when double-escaping a command passed to &quot;eval&quot;. For API writers
+the best is probably to place escaped quotes around each and every argument,
+regardless of their contents. Users will probably find that using single quotes
+around the whole expression and double quotes around each argument provides
+more readable configurations.
+</pre></div>
 <a class="anchor" id="2.3" name="2.3"></a>
 <h2 id="chapter-2.3" data-target="2.3"><small><a class="small" href="#2.3">2.3.</a></small> Environment variables</h2>
 <div><pre class="text">HAProxy's configuration supports environment variables. Those variables are
@@ -18063,7 +18194,8 @@ certificates will be presented to clients who provide a valid TLS Server Name
 Indication field matching one of their CN or alt subjects. Wildcards are
 supported, where a wildcard character '*' is used instead of the first
 hostname component (e.g. *.example.org matches www.example.org but not
-www.sub.example.org).
+www.sub.example.org). If an empty directory is used, HAProxy will not start
+unless the &quot;<a href="#strict-sni">strict-sni</a>&quot; keyword is used.
 
 If no SNI is provided by the client or if the SSL library does not support
 TLS extensions, or if the client provides an SNI hostname which does not
@@ -18430,8 +18562,11 @@ is also available on global statement &quot;<a href="#ssl-default-bind-options">
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="strict-sni"></a><a class="anchor" name="5-strict-sni"></a><a class="anchor" name="5.1-strict-sni"></a><a class="anchor" name="strict-sni (Bind and server options)"></a><a class="anchor" name="strict-sni (Bind options)"></a><div class="keyword"><b><a class="anchor" name="strict-sni"></a><a href="#5.1-strict-sni">strict-sni</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. The
 SSL/TLS negotiation is allow only if the client provided an SNI which match
-a certificate. The default certificate is not used.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information.
+a certificate. The default certificate is not used. This option also allows
+to start without any certificate on a bind line, so an empty directory could
+be used and filled later from the stats socket.
+See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
+the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -26391,7 +26526,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7.6-2 &ndash; Configuration Manual<br>
+							HAProxy 2.7.6-103 &ndash; Configuration Manual<br>
 							<small>, 2023/03/28</small>
 						</div>
 					</div>
