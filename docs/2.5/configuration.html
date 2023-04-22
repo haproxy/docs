@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.5.13-2 - Configuration Manual</title>
+		<title>HAProxy version 2.5.13-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4051,7 +4051,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/03/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4062,7 +4062,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.5.13-2</strong></p>
+							<p><strong>version 2.5.13-47</strong></p>
 							<p>
 								2023/03/17<br>
 								
@@ -17539,7 +17539,8 @@ multiple files or directories. The certificates will be presented to clients
 who provide a valid TLS Server Name Indication field matching one of their
 CN or alt subjects. Wildcards are supported, where a wildcard character '*'
 is used instead of the first hostname component (e.g. *.example.org matches
-www.example.org but not www.sub.example.org).
+www.example.org but not www.sub.example.org). If an empty directory is used,
+HAProxy will not start unless the &quot;<a href="#strict-sni">strict-sni</a>&quot; keyword is used.
 
 If no SNI is provided by the client or if the SSL library does not support
 TLS extensions, or if the client provides an SNI hostname which does not
@@ -17896,8 +17897,11 @@ is also available on global statement &quot;<a href="#ssl-default-bind-options">
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="strict-sni"></a><a class="anchor" name="5-strict-sni"></a><a class="anchor" name="5.1-strict-sni"></a><a class="anchor" name="strict-sni (Bind and server options)"></a><a class="anchor" name="strict-sni (Bind options)"></a><div class="keyword"><b><a class="anchor" name="strict-sni"></a><a href="#5.1-strict-sni">strict-sni</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. The
 SSL/TLS negotiation is allow only if the client provided an SNI which match
-a certificate. The default certificate is not used.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information.
+a certificate. The default certificate is not used. This option also allows
+to start without any certificate on a bind line, so an empty directory could
+be used and filled later from the stats socket.
+See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
+the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -25546,7 +25550,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.5.13-2 &ndash; Configuration Manual<br>
+							HAProxy 2.5.13-47 &ndash; Configuration Manual<br>
 							<small>, 2023/03/17</small>
 						</div>
 					</div>
