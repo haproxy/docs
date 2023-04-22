@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev7-126 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev7-170 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4224,7 +4224,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4235,7 +4235,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev7-126</strong></p>
+							<p><strong>version 2.8-dev7-170</strong></p>
 							<p>
 								2023/04/08<br>
 								
@@ -7956,15 +7956,22 @@ means that HAProxy will not try to detect idle streams. The default is 1000,
 which seems to correctly detect end user pauses (e.g. read a page before
 clicking). There should be no reason for changing this value. Please check
 tune.ssl.maxrecord below.
-</pre><a class="anchor" name="tune.listener.multi-queue"></a><a class="anchor" name="3-tune.listener.multi-queue"></a><a class="anchor" name="3.2-tune.listener.multi-queue"></a><a class="anchor" name="tune.listener.multi-queue (Global parameters)"></a><a class="anchor" name="tune.listener.multi-queue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.listener.multi-queue"></a><a href="#3.2-tune.listener.multi-queue">tune.listener.multi-queue</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the listener's multi-queue accept which
-spreads the incoming traffic to all threads a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line is allowed to run
-on instead of taking them for itself. This provides a smoother traffic
+</pre><a class="anchor" name="tune.listener.multi-queue"></a><a class="anchor" name="3-tune.listener.multi-queue"></a><a class="anchor" name="3.2-tune.listener.multi-queue"></a><a class="anchor" name="tune.listener.multi-queue (Global parameters)"></a><a class="anchor" name="tune.listener.multi-queue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.listener.multi-queue"></a><a href="#3.2-tune.listener.multi-queue">tune.listener.multi-queue</a></b> <span style="color: #800">{ on | fair | off }</span></div><pre class="text">Enables ('on' / 'fair') or disables ('off') the listener's multi-queue accept
+which spreads the incoming traffic to all threads a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line is allowed to
+run on instead of taking them for itself. This provides a smoother traffic
 distribution and scales much better, especially in environments where threads
 may be unevenly loaded due to external activity (network interrupts colliding
-with one thread for example). This option is enabled by default, but it may
-be forcefully disabled for troubleshooting or for situations where it is
-estimated that the operating system already provides a good enough
-distribution and connections are extremely short-lived.
+with one thread for example). The default mode, &quot;on&quot;, optimizes the choice of
+a thread by picking in a sample the one with the less connections. It is
+often the best choice when connections are long-lived as it manages to keep
+all threads busy. A second mode, &quot;fair&quot;, instead cycles through all threads
+regardless of their instant load level. It can be better suited for short-
+lived connections, or on machines with very large numbers of threads where
+the probability to find the least loaded thread with the first mode is low.
+Finally it is possible to forcefully disable the redistribution mechanism
+using &quot;off&quot; for troubleshooting, or for situations where connections are
+short-lived and it is estimated that the operating system alredy provides a
+good enough distribution. The default is &quot;on&quot;.
 </pre><a class="anchor" name="tune.lua.forced-yield"></a><a class="anchor" name="3-tune.lua.forced-yield"></a><a class="anchor" name="3.2-tune.lua.forced-yield"></a><a class="anchor" name="tune.lua.forced-yield (Global parameters)"></a><a class="anchor" name="tune.lua.forced-yield (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.forced-yield"></a><a href="#3.2-tune.lua.forced-yield">tune.lua.forced-yield</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive forces the Lua engine to execute a yield each &lt;number&gt; of
 instructions executed. This permits interrupting a long script and allows the
 HAProxy scheduler to process other tasks like accepting connections or
@@ -19214,10 +19221,21 @@ and absolute specifications because the whole &quot;<span class="dropdown"><a cl
 an absolute notation or a relative one, as those not set will be resolved at
 the end of the parsing.
 
+It is important to know that each listener described by a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line creates
+at least one socket represented by at least one file descriptor. Since file
+descriptors cannot span multiple thread groups, if a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line specifies a
+thread range that covers more than one group, several file descriptors will
+automatically be created so that there is at least one per group. Technically
+speaking they all refer to the same socket in the kernel, but they will get a
+distinct identifier in haproxy and will even have a dedicated stats entry if
+&quot;<a href="#option%20socket-stats">option socket-stats</a>&quot; is used.
+
 The main purpose is to have multiple bind lines sharing the same IP:port but
 not the same thread in a listener, so that the system can distribute the
 incoming connections into multiple queues, bypassing haproxy's internal queue
 load balancing. Currently Linux 3.9 and above is known for supporting this.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; keyword above that automates duplication of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+lines and their assignment to multiple groups of threads.
 </pre><a class="anchor" name="tls-ticket-keys"></a><a class="anchor" name="5-tls-ticket-keys"></a><a class="anchor" name="5.1-tls-ticket-keys"></a><a class="anchor" name="tls-ticket-keys (Bind and server options)"></a><a class="anchor" name="tls-ticket-keys (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-ticket-keys"></a><a href="#5.1-tls-ticket-keys">tls-ticket-keys</a></b> <span style="color: #080">&lt;keyfile&gt;</span></div><pre class="text">Sets the TLS ticket keys file to load the keys from. The keys need to be 48
 or 80 bytes long, depending if aes128 or aes256 is used, encoded with base64
 with one line per key (ex. openssl rand 80 | openssl base64 -A | xargs echo).
@@ -27220,7 +27238,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev7-126 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev7-170 &ndash; Configuration Manual<br>
 							<small>, 2023/04/08</small>
 						</div>
 					</div>
