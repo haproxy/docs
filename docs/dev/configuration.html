@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev7-175 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3989,6 +3989,8 @@
 							
 							<a class="list-group-item" href="#tune.idletimer">tune.idletimer</a>
 							
+							<a class="list-group-item" href="#tune.listener.default-shards">tune.listener.default-shards</a>
+							
 							<a class="list-group-item" href="#tune.listener.multi-queue">tune.listener.multi-queue</a>
 							
 							<a class="list-group-item" href="#tune.lua.burst-timeout">tune.lua.burst-timeout</a>
@@ -4224,7 +4226,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4235,9 +4237,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev7-175</strong></p>
+							<p><strong>version 2.8-dev8</strong></p>
 							<p>
-								2023/04/08<br>
+								2023/04/23<br>
 								
 							</p>
 						</div>
@@ -7956,6 +7958,29 @@ means that HAProxy will not try to detect idle streams. The default is 1000,
 which seems to correctly detect end user pauses (e.g. read a page before
 clicking). There should be no reason for changing this value. Please check
 tune.ssl.maxrecord below.
+</pre><a class="anchor" name="tune.listener.default-shards"></a><a class="anchor" name="3-tune.listener.default-shards"></a><a class="anchor" name="3.2-tune.listener.default-shards"></a><a class="anchor" name="tune.listener.default-shards (Global parameters)"></a><a class="anchor" name="tune.listener.default-shards (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.listener.default-shards"></a><a href="#3.2-tune.listener.default-shards">tune.listener.default-shards</a></b> <span style="color: #800">{ by-process | by-thread | by-group }</span></div><pre class="text">Normally, all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines will create a single shard, that is, a single
+socket that all threads of the process will listen to. With many threads,
+this is not very efficient, and may even induce some important overhead in
+the kernel for updating the polling state or even distributing events to the
+various threads. Modern operating systems support balancing of incoming
+connections, a mechanism that will consist in permitting multiple sockets to
+be bound to the same address and port, and to evenly distribute all incoming
+connections to these sockets so that each thread only sees the connections
+that are waiting in the socket it is bound to. This significantly reduces
+kernel-side overhead and increases performance in the incoming connection
+path. This is usually enabled in HAProxy using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; setting on &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+lines, which defaults to 1, meaning that each listener will be unique in the
+process. On systems with many processors, it may be more convenient to change
+the default setting to &quot;by-thread&quot; in order to always create one listening
+socket per thread, or &quot;by-group&quot; in order to always create one listening
+socket per thread group. Be careful about the file descriptor usage with
+&quot;by-thread&quot; as each listener will need as many sockets as there are threads.
+Also some operating systems (e.g. FreeBSD) are limited to no more than 256
+sockets on a same address. Note that &quot;by-group&quot; will remain equivalent to
+&quot;by-process&quot; for default configurations involving a single thread group, and
+will fall back to sharing the same socket on systems that do not support this
+mechanism. The default is &quot;by-group&quot; with a fallback to &quot;by-process&quot; for
+systems or socket families that do not support multiple bindings.
 </pre><a class="anchor" name="tune.listener.multi-queue"></a><a class="anchor" name="3-tune.listener.multi-queue"></a><a class="anchor" name="3.2-tune.listener.multi-queue"></a><a class="anchor" name="tune.listener.multi-queue (Global parameters)"></a><a class="anchor" name="tune.listener.multi-queue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.listener.multi-queue"></a><a href="#3.2-tune.listener.multi-queue">tune.listener.multi-queue</a></b> <span style="color: #800">{ on | fair | off }</span></div><pre class="text">Enables ('on' / 'fair') or disables ('off') the listener's multi-queue accept
 which spreads the incoming traffic to all threads a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line is allowed to
 run on instead of taking them for itself. This provides a smoother traffic
@@ -19137,6 +19162,14 @@ special value &quot;by-group&quot; will create one shard per thread group. This 
 be useful when dealing with many threads and not wanting to create too many
 sockets. The load distribution will be a bit less optimal but the contention
 (especially in the system) will still be lower than with a single socket.
+
+On operating systems that do not support multiple sockets bound to the same
+address, &quot;by-thread&quot; and &quot;by-group&quot; will automatically fall back to a single
+shard. For &quot;by-group&quot; this is done without any warning since it doesn't
+change anything for a single group, and will result in sockets being
+duplicated for each group anyway. However, for &quot;by-thread&quot;, a diagnostic
+warning will be emitted if this happens since the resulting number of
+listeners will not be the expected one.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
 certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
@@ -27238,8 +27271,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev7-175 &ndash; Configuration Manual<br>
-							<small>, 2023/04/08</small>
+							HAProxy 2.8-dev8 &ndash; Configuration Manual<br>
+							<small>, 2023/04/23</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
