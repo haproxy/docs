@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.22-2 - Configuration Manual</title>
+		<title>HAProxy version 2.4.22-51 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3467,15 +3467,7 @@
 							
 							<a class="list-group-item" href="#thread">thread</a>
 							
-							<a class="list-group-item" href="#timeout (Log forwarding)">timeout (Log forwarding)</a>
-							
-							<a class="list-group-item" href="#timeout (Mailers)">timeout (Mailers)</a>
-							
-							<a class="list-group-item" href="#timeout (Rings)">timeout (Rings)</a>
-							
-							<a class="list-group-item" href="#timeout (Alphabetically sorted keywords reference)">timeout (Alphabetically sorted keywords reference)</a>
-							
-							<a class="list-group-item" href="#timeout (The resolvers section)">timeout (The resolvers section)</a>
+							<a class="list-group-item" href="#timeout">timeout</a>
 							
 							<a class="list-group-item" href="#timeout check">timeout check</a>
 							
@@ -3754,7 +3746,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/02/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3765,7 +3757,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.22-2</strong></p>
+							<p><strong>version 2.4.22-51</strong></p>
 							<p>
 								2023/02/14<br>
 								
@@ -5355,6 +5347,10 @@ file, or could be inherited by a program (See 3.7. Programs):
 * HAPROXY_MASTER_CLI: In master-worker mode, listeners addresses of the master
   CLI, separated by semicolons.
 
+* HAPROXY_STARTUP_VERSION: contains the version used to start, in master-worker
+  mode this is the version which was used to start the master, even after
+  updating the binary and reloading.
+
 In addition, some pseudo-variables are internally resolved and may be used as
 regular variables. Pseudo-variables always start with a dot ('.'), and are the
 only ones where the dot is permitted. The current list of pseudo-variables is:
@@ -5658,6 +5654,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize">tune.bufsize</a>
    - <a href="#tune.chksize">tune.chksize</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
+   - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
    - <a href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
@@ -12497,7 +12494,8 @@ are often the only way to detect them.
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#option%20dontlognull">dontlognull</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, and <a href="#8">section 8</a> about logging.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-keep-alive"></a><a class="anchor" name="4-option http-keep-alive"></a><a class="anchor" name="4.2-option http-keep-alive"></a><a class="anchor" name="option http-keep-alive (Proxies)"></a><a class="anchor" name="option http-keep-alive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-keep-alive"></a><a href="#4.2-option%20http-keep-alive">option http-keep-alive</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-keep-alive"></a><a class="anchor" name="4-no option http-keep-alive"></a><a class="anchor" name="4.2-no option http-keep-alive"></a><a class="anchor" name="no option http-keep-alive (Proxies)"></a><a class="anchor" name="no option http-keep-alive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-keep-alive"></a><a href="#4.2-no%20option%20http-keep-alive">no option http-keep-alive</a></b></div><pre class="text">Enable or disable HTTP keep-alive from client to server
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-keep-alive"></a><a class="anchor" name="4-option http-keep-alive"></a><a class="anchor" name="4.2-option http-keep-alive"></a><a class="anchor" name="option http-keep-alive (Proxies)"></a><a class="anchor" name="option http-keep-alive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-keep-alive"></a><a href="#4.2-option%20http-keep-alive">option http-keep-alive</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-keep-alive"></a><a class="anchor" name="4-no option http-keep-alive"></a><a class="anchor" name="4.2-no option http-keep-alive"></a><a class="anchor" name="no option http-keep-alive (Proxies)"></a><a class="anchor" name="no option http-keep-alive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-keep-alive"></a><a href="#4.2-no%20option%20http-keep-alive">no option http-keep-alive</a></b></div><pre class="text">Enable or disable HTTP keep-alive from client to server for HTTP/1.x
+connections
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -12506,12 +12504,11 @@ in a specific instance by prepending the &quot;no&quot; keyword before it.
 <span class="label label-info">Arguments :</span> none
 </div>
 <pre class="text">By default HAProxy operates in keep-alive mode with regards to persistent
-connections: for each connection it processes each request and response, and
-leaves the connection idle on both sides between the end of a response and
-the start of a new request. This mode may be changed by several options such
-as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;<a href="#option%20httpclose">option httpclose</a>&quot;. This option allows to
-set back the keep-alive mode, which can be useful when another mode was used
-in a defaults section.
+HTTP/1.x connections: for each connection it processes each request and
+response, and leaves the connection idle on both sides. This mode may be
+changed by several options such as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;option
+httpclose&quot;. This option allows to set back the keep-alive mode, which can be
+useful when another mode was used in a defaults section.
 
 Setting &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot; enables HTTP keep-alive mode on the client-
 and server- sides. This provides the lowest latency on the client side (slow
@@ -12528,15 +12525,6 @@ situations where this option may be useful :
     compared to the cost of retrieving the associated object from the server.
 
 This last case can happen when the server is a fast static server of cache.
-In this case, the server will need to be properly tuned to support high enough
-connection counts because connections will last until the client sends another
-request.
-
-If the client request has to go to another backend or another server due to
-content switching or the load balancing algorithm, the idle connection will
-immediately be closed and a new one re-opened. Option &quot;<a href="#option%20prefer-last-server">prefer-last-server</a>&quot; is
-available to try optimize server selection so that if the server currently
-attached to an idle connection is usable, it will be used.
 
 At the moment, logs will not indicate whether requests came from the same
 session or not. The accept date reported in the logs corresponds to the end
@@ -12546,9 +12534,8 @@ timeout defined by &quot;<a href="#timeout%20http-keep-alive">timeout http-keep-
 not set.
 
 This option disables and replaces any previous &quot;<a href="#option%20httpclose">option httpclose</a>&quot; or &quot;option
-http-server-close&quot;. When backend and frontend options differ, all of these 4
-options have precedence over &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpclose">option httpclose</a>&quot;,, &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot;, &quot;<a href="#option%20prefer-last-server">option prefer-last-server</a>&quot;, &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;, and &quot;1.1. The HTTP transaction model&quot;.</div>
+http-server-close&quot;.
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpclose">option httpclose</a>&quot;,, &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot;, &quot;<a href="#option%20prefer-last-server">option prefer-last-server</a>&quot; and &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-no-delay"></a><a class="anchor" name="4-option http-no-delay"></a><a class="anchor" name="4.2-option http-no-delay"></a><a class="anchor" name="option http-no-delay (Proxies)"></a><a class="anchor" name="option http-no-delay (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-no-delay"></a><a href="#4.2-option%20http-no-delay">option http-no-delay</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-no-delay"></a><a class="anchor" name="4-no option http-no-delay"></a><a class="anchor" name="4.2-no option http-no-delay"></a><a class="anchor" name="no option http-no-delay (Proxies)"></a><a class="anchor" name="no option http-no-delay (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-no-delay"></a><a href="#4.2-no%20option%20http-no-delay">no option http-no-delay</a></b></div><pre class="text">Instruct the system to favor low interactive delays over performance in HTTP
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -12581,7 +12568,8 @@ is discovered. The impact of using this option is an increase of bandwidth
 usage and CPU usage, which may significantly lower performance in high
 latency environments.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-pretend-keepalive"></a><a class="anchor" name="4-option http-pretend-keepalive"></a><a class="anchor" name="4.2-option http-pretend-keepalive"></a><a class="anchor" name="option http-pretend-keepalive (Proxies)"></a><a class="anchor" name="option http-pretend-keepalive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-pretend-keepalive"></a><a href="#4.2-option%20http-pretend-keepalive">option http-pretend-keepalive</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-pretend-keepalive"></a><a class="anchor" name="4-no option http-pretend-keepalive"></a><a class="anchor" name="4.2-no option http-pretend-keepalive"></a><a class="anchor" name="no option http-pretend-keepalive (Proxies)"></a><a class="anchor" name="no option http-pretend-keepalive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-pretend-keepalive"></a><a href="#4.2-no%20option%20http-pretend-keepalive">no option http-pretend-keepalive</a></b></div><pre class="text">Define whether HAProxy will announce keepalive to the server or not
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-pretend-keepalive"></a><a class="anchor" name="4-option http-pretend-keepalive"></a><a class="anchor" name="4.2-option http-pretend-keepalive"></a><a class="anchor" name="option http-pretend-keepalive (Proxies)"></a><a class="anchor" name="option http-pretend-keepalive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-pretend-keepalive"></a><a href="#4.2-option%20http-pretend-keepalive">option http-pretend-keepalive</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-pretend-keepalive"></a><a class="anchor" name="4-no option http-pretend-keepalive"></a><a class="anchor" name="4.2-no option http-pretend-keepalive"></a><a class="anchor" name="no option http-pretend-keepalive (Proxies)"></a><a class="anchor" name="no option http-pretend-keepalive (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-pretend-keepalive"></a><a href="#4.2-no%20option%20http-pretend-keepalive">no option http-pretend-keepalive</a></b></div><pre class="text">Define whether HAProxy will announce keepalive for HTTP/1.x connection to the
+server or not
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -12590,13 +12578,12 @@ latency environments.
 <span class="label label-info">Arguments :</span> none
 </div>
 <pre class="text">When running with &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;<a href="#option%20httpclose">option httpclose</a>&quot;, HAProxy
-adds a &quot;Connection: close&quot; header to the request forwarded to the server.
-Unfortunately, when some servers see this header, they automatically refrain
-from using the chunked encoding for responses of unknown length, while this
-is totally unrelated. The immediate effect is that this prevents HAProxy from
-maintaining the client connection alive. A second effect is that a client or
-a cache could receive an incomplete response without being aware of it, and
-consider the response complete.
+adds a &quot;Connection: close&quot; header to the HTTP/1.x request forwarded to the
+server. Unfortunately, when some servers see this header, they automatically
+refrain from using the chunked encoding for responses of unknown length,
+while this is totally unrelated. The effect is that a client or a cache could
+receive an incomplete response without being aware of it, and consider the
+response complete.
 
 By setting &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;, HAProxy will make the server
 believe it will keep the connection alive. The server will then not fall back
@@ -12616,9 +12603,7 @@ enabling this option might save a few CPU cycles.
 This option may be set in backend and listen sections. Using it in a frontend
 section will be ignored and a warning will be reported during startup. It is
 a backend related option, so there is no real reason to set it on a
-frontend. This option may be combined with &quot;<a href="#option%20httpclose">option httpclose</a>&quot;, which will
-cause keepalive to be announced to the server and close to be announced to
-the client. This practice is discouraged though.
+frontend.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
@@ -12651,7 +12636,7 @@ converted to &quot;HTTP_X_FORWARDED_FOR&quot; in FastCGI.
 
 Note this option is evaluated per proxy and after the http-request rules
 evaluation.
-</pre><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-server-close"></a><a class="anchor" name="4-option http-server-close"></a><a class="anchor" name="4.2-option http-server-close"></a><a class="anchor" name="option http-server-close (Proxies)"></a><a class="anchor" name="option http-server-close (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-server-close"></a><a href="#4.2-option%20http-server-close">option http-server-close</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-server-close"></a><a class="anchor" name="4-no option http-server-close"></a><a class="anchor" name="4.2-no option http-server-close"></a><a class="anchor" name="no option http-server-close (Proxies)"></a><a class="anchor" name="no option http-server-close (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-server-close"></a><a href="#4.2-no%20option%20http-server-close">no option http-server-close</a></b></div><pre class="text">Enable or disable HTTP connection closing on the server side
+</pre><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-server-close"></a><a class="anchor" name="4-option http-server-close"></a><a class="anchor" name="4.2-option http-server-close"></a><a class="anchor" name="option http-server-close (Proxies)"></a><a class="anchor" name="option http-server-close (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-server-close"></a><a href="#4.2-option%20http-server-close">option http-server-close</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-server-close"></a><a class="anchor" name="4-no option http-server-close"></a><a class="anchor" name="4.2-no option http-server-close"></a><a class="anchor" name="no option http-server-close (Proxies)"></a><a class="anchor" name="no option http-server-close (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-server-close"></a><a href="#4.2-no%20option%20http-server-close">no option http-server-close</a></b></div><pre class="text">Enable or disable HTTP/1.x connection closing on the server side
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -12660,20 +12645,19 @@ evaluation.
 <span class="label label-info">Arguments :</span> none
 </div>
 <pre class="text">By default HAProxy operates in keep-alive mode with regards to persistent
-connections: for each connection it processes each request and response, and
-leaves the connection idle on both sides between the end of a response and
-the start of a new request. This mode may be changed by several options such
-as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;<a href="#option%20httpclose">option httpclose</a>&quot;. Setting &quot;option
-http-server-close&quot; enables HTTP connection-close mode on the server side
-while keeping the ability to support HTTP keep-alive and pipelining on the
-client side. This provides the lowest latency on the client side (slow
-network) and the fastest session reuse on the server side to save server
-resources, similarly to &quot;<a href="#option%20httpclose">option httpclose</a>&quot;.  It also permits non-keepalive
-capable servers to be served in keep-alive mode to the clients if they
-conform to the requirements of RFC7230. Please note that some servers do not
-always conform to those requirements when they see &quot;Connection: close&quot; in the
-request. The effect will be that keep-alive will never be used. A workaround
-consists in enabling &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;.
+HTTP/1.x connections: for each connection it processes each request and
+response, and leaves the connection idle on both sides. This mode may be
+changed by several options such as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;option
+httpclose&quot;. Setting &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; enables HTTP connection-close
+mode on the server side while keeping the ability to support HTTP keep-alive
+and pipelining on the client side. This provides the lowest latency on the
+client side (slow network) and the fastest session reuse on the server side
+to save server resources, similarly to &quot;<a href="#option%20httpclose">option httpclose</a>&quot;.  It also permits
+non-keepalive capable servers to be served in keep-alive mode to the clients
+if they conform to the requirements of RFC7230. Please note that some servers
+do not always conform to those requirements when they see &quot;Connection: close&quot;
+in the request. The effect will be that keep-alive will never be used. A
+workaround consists in enabling &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;.
 
 At the moment, logs will not indicate whether requests came from the same
 session or not. The accept date reported in the logs corresponds to the end
@@ -12690,7 +12674,7 @@ combines with others when frontend and backend options differ.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpclose">option httpclose</a>&quot;, &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;, &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;, and &quot;1.1. The HTTP transaction model&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpclose">option httpclose</a>&quot;, &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot; and &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option http-use-proxy-header"></a><a class="anchor" name="4-option http-use-proxy-header"></a><a class="anchor" name="4.2-option http-use-proxy-header"></a><a class="anchor" name="option http-use-proxy-header (Proxies)"></a><a class="anchor" name="option http-use-proxy-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option http-use-proxy-header"></a><a href="#4.2-option%20http-use-proxy-header">option http-use-proxy-header</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option http-use-proxy-header"></a><a class="anchor" name="4-no option http-use-proxy-header"></a><a class="anchor" name="4.2-no option http-use-proxy-header"></a><a class="anchor" name="no option http-use-proxy-header (Proxies)"></a><a class="anchor" name="no option http-use-proxy-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option http-use-proxy-header"></a><a href="#4.2-no%20option%20http-use-proxy-header">no option http-use-proxy-header</a></b></div><pre class="text">Make use of non-standard Proxy-Connection header instead of Connection
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -12778,7 +12762,7 @@ backend https_relay
     server apache1 192.168.1.1:443 check port 80
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20ssl-hello-chk">option ssl-hello-chk</a>&quot;, &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;, &quot;<a href="#http-check">http-check</a>&quot; and the &quot;<a href="#check">check</a>&quot;, &quot;<a href="#port">port</a>&quot; and &quot;<a href="#inter">inter</a>&quot; server options.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpclose"></a><a class="anchor" name="4-option httpclose"></a><a class="anchor" name="4.2-option httpclose"></a><a class="anchor" name="option httpclose (Proxies)"></a><a class="anchor" name="option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpclose"></a><a href="#4.2-option%20httpclose">option httpclose</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option httpclose"></a><a class="anchor" name="4-no option httpclose"></a><a class="anchor" name="4.2-no option httpclose"></a><a class="anchor" name="no option httpclose (Proxies)"></a><a class="anchor" name="no option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option httpclose"></a><a href="#4.2-no%20option%20httpclose">no option httpclose</a></b></div><pre class="text">Enable or disable HTTP connection closing
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpclose"></a><a class="anchor" name="4-option httpclose"></a><a class="anchor" name="4.2-option httpclose"></a><a class="anchor" name="option httpclose (Proxies)"></a><a class="anchor" name="option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpclose"></a><a href="#4.2-option%20httpclose">option httpclose</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option httpclose"></a><a class="anchor" name="4-no option httpclose"></a><a class="anchor" name="4.2-no option httpclose"></a><a class="anchor" name="no option httpclose (Proxies)"></a><a class="anchor" name="no option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option httpclose"></a><a href="#4.2-no%20option%20httpclose">no option httpclose</a></b></div><pre class="text">Enable or disable HTTP/1.x connection closing
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -12787,30 +12771,30 @@ backend https_relay
 <span class="label label-info">Arguments :</span> none
 </div>
 <pre class="text">By default HAProxy operates in keep-alive mode with regards to persistent
-connections: for each connection it processes each request and response, and
-leaves the connection idle on both sides between the end of a response and
-the start of a new request. This mode may be changed by several options such
-as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;<a href="#option%20httpclose">option httpclose</a>&quot;.
+HTTP/1.x connections: for each connection it processes each request and
+response, and leaves the connection idle on both sides. This mode may be
+changed by several options such as &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;option
+httpclose&quot;.
 
-If &quot;<a href="#option%20httpclose">option httpclose</a>&quot; is set, HAProxy will close connections with the server
-and the client as soon as the request and the response are received. It will
-also check if a &quot;Connection: close&quot; header is already set in each direction,
-and will add one if missing. Any &quot;Connection&quot; header different from &quot;close&quot;
-will also be removed.
+If &quot;<a href="#option%20httpclose">option httpclose</a>&quot; is set, HAProxy will close the client or the server
+connection, depending where the option is set. Only the frontend is
+considered for client connections while the frontend and the backend are
+considered for server ones. In this case the option is enabled if at least
+one of the frontend or backend holding the connection has it enabled. If the
+option is set on a listener, it is applied both on client and server
+connections. It will check if a &quot;Connection: close&quot; header is already set in
+each direction, and will add one if missing.
 
 This option may also be combined with &quot;<a href="#option%20http-pretend-keepalive">option http-pretend-keepalive</a>&quot;, which
-will disable sending of the &quot;Connection: close&quot; header, but will still cause
-the connection to be closed once the whole response is received.
+will disable sending of the &quot;Connection: close&quot; request header, but will
+still cause the connection to be closed once the whole response is received.
 
-This option may be set both in a frontend and in a backend. It is enabled if
-at least one of the frontend or backend holding a connection has it enabled.
 It disables and replaces any previous &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; or &quot;option
-http-keep-alive&quot;. Please check <a href="#4">section 4</a> (&quot;Proxies&quot;) to see how this option
-combines with others when frontend and backend options differ.
+http-keep-alive&quot;.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot; and &quot;1.1. The HTTP transaction model&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot;.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httplog"></a><a class="anchor" name="4-option httplog"></a><a class="anchor" name="4.2-option httplog"></a><a class="anchor" name="option httplog (Proxies)"></a><a class="anchor" name="option httplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httplog"></a><a href="#4.2-option%20httplog">option httplog</a></b> <span style="color: #008">[ clf ]</span></div><pre class="text">Enable logging of HTTP request, session state and timers
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -17238,7 +17222,8 @@ multiple files or directories. The certificates will be presented to clients
 who provide a valid TLS Server Name Indication field matching one of their
 CN or alt subjects. Wildcards are supported, where a wildcard character '*'
 is used instead of the first hostname component (e.g. *.example.org matches
-www.example.org but not www.sub.example.org).
+www.example.org but not www.sub.example.org). If an empty directory is used,
+HAProxy will not start unless the &quot;<a href="#strict-sni">strict-sni</a>&quot; keyword is used.
 
 If no SNI is provided by the client or if the SSL library does not support
 TLS extensions, or if the client provides an SNI hostname which does not
@@ -17585,8 +17570,11 @@ is also available on global statement &quot;<a href="#ssl-default-bind-options">
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="strict-sni"></a><a class="anchor" name="5-strict-sni"></a><a class="anchor" name="5.1-strict-sni"></a><a class="anchor" name="strict-sni (Bind and server options)"></a><a class="anchor" name="strict-sni (Bind options)"></a><div class="keyword"><b><a class="anchor" name="strict-sni"></a><a href="#5.1-strict-sni">strict-sni</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. The
 SSL/TLS negotiation is allow only if the client provided an SNI which match
-a certificate. The default certificate is not used.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information.
+a certificate. The default certificate is not used. This option also allows
+to start without any certificate on a bind line, so an empty directory could
+be used and filled later from the stats socket.
+See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
+the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -18695,15 +18683,53 @@ concurrent connections and TLS should also usable if the server supports.
 </pre><a class="anchor" name="parse-resolv-conf"></a><a class="anchor" name="5-parse-resolv-conf"></a><a class="anchor" name="5.3.2-parse-resolv-conf"></a><a class="anchor" name="parse-resolv-conf (Bind and server options)"></a><a class="anchor" name="parse-resolv-conf (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="parse-resolv-conf"></a><a href="#5.3.2-parse-resolv-conf">parse-resolv-conf</a></b></div><pre class="text">Adds all nameservers found in /etc/resolv.conf to this resolvers nameservers
 list. Ordered as if each nameserver in /etc/resolv.conf was individually
 placed in the resolvers section in place of this directive.
-</pre><a class="anchor" name="hold"></a><a class="anchor" name="5-hold"></a><a class="anchor" name="5.3.2-hold"></a><a class="anchor" name="hold (Bind and server options)"></a><a class="anchor" name="hold (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="hold"></a><a href="#5.3.2-hold">hold</a></b> <span style="color: #080">&lt;status&gt;</span> <span style="color: #080">&lt;period&gt;</span></div><pre class="text">Defines &lt;period&gt; during which the last name resolution should be kept based
-on last resolution &lt;status&gt;
-  &lt;status&gt; : last name resolution status. Acceptable values are &quot;nx&quot;,
-             &quot;other&quot;, &quot;refused&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20%28Mailers%29">Mailers</a></li><li><a href="#timeout%20%28Rings%29">Rings</a></li><li><a href="#timeout%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#timeout%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot;, &quot;valid&quot;, &quot;obsolete&quot;.
-  &lt;period&gt; : interval between two successive name resolution when the last
-             answer was in &lt;status&gt;. It follows the HAProxy time format.
-             &lt;period&gt; is in milliseconds by default.
+</pre><a class="anchor" name="hold"></a><a class="anchor" name="5-hold"></a><a class="anchor" name="5.3.2-hold"></a><a class="anchor" name="hold (Bind and server options)"></a><a class="anchor" name="hold (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="hold"></a><a href="#5.3.2-hold">hold</a></b> <span style="color: #080">&lt;status&gt;</span> <span style="color: #080">&lt;period&gt;</span></div><pre class="text">Upon receiving the DNS response &lt;status&gt;, determines whether a server's state
+should change from UP to DOWN. To make that determination, it checks whether
+any valid status has been received during the past &lt;period&gt; in order to
+counteract the just received invalid status.
 
-Default value is 10s for &quot;valid&quot;, 0s for &quot;obsolete&quot; and 30s for others.
+  &lt;status&gt; : last name resolution status.
+         nx        After receiving an NXDOMAIN status, check for any valid
+                   status during the concluding period.
+
+         refused   After receiving a REFUSED status, check for any valid
+                   status during the concluding period.
+
+         timeout   After the &quot;timeout retry&quot; has struck, check for any
+                   valid status during the concluding period.
+
+         other     After receiving any other invalid status, check for any
+                   valid status during the concluding period.
+
+         valid     Applies only to &quot;<a href="#http-request%20do-resolve">http-request do-resolve</a>&quot; and
+                   &quot;tcp-request content do-resolve&quot; actions. It defines the
+                   period for which the server will maintain a valid response
+                   before triggering another resolution. It does not affect
+                   dynamic resolution of servers.
+
+         obsolete  Defines how long to wait before removing obsolete DNS
+                   records after an updated answer record is received. It
+                   applies to SRV records.
+
+  &lt;period&gt; : Amount of time into the past during which a valid response must
+             have been received. It follows the HAProxy time format and is in
+             milliseconds by default.
+
+For a server that relies on dynamic DNS resolution to determine its IP
+address, receiving an invalid DNS response, such as NXDOMAIN, will lead to
+changing the server's state from UP to DOWN. The hold directives define how
+far into the past to look for a valid response. If a valid response has been
+received within &lt;period&gt;, the just received invalid status will be ignored.
+
+Unless a valid response has been receiving during the concluding period, the
+server will be marked as DOWN. For example, if &quot;hold nx 30s&quot; is set and the
+last received DNS response was NXDOMAIN, the server will be marked DOWN
+unless a valid response has been received during the last 30 seconds.
+
+A server in the DOWN state will be marked UP immediately upon receiving a
+valid status from the DNS server.
+
+A separate behavior exists for &quot;hold valid&quot; and &quot;hold obsolete&quot;.
 </pre><a class="anchor" name="resolve_retries"></a><a class="anchor" name="5-resolve_retries"></a><a class="anchor" name="5.3.2-resolve_retries"></a><a class="anchor" name="resolve_retries (Bind and server options)"></a><a class="anchor" name="resolve_retries (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolve_retries"></a><a href="#5.3.2-resolve_retries">resolve_retries</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the number &lt;nb&gt; of queries to send to resolve a server name before
 giving up.
 Default value: 3
@@ -24609,7 +24635,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.22-2 &ndash; Configuration Manual<br>
+							HAProxy 2.4.22-51 &ndash; Configuration Manual<br>
 							<small>, 2023/02/14</small>
 						</div>
 					</div>
