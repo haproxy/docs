@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev8-40 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1279,6 +1279,10 @@
 							<a class="list-group-item" href="#bc_err_str">bc_err_str</a>
 							
 							<a class="list-group-item" href="#bc_http_major">bc_http_major</a>
+							
+							<a class="list-group-item" href="#bc_rtt">bc_rtt</a>
+							
+							<a class="list-group-item" href="#bc_rttvar">bc_rttvar</a>
 							
 							<a class="list-group-item" href="#bc_src">bc_src</a>
 							
@@ -4226,7 +4230,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/04/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4237,9 +4241,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev8-40</strong></p>
+							<p><strong>version 2.8-dev9</strong></p>
 							<p>
-								2023/04/23<br>
+								2023/04/28<br>
 								
 							</p>
 						</div>
@@ -22884,6 +22888,18 @@ also be used in a tcp-check or an http-check ruleset.
 </pre><a class="anchor" name="be_name"></a><a class="anchor" name="7-be_name"></a><a class="anchor" name="7.3.3-be_name"></a><a class="anchor" name="be_name (Using ACLs and fetching samples)"></a><a class="anchor" name="be_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_name"></a><a href="#7.3.3-be_name">be_name</a></b> : string</div><pre class="text">Returns a string containing the current backend's name. It can be used in
 frontends with responses to check which backend processed the request. It can
 also be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="bc_rtt"></a><a class="anchor" name="7-bc_rtt"></a><a class="anchor" name="7.3.3-bc_rtt"></a><a class="anchor" name="bc_rtt (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_rtt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_rtt"></a><a href="#7.3.3-bc_rtt">bc_rtt</a></b>(<span style="color: #080">&lt;unit&gt;</span>) : integer</div><pre class="text">Returns the Round Trip Time (RTT) measured by the kernel for the backend
+connection. &lt;unit&gt; is facultative, by default the unit is milliseconds. &lt;unit&gt;
+can be set to &quot;ms&quot; for milliseconds or &quot;us&quot; for microseconds. If the server
+connection is not established, if the connection is not TCP or if the
+operating system does not support TCP_INFO, for example Linux kernels before
+2.4, the sample fetch fails.
+</pre><a class="anchor" name="bc_rttvar"></a><a class="anchor" name="7-bc_rttvar"></a><a class="anchor" name="7.3.3-bc_rttvar"></a><a class="anchor" name="bc_rttvar (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_rttvar (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_rttvar"></a><a href="#7.3.3-bc_rttvar">bc_rttvar</a></b>(<span style="color: #080">&lt;unit&gt;</span>) : integer</div><pre class="text">Returns the Round Trip Time (RTT) variance measured by the kernel for the
+backend connection. &lt;unit&gt; is facultative, by default the unit is milliseconds.
+&lt;unit&gt; can be set to &quot;ms&quot; for milliseconds or &quot;us&quot; for microseconds. If the
+server connection is not established, if the connection is not TCP or if the
+operating system does not support TCP_INFO, for example Linux kernels before
+2.4, the sample fetch fails.
 </pre><a class="anchor" name="be_server_timeout"></a><a class="anchor" name="7-be_server_timeout"></a><a class="anchor" name="7.3.3-be_server_timeout"></a><a class="anchor" name="be_server_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_server_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_server_timeout"></a><a href="#7.3.3-be_server_timeout">be_server_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the server timeout of the
 current backend. This timeout can be overwritten by a &quot;set-timeout&quot; rule. See
 also the &quot;<a href="#cur_server_timeout">cur_server_timeout</a>&quot;.
@@ -27271,8 +27287,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev8-40 &ndash; Configuration Manual<br>
-							<small>, 2023/04/23</small>
+							HAProxy 2.8-dev9 &ndash; Configuration Manual<br>
+							<small>, 2023/04/28</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
