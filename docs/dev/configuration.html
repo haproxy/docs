@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev9-14 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev9-34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1392,6 +1392,8 @@
 							<a class="list-group-item" href="#ciphersuites (Bind options)">ciphersuites (Bind options)</a>
 							
 							<a class="list-group-item" href="#ciphersuites (Server and default-server options)">ciphersuites (Server and default-server options)</a>
+							
+							<a class="list-group-item" href="#client-sigalgs">client-sigalgs</a>
 							
 							<a class="list-group-item" href="#clitcpka-cnt">clitcpka-cnt</a>
 							
@@ -3196,6 +3198,8 @@
 							
 							<a class="list-group-item" href="#shdr_val">shdr_val</a>
 							
+							<a class="list-group-item" href="#sigalgs">sigalgs</a>
+							
 							<a class="list-group-item" href="#size">size</a>
 							
 							<a class="list-group-item" href="#slowstart">slowstart</a>
@@ -3316,9 +3320,13 @@
 							
 							<a class="list-group-item" href="#ssl-default-bind-ciphersuites">ssl-default-bind-ciphersuites</a>
 							
+							<a class="list-group-item" href="#ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a>
+							
 							<a class="list-group-item" href="#ssl-default-bind-curves">ssl-default-bind-curves</a>
 							
 							<a class="list-group-item" href="#ssl-default-bind-options">ssl-default-bind-options</a>
+							
+							<a class="list-group-item" href="#ssl-default-bind-sigalgs">ssl-default-bind-sigalgs</a>
 							
 							<a class="list-group-item" href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>
 							
@@ -4230,7 +4238,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4241,7 +4249,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev9-14</strong></p>
+							<p><strong>version 2.8-dev9-34</strong></p>
 							<p>
 								2023/04/28<br>
 								
@@ -6311,8 +6319,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#setenv">setenv</a>
    - <a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>
    - <a href="#ssl-default-bind-ciphersuites">ssl-default-bind-ciphersuites</a>
+   - <a href="#ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a>
    - <a href="#ssl-default-bind-curves">ssl-default-bind-curves</a>
    - <a href="#ssl-default-bind-options">ssl-default-bind-options</a>
+   - <a href="#ssl-default-bind-sigalgs">ssl-default-bind-sigalgs</a>
    - <a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>
    - <a href="#ssl-default-server-ciphersuites">ssl-default-server-ciphersuites</a>
    - <a href="#ssl-default-server-options">ssl-default-server-options</a>
@@ -7255,6 +7265,19 @@ theirs. The format of the string is defined in
 cipher configuration for TLSv1.2 and earlier, please check the
 &quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more
 information.
+</pre><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a href="#3.1-ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the default string describing the list of signature algorithms related to
+client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
+theirs. The format of the string is a colon-delimited list of signature
+algorithms. Each signature algorithm can use one of two forms: TLS1.3 signature
+scheme names (&quot;rsa_pss_rsae_sha256&quot;) or the public key algorithm + digest form
+(&quot;ECDSA+SHA256&quot;). A list can contain both forms. For more information on the
+format, see SSL_CTX_set1_client_sigalgs(3). A list of signature algorithms is
+also available in RFC8446 <a href="#4.2.3">section 4.2.3</a> and in OpenSSL in the ssl/t1_lib.c
+file.  This setting is not applicable to TLSv1.1 and earlier versions of the
+protocol as the signature algorithms aren't separately negotiated in these
+versions. It is not recommended to change this setting unless compatibility
+with a middlebox is required.
 </pre><a class="anchor" name="ssl-default-bind-curves"></a><a class="anchor" name="3-ssl-default-bind-curves"></a><a class="anchor" name="3.1-ssl-default-bind-curves"></a><a class="anchor" name="ssl-default-bind-curves (Global parameters)"></a><a class="anchor" name="ssl-default-bind-curves (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-curves"></a><a href="#3.1-ssl-default-bind-curves">ssl-default-bind-curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of elliptic curves algorithms (&quot;curve
 suite&quot;) that are negotiated during the SSL/TLS handshake with ECDHE. The format
@@ -7269,7 +7292,21 @@ keyword to see available options.
 <code>global
    ssl-default-bind-options ssl-min-ver TLSv1.0 no-tls-tickets
 </code></pre>
-</div><a class="anchor" name="ssl-default-server-ciphers"></a><a class="anchor" name="3-ssl-default-server-ciphers"></a><a class="anchor" name="3.1-ssl-default-server-ciphers"></a><a class="anchor" name="ssl-default-server-ciphers (Global parameters)"></a><a class="anchor" name="ssl-default-server-ciphers (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-ciphers"></a><a href="#3.1-ssl-default-server-ciphers">ssl-default-server-ciphers</a></b> <span style="color: #080">&lt;ciphers&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
+</div><a class="anchor" name="ssl-default-bind-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-sigalgs"></a><a class="anchor" name="ssl-default-bind-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-sigalgs"></a><a href="#3.1-ssl-default-bind-sigalgs">ssl-default-bind-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
+sets the default string describing the list of signature algorithms that
+are negotiated during the TLSv1.2 and TLSv1.3 handshake for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines
+which do not explicitly define theirs. The format of the string is a
+colon-delimited list of signature algorithms. Each signature algorithm can
+use one of two forms: TLS1.3 signature scheme names (&quot;rsa_pss_rsae_sha256&quot;)
+or the public key algorithm + digest form (&quot;ECDSA+SHA256&quot;). A list
+can contain both forms. For more information on the format,
+see SSL_CTX_set1_sigalgs(3). A list of signature algorithms is also
+available in RFC8446 <a href="#4.2.3">section 4.2.3</a> and in OpenSSL in the ssl/t1_lib.c file.
+This setting is not applicable to TLSv1.1 and earlier versions of the
+protocol as the signature algorithms aren't separately negotiated in these
+versions. It is not recommended to change this setting unless compatibility
+with a middlebox is required.
+</pre><a class="anchor" name="ssl-default-server-ciphers"></a><a class="anchor" name="3-ssl-default-server-ciphers"></a><a class="anchor" name="3.1-ssl-default-server-ciphers"></a><a class="anchor" name="ssl-default-server-ciphers (Global parameters)"></a><a class="anchor" name="ssl-default-server-ciphers (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-ciphers"></a><a href="#3.1-ssl-default-server-ciphers">ssl-default-server-ciphers</a></b> <span style="color: #080">&lt;ciphers&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 sets the default string describing the list of cipher algorithms that are
 negotiated during the SSL/TLS handshake up to TLSv1.2 with the server,
 for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define theirs. The format of
@@ -18714,6 +18751,11 @@ the list of cipher algorithms (&quot;cipher suite&quot;) that are negotiated dur
 TLSv1.3 handshake. The format of the string is defined in &quot;man 1 ciphers&quot; from
 OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section. For cipher configuration
 for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
+</pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the string describing the list of signature algorithms related to client
+authentication that are negotiated . The format of the string is defined in
+&quot;man 3 SSL_CTX_set1_client_sigalgs&quot; from the OpenSSL man pages. It is not
+recommended to use this setting if no specific usecase was identified.
 </pre><a class="anchor" name="crl-file"></a><a class="anchor" name="5-crl-file"></a><a class="anchor" name="5.1-crl-file"></a><a class="anchor" name="crl-file (Bind and server options)"></a><a class="anchor" name="crl-file (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crl-file"></a><a href="#5.1-crl-file">crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 designates a PEM file from which to load certificate revocation list used
 to verify client's certificate. You need to provide a certificate revocation
@@ -19174,6 +19216,12 @@ change anything for a single group, and will result in sockets being
 duplicated for each group anyway. However, for &quot;by-thread&quot;, a diagnostic
 warning will be emitted if this happens since the resulting number of
 listeners will not be the expected one.
+</pre><a class="anchor" name="sigalgs"></a><a class="anchor" name="5-sigalgs"></a><a class="anchor" name="5.1-sigalgs"></a><a class="anchor" name="sigalgs (Bind and server options)"></a><a class="anchor" name="sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="sigalgs"></a><a href="#5.1-sigalgs">sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the string describing the list of signature algorithms that are negotiated
+during the TLSv1.2 and TLSv1.3 handshake. The format of the string is defined
+in &quot;man 3 SSL_CTX_set1_sigalgs&quot; from the OpenSSL man pages. It is not
+recommended to use this setting unless compatibility with a middlebox is
+required.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
 certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
@@ -27292,7 +27340,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev9-14 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev9-34 &ndash; Configuration Manual<br>
 							<small>, 2023/04/28</small>
 						</div>
 					</div>
