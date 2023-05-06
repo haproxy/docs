@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev9-34 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev9-75 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4238,7 +4238,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4249,7 +4249,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev9-34</strong></p>
+							<p><strong>version 2.8-dev9-75</strong></p>
 							<p>
 								2023/04/28<br>
 								
@@ -6526,7 +6526,7 @@ tokens.
 If this parameter is not set, a random value will be selected on process
 startup. This allows to use features which rely on it, albeit with some
 limitations.
-</pre><a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;thread-group&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span>...</div><pre class="text">On some operating systems, it is possible to bind a thread group or a thread
+</pre><a class="anchor" name="cpu-map"></a><a class="anchor" name="3-cpu-map"></a><a class="anchor" name="3.1-cpu-map"></a><a class="anchor" name="cpu-map (Global parameters)"></a><a class="anchor" name="cpu-map (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-map"></a><a href="#3.1-cpu-map">cpu-map</a></b> <span style="color: #008">[auto:]</span><span style="color: #080">&lt;thread-group&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;thread-set&gt;</span>]</span> <span style="color: #080">&lt;cpu-set&gt;</span><span style="color: #008">[,...]</span> <span style="color: #008">[...]</span></div><pre class="text">On some operating systems, it is possible to bind a thread group or a thread
 to a specific CPU set. This means that the designated threads will never run
 on other CPUs. The &quot;<a href="#cpu-map">cpu-map</a>&quot; directive specifies CPU sets for individual
 threads or thread groups. The first argument is a thread group range,
@@ -6542,12 +6542,12 @@ delimited by a dash ('-'). It also is possible to specify all threads at once
 using &quot;all&quot;, only odd numbers using &quot;<a href="#odd">odd</a>&quot; or even numbers using &quot;<a href="#even">even</a>&quot;, just
 like with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">thread<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#thread%20%28Bind%20options%29">Bind options</a></li><li><a href="#thread%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; bind directive. The second and forthcoming arguments
 are CPU sets. Each CPU set is either a unique number starting at 0 for the
-first CPU or a range with two such numbers delimited by a dash ('-'). Outside
-of Linux and BSDs, there may be a limitation on the maximum CPU index to
-either 31 or 63. Multiple CPU numbers or ranges may be specified, and the
-processes or threads will be allowed to bind to all of them. Obviously,
-multiple &quot;<a href="#cpu-map">cpu-map</a>&quot; directives may be specified. Each &quot;<a href="#cpu-map">cpu-map</a>&quot; directive will
-replace the previous ones when they overlap.
+first CPU or a range with two such numbers delimited by a dash ('-'). These
+CPU numbers and ranges may be repeated by delimiting them with commas or by
+passing more ranges as new arguments on the same line. Outside of Linux and
+BSD operating systems, there may be a limitation on the maximum CPU index to
+either 31 or 63. Multiple &quot;<a href="#cpu-map">cpu-map</a>&quot; directives may be specified, but each
+&quot;<a href="#cpu-map">cpu-map</a>&quot; directive will replace the previous ones when they overlap.
 
 Ranges can be partially defined. The higher bound can be omitted. In such
 case, it is replaced by the corresponding maximum value, 32 or 64 depending
@@ -6581,6 +6581,7 @@ cpu-map 1/1- 0-   <span class="comment"># will be replaced by &quot;cpu-map 1/1-
 cpu-map auto:1/1-4   0-3
 cpu-map auto:1/1-4   0-1 2-3
 cpu-map auto:1/1-4   3 2 1 0
+cpu-map auto:1/1-4   3,2,1,0
 
 <span class="comment"># bind each thread to exactly one CPU using all/odd/even keyword</span>
 cpu-map auto:1/all   0-63
@@ -6600,10 +6601,10 @@ cpu-map auto:4/1-10   30-39
 <span class="comment"># Map 80 threads to one physical socket and 80 others to another socket</span>
 <span class="comment"># without forcing assignment. These are split into 4 groups since no</span>
 <span class="comment"># group may have more than 64 threads.</span>
-cpu-map 1/1-40   0-39 80-119    <span class="comment"># node0, siblings 0 &amp; 1</span>
-cpu-map 2/1-40   0-39 80-119
-cpu-map 3/1-40   40-79 120-159  <span class="comment"># node1, siblings 0 &amp; 1</span>
-cpu-map 4/1-40   40-79 120-159
+cpu-map 1/1-40   0-39,80-119    <span class="comment"># node0, siblings 0 &amp; 1</span>
+cpu-map 2/1-40   0-39,80-119
+cpu-map 3/1-40   40-79,120-159  <span class="comment"># node1, siblings 0 &amp; 1</span>
+cpu-map 4/1-40   40-79,120-159
 </code></pre>
 </div><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
 path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
@@ -27340,7 +27341,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev9-34 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev9-75 &ndash; Configuration Manual<br>
 							<small>, 2023/04/28</small>
 						</div>
 					</div>
