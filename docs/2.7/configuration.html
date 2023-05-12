@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7.8 - Configuration Manual</title>
+		<title>HAProxy version 2.7.8-48 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1768,13 +1768,31 @@
 							
 							<a class="list-group-item" href="#http-after-response capture">http-after-response capture</a>
 							
+							<a class="list-group-item" href="#http-after-response del-acl">http-after-response del-acl</a>
+							
 							<a class="list-group-item" href="#http-after-response del-header">http-after-response del-header</a>
+							
+							<a class="list-group-item" href="#http-after-response del-map">http-after-response del-map</a>
 							
 							<a class="list-group-item" href="#http-after-response replace-header">http-after-response replace-header</a>
 							
 							<a class="list-group-item" href="#http-after-response replace-value">http-after-response replace-value</a>
 							
+							<a class="list-group-item" href="#http-after-response sc-inc-gpc">http-after-response sc-inc-gpc</a>
+							
+							<a class="list-group-item" href="#http-after-response sc-inc-gpc0">http-after-response sc-inc-gpc0</a>
+							
+							<a class="list-group-item" href="#http-after-response sc-inc-gpc1">http-after-response sc-inc-gpc1</a>
+							
+							<a class="list-group-item" href="#http-after-response sc-set-gpt">http-after-response sc-set-gpt</a>
+							
+							<a class="list-group-item" href="#http-after-response sc-set-gpt0">http-after-response sc-set-gpt0</a>
+							
 							<a class="list-group-item" href="#http-after-response set-header">http-after-response set-header</a>
+							
+							<a class="list-group-item" href="#http-after-response set-log-level">http-after-response set-log-level</a>
+							
+							<a class="list-group-item" href="#http-after-response set-map">http-after-response set-map</a>
 							
 							<a class="list-group-item" href="#http-after-response set-status">http-after-response set-status</a>
 							
@@ -4138,7 +4156,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4149,7 +4167,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7.8</strong></p>
+							<p><strong>version 2.7.8-48</strong></p>
 							<p>
 								2023/05/02<br>
 								
@@ -7650,6 +7668,11 @@ of different algorithms may be specified, including: RSA, DSA, DH, EC, RAND,
 CIPHERS, DIGESTS, PKEY, PKEY_CRYPTO, PKEY_ASN1. This is the same format that
 openssl configuration file uses:
 https://www.openssl.org/docs/man1.0.2/apps/config.html
+
+HAProxy Version 2.6 disabled the support for engines in the default build.
+This option is only available when HAProxy has been built with support for
+it.  In case the ssl-engine is required HAProxy can be rebuild with the
+USE_ENGINE=1 flag.
 </pre><a class="anchor" name="ssl-mode-async"></a><a class="anchor" name="3-ssl-mode-async"></a><a class="anchor" name="3.2-ssl-mode-async"></a><a class="anchor" name="ssl-mode-async (Global parameters)"></a><a class="anchor" name="ssl-mode-async (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="ssl-mode-async"></a><a href="#3.2-ssl-mode-async">ssl-mode-async</a></b></div><pre class="text">Adds SSL_MODE_ASYNC mode to the SSL context. This enables asynchronous TLS
 I/O operations if asynchronous capable SSL engines are used. The current
 implementation supports a maximum of 32 engines. The Openssl ASYNC API
@@ -10413,10 +10436,19 @@ supported:
   - add-header &lt;name&gt; &lt;fmt&gt;
   - allow
   - capture &lt;sample&gt; id &lt;id&gt;
+  - del-acl(&lt;file-name&gt;) &lt;key fmt&gt;
   - del-header &lt;name&gt; [ -m &lt;meth&gt; ]
+  - del-map(&lt;file-name&gt;) &lt;key fmt&gt;
   - replace-header &lt;name&gt; &lt;regex-match&gt; &lt;replace-fmt&gt;
   - replace-value &lt;name&gt; &lt;regex-match&gt; &lt;replace-fmt&gt;
+  - sc-inc-gpc(&lt;idx&gt;,&lt;sc-id&gt;)
+  - sc-inc-gpc0(&lt;sc-id&gt;)
+  - sc-inc-gpc1(&lt;sc-id&gt;)
+  - sc-set-gpt(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
+  - sc-set-gpt0(&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - set-header &lt;name&gt; &lt;fmt&gt;
+  - set-log-level &lt;level&gt;
+  - set-map(&lt;file-name&gt;) &lt;key fmt&gt; &lt;value fmt&gt;
   - set-status &lt;status&gt; [reason &lt;str&gt;]
   - set-var(&lt;var-name&gt;[,&lt;cond&gt;...]) &lt;expr&gt;
   - set-var-fmt(&lt;var-name&gt;[,&lt;cond&gt;...]) &lt;fmt&gt;
@@ -10453,8 +10485,12 @@ No further &quot;<a href="#http-after-response">http-after-response</a>&quot; ru
 </pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response capture"></a><a class="anchor" name="4-http-after-response capture"></a><a class="anchor" name="4.2-http-after-response capture"></a><a class="anchor" name="http-after-response capture (Proxies)"></a><a class="anchor" name="http-after-response capture (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response capture"></a><a href="#4.2-http-after-response%20capture">http-after-response capture</a></b> <span style="color: #080">&lt;sample&gt;</span> id <span style="color: #080">&lt;id&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This captures sample expression &lt;sample&gt; from the response buffer, and
 converts it to a string. Please refer to &quot;<a href="#http-response%20capture">http-response capture</a>&quot; for a
 complete description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response del-acl"></a><a class="anchor" name="4-http-after-response del-acl"></a><a class="anchor" name="4.2-http-after-response del-acl"></a><a class="anchor" name="http-after-response del-acl (Proxies)"></a><a class="anchor" name="http-after-response del-acl (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response del-acl"></a><a href="#4.2-http-after-response%20del-acl">http-after-response del-acl</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to delete an entry from an ACL. Please refer to &quot;http-request
+del-acl&quot; for a complete description.
 </pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response del-header"></a><a class="anchor" name="4-http-after-response del-header"></a><a class="anchor" name="4.2-http-after-response del-header"></a><a class="anchor" name="http-after-response del-header (Proxies)"></a><a class="anchor" name="http-after-response del-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response del-header"></a><a href="#4.2-http-after-response%20del-header">http-after-response del-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ -m <span style="color: #080">&lt;meth&gt;</span> ]</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This removes all HTTP header fields whose name is specified in &lt;name&gt;. Please
 refer to &quot;<a href="#http-request%20del-header">http-request del-header</a>&quot; for a complete description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response del-map"></a><a class="anchor" name="4-http-after-response del-map"></a><a class="anchor" name="4.2-http-after-response del-map"></a><a class="anchor" name="http-after-response del-map (Proxies)"></a><a class="anchor" name="http-after-response del-map (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response del-map"></a><a href="#4.2-http-after-response%20del-map">http-after-response del-map</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to delete an entry from a MAP. Please refer to &quot;http-request
+del-map&quot; for a complete description.
 </pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response replace-header"></a><a class="anchor" name="4-http-after-response replace-header"></a><a class="anchor" name="4.2-http-after-response replace-header"></a><a class="anchor" name="http-after-response replace-header (Proxies)"></a><a class="anchor" name="http-after-response replace-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response replace-header"></a><a href="#4.2-http-after-response%20replace-header">http-after-response replace-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;regex-match&gt;</span> <span style="color: #080">&lt;replace-fmt&gt;</span>
                                    <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This works like &quot;<a href="#http-response%20replace-header">http-response replace-header</a>&quot;.
 </pre><div class="separator">
@@ -10483,7 +10519,20 @@ Cache-Control: max-age=3600, public
 <span class="comment"># outputs:</span>
 Cache-Control: max-age=3600, private
 </code></pre>
-</div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-header"></a><a class="anchor" name="4-http-after-response set-header"></a><a class="anchor" name="4.2-http-after-response set-header"></a><a class="anchor" name="http-after-response set-header (Proxies)"></a><a class="anchor" name="http-after-response set-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-header"></a><a href="#4.2-http-after-response%20set-header">http-after-response set-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This does the same as &quot;<a href="#http-after-response%20add-header">http-after-response add-header</a>&quot; except that the header
+</div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-inc-gpc"></a><a class="anchor" name="4-http-after-response sc-inc-gpc"></a><a class="anchor" name="4.2-http-after-response sc-inc-gpc"></a><a class="anchor" name="http-after-response sc-inc-gpc (Proxies)"></a><a class="anchor" name="http-after-response sc-inc-gpc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-inc-gpc"></a><a href="#4.2-http-after-response%20sc-inc-gpc">http-after-response sc-inc-gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-inc-gpc0"></a><a class="anchor" name="4-http-after-response sc-inc-gpc0"></a><a class="anchor" name="4.2-http-after-response sc-inc-gpc0"></a><a class="anchor" name="http-after-response sc-inc-gpc0 (Proxies)"></a><a class="anchor" name="http-after-response sc-inc-gpc0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-inc-gpc0"></a><a href="#4.2-http-after-response%20sc-inc-gpc0">http-after-response sc-inc-gpc0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-inc-gpc1"></a><a class="anchor" name="4-http-after-response sc-inc-gpc1"></a><a class="anchor" name="4.2-http-after-response sc-inc-gpc1"></a><a class="anchor" name="http-after-response sc-inc-gpc1 (Proxies)"></a><a class="anchor" name="http-after-response sc-inc-gpc1 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-inc-gpc1"></a><a href="#4.2-http-after-response%20sc-inc-gpc1">http-after-response sc-inc-gpc1</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions increment the General Purppose Counters according to the sticky
+counter designated by &lt;sc-id&gt;. Please refer to &quot;<a href="#http-request%20sc-inc-gpc">http-request sc-inc-gpc</a>&quot;,
+&quot;<a href="#http-request%20sc-inc-gpc0">http-request sc-inc-gpc0</a>&quot; and &quot;<a href="#http-request%20sc-inc-gpc1">http-request sc-inc-gpc1</a>&quot; for a complete
+description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-set-gpt"></a><a class="anchor" name="4-http-after-response sc-set-gpt"></a><a class="anchor" name="4.2-http-after-response sc-set-gpt"></a><a class="anchor" name="http-after-response sc-set-gpt (Proxies)"></a><a class="anchor" name="http-after-response sc-set-gpt (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-set-gpt"></a><a href="#4.2-http-after-response%20sc-set-gpt">http-after-response sc-set-gpt</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
+                                              <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-set-gpt0"></a><a class="anchor" name="4-http-after-response sc-set-gpt0"></a><a class="anchor" name="4.2-http-after-response sc-set-gpt0"></a><a class="anchor" name="http-after-response sc-set-gpt0 (Proxies)"></a><a class="anchor" name="http-after-response sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-set-gpt0"></a><a href="#4.2-http-after-response%20sc-set-gpt0">http-after-response sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
+                                         <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
+sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
+sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-log-level"></a><a class="anchor" name="4-http-after-response set-log-level"></a><a class="anchor" name="4.2-http-after-response set-log-level"></a><a class="anchor" name="http-after-response set-log-level (Proxies)"></a><a class="anchor" name="http-after-response set-log-level (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-log-level"></a><a href="#4.2-http-after-response%20set-log-level">http-after-response set-log-level</a></b> <span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to change the log level of the current response. Please refer to
+&quot;<a href="#http-request%20set-log-level">http-request set-log-level</a>&quot; for a complete description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-map"></a><a class="anchor" name="4-http-after-response set-map"></a><a class="anchor" name="4.2-http-after-response set-map"></a><a class="anchor" name="http-after-response set-map (Proxies)"></a><a class="anchor" name="http-after-response set-map (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-map"></a><a href="#4.2-http-after-response%20set-map">http-after-response set-map</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #080">&lt;value fmt&gt;</span></div><pre class="text">This is used to add a new entry into a MAP. Please refer to &quot;http-request
+set-map&quot; for a complete description.
+</pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-header"></a><a class="anchor" name="4-http-after-response set-header"></a><a class="anchor" name="4.2-http-after-response set-header"></a><a class="anchor" name="http-after-response set-header (Proxies)"></a><a class="anchor" name="http-after-response set-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-header"></a><a href="#4.2-http-after-response%20set-header">http-after-response set-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This does the same as &quot;<a href="#http-after-response%20add-header">http-after-response add-header</a>&quot; except that the header
 name is first removed if it existed. This is useful when passing security
 information to the server, where the header must not be manipulated by
 external users.
@@ -21711,6 +21760,9 @@ as cryptographically secure.
 is useful in ACL in order to have a configuration which works with multiple
 version of OpenSSL since some codes might change when changing version.
 
+When the corresponding constant name was not found, outputs the numerical
+value as a string.
+
 The list of constant provided by OpenSSL can be found at
 https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
 Be careful to read the page for the right version of OpenSSL.
@@ -21726,6 +21778,8 @@ acl cert_ok      ssl_c_verify,x509_v_err_str -m str X509_V_OK
 http-response add-header X-SSL Ok if cert_ok
 http-response add-header X-SSL Expired if cert_expired
 http-response add-header X-SSL Revoked if cert_revoked
+
+http-response add-header X-SSL-verify %[ssl_c_verify,x509_v_err_str]
 </code></pre>
 </div></div>
 <a class="anchor" id="7.3.2" name="7.3.2"></a>
@@ -26526,7 +26580,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7.8 &ndash; Configuration Manual<br>
+							HAProxy 2.7.8-48 &ndash; Configuration Manual<br>
 							<small>, 2023/05/02</small>
 						</div>
 					</div>
