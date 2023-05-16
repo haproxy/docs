@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev11-51 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev11-60 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3414,6 +3414,8 @@
 							
 							<a class="list-group-item" href="#ssl_c_notbefore">ssl_c_notbefore</a>
 							
+							<a class="list-group-item" href="#ssl_c_r_dn">ssl_c_r_dn</a>
+							
 							<a class="list-group-item" href="#ssl_c_s_dn">ssl_c_s_dn</a>
 							
 							<a class="list-group-item" href="#ssl_c_serial">ssl_c_serial</a>
@@ -4240,7 +4242,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4251,7 +4253,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev11-51</strong></p>
+							<p><strong>version 2.8-dev11-60</strong></p>
 							<p>
 								2023/05/11<br>
 								
@@ -23692,6 +23694,18 @@ transport layer.
 </pre><a class="anchor" name="ssl_c_notbefore"></a><a class="anchor" name="7-ssl_c_notbefore"></a><a class="anchor" name="7.3.4-ssl_c_notbefore"></a><a class="anchor" name="ssl_c_notbefore (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_notbefore (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_notbefore"></a><a href="#7.3.4-ssl_c_notbefore">ssl_c_notbefore</a></b> : string</div><pre class="text">Returns the start date presented by the client as a formatted string
 YYMMDDhhmmss[Z] when the incoming connection was made over an SSL/TLS
 transport layer.
+</pre><a class="anchor" name="ssl_c_r_dn"></a><a class="anchor" name="7-ssl_c_r_dn"></a><a class="anchor" name="7.3.4-ssl_c_r_dn"></a><a class="anchor" name="ssl_c_r_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_r_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_r_dn"></a><a href="#7.3.4-ssl_c_r_dn">ssl_c_r_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and is
+successfully validated with the configured ca-file, returns the full
+distinguished name of the root CA of the certificate presented by the client
+when no &lt;entry&gt; is specified, or the value of the first given entry found from
+the beginning of the DN. If a positive/negative occurrence number is specified
+as the optional second argument, it returns the value of the nth given entry
+value from the beginning/end of the DN. For instance, &quot;ssl_c_r_dn(OU,2)&quot; the
+second organization unit, and &quot;ssl_c_r_dn(CN)&quot; retrieves the common name. The
+&lt;format&gt; parameter allows you to receive the DN suitable for consumption by
+different protocols. Currently supported is rfc2253 for LDAP v3. If you'd like
+to modify the format only you can specify an empty string and zero for the
+first two parameters. Example: ssl_c_r_dn(,0,rfc2253)
 </pre><a class="anchor" name="ssl_c_s_dn"></a><a class="anchor" name="7-ssl_c_s_dn"></a><a class="anchor" name="7.3.4-ssl_c_s_dn"></a><a class="anchor" name="ssl_c_s_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_s_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_s_dn"></a><a href="#7.3.4-ssl_c_s_dn">ssl_c_s_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer,
 returns the full distinguished name of the subject of the certificate
 presented by the client when no &lt;entry&gt; is specified, or the value of the
@@ -27353,7 +27367,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev11-51 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev11-60 &ndash; Configuration Manual<br>
 							<small>, 2023/05/11</small>
 						</div>
 					</div>
