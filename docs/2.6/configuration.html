@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6.13-31 - Configuration Manual</title>
+		<title>HAProxy version 2.6.13-39 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -210,7 +210,18 @@
 					<td><small>2.6.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#2.6">Examples</a>
+							<a href="#2.6">Size format</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>2.7.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#2.7">Examples</a>
 							</div>
 					<td>
 				</tr>
@@ -4117,7 +4128,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4128,7 +4139,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6.13-31</strong></p>
+							<p><strong>version 2.6.13-39</strong></p>
 							<p>
 								2023/05/02<br>
 								
@@ -4323,7 +4334,18 @@ Note to documentation contributors :
 					<td><small>2.6.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#2.6">Examples</a>
+							<a href="#2.6">Size format</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>2.7.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#2.7">Examples</a>
 							</div>
 					<td>
 				</tr>
@@ -6049,7 +6071,21 @@ for every keyword. Supported units are :
   - d  : days.    1d = 24h = 1440m = 86400s = 86400000ms
 </pre></div>
 <a class="anchor" id="2.6" name="2.6"></a>
-<h2 id="chapter-2.6" data-target="2.6"><small><a class="small" href="#2.6">2.6.</a></small> Examples</h2>
+<h2 id="chapter-2.6" data-target="2.6"><small><a class="small" href="#2.6">2.6.</a></small> Size format</h2>
+<div><pre class="text">Some parameters involve values representing size, such as bandwidth limits.
+These values are generally expressed in bytes (unless explicitly stated
+otherwise) but may be expressed in any other unit by suffixing the unit to the
+numeric value. It is important to consider this because it will not be repeated
+for every keyword. Supported units are case insensitive :
+
+  - k : kilobytes. 1 kilobyte = 1024 bytes
+  - m : megabytes. 1 megabyte = 1048576 bytes
+  - g : gigabytes. 1 gigabyte = 1073741824 bytes
+
+Both time and size formats require integers, decimal notation is not allowed.
+</pre></div>
+<a class="anchor" id="2.7" name="2.7"></a>
+<h2 id="chapter-2.7" data-target="2.7"><small><a class="small" href="#2.7">2.7.</a></small> Examples</h2>
 <div><pre class="text">    # Simple configuration for an HTTP proxy listening on port 80 on all
     # interfaces and forwarding requests to a single backend &quot;servers&quot; with a
     # single server &quot;server1&quot; listening on 127.0.0.1:8000
@@ -17073,6 +17109,9 @@ and will immediately apply a verdict based on the available information.
 Obviously this is unlikely to be very useful and might even be racy, so such
 setups are not recommended.
 
+Note the inspection delay is shortened if an connection error or shutdown is
+experienced or if the request buffer appears as full.
+
 As soon as a rule matches, the request is released and continues as usual. If
 the timeout is reached and no rule matches, the default policy will be to let
 it pass through unaffected.
@@ -22569,7 +22608,7 @@ frontend http-in
 </code></pre>
 </div><a class="anchor" name="ssl_bc"></a><a class="anchor" name="7-ssl_bc"></a><a class="anchor" name="7.3.4-ssl_bc"></a><a class="anchor" name="ssl_bc (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc"></a><a href="#7.3.4-ssl_bc">ssl_bc</a></b> : boolean</div><pre class="text">Returns true when the back connection was made via an SSL/TLS transport
 layer and is locally deciphered. This means the outgoing connection was made
-other a server with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. It can be used in a tcp-check or an
+to a server with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. It can be used in a tcp-check or an
 http-check ruleset.
 </pre><a class="anchor" name="ssl_bc_alg_keysize"></a><a class="anchor" name="7-ssl_bc_alg_keysize"></a><a class="anchor" name="7.3.4-ssl_bc_alg_keysize"></a><a class="anchor" name="ssl_bc_alg_keysize (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_alg_keysize (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_alg_keysize"></a><a href="#7.3.4-ssl_bc_alg_keysize">ssl_bc_alg_keysize</a></b> : integer</div><pre class="text">Returns the symmetric cipher key size supported in bits when the outgoing
 connection was made over an SSL/TLS transport layer. It can be used in a
@@ -26211,7 +26250,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6.13-31 &ndash; Configuration Manual<br>
+							HAProxy 2.6.13-39 &ndash; Configuration Manual<br>
 							<small>, 2023/05/02</small>
 						</div>
 					</div>
