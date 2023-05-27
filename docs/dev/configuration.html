@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev13-2 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev13-12 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2702,6 +2702,8 @@
 							
 							<a class="list-group-item" href="#pp2-never-send-local">pp2-never-send-local</a>
 							
+							<a class="list-group-item" href="#prealloc-fd">prealloc-fd</a>
+							
 							<a class="list-group-item" href="#prefer-client-ciphers">prefer-client-ciphers</a>
 							
 							<a class="list-group-item" href="#presetenv">presetenv</a>
@@ -4253,7 +4255,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4264,7 +4266,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev13-2</strong></p>
+							<p><strong>version 2.8-dev13-12</strong></p>
 							<p>
 								2023/05/24<br>
 								
@@ -6354,6 +6356,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#pidfile">pidfile</a>
    - <a href="#pp2-never-send-local">pp2-never-send-local</a>
    - <a href="#presetenv">presetenv</a>
+   - <a href="#prealloc-fd">prealloc-fd</a>
    - <a href="#resetenv">resetenv</a>
    - <a href="#set-dumpable">set-dumpable</a>
    - <a href="#set-var">set-var</a>
@@ -7215,6 +7218,10 @@ This option is disabled by default and acts on all servers having the
 is NOT overwritten. The changes immediately take effect so that the next line
 in the configuration file sees the new value. See also &quot;<a href="#setenv">setenv</a>&quot;, &quot;<a href="#resetenv">resetenv</a>&quot;,
 and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
+</pre><a class="anchor" name="prealloc-fd"></a><a class="anchor" name="3-prealloc-fd"></a><a class="anchor" name="3.1-prealloc-fd"></a><a class="anchor" name="prealloc-fd (Global parameters)"></a><a class="anchor" name="prealloc-fd (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="prealloc-fd"></a><a href="#3.1-prealloc-fd">prealloc-fd</a></b></div><pre class="text">Performs a one-time open of the maximum file descriptor which results in a
+pre-allocation of the kernel's data structures. This prevents short pauses
+when nbthread&gt;1 and HAProxy opens a file descriptor which requires the kernel
+to expand its data structures.
 </pre><a class="anchor" name="resetenv"></a><a class="anchor" name="3-resetenv"></a><a class="anchor" name="3.1-resetenv"></a><a class="anchor" name="resetenv (Global parameters)"></a><a class="anchor" name="resetenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="resetenv"></a><a href="#3.1-resetenv">resetenv</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span> ...]</span></div><pre class="text">Removes all environment variables except the ones specified in argument. It
 allows to use a clean controlled environment before setting new values with
 setenv or unsetenv. Please note that some internal functions may make use of
@@ -27406,7 +27413,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev13-2 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev13-12 &ndash; Configuration Manual<br>
 							<small>, 2023/05/24</small>
 						</div>
 					</div>
