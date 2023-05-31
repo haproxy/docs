@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8-dev13-13 - Configuration Manual</title>
+		<title>HAProxy version 2.8-dev13-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4255,7 +4255,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4266,7 +4266,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8-dev13-13</strong></p>
+							<p><strong>version 2.8-dev13-17</strong></p>
 							<p>
 								2023/05/24<br>
 								
@@ -7183,10 +7183,7 @@ bound to upon startup. This means that the thread count can easily be
 adjusted from the calling process using commands like &quot;taskset&quot; or &quot;cpuset&quot;.
 Otherwise, this value defaults to 1. The default value is reported in the
 output of &quot;haproxy -vv&quot;.
-</pre><a class="anchor" name="no-quic"></a><a class="anchor" name="3-no-quic"></a><a class="anchor" name="3.1-no-quic"></a><a class="anchor" name="no-quic (Global parameters)"></a><a class="anchor" name="no-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="no-quic"></a><a href="#3.1-no-quic">no-quic</a></b></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Disable QUIC transport protocol. All the QUIC listeners will still be created.
+</pre><a class="anchor" name="no-quic"></a><a class="anchor" name="3-no-quic"></a><a class="anchor" name="3.1-no-quic"></a><a class="anchor" name="no-quic (Global parameters)"></a><a class="anchor" name="no-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="no-quic"></a><a href="#3.1-no-quic">no-quic</a></b></div><pre class="text">Disable QUIC transport protocol. All the QUIC listeners will still be created.
 But they will not bind their addresses. Hence, no QUIC traffic will be
 processed by haproxy. See also &quot;<a href="#quic_enabled">quic_enabled</a>&quot; sample fetch.
 </pre><a class="anchor" name="numa-cpu-mapping"></a><a class="anchor" name="3-numa-cpu-mapping"></a><a class="anchor" name="3.1-numa-cpu-mapping"></a><a class="anchor" name="numa-cpu-mapping (Global parameters)"></a><a class="anchor" name="numa-cpu-mapping (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="numa-cpu-mapping"></a><a href="#3.1-numa-cpu-mapping">numa-cpu-mapping</a></b></div><pre class="text">If running on a NUMA-aware platform, HAProxy inspects on startup the CPU
@@ -8249,18 +8246,12 @@ much sense in the general case when targeting connection reuse).
 HAProxy globally against the maximum number of file descriptors HAProxy can
 use before we stop putting connection into the idle pool for reuse. The
 default is 20.
-</pre><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-This settings defines the maximum number of buffers allocated for a QUIC
+</pre><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This settings defines the maximum number of buffers allocated for a QUIC
 connection on data emission. By default, it is set to 30. QUIC buffers are
 drained on ACK reception. This setting has a direct impact on the throughput
 and memory consumption and can be adjusted according to an estimated round
 time-trip. Each buffer is tune.bufsize.
-</pre><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3.2-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a href="#3.2-tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Sets the QUIC max_idle_timeout transport parameters in milliseconds for
+</pre><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3.2-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a href="#3.2-tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the QUIC max_idle_timeout transport parameters in milliseconds for
 frontends which determines the period of time after which a connection silently
 closes if it has remained inactive during an effective period of time deduced
 from the two max_idle_timeout values announced by the two endpoints:
@@ -8269,26 +8260,17 @@ from the two max_idle_timeout values announced by the two endpoints:
   - if both values are null, this feature is disabled.
 
 The default value is 30000.
-</pre><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Sets the QUIC initial_max_streams_bidi transport parameter for frontends.
+</pre><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the QUIC initial_max_streams_bidi transport parameter for frontends.
 This is the initial maximum number of bidirectional streams the remote peer
 will be authorized to open. This determines the number of concurrent client
 requests.
 
 The default value is 100.
-</pre><a class="anchor" name="tune.quic.max-frame-loss"></a><a class="anchor" name="3-tune.quic.max-frame-loss"></a><a class="anchor" name="3.2-tune.quic.max-frame-loss"></a><a class="anchor" name="tune.quic.max-frame-loss (Global parameters)"></a><a class="anchor" name="tune.quic.max-frame-loss (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.max-frame-loss"></a><a href="#3.2-tune.quic.max-frame-loss">tune.quic.max-frame-loss</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Sets the limit for which a single QUIC frame can be marked as lost. If
+</pre><a class="anchor" name="tune.quic.max-frame-loss"></a><a class="anchor" name="3-tune.quic.max-frame-loss"></a><a class="anchor" name="3.2-tune.quic.max-frame-loss"></a><a class="anchor" name="tune.quic.max-frame-loss (Global parameters)"></a><a class="anchor" name="tune.quic.max-frame-loss (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.max-frame-loss"></a><a href="#3.2-tune.quic.max-frame-loss">tune.quic.max-frame-loss</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the limit for which a single QUIC frame can be marked as lost. If
 exceeded, the connection is considered as failing and is closed immediately.
 
 The default value is 10.
-</pre><a class="anchor" name="tune.quic.retry-threshold"></a><a class="anchor" name="3-tune.quic.retry-threshold"></a><a class="anchor" name="3.2-tune.quic.retry-threshold"></a><a class="anchor" name="tune.quic.retry-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.retry-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.retry-threshold"></a><a href="#3.2-tune.quic.retry-threshold">tune.quic.retry-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Dynamically enables the Retry feature for all the configured QUIC listeners
+</pre><a class="anchor" name="tune.quic.retry-threshold"></a><a class="anchor" name="3-tune.quic.retry-threshold"></a><a class="anchor" name="3.2-tune.quic.retry-threshold"></a><a class="anchor" name="tune.quic.retry-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.retry-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.retry-threshold"></a><a href="#3.2-tune.quic.retry-threshold">tune.quic.retry-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Dynamically enables the Retry feature for all the configured QUIC listeners
 as soon as this number of half open connections is reached. A half open
 connection is a connection whose handshake has not already successfully
 completed or failed. To be functional this setting needs a cluster secret to
@@ -8300,10 +8282,7 @@ The default value is 100.
 
 See https://www.rfc-editor.org/rfc/rfc9000.html#section-8.1.2 for more
 information about QUIC retry.
-</pre><a class="anchor" name="tune.quic.socket-owner"></a><a class="anchor" name="3-tune.quic.socket-owner"></a><a class="anchor" name="3.2-tune.quic.socket-owner"></a><a class="anchor" name="tune.quic.socket-owner (Global parameters)"></a><a class="anchor" name="tune.quic.socket-owner (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.socket-owner"></a><a href="#3.2-tune.quic.socket-owner">tune.quic.socket-owner</a></b> <span style="color: #800">{ listener | connection }</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Specifies how QUIC connections will use socket for receive/send operations.
+</pre><a class="anchor" name="tune.quic.socket-owner"></a><a class="anchor" name="3-tune.quic.socket-owner"></a><a class="anchor" name="3.2-tune.quic.socket-owner"></a><a class="anchor" name="tune.quic.socket-owner (Global parameters)"></a><a class="anchor" name="tune.quic.socket-owner (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.socket-owner"></a><a href="#3.2-tune.quic.socket-owner">tune.quic.socket-owner</a></b> <span style="color: #800">{ listener | connection }</span></div><pre class="text">Specifies how QUIC connections will use socket for receive/send operations.
 Connections can share listener socket or each connection can allocate its
 own socket.
 
@@ -19225,17 +19204,12 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #008">[ cubic | newreno ]</span></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-
-This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #008">[ cubic | newreno ]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
 to those used by TCP.
 
 Default value: cubic
-</pre><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-This is a QUIC specific setting which forces the use of the QUIC Retry feature
+</pre><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">This is a QUIC specific setting which forces the use of the QUIC Retry feature
 for all the connection attempts to the configured QUIC listeners. It consists
 in veryfying the peers are able to receive packets at the transport address
 they used to initiate a new connection, sending them a Retry packet which
@@ -21326,10 +21300,12 @@ into its corresponding nodename final form:
 <code><span class="comment"># extract 'for' field from forwarded header, extract nodename from</span>
 <span class="comment"># resulting node identifier and store the result in req.fnn</span>
 http-request set-var(req.fnn) req.hdr(forwarded),rfc7239_field(for),rfc7239_n2nn
-<span class="comment">#input: &quot;for=\&quot;127.0.0.1:9999\&quot;&quot;</span>
-<span class="comment">#  output: 127.0.0.1</span>
-<span class="comment">#input: &quot;for=\&quot;_name:_port\&quot;&quot;</span>
-<span class="comment">#  output: &quot;_name&quot;</span>
+<span class="comment">#input: &quot;127.0.0.1:9999&quot;</span>
+<span class="comment">#  output: 127.0.0.1 (ipv4)</span>
+<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
+<span class="comment">#  output: ab:cd:ff:ff:ff:ff:ff:ff (ipv6)</span>
+<span class="comment">#input: &quot;_name:_port&quot;</span>
+<span class="comment">#  output: &quot;_name&quot; (string)</span>
 </code></pre>
 </div><a class="anchor" name="rfc7239_n2np"></a><a class="anchor" name="7-rfc7239_n2np"></a><a class="anchor" name="7.3.1-rfc7239_n2np"></a><a class="anchor" name="rfc7239_n2np (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2np (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2np"></a><a href="#7.3.1-rfc7239_n2np">rfc7239_n2np</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
 into its corresponding nodeport final form:
@@ -21342,9 +21318,11 @@ into its corresponding nodeport final form:
 <span class="comment"># resulting node identifier and store the result in req.fnp</span>
 http-request set-var(req.fnp) req.hdr(forwarded),rfc7239_field(by),rfc7239_n2np
 <span class="comment">#input: &quot;by=\&quot;127.0.0.1:9999\&quot;&quot;</span>
-<span class="comment">#  output: 9999</span>
-<span class="comment">#input: &quot;by=\&quot;_name:_port\&quot;&quot;</span>
-<span class="comment">#  output: &quot;_port&quot;</span>
+<span class="comment">#  output: 9999 (integer)</span>
+<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
+<span class="comment">#  output: 9998 (integer)</span>
+<span class="comment">#input: &quot;_name:_port&quot;</span>
+<span class="comment">#  output: &quot;_port&quot; (string)</span>
 </code></pre>
 </div><a class="anchor" name="add"></a><a class="anchor" name="7-add"></a><a class="anchor" name="7.3.1-add"></a><a class="anchor" name="add (Using ACLs and fetching samples)"></a><a class="anchor" name="add (Converters)"></a><div class="keyword"><b><a class="anchor" name="add"></a><a href="#7.3.1-add">add</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Adds &lt;value&gt; to the input value of type signed integer, and returns the
 result as a signed integer. &lt;value&gt; can be a numeric value or a variable
@@ -22865,10 +22843,7 @@ can be used to take actions when queuing goes above a known level, generally
 indicating a surge of traffic or a massive slowdown on the servers. One
 possible action could be to reject new users but still accept old ones. See
 also the &quot;<a href="#avg_queue">avg_queue</a>&quot;, &quot;<a href="#be_conn">be_conn</a>&quot;, and &quot;<a href="#be_sess_rate">be_sess_rate</a>&quot; fetches.
-</pre><a class="anchor" name="quic_enabled"></a><a class="anchor" name="7-quic_enabled"></a><a class="anchor" name="7.3.2-quic_enabled"></a><a class="anchor" name="quic_enabled (Using ACLs and fetching samples)"></a><a class="anchor" name="quic_enabled (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="quic_enabled"></a><a href="#7.3.2-quic_enabled">quic_enabled</a></b> : boolean</div><pre class="text">Warning: QUIC support in HAProxy is currently experimental. Configuration may
-change without deprecation in the future.
-
-Return true when the support for QUIC transport protocol was compiled and
+</pre><a class="anchor" name="quic_enabled"></a><a class="anchor" name="7-quic_enabled"></a><a class="anchor" name="7.3.2-quic_enabled"></a><a class="anchor" name="quic_enabled (Using ACLs and fetching samples)"></a><a class="anchor" name="quic_enabled (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="quic_enabled"></a><a href="#7.3.2-quic_enabled">quic_enabled</a></b> : boolean</div><pre class="text">Return true when the support for QUIC transport protocol was compiled and
 if this procotol was not disabled by &quot;<a href="#no-quic">no-quic</a>&quot; global option. See also &quot;<a href="#no-quic">no-quic</a>&quot;
 global option.
 </pre><a class="anchor" name="rand"></a><a class="anchor" name="7-rand"></a><a class="anchor" name="7.3.2-rand"></a><a class="anchor" name="rand (Using ACLs and fetching samples)"></a><a class="anchor" name="rand (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="rand"></a><a href="#7.3.2-rand">rand</a></b>(<span style="color: #008">[<span style="color: #080">&lt;range&gt;</span>]</span>) : integer</div><pre class="text">Returns a random integer value within a range of &lt;range&gt; possible values,
@@ -27413,7 +27388,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8-dev13-13 &ndash; Configuration Manual<br>
+							HAProxy 2.8-dev13-17 &ndash; Configuration Manual<br>
 							<small>, 2023/05/24</small>
 						</div>
 					</div>
