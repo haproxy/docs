@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.7.8-114 - Configuration Manual</title>
+		<title>HAProxy version 2.7.9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4167,7 +4167,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/05/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/06/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4178,9 +4178,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.7.8-114</strong></p>
+							<p><strong>version 2.7.9</strong></p>
 							<p>
-								2023/05/02<br>
+								2023/06/07<br>
 								
 							</p>
 						</div>
@@ -9384,9 +9384,10 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                   to a listener will be multiplexed over the listener
                   socket. With a large traffic this has a noticeable impact
                   on performance and CPU consumption. To improve this, you
-                  can change default settings of &quot;tune.quic.conn-owner&quot; to
-                  connection or at least duplicate QUIC listener instances
-                  over several threads, for example using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; keyword.
+                  can change default settings of &quot;<a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>&quot;
+                  to connection or at least duplicate QUIC listener
+                  instances over several threads, for example using
+                  &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; keyword.
                 - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
                   is used. The performance note for QUIC over IPv4 applies
                   as well.
@@ -21058,7 +21059,7 @@ compiled with USE_OPENSSL.
 <span class="comment"># JOSE header and use a public certificate to verify a signature</span>
 http-request set-var(txn.bearer) http_auth_bearer
 http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
-http-request deny unless { var(txn.jwt_alg) &quot;RS256&quot; }
+http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
 http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/crt.pem&quot;) 1 }
 </code></pre>
 </div><a class="anchor" name="language"></a><a class="anchor" name="7-language"></a><a class="anchor" name="7.3.1-language"></a><a class="anchor" name="language (Using ACLs and fetching samples)"></a><a class="anchor" name="language (Converters)"></a><div class="keyword"><b><a class="anchor" name="language"></a><a href="#7.3.1-language">language</a></b>(<span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>)</div><pre class="text">Returns the value with the highest q-factor from a list as extracted from the
@@ -26619,8 +26620,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.7.8-114 &ndash; Configuration Manual<br>
-							<small>, 2023/05/02</small>
+							HAProxy 2.7.9 &ndash; Configuration Manual<br>
+							<small>, 2023/06/07</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
