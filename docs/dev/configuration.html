@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev1-39 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev1-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3393,6 +3393,8 @@
 							
 							<a class="list-group-item" href="#ssl_bc_client_random">ssl_bc_client_random</a>
 							
+							<a class="list-group-item" href="#ssl_bc_curve">ssl_bc_curve</a>
+							
 							<a class="list-group-item" href="#ssl_bc_err">ssl_bc_err</a>
 							
 							<a class="list-group-item" href="#ssl_bc_err_str">ssl_bc_err_str</a>
@@ -3490,6 +3492,8 @@
 							<a class="list-group-item" href="#ssl_fc_client_random">ssl_fc_client_random</a>
 							
 							<a class="list-group-item" href="#ssl_fc_client_traffic_secret_0">ssl_fc_client_traffic_secret_0</a>
+							
+							<a class="list-group-item" href="#ssl_fc_curve">ssl_fc_curve</a>
 							
 							<a class="list-group-item" href="#ssl_fc_early_exporter_secret">ssl_fc_early_exporter_secret</a>
 							
@@ -4259,7 +4263,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4270,7 +4274,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev1-39</strong></p>
+							<p><strong>version 2.9-dev1-47</strong></p>
 							<p>
 								2023/07/02<br>
 								
@@ -23215,9 +23219,9 @@ operating system does not support TCP_INFO, for example Linux kernels before
 If the server connection is not established, if the connection is not TCP or
 if the operating system does not support TCP_INFO, for example Linux kernels
 before 2.4, the sample fetch fails.
-</pre><a class="anchor" name="fc_src"></a><a class="anchor" name="7-fc_src"></a><a class="anchor" name="7.3.3-fc_src"></a><a class="anchor" name="fc_src (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src"></a><a href="#7.3.3-fc_src">fc_src</a></b> : ip</div><pre class="text">This is the original destination IP address of the connection on the client
-side. Only &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; rules may alter this address. See &quot;<a href="#src">src</a>&quot;
-for details.
+</pre><a class="anchor" name="fc_src"></a><a class="anchor" name="7-fc_src"></a><a class="anchor" name="7.3.3-fc_src"></a><a class="anchor" name="fc_src (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src"></a><a href="#7.3.3-fc_src">fc_src</a></b> : ip</div><pre class="text">This is the original source IP address of the connection on the client side
+Only &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; rules may alter this address. See &quot;<a href="#src">src</a>&quot; for
+details.
 </pre><a class="anchor" name="fc_src_is_local"></a><a class="anchor" name="7-fc_src_is_local"></a><a class="anchor" name="7.3.3-fc_src_is_local"></a><a class="anchor" name="fc_src_is_local (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src_is_local (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src_is_local"></a><a href="#7.3.3-fc_src_is_local">fc_src_is_local</a></b> : boolean</div><pre class="text">Returns true if the source address of incoming connection is local to the
 system, or false if the address doesn't exist on the system. See
 &quot;<a href="#src_is_local">src_is_local</a>&quot; for details.
@@ -23697,6 +23701,9 @@ http-check ruleset.
 was made over an SSL/TLS transport layer. It is useful to to decrypt traffic
 sent using ephemeral ciphers. This requires OpenSSL &gt;= 1.1.0, or BoringSSL.
 It can be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="ssl_bc_curve"></a><a class="anchor" name="7-ssl_bc_curve"></a><a class="anchor" name="7.3.4-ssl_bc_curve"></a><a class="anchor" name="ssl_bc_curve (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_curve (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_curve"></a><a href="#7.3.4-ssl_bc_curve">ssl_bc_curve</a></b> : string</div><pre class="text">Returns the name of the curve used in the key agreement when the outgoing
+connection was made over an SSL/TLS transport layer. This requires
+OpenSSL &gt;= 3.0.0.
 </pre><a class="anchor" name="ssl_bc_err"></a><a class="anchor" name="7-ssl_bc_err"></a><a class="anchor" name="7.3.4-ssl_bc_err"></a><a class="anchor" name="ssl_bc_err (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_err (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_err"></a><a href="#7.3.4-ssl_bc_err">ssl_bc_err</a></b> : integer</div><pre class="text">When the outgoing connection was made over an SSL/TLS transport layer,
 returns the ID of the last error of the first error stack raised on the
 backend side. It can raise handshake errors as well as other read or write
@@ -23948,6 +23955,9 @@ function is not enabled, this sample-fetch returns the hash like
 </pre><a class="anchor" name="ssl_fc_cipherlist_xxh"></a><a class="anchor" name="7-ssl_fc_cipherlist_xxh"></a><a class="anchor" name="7.3.4-ssl_fc_cipherlist_xxh"></a><a class="anchor" name="ssl_fc_cipherlist_xxh (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_cipherlist_xxh (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_cipherlist_xxh"></a><a href="#7.3.4-ssl_fc_cipherlist_xxh">ssl_fc_cipherlist_xxh</a></b> : integer</div><pre class="text">Returns a xxh64 of the cipher list. This hash can return only if the value
 &quot;<a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>&quot; is set greater than 0, however the hash take
 into account all the data of the cipher list.
+</pre><a class="anchor" name="ssl_fc_curve"></a><a class="anchor" name="7-ssl_fc_curve"></a><a class="anchor" name="7.3.4-ssl_fc_curve"></a><a class="anchor" name="ssl_fc_curve (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_curve (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_curve"></a><a href="#7.3.4-ssl_fc_curve">ssl_fc_curve</a></b> : string</div><pre class="text">Returns the name of the curve used in the key agreement when the incoming
+connection was made over an SSL/TLS transport layer. This requires
+OpenSSL &gt;= 3.0.0.
 </pre><a class="anchor" name="ssl_fc_ecformats_bin"></a><a class="anchor" name="7-ssl_fc_ecformats_bin"></a><a class="anchor" name="7.3.4-ssl_fc_ecformats_bin"></a><a class="anchor" name="ssl_fc_ecformats_bin (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_ecformats_bin (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_ecformats_bin"></a><a href="#7.3.4-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></b> : binary</div><pre class="text">Return the binary form of the client hello supported elliptic curve point
 formats. The maximum returned value length is limited by the shared capture
 buffer size controlled by &quot;<a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>&quot; setting.
@@ -27461,7 +27471,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev1-39 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev1-47 &ndash; Configuration Manual<br>
 							<small>, 2023/07/02</small>
 						</div>
 					</div>
