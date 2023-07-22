@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.1 - Configuration Manual</title>
+		<title>HAProxy version 2.8.1-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4255,7 +4255,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4266,7 +4266,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.1</strong></p>
+							<p><strong>version 2.8.1-47</strong></p>
 							<p>
 								2023/07/03<br>
 								
@@ -19127,12 +19127,23 @@ only available starting with OpenSSL 1.0.2. If HTTP/2 is desired on an older
 version of OpenSSL, NPN might still be used as most clients still support it
 at the time of writing this. It is possible to enable both NPN and ALPN
 though it probably doesn't make any sense out of testing.
-</pre><a class="anchor" name="ocsp-update"></a><a class="anchor" name="5-ocsp-update"></a><a class="anchor" name="5.1-ocsp-update"></a><a class="anchor" name="ocsp-update (Bind and server options)"></a><a class="anchor" name="ocsp-update (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update"></a><a href="#5.1-ocsp-update">ocsp-update</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Enable automatic OCSP response update when set to 'on', disable it otherwise.
+</pre><a class="anchor" name="ocsp-update"></a><a class="anchor" name="5-ocsp-update"></a><a class="anchor" name="5.1-ocsp-update"></a><a class="anchor" name="ocsp-update (Bind and server options)"></a><a class="anchor" name="ocsp-update (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update"></a><a href="#5.1-ocsp-update">ocsp-update</a></b> <span style="color: #008">[ off | on ]</span> (crt-list only)</div><pre class="text">Enable automatic OCSP response update when set to 'on', disable it otherwise.
 Its value defaults to 'off'.
-This option can only be used in a crt-list line so that is applies to only
-one certificate at a time. If a given certificate is used in multiple
-crt-lists with different values of the 'ocsp-update' set, an error will be
-raised.
+Please note that for now, this option can only be used in a crt-list line, it
+cannot be used directly on a bind line. It lies in this &quot;Bind options&quot;
+section because it is still a frontend option. This limitation was set so
+that the option applies to only one certificate at a time.
+If a given certificate is used in multiple crt-lists with different values of
+the 'ocsp-update' set, an error will be raised. Here is an example
+configuration enabling it:
+
+haproxy.cfg:
+    frontend fe
+        bind :443 ssl crt-list haproxy.list
+
+haproxy.list:
+    server_cert.pem [ocsp-update on] foo.bar
+
 When the option is set to 'on', we will try to get an ocsp response whenever
 an ocsp uri is found in the frontend's certificate. The only limitation of
 this mode is that the certificate's issuer will have to be known in order for
@@ -19150,9 +19161,9 @@ be in the future) so it is unlikely that this response expires in such a
 short time after init.
 On the other hand, if a certificate has an OCSP uri specified and no OCSP
 response, setting this option to 'on' for the given certificate will ensure
-that the OCSP response gets fetched automatically right after init.  The
-default minimum and maximum delays (5 minutes and 1 hour respectively) can be
-configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
+that the OCSP response gets fetched automatically right after init.
+The default minimum and maximum delays (5 minutes and 1 hour respectively)
+can be configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
 &quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
 
 Whenever an OCSP response is updated by the auto update task or following a
@@ -19172,17 +19183,29 @@ instance that has the dontlog-normal option set and that uses the regular
 HTTP log format in case of error (unreachable OCSP responder for instance).
 If such an error occurs, another log line that contains HTTP-related
 information will then be emitted alongside the &quot;regular&quot; OCSP one (which will
-likely have &quot;HTTP error&quot; as text status).
-
-but if a purely HTTP error happens
+likely have &quot;HTTP error&quot; as text status). But if a purely HTTP error happens
 (unreachable OCSP responder for instance), an extra log line that follows the
 regular HTTP log-format will be emitted.
-Here are two examples of such log lines, with a successful OCSP update log line first
-and then an example of an HTTP error with the two different lines:
-  &lt;134&gt;Mar  6 11:16:53 haproxy[14872]: -:- [06/Mar/2023:11:16:52.808] &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 &quot;Update successful&quot; 0 1
+Here are two examples of such log lines, with a successful OCSP update log
+line first and then an example of an HTTP error with the two different lines
+(lines were spit and the URL was shortened for readability):
+  &lt;134&gt;Mar  6 11:16:53 haproxy[14872]: -:- [06/Mar/2023:11:16:52.808] \
+          &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 &quot;Update successful&quot; 0 1
 
-  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:54.207] &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 &quot;HTTP error&quot; 1 0
-  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} &quot;GET http://127.0.0.1:12345/MEMwQTA%2FMD0wOzAJBgUrDgMCGgUABBSKg%2BAGD6%2F3Ccp%2Bm5VSKi6BY1%2FaCgQU9lKw5DXV6pI4UVCPCtvpLYXeAHoCAhAV HTTP/1.1&quot;
+  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:54.207] \
+          &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 &quot;HTTP error&quot; 1 0
+  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] \
+          &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} \
+          &quot;GET http://127.0.0.1:12345/MEMwQT HTTP/1.1&quot;
+
+Troubleshooting:
+A common error that can happen with let's encrypt certificates is if the DNS
+resolution provides an IPv6 address and your system does not have a valid
+outgoing IPv6 route. In such a case, you can either create the appropriate
+route or set the &quot;httpclient.resolvers.prefer ipv4&quot; option in the global
+section.
+In case of &quot;OCSP response check failure&quot; error, you might want to check that
+the issuer certificate that you provided is valid.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
@@ -23148,9 +23171,9 @@ operating system does not support TCP_INFO, for example Linux kernels before
 If the server connection is not established, if the connection is not TCP or
 if the operating system does not support TCP_INFO, for example Linux kernels
 before 2.4, the sample fetch fails.
-</pre><a class="anchor" name="fc_src"></a><a class="anchor" name="7-fc_src"></a><a class="anchor" name="7.3.3-fc_src"></a><a class="anchor" name="fc_src (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src"></a><a href="#7.3.3-fc_src">fc_src</a></b> : ip</div><pre class="text">This is the original destination IP address of the connection on the client
-side. Only &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; rules may alter this address. See &quot;<a href="#src">src</a>&quot;
-for details.
+</pre><a class="anchor" name="fc_src"></a><a class="anchor" name="7-fc_src"></a><a class="anchor" name="7.3.3-fc_src"></a><a class="anchor" name="fc_src (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src"></a><a href="#7.3.3-fc_src">fc_src</a></b> : ip</div><pre class="text">This is the original source IP address of the connection on the client side
+Only &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; rules may alter this address. See &quot;<a href="#src">src</a>&quot; for
+details.
 </pre><a class="anchor" name="fc_src_is_local"></a><a class="anchor" name="7-fc_src_is_local"></a><a class="anchor" name="7.3.3-fc_src_is_local"></a><a class="anchor" name="fc_src_is_local (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_src_is_local (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_src_is_local"></a><a href="#7.3.3-fc_src_is_local">fc_src_is_local</a></b> : boolean</div><pre class="text">Returns true if the source address of incoming connection is local to the
 system, or false if the address doesn't exist on the system. See
 &quot;<a href="#src_is_local">src_is_local</a>&quot; for details.
@@ -27394,7 +27417,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.1 &ndash; Configuration Manual<br>
+							HAProxy 2.8.1-47 &ndash; Configuration Manual<br>
 							<small>, 2023/07/03</small>
 						</div>
 					</div>
