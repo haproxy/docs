@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev2 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev2-6 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1210,11 +1210,15 @@
 							
 							<a class="list-group-item" href="#accept-proxy">accept-proxy</a>
 							
+							<a class="list-group-item" href="#accept_date">accept_date</a>
+							
 							<a class="list-group-item" href="#accepted_payload_size">accepted_payload_size</a>
 							
 							<a class="list-group-item" href="#acl (Fcgi-app section)">acl (Fcgi-app section)</a>
 							
 							<a class="list-group-item" href="#acl (Alphabetically sorted keywords reference)">acl (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#act_conn">act_conn</a>
 							
 							<a class="list-group-item" href="#add">add</a>
 							
@@ -2337,6 +2341,10 @@
 							
 							<a class="list-group-item" href="#mqtt_is_valid">mqtt_is_valid</a>
 							
+							<a class="list-group-item" href="#ms_ltime">ms_ltime</a>
+							
+							<a class="list-group-item" href="#ms_utime">ms_utime</a>
+							
 							<a class="list-group-item" href="#mss">mss</a>
 							
 							<a class="list-group-item" href="#mul">mul</a>
@@ -2690,6 +2698,8 @@
 							
 							<a class="list-group-item" href="#persist rdp-cookie">persist rdp-cookie</a>
 							
+							<a class="list-group-item" href="#pid">pid</a>
+							
 							<a class="list-group-item" href="#pidfile">pidfile</a>
 							
 							<a class="list-group-item" href="#pool-low-conn">pool-low-conn</a>
@@ -2845,6 +2855,8 @@
 							<a class="list-group-item" href="#req_ssl_ver">req_ssl_ver</a>
 							
 							<a class="list-group-item" href="#req_ver">req_ver</a>
+							
+							<a class="list-group-item" href="#request_date">request_date</a>
 							
 							<a class="list-group-item" href="#res.body">res.body</a>
 							
@@ -4177,6 +4189,10 @@
 							
 							<a class="list-group-item" href="#urlp_val">urlp_val</a>
 							
+							<a class="list-group-item" href="#us_ltime">us_ltime</a>
+							
+							<a class="list-group-item" href="#us_utime">us_utime</a>
+							
 							<a class="list-group-item" href="#use-fcgi-app (Proxy section)">use-fcgi-app (Proxy section)</a>
 							
 							<a class="list-group-item" href="#use-fcgi-app (Alphabetically sorted keywords reference)">use-fcgi-app (Alphabetically sorted keywords reference)</a>
@@ -4265,7 +4281,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4276,7 +4292,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev2</strong></p>
+							<p><strong>version 2.9-dev2-6</strong></p>
 							<p>
 								2023/07/21<br>
 								
@@ -22062,6 +22078,54 @@ Only MQTT 3.1, 3.1.1 and 5.0 are supported.
 <code>acl data_in_buffer req.len ge 4
 tcp-request content reject unless { req.payload(0,0),mqtt_is_valid }
 </code></pre>
+</div><a class="anchor" name="ms_ltime"></a><a class="anchor" name="7-ms_ltime"></a><a class="anchor" name="7.3.1-ms_ltime"></a><a class="anchor" name="ms_ltime (Using ACLs and fetching samples)"></a><a class="anchor" name="ms_ltime (Converters)"></a><div class="keyword"><b><a class="anchor" name="ms_ltime"></a><a href="#7.3.1-ms_ltime">ms_ltime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">This works like &quot;<a href="#ltime">ltime</a>&quot; but takes an input in milliseconds. It also supports
+the %N conversion specifier inspired by date(1).
+Converts an integer supposed to contain a date since epoch to a string
+representing this date in local time using a format defined by the &lt;format&gt;
+string using strftime(3). The purpose is to allow any date format to be used
+in logs. An optional &lt;offset&gt; in milliseconds may be applied to the input date
+(positive or negative). See the strftime() man page for the format supported
+by your operating system.
+
+The %N conversion specifier allows you to output the nanoseconds part of the
+date, precision is limited since the input is milliseconds.
+(000000000..999000000).  %N can take a width argument between % and N. It is
+useful to display milliseconds (%3N) or microseconds (%6N). The default and
+maximum width is 9 (%N = %9N).
+
+See also the utime converter for UTC as well as &quot;<a href="#ltime">ltime</a>&quot; and &quot;<a href="#us_ltime">us_ltime</a>&quot;
+converters.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Emit 3 colons, the local time, the timezone and another with ip:port</span>
+<span class="comment"># e.g. 2023/07/24/11:53:02.196 +0200 127.0.0.1:41530</span>
+log-format %[accept_date(ms),ms_ltime(&quot;%Y/%m/%d/%H:%M:%S.%3N %z&quot;)]\ %ci:%cp
+</code></pre>
+</div><a class="anchor" name="ms_utime"></a><a class="anchor" name="7-ms_utime"></a><a class="anchor" name="7.3.1-ms_utime"></a><a class="anchor" name="ms_utime (Using ACLs and fetching samples)"></a><a class="anchor" name="ms_utime (Converters)"></a><div class="keyword"><b><a class="anchor" name="ms_utime"></a><a href="#7.3.1-ms_utime">ms_utime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">This works like &quot;<a href="#utime">utime</a>&quot; but takes an input in milliseconds. It also supports
+the %N conversion specifier inspired by date(1).
+Converts an integer supposed to contain a date since epoch to a string
+representing this date in UTC time using a format defined by the &lt;format&gt;
+string using strftime(3). The purpose is to allow any date format to be used
+in logs. An optional &lt;offset&gt; in milliseconds may be applied to the input date
+(positive or negative). See the strftime() man page for the format supported
+by your operating system.
+
+The %N conversion specifier allows you to output the nanoseconds part of the
+date, precision is limited since the input is milliseconds.
+(000000000..999000000).  %N can take a width argument between % and N. It is
+useful to display milliseconds (%3N) or microseconds (%6N). The default and
+maximum width is 9 (%N = %9N).
+
+See also the ltime converter for local as well as &quot;<a href="#utime">utime</a>&quot; and &quot;<a href="#us_utime">us_utime</a>&quot;
+converters.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Emit 3 colons, the UTC time, the timezone and another with ip:port</span>
+<span class="comment"># e.g. 2023/07/24/09:53:02.196 +0000 127.0.0.1:41530</span>
+log-format %[accept_date(ms),ms_utime(&quot;%Y/%m/%d/%H:%M:%S.%3N %z&quot;)]\ %ci:%cp
+</code></pre>
 </div><a class="anchor" name="mul"></a><a class="anchor" name="7-mul"></a><a class="anchor" name="7.3.1-mul"></a><a class="anchor" name="mul (Using ACLs and fetching samples)"></a><a class="anchor" name="mul (Converters)"></a><div class="keyword"><b><a class="anchor" name="mul"></a><a href="#7.3.1-mul">mul</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Multiplies the input value of type signed integer by &lt;value&gt;, and returns
 the product as an signed integer. In case of overflow, the largest possible
 value for the sign is returned so that the operation doesn't wrap around.
@@ -22556,12 +22620,61 @@ starts with an indication about its scope. The scopes allowed are:
   &quot;res&quot;  : the variable is shared only during response processing.
 This prefix is followed by a name. The separator is a '.'. The name may only
 contain characters 'a-z', 'A-Z', '0-9', '.' and '_'.
-</pre><a class="anchor" name="utime"></a><a class="anchor" name="7-utime"></a><a class="anchor" name="7.3.1-utime"></a><a class="anchor" name="utime (Using ACLs and fetching samples)"></a><a class="anchor" name="utime (Converters)"></a><div class="keyword"><b><a class="anchor" name="utime"></a><a href="#7.3.1-utime">utime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
+</pre><a class="anchor" name="us_ltime"></a><a class="anchor" name="7-us_ltime"></a><a class="anchor" name="7.3.1-us_ltime"></a><a class="anchor" name="us_ltime (Using ACLs and fetching samples)"></a><a class="anchor" name="us_ltime (Converters)"></a><div class="keyword"><b><a class="anchor" name="us_ltime"></a><a href="#7.3.1-us_ltime">us_ltime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">This works like &quot;<a href="#ltime">ltime</a>&quot; but takes an input in microseconds. It also supports
+the %N conversion specifier inspired by date(1).
+Converts an integer supposed to contain a date since epoch to a string
+representing this date in local time using a format defined by the &lt;format&gt;
+string using strftime(3). The purpose is to allow any date format to be used
+in logs. An optional &lt;offset&gt; in microseconds may be applied to the input
+date (positive or negative). See the strftime() man page for the format
+supported by your operating system.
+
+The %N conversion specifier allows you to output the nanoseconds part of the
+date, precision is limited since the input is microseconds.
+(000000000..999999000). %N can take a width argument between % and N. It is
+useful to display milliseconds (%3N) or microseconds (%6N). The default and
+maximum width is 9 (%N = %9N).
+
+See also the &quot;<a href="#utime">utime</a>&quot; converter for UTC as well as &quot;<a href="#ltime">ltime</a>&quot; and &quot;<a href="#ms_ltime">ms_ltime</a>&quot;
+converters.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Emit 3 colons, the local time, the timezone and another with ip:port</span>
+<span class="comment"># e.g. 2023/07/24/09:53:02.196234 +0000 127.0.0.1:41530</span>
+log-format %[accept_date(us),us_ltime(&quot;%Y/%m/%d/%H:%M:%S.%6N %z&quot;)]\ %ci:%cp
+</code></pre>
+</div><a class="anchor" name="us_utime"></a><a class="anchor" name="7-us_utime"></a><a class="anchor" name="7.3.1-us_utime"></a><a class="anchor" name="us_utime (Using ACLs and fetching samples)"></a><a class="anchor" name="us_utime (Converters)"></a><div class="keyword"><b><a class="anchor" name="us_utime"></a><a href="#7.3.1-us_utime">us_utime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">This works like &quot;<a href="#utime">utime</a>&quot; but takes an input in microseconds. It also supports
+the %N conversion specifier inspired by date(1).
+Converts an integer supposed to contain a date since epoch to a string
+representing this date in UTC time using a format defined by the &lt;format&gt;
+string using strftime(3). The purpose is to allow any date format to be used
+in logs. An optional &lt;offset&gt; in microseconds may be applied to the input
+date (positive or negative). See the strftime() man page for the format
+supported by your operating system.
+
+The %N conversion specifier allows you to output the nanoseconds part of the
+date, precision is limited since the input is microseconds.
+(000000000..999999000). %N can take a width argument between % and N. It is
+useful to display milliseconds (%3N) or microseconds (%6N). The default and
+maximum width is 9 (%N = %9N).
+
+See also the &quot;<a href="#ltime">ltime</a>&quot; converter for local as well as &quot;<a href="#utime">utime</a>&quot; and &quot;<a href="#ms_utime">ms_utime</a>&quot;
+converters.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Emit 3 colons, the UTC time, the timezone and another with ip:port</span>
+<span class="comment"># e.g. 2023/07/24/09:53:02.196234 +0000 127.0.0.1:41530</span>
+log-format %[accept_date(us),us_utime(&quot;%Y/%m/%d/%H:%M:%S.%6N %z&quot;)]\ %ci:%cp
+</code></pre>
+</div><a class="anchor" name="utime"></a><a class="anchor" name="7-utime"></a><a class="anchor" name="7.3.1-utime"></a><a class="anchor" name="utime (Using ACLs and fetching samples)"></a><a class="anchor" name="utime (Converters)"></a><div class="keyword"><b><a class="anchor" name="utime"></a><a href="#7.3.1-utime">utime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
 representing this date in UTC time using a format defined by the &lt;format&gt;
 string using strftime(3). The purpose is to allow any date format to be used
 in logs. An optional &lt;offset&gt; in seconds may be applied to the input date
 (positive or negative). See the strftime() man page for the format supported
-by your operating system. See also the ltime converter.
+by your operating system. See also the &quot;<a href="#ltime">ltime</a>&quot; converter as well as &quot;<a href="#ms_utime">ms_utime</a>&quot;
+and &quot;<a href="#us_utime">us_utime</a>&quot;.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -22659,6 +22772,7 @@ http-response add-header X-SSL-verify %[ssl_c_verify,x509_v_err_str]
 not even relate to any client information. These ones are sometimes used with
 &quot;monitor-fail&quot; directives to report an internal status to external watchers.
 The sample fetch methods described in this section are usable anywhere.
+</pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
 </pre><a class="anchor" name="always_false"></a><a class="anchor" name="7-always_false"></a><a class="anchor" name="7.3.2-always_false"></a><a class="anchor" name="always_false (Using ACLs and fetching samples)"></a><a class="anchor" name="always_false (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="always_false"></a><a href="#7.3.2-always_false">always_false</a></b> : boolean</div><pre class="text">Always returns the boolean &quot;false&quot; value. It may be used with ACLs as a
 temporary replacement for another one when adjusting configurations.
 </pre><a class="anchor" name="always_true"></a><a class="anchor" name="7-always_true"></a><a class="anchor" name="7.3.2-always_true"></a><a class="anchor" name="always_true (Using ACLs and fetching samples)"></a><a class="anchor" name="always_true (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="always_true"></a><a href="#7.3.2-always_true">always_true</a></b> : boolean</div><pre class="text">Always returns the boolean &quot;true&quot; value. It may be used with ACLs as a
@@ -22917,6 +23031,8 @@ set-priority-class&quot; or &quot;<a href="#tcp-request%20content%20set-priority
 connection for tcp mode. The value will be that set by the last call to
 &quot;<a href="#http-request%20set-priority-offset">http-request set-priority-offset</a>&quot; or &quot;tcp-request content
 set-priority-offset&quot;.
+</pre><a class="anchor" name="pid"></a><a class="anchor" name="7-pid"></a><a class="anchor" name="7.3.2-pid"></a><a class="anchor" name="pid (Using ACLs and fetching samples)"></a><a class="anchor" name="pid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="pid"></a><a href="#7.3.2-pid">pid</a></b> : integer</div><pre class="text">Return the PID of the current process. In most cases this is the PID of the
+worker process.
 </pre><a class="anchor" name="proc"></a><a class="anchor" name="7-proc"></a><a class="anchor" name="7.3.2-proc"></a><a class="anchor" name="proc (Using ACLs and fetching samples)"></a><a class="anchor" name="proc (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="proc"></a><a href="#7.3.2-proc">proc</a></b> : integer</div><pre class="text">Always returns value 1 (historically it would return the calling process
 number).
 </pre><a class="anchor" name="queue"></a><a class="anchor" name="7-queue"></a><a class="anchor" name="7.3.2-queue"></a><a class="anchor" name="queue (Using ACLs and fetching samples)"></a><a class="anchor" name="queue (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="queue"></a><a href="#7.3.2-queue">queue</a></b>(<span style="color: #008">[<span style="color: #080">&lt;backend&gt;</span>]</span>) : integer</div><pre class="text">Returns the total number of queued connections of the designated backend,
@@ -23033,6 +23149,21 @@ counter number can be specified as the first integer argument when using the
 An optional table may be specified with the &quot;sc*&quot; form, in which case the
 currently tracked key will be looked up into this alternate table instead of
 the table currently being tracked.
+</pre><a class="anchor" name="accept_date"></a><a class="anchor" name="7-accept_date"></a><a class="anchor" name="7.3.3-accept_date"></a><a class="anchor" name="accept_date (Using ACLs and fetching samples)"></a><a class="anchor" name="accept_date (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="accept_date"></a><a href="#7.3.3-accept_date">accept_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the connection was received by HAProxy
+(which might be very slightly different from the date observed on the
+network if there was some queuing in the system's backlog). This is usually
+the same date which may appear in any upstream firewall's log. When used in
+HTTP mode, the accept_date field will be reset to the first moment the
+connection is ready to receive a new request (end of previous response for
+HTTP/1, immediately after previous request for HTTP/2).
+
+Returns a value in number of seconds since epoch.
+
+&lt;unit&gt; is facultative, and can be set to &quot;s&quot; for seconds (default behavior),
+&quot;ms&quot; for  milliseconds or &quot;us&quot; for microseconds.
+If unit is set, return value is an integer reflecting either seconds,
+milliseconds or microseconds since epoch.
+It is useful when a time resolution of less than a second is needed.
 </pre><a class="anchor" name="bc_dst"></a><a class="anchor" name="7-bc_dst"></a><a class="anchor" name="7.3.3-bc_dst"></a><a class="anchor" name="bc_dst (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_dst"></a><a href="#7.3.3-bc_dst">bc_dst</a></b> : ip</div><pre class="text">This is the destination ip address of the connection on the server side,
 which is the server address HAProxy connected to. It is of type IP and works
 on both IPv4 and IPv6 tables.  On IPv6 tables, IPv4 address is mapped to its
@@ -24622,6 +24753,17 @@ used on responses. Please refer to these respective fetches for more details.
 In case of doubt about the fetch direction, please use the explicit ones.
 Note that contrary to the hdr() sample fetch method, the hdr_* ACL keywords
 unambiguously apply to the request headers.
+</pre><a class="anchor" name="request_date"></a><a class="anchor" name="7-request_date"></a><a class="anchor" name="7.3.6-request_date"></a><a class="anchor" name="request_date (Using ACLs and fetching samples)"></a><a class="anchor" name="request_date (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="request_date"></a><a href="#7.3.6-request_date">request_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the first byte of the HTTP request was received
+by HAProxy (log-format tag %tr). This is computed from accept_date +
+handshake time (%Th) + idle time (%Ti).
+
+Returns a value in number of seconds since epoch.
+
+&lt;unit&gt; is facultative, and can be set to &quot;s&quot; for seconds (default behavior),
+&quot;ms&quot; for  milliseconds or &quot;us&quot; for microseconds.
+If unit is set, return value is an integer reflecting either seconds,
+milliseconds or microseconds since epoch.
+It is useful when a time resolution of less than a second is needed.
 </pre><a class="anchor" name="req.fhdr"></a><a class="anchor" name="7-req.fhdr"></a><a class="anchor" name="7.3.6-req.fhdr"></a><a class="anchor" name="req.fhdr (Using ACLs and fetching samples)"></a><a class="anchor" name="req.fhdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.fhdr"></a><a href="#7.3.6-req.fhdr">req.fhdr</a></b>(<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) : string</div><pre class="text">This returns the full value of the last occurrence of header &lt;name&gt; in an
 HTTP request. It differs from req.hdr() in that any commas present in the
 value are returned and are not used as delimiters. This is sometimes useful
@@ -25311,7 +25453,7 @@ Detailed fields description :
     replaced with the ID of the accepting socket, which is also reported in the
     stats interface.
 
-  - &quot;accept_date&quot; is the exact date when the connection was received by HAProxy
+  - &quot;<a href="#accept_date">accept_date</a>&quot; is the exact date when the connection was received by HAProxy
     (which might be very slightly different from the date observed on the
     network if there was some queuing in the system's backlog). This is usually
     the same date which may appear in any upstream firewall's log. When used in
@@ -25512,7 +25654,7 @@ Detailed fields description :
     replaced with the ID of the accepting socket, which is also reported in the
     stats interface.
 
-  - &quot;request_date&quot; is the exact date when the first byte of the HTTP request
+  - &quot;<a href="#request_date">request_date</a>&quot; is the exact date when the first byte of the HTTP request
     was received by HAProxy (log field %tr).
 
   - &quot;frontend_name&quot; is the name of the frontend (or listener) which received
@@ -27478,7 +27620,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev2 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev2-6 &ndash; Configuration Manual<br>
 							<small>, 2023/07/21</small>
 						</div>
 					</div>
