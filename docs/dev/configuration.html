@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev2-8 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev2-10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1285,6 +1285,8 @@
 							
 							<a class="list-group-item" href="#baseq">baseq</a>
 							
+							<a class="list-group-item" href="#bc.timer.connect">bc.timer.connect</a>
+							
 							<a class="list-group-item" href="#bc_dst">bc_dst</a>
 							
 							<a class="list-group-item" href="#bc_dst_port">bc_dst_port</a>
@@ -1626,6 +1628,10 @@
 							<a class="list-group-item" href="#fall">fall</a>
 							
 							<a class="list-group-item" href="#fastinter">fastinter</a>
+							
+							<a class="list-group-item" href="#fc.timer.handshake">fc.timer.handshake</a>
+							
+							<a class="list-group-item" href="#fc.timer.total">fc.timer.total</a>
 							
 							<a class="list-group-item" href="#fc_dst">fc_dst</a>
 							
@@ -2842,6 +2848,14 @@
 							
 							<a class="list-group-item" href="#req.ssl_ver">req.ssl_ver</a>
 							
+							<a class="list-group-item" href="#req.timer.hdr">req.timer.hdr</a>
+							
+							<a class="list-group-item" href="#req.timer.idle">req.timer.idle</a>
+							
+							<a class="list-group-item" href="#req.timer.queue">req.timer.queue</a>
+							
+							<a class="list-group-item" href="#req.timer.tq">req.timer.tq</a>
+							
 							<a class="list-group-item" href="#req.ver">req.ver</a>
 							
 							<a class="list-group-item" href="#req_len">req_len</a>
@@ -2903,6 +2917,10 @@
 							<a class="list-group-item" href="#res.payload_lv">res.payload_lv</a>
 							
 							<a class="list-group-item" href="#res.ssl_hello_type">res.ssl_hello_type</a>
+							
+							<a class="list-group-item" href="#res.timer.data">res.timer.data</a>
+							
+							<a class="list-group-item" href="#res.timer.hdr">res.timer.hdr</a>
 							
 							<a class="list-group-item" href="#res.ver">res.ver</a>
 							
@@ -4140,6 +4158,10 @@
 							
 							<a class="list-group-item" href="#tune.zlib.windowsize">tune.zlib.windowsize</a>
 							
+							<a class="list-group-item" href="#txn.timer.total">txn.timer.total</a>
+							
+							<a class="list-group-item" href="#txn.timer.user">txn.timer.user</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-U"><h4>U</h4>
 								
@@ -4281,7 +4303,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4292,7 +4314,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev2-8</strong></p>
+							<p><strong>version 2.9-dev2-10</strong></p>
 							<p>
 								2023/07/21<br>
 								
@@ -23164,6 +23186,9 @@ Returns a value in number of seconds since epoch.
 If unit is set, return value is an integer reflecting either seconds,
 milliseconds or microseconds since epoch.
 It is useful when a time resolution of less than a second is needed.
+</pre><a class="anchor" name="bc.timer.connect"></a><a class="anchor" name="7-bc.timer.connect"></a><a class="anchor" name="7.3.3-bc.timer.connect"></a><a class="anchor" name="bc.timer.connect (Using ACLs and fetching samples)"></a><a class="anchor" name="bc.timer.connect (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc.timer.connect"></a><a href="#7.3.3-bc.timer.connect">bc.timer.connect</a></b> : integer</div><pre class="text">Total time to establish the TCP connection to the server.  This is the
+equivalent of %Tc in the log-format. This is reported in milliseconds (ms).
+For more information see Section 8.4 &quot;Timing events&quot;
 </pre><a class="anchor" name="bc_dst"></a><a class="anchor" name="7-bc_dst"></a><a class="anchor" name="7.3.3-bc_dst"></a><a class="anchor" name="bc_dst (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_dst"></a><a href="#7.3.3-bc_dst">bc_dst</a></b> : ip</div><pre class="text">This is the destination ip address of the connection on the server side,
 which is the server address HAProxy connected to. It is of type IP and works
 on both IPv4 and IPv6 tables.  On IPv6 tables, IPv4 address is mapped to its
@@ -23249,6 +23274,14 @@ Any tcp/http rules may alter this address. This might be used when running in
 transparent mode, when assigning dynamic ports to some clients for a whole
 application session, to stick all users to a same server, or to pass the
 destination port information to a server using an HTTP header.
+</pre><a class="anchor" name="fc.timer.handshake"></a><a class="anchor" name="7-fc.timer.handshake"></a><a class="anchor" name="7.3.3-fc.timer.handshake"></a><a class="anchor" name="fc.timer.handshake (Using ACLs and fetching samples)"></a><a class="anchor" name="fc.timer.handshake (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc.timer.handshake"></a><a href="#7.3.3-fc.timer.handshake">fc.timer.handshake</a></b> : integer</div><pre class="text">Total time to accept tcp connection and execute handshakes for low level
+protocols. Currently, these protocols are proxy-protocol and SSL. This is the
+equivalent of %Th in the log-format.  This is reported in milliseconds (ms).
+For more information see Section 8.4 &quot;Timing events&quot;
+</pre><a class="anchor" name="fc.timer.total"></a><a class="anchor" name="7-fc.timer.total"></a><a class="anchor" name="7.3.3-fc.timer.total"></a><a class="anchor" name="fc.timer.total (Using ACLs and fetching samples)"></a><a class="anchor" name="fc.timer.total (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc.timer.total"></a><a href="#7.3.3-fc.timer.total">fc.timer.total</a></b> : integer</div><pre class="text">Total session duration time, between the moment the proxy accepted it and the
+moment both ends were closed. This is the equivalent of %Tt in the log-format.
+This is reported in milliseconds (ms). For more information see Section 8.4
+&quot;Timing events&quot;
 </pre><a class="anchor" name="fc_dst"></a><a class="anchor" name="7-fc_dst"></a><a class="anchor" name="7.3.3-fc_dst"></a><a class="anchor" name="fc_dst (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_dst"></a><a href="#7.3.3-fc_dst">fc_dst</a></b> : ip</div><pre class="text">This is the original destination IP address of the connection on the client
 side. Only &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; rules may alter this address. See &quot;<a href="#dst">dst</a>&quot;
 for details.
@@ -23380,6 +23413,10 @@ backends to check from which frontend it was called, or to stick all users
 coming via a same frontend to the same server.
 </pre><a class="anchor" name="fe_client_timeout"></a><a class="anchor" name="7-fe_client_timeout"></a><a class="anchor" name="7.3.3-fe_client_timeout"></a><a class="anchor" name="fe_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_client_timeout"></a><a href="#7.3.3-fe_client_timeout">fe_client_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the client timeout of the
 current frontend.
+</pre><a class="anchor" name="res.timer.data"></a><a class="anchor" name="7-res.timer.data"></a><a class="anchor" name="7.3.3-res.timer.data"></a><a class="anchor" name="res.timer.data (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.data (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.timer.data"></a><a href="#7.3.3-res.timer.data">res.timer.data</a></b> : integer</div><pre class="text">this is the total transfer time of the response payload till the last byte
+sent to the client. In HTTP it starts after the last response header (after
+Tr). This is the equivalent of %Td in the log-format and is reported in
+milliseconds (ms).  For more information see Section 8.4 &quot;Timing events&quot;
 </pre><a class="anchor" name="sc_bytes_in_rate"></a><a class="anchor" name="7-sc_bytes_in_rate"></a><a class="anchor" name="7.3.3-sc_bytes_in_rate"></a><a class="anchor" name="sc_bytes_in_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc_bytes_in_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc_bytes_in_rate"></a><a href="#7.3.3-sc_bytes_in_rate">sc_bytes_in_rate</a></b>(<span style="color: #080">&lt;ctr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc0_bytes_in_rate"></a><a class="anchor" name="7-sc0_bytes_in_rate"></a><a class="anchor" name="7.3.3-sc0_bytes_in_rate"></a><a class="anchor" name="sc0_bytes_in_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc0_bytes_in_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc0_bytes_in_rate"></a><a href="#7.3.3-sc0_bytes_in_rate">sc0_bytes_in_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc1_bytes_in_rate"></a><a class="anchor" name="7-sc1_bytes_in_rate"></a><a class="anchor" name="7.3.3-sc1_bytes_in_rate"></a><a class="anchor" name="sc1_bytes_in_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc1_bytes_in_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc1_bytes_in_rate"></a><a href="#7.3.3-sc1_bytes_in_rate">sc1_bytes_in_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc2_bytes_in_rate"></a><a class="anchor" name="7-sc2_bytes_in_rate"></a><a class="anchor" name="7.3.3-sc2_bytes_in_rate"></a><a class="anchor" name="sc2_bytes_in_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc2_bytes_in_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc2_bytes_in_rate"></a><a href="#7.3.3-sc2_bytes_in_rate">sc2_bytes_in_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the average client-to-server bytes rate from the currently tracked
 counters, measured in amount of bytes over the period configured in the
 table. See also src_bytes_in_rate.
@@ -24359,6 +24396,10 @@ the server when the outgoing connection was made over an SSL/TLS transport
 layer.
 </pre><a class="anchor" name="ssl_s_version"></a><a class="anchor" name="7-ssl_s_version"></a><a class="anchor" name="7.3.4-ssl_s_version"></a><a class="anchor" name="ssl_s_version (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_version (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_version"></a><a href="#7.3.4-ssl_s_version">ssl_s_version</a></b> : integer</div><pre class="text">Returns the version of the certificate presented by the server when the
 outgoing connection was made over an SSL/TLS transport layer.
+</pre><a class="anchor" name="txn.timer.user"></a><a class="anchor" name="7-txn.timer.user"></a><a class="anchor" name="7.3.4-txn.timer.user"></a><a class="anchor" name="txn.timer.user (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.timer.user (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="txn.timer.user"></a><a href="#7.3.4-txn.timer.user">txn.timer.user</a></b> : integer</div><pre class="text">Total estimated time as seen from client, between the moment the proxy
+accepted it and the moment both ends were closed, without idle time.
+This is the equivalent of %Tu in the log-format and is reported in
+milliseconds (ms). For more details see Section 8.4 &quot;Timing events&quot;
 </pre></div>
 <a class="anchor" id="7.3.5" name="7.3.5"></a>
 <h3 id="chapter-7.3.5" data-target="7.3.5"><small><a class="small" href="#7.3.5">7.3.5.</a></small> Fetching samples from buffer contents (Layer 6)</h3>
@@ -24853,6 +24894,26 @@ names and values (length of 0 for both).
 
 int:  refer to the SPOE documentation for the encoding
 str:  &lt;int:length&gt;&lt;bytes&gt;
+</pre><a class="anchor" name="req.timer.hdr"></a><a class="anchor" name="7-req.timer.hdr"></a><a class="anchor" name="7.3.6-req.timer.hdr"></a><a class="anchor" name="req.timer.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="req.timer.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.timer.hdr"></a><a href="#7.3.6-req.timer.hdr">req.timer.hdr</a></b> : integer</div><pre class="text">Total time to get the client request (HTTP mode only). It's the time elapsed
+between the first bytes received and the moment the proxy received the empty
+line marking the end of the HTTP headers. This is reported in milliseconds
+(ms) and is equivalent to %TR in log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot;
+for more details.
+</pre><a class="anchor" name="req.timer.idle"></a><a class="anchor" name="7-req.timer.idle"></a><a class="anchor" name="7.3.6-req.timer.idle"></a><a class="anchor" name="req.timer.idle (Using ACLs and fetching samples)"></a><a class="anchor" name="req.timer.idle (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.timer.idle"></a><a href="#7.3.6-req.timer.idle">req.timer.idle</a></b> : integer</div><pre class="text">This is the idle time before the HTTP request (HTTP mode only). This timer
+counts between the end of the handshakes and the first byte of the HTTP
+request. This is reported in milliseconds and is equivalent to %Ti in
+log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
+</pre><a class="anchor" name="req.timer.queue"></a><a class="anchor" name="7-req.timer.queue"></a><a class="anchor" name="7.3.6-req.timer.queue"></a><a class="anchor" name="req.timer.queue (Using ACLs and fetching samples)"></a><a class="anchor" name="req.timer.queue (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.timer.queue"></a><a href="#7.3.6-req.timer.queue">req.timer.queue</a></b> : integer</div><pre class="text">Total time spent in the queues waiting for a connection slot.
+This is reported in milliseconds and is equivalent to %Tw in
+log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
+</pre><a class="anchor" name="req.timer.tq"></a><a class="anchor" name="7-req.timer.tq"></a><a class="anchor" name="7.3.6-req.timer.tq"></a><a class="anchor" name="req.timer.tq (Using ACLs and fetching samples)"></a><a class="anchor" name="req.timer.tq (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.timer.tq"></a><a href="#7.3.6-req.timer.tq">req.timer.tq</a></b> : integer</div><pre class="text">total time to get the client request from the accept date or since the
+emission of the last byte of the previous response.
+This is reported in milliseconds and is equivalent to %Tq in
+log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
+</pre><a class="anchor" name="res.timer.hdr"></a><a class="anchor" name="7-res.timer.hdr"></a><a class="anchor" name="7.3.6-res.timer.hdr"></a><a class="anchor" name="res.timer.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.timer.hdr"></a><a href="#7.3.6-res.timer.hdr">res.timer.hdr</a></b> : integer</div><pre class="text">It's the time elapsed between the moment the TCP connection was established
+to the server and the moment the server sent its complete response headers.
+This is reported in milliseconds and is equivalent to %Tr in log-format. See
+<a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
 </pre><a class="anchor" name="http_auth"></a><a class="anchor" name="7-http_auth"></a><a class="anchor" name="7.3.6-http_auth"></a><a class="anchor" name="http_auth (Using ACLs and fetching samples)"></a><a class="anchor" name="http_auth (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="http_auth"></a><a href="#7.3.6-http_auth">http_auth</a></b>(<span style="color: #080">&lt;userlist&gt;</span>) : boolean</div><pre class="text">Returns a boolean indicating whether the authentication data received from
 the client match a username &amp; password stored in the specified userlist. This
 fetch function is not really useful outside of ACLs. Currently only http
@@ -25084,6 +25145,11 @@ example, 302. It is mostly used within ACLs and integer ranges, for example,
 to remove any Location header if the response is not a 3xx.
 
 It may be used in tcp-check based expect rules.
+</pre><a class="anchor" name="txn.timer.total"></a><a class="anchor" name="7-txn.timer.total"></a><a class="anchor" name="7.3.6-txn.timer.total"></a><a class="anchor" name="txn.timer.total (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.timer.total (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="txn.timer.total"></a><a href="#7.3.6-txn.timer.total">txn.timer.total</a></b> : integer</div><pre class="text">Total active time for the HTTP request, between the moment the proxy received
+the first byte of the request header and the emission of the last byte of the
+response body. This is the equivalent of %Ta in the log-format and is
+reported in milliseconds (ms).  For more information see Section 8.4 &quot;Timing
+events&quot;
 </pre><a class="anchor" name="unique-id"></a><a class="anchor" name="7-unique-id"></a><a class="anchor" name="7.3.6-unique-id"></a><a class="anchor" name="unique-id (Using ACLs and fetching samples)"></a><a class="anchor" name="unique-id (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="unique-id"></a><a href="#7.3.6-unique-id">unique-id</a></b> : string</div><pre class="text">Returns the unique-id attached to the request. The directive
 &quot;<a href="#unique-id-format">unique-id-format</a>&quot; must be set. If it is not set, the unique-id sample fetch
 fails. Note that the unique-id is usually used with HTTP requests, however this
@@ -26216,6 +26282,9 @@ Timings events in TCP mode:
     all request to calculate the amortized value. The second and subsequent
     request will always report zero here.
 
+    This timer is named %Th as a log-format tag, and fc.timer.handshake as a
+    sample fetch.
+
   - Ti: is the idle time before the HTTP request (HTTP mode only). This timer
     counts between the end of the handshakes and the first byte of the HTTP
     request. When dealing with a second request in keep-alive mode, it starts
@@ -26226,6 +26295,9 @@ Timings events in TCP mode:
     pending until they need it. This delay will be reported as the idle time. A
     value of -1 indicates that nothing was received on the connection.
 
+    This timer is named %Ti as a log-format tag, and req.timer.idle as a
+    sample fetch.
+
   - TR: total time to get the client request (HTTP mode only). It's the time
     elapsed between the first bytes received and the moment the proxy received
     the empty line marking the end of the HTTP headers. The value &quot;-1&quot;
@@ -26233,6 +26305,9 @@ Timings events in TCP mode:
     the client closes prematurely or times out. This time is usually very short
     since most requests fit in a single packet. A large time may indicate a
     request typed by hand during a test.
+
+    This timer is named %TR as a log-format tag, and req.timer.hdr as a
+    sample fetch.
 
   - Tq: total time to get the client request from the accept date or since the
     emission of the last byte of the previous response (HTTP mode only). It's
@@ -26242,17 +26317,26 @@ Timings events in TCP mode:
     it in favor of TR nowadays, as the idle time adds a lot of noise to the
     reports.
 
+    This timer is named %Tq as a log-format tag, and req.timer.tq as a
+    sample fetch.
+
   - Tw: total time spent in the queues waiting for a connection slot. It
     accounts for backend queue as well as the server queues, and depends on the
     queue size, and the time needed for the server to complete previous
     requests. The value &quot;-1&quot; means that the request was killed before reaching
     the queue, which is generally what happens with invalid or denied requests.
 
+    This timer is named %Tw as a log-format tag, and req.timer.queue as a
+    sample fetch.
+
   - Tc: total time to establish the TCP connection to the server. It's the time
     elapsed between the moment the proxy sent the connection request, and the
     moment it was acknowledged by the server, or between the TCP SYN packet and
     the matching SYN/ACK packet in return. The value &quot;-1&quot; means that the
     connection never established.
+
+    This timer is named %Tc as a log-format tag, and bc.timer.connect as a
+    sample fetch.
 
   - Tr: server response time (HTTP mode only). It's the time elapsed between
     the moment the TCP connection was established to the server and the moment
@@ -26266,12 +26350,18 @@ Timings events in TCP mode:
     header (empty line) was never seen, most likely because the server timeout
     stroke before the server managed to process the request.
 
+    This timer is named %Tr as a log-format tag, and res.timer.hdr as a
+    sample fetch.
+
   - Td: this is the total transfer time of the response payload till the last
     byte sent to the client. In HTTP it starts after the last response header
     (after Tr).
 
     The data sent are not guaranteed to be received by the client, they can be
     stuck in either the kernel or the network.
+
+    This timer is named %Td as a log-format tag, and res.timer.data as a
+    sample fetch.
 
   - Ta: total active time for the HTTP request, between the moment the proxy
     received the first byte of the request header and the emission of the last
@@ -26285,6 +26375,9 @@ Timings events in TCP mode:
     Timers with &quot;-1&quot; values have to be excluded from this equation. Note that
     &quot;Ta&quot; can never be negative.
 
+    This timer is named %Ta as a log-format tag, and txn.timer.total as a
+    sample fetch.
+
   - Tt: total session duration time, between the moment the proxy accepted it
     and the moment both ends were closed. The exception is when the &quot;<a href="#option%20logasap">logasap</a>&quot;
     option is specified. In this case, it only equals (Th+Ti+TR+Tw+Tc+Tr), and
@@ -26297,6 +26390,9 @@ Timings events in TCP mode:
     mode, &quot;Ti&quot;, &quot;Tq&quot; and &quot;Tr&quot; have to be excluded too. Note that &quot;Tt&quot; can never
     be negative and that for HTTP, Tt is simply equal to (Th+Ti+Ta).
 
+    This timer is named %Tt as a log-format tag, and fc.timer.total as a
+    sample fetch.
+
   - Tu: total estimated time as seen from client, between the moment the proxy
     accepted it and the moment both ends were closed, without idle time.
     This is useful to roughly measure end-to-end time as a user would see it,
@@ -26305,6 +26401,9 @@ Timings events in TCP mode:
     latency is the same in both directions. The exception is when the &quot;<a href="#option%20logasap">logasap</a>&quot;
     option is specified. In this case, it only equals (Th+TR+Tw+Tc+Tr), and is
     prefixed with a '+' sign.
+
+    This timer is named %Tu as a log-format tag, and txn.timer.user as a
+    sample fetch.
 
 These timers provide precious indications on trouble causes. Since the TCP
 protocol defines retransmit delays of 3, 6, 12... seconds, we know for sure
@@ -27627,7 +27726,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev2-8 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev2-10 &ndash; Configuration Manual<br>
 							<small>, 2023/07/21</small>
 						</div>
 					</div>
