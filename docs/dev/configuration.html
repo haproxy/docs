@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev2-24 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev2-28 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1217,6 +1217,8 @@
 							<a class="list-group-item" href="#acl (Fcgi-app section)">acl (Fcgi-app section)</a>
 							
 							<a class="list-group-item" href="#acl (Alphabetically sorted keywords reference)">acl (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#acl (Fetching samples from internal states)">acl (Fetching samples from internal states)</a>
 							
 							<a class="list-group-item" href="#act_conn">act_conn</a>
 							
@@ -4303,7 +4305,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/07/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4314,7 +4316,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev2-24</strong></p>
+							<p><strong>version 2.9-dev2-28</strong></p>
 							<p>
 								2023/07/21<br>
 								
@@ -20802,7 +20804,7 @@ simple :
 The actions generally consist in blocking a request, selecting a backend, or
 adding a header.
 
-In order to define a test, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acl%20%28Fcgi-app%20section%29">Fcgi-app section</a></li><li><a href="#acl%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword is used. The syntax is :
+In order to define a test, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acl%20%28Fcgi-app%20section%29">Fcgi-app section</a></li><li><a href="#acl%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#acl%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; keyword is used. The syntax is :
 
    acl &lt;aclname&gt; &lt;criterion&gt; [flags] [operator] [&lt;value&gt;] ...
 
@@ -22795,6 +22797,13 @@ not even relate to any client information. These ones are sometimes used with
 &quot;monitor-fail&quot; directives to report an internal status to external watchers.
 The sample fetch methods described in this section are usable anywhere.
 </pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
+</pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
+returns false. Up to 12 ACLs may be provided, each delimited by comma. Each
+named ACL may be prefixed with a &quot;!&quot; to invert the result. If any evaluation
+produces an error then the sample also returns an error.
+Note that HAProxy does not perform any validation checks on the referenced
+ACLs, such as whether an ACL which uses a http request sample is used in
+response context. This behavior may be changed in the future.
 </pre><a class="anchor" name="always_false"></a><a class="anchor" name="7-always_false"></a><a class="anchor" name="7.3.2-always_false"></a><a class="anchor" name="always_false (Using ACLs and fetching samples)"></a><a class="anchor" name="always_false (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="always_false"></a><a href="#7.3.2-always_false">always_false</a></b> : boolean</div><pre class="text">Always returns the boolean &quot;false&quot; value. It may be used with ACLs as a
 temporary replacement for another one when adjusting configurations.
 </pre><a class="anchor" name="always_true"></a><a class="anchor" name="7-always_true"></a><a class="anchor" name="7.3.2-always_true"></a><a class="anchor" name="always_true (Using ACLs and fetching samples)"></a><a class="anchor" name="always_true (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="always_true"></a><a href="#7.3.2-always_true">always_true</a></b> : boolean</div><pre class="text">Always returns the boolean &quot;true&quot; value. It may be used with ACLs as a
@@ -27388,7 +27397,7 @@ connection.
 document root must be defined.
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="10-acl"></a><a class="anchor" name="10.1.1-acl"></a><a class="anchor" name="acl (FastCGI applications)"></a><a class="anchor" name="acl (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#10.1.1-acl">acl</a></b> <span style="color: #080">&lt;aclname&gt;</span> <span style="color: #080">&lt;criterion&gt;</span> <span style="color: #008">[flags]</span> <span style="color: #008">[operator]</span> <span style="color: #080">&lt;value&gt;</span> ...</div><pre class="text">Declare or complete an access list.
 
-See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acl%20%28Fcgi-app%20section%29">Fcgi-app section</a></li><li><a href="#acl%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword in <a href="#4.2">section 4.2</a> and <a href="#7">section 7</a> about ACL usage for
+See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acl%20%28Fcgi-app%20section%29">Fcgi-app section</a></li><li><a href="#acl%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#acl%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; keyword in <a href="#4.2">section 4.2</a> and <a href="#7">section 7</a> about ACL usage for
 details. ACLs defined for a FastCGI application are private. They cannot be
 used by any other application or by any proxy. In the same way, ACLs defined
 in any other section are not usable by a FastCGI application. However,
@@ -27827,7 +27836,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev2-24 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev2-28 &ndash; Configuration Manual<br>
 							<small>, 2023/07/21</small>
 						</div>
 					</div>
