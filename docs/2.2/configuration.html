@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.2.30 - Configuration Manual</title>
+		<title>HAProxy version 2.2.30-22 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3497,7 +3497,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/06/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3508,7 +3508,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.2.30</strong></p>
+							<p><strong>version 2.2.30-22</strong></p>
 							<p>
 								2023/06/12<br>
 								
@@ -5306,6 +5306,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
    - <a href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
    - <a href="#tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a>
+   - <a href="#tune.h2.max-frame-size">tune.h2.max-frame-size</a>
    - <a href="#tune.http.cookielen">tune.http.cookielen</a>
    - <a href="#tune.http.logurilen">tune.http.logurilen</a>
    - <a href="#tune.http.maxhdr">tune.http.maxhdr</a>
@@ -11127,7 +11128,8 @@ not allowed at all. HAProxy always blocks a number of them (0..32, 127). The
 remaining ones are blocked by default unless this option is enabled. This
 option also relaxes the test on the HTTP version, it allows HTTP/0.9 requests
 to pass through (no version specified) and multiple digits for both the major
-and the minor version.
+and the minor version. Finally, this option also allows incoming URLs to
+contain fragment references ('#' after the path).
 
 This option should never be enabled by default as it hides application bugs
 and open security breaches. It should only be deployed after a problem has
@@ -20771,7 +20773,11 @@ prefetch-capable caches, and with portals which need to aggregate multiple
 information from databases and keep them in caches. Note that with outgoing
 caches, it would be wiser to use &quot;<a href="#url">url</a>&quot; instead. With ACLs, it's typically
 used to match exact file names (e.g. &quot;/login.php&quot;), or directory parts using
-the derivative forms. See also the &quot;<a href="#url">url</a>&quot; and &quot;<a href="#base">base</a>&quot; fetch methods.
+the derivative forms. See also the &quot;<a href="#url">url</a>&quot; and &quot;<a href="#base">base</a>&quot; fetch methods. Please
+note that any fragment reference in the URI ('#' after the path) is strictly
+forbidden by the HTTP standard and will be rejected. However, if the frontend
+receiving the request has &quot;<a href="#option%20accept-invalid-http-request">option accept-invalid-http-request</a>&quot;, then this
+fragment part will be accepted and will also appear in the path.
 
 ACL derivatives :
   path     : exact string match
@@ -20787,7 +20793,11 @@ the first slash. This sample fetch is pretty handy to always retrieve a
 relative URI, excluding the scheme and the authority part, if any. Indeed,
 while it is the common representation for an HTTP/1.1 request target, in
 HTTP/2, an absolute URI is often used. This sample fetch will return the same
-result in both cases.
+result in both cases. Please note that any fragment reference in the URI ('#'
+after the path) is strictly forbidden by the HTTP standard and will be
+rejected. However, if the frontend receiving the request has &quot;option
+accept-invalid-http-request&quot;, then this fragment part will be accepted and
+will also appear in the path.
 </pre><a class="anchor" name="query"></a><a class="anchor" name="7-query"></a><a class="anchor" name="7.3.6-query"></a><a class="anchor" name="query (Using ACLs and fetching samples)"></a><a class="anchor" name="query (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="query"></a><a href="#7.3.6-query">query</a></b> : string</div><pre class="text">This extracts the request's query string, which starts after the first
 question mark. If no question mark is present, this fetch returns nothing. If
 a question mark is present but nothing follows, it returns an empty string.
@@ -20952,7 +20962,11 @@ multiple information from databases and keep them in caches. With ACLs, using
 &quot;<a href="#path">path</a>&quot; is preferred over using &quot;<a href="#url">url</a>&quot;, because clients may send a full URL as
 is normally done with proxies. The only real use is to match &quot;*&quot; which does
 not match in &quot;<a href="#path">path</a>&quot;, and for which there is already a predefined ACL. See
-also &quot;<a href="#path">path</a>&quot; and &quot;<a href="#base">base</a>&quot;.
+also &quot;<a href="#path">path</a>&quot; and &quot;<a href="#base">base</a>&quot;. Please note that any fragment reference in the URI
+('#' after the path) is strictly forbidden by the HTTP standard and will be
+rejected. However, if the frontend receiving the request has &quot;option
+accept-invalid-http-request&quot;, then this fragment part will be accepted and
+will also appear in the url.
 
 ACL derivatives :
   url     : exact string match
@@ -21978,6 +21992,13 @@ Timings events in TCP mode:
     untrusted network. A value of &quot;-1&quot; here means that the last the response
     header (empty line) was never seen, most likely because the server timeout
     stroke before the server managed to process the request.
+
+  - Td: this is the total transfer time of the response payload till the last
+    byte sent to the client. In HTTP it starts after the last response header
+    (after Tr).
+
+    The data sent are not guaranteed to be received by the client, they can be
+    stuck in either the kernel or the network.
 
   - Ta: total active time for the HTTP request, between the moment the proxy
     received the first byte of the request header and the emission of the last
@@ -23035,7 +23056,7 @@ here.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.2.30 &ndash; Configuration Manual<br>
+							HAProxy 2.2.30-22 &ndash; Configuration Manual<br>
 							<small>, 2023/06/12</small>
 						</div>
 					</div>
