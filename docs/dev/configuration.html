@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev3-22 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev3-45 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3872,6 +3872,8 @@
 							
 							<a class="list-group-item" href="#tcp-request session accept">tcp-request session accept</a>
 							
+							<a class="list-group-item" href="#tcp-request session attach-srv">tcp-request session attach-srv</a>
+							
 							<a class="list-group-item" href="#tcp-request session reject">tcp-request session reject</a>
 							
 							<a class="list-group-item" href="#tcp-request session sc-add-gpc">tcp-request session sc-add-gpc</a>
@@ -4305,7 +4307,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4316,7 +4318,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev3-22</strong></p>
+							<p><strong>version 2.9-dev3-45</strong></p>
 							<p>
 								2023/08/12<br>
 								
@@ -9805,6 +9807,10 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                 - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
                   is used. The performance note for QUIC over IPv4 applies
                   as well.
+                - 'rev@' -&gt; used for reverse HTTP. Address must be a server
+                  with the format '&lt;backend&gt;/&lt;server&gt;'. The server will be
+                  used to instantiate connections to a remote address. The
+                  listener will try to maintain 'maxconn' connections.
 
               You may want to reference some environment variables in the
               address parameter, see <a href="#2.3">section 2.3</a> about environment
@@ -15755,6 +15761,13 @@ The default is &quot;conn-failure&quot;.
           variables. The &quot;<a href="#init-addr">init-addr</a>&quot; setting can be used to modify the way
           IP addresses should be resolved upon startup.
 
+          Additionally, there is a special address notation defined for
+          servers which does not have any address assigned. Currently, only
+          '@reverse' is valid. This instantiates a server which can only be
+          used with reverse connect. This mode requires the proxy to be in
+          HTTP mode and the server to explicitly use HTTP/2, either through
+          'proto' or 'alpn' keywords.
+
 &lt;port&gt;    is an optional port specification. If set, all connections will
           be sent to this port. If unset, the same port the client
           connected to will be used. The port may also be prefixed by a &quot;+&quot;
@@ -17968,6 +17981,7 @@ rules which may be inserted.
 The first keyword is the rule's action. Several types of actions are
 supported:
   - accept
+  - attach-srv &lt;srv&gt; [name &lt;expr&gt;]
   - reject
   - sc-add-gpc(&lt;idx&gt;,&lt;sc-id&gt;) { &lt;int&gt; | &lt;expr&gt; }
   - sc-inc-gpc(&lt;idx&gt;,&lt;sc-id&gt;)
@@ -18025,6 +18039,19 @@ tcp-request session reject if { sc0_sess_rate gt 10 }
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;, &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;, &quot;<a href="#stick-table">stick-table</a>&quot;</div>
 <a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session accept"></a><a class="anchor" name="4-tcp-request session accept"></a><a class="anchor" name="4.2-tcp-request session accept"></a><a class="anchor" name="tcp-request session accept (Proxies)"></a><a class="anchor" name="tcp-request session accept (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session accept"></a><a href="#4.2-tcp-request%20session%20accept">tcp-request session accept</a></b> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to accept the connection. No further &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;
 rules are evaluated.
+</pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session attach-srv"></a><a class="anchor" name="4-tcp-request session attach-srv"></a><a class="anchor" name="4.2-tcp-request session attach-srv"></a><a class="anchor" name="tcp-request session attach-srv (Proxies)"></a><a class="anchor" name="tcp-request session attach-srv (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session attach-srv"></a><a href="#4.2-tcp-request%20session%20attach-srv">tcp-request session attach-srv</a></b> <span style="color: #080">&lt;srv&gt;</span> <span style="color: #008">[name <span style="color: #080">&lt;expr&gt;</span>]</span></div><pre class="text">This is used to intercept the connection after proper HTTP/2 establishment.
+The connection is reversed to the backend side and inserted into the idle
+pool of &lt;srv&gt; server. This is useful for reverse server with '@reverse'
+address.
+
+An extra parameter &lt;expr&gt; can be specified. Its value is interpreted as a
+sample expression to name the connection inside the server idle pool. When
+routing an outgoing request through this server, this name will be matched
+against the 'sni' parameter of the server line. Otherwise, the connection
+will have no name and will only match requests without SNI.
+
+This rule is only valid for frontend in HTTP mode. Also all listeners must
+not require a protocol different from HTTP/2.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session reject"></a><a class="anchor" name="4-tcp-request session reject"></a><a class="anchor" name="4.2-tcp-request session reject"></a><a class="anchor" name="tcp-request session reject (Proxies)"></a><a class="anchor" name="tcp-request session reject (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session reject"></a><a href="#4.2-tcp-request%20session%20reject">tcp-request session reject</a></b> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to reject the connection. No further &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rules
 are evaluated.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session sc-add-gpc"></a><a class="anchor" name="4-tcp-request session sc-add-gpc"></a><a class="anchor" name="4.2-tcp-request session sc-add-gpc"></a><a class="anchor" name="tcp-request session sc-add-gpc (Proxies)"></a><a class="anchor" name="tcp-request session sc-add-gpc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session sc-add-gpc"></a><a href="#4.2-tcp-request%20session%20sc-add-gpc">tcp-request session sc-add-gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
@@ -27851,7 +27878,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev3-22 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev3-45 &ndash; Configuration Manual<br>
 							<small>, 2023/08/12</small>
 						</div>
 					</div>
