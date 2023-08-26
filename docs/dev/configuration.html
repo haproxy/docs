@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev3-45 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4307,7 +4307,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4318,9 +4318,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev3-45</strong></p>
+							<p><strong>version 2.9-dev4</strong></p>
 							<p>
-								2023/08/12<br>
+								2023/08/25<br>
 								
 							</p>
 						</div>
@@ -11690,8 +11690,7 @@ http-request del-map(map.lst) %[src]                     if delmap
 file (even a dummy empty file). The file name of the ACL to be updated is
 passed between parentheses. It takes one argument: &lt;key fmt&gt;, which follows
 log-format rules, to collect content of the new entry. It performs a lookup
-in the ACL before insertion, to avoid duplicated (or more) values. This
-lookup is done by a linear search and can be expensive with large lists!
+in the ACL before insertion, to avoid duplicated (or more) values.
 It is the equivalent of the &quot;add acl&quot; command from the stats socket, but can
 be triggered by an HTTP request.
 </pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request add-header"></a><a class="anchor" name="4-http-request add-header"></a><a class="anchor" name="4.2-http-request add-header"></a><a class="anchor" name="http-request add-header (Proxies)"></a><a class="anchor" name="http-request add-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request add-header"></a><a href="#4.2-http-request%20add-header">http-request add-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This appends an HTTP header field whose name is specified in &lt;name&gt; and
@@ -12333,8 +12332,7 @@ passed between parentheses. It takes 2 arguments: &lt;key fmt&gt;, which follows
 log-format rules, used to collect MAP key, and &lt;value fmt&gt;, which follows
 log-format rules, used to collect content for the new entry.
 It performs a lookup in the MAP before insertion, to avoid duplicated (or
-more) values. This lookup is done by a linear search and can be expensive
-with large lists! It is the equivalent of the &quot;set map&quot; command from the
+more) values. It is the equivalent of the &quot;set map&quot; command from the
 stats socket, but can be triggered by an HTTP request.
 </pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-mark"></a><a class="anchor" name="4-http-request set-mark"></a><a class="anchor" name="4.2-http-request set-mark"></a><a class="anchor" name="http-request set-mark (Proxies)"></a><a class="anchor" name="http-request set-mark (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-mark"></a><a href="#4.2-http-request%20set-mark">http-request set-mark</a></b> <span style="color: #080">&lt;mark&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to set the Netfilter/IPFW MARK on all packets sent to the client
 to the value passed in &lt;mark&gt; on platforms which support it. This value is an
@@ -23251,11 +23249,14 @@ equivalent, according to RFC 4291.
 </pre><a class="anchor" name="bc_src_port"></a><a class="anchor" name="7-bc_src_port"></a><a class="anchor" name="7.3.3-bc_src_port"></a><a class="anchor" name="bc_src_port (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_src_port (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_src_port"></a><a href="#7.3.3-bc_src_port">bc_src_port</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the TCP source port of the
 connection on the server side, which is the port HAProxy connected from.
 </pre><a class="anchor" name="be_id"></a><a class="anchor" name="7-be_id"></a><a class="anchor" name="7.3.3-be_id"></a><a class="anchor" name="be_id (Using ACLs and fetching samples)"></a><a class="anchor" name="be_id (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_id"></a><a href="#7.3.3-be_id">be_id</a></b> : integer</div><pre class="text">Returns an integer containing the current backend's id. It can be used in
-frontends with responses to check which backend processed the request. It can
-also be used in a tcp-check or an http-check ruleset.
+frontends with responses to check which backend processed the request. If
+used in a frontend and no backend was used, it returns the current
+frontend's id. It can also be used in a tcp-check or an http-check ruleset.
 </pre><a class="anchor" name="be_name"></a><a class="anchor" name="7-be_name"></a><a class="anchor" name="7.3.3-be_name"></a><a class="anchor" name="be_name (Using ACLs and fetching samples)"></a><a class="anchor" name="be_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_name"></a><a href="#7.3.3-be_name">be_name</a></b> : string</div><pre class="text">Returns a string containing the current backend's name. It can be used in
-frontends with responses to check which backend processed the request. It can
-also be used in a tcp-check or an http-check ruleset.
+frontends with responses to check which backend processed the request. If
+used in a frontend and no backend was used, it returns the current
+frontend's name. It can also be used in a tcp-check or an http-check
+ruleset.
 </pre><a class="anchor" name="bc_rtt"></a><a class="anchor" name="7-bc_rtt"></a><a class="anchor" name="7.3.3-bc_rtt"></a><a class="anchor" name="bc_rtt (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_rtt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_rtt"></a><a href="#7.3.3-bc_rtt">bc_rtt</a></b>(<span style="color: #080">&lt;unit&gt;</span>) : integer</div><pre class="text">Returns the Round Trip Time (RTT) measured by the kernel for the backend
 connection. &lt;unit&gt; is facultative, by default the unit is milliseconds. &lt;unit&gt;
 can be set to &quot;ms&quot; for milliseconds or &quot;us&quot; for microseconds. If the server
@@ -26252,7 +26253,8 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   | %ac  | actconn                                              |         |
   |   |      | %[act_conn]                                          | numeric |
   +---+------+------------------------------------------------------+---------+
-  |   | %b   | backend_name                                         | string  |
+  |   | %b   | backend_name                                         |         |
+  |   |      | %[be_name]                                           | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %bc  | beconn      (backend concurrent connections)         | numeric |
   +---+------+------------------------------------------------------+---------+
@@ -27878,8 +27880,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev3-45 &ndash; Configuration Manual<br>
-							<small>, 2023/08/12</small>
+							HAProxy 2.9-dev4 &ndash; Configuration Manual<br>
+							<small>, 2023/08/25</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
