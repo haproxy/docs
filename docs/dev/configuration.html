@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev4-4 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4-13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1653,6 +1653,8 @@
 							
 							<a class="list-group-item" href="#fc_pp_authority">fc_pp_authority</a>
 							
+							<a class="list-group-item" href="#fc_pp_tlv">fc_pp_tlv</a>
+							
 							<a class="list-group-item" href="#fc_pp_unique_id">fc_pp_unique_id</a>
 							
 							<a class="list-group-item" href="#fc_rcvd_proxy">fc_rcvd_proxy</a>
@@ -3225,6 +3227,8 @@
 							
 							<a class="list-group-item" href="#set-var-fmt">set-var-fmt</a>
 							
+							<a class="list-group-item" href="#setcap">setcap</a>
+							
 							<a class="list-group-item" href="#setenv">setenv</a>
 							
 							<a class="list-group-item" href="#severity-output">severity-output</a>
@@ -4307,7 +4311,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4318,7 +4322,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev4-4</strong></p>
+							<p><strong>version 2.9-dev4-13</strong></p>
 							<p>
 								2023/08/25<br>
 								
@@ -7356,7 +7360,21 @@ Please see <a href="#8.2.4">section 8.2.4</a> for details on the log-format synt
     set-var-fmt proc.current_state &quot;primary&quot;
     set-var-fmt proc.bootid        &quot;%pid|%t&quot;
 </code></pre>
-</div><a class="anchor" name="setenv"></a><a class="anchor" name="3-setenv"></a><a class="anchor" name="3.1-setenv"></a><a class="anchor" name="setenv (Global parameters)"></a><a class="anchor" name="setenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setenv"></a><a href="#3.1-setenv">setenv</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Sets environment variable &lt;name&gt; to value &lt;value&gt;. If the variable exists, it
+</div><a class="anchor" name="setcap"></a><a class="anchor" name="3-setcap"></a><a class="anchor" name="3.1-setcap"></a><a class="anchor" name="setcap (Global parameters)"></a><a class="anchor" name="setcap (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setcap"></a><a href="#3.1-setcap">setcap</a></b> <span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;name&gt;</span>...]</span></div><pre class="text">Sets a list of capabilities that must be preserved when starting with uid 0
+and switching to a non-zero uid. By default all permissions are lost by the
+uid switch, but some are often needed when trying connecting to a server from
+a foreign address during transparent proxying, or when binding to a port
+below 1024, e.g. when using &quot;tune.quic.socket-owner connection&quot;, resulting in
+setups running entirely under uid 0. Setting capabilities generally is a
+safer alternative, as only the required capabilities will be preserved. The
+feature is OS-specific and only enabled on Linux when USE_LINUX_CAP=1 is set
+at build time. The list of supported capabilities also depends on the OS and
+is enumerated by the error message displayed when an invalid capability name
+or an empty one is passed. Multiple capabilities may be passed, delimited by
+commas. Among those commonly used, &quot;cap_net_raw&quot; allows to transparently bind
+to a foreign address, and &quot;cap_net_bind_service&quot; allows to bind to a
+privileged port and may be used by QUIC.
+</pre><a class="anchor" name="setenv"></a><a class="anchor" name="3-setenv"></a><a class="anchor" name="3.1-setenv"></a><a class="anchor" name="setenv (Global parameters)"></a><a class="anchor" name="setenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setenv"></a><a href="#3.1-setenv">setenv</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Sets environment variable &lt;name&gt; to value &lt;value&gt;. If the variable exists, it
 is overwritten. The changes immediately take effect so that the next line in
 the configuration file sees the new value. See also &quot;<a href="#presetenv">presetenv</a>&quot;, &quot;<a href="#resetenv">resetenv</a>&quot;,
 and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
@@ -8385,7 +8403,10 @@ ensure soft-stop is conducted properly without data loss for QUIC connections
 and cases of transient errors during sendto() operation are handled
 efficiently. However, this relies on some advanced features from the UDP
 network stack. If your platform is deemed not compatible, haproxy will
-automatically switch to &quot;listener&quot; mode on startup.
+automatically switch to &quot;listener&quot; mode on startup. Please note that QUIC
+listeners running on privileged ports may require to run as uid 0, or some
+OS-specific tuning to permit the target uid to bind such ports, such as
+system capabilities. See also the &quot;<a href="#setcap">setcap</a>&quot; global directive.
 
 The &quot;listener&quot; value indicates that QUIC transfers will occur on the shared
 listener socket. This option can be a good compromise for small traffic as it
@@ -15958,7 +15979,8 @@ also be specified in a &quot;defaults&quot; section. Finer source address specif
 is possible at the server level using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; server option. Refer to
 <a href="#5">section 5</a> for more information.
 
-In order to work, &quot;usesrc&quot; requires root privileges.
+In order to work, &quot;usesrc&quot; requires root privileges, or on supported systems,
+the &quot;cap_net_raw&quot; capability. See also the &quot;<a href="#setcap">setcap</a>&quot; global directive.
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -23400,10 +23422,31 @@ encoding and not on the version present in the request header.
 connection. If the server connection is not established, if the connection is
 not TCP or if the operating system does not support TCP_INFO, for example
 Linux kernels before 2.4, the sample fetch fails.
-</pre><a class="anchor" name="fc_pp_authority"></a><a class="anchor" name="7-fc_pp_authority"></a><a class="anchor" name="7.3.3-fc_pp_authority"></a><a class="anchor" name="fc_pp_authority (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_pp_authority (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_pp_authority"></a><a href="#7.3.3-fc_pp_authority">fc_pp_authority</a></b> : string</div><pre class="text">Returns the authority TLV sent by the client in the PROXY protocol header,
-if any.
-</pre><a class="anchor" name="fc_pp_unique_id"></a><a class="anchor" name="7-fc_pp_unique_id"></a><a class="anchor" name="7.3.3-fc_pp_unique_id"></a><a class="anchor" name="fc_pp_unique_id (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_pp_unique_id (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_pp_unique_id"></a><a href="#7.3.3-fc_pp_unique_id">fc_pp_unique_id</a></b> : string</div><pre class="text">Returns the unique ID TLV sent by the client in the PROXY protocol header,
-if any.
+</pre><a class="anchor" name="fc_pp_authority"></a><a class="anchor" name="7-fc_pp_authority"></a><a class="anchor" name="7.3.3-fc_pp_authority"></a><a class="anchor" name="fc_pp_authority (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_pp_authority (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_pp_authority"></a><a href="#7.3.3-fc_pp_authority">fc_pp_authority</a></b> : string</div><pre class="text">Returns the first authority TLV sent by the client in the PROXY protocol
+header, if any.
+</pre><a class="anchor" name="fc_pp_unique_id"></a><a class="anchor" name="7-fc_pp_unique_id"></a><a class="anchor" name="7.3.3-fc_pp_unique_id"></a><a class="anchor" name="fc_pp_unique_id (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_pp_unique_id (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_pp_unique_id"></a><a href="#7.3.3-fc_pp_unique_id">fc_pp_unique_id</a></b> : string</div><pre class="text">Returns the first unique ID TLV sent by the client in the PROXY protocol
+header, if any.
+</pre><a class="anchor" name="fc_pp_tlv"></a><a class="anchor" name="7-fc_pp_tlv"></a><a class="anchor" name="7.3.3-fc_pp_tlv"></a><a class="anchor" name="fc_pp_tlv (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_pp_tlv (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_pp_tlv"></a><a href="#7.3.3-fc_pp_tlv">fc_pp_tlv</a></b>(<span style="color: #080">&lt;id&gt;</span>) : string</div><pre class="text">Returns the TLV value for the given TLV ID. The ID must either be a numeric
+value between 0 and 255 or one of the following supported symbolic names
+that correspond to the TLV constant suffixes in the PPv2 spec:
+&quot;ALPN&quot;: PP2_TYPE_ALPN, &quot;AUTHORITY&quot;: PP2_TYPE_AUTHORITY,
+&quot;CRC32&quot;: PP2_TYPE_CRC32C, &quot;NETNS&quot;: PP2_TYPE_NETNS, &quot;NOOP: PP2_TYPE_NOOP&quot;,
+&quot;SSL&quot;: PP2_TYPE_SSL, &quot;SSL_CIPHER&quot;: PP2_SUBTYPE_SSL_CIPHER,
+&quot;SSL_CN&quot;: PP2_SUBTYPE_SSL_CN, &quot;SSL_KEY_ALG&quot;: PP2_SUBTYPE_SSL_KEY_ALG,
+&quot;SSL_SIG_ALG&quot;: PP2_SUBTYPE_SSL_SIG_ALG,
+&quot;SSL_VERSION&quot;: PP2_SUBTYPE_SSL_VERSION, &quot;UNIQUE_ID&quot;: PP2_TYPE_UNIQUE_ID.
+
+The received value must be smaller or equal to 1024 bytes. This is done to
+prevent potential DoS attacks. Values smaller or equal to 256 bytes will be
+able to be memory pooled. Therefore, try to restrict the length of sent
+values to 256 bytes for optimal performance.
+
+Note that unlike fc_pp_authority and fc_pp_unique_id, fc_pp_tlv is able to
+iterate over all occurances of a requested TLV in case there are duplicate
+TLV IDs. The order of iteration matches the position in the PROXY protocol
+header. However, relying on duplicates should mostly be avoided as TLVs are
+typically assumed to be unique. Generally, finding duplicated TLV IDs
+indicates an error on the sender side of the PROXY protocol header.
 </pre><a class="anchor" name="fc_rcvd_proxy"></a><a class="anchor" name="7-fc_rcvd_proxy"></a><a class="anchor" name="7.3.3-fc_rcvd_proxy"></a><a class="anchor" name="fc_rcvd_proxy (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_rcvd_proxy (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_rcvd_proxy"></a><a href="#7.3.3-fc_rcvd_proxy">fc_rcvd_proxy</a></b> : boolean</div><pre class="text">Returns true if the client initiated the connection with a PROXY protocol
 header.
 </pre><a class="anchor" name="fc_reordering"></a><a class="anchor" name="7-fc_reordering"></a><a class="anchor" name="7.3.3-fc_reordering"></a><a class="anchor" name="fc_reordering (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_reordering (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_reordering"></a><a href="#7.3.3-fc_reordering">fc_reordering</a></b> : integer</div><pre class="text">Returns the reordering counter measured by the kernel for the client
@@ -27880,7 +27923,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev4-4 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev4-13 &ndash; Configuration Manual<br>
 							<small>, 2023/08/25</small>
 						</div>
 					</div>
