@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev4-21 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4-37 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4082,6 +4082,8 @@
 							
 							<a class="list-group-item" href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
 							
+							<a class="list-group-item" href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
+							
 							<a class="list-group-item" href="#tune.maxaccept">tune.maxaccept</a>
 							
 							<a class="list-group-item" href="#tune.maxpollevents">tune.maxpollevents</a>
@@ -4311,7 +4313,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4322,7 +4324,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev4-21</strong></p>
+							<p><strong>version 2.9-dev4-37</strong></p>
 							<p>
 								2023/08/25<br>
 								
@@ -6497,6 +6499,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
+   - <a href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
    - <a href="#tune.maxrewrite">tune.maxrewrite</a>
@@ -8274,6 +8277,18 @@ not taken in account. The default timeout is 4s.
 dedicated to the tasks. By default, this timeout isn't set because a task may
 remain alive during of the lifetime of HAProxy. For example, a task used to
 check servers.
+</pre><a class="anchor" name="tune.max-checks-per-thread"></a><a class="anchor" name="3-tune.max-checks-per-thread"></a><a class="anchor" name="3.2-tune.max-checks-per-thread"></a><a class="anchor" name="tune.max-checks-per-thread (Global parameters)"></a><a class="anchor" name="tune.max-checks-per-thread (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-checks-per-thread"></a><a href="#3.2-tune.max-checks-per-thread">tune.max-checks-per-thread</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of active checks per thread above which a thread will
+actively try to search a less loaded thread to run the health check, or
+queue it until the number of active checks running on it diminishes. The
+default value is zero, meaning no such limit is set. It may be needed in
+certain environments running an extremely large number of expensive checks
+with many threads when the load appears unequal and may make health checks
+to randomly time out on startup, typically when using OpenSSL 3.0 which is
+about 20 times more CPU-intensive on health checks than older ones. This will
+have for result to try to level the health check work across all threads. The
+vast majority of configurations do not need to touch this parameter. Please
+note that too low values may significantly slow down the health checking if
+checks are slow to execute.
 </pre><a class="anchor" name="tune.maxaccept"></a><a class="anchor" name="3-tune.maxaccept"></a><a class="anchor" name="3.2-tune.maxaccept"></a><a class="anchor" name="tune.maxaccept (Global parameters)"></a><a class="anchor" name="tune.maxaccept (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.maxaccept"></a><a href="#3.2-tune.maxaccept">tune.maxaccept</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of consecutive connections a process may accept in a
 row before switching to other work. In single process mode, higher numbers
 used to give better performance at high connection rates, though this is not
@@ -19938,7 +19953,14 @@ hosted on the same hardware, the agent and health checks of all servers
 are started with a small time offset between them. It is also possible to
 add some random noise in the agent and health checks interval using the
 global &quot;<a href="#spread-checks">spread-checks</a>&quot; keyword. This makes sense for instance when a lot
-of backends use the same servers.
+of backends use the same servers. The global &quot;<a href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>&quot;
+setting, if defined to a non-nul value, will limit the number of concurrent
+checks being performed at once on any given thread. In order to achieve this,
+haproxy will put in a queue the checks that were about to start on a thread
+that has reached this limit, until another check finishes. This will have for
+effect to extend the effective check interval. In such a case, reducing the
+&quot;<a href="#inter">inter</a>&quot; setting will have a very limited effect as it will not be able to
+reduce the time spent in the queue.
 </pre><a class="anchor" name="log-proto"></a><a class="anchor" name="5-log-proto"></a><a class="anchor" name="5.2-log-proto"></a><a class="anchor" name="log-proto (Bind and server options)"></a><a class="anchor" name="log-proto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-proto"></a><a href="#5.2-log-proto">log-proto</a></b> <span style="color: #080">&lt;logproto&gt;</span></div><pre class="text">The &quot;<a href="#log-proto">log-proto</a>&quot; specifies the protocol used to forward event messages to
 a server configured in a ring section. Possible values are &quot;legacy&quot;
 and &quot;octet-count&quot; corresponding respectively to &quot;Non-transparent-framing&quot;
@@ -27923,7 +27945,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev4-21 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev4-37 &ndash; Configuration Manual<br>
 							<small>, 2023/08/25</small>
 						</div>
 					</div>
