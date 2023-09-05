@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev4-37 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4313,7 +4313,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4324,7 +4324,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev4-37</strong></p>
+							<p><strong>version 2.9-dev4-50</strong></p>
 							<p>
 								2023/08/25<br>
 								
@@ -25112,8 +25112,14 @@ appear in the request when the rule is evaluated. The default delimiter is
 the comma (',') but it may be overridden as an optional argument &lt;delim&gt;. In
 this case, only the first character of &lt;delim&gt; is considered.
 </pre><a class="anchor" name="req.ver"></a><a class="anchor" name="7-req.ver"></a><a class="anchor" name="7.3.6-req.ver"></a><a class="anchor" name="req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.ver"></a><a href="#7.3.6-req.ver">req.ver</a></b> : string</div><a class="anchor" name="req_ver"></a><a class="anchor" name="7-req_ver"></a><a class="anchor" name="7.3.6-req_ver"></a><a class="anchor" name="req_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req_ver"></a><a href="#7.3.6-req_ver">req_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP request, for example &quot;1.1&quot;. This can
-be useful for logs, but is mostly there for ACL. Some predefined ACL already
-check for versions 1.0 and 1.1.
+be useful for ACL. For logs use the &quot;%HV&quot; log variable. Some predefined ACL
+already check for versions 1.0 and 1.1.
+
+Common values are &quot;1.0&quot;, &quot;1.1&quot;, &quot;2.0&quot; or &quot;3.0&quot;.
+
+In the case of http/2 and http/3, the value is not extracted from the HTTP
+version in the request line but is determined by the negociated protocol
+version.
 
 ACL derivatives :
   req.ver : exact string match
@@ -27945,7 +27951,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev4-37 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev4-50 &ndash; Configuration Manual<br>
 							<small>, 2023/08/25</small>
 						</div>
 					</div>
