@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev4-50 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4-63 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2127,9 +2127,13 @@
 							
 							<a class="list-group-item" href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
 							
+							<a class="list-group-item" href="#httpclient.retries">httpclient.retries</a>
+							
 							<a class="list-group-item" href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
 							
 							<a class="list-group-item" href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
+							
+							<a class="list-group-item" href="#httpclient.timeout.connect">httpclient.timeout.connect</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-I"><h4>I</h4>
@@ -4313,7 +4317,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4324,7 +4328,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev4-50</strong></p>
+							<p><strong>version 2.9-dev4-63</strong></p>
 							<p>
 								2023/08/25<br>
 								
@@ -6395,8 +6399,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#httpclient.resolvers.disabled">httpclient.resolvers.disabled</a>
    - <a href="#httpclient.resolvers.id">httpclient.resolvers.id</a>
    - <a href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
+   - <a href="#httpclient.retries">httpclient.retries</a>
    - <a href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
    - <a href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
+   - <a href="#httpclient.timeout.connect">httpclient.timeout.connect</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
@@ -6960,6 +6966,11 @@ configuration error if it fails to load.
 </pre><a class="anchor" name="httpclient.resolvers.prefer"></a><a class="anchor" name="3-httpclient.resolvers.prefer"></a><a class="anchor" name="3.1-httpclient.resolvers.prefer"></a><a class="anchor" name="httpclient.resolvers.prefer (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.prefer (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.prefer"></a><a href="#3.1-httpclient.resolvers.prefer">httpclient.resolvers.prefer</a></b> <span style="color: #080">&lt;ipv4|ipv6&gt;</span></div><pre class="text">This option allows to chose which family of IP you want when resolving,
 which is convenient when IPv6 is not available on your network. Default
 option is &quot;<a href="#ipv6">ipv6</a>&quot;.
+</pre><a class="anchor" name="httpclient.retries"></a><a class="anchor" name="3-httpclient.retries"></a><a class="anchor" name="3.1-httpclient.retries"></a><a class="anchor" name="httpclient.retries (Global parameters)"></a><a class="anchor" name="httpclient.retries (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.retries"></a><a href="#3.1-httpclient.retries">httpclient.retries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This option allows to configure the number of retries attempt of the
+httpclient when a request failed. This does the same as the &quot;<a href="#retries">retries</a>&quot; keyword
+in a backend.
+
+Default value is 3.
 </pre><a class="anchor" name="httpclient.ssl.ca-file"></a><a class="anchor" name="3-httpclient.ssl.ca-file"></a><a class="anchor" name="3.1-httpclient.ssl.ca-file"></a><a class="anchor" name="httpclient.ssl.ca-file (Global parameters)"></a><a class="anchor" name="httpclient.ssl.ca-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.ssl.ca-file"></a><a href="#3.1-httpclient.ssl.ca-file">httpclient.ssl.ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">This option defines the ca-file which should be used to verify the server
 certificate. It takes the same parameters as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option on the
 server line.
@@ -6978,6 +6989,14 @@ By default and when this option is not used, the value is
 
 However, when this option is explicitly enabled it will trigger a
 configuration error if it fails.
+</pre><a class="anchor" name="httpclient.timeout.connect"></a><a class="anchor" name="3-httpclient.timeout.connect"></a><a class="anchor" name="3.1-httpclient.timeout.connect"></a><a class="anchor" name="httpclient.timeout.connect (Global parameters)"></a><a class="anchor" name="httpclient.timeout.connect (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.timeout.connect"></a><a href="#3.1-httpclient.timeout.connect">httpclient.timeout.connect</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum time to wait for a connection attempt by default for the
+httpclient.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;timeout&gt; is the timeout value specified in milliseconds by default, but
+          can be in any other unit if the number is suffixed by the unit,
+          as explained at the top of this document.</pre>
+</div>
+<pre class="text">The default value is 5000ms.
 </pre><a class="anchor" name="insecure-fork-wanted"></a><a class="anchor" name="3-insecure-fork-wanted"></a><a class="anchor" name="3.1-insecure-fork-wanted"></a><a class="anchor" name="insecure-fork-wanted (Global parameters)"></a><a class="anchor" name="insecure-fork-wanted (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="insecure-fork-wanted"></a><a href="#3.1-insecure-fork-wanted">insecure-fork-wanted</a></b></div><pre class="text">By default HAProxy tries hard to prevent any thread and process creation
 after it starts. Doing so is particularly important when using Lua files of
 uncertain origin, and when experimenting with development versions which may
@@ -27951,7 +27970,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev4-50 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev4-63 &ndash; Configuration Manual<br>
 							<small>, 2023/08/25</small>
 						</div>
 					</div>
