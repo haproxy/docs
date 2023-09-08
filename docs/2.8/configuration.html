@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.2 - Configuration Manual</title>
+		<title>HAProxy version 2.8.3 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2113,9 +2113,13 @@
 							
 							<a class="list-group-item" href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
 							
+							<a class="list-group-item" href="#httpclient.retries">httpclient.retries</a>
+							
 							<a class="list-group-item" href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
 							
 							<a class="list-group-item" href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
+							
+							<a class="list-group-item" href="#httpclient.timeout.connect">httpclient.timeout.connect</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-I"><h4>I</h4>
@@ -3191,6 +3195,8 @@
 							
 							<a class="list-group-item" href="#set-var-fmt">set-var-fmt</a>
 							
+							<a class="list-group-item" href="#setcap">setcap</a>
+							
 							<a class="list-group-item" href="#setenv">setenv</a>
 							
 							<a class="list-group-item" href="#severity-output">severity-output</a>
@@ -4255,7 +4261,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/08/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4266,9 +4272,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.2</strong></p>
+							<p><strong>version 2.8.3</strong></p>
 							<p>
-								2023/08/09<br>
+								2023/09/07<br>
 								
 							</p>
 						</div>
@@ -6337,8 +6343,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#httpclient.resolvers.disabled">httpclient.resolvers.disabled</a>
    - <a href="#httpclient.resolvers.id">httpclient.resolvers.id</a>
    - <a href="#httpclient.resolvers.prefer">httpclient.resolvers.prefer</a>
+   - <a href="#httpclient.retries">httpclient.retries</a>
    - <a href="#httpclient.ssl.ca-file">httpclient.ssl.ca-file</a>
    - <a href="#httpclient.ssl.verify">httpclient.ssl.verify</a>
+   - <a href="#httpclient.timeout.connect">httpclient.timeout.connect</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
@@ -6899,6 +6907,11 @@ configuration error if it fails to load.
 </pre><a class="anchor" name="httpclient.resolvers.prefer"></a><a class="anchor" name="3-httpclient.resolvers.prefer"></a><a class="anchor" name="3.1-httpclient.resolvers.prefer"></a><a class="anchor" name="httpclient.resolvers.prefer (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.prefer (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.prefer"></a><a href="#3.1-httpclient.resolvers.prefer">httpclient.resolvers.prefer</a></b> <span style="color: #080">&lt;ipv4|ipv6&gt;</span></div><pre class="text">This option allows to chose which family of IP you want when resolving,
 which is convenient when IPv6 is not available on your network. Default
 option is &quot;<a href="#ipv6">ipv6</a>&quot;.
+</pre><a class="anchor" name="httpclient.retries"></a><a class="anchor" name="3-httpclient.retries"></a><a class="anchor" name="3.1-httpclient.retries"></a><a class="anchor" name="httpclient.retries (Global parameters)"></a><a class="anchor" name="httpclient.retries (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.retries"></a><a href="#3.1-httpclient.retries">httpclient.retries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This option allows to configure the number of retries attempt of the
+httpclient when a request failed. This does the same as the &quot;<a href="#retries">retries</a>&quot; keyword
+in a backend.
+
+Default value is 3.
 </pre><a class="anchor" name="httpclient.ssl.ca-file"></a><a class="anchor" name="3-httpclient.ssl.ca-file"></a><a class="anchor" name="3.1-httpclient.ssl.ca-file"></a><a class="anchor" name="httpclient.ssl.ca-file (Global parameters)"></a><a class="anchor" name="httpclient.ssl.ca-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.ssl.ca-file"></a><a href="#3.1-httpclient.ssl.ca-file">httpclient.ssl.ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">This option defines the ca-file which should be used to verify the server
 certificate. It takes the same parameters as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option on the
 server line.
@@ -6917,6 +6930,14 @@ By default and when this option is not used, the value is
 
 However, when this option is explicitly enabled it will trigger a
 configuration error if it fails.
+</pre><a class="anchor" name="httpclient.timeout.connect"></a><a class="anchor" name="3-httpclient.timeout.connect"></a><a class="anchor" name="3.1-httpclient.timeout.connect"></a><a class="anchor" name="httpclient.timeout.connect (Global parameters)"></a><a class="anchor" name="httpclient.timeout.connect (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.timeout.connect"></a><a href="#3.1-httpclient.timeout.connect">httpclient.timeout.connect</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum time to wait for a connection attempt by default for the
+httpclient.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;timeout&gt; is the timeout value specified in milliseconds by default, but
+          can be in any other unit if the number is suffixed by the unit,
+          as explained at the top of this document.</pre>
+</div>
+<pre class="text">The default value is 5000ms.
 </pre><a class="anchor" name="insecure-fork-wanted"></a><a class="anchor" name="3-insecure-fork-wanted"></a><a class="anchor" name="3.1-insecure-fork-wanted"></a><a class="anchor" name="insecure-fork-wanted (Global parameters)"></a><a class="anchor" name="insecure-fork-wanted (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="insecure-fork-wanted"></a><a href="#3.1-insecure-fork-wanted">insecure-fork-wanted</a></b></div><pre class="text">By default HAProxy tries hard to prevent any thread and process creation
 after it starts. Doing so is particularly important when using Lua files of
 uncertain origin, and when experimenting with development versions which may
@@ -7297,7 +7318,21 @@ Please see <a href="#8.2.4">section 8.2.4</a> for details on the log-format synt
     set-var-fmt proc.current_state &quot;primary&quot;
     set-var-fmt proc.bootid        &quot;%pid|%t&quot;
 </code></pre>
-</div><a class="anchor" name="setenv"></a><a class="anchor" name="3-setenv"></a><a class="anchor" name="3.1-setenv"></a><a class="anchor" name="setenv (Global parameters)"></a><a class="anchor" name="setenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setenv"></a><a href="#3.1-setenv">setenv</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Sets environment variable &lt;name&gt; to value &lt;value&gt;. If the variable exists, it
+</div><a class="anchor" name="setcap"></a><a class="anchor" name="3-setcap"></a><a class="anchor" name="3.1-setcap"></a><a class="anchor" name="setcap (Global parameters)"></a><a class="anchor" name="setcap (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setcap"></a><a href="#3.1-setcap">setcap</a></b> <span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;name&gt;</span>...]</span></div><pre class="text">Sets a list of capabilities that must be preserved when starting with uid 0
+and switching to a non-zero uid. By default all permissions are lost by the
+uid switch, but some are often needed when trying connecting to a server from
+a foreign address during transparent proxying, or when binding to a port
+below 1024, e.g. when using &quot;tune.quic.socket-owner connection&quot;, resulting in
+setups running entirely under uid 0. Setting capabilities generally is a
+safer alternative, as only the required capabilities will be preserved. The
+feature is OS-specific and only enabled on Linux when USE_LINUX_CAP=1 is set
+at build time. The list of supported capabilities also depends on the OS and
+is enumerated by the error message displayed when an invalid capability name
+or an empty one is passed. Multiple capabilities may be passed, delimited by
+commas. Among those commonly used, &quot;cap_net_raw&quot; allows to transparently bind
+to a foreign address, and &quot;cap_net_bind_service&quot; allows to bind to a
+privileged port and may be used by QUIC.
+</pre><a class="anchor" name="setenv"></a><a class="anchor" name="3-setenv"></a><a class="anchor" name="3.1-setenv"></a><a class="anchor" name="setenv (Global parameters)"></a><a class="anchor" name="setenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="setenv"></a><a href="#3.1-setenv">setenv</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Sets environment variable &lt;name&gt; to value &lt;value&gt;. If the variable exists, it
 is overwritten. The changes immediately take effect so that the next line in
 the configuration file sees the new value. See also &quot;<a href="#presetenv">presetenv</a>&quot;, &quot;<a href="#resetenv">resetenv</a>&quot;,
 and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
@@ -8299,7 +8334,10 @@ ensure soft-stop is conducted properly without data loss for QUIC connections
 and cases of transient errors during sendto() operation are handled
 efficiently. However, this relies on some advanced features from the UDP
 network stack. If your platform is deemed not compatible, haproxy will
-automatically switch to &quot;listener&quot; mode on startup.
+automatically switch to &quot;listener&quot; mode on startup. Please note that QUIC
+listeners running on privileged ports may require to run as uid 0, or some
+OS-specific tuning to permit the target uid to bind such ports, such as
+system capabilities. See also the &quot;<a href="#setcap">setcap</a>&quot; global directive.
 
 The &quot;listener&quot; value indicates that QUIC transfers will occur on the shared
 listener socket. This option can be a good compromise for small traffic as it
@@ -10914,7 +10952,7 @@ description.
                                               <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response sc-set-gpt0"></a><a class="anchor" name="4-http-after-response sc-set-gpt0"></a><a class="anchor" name="4.2-http-after-response sc-set-gpt0"></a><a class="anchor" name="http-after-response sc-set-gpt0 (Proxies)"></a><a class="anchor" name="http-after-response sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response sc-set-gpt0"></a><a href="#4.2-http-after-response%20sc-set-gpt0">http-after-response sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                                          <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
-sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+sc-set-gpt&quot; and &quot;<a href="#http-request%20sc-set-gpt0">http-request sc-set-gpt0</a>&quot; for a complete description.
 </pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-log-level"></a><a class="anchor" name="4-http-after-response set-log-level"></a><a class="anchor" name="4.2-http-after-response set-log-level"></a><a class="anchor" name="http-after-response set-log-level (Proxies)"></a><a class="anchor" name="http-after-response set-log-level (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-log-level"></a><a href="#4.2-http-after-response%20set-log-level">http-after-response set-log-level</a></b> <span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to change the log level of the current response. Please refer to
 &quot;<a href="#http-request%20set-log-level">http-request set-log-level</a>&quot; for a complete description.
 </pre><a class="anchor" name="http-after-response"></a><a class="anchor" name="4-http-after-response"></a><a class="anchor" name="4.2-http-after-response"></a><a class="anchor" name="http-after-response (Proxies)"></a><a class="anchor" name="http-after-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-after-response set-map"></a><a class="anchor" name="4-http-after-response set-map"></a><a class="anchor" name="4.2-http-after-response set-map"></a><a class="anchor" name="http-after-response set-map (Proxies)"></a><a class="anchor" name="http-after-response set-map (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-after-response set-map"></a><a href="#4.2-http-after-response%20set-map">http-after-response set-map</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #080">&lt;value fmt&gt;</span></div><pre class="text">This is used to add a new entry into a MAP. Please refer to &quot;http-request
@@ -12737,7 +12775,7 @@ description.
                                         <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response sc-set-gpt0"></a><a class="anchor" name="4-http-response sc-set-gpt0"></a><a class="anchor" name="4.2-http-response sc-set-gpt0"></a><a class="anchor" name="http-response sc-set-gpt0 (Proxies)"></a><a class="anchor" name="http-response sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response sc-set-gpt0"></a><a href="#4.2-http-response%20sc-set-gpt0">http-response sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                                    <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
-sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+sc-set-gpt&quot; and &quot;<a href="#http-request%20sc-set-gpt0">http-request sc-set-gpt0</a>&quot; for a complete description.
 </pre><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response send-spoe-group"></a><a class="anchor" name="4-http-response send-spoe-group"></a><a class="anchor" name="4.2-http-response send-spoe-group"></a><a class="anchor" name="http-response send-spoe-group (Proxies)"></a><a class="anchor" name="http-response send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response send-spoe-group"></a><a href="#4.2-http-response%20send-spoe-group">http-response send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                               <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
@@ -15863,7 +15901,8 @@ also be specified in a &quot;defaults&quot; section. Finer source address specif
 is possible at the server level using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; server option. Refer to
 <a href="#5">section 5</a> for more information.
 
-In order to work, &quot;usesrc&quot; requires root privileges.
+In order to work, &quot;usesrc&quot; requires root privileges, or on supported systems,
+the &quot;cap_net_raw&quot; capability. See also the &quot;<a href="#setcap">setcap</a>&quot; global directive.
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -17484,7 +17523,7 @@ description.
                        <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection"></a><a class="anchor" name="4-tcp-request connection"></a><a class="anchor" name="4.2-tcp-request connection"></a><a class="anchor" name="tcp-request connection (Proxies)"></a><a class="anchor" name="tcp-request connection (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection sc-set-gpt0"></a><a class="anchor" name="4-tcp-request connection sc-set-gpt0"></a><a class="anchor" name="4.2-tcp-request connection sc-set-gpt0"></a><a class="anchor" name="tcp-request connection sc-set-gpt0 (Proxies)"></a><a class="anchor" name="tcp-request connection sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request connection sc-set-gpt0"></a><a href="#4.2-tcp-request%20connection%20sc-set-gpt0">tcp-request connection sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                        <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
-sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+sc-set-gpt&quot; and &quot;<a href="#http-request%20sc-set-gpt0">http-request sc-set-gpt0</a>&quot; for a complete description.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection"></a><a class="anchor" name="4-tcp-request connection"></a><a class="anchor" name="4.2-tcp-request connection"></a><a class="anchor" name="tcp-request connection (Proxies)"></a><a class="anchor" name="tcp-request connection (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection set-dst"></a><a class="anchor" name="4-tcp-request connection set-dst"></a><a class="anchor" name="4.2-tcp-request connection set-dst"></a><a class="anchor" name="tcp-request connection set-dst (Proxies)"></a><a class="anchor" name="tcp-request connection set-dst (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request connection set-dst"></a><a href="#4.2-tcp-request%20connection%20set-dst">tcp-request connection set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection"></a><a class="anchor" name="4-tcp-request connection"></a><a class="anchor" name="4.2-tcp-request connection"></a><a class="anchor" name="tcp-request connection (Proxies)"></a><a class="anchor" name="tcp-request connection (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request connection set-dst-port"></a><a class="anchor" name="4-tcp-request connection set-dst-port"></a><a class="anchor" name="4.2-tcp-request connection set-dst-port"></a><a class="anchor" name="tcp-request connection set-dst-port (Proxies)"></a><a class="anchor" name="tcp-request connection set-dst-port (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request connection set-dst-port"></a><a href="#4.2-tcp-request%20connection%20set-dst-port">tcp-request connection set-dst-port</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions are used to set the destination IP/Port address to the value of
 specified expression. Please refer to &quot;<a href="#http-request%20set-dst">http-request set-dst</a>&quot; and
 &quot;<a href="#http-request%20set-dst-port">http-request set-dst-port</a>&quot; for a complete description.
@@ -17735,7 +17774,7 @@ description.
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content sc-set-gpt0"></a><a class="anchor" name="4-tcp-request content sc-set-gpt0"></a><a class="anchor" name="4.2-tcp-request content sc-set-gpt0"></a><a class="anchor" name="tcp-request content sc-set-gpt0 (Proxies)"></a><a class="anchor" name="tcp-request content sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content sc-set-gpt0"></a><a href="#4.2-tcp-request%20content%20sc-set-gpt0">tcp-request content sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
-sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+sc-set-gpt&quot; and &quot;<a href="#http-request%20sc-set-gpt0">http-request sc-set-gpt0</a>&quot; for a complete description.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content send-spoe-group"></a><a class="anchor" name="4-tcp-request content send-spoe-group"></a><a class="anchor" name="4.2-tcp-request content send-spoe-group"></a><a class="anchor" name="tcp-request content send-spoe-group (Proxies)"></a><a class="anchor" name="tcp-request content send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content send-spoe-group"></a><a href="#4.2-tcp-request%20content%20send-spoe-group">tcp-request content send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Thaction is is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
@@ -17955,7 +17994,7 @@ description.
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session sc-set-gpt0"></a><a class="anchor" name="4-tcp-request session sc-set-gpt0"></a><a class="anchor" name="4.2-tcp-request session sc-set-gpt0"></a><a class="anchor" name="tcp-request session sc-set-gpt0 (Proxies)"></a><a class="anchor" name="tcp-request session sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session sc-set-gpt0"></a><a href="#4.2-tcp-request%20session%20sc-set-gpt0">tcp-request session sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                     <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;tcp-request connection
-sc-inc-gpt&quot; and &quot;tcp-request connection sc-inc-gpt0&quot; for a complete
+sc-set-gpt&quot; and &quot;<a href="#tcp-request%20connection%20sc-set-gpt0">tcp-request connection sc-set-gpt0</a>&quot; for a complete
 description.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session set-dst"></a><a class="anchor" name="4-tcp-request session set-dst"></a><a class="anchor" name="4.2-tcp-request session set-dst"></a><a class="anchor" name="tcp-request session set-dst (Proxies)"></a><a class="anchor" name="tcp-request session set-dst (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session set-dst"></a><a href="#4.2-tcp-request%20session%20set-dst">tcp-request session set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session"></a><a class="anchor" name="4-tcp-request session"></a><a class="anchor" name="4.2-tcp-request session"></a><a class="anchor" name="tcp-request session (Proxies)"></a><a class="anchor" name="tcp-request session (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request session set-dst-port"></a><a class="anchor" name="4-tcp-request session set-dst-port"></a><a class="anchor" name="4.2-tcp-request session set-dst-port"></a><a class="anchor" name="tcp-request session set-dst-port (Proxies)"></a><a class="anchor" name="tcp-request session set-dst-port (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request session set-dst-port"></a><a href="#4.2-tcp-request%20session%20set-dst-port">tcp-request session set-dst-port</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions are used to set the destination IP/Port address to the value of
 specified expression. Please refer to &quot;<a href="#http-request%20set-dst">http-request set-dst</a>&quot; and
@@ -18072,7 +18111,7 @@ description.
                      <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><a class="anchor" name="tcp-resposne"></a><a class="anchor" name="4-tcp-resposne"></a><a class="anchor" name="4.2-tcp-resposne"></a><a class="anchor" name="tcp-resposne (Proxies)"></a><a class="anchor" name="tcp-resposne (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-resposne content"></a><a class="anchor" name="4-tcp-resposne content"></a><a class="anchor" name="4.2-tcp-resposne content"></a><a class="anchor" name="tcp-resposne content (Proxies)"></a><a class="anchor" name="tcp-resposne content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-resposne content sc-set-gpt0"></a><a class="anchor" name="4-tcp-resposne content sc-set-gpt0"></a><a class="anchor" name="4.2-tcp-resposne content sc-set-gpt0"></a><a class="anchor" name="tcp-resposne content sc-set-gpt0 (Proxies)"></a><a class="anchor" name="tcp-resposne content sc-set-gpt0 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-resposne content sc-set-gpt0"></a><a href="#4.2-tcp-resposne%20content%20sc-set-gpt0">tcp-resposne content sc-set-gpt0</a></b>(<span style="color: #080">&lt;sc-id&gt;</span>) <span style="color: #800">{ <span style="color: #080">&lt;int&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
                      <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">These actions set the 32-bit unsigned General Purpose Tags according to the
 sticky counter designated by &lt;sc-id&gt;. Please refer to &quot;http-request
-sc-inc-gpt&quot; and &quot;http-request sc-inc-gpt0&quot; for a complete description.
+sc-set-gpt&quot; and &quot;<a href="#http-request%20sc-set-gpt0">http-request sc-set-gpt0</a>&quot; for a complete description.
 </pre><a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content send-spoe-group"></a><a class="anchor" name="4-tcp-response content send-spoe-group"></a><a class="anchor" name="4.2-tcp-response content send-spoe-group"></a><a class="anchor" name="tcp-response content send-spoe-group (Proxies)"></a><a class="anchor" name="tcp-response content send-spoe-group (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content send-spoe-group"></a><a href="#4.2-tcp-response%20content%20send-spoe-group">tcp-response content send-spoe-group</a></b> <span style="color: #080">&lt;engine-name&gt;</span> <span style="color: #080">&lt;group-name&gt;</span>
                      <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Thaction is is used to trigger sending of a group of SPOE messages. Please
 refer to &quot;<a href="#http-request%20send-spoe-group">http-request send-spoe-group</a>&quot; for a complete description.
@@ -21771,7 +21810,8 @@ below for a full list of the possible return values.
 
 For now, only JWS tokens using the Compact Serialization format can be
 processed (three dot-separated base64-url encoded strings). All the
-algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed.
+algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed (HS, ES, RS and PS
+with the 256, 384 or 512 key sizes, as well as the special &quot;none&quot; case).
 
 If the used algorithm is of the HMAC family, &lt;key&gt; should be the secret used
 in the HMAC signature calculation. Otherwise, &lt;key&gt; should be the path to the
@@ -24745,8 +24785,14 @@ appear in the request when the rule is evaluated. The default delimiter is
 the comma (',') but it may be overridden as an optional argument &lt;delim&gt;. In
 this case, only the first character of &lt;delim&gt; is considered.
 </pre><a class="anchor" name="req.ver"></a><a class="anchor" name="7-req.ver"></a><a class="anchor" name="7.3.6-req.ver"></a><a class="anchor" name="req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.ver"></a><a href="#7.3.6-req.ver">req.ver</a></b> : string</div><a class="anchor" name="req_ver"></a><a class="anchor" name="7-req_ver"></a><a class="anchor" name="7.3.6-req_ver"></a><a class="anchor" name="req_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req_ver"></a><a href="#7.3.6-req_ver">req_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP request, for example &quot;1.1&quot;. This can
-be useful for logs, but is mostly there for ACL. Some predefined ACL already
-check for versions 1.0 and 1.1.
+be useful for ACL. For logs use the &quot;%HV&quot; log variable. Some predefined ACL
+already check for versions 1.0 and 1.1.
+
+Common values are &quot;1.0&quot;, &quot;1.1&quot;, &quot;2.0&quot; or &quot;3.0&quot;.
+
+In the case of http/2 and http/3, the value is not extracted from the HTTP
+version in the request line but is determined by the negociated protocol
+version.
 
 ACL derivatives :
   req.ver : exact string match
@@ -27438,8 +27484,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.2 &ndash; Configuration Manual<br>
-							<small>, 2023/08/09</small>
+							HAProxy 2.8.3 &ndash; Configuration Manual<br>
+							<small>, 2023/09/07</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
