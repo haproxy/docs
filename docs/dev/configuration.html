@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev4-97 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev4-98 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1488,7 +1488,9 @@
 							
 							<a class="list-group-item" href="#cur_tunnel_timeout">cur_tunnel_timeout</a>
 							
-							<a class="list-group-item" href="#curves">curves</a>
+							<a class="list-group-item" href="#curves (Bind options)">curves (Bind options)</a>
+							
+							<a class="list-group-item" href="#curves (Server and default-server options)">curves (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#cut_crlf">cut_crlf</a>
 							
@@ -3391,6 +3393,8 @@
 							
 							<a class="list-group-item" href="#ssl-default-server-client-sigalgs">ssl-default-server-client-sigalgs</a>
 							
+							<a class="list-group-item" href="#ssl-default-server-curves">ssl-default-server-curves</a>
+							
 							<a class="list-group-item" href="#ssl-default-server-options">ssl-default-server-options</a>
 							
 							<a class="list-group-item" href="#ssl-default-server-sigalgs">ssl-default-server-sigalgs</a>
@@ -4317,7 +4321,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4328,7 +4332,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev4-97</strong></p>
+							<p><strong>version 2.9-dev4-98</strong></p>
 							<p>
 								2023/08/25<br>
 								
@@ -6434,6 +6438,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>
    - <a href="#ssl-default-server-ciphersuites">ssl-default-server-ciphersuites</a>
    - <a href="#ssl-default-server-client-sigalgs">ssl-default-server-client-sigalgs</a>
+   - <a href="#ssl-default-server-curves">ssl-default-server-curves</a>
    - <a href="#ssl-default-server-options">ssl-default-server-options</a>
    - <a href="#ssl-default-server-sigalgs">ssl-default-server-sigalgs</a>
    - <a href="#ssl-dh-param-file">ssl-dh-param-file</a>
@@ -7493,6 +7498,11 @@ file.  This setting is not applicable to TLSv1.1 and earlier versions of the
 protocol as the signature algorithms aren't separately negotiated in these
 versions. It is not recommended to change this setting unless compatibility
 with a middlebox is required.
+</pre><a class="anchor" name="ssl-default-server-curves"></a><a class="anchor" name="3-ssl-default-server-curves"></a><a class="anchor" name="3.1-ssl-default-server-curves"></a><a class="anchor" name="ssl-default-server-curves (Global parameters)"></a><a class="anchor" name="ssl-default-server-curves (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-curves"></a><a href="#3.1-ssl-default-server-curves">ssl-default-server-curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the default string describing the list of elliptic curves algorithms (&quot;curve
+suite&quot;) that are negotiated during the SSL/TLS handshake with ECDHE. The format
+of the string is a colon-delimited list of curve name.
+Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
 </pre><a class="anchor" name="ssl-default-server-options"></a><a class="anchor" name="3-ssl-default-server-options"></a><a class="anchor" name="3.1-ssl-default-server-options"></a><a class="anchor" name="ssl-default-server-options (Global parameters)"></a><a class="anchor" name="ssl-default-server-options (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-options"></a><a href="#3.1-ssl-default-server-options">ssl-default-server-options</a></b> <span style="color: #008">[<span style="color: #080">&lt;option&gt;</span>]</span>...</div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 default ssl-options to force on all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
 keyword to see available options.
@@ -18910,7 +18920,7 @@ string is a colon-delimited list of curve name.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<a href="#curves">curves</a>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
+<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
 </code></pre>
 </div><a class="anchor" name="ecdhe"></a><a class="anchor" name="5-ecdhe"></a><a class="anchor" name="5.1-ecdhe"></a><a class="anchor" name="ecdhe (Bind and server options)"></a><a class="anchor" name="ecdhe (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ecdhe"></a><a href="#5.1-ecdhe">ecdhe</a></b> <span style="color: #080">&lt;named curve&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the named curve (RFC 4492) used to generate ECDH ephemeral keys. By default,
@@ -19059,7 +19069,7 @@ filter per certificate, with the following format for each line :
       &lt;crtfile&gt; [\[&lt;sslbindconf&gt; ...\]] [[!]&lt;snifilter&gt; ...]
 
 sslbindconf supports &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">allow-0rtt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#allow-0rtt%20%28Bind%20options%29">Bind options</a></li><li><a href="#allow-0rtt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot;,
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#curves">curves</a>&quot;, &quot;<a href="#ecdhe">ecdhe</a>&quot;, &quot;<a href="#no-ca-names">no-ca-names</a>&quot;,
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ecdhe">ecdhe</a>&quot;, &quot;<a href="#no-ca-names">no-ca-names</a>&quot;,
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">verify<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#verify%20%28Bind%20options%29">Bind options</a></li><li><a href="#verify%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; configuration. With BoringSSL and Openssl &gt;= 1.1.1
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-min-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-min-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-min-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; are also supported. It overrides the
 configuration set in bind line for the certificate.
@@ -19890,7 +19900,15 @@ certificate request.
 If the file does not contain a private key, HAProxy will try to load the key
 at the same path suffixed by a &quot;.key&quot; (provided the &quot;<a href="#ssl-load-extra-files">ssl-load-extra-files</a>&quot;
 option is set accordingly).
-</pre><a class="anchor" name="disabled"></a><a class="anchor" name="5-disabled"></a><a class="anchor" name="5.2-disabled"></a><a class="anchor" name="disabled (Bind and server options)"></a><a class="anchor" name="disabled (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="disabled"></a><a href="#5.2-disabled">disabled</a></b></div><pre class="text">The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%29">Peers</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword starts the server in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%29">Peers</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; state. That means
+</pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.2-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.2-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the string describing the list of elliptic curves algorithms (&quot;curve suite&quot;)
+that are negotiated during the SSL/TLS handshake with ECDHE. The format of the
+string is a colon-delimited list of curve name.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code></code></pre>
+</div><a class="anchor" name="disabled"></a><a class="anchor" name="5-disabled"></a><a class="anchor" name="5.2-disabled"></a><a class="anchor" name="disabled (Bind and server options)"></a><a class="anchor" name="disabled (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="disabled"></a><a href="#5.2-disabled">disabled</a></b></div><pre class="text">The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%29">Peers</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword starts the server in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%29">Peers</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; state. That means
 that it is marked down in maintenance mode, and no connection other than the
 ones allowed by persist mode will reach it. It is very well suited to setup
 new servers, because normal traffic will never reach them, while it is still
@@ -27970,7 +27988,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev4-97 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev4-98 &ndash; Configuration Manual<br>
 							<small>, 2023/08/25</small>
 						</div>
 					</div>
