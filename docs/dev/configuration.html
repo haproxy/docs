@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev5-14 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev5-21 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1340,6 +1340,12 @@
 							<a class="list-group-item" href="#busy-polling">busy-polling</a>
 							
 							<a class="list-group-item" href="#bytes">bytes</a>
+							
+							<a class="list-group-item" href="#bytes_in">bytes_in</a>
+							
+							<a class="list-group-item" href="#bytes_out">bytes_out</a>
+							
+							<a class="list-group-item" href="#bytes_out integer">bytes_out integer</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-C"><h4>C</h4>
@@ -4321,7 +4327,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4332,7 +4338,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev5-14</strong></p>
+							<p><strong>version 2.9-dev5-21</strong></p>
 							<p>
 								2023/09/08<br>
 								
@@ -24858,7 +24864,9 @@ per-URL counters.
 the request with the query-string, which starts at the first slash. Using this
 instead of &quot;<a href="#base">base</a>&quot; allows one to properly identify the target resource, for
 statistics or caching use cases. See also &quot;<a href="#path">path</a>&quot;, &quot;<a href="#pathq">pathq</a>&quot; and &quot;<a href="#base">base</a>&quot;.
-</pre><a class="anchor" name="capture.req.hdr"></a><a class="anchor" name="7-capture.req.hdr"></a><a class="anchor" name="7.3.6-capture.req.hdr"></a><a class="anchor" name="capture.req.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.hdr"></a><a href="#7.3.6-capture.req.hdr">capture.req.hdr</a></b>(<span style="color: #080">&lt;idx&gt;</span>) : string</div><pre class="text">This extracts the content of the header captured by the &quot;capture request
+</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.6-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.6-bytes_in">bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes uploaded from the client to the server.
+</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.6-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching HTTP samples (Layer 7))"></a><a class="anchor" name="bytes_out integer"></a><a class="anchor" name="7-bytes_out integer"></a><a class="anchor" name="7.3.6-bytes_out integer"></a><a class="anchor" name="bytes_out integer (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out integer (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="bytes_out integer"></a><a href="#7.3.6-bytes_out%20integer">bytes_out integer</a></b>
+   This is the number of bytes transmitted from the server to the client.</div><a class="anchor" name="capture.req.hdr"></a><a class="anchor" name="7-capture.req.hdr"></a><a class="anchor" name="7.3.6-capture.req.hdr"></a><a class="anchor" name="capture.req.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.hdr"></a><a href="#7.3.6-capture.req.hdr">capture.req.hdr</a></b>(<span style="color: #080">&lt;idx&gt;</span>) : string</div><pre class="text">This extracts the content of the header captured by the &quot;capture request
 header&quot;, idx is the position of the capture keyword in the configuration.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture%20request%20header">capture request header</a>&quot;.</div>
 <a class="anchor" name="capture.req.method"></a><a class="anchor" name="7-capture.req.method"></a><a class="anchor" name="7.3.6-capture.req.method"></a><a class="anchor" name="capture.req.method (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.method (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.method"></a><a href="#7.3.6-capture.req.method">capture.req.method</a></b> : string</div><pre class="text">This extracts the METHOD of an HTTP request. It can be used in both request
@@ -26333,6 +26341,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |                          Others                                           |
   +---+------+------------------------------------------------------+---------+
   |   | %B   | bytes_read           (from server to client)         | numeric |
+  |   |      | %[bytes_out]                                         |         |
   +---+------+------------------------------------------------------+---------+
   | H | %CC  | captured_request_cookie                              | string  |
   +---+------+------------------------------------------------------+---------+
@@ -26347,16 +26356,19 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   | H | %HPO | HTTP path only (without host nor query string)       | string  |
   +---+------+------------------------------------------------------+---------+
   | H | %HQ  | HTTP request URI query string (ex: ?bar=baz)         | string  |
+  |   |      | ?%[query]                                            |         |
   +---+------+------------------------------------------------------+---------+
   | H | %HU  | HTTP request URI (ex: /foo?bar=baz)                  | string  |
   +---+------+------------------------------------------------------+---------+
   | H | %HV  | HTTP version (ex: HTTP/1.0)                          | string  |
+  |   |      | HTTP/%[req.ver]                                      |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ID  | unique-id                                            | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %ST  | status_code                                          | numeric |
   +---+------+------------------------------------------------------+---------+
   |   | %U   | bytes_uploaded       (from client to server)         | numeric |
+  |   |      | %[bytes_in]                                          |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ac  | actconn                                              |         |
   |   |      | %[act_conn]                                          | numeric |
@@ -27988,7 +28000,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev5-14 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev5-21 &ndash; Configuration Manual<br>
 							<small>, 2023/09/08</small>
 						</div>
 					</div>
