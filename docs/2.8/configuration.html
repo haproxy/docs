@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.3-3 - Configuration Manual</title>
+		<title>HAProxy version 2.8.3-24 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2216,6 +2216,8 @@
 							
 							<a class="list-group-item" href="#level">level</a>
 							
+							<a class="list-group-item" href="#limited-quic">limited-quic</a>
+							
 							<a class="list-group-item" href="#load-server-state-from-file">load-server-state-from-file</a>
 							
 							<a class="list-group-item" href="#localpeer">localpeer</a>
@@ -4261,7 +4263,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4272,7 +4274,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.3-3</strong></p>
+							<p><strong>version 2.8.3-24</strong></p>
 							<p>
 								2023/09/07<br>
 								
@@ -6979,6 +6981,11 @@ could be replaced with PrivateKey+Certificate. HAProxy will complete the
 chain if a file with IntermediateCA2+IntermediateCA1 is present in
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot; directory. All other certificates with the same issuer
 will share the chain in memory.
+</pre><a class="anchor" name="limited-quic"></a><a class="anchor" name="3-limited-quic"></a><a class="anchor" name="3.1-limited-quic"></a><a class="anchor" name="limited-quic (Global parameters)"></a><a class="anchor" name="limited-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="limited-quic"></a><a href="#3.1-limited-quic">limited-quic</a></b></div><pre class="text">This setting must be used to explicitly enable the QUIC listener bindings when
+haproxy is compiled against a TLS/SSL stack without QUIC support, typically
+OpenSSL. It has no effect when haproxy is compiled against a TLS/SSL stack
+with QUIC support, quictls for instance. Note that QUIC 0-RTT is not supported
+when this setting is set.
 </pre><a class="anchor" name="localpeer"></a><a class="anchor" name="3-localpeer"></a><a class="anchor" name="3.1-localpeer"></a><a class="anchor" name="localpeer (Global parameters)"></a><a class="anchor" name="localpeer (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="localpeer"></a><a href="#3.1-localpeer">localpeer</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Sets the local instance's peer name. It will be ignored if the &quot;-L&quot;
 command line argument is specified or if used after &quot;<a href="#peers">peers</a>&quot; section
 definitions. In such cases, a warning message will be emitted during
@@ -27484,7 +27491,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.3-3 &ndash; Configuration Manual<br>
+							HAProxy 2.8.3-24 &ndash; Configuration Manual<br>
 							<small>, 2023/09/07</small>
 						</div>
 					</div>
