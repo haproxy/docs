@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev6 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev6-2 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1489,6 +1489,8 @@
 							<a class="list-group-item" href="#crt-ignore-err">crt-ignore-err</a>
 							
 							<a class="list-group-item" href="#crt-list">crt-list</a>
+							
+							<a class="list-group-item" href="#cur_client_timeout">cur_client_timeout</a>
 							
 							<a class="list-group-item" href="#cur_server_timeout">cur_server_timeout</a>
 							
@@ -4327,7 +4329,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/09/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4338,7 +4340,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev6</strong></p>
+							<p><strong>version 2.9-dev6-2</strong></p>
 							<p>
 								2023/09/22<br>
 								
@@ -11692,7 +11694,7 @@ supported:
   - set-query &lt;fmt&gt;
   - set-src &lt;expr&gt;
   - set-src-port &lt;expr&gt;
-  - set-timeout { server | tunnel } { &lt;timeout&gt; | &lt;expr&gt; }
+  - set-timeout { client | server | tunnel } { &lt;timeout&gt; | &lt;expr&gt; }
   - set-tos &lt;tos&gt;
   - set-uri &lt;fmt&gt;
   - set-var(&lt;var-name&gt;[,&lt;cond&gt;...]) &lt;expr&gt;
@@ -12508,8 +12510,8 @@ http-request set-src-port int(4000)
 </div><pre class="text">When possible, set-src-port preserves the original source address as long as
 the address family supports a port, otherwise it forces the source address to
 IPv4 &quot;0.0.0.0&quot; before rewriting the port.
-</pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-timeout"></a><a class="anchor" name="4-http-request set-timeout"></a><a class="anchor" name="4.2-http-request set-timeout"></a><a class="anchor" name="http-request set-timeout (Proxies)"></a><a class="anchor" name="http-request set-timeout (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-timeout"></a><a href="#4.2-http-request%20set-timeout">http-request set-timeout</a></b> <span style="color: #800">{ server | tunnel }</span> <span style="color: #800">{ <span style="color: #080">&lt;timeout&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
-                                       <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action overrides the specified &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or &quot;tunnel&quot; timeout for the
+</pre><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request set-timeout"></a><a class="anchor" name="4-http-request set-timeout"></a><a class="anchor" name="4.2-http-request set-timeout"></a><a class="anchor" name="http-request set-timeout (Proxies)"></a><a class="anchor" name="http-request set-timeout (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request set-timeout"></a><a href="#4.2-http-request%20set-timeout">http-request set-timeout</a></b> <span style="color: #800">{ client | server | tunnel }</span> <span style="color: #800">{ <span style="color: #080">&lt;timeout&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
+                                       <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action overrides the specified &quot;client&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or &quot;tunnel&quot; timeout for the
 current stream only. The timeout can be specified in millisecond or with any
 other unit if the number is suffixed by the unit as explained at the top of
 this document. It is also possible to write an expression which must returns
@@ -12517,8 +12519,8 @@ a number interpreted as a timeout in millisecond.
 
 Note that the server/tunnel timeouts are only relevant on the backend side
 and thus this rule is only available for the proxies with backend
-capabilities. Also the timeout value must be non-null to obtain the expected
-results.
+capabilities. As well as client timeout is only relevant for frontend side.
+Also the timeout value must be non-null to obtain the expected results.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -23384,6 +23386,9 @@ In the default case, this will be equal to be_server_timeout unless a
 </pre><a class="anchor" name="cur_tunnel_timeout"></a><a class="anchor" name="7-cur_tunnel_timeout"></a><a class="anchor" name="7.3.3-cur_tunnel_timeout"></a><a class="anchor" name="cur_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_tunnel_timeout"></a><a href="#7.3.3-cur_tunnel_timeout">cur_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the currently applied tunnel timeout in millisecond for the stream.
 In the default case, this will be equal to be_tunnel_timeout unless a
 &quot;set-timeout&quot; rule has been applied. See also &quot;<a href="#be_tunnel_timeout">be_tunnel_timeout</a>&quot;.
+</pre><a class="anchor" name="cur_client_timeout"></a><a class="anchor" name="7-cur_client_timeout"></a><a class="anchor" name="7.3.3-cur_client_timeout"></a><a class="anchor" name="cur_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_client_timeout"></a><a href="#7.3.3-cur_client_timeout">cur_client_timeout</a></b> : integer</div><pre class="text">Returns the currently applied client timeout in millisecond for the stream.
+In the default case, this will be equal to fe_client_timeout unless a
+&quot;set-timeout&quot; rule has been applied. See also &quot;<a href="#fe_client_timeout">fe_client_timeout</a>&quot;.
 </pre><a class="anchor" name="dst"></a><a class="anchor" name="7-dst"></a><a class="anchor" name="7.3.3-dst"></a><a class="anchor" name="dst (Using ACLs and fetching samples)"></a><a class="anchor" name="dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="dst"></a><a href="#7.3.3-dst">dst</a></b> : ip</div><pre class="text">This is the destination IP address of the connection on the client side,
 which is the address the client connected to. Any tcp/http rules may alter
 this address. It can be useful when running in transparent mode. It is of
@@ -23576,7 +23581,7 @@ coming via a same frontend to the same server.
 backends to check from which frontend it was called, or to stick all users
 coming via a same frontend to the same server.
 </pre><a class="anchor" name="fe_client_timeout"></a><a class="anchor" name="7-fe_client_timeout"></a><a class="anchor" name="7.3.3-fe_client_timeout"></a><a class="anchor" name="fe_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_client_timeout"></a><a href="#7.3.3-fe_client_timeout">fe_client_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the client timeout of the
-current frontend.
+current frontend. This timeout can be overwritten by a &quot;set-timeout&quot; rule.
 </pre><a class="anchor" name="res.timer.data"></a><a class="anchor" name="7-res.timer.data"></a><a class="anchor" name="7.3.3-res.timer.data"></a><a class="anchor" name="res.timer.data (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.data (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.timer.data"></a><a href="#7.3.3-res.timer.data">res.timer.data</a></b> : integer</div><pre class="text">this is the total transfer time of the response payload till the last byte
 sent to the client. In HTTP it starts after the last response header (after
 Tr). This is the equivalent of %Td in the log-format and is reported in
@@ -28016,7 +28021,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev6 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev6-2 &ndash; Configuration Manual<br>
 							<small>, 2023/09/22</small>
 						</div>
 					</div>
