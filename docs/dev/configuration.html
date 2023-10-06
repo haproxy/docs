@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev6-51 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev6-52 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4331,7 +4331,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4342,7 +4342,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev6-51</strong></p>
+							<p><strong>version 2.9-dev6-52</strong></p>
 							<p>
 								2023/09/22<br>
 								
@@ -20838,7 +20838,7 @@ replaced by &quot;&lt;CACHE&gt;&quot;.
 - If the response is not a 200
 - If the response contains a Vary header and either the process-vary option is
   disabled, or a currently unmanaged header is specified in the Vary value (only
-  accept-encoding and referer are managed for now)
+  accept-encoding, referer and origin are managed for now)
 - If the Content-Length + the headers size is greater than &quot;<a href="#max-object-size">max-object-size</a>&quot;
 - If the response is not cacheable
 - If the response does not have an explicit expiration time (s-maxage or max-age
@@ -20876,8 +20876,10 @@ default.
 </pre><a class="anchor" name="process-vary"></a><a class="anchor" name="6-process-vary"></a><a class="anchor" name="6.2.1-process-vary"></a><a class="anchor" name="process-vary (Cache)"></a><a class="anchor" name="process-vary (Cache section)"></a><div class="keyword"><b><a class="anchor" name="process-vary"></a><a href="#6.2.1-process-vary">process-vary</a></b> <span style="color: #080">&lt;on/off&gt;</span></div><pre class="text">Enable or disable the processing of the Vary header. When disabled, a response
 containing such a header will never be cached. When enabled, we need to calculate
 a preliminary hash for a subset of request headers on all the incoming requests
-(which might come with a cpu cost) which will be used to build a secondary key
-for a given request (see RFC 7234#4.1). The default value is off (disabled).
+(which might come with a cpu cost) which will be used to build a secondary
+key for a given request (see RFC 7234#4.1). The secondary key is built out of
+the contents of the 'accept-encoding', 'referer' and 'origin' headers for
+now. The default value is off (disabled).
 </pre><a class="anchor" name="max-secondary-entries"></a><a class="anchor" name="6-max-secondary-entries"></a><a class="anchor" name="6.2.1-max-secondary-entries"></a><a class="anchor" name="max-secondary-entries (Cache)"></a><a class="anchor" name="max-secondary-entries (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-secondary-entries"></a><a href="#6.2.1-max-secondary-entries">max-secondary-entries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Define the maximum number of simultaneous secondary entries with the same primary
 key in the cache. This needs the vary support to be enabled. Its default value is 10
 and should be passed a strictly positive integer.
@@ -28032,7 +28034,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev6-51 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev6-52 &ndash; Configuration Manual<br>
 							<small>, 2023/09/22</small>
 						</div>
 					</div>
