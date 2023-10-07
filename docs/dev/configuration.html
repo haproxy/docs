@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev6-52 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev7 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4331,7 +4331,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4342,9 +4342,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev6-52</strong></p>
+							<p><strong>version 2.9-dev7</strong></p>
 							<p>
-								2023/09/22<br>
+								2023/10/06<br>
 								
 							</p>
 						</div>
@@ -7068,137 +7068,7 @@ See also &quot;-L&quot; in the management guide and &quot;<a href="#peers">peers
 </pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.1-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.1-log">log</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
     <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[max level <span style="color: #008">[min level]</span>]</span></div><pre class="text">Adds a global syslog server. Several global servers can be defined. They
 will receive logs for starts and exits, as well as all logs from proxies
-configured with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.
-
-&lt;address&gt; can be one of:
-
-      - An IPv4 address optionally followed by a colon and a UDP port. If
-        no port is specified, 514 is used by default (the standard syslog
-        port).
-
-      - An IPv6 address followed by a colon and optionally a UDP port. If
-        no port is specified, 514 is used by default (the standard syslog
-        port).
-
-      - A filesystem path to a datagram UNIX domain socket, keeping in mind
-        considerations for chroot (be sure the path is accessible inside
-        the chroot) and uid/gid (be sure the path is appropriately
-        writable).
-
-      - A file descriptor number in the form &quot;fd@&lt;number&gt;&quot;, which may point
-        to a pipe, terminal, or socket. In this case unbuffered logs are used
-        and one writev() call per log is performed. This is a bit expensive
-        but acceptable for most workloads. Messages sent this way will not be
-        truncated but may be dropped, in which case the DroppedLogs counter
-        will be incremented. The writev() call is atomic even on pipes for
-        messages up to PIPE_BUF size, which POSIX recommends to be at least
-        512 and which is 4096 bytes on most modern operating systems. Any
-        larger message may be interleaved with messages from other processes.
-        Exceptionally for debugging purposes the file descriptor may also be
-        directed to a file, but doing so will significantly slow HAProxy down
-        as non-blocking calls will be ignored. Also there will be no way to
-        purge nor rotate this file without restarting the process. Note that
-        the configured syslog format is preserved, so the output is suitable
-        for use with a TCP syslog server. See also the &quot;short&quot; and &quot;raw&quot;
-        format below.
-
-      - &quot;stdout&quot; / &quot;stderr&quot;, which are respectively aliases for &quot;fd@1&quot; and
-        &quot;fd@2&quot;, see above.
-
-      - A ring buffer in the form &quot;ring@&lt;name&gt;&quot;, which will correspond to an
-        in-memory ring buffer accessible over the CLI using the &quot;show events&quot;
-        command, which will also list existing rings and their sizes. Such
-        buffers are lost on reload or restart but when used as a complement
-        this can help troubleshooting by having the logs instantly available.
-
-      You may want to reference some environment variables in the address
-      parameter, see <a href="#2.3">section 2.3</a> about environment variables.
-
-&lt;length&gt; is an optional maximum line length. Log lines larger than this value
-         will be truncated before being sent. The reason is that syslog
-         servers act differently on log line length. All servers support the
-         default value of 1024, but some servers simply drop larger lines
-         while others do log them. If a server supports long lines, it may
-         make sense to set this value here in order to avoid truncating long
-         lines. Similarly, if a server drops long lines, it is preferable to
-         truncate them before sending them. Accepted values are 80 to 65535
-         inclusive. The default value of 1024 is generally fine for all
-         standard usages. Some specific cases of long captures or
-         JSON-formatted logs may require larger values. You may also need to
-         increase &quot;<a href="#tune.http.logurilen">tune.http.logurilen</a>&quot; if your request URIs are truncated.
-
-&lt;format&gt; is the log format used when generating syslog messages. It may be
-         one of the following :
-
-  local     Analog to rfc3164 syslog message format except that hostname
-            field is stripped. This is the default.
-            Note: option &quot;<a href="#log-send-hostname">log-send-hostname</a>&quot; switches the default to
-            rfc3164.
-
-  rfc3164   The RFC3164 syslog message format.
-            (https://tools.ietf.org/html/rfc3164)
-
-  rfc5424   The RFC5424 syslog message format.
-            (https://tools.ietf.org/html/rfc5424)
-
-  priority  A message containing only a level plus syslog facility between
-            angle brackets such as '&lt;63&gt;', followed by the text. The PID,
-            date, time, process name and system name are omitted. This is
-            designed to be used with a local log server.
-
-  short     A message containing only a level between angle brackets such as
-            '&lt;3&gt;', followed by the text. The PID, date, time, process name
-            and system name are omitted. This is designed to be used with a
-            local log server. This format is compatible with what the systemd
-            logger consumes.
-
-  timed     A message containing only a level between angle brackets such as
-           '&lt;3&gt;', followed by ISO date and by the text. The PID, process
-            name and system name are omitted. This is designed to be
-            used with a local log server.
-
-  iso       A message containing only the ISO date, followed by the text.
-            The PID, process name and system name are omitted. This is
-            designed to be used with a local log server.
-
-  raw       A message containing only the text. The level, PID, date, time,
-            process name and system name are omitted. This is designed to be
-            used in containers or during development, where the severity only
-            depends on the file descriptor used (stdout/stderr).
-
-&lt;ranges&gt;   A list of comma-separated ranges to identify the logs to sample.
-           This is used to balance the load of the logs to send to the log
-           server. The limits of the ranges cannot be null. They are numbered
-           from 1. The size or period (in number of logs) of the sample must be
-           set with &lt;sample_size&gt; parameter.
-
-&lt;sample_size&gt;
-           The size of the sample in number of logs to consider when balancing
-           their logging loads. It is used to balance the load of the logs to
-           send to the syslog server. This size must be greater or equal to the
-           maximum of the high limits of the ranges.
-           (see also &lt;ranges&gt; parameter).
-
-&lt;facility&gt; must be one of the 24 standard syslog facilities :
-
-               kern   user   mail   daemon auth   syslog lpr    news
-               uucp   cron   auth2  ftp    ntp    audit  alert  cron2
-               local0 local1 local2 local3 local4 local5 local6 local7
-
-           Note that the facility is ignored for the &quot;short&quot; and &quot;raw&quot;
-           formats, but still required as a positional field. It is
-           recommended to use &quot;<a href="#daemon">daemon</a>&quot; in this case to make it clear that
-           it's only supposed to be used locally.
-
-An optional level can be specified to filter outgoing messages. By default,
-all messages are sent. If a maximum level is specified, only messages with a
-severity at least as important as this level will be sent. An optional minimum
-level can be specified. If it is set, logs emitted with a more severe level
-than this one will be capped to this level. This is used to avoid sending
-&quot;emerg&quot; messages on all terminals on some default syslog configurations.
-Eight levels are known :
-
-        emerg  alert  crit   err    warning notice info  debug
+configured with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; option for proxies for more details.
 </pre><a class="anchor" name="log-send-hostname"></a><a class="anchor" name="3-log-send-hostname"></a><a class="anchor" name="3.1-log-send-hostname"></a><a class="anchor" name="log-send-hostname (Global parameters)"></a><a class="anchor" name="log-send-hostname (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log-send-hostname"></a><a href="#3.1-log-send-hostname">log-send-hostname</a></b> <span style="color: #008">[<span style="color: #080">&lt;string&gt;</span>]</span></div><pre class="text">Sets the hostname field in the syslog header. If optional &quot;string&quot; parameter
 is set the header is set to the string contents, otherwise uses the hostname
 of the system. Generally used if one is not relaying logs through an
@@ -13282,6 +13152,8 @@ Content of the file /etc/haproxy/states/bk would be like this:
            values are 80 to 65535 inclusive. The default value of 1024 is
            generally fine for all standard usages. Some specific cases of
            long captures or JSON-formatted logs may require larger values.
+           You may also need to increase &quot;<a href="#tune.http.logurilen">tune.http.logurilen</a>&quot; if your
+           request URIs are truncated.
 
 &lt;ranges&gt;   A list of comma-separated ranges to identify the logs to sample.
            This is used to balance the load of the logs to send to the log
@@ -28034,8 +27906,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev6-52 &ndash; Configuration Manual<br>
-							<small>, 2023/09/22</small>
+							HAProxy 2.9-dev7 &ndash; Configuration Manual<br>
+							<small>, 2023/10/06</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
