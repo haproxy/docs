@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev7-24 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev7-49 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2258,6 +2258,10 @@
 							
 							<a class="list-group-item" href="#log global (Alphabetically sorted keywords reference)">log global (Alphabetically sorted keywords reference)</a>
 							
+							<a class="list-group-item" href="#log-balance">log-balance</a>
+							
+							<a class="list-group-item" href="#log-bufsize">log-bufsize</a>
+							
 							<a class="list-group-item" href="#log-format">log-format</a>
 							
 							<a class="list-group-item" href="#log-format-sd">log-format-sd</a>
@@ -4331,7 +4335,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4342,7 +4346,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev7-24</strong></p>
+							<p><strong>version 2.9-dev7-49</strong></p>
 							<p>
 								2023/10/06<br>
 								
@@ -7065,7 +7069,7 @@ the configuration parsing.
 
 This option will also set the HAPROXY_LOCALPEER environment variable.
 See also &quot;-L&quot; in the management guide and &quot;<a href="#peers">peers</a>&quot; section below.
-</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.1-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.1-log">log</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
+</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.1-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.1-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
     <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[max level <span style="color: #008">[min level]</span>]</span></div><pre class="text">Adds a global syslog server. Several global servers can be defined. They
 will receive logs for starts and exits, as well as all logs from proxies
 configured with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; option for proxies for more details.
@@ -8647,7 +8651,7 @@ tables without having to comment out all &quot;<a href="#peers">peers</a>&quot; 
 <div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and <a href="#5">section 5</a> about server options</div>
 <a class="anchor" name="enabled"></a><a class="anchor" name="3-enabled"></a><a class="anchor" name="3.5-enabled"></a><a class="anchor" name="enabled (Global parameters)"></a><a class="anchor" name="enabled (Peers)"></a><div class="keyword"><b><a class="anchor" name="enabled"></a><a href="#3.5-enabled">enabled</a></b></div><pre class="text">This re-enables a peers section which was previously disabled via the
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%29">Peers</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
-</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.5-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Peers)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.5-log">log</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
+</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.5-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Peers)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.5-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
     <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><pre class="text">&quot;<a href="#peers">peers</a>&quot; sections support the same &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword as for the proxies to
 log information about the &quot;<a href="#peers">peers</a>&quot; listener. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; option for proxies for
 more details.
@@ -9010,7 +9014,7 @@ Addresses must be in IPv4 or IPv6 form,followed by a port. This supports
 for some of the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.1 paragraph among which
 &quot;<a href="#interface">interface</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">namespace<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#namespace%20%28Bind%20options%29">Bind options</a></li><li><a href="#namespace%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or &quot;<a href="#option%20transparent">transparent</a>&quot;, the other ones being
 silently ignored as irrelevant for UDP/syslog case.
-</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.10-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Log forwarding)"></a><a class="anchor" name="log global"></a><a class="anchor" name="3-log global"></a><a class="anchor" name="3.10-log global"></a><a class="anchor" name="log global (Global parameters)"></a><a class="anchor" name="log global (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="log global"></a><a href="#3.10-log%20global">log global</a></b></div><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.10-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.10-log">log</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
+</pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.10-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Log forwarding)"></a><a class="anchor" name="log global"></a><a class="anchor" name="3-log global"></a><a class="anchor" name="3.10-log global"></a><a class="anchor" name="log global (Global parameters)"></a><a class="anchor" name="log global (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="log global"></a><a href="#3.10-log%20global">log global</a></b></div><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.10-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.10-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
     <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><pre class="text">Used to configure target log servers. See more details on proxies
 documentation.
 If no format specified, HAProxy tries to keep the incoming log format.
@@ -9261,6 +9265,7 @@ anonymous ones.
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-log-balance">log-balance</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9268,8 +9273,8 @@ anonymous ones.
 <tr><td ><a href="#4-maxconn">maxconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-mode">mode</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-monitor%20fail">monitor fail</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-monitor-uri">monitor-uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-monitor-uri">monitor-uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20abortonclose"><span class="pull-right"><span>(*)</span></span>option abortonclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20accept-invalid-http-request"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20accept-invalid-http-response"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9289,8 +9294,8 @@ anonymous ones.
 <tr><td ><a href="#4-option%20http-keep-alive"><span class="pull-right"><span>(*)</span></span>option http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-no-delay"><span class="pull-right"><span>(*)</span></span>option http-no-delay</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-pretend-keepalive"><span class="pull-right"><span>(*)</span></span>option http-pretend-keepalive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20http-restrict-req-hdr-names">option http-restrict-req-hdr-names</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20http-restrict-req-hdr-names">option http-restrict-req-hdr-names</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-server-close"><span class="pull-right"><span>(*)</span></span>option http-server-close</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-use-proxy-header"><span class="pull-right"><span>(*)</span></span>option http-use-proxy-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20httpchk">option httpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9310,8 +9315,8 @@ anonymous ones.
 <tr><td ><a href="#4-option%20pgsql-check">option pgsql-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20prefer-last-server"><span class="pull-right"><span>(*)</span></span>option prefer-last-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redispatch"><span class="pull-right"><span>(*)</span></span>option redispatch</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20redis-check">option redis-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20redis-check">option redis-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20smtpchk">option smtpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20socket-stats"><span class="pull-right"><span>(*)</span></span>option socket-stats</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20splice-auto"><span class="pull-right"><span>(*)</span></span>option splice-auto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9331,8 +9336,8 @@ anonymous ones.
 <tr><td ><a href="#4-external-check%20path">external-check path</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-persist%20rdp-cookie">persist rdp-cookie</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-rate-limit%20sessions">rate-limit sessions</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-redirect">redirect</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-redirect">redirect</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-retries">retries</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-retry-on">retry-on</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-server">server</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9352,8 +9357,8 @@ anonymous ones.
 <tr><td ><a href="#4-stats%20scope">stats scope</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-desc">stats show-desc</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-legends">stats show-legends</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20match">stick match</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20on">stick on</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -9373,8 +9378,8 @@ anonymous ones.
 <tr><td ><a href="#4-tcp-request%20content">tcp-request content</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20inspect-delay">tcp-request inspect-delay</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20session">tcp-request session</a></td><td >X (!)</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-tcp-response%20content">tcp-response content</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-response%20content">tcp-response content</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-response%20inspect-delay">tcp-response inspect-delay</a></td><td >X (!)</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20check">timeout check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20client">timeout client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -10817,6 +10822,10 @@ consistent hashing mechanism.
           gzip, PNG, etc. It is slower than the other ones but may provide
           a better distribution or less predictable results especially when
           used on strings.
+
+   none   don't hash the key, the key will be used as a hash, this can be
+          useful to manually hash the key using a converter for that purpose
+          and let haproxy use the result directly.
 
 &lt;modifier&gt; indicates an optional method applied after hashing the key :
 
@@ -13071,7 +13080,7 @@ Content of the file /etc/haproxy/states/bk would be like this:
   1 bk 1 s1 127.0.0.1 2 0 11 11 4 6 3 4 6 0 0
   1 bk 2 s2 127.0.0.1 2 0 12 12 4 6 3 4 6 0 0
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#server-state-file">server-state-file</a>&quot;, &quot;<a href="#server-state-file-name">server-state-file-name</a>&quot;, and &quot;show servers state&quot;</div>
-<a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><a class="anchor" name="log global"></a><a class="anchor" name="4-log global"></a><a class="anchor" name="4.2-log global"></a><a class="anchor" name="log global (Proxies)"></a><a class="anchor" name="log global (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log global"></a><a href="#4.2-log%20global">log global</a></b></div><a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#4.2-log">log</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
+<a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><a class="anchor" name="log global"></a><a class="anchor" name="4-log global"></a><a class="anchor" name="4.2-log global"></a><a class="anchor" name="log global (Proxies)"></a><a class="anchor" name="log global (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log global"></a><a href="#4.2-log%20global">log global</a></b></div><a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#4.2-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
     <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no log"></a><a class="anchor" name="4-no log"></a><a class="anchor" name="4.2-no log"></a><a class="anchor" name="no log (Proxies)"></a><a class="anchor" name="no log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no log"></a><a href="#4.2-no%20log">no log</a></b></div><pre class="text">Enable per-instance logging of events and traffic.
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -13084,12 +13093,12 @@ Content of the file /etc/haproxy/states/bk would be like this:
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">global     should be used when the instance's logging parameters are the
            same as the global ones. This is the most common usage. &quot;global&quot;
-           replaces &lt;address&gt;, &lt;facility&gt; and &lt;level&gt; with those of the log
+           replaces &lt;target&gt;, &lt;facility&gt; and &lt;level&gt; with those of the log
            entries found in the &quot;global&quot; section. Only one &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
            statement may be used per instance, and this form takes no other
            parameter.
 
-&lt;address&gt;  indicates where to send the logs. It takes the same format as
+&lt;target&gt;   indicates where to send the logs. It takes the same format as
            for the &quot;global&quot; section's logs, and can be one of :
 
            - An IPv4 address optionally followed by a colon (':') and a UDP
@@ -13133,6 +13142,12 @@ Content of the file /etc/haproxy/states/bk would be like this:
              their sizes. Such buffers are lost on reload or restart but
              when used as a complement this can help troubleshooting by
              having the logs instantly available.
+
+           - A log backend in the form &quot;backend@&lt;name&gt;&quot;, which will send
+             log messages to the corresponding log backend responsible for
+             sending the message to the proper server according to the
+             backend's lb settings. A log backend is a backend section with
+             &quot;mode log&quot; set (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">mode<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#mode%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#mode%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; for more information).
 
            - An explicit stream address prefix such as &quot;tcp@&quot;,&quot;tcp6@&quot;,
              &quot;tcp4@&quot; or &quot;uxst@&quot; will allocate an implicit ring buffer with
@@ -13252,6 +13267,81 @@ log tcp@127.0.0.1:514 local0 notice notice  <span class="comment"># same but lim
                                             <span class="comment"># level and send in tcp</span>
 log &quot;${LOCAL_SYSLOG}:514&quot; local0 notice   <span class="comment"># send to local server</span>
 </code></pre>
+</div><a class="anchor" name="log-balance"></a><a class="anchor" name="4-log-balance"></a><a class="anchor" name="4.2-log-balance"></a><a class="anchor" name="log-balance (Proxies)"></a><a class="anchor" name="log-balance (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-balance"></a><a href="#4.2-log-balance">log-balance</a></b> <span style="color: #080">&lt;algorithm&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arguments&gt;</span> ]</span></div><pre class="text">Define the load balancing algorithm to be used in a log backend.
+(&quot;mode log&quot; enabled)
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;algorithm&gt; is the algorithm used to select a server when doing load
+            balancing. This only applies when no persistence information
+            is available, or when a connection is redispatched to another
+            server. &lt;algorithm&gt; may be one of the following :
+
+  roundrobin  Each server is used in turns. This is the smoothest and
+              fairest algorithm when the server's processing time remains
+              equally distributed.
+
+  sticky      The first server in the list of available servers receives all
+              the log messages. When the server goes DOWN, the next server
+              in the list takes its place. When a previously DOWN server
+              goes back UP it is added at the end of the list so that the
+              sticky server doesn't change until it becomes DOWN.
+
+  random      A random number will be used as the key for the server
+              lookup. Random log balancing can be useful with large farms
+              or when servers are frequently added or removed from the
+              pool of available servers as it may avoid the hammering
+              effect that could result from roundrobin in this situation.
+
+  hash        &lt;arguments&gt; should be found in the form: &lt;cnv_list&gt;
+              e.g.: log-balance hash &lt;cnv_list&gt;
+
+              Each log message will be passed to the converter list
+              specified in &lt;cnv_list&gt; (ie: &quot;cnv1,cnv2...&quot;), and it will
+              then be passed to haproxy hashing function according to
+              &quot;<a href="#hash-type">hash-type</a>&quot; settings. The resulting hash will be used to
+              select the destination server among the ones declared in the
+              log backend. The goal of this algorithm is to be able to
+              extract a key within the final log message using string
+              converters and then be able to stick to the same server thanks
+              to the hash. Only &quot;map-based&quot; hashes are supported for now.
+
+&lt;arguments&gt; is an optional list of arguments which may be needed by some
+            algorithms.</pre>
+</div>
+<pre class="text">The load balancing algorithm of a log backend is set to roundrobin when
+no other algorithm has been set. The algorithm may only be set once for each
+log backend. The above algorithms support the &quot;<a href="#backup">backup</a>&quot; server option and the
+&quot;<a href="#option%20allbackups">allbackups</a>&quot; proxy option. However server &quot;<a href="#weight">weight</a>&quot; is not supported and will
+be ignored.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code>global
+  log backend@mylog-rrb local0 <span class="comment"># send all logs to mylog-rrb backend</span>
+  log backend@mylog-hash local0 <span class="comment"># send all logs to mylog-hash backend</span>
+
+backend mylog-rrb
+  mode log
+  log-balance roundrobin
+
+  server s1 udp@127.0.0.1:514 <span class="comment"># will receive 50% of log messages</span>
+  server s2 udp@127.0.0.1:514
+
+backend mylog-hash
+  mode log
+
+  <span class="comment"># extract &quot;METHOD URL PROTO&quot; at the end of the log message,</span>
+  <span class="comment"># and let haproxy hash it so that log messages generated from</span>
+  <span class="comment"># similar requests get sent to the same syslog server:</span>
+  log-balance hash 'field(-2,\&quot;)'
+
+  <span class="comment"># server list here</span>
+  server s1 127.0.0.1:514
+  <span class="comment">#...</span>
+</code></pre>
 </div><a class="anchor" name="log-format"></a><a class="anchor" name="4-log-format"></a><a class="anchor" name="4.2-log-format"></a><a class="anchor" name="log-format (Proxies)"></a><a class="anchor" name="log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format"></a><a href="#4.2-log-format">log-format</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specifies the log format string to use for traffic logs
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -13356,7 +13446,7 @@ to assign them some reasonable connection limits.
 When this value is set to zero, which is the default, the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 value is used.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, global section's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#fullconn">fullconn</a>&quot;</div>
-<a class="anchor" name="mode"></a><a class="anchor" name="4-mode"></a><a class="anchor" name="4.2-mode"></a><a class="anchor" name="mode (Proxies)"></a><a class="anchor" name="mode (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="mode"></a><a href="#4.2-mode">mode</a></b> <span style="color: #800">{ tcp|http }</span></div><pre class="text">Set the running mode or protocol of the instance
+<a class="anchor" name="mode"></a><a class="anchor" name="4-mode"></a><a class="anchor" name="4.2-mode"></a><a class="anchor" name="mode (Proxies)"></a><a class="anchor" name="mode (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="mode"></a><a href="#4.2-mode">mode</a></b> <span style="color: #800">{ tcp|http|log }</span></div><pre class="text">Set the running mode or protocol of the instance
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -13371,7 +13461,17 @@ http      The instance will work in HTTP mode. The client request will be
           analyzed in depth before connecting to any server. Any request
           which is not RFC-compliant will be rejected. Layer 7 filtering,
           processing and switching will be possible. This is the mode which
-          brings HAProxy most of its value.</pre>
+          brings HAProxy most of its value.
+
+log       When used in a backend section, it will turn the backend into a
+          log backend. Such backend can be used as a log destination for
+          any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive by using the &quot;backend@&lt;name&gt;&quot; syntax. Log
+          messages will be distributed to the servers from the backend
+          according to the lb settings which can be configured using the
+          &quot;<a href="#log-balance">log-balance</a>&quot; keyword (in place of the &quot;<a href="#balance">balance</a>&quot; keyword for TCP
+          and HTTP backends). Log backends support UDP servers by prefixing
+          the server's address with the &quot;udp@&quot; prefix. Common backend and
+          server features are supported, but not TCP or HTTP related ones.</pre>
 </div>
 <pre class="text">When doing content switching, it is mandatory that the frontend and the
 backend are in the same mode (generally HTTP), otherwise the configuration
@@ -19889,8 +19989,14 @@ that has reached this limit, until another check finishes. This will have for
 effect to extend the effective check interval. In such a case, reducing the
 &quot;<a href="#inter">inter</a>&quot; setting will have a very limited effect as it will not be able to
 reduce the time spent in the queue.
+</pre><a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">The &quot;<a href="#log-bufsize">log-bufsize</a>&quot; specifies the ring bufsize to use for the implicit ring
+that will be associated to the log server in a log backend. When not
+specified, this defaults to BUFSIZE. Use of a greater value will increase
+memory usage but can help to prevent the loss of log messages with slow
+servers since the buffer will be able to hold more pending messages.
+This keyword may only be used in log backend sections (with &quot;mode log&quot;)
 </pre><a class="anchor" name="log-proto"></a><a class="anchor" name="5-log-proto"></a><a class="anchor" name="5.2-log-proto"></a><a class="anchor" name="log-proto (Bind and server options)"></a><a class="anchor" name="log-proto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-proto"></a><a href="#5.2-log-proto">log-proto</a></b> <span style="color: #080">&lt;logproto&gt;</span></div><pre class="text">The &quot;<a href="#log-proto">log-proto</a>&quot; specifies the protocol used to forward event messages to
-a server configured in a ring section. Possible values are &quot;legacy&quot;
+a server configured in a log or ring section. Possible values are &quot;legacy&quot;
 and &quot;octet-count&quot; corresponding respectively to &quot;Non-transparent-framing&quot;
 and &quot;Octet counting&quot; in rfc6587. &quot;legacy&quot; is the default.
 </pre><a class="anchor" name="maxconn"></a><a class="anchor" name="5-maxconn"></a><a class="anchor" name="5.2-maxconn"></a><a class="anchor" name="maxconn (Bind and server options)"></a><a class="anchor" name="maxconn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#5.2-maxconn">maxconn</a></b> <span style="color: #080">&lt;maxconn&gt;</span></div><pre class="text">The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter specifies the maximal number of concurrent
@@ -27483,7 +27589,7 @@ is an optional setting.
 <pre class="prettyprint">
 <code>index index.php
 </code></pre>
-</div><a class="anchor" name="log-stderr"></a><a class="anchor" name="10-log-stderr"></a><a class="anchor" name="10.1.1-log-stderr"></a><a class="anchor" name="log-stderr (FastCGI applications)"></a><a class="anchor" name="log-stderr (Fcgi-app section)"></a><a class="anchor" name="log-stderr global"></a><a class="anchor" name="10-log-stderr global"></a><a class="anchor" name="10.1.1-log-stderr global"></a><a class="anchor" name="log-stderr global (FastCGI applications)"></a><a class="anchor" name="log-stderr global (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="log-stderr global"></a><a href="#10.1.1-log-stderr%20global">log-stderr global</a></b></div><a class="anchor" name="log-stderr"></a><a class="anchor" name="10-log-stderr"></a><a class="anchor" name="10.1.1-log-stderr"></a><a class="anchor" name="log-stderr (FastCGI applications)"></a><a class="anchor" name="log-stderr (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="log-stderr"></a><a href="#10.1.1-log-stderr">log-stderr</a></b> <span style="color: #080">&lt;address&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span>
+</div><a class="anchor" name="log-stderr"></a><a class="anchor" name="10-log-stderr"></a><a class="anchor" name="10.1.1-log-stderr"></a><a class="anchor" name="log-stderr (FastCGI applications)"></a><a class="anchor" name="log-stderr (Fcgi-app section)"></a><a class="anchor" name="log-stderr global"></a><a class="anchor" name="10-log-stderr global"></a><a class="anchor" name="10.1.1-log-stderr global"></a><a class="anchor" name="log-stderr global (FastCGI applications)"></a><a class="anchor" name="log-stderr global (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="log-stderr global"></a><a href="#10.1.1-log-stderr%20global">log-stderr global</a></b></div><a class="anchor" name="log-stderr"></a><a class="anchor" name="10-log-stderr"></a><a class="anchor" name="10.1.1-log-stderr"></a><a class="anchor" name="log-stderr (FastCGI applications)"></a><a class="anchor" name="log-stderr (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="log-stderr"></a><a href="#10.1.1-log-stderr">log-stderr</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span>
     <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span> <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><pre class="text">Enable logging of STDERR messages reported by the FastCGI application.
 
 See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword in <a href="#4.2">section 4.2</a> for details. It is an optional setting. By
@@ -27906,7 +28012,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev7-24 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev7-49 &ndash; Configuration Manual<br>
 							<small>, 2023/10/06</small>
 						</div>
 					</div>
