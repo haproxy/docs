@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev7-49 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev7-53 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2088,6 +2088,8 @@
 							<a class="list-group-item" href="#http-response set-nice">http-response set-nice</a>
 							
 							<a class="list-group-item" href="#http-response set-status">http-response set-status</a>
+							
+							<a class="list-group-item" href="#http-response set-timeout">http-response set-timeout</a>
 							
 							<a class="list-group-item" href="#http-response set-tos">http-response set-tos</a>
 							
@@ -4335,7 +4337,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4346,7 +4348,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev7-49</strong></p>
+							<p><strong>version 2.9-dev7-53</strong></p>
 							<p>
 								2023/10/06<br>
 								
@@ -12643,6 +12645,7 @@ supported:
   - set-mark &lt;mark&gt;
   - set-nice &lt;nice&gt;
   - set-status &lt;status&gt; [reason &lt;str&gt;]
+  - set-timeout { client | server | tunnel } { &lt;timeout&gt; | &lt;expr&gt; }
   - set-tos &lt;tos&gt;
   - set-var(&lt;var-name&gt;[,&lt;cond&gt;...]) &lt;expr&gt;
   - set-var-fmt(&lt;var-name&gt;[,&lt;cond&gt;...]) &lt;fmt&gt;
@@ -12818,6 +12821,23 @@ fallback.
 http-response set-status 431
 <span class="comment"># return &quot;503 Slow Down&quot;, custom reason</span>
 http-response set-status 503 reason &quot;Slow Down&quot;.
+</code></pre>
+</div><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response set-timeout"></a><a class="anchor" name="4-http-response set-timeout"></a><a class="anchor" name="4.2-http-response set-timeout"></a><a class="anchor" name="http-response set-timeout (Proxies)"></a><a class="anchor" name="http-response set-timeout (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response set-timeout"></a><a href="#4.2-http-response%20set-timeout">http-response set-timeout</a></b> <span style="color: #800">{ client | server | tunnel }</span> <span style="color: #800">{ <span style="color: #080">&lt;timeout&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span>
+                                       <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This action overrides the specified &quot;client&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or &quot;tunnel&quot; timeout for the
+current stream only. The timeout can be specified in millisecond or with any
+other unit if the number is suffixed by the unit as explained at the top of
+this document. It is also possible to write an expression which must returns
+a number interpreted as a timeout in millisecond.
+
+Note that the server/tunnel timeouts are only relevant on the backend side
+and thus this rule is only available for the proxies with backend
+capabilities. As well as client timeout is only relevant for frontend side.
+Also the timeout value must be non-null to obtain the expected results.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-response set-timeout tunnel 5s
+http-response set-timeout server res.hdr(X-Refresh-Seconds),mul(1000)
 </code></pre>
 </div><a class="anchor" name="http-response"></a><a class="anchor" name="4-http-response"></a><a class="anchor" name="4.2-http-response"></a><a class="anchor" name="http-response (Proxies)"></a><a class="anchor" name="http-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-response set-tos"></a><a class="anchor" name="4-http-response set-tos"></a><a class="anchor" name="4.2-http-response set-tos"></a><a class="anchor" name="http-response set-tos (Proxies)"></a><a class="anchor" name="http-response set-tos (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-response set-tos"></a><a href="#4.2-http-response%20set-tos">http-response set-tos</a></b> <span style="color: #080">&lt;tos&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This is used to set the TOS or DSCP field value of packets sent to the client
 to the value passed in &lt;tos&gt; on platforms which support this. Please refer to
@@ -28012,7 +28032,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev7-49 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev7-53 &ndash; Configuration Manual<br>
 							<small>, 2023/10/06</small>
 						</div>
 					</div>
