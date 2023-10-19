@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev7-53 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev7-85 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4138,7 +4138,11 @@
 							
 							<a class="list-group-item" href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
 							
+							<a class="list-group-item" href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
+							
 							<a class="list-group-item" href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
+							
+							<a class="list-group-item" href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
 							
@@ -4148,7 +4152,11 @@
 							
 							<a class="list-group-item" href="#tune.sched.low-latency">tune.sched.low-latency</a>
 							
+							<a class="list-group-item" href="#tune.sndbuf.backend">tune.sndbuf.backend</a>
+							
 							<a class="list-group-item" href="#tune.sndbuf.client">tune.sndbuf.client</a>
+							
+							<a class="list-group-item" href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>
 							
 							<a class="list-group-item" href="#tune.sndbuf.server">tune.sndbuf.server</a>
 							
@@ -4187,6 +4195,8 @@
 							<a class="list-group-item" href="#tune.vars.sess-max-size">tune.vars.sess-max-size</a>
 							
 							<a class="list-group-item" href="#tune.vars.txn-max-size">tune.vars.txn-max-size</a>
+							
+							<a class="list-group-item" href="#tune.zero-copy-forwarding">tune.zero-copy-forwarding</a>
 							
 							<a class="list-group-item" href="#tune.zlib.memlevel">tune.zlib.memlevel</a>
 							
@@ -4337,7 +4347,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4348,7 +4358,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev7-53</strong></p>
+							<p><strong>version 2.9-dev7-85</strong></p>
 							<p>
 								2023/10/06<br>
 								
@@ -6506,6 +6516,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize">tune.bufsize</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
+   - tune.disable-zero-copy-forwarding
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
@@ -6542,12 +6553,16 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
+   - <a href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
+   - <a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>
    - <a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
    - <a href="#tune.recv_enough">tune.recv_enough</a>
    - <a href="#tune.runqueue-depth">tune.runqueue-depth</a>
    - <a href="#tune.sched.low-latency">tune.sched.low-latency</a>
+   - <a href="#tune.sndbuf.backend">tune.sndbuf.backend</a>
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
+   - <a href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>
    - <a href="#tune.sndbuf.server">tune.sndbuf.server</a>
    - <a href="#tune.stick-counters">tune.stick-counters</a>
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
@@ -7953,11 +7968,16 @@ this value. The default value is 1.
 </pre><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global parameters)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
 forwarding by passing data directly from a side to the other one without
 waking the stream up. Thanks to this directive, it is possible to disable
-this optimization. Note it also disable any kernel tcp splicing. This command
-is not meant for regular use, it will generally only be suggested by
-developers along complex debugging sessions. For this reason it is internally
-marked as experimental, meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must
-appear on a line before this directive.
+this optimization. Note it also disable any kernel tcp splicing but also the
+zero-copy forwarding. This command is not meant for regular use, it will
+generally only be suggested by developers along complex debugging
+sessions. For this reason it is internally marked as experimental, meaning
+that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on a line before this
+directive.
+</pre><a class="anchor" name="tune.zero-copy-forwarding"></a><a class="anchor" name="3-tune.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.zero-copy-forwarding"></a><a class="anchor" name="tune.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zero-copy-forwarding"></a><a href="#3.2-tune.zero-copy-forwarding">tune.zero-copy-forwarding</a></b></div><pre class="text">Disables the zero-copy forwarding of data. It is a mechanism to optimize the
+data fast-forwarding by avoiding to use the channel's buffer. Thanks to this
+directive, it is possible to disable this optimization. Note it also disable
+any kernel tcp splicing.
 </pre><a class="anchor" name="tune.fail-alloc"></a><a class="anchor" name="3-tune.fail-alloc"></a><a class="anchor" name="3.2-tune.fail-alloc"></a><a class="anchor" name="tune.fail-alloc (Global parameters)"></a><a class="anchor" name="tune.fail-alloc (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.fail-alloc"></a><a href="#3.2-tune.fail-alloc">tune.fail-alloc</a></b></div><pre class="text">If compiled with DEBUG_FAIL_ALLOC or started with &quot;-dMfail&quot;, gives the
 percentage of chances an allocation attempt fails. Must be between 0 (no
 failure) and 100 (no success). This is useful to debug and make sure memory
@@ -8349,6 +8369,19 @@ If &quot;connection&quot; mode is used on global tuning, it will be activated fo
 listener, unless its bind option is set to &quot;listener&quot;. However, if &quot;listener&quot;
 is used globally, it will be forced on every listener instance, regardless of
 their individual configuration.
+</pre><a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
+size. This can be used QUIC in listener mode and log-forward on the frontend.
+The default system buffers might sometimes be too small for sockets receiving
+lots of aggregated traffic, causing some losses and possibly retransmits (in
+case of QUIC), possibly slowing down connection establishment under heavy
+traffic. The value is expressed in bytes, applied to each socket. In listener
+mode, sockets are shared between all connections, and the total number of
+sockets depends on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; value of the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line. There's no good
+value, a good one corresponds to an expected size per connection multiplied
+by the expected number of connections. The kernel may trim large values. See
+also &quot;<a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>&quot; and &quot;<a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>&quot; for their connected socket
+counter parts, as well as &quot;<a href="#tune.sndbuf.backend">tune.sndbuf.backend</a>&quot; and &quot;<a href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>&quot;
+for the send setting.
 </pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
 to the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
@@ -8378,6 +8411,19 @@ be executed before other ones if they exist. This will permit to lower the
 maximum latency experienced by new requests or connections in the middle of
 massive traffic, at the expense of a higher impact on this large traffic.
 For regular usage it is better to leave this off. The default value is off.
+</pre><a class="anchor" name="tune.sndbuf.backend"></a><a class="anchor" name="3-tune.sndbuf.backend"></a><a class="anchor" name="3.2-tune.sndbuf.backend"></a><a class="anchor" name="tune.sndbuf.backend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.backend"></a><a href="#3.2-tune.sndbuf.backend">tune.sndbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.sndbuf.frontend"></a><a class="anchor" name="3-tune.sndbuf.frontend"></a><a class="anchor" name="3.2-tune.sndbuf.frontend"></a><a class="anchor" name="tune.sndbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.frontend"></a><a href="#3.2-tune.sndbuf.frontend">tune.sndbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket send buffer size on non-connected sockets to this size.
+This can be used for UNIX socket and UDP logging on the backend side, and for
+QUIC in listener mode on the frontend. The default system buffers might
+sometimes be too small for sockets shared between many connections (or log
+senders), causing some losses and possibly retransmits, slowing down new
+connection establishment under high traffic. The value is expressed in bytes,
+applied to each socket. In listener mode, sockets are shared between all
+connections, and the total number of sockets depends on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">shards<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#shards%20%28Peers%29">Peers</a></li><li><a href="#shards%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; value of
+the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line. There's no good value, a good one corresponds to an expected
+size per connection multiplied by the expected number of connections. The
+kernel may trim large values. See also &quot;<a href="#tune.sndbuf.client">tune.sndbuf.client</a>&quot; and
+&quot;<a href="#tune.sndbuf.server">tune.sndbuf.server</a>&quot; for their connected socket counter parts, as well as
+&quot;<a href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>&quot; and &quot;<a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>&quot; for the receive setting.
 </pre><a class="anchor" name="tune.sndbuf.client"></a><a class="anchor" name="3-tune.sndbuf.client"></a><a class="anchor" name="3.2-tune.sndbuf.client"></a><a class="anchor" name="tune.sndbuf.client (Global parameters)"></a><a class="anchor" name="tune.sndbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.client"></a><a href="#3.2-tune.sndbuf.client">tune.sndbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.sndbuf.server"></a><a class="anchor" name="3-tune.sndbuf.server"></a><a class="anchor" name="3.2-tune.sndbuf.server"></a><a class="anchor" name="tune.sndbuf.server (Global parameters)"></a><a class="anchor" name="tune.sndbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.server"></a><a href="#3.2-tune.sndbuf.server">tune.sndbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket send buffer size on the client or the server side to
 the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
@@ -28032,7 +28078,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev7-53 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev7-85 &ndash; Configuration Manual<br>
 							<small>, 2023/10/06</small>
 						</div>
 					</div>
