@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev7-86 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2392,6 +2392,8 @@
 							
 							<a class="list-group-item" href="#namespace (Server and default-server options)">namespace (Server and default-server options)</a>
 							
+							<a class="list-group-item" href="#nbconn">nbconn</a>
+							
 							<a class="list-group-item" href="#nbsrv (Converters)">nbsrv (Converters)</a>
 							
 							<a class="list-group-item" href="#nbsrv (Fetching samples from internal states)">nbsrv (Fetching samples from internal states)</a>
@@ -4347,7 +4349,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4358,9 +4360,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev7-86</strong></p>
+							<p><strong>version 2.9-dev8</strong></p>
 							<p>
-								2023/10/06<br>
+								2023/10/20<br>
 								
 							</p>
 						</div>
@@ -9811,10 +9813,11 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                 - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
                   is used. The performance note for QUIC over IPv4 applies
                   as well.
-                - 'rev@' -&gt; used for reverse HTTP. Address must be a server
-                  with the format '&lt;backend&gt;/&lt;server&gt;'. The server will be
-                  used to instantiate connections to a remote address. The
-                  listener will try to maintain 'maxconn' connections.
+                - 'rhttp@' -&gt; used for reverse HTTP. Address must be a
+                  server with the format '&lt;backend&gt;/&lt;server&gt;'. The server
+                  will be used to instantiate connections to a remote
+                  address. The listener will try to maintain 'maxconn'
+                  connections.
 
               You may want to reference some environment variables in the
               address parameter, see <a href="#2.3">section 2.3</a> about environment
@@ -15873,17 +15876,12 @@ The default is &quot;conn-failure&quot;.
                   one of them over the FD. The bind part will use the
                   received socket as the client FD. Should be used
                   carefully.
+                - 'rhttp@' -&gt; custom address family for a passive server in
+                  HTTP reverse context.
           You may want to reference some environment variables in the
           address parameter, see <a href="#2.3">section 2.3</a> about environment
           variables. The &quot;<a href="#init-addr">init-addr</a>&quot; setting can be used to modify the way
           IP addresses should be resolved upon startup.
-
-          Additionally, there is a special address notation defined for
-          servers which does not have any address assigned. Currently, only
-          '@reverse' is valid. This instantiates a server which can only be
-          used with reverse connect. This mode requires the proxy to be in
-          HTTP mode and the server to explicitly use HTTP/2, either through
-          'proto' or 'alpn' keywords.
 
 &lt;port&gt;    is an optional port specification. If set, all connections will
           be sent to this port. If unset, the same port the client
@@ -19288,6 +19286,9 @@ page.
 belong to. This directive makes it possible to explicitly bind a listener to
 a namespace different from the default one. Please refer to your operating
 system's documentation to find more details about network namespaces.
+</pre><a class="anchor" name="nbconn"></a><a class="anchor" name="5-nbconn"></a><a class="anchor" name="5.1-nbconn"></a><a class="anchor" name="nbconn (Bind and server options)"></a><a class="anchor" name="nbconn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="nbconn"></a><a href="#5.1-nbconn">nbconn</a></b> <span style="color: #080">&lt;nbconn&gt;</span></div><pre class="text">This setting is only valid for listener instances which uses reverse HTTP.
+This will define the count of connections which will be mounted in parallel.
+If not specified, a default value of 1 is used.
 </pre><a class="anchor" name="nice"></a><a class="anchor" name="5-nice"></a><a class="anchor" name="5.1-nice"></a><a class="anchor" name="nice (Bind and server options)"></a><a class="anchor" name="nice (Bind options)"></a><div class="keyword"><b><a class="anchor" name="nice"></a><a href="#5.1-nice">nice</a></b> <span style="color: #080">&lt;nice&gt;</span></div><pre class="text">Sets the 'niceness' of connections initiated from the socket. Value must be
 in the range -1024..1024 inclusive, and defaults to zero. Positive values
 means that such connections are more friendly to others and easily offer
@@ -22003,10 +22004,18 @@ log-format '{&quot;ip&quot;:&quot;%[src]&quot;,&quot;user-agent&quot;:&quot;%[ca
 
 Output log:
    {&quot;ip&quot;:&quot;127.0.0.1&quot;,&quot;user-agent&quot;:&quot;Very \&quot;Ugly\&quot; UA 1\/2&quot;}
-</pre><a class="anchor" name="json_query"></a><a class="anchor" name="7-json_query"></a><a class="anchor" name="7.3.1-json_query"></a><a class="anchor" name="json_query (Using ACLs and fetching samples)"></a><a class="anchor" name="json_query (Converters)"></a><div class="keyword"><b><a class="anchor" name="json_query"></a><a href="#7.3.1-json_query">json_query</a></b>(<span style="color: #080">&lt;json_path&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;output_type&gt;</span>]</span>)</div><pre class="text">The json_query converter supports the JSON types string, boolean and
-number. Floating point numbers will be returned as a string. By
+</pre><a class="anchor" name="json_query"></a><a class="anchor" name="7-json_query"></a><a class="anchor" name="7.3.1-json_query"></a><a class="anchor" name="json_query (Using ACLs and fetching samples)"></a><a class="anchor" name="json_query (Converters)"></a><div class="keyword"><b><a class="anchor" name="json_query"></a><a href="#7.3.1-json_query">json_query</a></b>(<span style="color: #080">&lt;json_path&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;output_type&gt;</span>]</span>)</div><pre class="text">The json_query converter supports the JSON types string, boolean, number
+and array. Floating point numbers will be returned as a string. By
 specifying the output_type 'int' the value will be converted to an
-Integer. If conversion is not possible the json_query converter fails.
+Integer. Arrays will be returned as string, starting and ending with a
+square brackets. The content is a CSV. Depending on the data type, the
+array values might be quoted. If the array values are complex types,
+the string contains the complete json representation of each value
+separated by a comma. Example result for a roles query to a JWT:
+
+   [&quot;manage-account&quot;,&quot;manage-account-links&quot;,&quot;view-profile&quot;]
+
+If conversion is not possible the json_query converter fails.
 
 &lt;json_path&gt; must be a valid JSON Path string as defined in
 https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
@@ -28078,8 +28087,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev7-86 &ndash; Configuration Manual<br>
-							<small>, 2023/10/06</small>
+							HAProxy 2.9-dev8 &ndash; Configuration Manual<br>
+							<small>, 2023/10/20</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
