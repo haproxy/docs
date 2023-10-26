@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev8-2 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev8-15 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4100,6 +4100,10 @@
 							
 							<a class="list-group-item" href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
 							
+							<a class="list-group-item" href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
+							
+							<a class="list-group-item" href="#tune.lua.log.stderr">tune.lua.log.stderr</a>
+							
 							<a class="list-group-item" href="#tune.lua.maxmem">tune.lua.maxmem</a>
 							
 							<a class="list-group-item" href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
@@ -4349,7 +4353,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4360,7 +4364,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev8-2</strong></p>
+							<p><strong>version 2.9-dev8-15</strong></p>
 							<p>
 								2023/10/20<br>
 								
@@ -6539,6 +6543,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
+   - <a href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
+   - <a href="#tune.lua.log.stderr">tune.lua.log.stderr</a>
    - <a href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
@@ -8214,6 +8220,22 @@ not taken in account. The default timeout is 4s.
 dedicated to the tasks. By default, this timeout isn't set because a task may
 remain alive during of the lifetime of HAProxy. For example, a task used to
 check servers.
+</pre><a class="anchor" name="tune.lua.log.loggers"></a><a class="anchor" name="3-tune.lua.log.loggers"></a><a class="anchor" name="3.2-tune.lua.log.loggers"></a><a class="anchor" name="tune.lua.log.loggers (Global parameters)"></a><a class="anchor" name="tune.lua.log.loggers (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.log.loggers"></a><a href="#3.2-tune.lua.log.loggers">tune.lua.log.loggers</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') logging the output of LUA scripts via the
+loggers applicable to the current proxy, if any.
+
+Defaults to 'on'.
+</pre><a class="anchor" name="tune.lua.log.stderr"></a><a class="anchor" name="3-tune.lua.log.stderr"></a><a class="anchor" name="3.2-tune.lua.log.stderr"></a><a class="anchor" name="tune.lua.log.stderr (Global parameters)"></a><a class="anchor" name="tune.lua.log.stderr (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.log.stderr"></a><a href="#3.2-tune.lua.log.stderr">tune.lua.log.stderr</a></b> <span style="color: #800">{ on | auto | off }</span></div><pre class="text">Enables ('on') or disables ('off') logging the output of LUA scripts via
+stderr.
+When set to 'auto', logging via stderr is conditionally 'on' if any of:
+
+  - tune.lua.log.loggers is set to 'off'
+  - the script is executed in a non-proxy context with no global logger
+  - the script is executed in a proxy context with no logger attached
+
+Please note that, when enabled, this logging is in addition to the logging
+configured via tune.lua.log.loggers.
+
+Defaults to 'auto'.
 </pre><a class="anchor" name="tune.max-checks-per-thread"></a><a class="anchor" name="3-tune.max-checks-per-thread"></a><a class="anchor" name="3.2-tune.max-checks-per-thread"></a><a class="anchor" name="tune.max-checks-per-thread (Global parameters)"></a><a class="anchor" name="tune.max-checks-per-thread (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-checks-per-thread"></a><a href="#3.2-tune.max-checks-per-thread">tune.max-checks-per-thread</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of active checks per thread above which a thread will
 actively try to search a less loaded thread to run the health check, or
 queue it until the number of active checks running on it diminishes. The
@@ -28087,7 +28109,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev8-2 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev8-15 &ndash; Configuration Manual<br>
 							<small>, 2023/10/20</small>
 						</div>
 					</div>
