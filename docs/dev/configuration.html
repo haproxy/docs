@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev8-26 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev8-36 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2832,6 +2832,8 @@
 							
 							<a class="list-group-item" href="#req.cook_cnt">req.cook_cnt</a>
 							
+							<a class="list-group-item" href="#req.cook_names">req.cook_names</a>
+							
 							<a class="list-group-item" href="#req.cook_val">req.cook_val</a>
 							
 							<a class="list-group-item" href="#req.fhdr">req.fhdr</a>
@@ -2917,6 +2919,8 @@
 							<a class="list-group-item" href="#res.cook">res.cook</a>
 							
 							<a class="list-group-item" href="#res.cook_cnt">res.cook_cnt</a>
+							
+							<a class="list-group-item" href="#res.cook_names">res.cook_names</a>
 							
 							<a class="list-group-item" href="#res.cook_val">res.cook_val</a>
 							
@@ -4353,7 +4357,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/10/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4364,7 +4368,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev8-26</strong></p>
+							<p><strong>version 2.9-dev8-36</strong></p>
 							<p>
 								2023/10/20<br>
 								
@@ -8791,7 +8795,7 @@ declared in the &quot;<a href="#peers">peers</a>&quot; section. In such cases, &
 number of peer involved in this stick-table contents distribution.
 See also &quot;<a href="#shard">shard</a>&quot; server parameter.
 </pre><a class="anchor" name="table"></a><a class="anchor" name="3-table"></a><a class="anchor" name="3.5-table"></a><a class="anchor" name="table (Global parameters)"></a><a class="anchor" name="table (Peers)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#3.5-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
-      size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure a stickiness table for the current section. This line is parsed
+      size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure a stickiness table for the current section. This line is parsed
 exactly the same way as the &quot;<a href="#stick-table">stick-table</a>&quot; keyword in others section, except
 for the &quot;<a href="#peers">peers</a>&quot; argument which is not required here and with an additional
 mandatory first parameter to designate the stick-table. Contrary to others
@@ -16824,7 +16828,7 @@ backend smtp
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, about ACLs and sample fetching.</div>
 <a class="anchor" name="stick-table"></a><a class="anchor" name="4-stick-table"></a><a class="anchor" name="4.2-stick-table"></a><a class="anchor" name="stick-table (Proxies)"></a><a class="anchor" name="stick-table (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="4-stick-table type"></a><a class="anchor" name="4.2-stick-table type"></a><a class="anchor" name="stick-table type (Proxies)"></a><a class="anchor" name="stick-table type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#4.2-stick-table%20type">stick-table type</a></b> <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
             size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[peers <span style="color: #080">&lt;peersect&gt;</span>]</span> <span style="color: #008">[srvkey <span style="color: #080">&lt;srvkey&gt;</span>]</span>
-            <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure the stickiness table for the current section
+            <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure the stickiness table for the current section
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -16887,6 +16891,23 @@ backend smtp
             the remote peers declared in this section. All entries are also
             automatically learned from the local peer (old process) during a
             soft restart.
+
+&lt;wtable&gt;    is the name of the stick table where peers updates will be
+            written to in addition to the source table. &lt;wtable&gt; must be of
+            the same type as the table being defined and must have the same
+            key length, and source table cannot be used as a target table
+            itself. Everytime an entry update will be received on the source
+            table through a peer, haproxy will try to refresh related
+            &lt;wtable&gt; entry. If the entry doesn't exist yet, it will be
+            created, else its values will be updated as well as its timer.
+            Note that only types that are not involved in arithmetic ops such
+            as server_id, server_key and gpt will be written to &lt;wtable&gt; to
+            prevent processed values from a remote table from intefering with
+            arithmetic operations performed on the local target table.
+            (ie: prevent shared cumulative counter from growing indefinitely)
+            One common use of this option is to be able to use sticking rules
+            (for server persistence) in a peers cluster setup, because
+            matching keys will be learned from remote tables.
 
  &lt;expire&gt;   defines the maximum duration of an entry in the table since it
             was last created, refreshed using 'track-sc' or matched using
@@ -25039,6 +25060,10 @@ ACL derivatives :
 header line from the request, and converts its value to an integer which is
 returned. If no name is specified, the first cookie value is returned. When
 used in ACLs, all matching names are iterated over until a value matches.
+</pre><a class="anchor" name="req.cook_names"></a><a class="anchor" name="7-req.cook_names"></a><a class="anchor" name="7.3.6-req.cook_names"></a><a class="anchor" name="req.cook_names (Using ACLs and fetching samples)"></a><a class="anchor" name="req.cook_names (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.cook_names"></a><a href="#7.3.6-req.cook_names">req.cook_names</a></b>(<span style="color: #008">[<span style="color: #080">&lt;delim&gt;</span>]</span>) : string</div><pre class="text">This builds a string made from the concatenation of all cookie names as they
+appear in the request (Cookie header) when the rule is evaluated. The default
+delimiter is the comma (',') but it may be overridden as an optional argument
+&lt;delim&gt;. In this case, only the first character of &lt;delim&gt; is considered.
 </pre><a class="anchor" name="cookie"></a><a class="anchor" name="7-cookie"></a><a class="anchor" name="7.3.6-cookie"></a><a class="anchor" name="cookie (Using ACLs and fetching samples)"></a><a class="anchor" name="cookie (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="cookie"></a><a href="#7.3.6-cookie">cookie</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span>) : string <span class="label label-warning">(deprecated)</span></div><pre class="text">This extracts the last occurrence of the cookie name &lt;name&gt; on a &quot;Cookie&quot;
 header line from the request, or a &quot;Set-Cookie&quot; header from the response, and
 returns its value as a string. A typical use is to get multiple clients
@@ -25321,6 +25346,13 @@ It may be used in tcp-check based expect rules.
 </pre><a class="anchor" name="res.cook_val"></a><a class="anchor" name="7-res.cook_val"></a><a class="anchor" name="7.3.6-res.cook_val"></a><a class="anchor" name="res.cook_val (Using ACLs and fetching samples)"></a><a class="anchor" name="res.cook_val (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.cook_val"></a><a href="#7.3.6-res.cook_val">res.cook_val</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span>) : integer</div><a class="anchor" name="scook_val"></a><a class="anchor" name="7-scook_val"></a><a class="anchor" name="7.3.6-scook_val"></a><a class="anchor" name="scook_val (Using ACLs and fetching samples)"></a><a class="anchor" name="scook_val (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="scook_val"></a><a href="#7.3.6-scook_val">scook_val</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span>) : integer <span class="label label-warning">(deprecated)</span></div><pre class="text">This extracts the last occurrence of the cookie name &lt;name&gt; on a &quot;Set-Cookie&quot;
 header line from the response, and converts its value to an integer which is
 returned. If no name is specified, the first cookie value is returned.
+
+It may be used in tcp-check based expect rules.
+</pre><a class="anchor" name="res.cook_names"></a><a class="anchor" name="7-res.cook_names"></a><a class="anchor" name="7.3.6-res.cook_names"></a><a class="anchor" name="res.cook_names (Using ACLs and fetching samples)"></a><a class="anchor" name="res.cook_names (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.cook_names"></a><a href="#7.3.6-res.cook_names">res.cook_names</a></b>(<span style="color: #008">[<span style="color: #080">&lt;delim&gt;</span>]</span>) : string</div><pre class="text">This builds a string made from the concatenation of all cookie names as they
+appear in the response (Set-Cookie headers) when the rule is evaluated. The
+default delimiter is the comma (',') but it may be overridden as an optional
+argument &lt;delim&gt;. In this case, only the first character of &lt;delim&gt; is
+considered.
 
 It may be used in tcp-check based expect rules.
 </pre><a class="anchor" name="res.fhdr"></a><a class="anchor" name="7-res.fhdr"></a><a class="anchor" name="7.3.6-res.fhdr"></a><a class="anchor" name="res.fhdr (Using ACLs and fetching samples)"></a><a class="anchor" name="res.fhdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.fhdr"></a><a href="#7.3.6-res.fhdr">res.fhdr</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>]</span>) : string</div><pre class="text">This fetch works like the req.fhdr() fetch with the difference that it acts
@@ -28109,7 +28141,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev8-26 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev8-36 &ndash; Configuration Manual<br>
 							<small>, 2023/10/20</small>
 						</div>
 					</div>
