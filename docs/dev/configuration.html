@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev8-36 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -3249,6 +3249,8 @@
 							
 							<a class="list-group-item" href="#set-param">set-param</a>
 							
+							<a class="list-group-item" href="#set-proxy-v2-tlv-fmt">set-proxy-v2-tlv-fmt</a>
+							
 							<a class="list-group-item" href="#set-var (Process management and security)">set-var (Process management and security)</a>
 							
 							<a class="list-group-item" href="#set-var (Converters)">set-var (Converters)</a>
@@ -4357,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4368,9 +4370,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev8-36</strong></p>
+							<p><strong>version 2.9-dev9</strong></p>
 							<p>
-								2023/10/20<br>
+								2023/11/04<br>
 								
 							</p>
 						</div>
@@ -20479,6 +20481,21 @@ whatever the upper layer protocol. It also send ALPN information if an alpn
 have been negotiated. This setting must not be used if the server isn't aware
 of this version of the protocol. See also the &quot;<a href="#no-send-proxy-v2">no-send-proxy-v2</a>&quot; option of
 this section and send-proxy&quot; option of the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword.
+</pre><a class="anchor" name="set-proxy-v2-tlv-fmt"></a><a class="anchor" name="5-set-proxy-v2-tlv-fmt"></a><a class="anchor" name="5.2-set-proxy-v2-tlv-fmt"></a><a class="anchor" name="set-proxy-v2-tlv-fmt (Bind and server options)"></a><a class="anchor" name="set-proxy-v2-tlv-fmt (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="set-proxy-v2-tlv-fmt"></a><a href="#5.2-set-proxy-v2-tlv-fmt">set-proxy-v2-tlv-fmt</a></b>(<span style="color: #080">&lt;id&gt;</span>) <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">The &quot;<a href="#set-proxy-v2-tlv-fmt">set-proxy-v2-tlv-fmt</a>&quot; parameter is used to send arbitrary PROXY protocol
+version 2 TLVs. For the type (&lt;id&gt;) range of the defined TLV type please refer
+to <a href="#2.2.8">section 2.2.8</a>. of the proxy protocol specification. However, the value can
+be chosen freely as long as it does not exceed the maximum length of 65,535
+bytes. It can also be used for forwarding TLVs by using the fetch &quot;<a href="#fc_pp_tlv">fc_pp_tlv</a>&quot;
+to retrieve a received TLV from the frontend. It may be used as a server or
+a default-server option. It must be used in combination with send-proxy-v2
+such that PPv2 TLVs are actually sent out.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>server srv1 192.168.1.1:80 send-proxy-v2 set-proxy-v2-tlv-fmt(0x20) %[fc_pp_tlv(0x20)]
+</code></pre>
+</div><pre class="text">In this case, we fetch the TLV with the type 0x20 as a string and set as the value
+of a newly created TLV that also has the type 0x20.
 </pre><a class="anchor" name="proxy-v2-options"></a><a class="anchor" name="5-proxy-v2-options"></a><a class="anchor" name="5.2-proxy-v2-options"></a><a class="anchor" name="proxy-v2-options (Bind and server options)"></a><a class="anchor" name="proxy-v2-options (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="proxy-v2-options"></a><a href="#5.2-proxy-v2-options">proxy-v2-options</a></b> <span style="color: #080">&lt;option&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;option&gt;</span>]</span>*</div><pre class="text">The &quot;<a href="#proxy-v2-options">proxy-v2-options</a>&quot; parameter add options to send in PROXY protocol
 version 2 when &quot;<a href="#send-proxy-v2">send-proxy-v2</a>&quot; is used. Options available are:
 
@@ -28141,8 +28158,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev8-36 &ndash; Configuration Manual<br>
-							<small>, 2023/10/20</small>
+							HAProxy 2.9-dev9 &ndash; Configuration Manual<br>
+							<small>, 2023/11/04</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
