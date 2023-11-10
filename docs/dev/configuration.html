@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev9-23 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev9-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4359,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4370,7 +4370,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev9-23</strong></p>
+							<p><strong>version 2.9-dev9-50</strong></p>
 							<p>
 								2023/11/04<br>
 								
@@ -9506,18 +9506,30 @@ acl local_dst    hdr(host) -i localhost
           system, it may represent the number of already acknowledged
           connections, of non-acknowledged ones, or both.</pre>
 </div>
-<pre class="text">In order to protect against SYN flood attacks, one solution is to increase
-the system's SYN backlog size. Depending on the system, sometimes it is just
-tunable via a system parameter, sometimes it is not adjustable at all, and
-sometimes the system relies on hints given by the application at the time of
-the listen() syscall. By default, HAProxy passes the frontend's maxconn value
-to the listen() syscall. On systems which can make use of this value, it can
-sometimes be useful to be able to specify a different value, hence this
-backlog parameter.
+<pre class="text">This option is only meaningful for stream listeners, including QUIC ones. Its
+behavior however is not identical with QUIC instances.
+
+For all listeners but QUIC, in order to protect against SYN flood attacks,
+one solution is to increase the system's SYN backlog size. Depending on the
+system, sometimes it is just tunable via a system parameter, sometimes it is
+not adjustable at all, and sometimes the system relies on hints given by the
+application at the time of the listen() syscall. By default, HAProxy passes
+the frontend's maxconn value to the listen() syscall. On systems which can
+make use of this value, it can sometimes be useful to be able to specify a
+different value, hence this backlog parameter.
 
 On Linux 2.4, the parameter is ignored by the system. On Linux 2.6, it is
 used as a hint and the system accepts up to the smallest greater power of
 two, and never more than some limits (usually 32768).
+
+For QUIC listeners, backlog sets a shared limits for both the maximum count
+of active handshakes and connections waiting to be accepted. The handshake
+phase relies primarily of the network latency with the remote peer, whereas
+the second phase depends solely on haproxy load. When either one of this
+limit is reached, haproxy starts to drop reception of INITIAL packets,
+preventing any new connection allocation, until the connection excess starts
+to decrease. This situation may cause browsers to silently downgrade the HTTP
+versions and switching to TCP.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and the target operating system's tuning guide.</div>
 <a class="anchor" name="balance"></a><a class="anchor" name="4-balance"></a><a class="anchor" name="4.2-balance"></a><a class="anchor" name="balance (Proxies)"></a><a class="anchor" name="balance (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="balance"></a><a href="#4.2-balance">balance</a></b> <span style="color: #080">&lt;algorithm&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arguments&gt;</span> ]</span></div><a class="anchor" name="balance"></a><a class="anchor" name="4-balance"></a><a class="anchor" name="4.2-balance"></a><a class="anchor" name="balance (Proxies)"></a><a class="anchor" name="balance (Alphabetically sorted keywords reference)"></a><a class="anchor" name="balance url_param"></a><a class="anchor" name="4-balance url_param"></a><a class="anchor" name="4.2-balance url_param"></a><a class="anchor" name="balance url_param (Proxies)"></a><a class="anchor" name="balance url_param (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="balance url_param"></a><a href="#4.2-balance%20url_param">balance url_param</a></b> <span style="color: #080">&lt;param&gt;</span> <span style="color: #008">[check_post]</span></div><pre class="text">Define the load balancing algorithm to be used in a backend.
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -28158,7 +28170,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev9-23 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev9-50 &ndash; Configuration Manual<br>
 							<small>, 2023/11/04</small>
 						</div>
 					</div>
