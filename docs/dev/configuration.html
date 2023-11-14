@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev9-61 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev9-76 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4068,6 +4068,8 @@
 							
 							<a class="list-group-item" href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
 							
+							<a class="list-group-item" href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
+							
 							<a class="list-group-item" href="#tune.fail-alloc">tune.fail-alloc</a>
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
@@ -4207,8 +4209,6 @@
 							<a class="list-group-item" href="#tune.vars.sess-max-size">tune.vars.sess-max-size</a>
 							
 							<a class="list-group-item" href="#tune.vars.txn-max-size">tune.vars.txn-max-size</a>
-							
-							<a class="list-group-item" href="#tune.zero-copy-forwarding">tune.zero-copy-forwarding</a>
 							
 							<a class="list-group-item" href="#tune.zlib.memlevel">tune.zlib.memlevel</a>
 							
@@ -4359,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4370,7 +4370,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev9-61</strong></p>
+							<p><strong>version 2.9-dev9-76</strong></p>
 							<p>
 								2023/11/04<br>
 								
@@ -6528,7 +6528,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize">tune.bufsize</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
-   - tune.disable-zero-copy-forwarding
+   - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
@@ -7988,7 +7988,7 @@ generally only be suggested by developers along complex debugging
 sessions. For this reason it is internally marked as experimental, meaning
 that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on a line before this
 directive.
-</pre><a class="anchor" name="tune.zero-copy-forwarding"></a><a class="anchor" name="3-tune.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.zero-copy-forwarding"></a><a class="anchor" name="tune.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zero-copy-forwarding"></a><a href="#3.2-tune.zero-copy-forwarding">tune.zero-copy-forwarding</a></b></div><pre class="text">Disables the zero-copy forwarding of data. It is a mechanism to optimize the
+</pre><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a href="#3.2-tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a></b></div><pre class="text">Disables the zero-copy forwarding of data. It is a mechanism to optimize the
 data fast-forwarding by avoiding to use the channel's buffer. Thanks to this
 directive, it is possible to disable this optimization. Note it also disable
 any kernel tcp splicing.
@@ -19522,12 +19522,22 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #008">[ cubic | newreno ]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno }</span></div><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno }</span>(max_window)</div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
-to those used by TCP.
+to those used by TCP. An optional value in bytes may be used to specify the
+maximum window size. It must be greater than 1k and smaller than 4g.
 
 Default value: cubic
-</pre><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">This is a QUIC specific setting which forces the use of the QUIC Retry feature
+Default window value: tune.quic.frontend.conn-tx-buffers.limit * tune.bufsize
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># newreno congestion control algorithm</span>
+quic-cc-algo newreno
+<span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
+quic-cc-algo cubic(1m)
+</code></pre>
+</div><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">This is a QUIC specific setting which forces the use of the QUIC Retry feature
 for all the connection attempts to the configured QUIC listeners. It consists
 in veryfying the peers are able to receive packets at the transport address
 they used to initiate a new connection, sending them a Retry packet which
@@ -28170,7 +28180,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev9-61 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev9-76 &ndash; Configuration Manual<br>
 							<small>, 2023/11/04</small>
 						</div>
 					</div>
