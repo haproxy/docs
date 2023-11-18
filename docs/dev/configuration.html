@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev9-108 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev9-133 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -4024,6 +4024,8 @@
 							
 							<a class="list-group-item" href="#timeout client-fin">timeout client-fin</a>
 							
+							<a class="list-group-item" href="#timeout client-hs">timeout client-hs</a>
+							
 							<a class="list-group-item" href="#timeout connect (Rings)">timeout connect (Rings)</a>
 							
 							<a class="list-group-item" href="#timeout connect (Alphabetically sorted keywords reference)">timeout connect (Alphabetically sorted keywords reference)</a>
@@ -4359,7 +4361,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4370,7 +4372,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev9-108</strong></p>
+							<p><strong>version 2.9-dev9-133</strong></p>
 							<p>
 								2023/11/04<br>
 								
@@ -9462,6 +9464,7 @@ anonymous ones.
 <tr><td ><a href="#4-timeout%20check">timeout check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20client">timeout client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20client-fin">timeout client-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-timeout%20client-hs">timeout client-hs</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20connect">timeout connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-keep-alive">timeout http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -18488,7 +18491,20 @@ This parameter is specific to frontends, but can be specified once for all in
 &quot;defaults&quot; sections. By default it is not set, so half-closed connections
 will use the other timeouts (timeout.client or timeout.tunnel).
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#timeout%20server-fin">timeout server-fin</a>&quot;, and &quot;<a href="#timeout%20tunnel">timeout tunnel</a>&quot;.</div>
-<a class="anchor" name="timeout"></a><a class="anchor" name="4-timeout"></a><a class="anchor" name="4.2-timeout"></a><a class="anchor" name="timeout (Proxies)"></a><a class="anchor" name="timeout (Alphabetically sorted keywords reference)"></a><a class="anchor" name="timeout connect"></a><a class="anchor" name="4-timeout connect"></a><a class="anchor" name="4.2-timeout connect"></a><a class="anchor" name="timeout connect (Proxies)"></a><a class="anchor" name="timeout connect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="timeout connect"></a><a href="#4.2-timeout%20connect">timeout connect</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum time to wait for a connection attempt to a server to succeed.
+<a class="anchor" name="timeout"></a><a class="anchor" name="4-timeout"></a><a class="anchor" name="4.2-timeout"></a><a class="anchor" name="timeout (Proxies)"></a><a class="anchor" name="timeout (Alphabetically sorted keywords reference)"></a><a class="anchor" name="timeout client-hs"></a><a class="anchor" name="4-timeout client-hs"></a><a class="anchor" name="4.2-timeout client-hs"></a><a class="anchor" name="timeout client-hs (Proxies)"></a><a class="anchor" name="timeout client-hs (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="timeout client-hs"></a><a href="#4.2-timeout%20client-hs">timeout client-hs</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum time to wait for a client TLS handshake to complete. This is
+usable both for TCP and QUIC connections.
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;timeout&gt; is the timeout value specified in milliseconds by default, but
+          can be in any other unit if the number is suffixed by the unit,
+          as explained at the top of this document.</pre>
+</div>
+<pre class="text">If this handshake timeout is not set, this is the client timeout which is used
+in place.
+</pre><a class="anchor" name="timeout"></a><a class="anchor" name="4-timeout"></a><a class="anchor" name="4.2-timeout"></a><a class="anchor" name="timeout (Proxies)"></a><a class="anchor" name="timeout (Alphabetically sorted keywords reference)"></a><a class="anchor" name="timeout connect"></a><a class="anchor" name="4-timeout connect"></a><a class="anchor" name="4.2-timeout connect"></a><a class="anchor" name="timeout connect (Proxies)"></a><a class="anchor" name="timeout connect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="timeout connect"></a><a href="#4.2-timeout%20connect">timeout connect</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum time to wait for a connection attempt to a server to succeed.
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
@@ -28180,7 +28196,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev9-108 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev9-133 &ndash; Configuration Manual<br>
 							<small>, 2023/11/04</small>
 						</div>
 					</div>
