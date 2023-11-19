@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev9-133 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -2260,8 +2260,6 @@
 							
 							<a class="list-group-item" href="#log global (Alphabetically sorted keywords reference)">log global (Alphabetically sorted keywords reference)</a>
 							
-							<a class="list-group-item" href="#log-balance">log-balance</a>
-							
 							<a class="list-group-item" href="#log-bufsize">log-bufsize</a>
 							
 							<a class="list-group-item" href="#log-format">log-format</a>
@@ -4361,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4372,9 +4370,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev9-133</strong></p>
+							<p><strong>version 2.9-dev10</strong></p>
 							<p>
-								2023/11/04<br>
+								2023/11/18<br>
 								
 							</p>
 						</div>
@@ -9556,7 +9554,8 @@ versions and switching to TCP.
               requests for it to be re-integrated into the farm and start
               receiving traffic. This is normal, though very rare. It is
               indicated here in case you would have the chance to observe
-              it, so that you don't worry.
+              it, so that you don't worry. Note: weights are ignored for
+              backends in LOG mode.
 
   static-rr   Each server is used in turns, according to their weights.
               This algorithm is as similar to roundrobin except that it is
@@ -9565,7 +9564,7 @@ versions and switching to TCP.
               limitation on the number of servers, and when a server goes
               up, it is always immediately reintroduced into the farm, once
               the full map is recomputed. It also uses slightly less CPU to
-              run (around -1%).
+              run (around -1%). This algorithm is not usable in LOG mode.
 
   leastconn   The server with the lowest number of connections receives the
               connection. Round-robin is performed within groups of servers
@@ -9576,7 +9575,8 @@ versions and switching to TCP.
               algorithm is dynamic, which means that server weights may be
               adjusted on the fly for slow starts for instance. It will
               also consider the number of queued connections in addition to
-              the established ones in order to minimize queuing.
+              the established ones in order to minimize queuing. This
+              algorithm is not usable in LOG mode.
 
   first       The first server with available connection slots receives the
               connection. The servers are chosen from the lowest numeric
@@ -9606,7 +9606,8 @@ versions and switching to TCP.
               is not available, round robin will apply. This algorithm is
               static by default, which means that changing a server's
               weight on the fly will have no effect, but this can be
-              changed using &quot;<a href="#hash-type">hash-type</a>&quot;.
+              changed using &quot;<a href="#hash-type">hash-type</a>&quot;. This algorithm is not usable for
+              backends in LOG mode, please use &quot;log-hash&quot; instead.
 
   source      The source IP address is hashed and divided by the total
               weight of the running servers to designate which server will
@@ -9621,6 +9622,7 @@ versions and switching to TCP.
               static by default, which means that changing a server's
               weight on the fly will have no effect, but this can be
               changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also the &quot;hash&quot; option above.
+              This algorithm is not usable for backends in LOG mode.
 
   uri         This algorithm hashes either the left part of the URI (before
               the question mark) or the whole URI (if the &quot;whole&quot; parameter
@@ -9728,6 +9730,13 @@ versions and switching to TCP.
               the Power of Two Random Choices and is described here :
               http://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf
 
+              For backends in LOG mode, the number of draws is ignored and
+              a single random is picked since there is no notion of server
+              load. Random log balancing can be useful with large farms or
+              when servers are frequently added or removed from the pool of
+              available servers as it may avoid the hammering effect that
+              could result from roundrobin in this situation.
+
   rdp-cookie
   rdp-cookie(&lt;name&gt;)
               The RDP cookie &lt;name&gt; (or &quot;mstshash&quot; if omitted) will be
@@ -9749,32 +9758,74 @@ versions and switching to TCP.
               but this can be changed using &quot;<a href="#hash-type">hash-type</a>&quot;. See also the
               &quot;hash&quot; option above.
 
+  log-hash    Takes a comma-delimited list of converters in argument. These
+              converters are applied in sequence to the input log message,
+              and the result will be cast as a string then hashed according
+              to the configured hash-type. The resulting hash will be used
+              to select the destination server among the ones declared in
+              the log backend. The goal of this algorithm is to be able to
+              extract a key within the final log message using string
+              converters and then be able to stick to the same server thanks
+              to the hash. Only &quot;map-based&quot; hashes are supported for now.
+              This algorithm is only usable for backends in LOG mode, for
+              others, please use &quot;hash&quot; instead.
+
+  log-sticky  Tries to stick to the same server as much as possible. The
+              first server in the list of available servers receives all
+              the log messages. When the server goes DOWN, the next server
+              in the list takes its place. When a previously DOWN server
+              goes back UP it is added at the end of the list so that the
+              sticky server doesn't change until it becomes DOWN.
+
 &lt;arguments&gt; is an optional list of arguments which may be needed by some
-            algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot; and &quot;uri&quot; support an
-            optional argument.</pre>
+            algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot;, &quot;uri&quot; and &quot;log-hash&quot;
+            support an optional argument.</pre>
 </div>
 <pre class="text">The load balancing algorithm of a backend is set to roundrobin when no other
 algorithm, mode nor option have been set. The algorithm may only be set once
-for each backend.
+for each backend. In backends in LOG mode, server &quot;<a href="#weight">weight</a>&quot; is always ignored.
 
 With authentication schemes that require the same connection like NTLM, URI
 based algorithms must not be used, as they would cause subsequent requests
 to be routed to different backend servers, breaking the invalid assumptions
 NTLM relies on.
-</pre><div class="separator">
-<span class="label label-success">Examples :</span>
-<pre class="prettyprint">
-<code>balance roundrobin
-balance url_param userid
-balance url_param session_id check_post 64
-balance hdr(User-Agent)
-balance hdr(host)
-balance hdr(Host) use_domain_only
-balance hash req.cookie(clientid)
-balance hash var(req.client_id)
-balance hash req.hdr_ip(x-forwarded-for,-1),ipmask(24)
-</code></pre>
-</div><pre class="text">Note: the following caveats and limitations on using the &quot;check_post&quot;
+
+TCP/HTTP Examples :
+      balance roundrobin
+      balance url_param userid
+      balance url_param session_id check_post 64
+      balance hdr(User-Agent)
+      balance hdr(host)
+      balance hdr(Host) use_domain_only
+      balance hash req.cookie(clientid)
+      balance hash var(req.client_id)
+      balance hash req.hdr_ip(x-forwarded-for,-1),ipmask(24)
+
+LOG backend examples:
+      global
+        log backend@mylog-rrb local0 # send all logs to mylog-rrb backend
+        log backend@mylog-hash local0 # send all logs to mylog-hash backend
+
+      backend mylog-rrb
+        mode log
+        balance roundrobin
+
+        server s1 udp@127.0.0.1:514 # will receive 50% of log messages
+        server s2 udp@127.0.0.1:514
+
+      backend mylog-hash
+        mode log
+
+        # extract &quot;METHOD URL PROTO&quot; at the end of the log message,
+        # and let haproxy hash it so that log messages generated from
+        # similar requests get sent to the same syslog server:
+        balance log-hash 'field(-2,\&quot;)'
+
+        # server list here
+        server s1 127.0.0.1:514
+        #...
+
+Note: the following caveats and limitations on using the &quot;check_post&quot;
 extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered :
 
   - all POST requests are eligible for consideration, because there is no way
@@ -13379,81 +13430,6 @@ log tcp@127.0.0.1:514 local0 notice notice  <span class="comment"># same but lim
                                             <span class="comment"># level and send in tcp</span>
 log &quot;${LOCAL_SYSLOG}:514&quot; local0 notice   <span class="comment"># send to local server</span>
 </code></pre>
-</div><a class="anchor" name="log-balance"></a><a class="anchor" name="4-log-balance"></a><a class="anchor" name="4.2-log-balance"></a><a class="anchor" name="log-balance (Proxies)"></a><a class="anchor" name="log-balance (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-balance"></a><a href="#4.2-log-balance">log-balance</a></b> <span style="color: #080">&lt;algorithm&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arguments&gt;</span> ]</span></div><pre class="text">Define the load balancing algorithm to be used in a log backend.
-(&quot;mode log&quot; enabled)
-</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
-<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
-</table></div>
-<div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;algorithm&gt; is the algorithm used to select a server when doing load
-            balancing. This only applies when no persistence information
-            is available, or when a connection is redispatched to another
-            server. &lt;algorithm&gt; may be one of the following :
-
-  roundrobin  Each server is used in turns. This is the smoothest and
-              fairest algorithm when the server's processing time remains
-              equally distributed.
-
-  sticky      The first server in the list of available servers receives all
-              the log messages. When the server goes DOWN, the next server
-              in the list takes its place. When a previously DOWN server
-              goes back UP it is added at the end of the list so that the
-              sticky server doesn't change until it becomes DOWN.
-
-  random      A random number will be used as the key for the server
-              lookup. Random log balancing can be useful with large farms
-              or when servers are frequently added or removed from the
-              pool of available servers as it may avoid the hammering
-              effect that could result from roundrobin in this situation.
-
-  hash        &lt;arguments&gt; should be found in the form: &lt;cnv_list&gt;
-              e.g.: log-balance hash &lt;cnv_list&gt;
-
-              Each log message will be passed to the converter list
-              specified in &lt;cnv_list&gt; (ie: &quot;cnv1,cnv2...&quot;), and it will
-              then be passed to haproxy hashing function according to
-              &quot;<a href="#hash-type">hash-type</a>&quot; settings. The resulting hash will be used to
-              select the destination server among the ones declared in the
-              log backend. The goal of this algorithm is to be able to
-              extract a key within the final log message using string
-              converters and then be able to stick to the same server thanks
-              to the hash. Only &quot;map-based&quot; hashes are supported for now.
-
-&lt;arguments&gt; is an optional list of arguments which may be needed by some
-            algorithms.</pre>
-</div>
-<pre class="text">The load balancing algorithm of a log backend is set to roundrobin when
-no other algorithm has been set. The algorithm may only be set once for each
-log backend. The above algorithms support the &quot;<a href="#backup">backup</a>&quot; server option and the
-&quot;<a href="#option%20allbackups">allbackups</a>&quot; proxy option. However server &quot;<a href="#weight">weight</a>&quot; is not supported and will
-be ignored.
-</pre><div class="separator">
-<span class="label label-success">Examples :</span>
-<pre class="prettyprint">
-<code>global
-  log backend@mylog-rrb local0 <span class="comment"># send all logs to mylog-rrb backend</span>
-  log backend@mylog-hash local0 <span class="comment"># send all logs to mylog-hash backend</span>
-
-backend mylog-rrb
-  mode log
-  log-balance roundrobin
-
-  server s1 udp@127.0.0.1:514 <span class="comment"># will receive 50% of log messages</span>
-  server s2 udp@127.0.0.1:514
-
-backend mylog-hash
-  mode log
-
-  <span class="comment"># extract &quot;METHOD URL PROTO&quot; at the end of the log message,</span>
-  <span class="comment"># and let haproxy hash it so that log messages generated from</span>
-  <span class="comment"># similar requests get sent to the same syslog server:</span>
-  log-balance hash 'field(-2,\&quot;)'
-
-  <span class="comment"># server list here</span>
-  server s1 127.0.0.1:514
-  <span class="comment">#...</span>
-</code></pre>
 </div><a class="anchor" name="log-format"></a><a class="anchor" name="4-log-format"></a><a class="anchor" name="4.2-log-format"></a><a class="anchor" name="log-format (Proxies)"></a><a class="anchor" name="log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format"></a><a href="#4.2-log-format">log-format</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specifies the log format string to use for traffic logs
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -13580,7 +13556,7 @@ log       When used in a backend section, it will turn the backend into a
           any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive by using the &quot;backend@&lt;name&gt;&quot; syntax. Log
           messages will be distributed to the servers from the backend
           according to the lb settings which can be configured using the
-          &quot;<a href="#log-balance">log-balance</a>&quot; keyword (in place of the &quot;<a href="#balance">balance</a>&quot; keyword for TCP
+          &quot;log-balance&quot; keyword (in place of the &quot;<a href="#balance">balance</a>&quot; keyword for TCP
           and HTTP backends). Log backends support UDP servers by prefixing
           the server's address with the &quot;udp@&quot; prefix. Common backend and
           server features are supported, but not TCP or HTTP related ones.</pre>
@@ -28196,8 +28172,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev9-133 &ndash; Configuration Manual<br>
-							<small>, 2023/11/04</small>
+							HAProxy 2.9-dev10 &ndash; Configuration Manual<br>
+							<small>, 2023/11/18</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
