@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev10-13 - Management Guide</title>
+		<title>HAProxy version 2.9-dev10-40 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -497,6 +497,8 @@
 							
 							<a class="list-group-item" href="#show cli sockets">show cli sockets</a>
 							
+							<a class="list-group-item" href="#show dev">show dev</a>
+							
 							<a class="list-group-item" href="#show env">show env</a>
 							
 							<a class="list-group-item" href="#show errors">show errors</a>
@@ -610,7 +612,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -621,7 +623,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.9-dev10-13</strong></p>
+							<p><strong>version 2.9-dev10-40</strong></p>
 							<p>
 								<br>
 								
@@ -3223,6 +3225,45 @@ $ echo 'show cache' | socat stdio /tmp/sock1
 5. number of blocks used for the object
 6. number of transactions using the entry
 7. expiration time, can be negative if already expired
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show dev"></a><a class="anchor" name="9-show dev"></a><a class="anchor" name="9.3-show dev"></a><a class="anchor" name="show dev (Statistics and monitoring)"></a><a class="anchor" name="show dev (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show dev"></a><a href="#9.3-show%20dev">show dev</a></b></div><pre class="text">This command is meant to centralize some information that HAProxy developers
+might need to better understand the causes of a given problem. It generally
+does not provide useful information for the user, but these information allow
+developers to eliminate certain hypothesis. The format is roughly a series of
+sections containing indented lines with one element per line, such as the OS
+type and version, the CPU type or the boot-time FD limits for example. Some
+fields will be omitted to avoid repetition or output pollution when they do
+not add value (e.g. unlimited values). More fields may appear in the future,
+and some may change. This output is not meant for being parsed by scripts, and
+should not be considered with a high degree of reliability, it's essentially
+aimed at saving time for those who can read it.
+
+Technically speaking, such information are taken as-is out of an internal
+structure that stores them together at boot time so that they can also be
+found in a core file after a crash. As such, it may happen that developers
+ask for an early output on a well behaving process to compare with what is
+found in a core dump, or to compare between several reloads (e.g. some limits
+might change). If anonymizing is enabled, any possibly sensitive value will
+be anonymized as well (e.g. the node name).
+
+Example of output:
+   $ socat stdio /tmp/sock1 &lt;&lt;&lt; &quot;<a href="#show%20dev">show dev</a>&quot;
+   Platform info
+     machine vendor: To be filled by O.E.M
+     machine family: Altra
+     cpu model: Impl 0x41 Arch 8 Part 0xd0c r3p1
+     virtual machine: no
+     container: no
+     OS name: Linux
+     OS release: 6.2.0-36-generic
+     OS version: #37~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  9 18:01:07 UTC 2
+     OS architecture: aarch64
+     node name: 489aaf
+   Process info
+     pid: 1735846
+     boot uid: 509
+     boot gid: 1002
+     fd limit (soft): 1024
+     fd limit (hard): 1048576
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show env"></a><a class="anchor" name="9-show env"></a><a class="anchor" name="9.3-show env"></a><a class="anchor" name="show env (Statistics and monitoring)"></a><a class="anchor" name="show env (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show env"></a><a href="#9.3-show%20env">show env</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">Dump one or all environment variables known by the process. Without any
 argument, all variables are dumped. With an argument, only the specified
 variable is dumped if it exists. Otherwise &quot;Variable not found&quot; is emitted.
@@ -4959,7 +5000,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev10-13 &ndash; Management Guide<br>
+							HAProxy 2.9-dev10-40 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
