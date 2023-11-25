@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev10-40 - Management Guide</title>
+		<title>HAProxy version 2.9-dev11-22 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -360,6 +360,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-H"><h4>H</h4>
 								
+							<a class="list-group-item" href="#hard-reload">hard-reload</a>
+							
 							<a class="list-group-item" href="#help">help</a>
 							
 							<a class="list-group-item" href="#httpclient">httpclient</a>
@@ -612,7 +614,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -623,7 +625,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.9-dev10-40</strong></p>
+							<p><strong>version 2.9-dev11-22</strong></p>
 							<p>
 								<br>
 								
@@ -4577,6 +4579,12 @@ the master CLI. Combined with &quot;<a href="#mcli-debug-mode">mcli-debug-mode</
 the master. Display the flag &quot;x&quot; in the master CLI prompt.
 
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">experimental-mode<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#experimental-mode%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#experimental-mode%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; in Section 9.3 and &quot;<a href="#mcli-debug-mode">mcli-debug-mode</a>&quot; in 9.4.1.
+</pre><a class="anchor" name="hard-reload"></a><a class="anchor" name="9-hard-reload"></a><a class="anchor" name="9.4.1-hard-reload"></a><a class="anchor" name="hard-reload (Statistics and monitoring)"></a><a class="anchor" name="hard-reload (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="hard-reload"></a><a href="#9.4.1-hard-reload">hard-reload</a></b></div><pre class="text">This command does the same as the &quot;<a href="#reload">reload</a>&quot; command over the master CLI with
+the expection that it does a hard-stop (-st) instead of a stop-stop (-sf) of
+the previous process. This means the previous process does not wait to
+achieve anything before exiting, so all connections will be closed.
+
+See also the &quot;<a href="#reload">reload</a>&quot; command.
 </pre><a class="anchor" name="mcli-debug-mode"></a><a class="anchor" name="9-mcli-debug-mode"></a><a class="anchor" name="9.4.1-mcli-debug-mode"></a><a class="anchor" name="mcli-debug-mode (Statistics and monitoring)"></a><a class="anchor" name="mcli-debug-mode (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="mcli-debug-mode"></a><a href="#9.4.1-mcli-debug-mode">mcli-debug-mode</a></b> <span style="color: #008">[on|off]</span></div><pre class="text">This keyword allows a special mode in the master CLI which enables every
 keywords that were meant for a worker CLI on the master CLI, allowing to debug
 the master process. Once activated, you list the new available keywords with
@@ -4643,6 +4651,7 @@ command after it are ignored. Once the reload command returns its status, it
 will close the connection to the CLI.
 
 Note that a reload will close all connections to the master CLI.
+See also the &quot;<a href="#hard-reload">hard-reload</a>&quot; command.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.4.1-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Master CLI commands)"></a><a class="anchor" name="show proc"></a><a class="anchor" name="9-show proc"></a><a class="anchor" name="9.4.1-show proc"></a><a class="anchor" name="show proc (Statistics and monitoring)"></a><a class="anchor" name="show proc (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="show proc"></a><a href="#9.4.1-show%20proc">show proc</a></b></div><pre class="text">The master CLI introduces a 'show proc' command to surpervise the
 processe.
 </pre><div class="separator">
@@ -5000,7 +5009,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev10-40 &ndash; Management Guide<br>
+							HAProxy 2.9-dev11-22 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
