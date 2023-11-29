@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev11-30 - Management Guide</title>
+		<title>HAProxy version 2.9-dev11-64 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -614,7 +614,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -625,7 +625,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.9-dev11-30</strong></p>
+							<p><strong>version 2.9-dev11-64</strong></p>
 							<p>
 								<br>
 								
@@ -2302,6 +2302,15 @@ Some commands may take an optional payload. To add one to a command, the first
 line needs to end with the &quot;&lt;&lt;\n&quot; pattern. The next lines will be treated as
 the payload and can contain as many lines as needed. To validate a command with
 a payload, it needs to end with an empty line.
+
+The payload pattern can be customized in order to change the way the payload
+ends. In order to end a payload with something else than an empty line, a
+customized pattern can be set between '&lt;&lt;' and '\n'. Only 7 characters can be
+used in addiction to '&lt;&lt;', otherwise this won't be considered a payload.
+For example, to use a PEM file that contains empty lines and comments:
+
+  # echo -e &quot;set ssl cert common.pem &lt;&lt;%EOF%\n$(cat common.pem)\n%EOF%\n&quot; | \
+  socat /var/run/haproxy.stat -
 
 Limitations do exist: the length of the whole buffer passed to the CLI must
 not be greater than tune.bfsize and the pattern &quot;&lt;&lt;&quot; must not be glued to the
@@ -5017,7 +5026,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev11-30 &ndash; Management Guide<br>
+							HAProxy 2.9-dev11-64 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
