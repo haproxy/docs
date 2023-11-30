@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev11-92 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev12 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1913,17 +1913,9 @@
 							
 							<a class="list-group-item" href="#http-errors">http-errors</a>
 							
-							<a class="list-group-item" href="#http-request (Alphabetically sorted keywords reference)">http-request (Alphabetically sorted keywords reference)</a>
+							<a class="list-group-item" href="#http-request">http-request</a>
 							
-							<a class="list-group-item" href="#http-request (Proxy section)">http-request (Proxy section)</a>
-							
-							<a class="list-group-item" href="#http-request cache-use">http-request cache-use</a>
-							
-							<a class="list-group-item" href="#http-response (Alphabetically sorted keywords reference)">http-response (Alphabetically sorted keywords reference)</a>
-							
-							<a class="list-group-item" href="#http-response (Proxy section)">http-response (Proxy section)</a>
-							
-							<a class="list-group-item" href="#http-response cache-store">http-response cache-store</a>
+							<a class="list-group-item" href="#http-response">http-response</a>
 							
 							<a class="list-group-item" href="#http-reuse">http-reuse</a>
 							
@@ -4108,9 +4100,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev11-92</strong></p>
+							<p><strong>version 2.9-dev12</strong></p>
 							<p>
-								2023/11/24<br>
+								2023/11/30<br>
 								
 							</p>
 						</div>
@@ -8353,7 +8345,7 @@ dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
 </pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global parameters)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules. The default value is set at build time by the macro
+&quot;<a href="#http-request">http-request</a>&quot; rules. The default value is set at build time by the macro
 MAX_SESS_STK_CTR, and defaults to 3. With this setting it is possible to
 change the value and ignore the one passed at build time. Increasing this
 value may be needed when porting complex configurations to haproxy, but users
@@ -9682,11 +9674,14 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
                 - 'quic6@' -&gt; address is resolved as IPv6 and protocol UDP
                   is used. The performance note for QUIC over IPv4 applies
                   as well.
-                - 'rhttp@' -&gt; used for reverse HTTP. Address must be a
-                  server with the format '&lt;backend&gt;/&lt;server&gt;'. The server
-                  will be used to instantiate connections to a remote
-                  address. The listener will try to maintain &quot;<a href="#nbconn">nbconn</a>&quot;
-                  connections.
+                - 'rhttp@' [ EXPERIMENTAL ] -&gt; used for reverse HTTP.
+                  Address must be a server with the format
+                  '&lt;backend&gt;/&lt;server&gt;'. The server will be used to
+                  instantiate connections to a remote address. The listener
+                  will try to maintain &quot;<a href="#nbconn">nbconn</a>&quot; connections. This is an
+                  experimental features which requires
+                  &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; on a line before this
+                  bind.
 
               You may want to reference some environment variables in the
               address parameter, see <a href="#2.3">section 2.3</a> about environment
@@ -11373,9 +11368,9 @@ multiple actions may rely on the same condition so that the first action that
 changes the condition's evaluation is sufficient to implicitly disable the
 remaining actions. This is used for example when trying to assign a value to
 a variable from various sources when it's empty. There is no limit to the
-number of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; statements per instance.
+number of &quot;<a href="#http-request">http-request</a>&quot; statements per instance.
 
-The first keyword after &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; in the syntax is the rule's action,
+The first keyword after &quot;<a href="#http-request">http-request</a>&quot; in the syntax is the rule's action,
 optionally followed by a varying number of arguments for the action. The
 supported actions and their respective syntaxes are enumerated in <a href="#4.3">section 4.3</a>
 &quot;Actions&quot; (look for actions which tick &quot;HTTP Req&quot;).
@@ -11442,9 +11437,9 @@ multiple actions may rely on the same condition so that the first action that
 changes the condition's evaluation is sufficient to implicitly disable the
 remaining actions. This is used for example when trying to assign a value to
 a variable from various sources when it's empty. There is no limit to the
-number of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; statements per instance.
+number of &quot;<a href="#http-response">http-response</a>&quot; statements per instance.
 
-The first keyword after &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; in the syntax is the rule's action,
+The first keyword after &quot;<a href="#http-response">http-response</a>&quot; in the syntax is the rule's action,
 optionally followed by a varying number of arguments for the action. The
 supported actions and their respective syntaxes are enumerated in <a href="#4.3">section 4.3</a>
 &quot;Actions&quot; (look for actions which tick &quot;HTTP Res&quot;).
@@ -11475,7 +11470,7 @@ use_backend bk_appli if { hdr(Host),map_str(map.lst) -m found }
 http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
 http-response del-map(map.lst) %[src]                     if ! value
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#http-request">http-request</a>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
 <a class="anchor" name="http-reuse"></a><a class="anchor" name="4-http-reuse"></a><a class="anchor" name="4.2-http-reuse"></a><a class="anchor" name="http-reuse (Proxies)"></a><a class="anchor" name="http-reuse (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-reuse"></a><a href="#4.2-http-reuse">http-reuse</a></b> <span style="color: #800">{ never | safe | aggressive | always }</span></div><pre class="text">Declare how idle HTTP connections may be shared between requests
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -12102,7 +12097,7 @@ version and all headers are ignored, but the request must at least be valid
 at the HTTP level. This keyword may only be used with an HTTP-mode frontend.
 
 Monitor requests are processed very early, just after the request is parsed
-and even before any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;. The only rulesets applied before are the
+and even before any &quot;<a href="#http-request">http-request</a>&quot;. The only rulesets applied before are the
 tcp-request ones. They cannot be logged either, and it is the intended
 purpose. Only one URI may be configured for monitoring; when multiple
 &quot;<a href="#monitor-uri">monitor-uri</a>&quot; statements are present, the last one will define the URI to
@@ -14110,7 +14105,7 @@ no delay is needed at all to detect the threshold.
 response. If no condition is specified, the redirect applies unconditionally.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;loc&gt;     With &quot;<a href="#redirect%20location">redirect location</a>&quot;, the exact value in &lt;loc&gt; is placed into
-          the HTTP &quot;Location&quot; header. When used in an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rule,
+          the HTTP &quot;Location&quot; header. When used in an &quot;<a href="#http-request">http-request</a>&quot; rule,
           &lt;loc&gt; value follows the log-format rules and can include some
           dynamic values (see Custom Log Format in <a href="#8.2.4">section 8.2.4</a>).
 
@@ -14120,7 +14115,7 @@ response. If no condition is specified, the redirect applies unconditionally.
           below). As a special case, if &lt;pfx&gt; equals exactly &quot;/&quot;, then
           nothing is inserted before the original URI. It allows one to
           redirect to the same URL (for instance, to insert a cookie). When
-          used in an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rule, &lt;pfx&gt; value follows the log-format
+          used in an &quot;<a href="#http-request">http-request</a>&quot; rule, &lt;pfx&gt; value follows the log-format
           rules and can include some dynamic values (see Custom Log Format
           in <a href="#8.2.4">section 8.2.4</a>).
 
@@ -14132,7 +14127,7 @@ response. If no condition is specified, the redirect applies unconditionally.
           no &quot;Host&quot; header is found, then an empty host component will be
           returned, which most recent browsers interpret as redirecting to
           the same host. This directive is mostly used to redirect HTTP to
-          HTTPS. When used in an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rule, &lt;sch&gt; value follows
+          HTTPS. When used in an &quot;<a href="#http-request">http-request</a>&quot; rule, &lt;sch&gt; value follows
           the log-format rules and can include some dynamic values (see
           Custom Log Format in <a href="#8.2.4">section 8.2.4</a>).
 
@@ -14371,8 +14366,11 @@ The default is &quot;conn-failure&quot;.
                   one of them over the FD. The bind part will use the
                   received socket as the client FD. Should be used
                   carefully.
-                - 'rhttp@' -&gt; custom address family for a passive server in
-                  HTTP reverse context.
+                - 'rhttp@' [ EXPERIMENTAL ] -&gt; custom address family for a
+                  passive server in HTTP reverse context. This is an
+                  experimental features which requires
+                  &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; on a line before this
+                  server.
           You may want to reference some environment variables in the
           address parameter, see <a href="#2.3">section 2.3</a> about environment
           variables. The &quot;<a href="#init-addr">init-addr</a>&quot; setting can be used to modify the way
@@ -14835,7 +14833,7 @@ backend private_monitoring
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
-<pre class="text">As &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, these set of options allow to fine control access to
+<pre class="text">As &quot;<a href="#http-request">http-request</a>&quot;, these set of options allow to fine control access to
 statistics. Each option may be followed by if/unless and acl.
 First option with matched condition (or option without condition) is final.
 For &quot;<a href="#deny">deny</a>&quot; a 403 error will be returned, for &quot;<a href="#allow">allow</a>&quot; normal processing is
@@ -14844,7 +14842,7 @@ should be asked to enter a username and password.
 
 There is no fixed limit to the number of http-request statements per
 instance.
-</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#http-request">http-request</a>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats realm"></a><a class="anchor" name="4-stats realm"></a><a class="anchor" name="4.2-stats realm"></a><a class="anchor" name="stats realm (Proxies)"></a><a class="anchor" name="stats realm (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats realm"></a><a href="#4.2-stats%20realm">stats realm</a></b> <span style="color: #080">&lt;realm&gt;</span></div><pre class="text">Enable statistics and set authentication realm
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -16227,7 +16225,7 @@ differently. In an HTTP frontend or an HTTP backend, it is guaranteed that
 HTTP contents will always be immediately present when the rule is evaluated
 first because the HTTP parsing is performed in the early stages of the
 connection processing, at the session level. But for such proxies, using
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules is much more natural and recommended.
+&quot;<a href="#http-request">http-request</a>&quot; rules is much more natural and recommended.
 
 Tracking layer7 information is also possible provided that the information
 are present when the rule is processed. The rule processing engine is able to
@@ -16316,7 +16314,7 @@ backend http_dynamic
     tcp-request content reject if click_too_fast mark_as_abuser
 </code></pre>
 </div><pre class="text">See <a href="#7">section 7</a> about ACL usage.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;, &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;, &quot;<a href="#tcp-request%20inspect-delay">tcp-request inspect-delay</a>&quot;, and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;, &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;, &quot;<a href="#tcp-request%20inspect-delay">tcp-request inspect-delay</a>&quot;, and &quot;<a href="#http-request">http-request</a>&quot;.</div>
 <a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request inspect-delay"></a><a class="anchor" name="4-tcp-request inspect-delay"></a><a class="anchor" name="4.2-tcp-request inspect-delay"></a><a class="anchor" name="tcp-request inspect-delay (Proxies)"></a><a class="anchor" name="tcp-request inspect-delay (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request inspect-delay"></a><a href="#4.2-tcp-request%20inspect-delay">tcp-request inspect-delay</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum allowed time to wait for data during content inspection
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -16648,13 +16646,13 @@ once the request has started to present itself.
 
 The &quot;<a href="#option%20http-keep-alive">http-keep-alive</a>&quot; timeout covers these needs. It will define how long to
 wait for a new HTTP request to start coming after a response was sent. Once
-the first byte of request has been seen, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; timeout is used
+the first byte of request has been seen, the &quot;<a href="#http-request">http-request</a>&quot; timeout is used
 to wait for the complete request to come. Note that empty lines prior to a
 new request do not refresh the timeout and are not counted as a new request.
 
 There is also another difference between the two timeouts : when a connection
 expires during timeout http-keep-alive, no error is returned, the connection
-just closes. If the connection expires in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; while waiting for a
+just closes. If the connection expires in &quot;<a href="#http-request">http-request</a>&quot; while waiting for a
 connection to complete, a HTTP 408 error is returned.
 
 In general it is optimal to set this value to a few tens to hundreds of
@@ -16664,7 +16662,7 @@ without waiting for further clicks. Also, if set to a very small value (e.g.
 non-pipelined ones. It may be a nice trade-off for very large sites running
 with tens to hundreds of thousands of clients.
 
-If this parameter is not set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; timeout applies, and if both
+If this parameter is not set, the &quot;<a href="#http-request">http-request</a>&quot; timeout applies, and if both
 are not set, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; still applies at the lower level. It should be
 set in the frontend to take effect, unless the frontend is in TCP mode, in
 which case the HTTP backend's timeout will be used.
@@ -17083,8 +17081,8 @@ corresponding abbreviated entry names among the following rule sets:
   - TCP RqSes: the action is valid for &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rules
   - TCP RqCnt: the action is valid for &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot; rules
   - TCP RsCnt: the action is valid for &quot;<a href="#tcp-response%20content">tcp-response content</a>&quot; rules
-  - HTTP  Req:  the action is valid for &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules
-  - HTTP  Res:  the action is valid for &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules
+  - HTTP  Req:  the action is valid for &quot;<a href="#http-request">http-request</a>&quot; rules
+  - HTTP  Res:  the action is valid for &quot;<a href="#http-response">http-response</a>&quot; rules
   - HTTP  Aft:  the action is valid for &quot;<a href="#http-after-response">http-after-response</a>&quot; rules
 
 The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> below.
@@ -17204,7 +17202,7 @@ evaluated for the current section. There is no difference between this and
 the &quot;<a href="#accept">accept</a>&quot; action except that for historical compatibility, &quot;<a href="#accept">accept</a>&quot; is
 used for TCP rules and &quot;<a href="#allow">allow</a>&quot; for HTTP rules. See also the &quot;<a href="#accept">accept</a>&quot; action
 above.
-</pre><a class="anchor" name="attach-srv"></a><a class="anchor" name="4-attach-srv"></a><a class="anchor" name="4.4-attach-srv"></a><a class="anchor" name="attach-srv (Proxies)"></a><a class="anchor" name="attach-srv (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="attach-srv"></a><a href="#4.4-attach-srv">attach-srv</a></b> <span style="color: #080">&lt;srv&gt;</span> <span style="color: #008">[name <span style="color: #080">&lt;expr&gt;</span>]</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
+</pre><a class="anchor" name="attach-srv"></a><a class="anchor" name="4-attach-srv"></a><a class="anchor" name="4.4-attach-srv"></a><a class="anchor" name="attach-srv (Proxies)"></a><a class="anchor" name="attach-srv (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="attach-srv"></a><a href="#4.4-attach-srv">attach-srv</a></b> <span style="color: #080">&lt;srv&gt;</span> <span style="color: #008">[name <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   X  |   -  |   -  |          - |  - |  -
 
 This is used to intercept the connection after proper HTTP/2 establishment.
@@ -17220,12 +17218,17 @@ will have no name and will only match requests without SNI.
 
 This rule is only valid for frontend in HTTP mode. Also all listeners must
 not require a protocol different from HTTP/2.
+
+Reverse HTTP is currently still in active development. Configuration
+mechanism may change in the future. For this reason it is internally marked
+as experimental, meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on
+a line before this directive.
 </pre><a class="anchor" name="auth"></a><a class="anchor" name="4-auth"></a><a class="anchor" name="4.4-auth"></a><a class="anchor" name="auth (Proxies)"></a><a class="anchor" name="auth (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="auth"></a><a href="#4.4-auth">auth</a></b> <span style="color: #008">[realm <span style="color: #080">&lt;realm&gt;</span>]</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   -  |   -  |   -  |          X |  - |  -
 
 This stops the evaluation of the rules and immediately responds with an
 HTTP 401 or 407 error code to invite the user to present a valid user name
-and password. No further &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules are evaluated. An optional
+and password. No further &quot;<a href="#http-request">http-request</a>&quot; rules are evaluated. An optional
 &quot;realm&quot; parameter is supported, it sets the authentication realm that is
 returned with the response (typically the application's name).
 
@@ -17245,9 +17248,19 @@ http-request auth unless auth_ok
 </div><a class="anchor" name="cache-store"></a><a class="anchor" name="4-cache-store"></a><a class="anchor" name="4.4-cache-store"></a><a class="anchor" name="cache-store (Proxies)"></a><a class="anchor" name="cache-store (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="cache-store"></a><a href="#4.4-cache-store">cache-store</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   -  |   -  |   -  |          - |  X |  -
 
+Store an http-response within the cache. The storage of the response headers
+is done at this step, which means you can use others http-response actions
+to modify headers before or after the storage of the response. This action
+is responsible for the setup of the cache storage filter.
+
 See <a href="#6.2">section 6.2</a> about cache setup.
 </pre><a class="anchor" name="cache-use"></a><a class="anchor" name="4-cache-use"></a><a class="anchor" name="4.4-cache-use"></a><a class="anchor" name="cache-use (Proxies)"></a><a class="anchor" name="cache-use (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="cache-use"></a><a href="#4.4-cache-use">cache-use</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   -  |   -  |   -  |          X |  - |  -
+
+Try to deliver a cached object from the cache &lt;name&gt;. This directive is also
+mandatory to store the cache as it calculates the cache hash. If you want to
+use a condition for both storage and delivering that's a good idea to put it
+after this one.
 
 See <a href="#6.2">section 6.2</a> about cache setup.
 </pre><a class="anchor" name="capture"></a><a class="anchor" name="4-capture"></a><a class="anchor" name="4.4-capture"></a><a class="anchor" name="capture (Proxies)"></a><a class="anchor" name="capture (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="capture"></a><a href="#4.4-capture">capture</a></b> <span style="color: #080">&lt;sample&gt;</span> <span style="color: #008">[ len <span style="color: #080">&lt;length&gt;</span> | id <span style="color: #080">&lt;id&gt;</span> ]</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
@@ -17260,7 +17273,7 @@ will possibly appear next to some captured HTTP headers. It will then
 automatically appear in the logs, and it will be possible to extract it using
 sample fetch methods to feed it into headers or anything. The length should
 be limited given that this size will be allocated for each capture during the
-whole session life. Note that the length is only usable with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+whole session life. Note that the length is only usable with &quot;<a href="#http-request">http-request</a>&quot;
 rules. Please check <a href="#7.3">section 7.3</a> (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot;
 and &quot;<a href="#capture%20response%20header">capture response header</a>&quot; for more information.
 
@@ -17573,7 +17586,7 @@ in a HTTP 400 Bad Request being returned.
 
 This performs an HTTP redirection based on a redirect rule. This is exactly
 the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; statement except that it inserts a redirect rule
-which is processed in the middle of other &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+which is processed in the middle of other &quot;<a href="#http-request">http-request</a>&quot; or &quot;<a href="#http-response">http-response</a>&quot;
 rules and that these rules use the &quot;<a href="#log-format">log-format</a>&quot; strings. For responses, only
 the &quot;location&quot; type of redirect is permitted. In addition, when a redirect is
 performed during a response, the transfer from the server to HAProxy is
@@ -18330,7 +18343,7 @@ For compatibility purpose, when no argument is defined, or only &quot;deny_statu
 the argument &quot;default-errorfiles&quot; is implied. It means
 &quot;http-request tarpit [deny_status &lt;status&gt;]&quot; is an alias of
 &quot;http-request tarpit [status &lt;status&gt;] default-errorfiles&quot;.
-No further &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules are evaluated.
+No further &quot;<a href="#http-request">http-request</a>&quot; rules are evaluated.
 See also &quot;http-request return&quot; and &quot;http-request silent-drop&quot;.
 </pre><a class="anchor" name="track-sc0"></a><a class="anchor" name="4-track-sc0"></a><a class="anchor" name="4.4-track-sc0"></a><a class="anchor" name="track-sc0 (Proxies)"></a><a class="anchor" name="track-sc0 (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="track-sc0"></a><a href="#4.4-track-sc0">track-sc0</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span></div><a class="anchor" name="track-sc1"></a><a class="anchor" name="4-track-sc1"></a><a class="anchor" name="4.4-track-sc1"></a><a class="anchor" name="track-sc1 (Proxies)"></a><a class="anchor" name="track-sc1 (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="track-sc1"></a><a href="#4.4-track-sc1">track-sc1</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span></div><a class="anchor" name="track-sc2"></a><a class="anchor" name="4-track-sc2"></a><a class="anchor" name="4.4-track-sc2"></a><a class="anchor" name="track-sc2 (Proxies)"></a><a class="anchor" name="track-sc2 (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="track-sc2"></a><a href="#4.4-track-sc2">track-sc2</a></b> <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   X  |   X  |   X  |   -  |          X |  X |  -
@@ -18832,9 +18845,14 @@ page.
 belong to. This directive makes it possible to explicitly bind a listener to
 a namespace different from the default one. Please refer to your operating
 system's documentation to find more details about network namespaces.
-</pre><a class="anchor" name="nbconn"></a><a class="anchor" name="5-nbconn"></a><a class="anchor" name="5.1-nbconn"></a><a class="anchor" name="nbconn (Bind and server options)"></a><a class="anchor" name="nbconn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="nbconn"></a><a href="#5.1-nbconn">nbconn</a></b> <span style="color: #080">&lt;nbconn&gt;</span></div><pre class="text">This setting is only valid for listener instances which uses reverse HTTP.
+</pre><a class="anchor" name="nbconn"></a><a class="anchor" name="5-nbconn"></a><a class="anchor" name="5.1-nbconn"></a><a class="anchor" name="nbconn (Bind and server options)"></a><a class="anchor" name="nbconn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="nbconn"></a><a href="#5.1-nbconn">nbconn</a></b> <span style="color: #080">&lt;nbconn&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">This setting is only valid for listener instances which uses reverse HTTP.
 This will define the count of connections which will be mounted in parallel.
 If not specified, a default value of 1 is used.
+
+Reverse HTTP is currently still in active development. Configuration
+mechanism may change in the future. For this reason it is internally marked
+as expirmental, meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on
+a line before this directive.
 </pre><a class="anchor" name="nice"></a><a class="anchor" name="5-nice"></a><a class="anchor" name="5.1-nice"></a><a class="anchor" name="nice (Bind and server options)"></a><a class="anchor" name="nice (Bind options)"></a><div class="keyword"><b><a class="anchor" name="nice"></a><a href="#5.1-nice">nice</a></b> <span style="color: #080">&lt;nice&gt;</span></div><pre class="text">Sets the 'niceness' of connections initiated from the socket. Value must be
 in the range -1024..1024 inclusive, and defaults to zero. Positive values
 means that such connections are more friendly to others and easily offer
@@ -20477,7 +20495,7 @@ replaced by &quot;&lt;CACHE&gt;&quot;.
 <a class="anchor" id="6.2" name="6.2"></a>
 <h2 id="chapter-6.2" data-target="6.2"><small><a class="small" href="#6.2">6.2.</a></small> Setup</h2>
 <div><pre class="text">To setup a cache, you must define a cache section and use it in a proxy with
-the corresponding http-request and response actions.
+the corresponding http-request and http-response actions.
 </pre></div>
 <a class="anchor" id="6.2.1" name="6.2.1"></a>
 <h3 id="chapter-6.2.1" data-target="6.2.1"><small><a class="small" href="#6.2.1">6.2.1.</a></small> Cache section</h3>
@@ -20506,14 +20524,16 @@ and should be passed a strictly positive integer.
 </pre></div>
 <a class="anchor" id="6.2.2" name="6.2.2"></a>
 <h3 id="chapter-6.2.2" data-target="6.2.2"><small><a class="small" href="#6.2.2">6.2.2.</a></small> Proxy section</h3>
-<div><a class="anchor" name="http-request"></a><a class="anchor" name="6-http-request"></a><a class="anchor" name="6.2.2-http-request"></a><a class="anchor" name="http-request (Cache)"></a><a class="anchor" name="http-request (Proxy section)"></a><a class="anchor" name="http-request cache-use"></a><a class="anchor" name="6-http-request cache-use"></a><a class="anchor" name="6.2.2-http-request cache-use"></a><a class="anchor" name="http-request cache-use (Cache)"></a><a class="anchor" name="http-request cache-use (Proxy section)"></a><div class="keyword"><b><a class="anchor" name="http-request cache-use"></a><a href="#6.2.2-http-request%20cache-use">http-request cache-use</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Try to deliver a cached object from the cache &lt;name&gt;. This directive is also
-mandatory to store the cache as it calculates the cache hash. If you want to
-use a condition for both storage and delivering that's a good idea to put it
-after this one.
-</pre><a class="anchor" name="http-response"></a><a class="anchor" name="6-http-response"></a><a class="anchor" name="6.2.2-http-response"></a><a class="anchor" name="http-response (Cache)"></a><a class="anchor" name="http-response (Proxy section)"></a><a class="anchor" name="http-response cache-store"></a><a class="anchor" name="6-http-response cache-store"></a><a class="anchor" name="6.2.2-http-response cache-store"></a><a class="anchor" name="http-response cache-store (Cache)"></a><a class="anchor" name="http-response cache-store (Proxy section)"></a><div class="keyword"><b><a class="anchor" name="http-response cache-store"></a><a href="#6.2.2-http-response%20cache-store">http-response cache-store</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Store an http-response within the cache. The storage of the response headers
-is done at this step, which means you can use others http-response actions
-to modify headers before or after the storage of the response. This action
-is responsible for the setup of the cache storage filter.
+<div><pre class="text">The proxy section making use of the cache will need to involve the &quot;<a href="#cache-use">cache-use</a>&quot;
+action in the &quot;<a href="#http-request">http-request</a>&quot; rule set in order to look up the requested object
+from the cache, and the &quot;<a href="#cache-store">cache-store</a>&quot; action in the &quot;<a href="#http-response">http-response</a>&quot; rule set in
+order to store or update the retrieved object into the cache. Each of these
+actions may optionally involve conditions. For example, one could decide to
+skip the &quot;<a href="#cache-use">cache-use</a>&quot; action for a certain sub-directory that is known not to
+be cacheable, or to skip the &quot;<a href="#cache-store">cache-store</a>&quot; action for certain content-types
+that are known to be worthless. Please note that the cache indexing key is
+computed during the &quot;<a href="#cache-use">cache-use</a>&quot; action, so if this action is skipped, no
+attempt to update the cache will be made on the response path anyway.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21109,7 +21129,135 @@ supported (and, or, xor, cpl) and some arithmetic operations are supported
 (add, sub, mul, div, mod, neg). Some comparators are provided (odd, even, not,
 bool) which make it possible to report a match without having to write an ACL.
 
-The currently available list of transformation keywords include :
+The following keywords are supported:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-51d.single">51d.single</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-add">add</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-add_item">add_item</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-aes_gcm_dec">aes_gcm_dec</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-and">and</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-b64dec">b64dec</a></td><td >string</td><td >binary</td></tr>
+<tr><td ><a href="#7-base64">base64</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-be2dec">be2dec</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-be2hex">be2hex</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-bool">bool</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-bytes">bytes</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-capture-req">capture-req</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-capture-res">capture-res</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-concat">concat</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-crc32">crc32</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-crc32c">crc32c</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-da-csv-conv">da-csv-conv</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-debug">debug</a></td><td >any</td><td >&lt;same&gt;</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-digest">digest</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-div">div</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-djb2">djb2</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-even">even</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-field">field</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
+<tr><td ><a href="#7-fix_tag_value">fix_tag_value</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-hmac">hmac</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-host_only">host_only</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-htonl">htonl</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-http_date">http_date</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-iif">iif</a></td><td >boolean</td><td >string</td></tr>
+<tr><td ><a href="#7-in_table">in_table</a></td><td >string</td><td >boolean</td></tr>
+<tr><td ><a href="#7-ipmask">ipmask</a></td><td >address</td><td >address</td></tr>
+<tr><td ><a href="#7-json">json</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-json_query">json_query</a></td><td >string</td><td >any</td></tr>
+<tr><td ><a href="#7-jwt_header_query">jwt_header_query</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-jwt_payload_query">jwt_payload_query</a></td><td >string</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-jwt_verify">jwt_verify</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-language">language</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-length">length</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-lower">lower</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-ltime">ltime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-ltrim">ltrim</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-map">map</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-map_%26lt%3Bmatch%26gt%3B">map_&lt;match&gt;</a></td><td >&lt;match&gt;</td><td >string</td></tr>
+<tr><td ><a href="#7-map_%26lt%3Bmatch%26gt%3B_%26lt%3Boutput%26gt%3B">map_&lt;match&gt;_&lt;output&gt;</a></td><td >&lt;match&gt;</td><td >&lt;output&gt;</td></tr>
+<tr><td ><a href="#7-mod">mod</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-mqtt_field_value">mqtt_field_value</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >bianry</td><td >boolean</td></tr>
+<tr><td ><a href="#7-ms_ltime">ms_ltime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-ms_utime">ms_utime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-mul">mul</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-or">or</a></td><td >integer</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-param">param</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-port_only">port_only</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-protobuf">protobuf</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-regsub">regsub</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-rfc7239_field">rfc7239_field</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
+<tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / string</td></tr>
+<tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / string</td></tr>
+<tr><td ><a href="#7-rtrim">rtrim</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-sdbm">sdbm</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-secure_memcmp">secure_memcmp</a></td><td >string</td><td >boolean</td></tr>
+<tr><td ><a href="#7-set-var">set-var</a></td><td >any</td><td >&lt;same&gt;</td></tr>
+<tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-sha2">sha2</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-strcmp">strcmp</a></td><td >string</td><td >boolean</td></tr>
+<tr><td ><a href="#7-sub">sub</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_bytes_out_rate">table_bytes_out_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_conn_cnt">table_conn_cnt</a></td><td >string</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_conn_cur">table_conn_cur</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_conn_rate">table_conn_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_expire">table_expire</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc">table_gpc</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc0">table_gpc0</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc1">table_gpc1</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpc_rate">table_gpc_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpt">table_gpt</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_gpt0">table_gpt0</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_err_rate">table_http_err_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_fail_cnt">table_http_fail_cnt</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_fail_rate">table_http_fail_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_req_cnt">table_http_req_cnt</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_http_req_rate">table_http_req_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_idle">table_idle</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_kbytes_in">table_kbytes_in</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_kbytes_out">table_kbytes_out</a></td><td >string</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_server_id">table_server_id</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_sess_cnt">table_sess_cnt</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_sess_rate">table_sess_rate</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-table_trackers">table_trackers</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-ungrpc">ungrpc</a></td><td >binary</td><td >binary / integer</td></tr>
+<tr><td ><a href="#7-unset-var">unset-var</a></td><td >any</td><td >&lt;same&gt;</td></tr>
+<tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-url_dec">url_dec</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-url_enc">url_enc</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-us_ltime">us_ltime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-us_utime">us_utime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-utime">utime</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-word">word</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-wt6">wt6</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-x509_v_err_str">x509_v_err_str</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-xor">xor</a></td><td >integer</td><td >integer</td></tr>
+<tr><td ><a href="#7-xxh3">xxh3</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-xxh32">xxh32</a></td><td >binary</td><td >integer</td></tr>
+</table><pre class="text">The detailed list of converter keywords follows:
 </pre><a class="anchor" name="51d.single"></a><a class="anchor" name="7-51d.single"></a><a class="anchor" name="7.3.1-51d.single"></a><a class="anchor" name="51d.single (Using ACLs and fetching samples)"></a><a class="anchor" name="51d.single (Converters)"></a><div class="keyword"><b><a class="anchor" name="51d.single"></a><a href="#7.3.1-51d.single">51d.single</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>)</div><pre class="text">Returns values for the properties requested as a string, where values are
 separated by the delimiter specified with &quot;<a href="#51degrees-property-separator">51degrees-property-separator</a>&quot;.
 The device is identified using the User-Agent header passed to the
@@ -21126,76 +21274,6 @@ frontend http-in
   default_backend servers
   http-request set-header X-51D-DeviceTypeMobileTablet \
     %[req.fhdr(User-Agent),51d.single(DeviceType,IsMobile,IsTablet)]
-</code></pre>
-</div><a class="anchor" name="rfc7239_is_valid"></a><a class="anchor" name="7-rfc7239_is_valid"></a><a class="anchor" name="7.3.1-rfc7239_is_valid"></a><a class="anchor" name="rfc7239_is_valid (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_is_valid (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_is_valid"></a><a href="#7.3.1-rfc7239_is_valid">rfc7239_is_valid</a></b></div><pre class="text">Returns true if input header is RFC 7239 compliant header value and false
-otherwise.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code>acl valid req.hdr(forwarded),rfc7239_is_valid
-<span class="comment">#input: &quot;for=127.0.0.1;proto=http&quot;</span>
-<span class="comment">#  output: TRUE</span>
-<span class="comment">#input: &quot;proto=custom&quot;</span>
-<span class="comment">#  output: FALSE</span>
-</code></pre>
-</div><a class="anchor" name="rfc7239_field"></a><a class="anchor" name="7-rfc7239_field"></a><a class="anchor" name="7.3.1-rfc7239_field"></a><a class="anchor" name="rfc7239_field (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_field (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_field"></a><a href="#7.3.1-rfc7239_field">rfc7239_field</a></b>(<span style="color: #080">&lt;field&gt;</span>)</div><pre class="text">Extracts a single field/parameter from RFC 7239 compliant header value input.
-
-Supported fields are:
-  - proto: either 'http' or 'https'
-  - host: http compliant host
-  - for: RFC7239 node
-  - by: RFC7239 node
-
-More info here:
-  https://www.rfc-editor.org/rfc/rfc7239.html#section-6
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code><span class="comment"># extract host field from forwarded header and store it in req.fhost var</span>
-http-request set-var(req.fhost) req.hdr(forwarded),rfc7239_field(host)
-<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;&quot;</span>
-<span class="comment">#  output: &quot;haproxy.org:80&quot;</span>
-
-<span class="comment"># extract for field from forwarded header and store it in req.ffor var</span>
-http-request set-var(req.ffor) req.hdr(forwarded),rfc7239_field(for)
-<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;;for=\&quot;127.0.0.1:9999\&quot;&quot;</span>
-<span class="comment">#  output: &quot;127.0.0.1:9999&quot;</span>
-</code></pre>
-</div><a class="anchor" name="rfc7239_n2nn"></a><a class="anchor" name="7-rfc7239_n2nn"></a><a class="anchor" name="7.3.1-rfc7239_n2nn"></a><a class="anchor" name="rfc7239_n2nn (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2nn (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2nn"></a><a href="#7.3.1-rfc7239_n2nn">rfc7239_n2nn</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
-into its corresponding nodename final form:
-  - ipv4 address
-  - ipv6 address
-  - 'unknown'
-  - '_obfs' identifier
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code><span class="comment"># extract 'for' field from forwarded header, extract nodename from</span>
-<span class="comment"># resulting node identifier and store the result in req.fnn</span>
-http-request set-var(req.fnn) req.hdr(forwarded),rfc7239_field(for),rfc7239_n2nn
-<span class="comment">#input: &quot;127.0.0.1:9999&quot;</span>
-<span class="comment">#  output: 127.0.0.1 (ipv4)</span>
-<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
-<span class="comment">#  output: ab:cd:ff:ff:ff:ff:ff:ff (ipv6)</span>
-<span class="comment">#input: &quot;_name:_port&quot;</span>
-<span class="comment">#  output: &quot;_name&quot; (string)</span>
-</code></pre>
-</div><a class="anchor" name="rfc7239_n2np"></a><a class="anchor" name="7-rfc7239_n2np"></a><a class="anchor" name="7.3.1-rfc7239_n2np"></a><a class="anchor" name="rfc7239_n2np (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2np (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2np"></a><a href="#7.3.1-rfc7239_n2np">rfc7239_n2np</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
-into its corresponding nodeport final form:
-  - unsigned integer
-  - '_obfs' identifier
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code><span class="comment"># extract 'by' field from forwarded header, extract node port from</span>
-<span class="comment"># resulting node identifier and store the result in req.fnp</span>
-http-request set-var(req.fnp) req.hdr(forwarded),rfc7239_field(by),rfc7239_n2np
-<span class="comment">#input: &quot;127.0.0.1:9999&quot;</span>
-<span class="comment">#  output: 9999 (integer)</span>
-<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
-<span class="comment">#  output: 9998 (integer)</span>
-<span class="comment">#input: &quot;_name:_port&quot;</span>
-<span class="comment">#  output: &quot;_port&quot; (string)</span>
 </code></pre>
 </div><a class="anchor" name="add"></a><a class="anchor" name="7-add"></a><a class="anchor" name="7.3.1-add"></a><a class="anchor" name="add (Using ACLs and fetching samples)"></a><a class="anchor" name="add (Converters)"></a><div class="keyword"><b><a class="anchor" name="add"></a><a href="#7.3.1-add">add</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Adds &lt;value&gt; to the input value of type signed integer, and returns the
 result as a signed integer. &lt;value&gt; can be a numeric value or a variable
@@ -21319,7 +21397,13 @@ http-response set-var(txn.var_start) int(1)
 http-response set-var(txn.var_length) int(3)
 http-response set-header bytes_var1_var3    &quot;%[var(txn.input),bytes(txn.var_start,txn.var_length)]&quot;  <span class="comment"># outputs &quot;123&quot;</span>
 </code></pre>
-</div><a class="anchor" name="concat"></a><a class="anchor" name="7-concat"></a><a class="anchor" name="7.3.1-concat"></a><a class="anchor" name="concat (Using ACLs and fetching samples)"></a><a class="anchor" name="concat (Converters)"></a><div class="keyword"><b><a class="anchor" name="concat"></a><a href="#7.3.1-concat">concat</a></b>(<span style="color: #008">[<span style="color: #080">&lt;start&gt;</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;var&gt;</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;end&gt;</span>]</span>)</div><pre class="text">Concatenates up to 3 fields after the current sample which is then turned to
+</div><a class="anchor" name="capture-req"></a><a class="anchor" name="7-capture-req"></a><a class="anchor" name="7.3.1-capture-req"></a><a class="anchor" name="capture-req (Using ACLs and fetching samples)"></a><a class="anchor" name="capture-req (Converters)"></a><div class="keyword"><b><a class="anchor" name="capture-req"></a><a href="#7.3.1-capture-req">capture-req</a></b>(<span style="color: #080">&lt;id&gt;</span>)</div><pre class="text">Capture the string entry in the request slot &lt;id&gt; and returns the entry as
+is. If the slot doesn't exist, the capture fails silently.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#declare%20capture">declare capture</a>&quot;, &quot;http-request capture&quot;, &quot;http-response capture&quot;, &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot; and &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches).</div>
+<a class="anchor" name="capture-res"></a><a class="anchor" name="7-capture-res"></a><a class="anchor" name="7.3.1-capture-res"></a><a class="anchor" name="capture-res (Using ACLs and fetching samples)"></a><a class="anchor" name="capture-res (Converters)"></a><div class="keyword"><b><a class="anchor" name="capture-res"></a><a href="#7.3.1-capture-res">capture-res</a></b>(<span style="color: #080">&lt;id&gt;</span>)</div><pre class="text">Capture the string entry in the response slot &lt;id&gt; and returns the entry as
+is. If the slot doesn't exist, the capture fails silently.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#declare%20capture">declare capture</a>&quot;, &quot;http-request capture&quot;, &quot;http-response capture&quot;, &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot; and &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches).</div>
+<a class="anchor" name="concat"></a><a class="anchor" name="7-concat"></a><a class="anchor" name="7.3.1-concat"></a><a class="anchor" name="concat (Using ACLs and fetching samples)"></a><a class="anchor" name="concat (Converters)"></a><div class="keyword"><b><a class="anchor" name="concat"></a><a href="#7.3.1-concat">concat</a></b>(<span style="color: #008">[<span style="color: #080">&lt;start&gt;</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;var&gt;</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;end&gt;</span>]</span>)</div><pre class="text">Concatenates up to 3 fields after the current sample which is then turned to
 a string. The first one, &lt;start&gt;, is a constant string, that will be appended
 immediately after the existing sample. It may be omitted if not used. The
 second one, &lt;var&gt;, is a variable name. The variable will be looked up, its
@@ -21493,10 +21577,6 @@ in a way that can be reliably transferred (e.g. an SSL ID can be copied in a
 header).
 </pre><a class="anchor" name="hex2i"></a><a class="anchor" name="7-hex2i"></a><a class="anchor" name="7.3.1-hex2i"></a><a class="anchor" name="hex2i (Using ACLs and fetching samples)"></a><a class="anchor" name="hex2i (Converters)"></a><div class="keyword"><b><a class="anchor" name="hex2i"></a><a href="#7.3.1-hex2i">hex2i</a></b></div><pre class="text">Converts a hex string containing two hex digits per input byte to an
 integer. If the input value cannot be converted, then zero is returned.
-</pre><a class="anchor" name="htonl"></a><a class="anchor" name="7-htonl"></a><a class="anchor" name="7.3.1-htonl"></a><a class="anchor" name="htonl (Using ACLs and fetching samples)"></a><a class="anchor" name="htonl (Converters)"></a><div class="keyword"><b><a class="anchor" name="htonl"></a><a href="#7.3.1-htonl">htonl</a></b></div><pre class="text">Converts the input integer value to its 32-bit binary representation in the
-network byte order. Because sample fetches own signed 64-bit integer, when
-this converter is used, the input integer value is first casted to an
-unsigned 32-bit integer.
 </pre><a class="anchor" name="hmac"></a><a class="anchor" name="7-hmac"></a><a class="anchor" name="7.3.1-hmac"></a><a class="anchor" name="hmac (Using ACLs and fetching samples)"></a><a class="anchor" name="hmac (Converters)"></a><div class="keyword"><b><a class="anchor" name="hmac"></a><a href="#7.3.1-hmac">hmac</a></b>(<span style="color: #080">&lt;algorithm&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Converts a binary input sample to a message authentication code with the given
 key. The result is a binary sample. The &lt;algorithm&gt; must be one of the
 registered OpenSSL message digest names (e.g. sha256). The &lt;key&gt; parameter must
@@ -21511,7 +21591,11 @@ hostname:80, 127.0.0.1, 127.0.0.1:80, [::1], [::1]:80.
 
 This converter also sets the string in lowercase.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#port_only">port_only</a>&quot; converter which will return the port.</div>
-<a class="anchor" name="http_date"></a><a class="anchor" name="7-http_date"></a><a class="anchor" name="7.3.1-http_date"></a><a class="anchor" name="http_date (Using ACLs and fetching samples)"></a><a class="anchor" name="http_date (Converters)"></a><div class="keyword"><b><a class="anchor" name="http_date"></a><a href="#7.3.1-http_date">http_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
+<a class="anchor" name="htonl"></a><a class="anchor" name="7-htonl"></a><a class="anchor" name="7.3.1-htonl"></a><a class="anchor" name="htonl (Using ACLs and fetching samples)"></a><a class="anchor" name="htonl (Converters)"></a><div class="keyword"><b><a class="anchor" name="htonl"></a><a href="#7.3.1-htonl">htonl</a></b></div><pre class="text">Converts the input integer value to its 32-bit binary representation in the
+network byte order. Because sample fetches own signed 64-bit integer, when
+this converter is used, the input integer value is first casted to an
+unsigned 32-bit integer.
+</pre><a class="anchor" name="http_date"></a><a class="anchor" name="7-http_date"></a><a class="anchor" name="7.3.1-http_date"></a><a class="anchor" name="http_date (Using ACLs and fetching samples)"></a><a class="anchor" name="http_date (Converters)"></a><div class="keyword"><b><a class="anchor" name="http_date"></a><a href="#7.3.1-http_date">http_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset</span>]</span>,<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>)</div><pre class="text">Converts an integer supposed to contain a date since epoch to a string
 representing this date in a format suitable for use in HTTP header fields. If
 an offset value is specified, then it is added to the date before the
 conversion is operated. This is particularly useful to emit Date header fields,
@@ -22040,13 +22124,77 @@ http-request set-header x-query &quot;%[query,regsub([?;&amp;]*,'')]&quot;
 http-request redirect location %[url,'regsub(&quot;(foo|bar)([0-9]+)?&quot;,&quot;\2\1&quot;,i)']
 http-request redirect location %[url,regsub(\&quot;(foo|bar)([0-9]+)?\&quot;,\&quot;\2\1\&quot;,i)]
 </code></pre>
-</div><a class="anchor" name="capture-req"></a><a class="anchor" name="7-capture-req"></a><a class="anchor" name="7.3.1-capture-req"></a><a class="anchor" name="capture-req (Using ACLs and fetching samples)"></a><a class="anchor" name="capture-req (Converters)"></a><div class="keyword"><b><a class="anchor" name="capture-req"></a><a href="#7.3.1-capture-req">capture-req</a></b>(<span style="color: #080">&lt;id&gt;</span>)</div><pre class="text">Capture the string entry in the request slot &lt;id&gt; and returns the entry as
-is. If the slot doesn't exist, the capture fails silently.
-</pre><div class="page-header"><b>See also:</b> &quot;<a href="#declare%20capture">declare capture</a>&quot;, &quot;http-request capture&quot;, &quot;http-response capture&quot;, &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot; and &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches).</div>
-<a class="anchor" name="capture-res"></a><a class="anchor" name="7-capture-res"></a><a class="anchor" name="7.3.1-capture-res"></a><a class="anchor" name="capture-res (Using ACLs and fetching samples)"></a><a class="anchor" name="capture-res (Converters)"></a><div class="keyword"><b><a class="anchor" name="capture-res"></a><a href="#7.3.1-capture-res">capture-res</a></b>(<span style="color: #080">&lt;id&gt;</span>)</div><pre class="text">Capture the string entry in the response slot &lt;id&gt; and returns the entry as
-is. If the slot doesn't exist, the capture fails silently.
-</pre><div class="page-header"><b>See also:</b> &quot;<a href="#declare%20capture">declare capture</a>&quot;, &quot;http-request capture&quot;, &quot;http-response capture&quot;, &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot; and &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches).</div>
-<a class="anchor" name="rtrim"></a><a class="anchor" name="7-rtrim"></a><a class="anchor" name="7.3.1-rtrim"></a><a class="anchor" name="rtrim (Using ACLs and fetching samples)"></a><a class="anchor" name="rtrim (Converters)"></a><div class="keyword"><b><a class="anchor" name="rtrim"></a><a href="#7.3.1-rtrim">rtrim</a></b>(<span style="color: #080">&lt;chars&gt;</span>)</div><pre class="text">Skips any characters from &lt;chars&gt; from the end of the string representation
+</div><a class="anchor" name="rfc7239_field"></a><a class="anchor" name="7-rfc7239_field"></a><a class="anchor" name="7.3.1-rfc7239_field"></a><a class="anchor" name="rfc7239_field (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_field (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_field"></a><a href="#7.3.1-rfc7239_field">rfc7239_field</a></b>(<span style="color: #080">&lt;field&gt;</span>)</div><pre class="text">Extracts a single field/parameter from RFC 7239 compliant header value input.
+
+Supported fields are:
+  - proto: either 'http' or 'https'
+  - host: http compliant host
+  - for: RFC7239 node
+  - by: RFC7239 node
+
+More info here:
+  https://www.rfc-editor.org/rfc/rfc7239.html#section-6
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract host field from forwarded header and store it in req.fhost var</span>
+http-request set-var(req.fhost) req.hdr(forwarded),rfc7239_field(host)
+<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;&quot;</span>
+<span class="comment">#  output: &quot;haproxy.org:80&quot;</span>
+
+<span class="comment"># extract for field from forwarded header and store it in req.ffor var</span>
+http-request set-var(req.ffor) req.hdr(forwarded),rfc7239_field(for)
+<span class="comment">#input: &quot;proto=https;host=\&quot;haproxy.org:80\&quot;;for=\&quot;127.0.0.1:9999\&quot;&quot;</span>
+<span class="comment">#  output: &quot;127.0.0.1:9999&quot;</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_is_valid"></a><a class="anchor" name="7-rfc7239_is_valid"></a><a class="anchor" name="7.3.1-rfc7239_is_valid"></a><a class="anchor" name="rfc7239_is_valid (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_is_valid (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_is_valid"></a><a href="#7.3.1-rfc7239_is_valid">rfc7239_is_valid</a></b></div><pre class="text">Returns true if input header is RFC 7239 compliant header value and false
+otherwise.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>acl valid req.hdr(forwarded),rfc7239_is_valid
+<span class="comment">#input: &quot;for=127.0.0.1;proto=http&quot;</span>
+<span class="comment">#  output: TRUE</span>
+<span class="comment">#input: &quot;proto=custom&quot;</span>
+<span class="comment">#  output: FALSE</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_n2nn"></a><a class="anchor" name="7-rfc7239_n2nn"></a><a class="anchor" name="7.3.1-rfc7239_n2nn"></a><a class="anchor" name="rfc7239_n2nn (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2nn (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2nn"></a><a href="#7.3.1-rfc7239_n2nn">rfc7239_n2nn</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
+into its corresponding nodename final form:
+  - ipv4 address
+  - ipv6 address
+  - 'unknown'
+  - '_obfs' identifier
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract 'for' field from forwarded header, extract nodename from</span>
+<span class="comment"># resulting node identifier and store the result in req.fnn</span>
+http-request set-var(req.fnn) req.hdr(forwarded),rfc7239_field(for),rfc7239_n2nn
+<span class="comment">#input: &quot;127.0.0.1:9999&quot;</span>
+<span class="comment">#  output: 127.0.0.1 (ipv4)</span>
+<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
+<span class="comment">#  output: ab:cd:ff:ff:ff:ff:ff:ff (ipv6)</span>
+<span class="comment">#input: &quot;_name:_port&quot;</span>
+<span class="comment">#  output: &quot;_name&quot; (string)</span>
+</code></pre>
+</div><a class="anchor" name="rfc7239_n2np"></a><a class="anchor" name="7-rfc7239_n2np"></a><a class="anchor" name="7.3.1-rfc7239_n2np"></a><a class="anchor" name="rfc7239_n2np (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_n2np (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_n2np"></a><a href="#7.3.1-rfc7239_n2np">rfc7239_n2np</a></b></div><pre class="text">Converts RFC7239 node (provided by 'for' or 'by' 7239 header fields)
+into its corresponding nodeport final form:
+  - unsigned integer
+  - '_obfs' identifier
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># extract 'by' field from forwarded header, extract node port from</span>
+<span class="comment"># resulting node identifier and store the result in req.fnp</span>
+http-request set-var(req.fnp) req.hdr(forwarded),rfc7239_field(by),rfc7239_n2np
+<span class="comment">#input: &quot;127.0.0.1:9999&quot;</span>
+<span class="comment">#  output: 9999 (integer)</span>
+<span class="comment">#input: &quot;[ab:cd:ff:ff:ff:ff:ff:ff]:9998&quot;</span>
+<span class="comment">#  output: 9998 (integer)</span>
+<span class="comment">#input: &quot;_name:_port&quot;</span>
+<span class="comment">#  output: &quot;_port&quot; (string)</span>
+</code></pre>
+</div><a class="anchor" name="rtrim"></a><a class="anchor" name="7-rtrim"></a><a class="anchor" name="7.3.1-rtrim"></a><a class="anchor" name="rtrim (Using ACLs and fetching samples)"></a><a class="anchor" name="rtrim (Converters)"></a><div class="keyword"><b><a class="anchor" name="rtrim"></a><a href="#7.3.1-rtrim">rtrim</a></b>(<span style="color: #080">&lt;chars&gt;</span>)</div><pre class="text">Skips any characters from &lt;chars&gt; from the end of the string representation
 of the input sample.
 </pre><a class="anchor" name="sdbm"></a><a class="anchor" name="7-sdbm"></a><a class="anchor" name="7.3.1-sdbm"></a><a class="anchor" name="sdbm (Using ACLs and fetching samples)"></a><a class="anchor" name="sdbm (Converters)"></a><div class="keyword"><b><a class="anchor" name="sdbm"></a><a href="#7.3.1-sdbm">sdbm</a></b>(<span style="color: #008">[<span style="color: #080">&lt;avalanche&gt;</span>]</span>)</div><pre class="text">Hashes a binary input sample into an unsigned 32-bit quantity using the SDBM
 hash function. Optionally, it is possible to apply a full avalanche hash
@@ -22187,20 +22335,6 @@ set: this makes the converter succeed and return &lt;default_value&gt;. If the k
 is found the converter returns the key expiration delay associated with the
 input sample in the designated table.
 See also the table_idle sample fetch keyword.
-</pre><a class="anchor" name="table_gpt"></a><a class="anchor" name="7-table_gpt"></a><a class="anchor" name="7.3.1-table_gpt"></a><a class="anchor" name="table_gpt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpt (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpt"></a><a href="#7.3.1-table_gpt">table_gpt</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
-the specified table. If the key is not found in the table, boolean value zero
-is returned. Otherwise the converter returns the current value of the general
-purpose tag at the index &lt;idx&gt; of the array associated to the input sample
-in the designated &lt;table&gt;. &lt;idx&gt; is an integer between 0 and 99.
-If there is no GPT stored at this index, it also returns the boolean value 0.
-This applies only to the 'gpt' array data_type (and not on the legacy 'gpt0'
-data-type).
-See also the sc_get_gpt sample fetch keyword.
-</pre><a class="anchor" name="table_gpt0"></a><a class="anchor" name="7-table_gpt0"></a><a class="anchor" name="7.3.1-table_gpt0"></a><a class="anchor" name="table_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpt0 (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpt0"></a><a href="#7.3.1-table_gpt0">table_gpt0</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
-the specified table. If the key is not found in the table, boolean value zero
-is returned. Otherwise the converter returns the current value of the first
-general purpose tag associated with the input sample in the designated table.
-See also the sc_get_gpt0 sample fetch keyword.
 </pre><a class="anchor" name="table_gpc"></a><a class="anchor" name="7-table_gpc"></a><a class="anchor" name="7.3.1-table_gpc"></a><a class="anchor" name="table_gpc (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpc (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpc"></a><a href="#7.3.1-table_gpc">table_gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
 the specified table. If the key is not found in the table, integer value zero
 is returned. Otherwise the converter returns the current value of the
@@ -22211,17 +22345,6 @@ If there is no GPC stored at this index, it also returns the boolean value 0.
 This applies only to the 'gpc' array data_type (and not to the legacy
 'gpc0' nor 'gpc1' data_types).
 See also the sc_get_gpc sample fetch keyword.
-</pre><a class="anchor" name="table_gpc_rate"></a><a class="anchor" name="7-table_gpc_rate"></a><a class="anchor" name="7.3.1-table_gpc_rate"></a><a class="anchor" name="table_gpc_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpc_rate (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpc_rate"></a><a href="#7.3.1-table_gpc_rate">table_gpc_rate</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
-the specified table. If the key is not found in the table, integer value zero
-is returned. Otherwise the converter returns the frequency which the Global
-Purpose Counter at index &lt;idx&gt; of the array (associated to the input sample
-in the designated stick-table &lt;table&gt;) was incremented over the
-configured period. &lt;idx&gt; is an integer between 0 and 99.
-If there is no gpc_rate stored at this index, it also returns the boolean
-value 0.
-This applies only to the 'gpc_rate' array data_type (and not to the
-legacy 'gpc0_rate' nor 'gpc1_rate' data_types).
-See also the sc_gpc_rate sample fetch keyword.
 </pre><a class="anchor" name="table_gpc0"></a><a class="anchor" name="7-table_gpc0"></a><a class="anchor" name="7.3.1-table_gpc0"></a><a class="anchor" name="table_gpc0 (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpc0 (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpc0"></a><a href="#7.3.1-table_gpc0">table_gpc0</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
 the specified table. If the key is not found in the table, integer value zero
 is returned. Otherwise the converter returns the current value of the first
@@ -22244,6 +22367,31 @@ is returned. Otherwise the converter returns the frequency which the gpc1
 counter was incremented over the configured period in the table, associated
 with the input sample in the designated table. See also the sc_get_gpc1_rate
 sample fetch keyword.
+</pre><a class="anchor" name="table_gpc_rate"></a><a class="anchor" name="7-table_gpc_rate"></a><a class="anchor" name="7.3.1-table_gpc_rate"></a><a class="anchor" name="table_gpc_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpc_rate (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpc_rate"></a><a href="#7.3.1-table_gpc_rate">table_gpc_rate</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
+the specified table. If the key is not found in the table, integer value zero
+is returned. Otherwise the converter returns the frequency which the Global
+Purpose Counter at index &lt;idx&gt; of the array (associated to the input sample
+in the designated stick-table &lt;table&gt;) was incremented over the
+configured period. &lt;idx&gt; is an integer between 0 and 99.
+If there is no gpc_rate stored at this index, it also returns the boolean
+value 0.
+This applies only to the 'gpc_rate' array data_type (and not to the
+legacy 'gpc0_rate' nor 'gpc1_rate' data_types).
+See also the sc_gpc_rate sample fetch keyword.
+</pre><a class="anchor" name="table_gpt"></a><a class="anchor" name="7-table_gpt"></a><a class="anchor" name="7.3.1-table_gpt"></a><a class="anchor" name="table_gpt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpt (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpt"></a><a href="#7.3.1-table_gpt">table_gpt</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
+the specified table. If the key is not found in the table, boolean value zero
+is returned. Otherwise the converter returns the current value of the general
+purpose tag at the index &lt;idx&gt; of the array associated to the input sample
+in the designated &lt;table&gt;. &lt;idx&gt; is an integer between 0 and 99.
+If there is no GPT stored at this index, it also returns the boolean value 0.
+This applies only to the 'gpt' array data_type (and not on the legacy 'gpt0'
+data-type).
+See also the sc_get_gpt sample fetch keyword.
+</pre><a class="anchor" name="table_gpt0"></a><a class="anchor" name="7-table_gpt0"></a><a class="anchor" name="7.3.1-table_gpt0"></a><a class="anchor" name="table_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpt0 (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpt0"></a><a href="#7.3.1-table_gpt0">table_gpt0</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
+the specified table. If the key is not found in the table, boolean value zero
+is returned. Otherwise the converter returns the current value of the first
+general purpose tag associated with the input sample in the designated table.
+See also the sc_get_gpt0 sample fetch keyword.
 </pre><a class="anchor" name="table_http_err_cnt"></a><a class="anchor" name="7-table_http_err_cnt"></a><a class="anchor" name="7.3.1-table_http_err_cnt"></a><a class="anchor" name="table_http_err_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_http_err_cnt (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_http_err_cnt"></a><a href="#7.3.1-table_http_err_cnt">table_http_err_cnt</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
 the specified table. If the key is not found in the table, integer value zero
 is returned. Otherwise the converter returns the cumulative number of HTTP
@@ -22338,19 +22486,6 @@ It is also the encoding used in JWT (JSON Web Token) standard.
 http-request set-var(txn.token_payload) req.hdr(Authorization),word(2,.),ub64dec
 </code></pre>
 </div><a class="anchor" name="ub64enc"></a><a class="anchor" name="7-ub64enc"></a><a class="anchor" name="7.3.1-ub64enc"></a><a class="anchor" name="ub64enc (Using ACLs and fetching samples)"></a><a class="anchor" name="ub64enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="ub64enc"></a><a href="#7.3.1-ub64enc">ub64enc</a></b></div><pre class="text">This converter is the base64url variant of base64 converter.
-</pre><a class="anchor" name="upper"></a><a class="anchor" name="7-upper"></a><a class="anchor" name="7.3.1-upper"></a><a class="anchor" name="upper (Using ACLs and fetching samples)"></a><a class="anchor" name="upper (Converters)"></a><div class="keyword"><b><a class="anchor" name="upper"></a><a href="#7.3.1-upper">upper</a></b></div><pre class="text">Convert a string sample to upper case. This can only be placed after a string
-sample fetch function or after a transformation keyword returning a string
-type. The result is of type string.
-</pre><a class="anchor" name="url_dec"></a><a class="anchor" name="7-url_dec"></a><a class="anchor" name="7.3.1-url_dec"></a><a class="anchor" name="url_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="url_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="url_dec"></a><a href="#7.3.1-url_dec">url_dec</a></b>(<span style="color: #008">[<span style="color: #080">&lt;in_form&gt;</span>]</span>)</div><pre class="text">Takes an url-encoded string provided as input and returns the decoded version
-as output. The input and the output are of type string. If the &lt;in_form&gt;
-argument is set to a non-zero integer value, the input string is assumed to
-be part of a form or query string and the '+' character will be turned into a
-space (' '). Otherwise this will only happen after a question mark indicating
-a query string ('?').
-</pre><a class="anchor" name="url_enc"></a><a class="anchor" name="7-url_enc"></a><a class="anchor" name="7.3.1-url_enc"></a><a class="anchor" name="url_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="url_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="url_enc"></a><a href="#7.3.1-url_enc">url_enc</a></b>(<span style="color: #008">[<span style="color: #080">&lt;enc_type&gt;</span>]</span>)</div><pre class="text">Takes a string provided as input and returns the encoded version as output.
-The input and the output are of type string. By default the type of encoding
-is meant for `query` type. There is no other type supported for now but the
-optional argument is here for future changes.
 </pre><a class="anchor" name="ungrpc"></a><a class="anchor" name="7-ungrpc"></a><a class="anchor" name="7.3.1-ungrpc"></a><a class="anchor" name="ungrpc (Using ACLs and fetching samples)"></a><a class="anchor" name="ungrpc (Converters)"></a><div class="keyword"><b><a class="anchor" name="ungrpc"></a><a href="#7.3.1-ungrpc">ungrpc</a></b>(<span style="color: #080">&lt;field_number&gt;</span>,<span style="color: #008">[<span style="color: #080">&lt;field_type&gt;</span>]</span>)</div><pre class="text">This extracts the protocol buffers message field in raw mode of an input binary
 sample representation of a gRPC message with &lt;field_number&gt; as field number
 (dotted notation) if &lt;field_type&gt; is not present, or as an integer sample if this
@@ -22418,6 +22553,19 @@ starts with an indication about its scope. The scopes allowed are:
   &quot;res&quot;  : the variable is shared only during response processing.
 This prefix is followed by a name. The separator is a '.'. The name may only
 contain characters 'a-z', 'A-Z', '0-9', '.' and '_'.
+</pre><a class="anchor" name="upper"></a><a class="anchor" name="7-upper"></a><a class="anchor" name="7.3.1-upper"></a><a class="anchor" name="upper (Using ACLs and fetching samples)"></a><a class="anchor" name="upper (Converters)"></a><div class="keyword"><b><a class="anchor" name="upper"></a><a href="#7.3.1-upper">upper</a></b></div><pre class="text">Convert a string sample to upper case. This can only be placed after a string
+sample fetch function or after a transformation keyword returning a string
+type. The result is of type string.
+</pre><a class="anchor" name="url_dec"></a><a class="anchor" name="7-url_dec"></a><a class="anchor" name="7.3.1-url_dec"></a><a class="anchor" name="url_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="url_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="url_dec"></a><a href="#7.3.1-url_dec">url_dec</a></b>(<span style="color: #008">[<span style="color: #080">&lt;in_form&gt;</span>]</span>)</div><pre class="text">Takes an url-encoded string provided as input and returns the decoded version
+as output. The input and the output are of type string. If the &lt;in_form&gt;
+argument is set to a non-zero integer value, the input string is assumed to
+be part of a form or query string and the '+' character will be turned into a
+space (' '). Otherwise this will only happen after a question mark indicating
+a query string ('?').
+</pre><a class="anchor" name="url_enc"></a><a class="anchor" name="7-url_enc"></a><a class="anchor" name="7.3.1-url_enc"></a><a class="anchor" name="url_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="url_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="url_enc"></a><a href="#7.3.1-url_enc">url_enc</a></b>(<span style="color: #008">[<span style="color: #080">&lt;enc_type&gt;</span>]</span>)</div><pre class="text">Takes a string provided as input and returns the encoded version as output.
+The input and the output are of type string. By default the type of encoding
+is meant for `query` type. There is no other type supported for now but the
+optional argument is here for future changes.
 </pre><a class="anchor" name="us_ltime"></a><a class="anchor" name="7-us_ltime"></a><a class="anchor" name="7.3.1-us_ltime"></a><a class="anchor" name="us_ltime (Using ACLs and fetching samples)"></a><a class="anchor" name="us_ltime (Converters)"></a><div class="keyword"><b><a class="anchor" name="us_ltime"></a><a href="#7.3.1-us_ltime">us_ltime</a></b>(<span style="color: #080">&lt;format&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset&gt;</span>]</span>)</div><pre class="text">This works like &quot;<a href="#ltime">ltime</a>&quot; but takes an input in microseconds. It also supports
 the %N conversion specifier inspired by date(1).
 Converts an integer supposed to contain a date since epoch to a string
@@ -22505,7 +22653,32 @@ mostly intended for debugging, but can be used as a stick-table entry to
 collect rough statistics. It must not be used for security purposes as a
 32-bit hash is trivial to break. See also &quot;<a href="#crc32">crc32</a>&quot;, &quot;<a href="#djb2">djb2</a>&quot;, &quot;<a href="#sdbm">sdbm</a>&quot;, &quot;<a href="#crc32c">crc32c</a>&quot;,
 and the &quot;<a href="#hash-type">hash-type</a>&quot; directive.
-</pre><a class="anchor" name="xor"></a><a class="anchor" name="7-xor"></a><a class="anchor" name="7.3.1-xor"></a><a class="anchor" name="xor (Using ACLs and fetching samples)"></a><a class="anchor" name="xor (Converters)"></a><div class="keyword"><b><a class="anchor" name="xor"></a><a href="#7.3.1-xor">xor</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Performs a bitwise &quot;XOR&quot; (exclusive OR) between &lt;value&gt; and the input value
+</pre><a class="anchor" name="x509_v_err_str"></a><a class="anchor" name="7-x509_v_err_str"></a><a class="anchor" name="7.3.1-x509_v_err_str"></a><a class="anchor" name="x509_v_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="x509_v_err_str (Converters)"></a><div class="keyword"><b><a class="anchor" name="x509_v_err_str"></a><a href="#7.3.1-x509_v_err_str">x509_v_err_str</a></b></div><pre class="text">Convert a numerical value to its corresponding X509_V_ERR constant name. It
+is useful in ACL in order to have a configuration which works with multiple
+version of OpenSSL since some codes might change when changing version.
+
+When the corresponding constant name was not found, outputs the numerical
+value as a string.
+
+The list of constant provided by OpenSSL can be found at
+https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
+Be careful to read the page for the right version of OpenSSL.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>bind :443 ssl crt common.pem ca-file ca-auth.crt verify optional crt-ignore-err X509_V_ERR_CERT_REVOKED,X509_V_ERR_CERT_HAS_EXPIRED
+
+acl cert_expired ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_HAS_EXPIRED
+acl cert_revoked ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_REVOKED
+acl cert_ok      ssl_c_verify,x509_v_err_str -m str X509_V_OK
+
+http-response add-header X-SSL Ok if cert_ok
+http-response add-header X-SSL Expired if cert_expired
+http-response add-header X-SSL Revoked if cert_revoked
+
+http-response add-header X-SSL-verify %[ssl_c_verify,x509_v_err_str]
+</code></pre>
+</div><a class="anchor" name="xor"></a><a class="anchor" name="7-xor"></a><a class="anchor" name="7.3.1-xor"></a><a class="anchor" name="xor (Using ACLs and fetching samples)"></a><a class="anchor" name="xor (Converters)"></a><div class="keyword"><b><a class="anchor" name="xor"></a><a href="#7.3.1-xor">xor</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Performs a bitwise &quot;XOR&quot; (exclusive OR) between &lt;value&gt; and the input value
 of type signed integer, and returns the result as an signed integer.
 &lt;value&gt; can be a numeric value or a variable name. The name of the variable
 starts with an indication about its scope. The scopes allowed are:
@@ -22538,38 +22711,75 @@ is known to be very good and very fast so it can be used to hash URLs and/or
 URL parameters for use as stick-table keys to collect statistics with a low
 collision rate, though care must be taken as the algorithm is not considered
 as cryptographically secure.
-</pre><a class="anchor" name="x509_v_err_str"></a><a class="anchor" name="7-x509_v_err_str"></a><a class="anchor" name="7.3.1-x509_v_err_str"></a><a class="anchor" name="x509_v_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="x509_v_err_str (Converters)"></a><div class="keyword"><b><a class="anchor" name="x509_v_err_str"></a><a href="#7.3.1-x509_v_err_str">x509_v_err_str</a></b></div><pre class="text">Convert a numerical value to its corresponding X509_V_ERR constant name. It
-is useful in ACL in order to have a configuration which works with multiple
-version of OpenSSL since some codes might change when changing version.
-
-When the corresponding constant name was not found, outputs the numerical
-value as a string.
-
-The list of constant provided by OpenSSL can be found at
-https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html#ERROR-CODES
-Be careful to read the page for the right version of OpenSSL.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code>bind :443 ssl crt common.pem ca-file ca-auth.crt verify optional crt-ignore-err X509_V_ERR_CERT_REVOKED,X509_V_ERR_CERT_HAS_EXPIRED
-
-acl cert_expired ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_HAS_EXPIRED
-acl cert_revoked ssl_c_verify,x509_v_err_str -m str X509_V_ERR_CERT_REVOKED
-acl cert_ok      ssl_c_verify,x509_v_err_str -m str X509_V_OK
-
-http-response add-header X-SSL Ok if cert_ok
-http-response add-header X-SSL Expired if cert_expired
-http-response add-header X-SSL Revoked if cert_revoked
-
-http-response add-header X-SSL-verify %[ssl_c_verify,x509_v_err_str]
-</code></pre>
-</div></div>
+</pre></div>
 <a class="anchor" id="7.3.2" name="7.3.2"></a>
 <h3 id="chapter-7.3.2" data-target="7.3.2"><small><a class="small" href="#7.3.2">7.3.2.</a></small> Fetching samples from internal states</h3>
 <div><pre class="text">A first set of sample fetch methods applies to internal information which does
 not even relate to any client information. These ones are sometimes used with
 &quot;monitor-fail&quot; directives to report an internal status to external watchers.
 The sample fetch methods described in this section are usable anywhere.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-act_conn">act_conn</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-acl">acl</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-always_false">always_false</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-always_true">always_true</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-avg_queue">avg_queue</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_conn">be_conn</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_conn_free">be_conn_free</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_sess_rate">be_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bin">bin</a></td><td >bin</td></tr>
+<tr><td ><a href="#7-bool">bool</a></td><td >bool</td></tr>
+<tr><td ><a href="#7-connslots">connslots</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cpu_calls">cpu_calls</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cpu_ns_avg">cpu_ns_avg</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cpu_ns_tot">cpu_ns_tot</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-date">date</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-date_us">date_us</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-env">env</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fe_conn">fe_conn</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fe_req_rate">fe_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fe_sess_rate">fe_sess_rate</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-hostname">hostname</a></td><td >string</td></tr>
+<tr><td ><a href="#7-int">int</a></td><td >signed</td></tr>
+<tr><td ><a href="#7-ipv4">ipv4</a></td><td >ipv4</td></tr>
+<tr><td ><a href="#7-ipv6">ipv6</a></td><td >ipv6</td></tr>
+<tr><td ><a href="#7-last_rule_file">last_rule_file</a></td><td >string</td></tr>
+<tr><td ><a href="#7-last_rule_line">last_rule_line</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-lat_ns_avg">lat_ns_avg</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-lat_ns_tot">lat_ns_tot</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-meth">meth</a></td><td >method</td></tr>
+<tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-prio_class">prio_class</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-prio_offset">prio_offset</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-pid">pid</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-proc">proc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-queue">queue</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-quic_enabled">quic_enabled</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-rand">rand</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_conn">srv_conn</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_conn_free">srv_conn_free</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_sess_rate">srv_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_iweight">srv_iweight</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_uweight">srv_uweight</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_weight">srv_weight</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-stopping">stopping</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-str">str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-table_avl">table_avl</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-table_cnt">table_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-thread">thread</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.id32">txn.id32</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.conn_retries">txn.conn_retries</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
+<tr><td ><a href="#7-uuid">uuid</a></td><td >string</td></tr>
+<tr><td ><a href="#7-var">var</a></td><td >undefined</td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
 returns false. Up to 12 ACLs may be provided, each delimited by comma. Each
@@ -22767,7 +22977,7 @@ frontend mail
 rule that was matched during stream analysis. A final rule is one that
 terminates the evaluation of the rule set (like an &quot;<a href="#accept">accept</a>&quot;, &quot;<a href="#deny">deny</a>&quot; or
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot;). This works for TCP request and response rules acting on the
-&quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+&quot;content&quot; rulesets, and on HTTP rules from &quot;<a href="#http-request">http-request</a>&quot;, &quot;<a href="#http-response">http-response</a>&quot;
 and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; rulesets are not
 supported (such information is not stored there), and neither &quot;tcp-request
 connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
@@ -22779,7 +22989,7 @@ figure why a request was denied for example. See also &quot;<a href="#last_rule_
 last final rule that was matched during stream analysis. A final rule is one
 that terminates the evaluation of the rule set (like an &quot;<a href="#accept">accept</a>&quot;, &quot;<a href="#deny">deny</a>&quot; or
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot;). This works for TCP request and response rules acting on the
-&quot;content&quot; rulesets, and on HTTP rules from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-response<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-response%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-response%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot;
+&quot;content&quot; rulesets, and on HTTP rules from &quot;<a href="#http-request">http-request</a>&quot;, &quot;<a href="#http-response">http-response</a>&quot;
 and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; rulesets are not
 supported (such information is not stored there), and neither &quot;tcp-request
 connection&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot; rulesets are supported because the
@@ -22974,6 +23184,216 @@ counter number can be specified as the first integer argument when using the
 An optional table may be specified with the &quot;sc*&quot; form, in which case the
 currently tracked key will be looked up into this alternate table instead of
 the table currently being tracked.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-accept_date">accept_date</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc.timer.connect">bc.timer.connect</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_dst">bc_dst</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-bc_dst_port">bc_dst_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_err">bc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_err_str">bc_err_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bc_http_major">bc_http_major</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_src">bc_src</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-bc_src_port">bc_src_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_id">be_id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_name">be_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bc_rtt">bc_rtt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_rttvar">bc_rttvar</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_server_timeout">be_server_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_tunnel_timeout">be_tunnel_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_tunnel_timeout">cur_tunnel_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-dst">dst</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-dst_conn">dst_conn</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-dst_is_local">dst_is_local</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-dst_port">dst_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc.timer.handshake">fc.timer.handshake</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc.timer.total">fc.timer.total</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_dst">fc_dst</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-fc_dst_is_local">fc_dst_is_local</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-fc_dst_port">fc_dst_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_err">fc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_err_str">fc_err_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fc_fackets">fc_fackets</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_http_major">fc_http_major</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_lost">fc_lost</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_pp_authority">fc_pp_authority</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fc_pp_unique_id">fc_pp_unique_id</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fc_pp_tlv">fc_pp_tlv</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fc_rcvd_proxy">fc_rcvd_proxy</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-fc_reordering">fc_reordering</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_retrans">fc_retrans</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_rtt">fc_rtt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_rttvar">fc_rttvar</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_src">fc_src</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-fc_src_is_local">fc_src_is_local</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-fc_src_port">fc_src_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_unacked">fc_unacked</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fe_defbe">fe_defbe</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fe_client_timeout">fe_client_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.timer.data">res.timer.data</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_bytes_in_rate">sc_bytes_in_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_bytes_in_rate">sc1_bytes_in_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_bytes_in_rate">sc2_bytes_in_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_bytes_out_rate">sc_bytes_out_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_bytes_out_rate">sc2_bytes_out_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_clr_gpc">sc_clr_gpc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc0_clr_gpc0">sc0_clr_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_clr_gpc0">sc1_clr_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_clr_gpc0">sc2_clr_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_clr_gpc1">sc_clr_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_clr_gpc1">sc0_clr_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_clr_gpc1">sc2_clr_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_conn_cnt">sc0_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_conn_cnt">sc1_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_conn_cnt">sc2_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_conn_cur">sc_conn_cur</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_conn_cur">sc0_conn_cur</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_conn_cur">sc2_conn_cur</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_conn_rate">sc_conn_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_conn_rate">sc0_conn_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_conn_rate">sc1_conn_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_conn_rate">sc2_conn_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_get_gpc">sc_get_gpc</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc_get_gpc0">sc_get_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_get_gpc0">sc0_get_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_get_gpc0">sc1_get_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_get_gpc0">sc2_get_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_get_gpc1">sc_get_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_get_gpc1">sc0_get_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_get_gpc1">sc1_get_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_get_gpc1">sc2_get_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_get_gpt">sc_get_gpt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_get_gpt0">sc_get_gpt0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_get_gpt0">sc0_get_gpt0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_get_gpt0">sc1_get_gpt0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_get_gpt0">sc2_get_gpt0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_gpc_rate">sc_gpc_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_gpc0_rate">sc_gpc0_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_gpc0_rate">sc1_gpc0_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_gpc1_rate">sc2_gpc1_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_err_cnt">sc_http_err_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_http_err_cnt">sc1_http_err_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_err_rate">sc_http_err_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_err_rate">sc0_http_err_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_http_err_rate">sc1_http_err_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_err_rate">sc2_http_err_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_fail_cnt">sc_http_fail_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_fail_cnt">sc0_http_fail_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_http_fail_cnt">sc1_http_fail_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_fail_cnt">sc2_http_fail_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_fail_rate">sc_http_fail_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_fail_rate">sc0_http_fail_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_http_fail_rate">sc1_http_fail_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_req_cnt">sc0_http_req_cnt</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_req_cnt">sc2_http_req_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_http_req_rate">sc_http_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_http_req_rate">sc0_http_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_http_req_rate">sc1_http_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_http_req_rate">sc2_http_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_inc_gpc">sc_inc_gpc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_inc_gpc0">sc0_inc_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_inc_gpc0">sc1_inc_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_inc_gpc0">sc2_inc_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_inc_gpc1">sc_inc_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_inc_gpc1">sc0_inc_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_inc_gpc1">sc1_inc_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_inc_gpc1">sc2_inc_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_kbytes_in">sc0_kbytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_kbytes_in">sc2_kbytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_kbytes_out">sc2_kbytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_sess_cnt">sc_sess_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_sess_cnt">sc0_sess_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_sess_cnt">sc1_sess_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_sess_cnt">sc2_sess_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_sess_rate">sc_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_sess_rate">sc0_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_sess_rate">sc1_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_sess_rate">sc2_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_tracked">sc_tracked</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-sc0_tracked">sc0_tracked</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-sc1_tracked">sc1_tracked</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-sc2_tracked">sc2_tracked</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-sc_trackers">sc_trackers</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_trackers">sc0_trackers</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_trackers">sc1_trackers</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_trackers">sc2_trackers</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-so_id">so_id</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-src">src</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-src_bytes_in_rate">src_bytes_in_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_bytes_out_rate">src_bytes_out_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_clr_gpc">src_clr_gpc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_clr_gpc0">src_clr_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_clr_gpc1">src_clr_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_conn_cnt">src_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_conn_cur">src_conn_cur</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_conn_rate">src_conn_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_get_gpc">src_get_gpc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_get_gpc0">src_get_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_get_gpc1">src_get_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_get_gpt">src_get_gpt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_get_gpt0">src_get_gpt0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_gpc_rate">src_gpc_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_gpc0_rate">src_gpc0_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_gpc1_rate">src_gpc1_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_http_err_rate">src_http_err_rate</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_http_fail_rate">src_http_fail_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_http_req_cnt">src_http_req_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_http_req_rate">src_http_req_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_inc_gpc">src_inc_gpc</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_inc_gpc0">src_inc_gpc0</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_inc_gpc1">src_inc_gpc1</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_is_local">src_is_local</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-src_kbytes_in">src_kbytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_kbytes_out">src_kbytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_port">src_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_sess_cnt">src_sess_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_sess_rate">src_sess_rate</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-src_updt_conn_cnt">src_updt_conn_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_id">srv_id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-srv_name">srv_name</a></td><td >string</td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="accept_date"></a><a class="anchor" name="7-accept_date"></a><a class="anchor" name="7.3.3-accept_date"></a><a class="anchor" name="accept_date (Using ACLs and fetching samples)"></a><a class="anchor" name="accept_date (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="accept_date"></a><a href="#7.3.3-accept_date">accept_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the connection was received by HAProxy
 (which might be very slightly different from the date observed on the
 network if there was some queuing in the system's backlog). This is usually
@@ -23665,6 +24085,106 @@ closest to the session once all the connection handshakes are finished, but
 when no content is yet made available. The fetch methods described here are
 usable as low as the &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot; rule sets unless they require some
 future information. Those generally include the results of SSL negotiations.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-51d.all">51d.all</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc">ssl_bc</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_bc_alg_keysize">ssl_bc_alg_keysize</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_bc_alpn">ssl_bc_alpn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_cipher">ssl_bc_cipher</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_client_random">ssl_bc_client_random</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_curve">ssl_bc_curve</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_err">ssl_bc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_bc_err_str">ssl_bc_err_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_is_resumed">ssl_bc_is_resumed</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_bc_npn">ssl_bc_npn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_protocol">ssl_bc_protocol</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_unique_id">ssl_bc_unique_id</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_server_random">ssl_bc_server_random</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_session_id">ssl_bc_session_id</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_session_key">ssl_bc_session_key</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_use_keysize">ssl_bc_use_keysize</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_c_ca_err">ssl_c_ca_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_c_ca_err_depth">ssl_c_ca_err_depth</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_c_chain_der">ssl_c_chain_der</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_c_der">ssl_c_der</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_c_err">ssl_c_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_c_i_dn">ssl_c_i_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_key_alg">ssl_c_key_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_notbefore">ssl_c_notbefore</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_r_dn">ssl_c_r_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_s_dn">ssl_c_s_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_serial">ssl_c_serial</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_c_sha1">ssl_c_sha1</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_c_sig_alg">ssl_c_sig_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_used">ssl_c_used</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_c_verify">ssl_c_verify</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_c_version">ssl_c_version</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_f_der">ssl_f_der</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_f_i_dn">ssl_f_i_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_f_key_alg">ssl_f_key_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_f_notafter">ssl_f_notafter</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_f_notbefore">ssl_f_notbefore</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_f_s_dn">ssl_f_s_dn</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_f_serial">ssl_f_serial</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_fc">ssl_fc</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_fc_alg_keysize">ssl_fc_alg_keysize</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_fc_alpn">ssl_fc_alpn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_cipher">ssl_fc_cipher</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_cipherlist_bin">ssl_fc_cipherlist_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_cipherlist_hex">ssl_fc_cipherlist_hex</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_cipherlist_str">ssl_fc_cipherlist_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_cipherlist_xxh">ssl_fc_cipherlist_xxh</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_fc_curve">ssl_fc_curve</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_eclist_bin">ssl_fc_eclist_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_client_random">ssl_fc_client_random</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_client_early_traffic_secret">ssl_fc_client_early_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_client_handshake_traffic_secret">ssl_fc_client_handshake_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_client_traffic_secret_0">ssl_fc_client_traffic_secret_0</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_fc_exporter_secret">ssl_fc_exporter_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_early_exporter_secret">ssl_fc_early_exporter_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_has_crt">ssl_fc_has_crt</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_fc_has_early">ssl_fc_has_early</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_fc_has_sni">ssl_fc_has_sni</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_fc_is_resumed">ssl_fc_is_resumed</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-ssl_fc_npn">ssl_fc_npn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_protocol">ssl_fc_protocol</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_protocol_hello_id">ssl_fc_protocol_hello_id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_fc_unique_id">ssl_fc_unique_id</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_server_handshake_traffic_secret">ssl_fc_server_handshake_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_server_traffic_secret_0">ssl_fc_server_traffic_secret_0</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_server_random">ssl_fc_server_random</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_session_id">ssl_fc_session_id</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_session_key">ssl_fc_session_key</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_sni">ssl_fc_sni</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_s_key_alg">ssl_s_key_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_notafter">ssl_s_notafter</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_notbefore">ssl_s_notbefore</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_s_dn">ssl_s_s_dn</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_serial">ssl_s_serial</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_s_sha1">ssl_s_sha1</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_s_sig_alg">ssl_s_sig_alg</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_s_version">ssl_s_version</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.timer.user">txn.timer.user</a></td><td >integer</td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="51d.all"></a><a class="anchor" name="7-51d.all"></a><a class="anchor" name="7.3.4-51d.all"></a><a class="anchor" name="51d.all (Using ACLs and fetching samples)"></a><a class="anchor" name="51d.all (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="51d.all"></a><a href="#7.3.4-51d.all">51d.all</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>) : string</div><pre class="text">Returns values for the properties requested as a string, where values are
 separated by the delimiter specified with &quot;<a href="#51degrees-property-separator">51degrees-property-separator</a>&quot;.
 The device is identified using all the important HTTP headers from the
@@ -24250,6 +24770,42 @@ Warning : Following sample fetches are ignored if used from HTTP proxies. They
           one of the following sample fetches. But it is not possible to detect
           all invalid usage (for instance inside a log-format string or a
           sample expression). So be careful.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-bs.id%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">bs.id                                              integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-distcc_body%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">distcc_body                                        binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-distcc_param%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">distcc_param                                       integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-fs.id%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">fs.id                                              integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-payload%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">payload                                            binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-payload_lv%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">payload_lv                                         binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.len%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req.len                                            integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req_len%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req_len                                            integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.payload%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">req.payload                                        binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.payload_lv%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">req.payload_lv                                     binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.proto_http%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20boolean">req.proto_http                                     boolean</a></td><td ></td></tr>
+<tr><td ><a href="#7-req_proto_http%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20boolean">req_proto_http                                     boolean</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.rdp_cookie%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20string">req.rdp_cookie                                     string</a></td><td ></td></tr>
+<tr><td ><a href="#7-rdp_cookie%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20string">rdp_cookie                                         string</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.rdp_cookie_cnt%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req.rdp_cookie_cnt                                 integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-rdp_cookie_cnt%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">rdp_cookie_cnt                                     integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_alpn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20string">req.ssl_alpn                                       string</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_ec_ext%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20boolean">req.ssl_ec_ext                                     boolean</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_hello_type%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req.ssl_hello_type                                 integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req_ssl_hello_type%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req_ssl_hello_type                                 integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_sni%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20string">req.ssl_sni                                        string</a></td><td ></td></tr>
+<tr><td ><a href="#7-req_ssl_sni%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20string">req_ssl_sni                                        string</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_st_ext%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req.ssl_st_ext                                     integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req.ssl_ver%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req.ssl_ver                                        integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-req_ssl_ver%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">req_ssl_ver                                        integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-res.len%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">res.len                                            integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-res.payload%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">res.payload                                        binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-res.payload_lv%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20binary">res.payload_lv                                     binary</a></td><td ></td></tr>
+<tr><td ><a href="#7-res.ssl_hello_type%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">res.ssl_hello_type                                 integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-rep_ssl_hello_type%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20integer">rep_ssl_hello_type                                 integer</a></td><td ></td></tr>
+<tr><td ><a href="#7-wait_end%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20boolean">wait_end                                           boolean</a></td><td ></td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the server side. It is the
 multiplexer's responsibility to return the appropriate information.
 </pre><a class="anchor" name="distcc_body"></a><a class="anchor" name="7-distcc_body"></a><a class="anchor" name="7.3.5-distcc_body"></a><a class="anchor" name="distcc_body (Using ACLs and fetching samples)"></a><a class="anchor" name="distcc_body (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="distcc_body"></a><a href="#7.3.5-distcc_body">distcc_body</a></b>(<span style="color: #080">&lt;token&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) : binary</div><pre class="text">Parses a distcc message and returns the body associated to occurrence #&lt;occ&gt;
@@ -24519,6 +25075,114 @@ Note : Regarding HTTP processing from the tcp-request content rules, everything
        to rely to &quot;<a href="#req.proto_http">req.proto_http</a>&quot;, &quot;<a href="#req.ver">req.ver</a>&quot; and eventually &quot;<a href="#method">method</a>&quot; sample
        fetches. All other L7 sample fetches will fail. After an HTTP upgrade,
        they will work in the same manner than from an HTTP proxy.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-base">base</a></td><td >string</td></tr>
+<tr><td ><a href="#7-base32">base32</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-base32%2Bsrc">base32+src</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-baseq">baseq</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bytes_in">bytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-capture.req.hdr">capture.req.hdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-capture.req.method">capture.req.method</a></td><td >string</td></tr>
+<tr><td ><a href="#7-capture.req.uri">capture.req.uri</a></td><td >string</td></tr>
+<tr><td ><a href="#7-capture.req.ver">capture.req.ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-capture.res.hdr">capture.res.hdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-capture.res.ver">capture.res.ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.body">req.body</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-req.body_param">req.body_param</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.body_len">req.body_len</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.body_size">req.body_size</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.cook">req.cook</a></td><td >string</td></tr>
+<tr><td ><a href="#7-cook">cook</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.cook_cnt">req.cook_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cook_cnt">cook_cnt</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-req.cook_val">req.cook_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cook_val">cook_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.cook_names">req.cook_names</a></td><td >string</td></tr>
+<tr><td ><a href="#7-cookie">cookie</a></td><td >string</td></tr>
+<tr><td ><a href="#7-hdr">hdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-request_date">request_date</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.fhdr">req.fhdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.fhdr_cnt">req.fhdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.hdr">req.hdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.hdr_cnt">req.hdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-hdr_cnt">hdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.hdr_ip">req.hdr_ip</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-hdr_ip">hdr_ip</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-req.hdr_val">req.hdr_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-hdr_val">hdr_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.hdrs">req.hdrs</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.hdrs_bin">req.hdrs_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-req.timer.hdr">req.timer.hdr</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.timer.idle">req.timer.idle</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.timer.queue">req.timer.queue</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-req.timer.tq">req.timer.tq</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.timer.hdr">res.timer.hdr</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-http_auth">http_auth</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-http_auth_bearer">http_auth_bearer</a></td><td >string</td></tr>
+<tr><td ><a href="#7-http_auth_group">http_auth_group</a></td><td >string</td></tr>
+<tr><td ><a href="#7-http_auth_pass">http_auth_pass</a></td><td >string</td></tr>
+<tr><td ><a href="#7-http_auth_type">http_auth_type</a></td><td >string</td></tr>
+<tr><td ><a href="#7-http_auth_user">http_auth_user</a></td><td >string</td></tr>
+<tr><td ><a href="#7-http_first_req">http_first_req</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-method">method</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-path">path</a></td><td >string</td></tr>
+<tr><td ><a href="#7-pathq">pathq</a></td><td >string</td></tr>
+<tr><td ><a href="#7-query">query</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.hdr_names">req.hdr_names</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.ver">req.ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req_ver">req_ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.body">res.body</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-res.body_len">res.body_len</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.body_size">res.body_size</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.cache_hit">res.cache_hit</a></td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-res.cache_name">res.cache_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.comp">res.comp</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-res.comp_algo">res.comp_algo</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.cook">res.cook</a></td><td >string</td></tr>
+<tr><td ><a href="#7-scook">scook</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.cook_cnt">res.cook_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-scook_cnt">scook_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.cook_val">res.cook_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-scook_val">scook_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.cook_names">res.cook_names</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.fhdr">res.fhdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.fhdr_cnt">res.fhdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.hdr">res.hdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-shdr">shdr</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.hdr_cnt">res.hdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-shdr_cnt">shdr_cnt</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.hdr_ip">res.hdr_ip</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-shdr_ip">shdr_ip</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-res.hdr_names">res.hdr_names</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.hdr_val">res.hdr_val</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-shdr_val">shdr_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.hdrs">res.hdrs</a></td><td >string</td></tr>
+<tr><td ><a href="#7-res.hdrs_bin">res.hdrs_bin</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-res.ver">res.ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-resp_ver">resp_ver</a></td><td >string</td></tr>
+<tr><td ><a href="#7-server_status">server_status</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-set-cookie">set-cookie</a></td><td >string</td></tr>
+<tr><td ><a href="#7-status">status</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.status">txn.status</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.timer.total">txn.timer.total</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-unique-id">unique-id</a></td><td >string</td></tr>
+<tr><td ><a href="#7-url">url</a></td><td >string</td></tr>
+<tr><td ><a href="#7-url_ip">url_ip</a></td><td >ip</td></tr>
+<tr><td ><a href="#7-url_port">url_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-urlp">urlp</a></td><td >string</td></tr>
+<tr><td ><a href="#7-url_param">url_param</a></td><td >string</td></tr>
+<tr><td ><a href="#7-urlp_val">urlp_val</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-url32">url32</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-url32%2Bsrc">url32+src</a></td><td >binary</td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="base"></a><a class="anchor" name="7-base"></a><a class="anchor" name="7.3.6-base"></a><a class="anchor" name="base (Using ACLs and fetching samples)"></a><a class="anchor" name="base (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="base"></a><a href="#7.3.6-base">base</a></b> : string</div><pre class="text">This returns the concatenation of the first Host header and the path part of
 the request, which starts at the first slash and ends before the question
 mark. It can be useful in virtual hosted environments to detect URL abuses as
@@ -25102,6 +25766,25 @@ There is no warranty the following sample fetches will never change, be renamed
 or simply removed. So be really careful if you should use one of them. To avoid
 any ambiguity, these sample fetches are placed in the dedicated scope &quot;internal&quot;,
 for instance &quot;<a href="#internal.strm.is_htx">internal.strm.is_htx</a>&quot;.
+
+Summary of sample fetch methods in this section and their respective types:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-internal.htx.data">internal.htx.data</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx.free">internal.htx.free</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx.free_data">internal.htx.free_data</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx.has_eom">internal.htx.has_eom</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-internal.htx.nbblks">internal.htx.nbblks</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx.size">internal.htx.size</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx.used">internal.htx.used</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.size">internal.htx_blk.size</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.type">internal.htx_blk.type</a></td><td >string</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.data">internal.htx_blk.data</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.hdrname">internal.htx_blk.hdrname</a></td><td >string</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.hdrval">internal.htx_blk.hdrval</a></td><td >string</td></tr>
+<tr><td ><a href="#7-internal.htx_blk.start_line">internal.htx_blk.start_line</a></td><td >string</td></tr>
+<tr><td ><a href="#7-internal.strm.is_htx">internal.strm.is_htx</a></td><td >boolean</td></tr>
+</table><pre class="text">Detailed list:
 </pre><a class="anchor" name="internal.htx.data"></a><a class="anchor" name="7-internal.htx.data"></a><a class="anchor" name="7.3.7-internal.htx.data"></a><a class="anchor" name="internal.htx.data (Using ACLs and fetching samples)"></a><a class="anchor" name="internal.htx.data (Fetching samples for developers)"></a><div class="keyword"><b><a class="anchor" name="internal.htx.data"></a><a href="#7.3.7-internal.htx.data">internal.htx.data</a></b> : integer</div><pre class="text">Returns the size in bytes used by data in the HTX message associated to a
 channel. The channel is chosen depending on the sample direction.
 </pre><a class="anchor" name="internal.htx.free"></a><a class="anchor" name="7-internal.htx.free"></a><a class="anchor" name="7.3.7-internal.htx.free"></a><a class="anchor" name="internal.htx.free (Using ACLs and fetching samples)"></a><a class="anchor" name="internal.htx.free (Fetching samples for developers)"></a><div class="keyword"><b><a class="anchor" name="internal.htx.free"></a><a href="#7.3.7-internal.htx.free">internal.htx.free</a></b> : integer</div><pre class="text">Returns the free space (size - used) in bytes in the HTX message associated
@@ -27538,7 +28221,7 @@ requests is finally forwarded to an HTTP server.
 About the rules &quot;<a href="#set-param">set-param</a>&quot;, when a rule is applied, a pseudo header is added
 into the HTX message. So, the same way than for HTTP header rewrites, it may
 fail if the buffer is full. The rules &quot;<a href="#set-param">set-param</a>&quot; will compete with
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; ones.
+&quot;<a href="#http-request">http-request</a>&quot; ones.
 
 Finally, all FastCGI params and HTTP headers are sent into a unique record
 FCGI_PARAM. Encoding of this record must be done in one pass, otherwise a
@@ -27709,8 +28392,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev11-92 &ndash; Configuration Manual<br>
-							<small>, 2023/11/24</small>
+							HAProxy 2.9-dev12 &ndash; Configuration Manual<br>
+							<small>, 2023/11/30</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
