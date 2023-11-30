@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev11-64 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev11-87 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -1337,6 +1337,8 @@
 							
 							<a class="list-group-item" href="#bool (Fetching samples from internal states)">bool (Fetching samples from internal states)</a>
 							
+							<a class="list-group-item" href="#bs.id">bs.id</a>
+							
 							<a class="list-group-item" href="#busy-polling">busy-polling</a>
 							
 							<a class="list-group-item" href="#bytes">bytes</a>
@@ -1756,6 +1758,8 @@
 							<a class="list-group-item" href="#force-tlsv13">force-tlsv13</a>
 							
 							<a class="list-group-item" href="#format">format</a>
+							
+							<a class="list-group-item" href="#fs.id">fs.id</a>
 							
 							<a class="list-group-item" href="#fullconn">fullconn</a>
 							
@@ -3241,6 +3245,8 @@
 							
 							<a class="list-group-item" href="#server-template">server-template</a>
 							
+							<a class="list-group-item" href="#server_status">server_status</a>
+							
 							<a class="list-group-item" href="#set-cookie">set-cookie</a>
 							
 							<a class="list-group-item" href="#set-dumpable">set-dumpable</a>
@@ -4070,6 +4076,8 @@
 							
 							<a class="list-group-item" href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
 							
+							<a class="list-group-item" href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
+							
 							<a class="list-group-item" href="#tune.fail-alloc">tune.fail-alloc</a>
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
@@ -4213,6 +4221,14 @@
 							<a class="list-group-item" href="#tune.zlib.memlevel">tune.zlib.memlevel</a>
 							
 							<a class="list-group-item" href="#tune.zlib.windowsize">tune.zlib.windowsize</a>
+							
+							<a class="list-group-item" href="#txn.conn_retries">txn.conn_retries</a>
+							
+							<a class="list-group-item" href="#txn.id32">txn.id32</a>
+							
+							<a class="list-group-item" href="#txn.sess_term_state">txn.sess_term_state</a>
+							
+							<a class="list-group-item" href="#txn.status">txn.status</a>
 							
 							<a class="list-group-item" href="#txn.timer.total">txn.timer.total</a>
 							
@@ -4359,7 +4375,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/11/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4370,7 +4386,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev11-64</strong></p>
+							<p><strong>version 2.9-dev11-87</strong></p>
 							<p>
 								2023/11/24<br>
 								
@@ -6529,6 +6545,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
+   - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
@@ -7998,6 +8015,14 @@ directive.
 data fast-forwarding by avoiding to use the channel's buffer. Thanks to this
 directive, it is possible to disable this optimization. Note it also disable
 any kernel tcp splicing.
+</pre><a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
+task handler (from event_hdl API). &lt;number&gt; should be included between 1
+and 10000. Large number could cause thread contention as a result of the
+task doing heavy work without interruption, and on the other hand, small
+number could result in the task being constantly rescheduled because it
+cannot consume enough events per run and is not able to catch up with the
+event producer. The default value may be forced at build time, otherwise
+defaults to 100.
 </pre><a class="anchor" name="tune.fail-alloc"></a><a class="anchor" name="3-tune.fail-alloc"></a><a class="anchor" name="3.2-tune.fail-alloc"></a><a class="anchor" name="tune.fail-alloc (Global parameters)"></a><a class="anchor" name="tune.fail-alloc (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.fail-alloc"></a><a href="#3.2-tune.fail-alloc">tune.fail-alloc</a></b></div><pre class="text">If compiled with DEBUG_FAIL_ALLOC or started with &quot;-dMfail&quot;, gives the
 percentage of chances an allocation attempt fails. Must be between 0 (no
 failure) and 100 (no success). This is useful to debug and make sure memory
@@ -23431,7 +23456,27 @@ table_avl for other entry counting methods.
 </pre><a class="anchor" name="thread"></a><a class="anchor" name="7-thread"></a><a class="anchor" name="7.3.2-thread"></a><a class="anchor" name="thread (Using ACLs and fetching samples)"></a><a class="anchor" name="thread (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#7.3.2-thread">thread</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread calling
 the function, between 0 and (global.nbthread-1). This is useful for logging
 and debugging purposes.
-</pre><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC4122 standard. If the version is not
+</pre><a class="anchor" name="txn.id32"></a><a class="anchor" name="7-txn.id32"></a><a class="anchor" name="7.3.2-txn.id32"></a><a class="anchor" name="txn.id32 (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.id32 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.id32"></a><a href="#7.3.2-txn.id32">txn.id32</a></b> : integer</div><pre class="text">Returns the internal transaction ID. It is a 32bits integer. So, in absolute,
+its value is not unique, transaction IDs may wrap. The wrapping period
+depends on the request rate. In practice, it should not be an issue. For a
+true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot; directive.
+</pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.2-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.2-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this session when
+trying to connect to the server. This value is subject to change while the
+connection is not fully established. For HTTP connections, the value may be
+affected by L7 retries.
+</pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Retruns the TCP or HTTP session termination state, as reported in the log. It
+is a 2-characters string, The final session state followed by the event which
+caused its to terminate. See <a href="#8.5">section 8.5</a> about session state at disconnection
+for the list of possible events. The current value at time the sample fetch
+is evaluated is returned. It is subject to change. Except used with ACLs in
+&quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets or in log messages, it will always be &quot;--&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Return a 429-Too-Many-Requests if session timed out in queue</span>
+http-after-response set-status 429 if { txn.sess_term_state  &quot;sQ&quot; }
+</code></pre>
+</div><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC4122 standard. If the version is not
 specified, a UUID version 4 (fully random) is returned.
 Currently, only version 4 is supported.
 </pre><a class="anchor" name="var"></a><a class="anchor" name="7-var"></a><a class="anchor" name="7.3.2-var"></a><a class="anchor" name="var (Using ACLs and fetching samples)"></a><a class="anchor" name="var (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="var"></a><a href="#7.3.2-var">var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>) : undefined</div><pre class="text">Returns a variable with the stored type. If the variable is not set, the
@@ -24739,6 +24784,8 @@ Warning : Following sample fetches are ignored if used from HTTP proxies. They
           one of the following sample fetches. But it is not possible to detect
           all invalid usage (for instance inside a log-format string or a
           sample expression). So be careful.
+</pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the server side. It is the
+multiplexer's responsibility to return the appropriate information.
 </pre><a class="anchor" name="distcc_body"></a><a class="anchor" name="7-distcc_body"></a><a class="anchor" name="7.3.5-distcc_body"></a><a class="anchor" name="distcc_body (Using ACLs and fetching samples)"></a><a class="anchor" name="distcc_body (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="distcc_body"></a><a href="#7.3.5-distcc_body">distcc_body</a></b>(<span style="color: #080">&lt;token&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) : binary</div><pre class="text">Parses a distcc message and returns the body associated to occurrence #&lt;occ&gt;
 of the token &lt;token&gt;. Occurrences start at 1, and when unspecified, any may
 match though in practice only the first one is checked for now. This can be
@@ -24763,7 +24810,10 @@ tcp-request content accept if { distcc_param(DOTI) -m found }
 <span class="comment"># send large files to the big farm</span>
 use_backend big_farm if { distcc_param(DOTI) gt 1000000 }
 </code></pre>
-</div><a class="anchor" name="payload"></a><a class="anchor" name="7-payload"></a><a class="anchor" name="7.3.5-payload"></a><a class="anchor" name="payload (Using ACLs and fetching samples)"></a><a class="anchor" name="payload (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload"></a><a href="#7.3.5-payload">payload</a></b>(<span style="color: #080">&lt;offset&gt;</span>,<span style="color: #080">&lt;length&gt;</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload">req.payload</a>&quot; when used in the context of a request (e.g.
+</div><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.5-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.5-fs.id">fs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the client side. It is the
+multiplexer's responsibility to return the appropriate information. For
+instance, on a raw TCP, 0 is always returned because there is no stream.
+</pre><a class="anchor" name="payload"></a><a class="anchor" name="7-payload"></a><a class="anchor" name="7.3.5-payload"></a><a class="anchor" name="payload (Using ACLs and fetching samples)"></a><a class="anchor" name="payload (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload"></a><a href="#7.3.5-payload">payload</a></b>(<span style="color: #080">&lt;offset&gt;</span>,<span style="color: #080">&lt;length&gt;</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload">req.payload</a>&quot; when used in the context of a request (e.g.
 &quot;<a href="#stick%20on">stick on</a>&quot;, &quot;<a href="#stick%20match">stick match</a>&quot;), and for &quot;<a href="#res.payload">res.payload</a>&quot; when used in the context of
 a response such as in &quot;stick store response&quot;.
 </pre><a class="anchor" name="payload_lv"></a><a class="anchor" name="7-payload_lv"></a><a class="anchor" name="7.3.5-payload_lv"></a><a class="anchor" name="payload_lv (Using ACLs and fetching samples)"></a><a class="anchor" name="payload_lv (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload_lv"></a><a href="#7.3.5-payload_lv">payload_lv</a></b>(<span style="color: #080">&lt;offset1&gt;</span>,<span style="color: #080">&lt;length&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset2&gt;</span>]</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload_lv">req.payload_lv</a>&quot; when used in the context of a request
@@ -25479,6 +25529,8 @@ It may be used in tcp-check based expect rules.
 
 ACL derivatives :
   resp.ver : exact string match
+</pre><a class="anchor" name="server_status"></a><a class="anchor" name="7-server_status"></a><a class="anchor" name="7.3.6-server_status"></a><a class="anchor" name="server_status (Using ACLs and fetching samples)"></a><a class="anchor" name="server_status (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="server_status"></a><a href="#7.3.6-server_status">server_status</a></b> : integer</div><pre class="text">Return an integer containing the HTTP status code as received from the
+server. If no response was received from the server, the sample fetch fails.
 </pre><a class="anchor" name="set-cookie"></a><a class="anchor" name="7-set-cookie"></a><a class="anchor" name="7.3.6-set-cookie"></a><a class="anchor" name="set-cookie (Using ACLs and fetching samples)"></a><a class="anchor" name="set-cookie (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="set-cookie"></a><a href="#7.3.6-set-cookie">set-cookie</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span>) : string <span class="label label-warning">(deprecated)</span></div><pre class="text">This extracts the last occurrence of the cookie name &lt;name&gt; on a &quot;Set-Cookie&quot;
 header line from the response and uses the corresponding value to match. This
 can be comparable to what &quot;appsession&quot; did with default options, but with
@@ -25488,9 +25540,13 @@ This fetch function is deprecated and has been superseded by the &quot;<a href="
 fetch. This keyword will disappear soon.
 </pre><a class="anchor" name="status"></a><a class="anchor" name="7-status"></a><a class="anchor" name="7.3.6-status"></a><a class="anchor" name="status (Using ACLs and fetching samples)"></a><a class="anchor" name="status (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="status"></a><a href="#7.3.6-status">status</a></b> : integer</div><pre class="text">Returns an integer containing the HTTP status code in the HTTP response, for
 example, 302. It is mostly used within ACLs and integer ranges, for example,
-to remove any Location header if the response is not a 3xx.
+to remove any Location header if the response is not a 3xx. It will be the
+status code received by the client if it is not changed, via a 'set-status'
+action for instance.
 
 It may be used in tcp-check based expect rules.
+</pre><a class="anchor" name="txn.status"></a><a class="anchor" name="7-txn.status"></a><a class="anchor" name="7.3.6-txn.status"></a><a class="anchor" name="txn.status (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.status (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="txn.status"></a><a href="#7.3.6-txn.status">txn.status</a></b> : integer</div><pre class="text">Return an integer containing the HTTP status code of the transaction, as
+reported in the log.
 </pre><a class="anchor" name="txn.timer.total"></a><a class="anchor" name="7-txn.timer.total"></a><a class="anchor" name="7.3.6-txn.timer.total"></a><a class="anchor" name="txn.timer.total (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.timer.total (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="txn.timer.total"></a><a href="#7.3.6-txn.timer.total">txn.timer.total</a></b> : integer</div><pre class="text">Total active time for the HTTP request, between the moment the proxy received
 the first byte of the request header and the emission of the last byte of the
 response body. This is the equivalent of %Ta in the log-format and is
@@ -26549,6 +26605,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   | %ID  | unique-id                                            | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %ST  | status_code                                          | numeric |
+  |   |      | %[txn.status]                                        |         |
   +---+------+------------------------------------------------------+---------+
   |   | %U   | bytes_uploaded       (from client to server)         | numeric |
   |   |      | %[bytes_in]                                          |         |
@@ -26605,8 +26662,10 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   | H | %r   | http_request                                         | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %rc  | retries                                              | numeric |
+  |   |      | %[txn.conn_retries]                                  |         |
   +---+------+------------------------------------------------------+---------+
   |   | %rt  | request_counter (HTTP req or TCP session)            | numeric |
+  |   |      | %[txn.id32]                                          |         |
   +---+------+------------------------------------------------------+---------+
   |   | %s   | server_name                                          | string  |
   +---+------+------------------------------------------------------+---------+
@@ -26627,6 +26686,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[ssl_fc_protocol]                                   | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %ts  | termination_state                                    | string  |
+  |   |      | %[txn.sess_term_state]                               |         |
   +---+------+------------------------------------------------------+---------+
   | H | %tsc | termination_state with cookie status                 | string  |
   +---+------+------------------------------------------------------+---------+
@@ -28183,7 +28243,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev11-64 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev11-87 &ndash; Configuration Manual<br>
 							<small>, 2023/11/24</small>
 						</div>
 					</div>
