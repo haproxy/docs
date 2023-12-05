@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev12-11 - Configuration Manual</title>
+		<title>HAProxy version 2.9-dev12-21 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -72,33 +72,7 @@
 					<td><small>1.2.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#1.2">HTTP request</a>
-							</div>
-					<td>
-				</tr>
-				
-			
-				
-				<tr>
-					<td><small>1.2.1.</small></td>
-					<td>
-							<div class="tab">
-							<div class="tab">
-							<a href="#1.2.1">The request line</a>
-							</div>
-							</div>
-					<td>
-				</tr>
-				
-			
-				
-				<tr>
-					<td><small>1.2.2.</small></td>
-					<td>
-							<div class="tab">
-							<div class="tab">
-							<a href="#1.2.2">The request headers</a>
-							</div>
+							<a href="#1.2">Terminology</a>
 							</div>
 					<td>
 				</tr>
@@ -109,7 +83,7 @@
 					<td><small>1.3.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#1.3">HTTP response</a>
+							<a href="#1.3">HTTP request</a>
 							</div>
 					<td>
 				</tr>
@@ -121,7 +95,7 @@
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#1.3.1">The response line</a>
+							<a href="#1.3.1">The request line</a>
 							</div>
 							</div>
 					<td>
@@ -134,7 +108,44 @@
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#1.3.2">The response headers</a>
+							<a href="#1.3.2">The request headers</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#1.4">HTTP response</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#1.4.1">The response line</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.2.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#1.4.2">The response headers</a>
 							</div>
 							</div>
 					<td>
@@ -885,7 +896,7 @@
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#8.3.2">Logging before waiting for the session to terminate</a>
+							<a href="#8.3.2">Logging before waiting for the stream to terminate</a>
 							</div>
 							</div>
 					<td>
@@ -934,7 +945,7 @@
 					<td><small>8.5.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#8.5">Session state at disconnection</a>
+							<a href="#8.5">Stream state at disconnection</a>
 							</div>
 					<td>
 				</tr>
@@ -3786,6 +3797,10 @@
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
 							
+							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
+							
+							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
+							
 							<a class="list-group-item" href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
@@ -3801,6 +3816,8 @@
 							<a class="list-group-item" href="#tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a>
 							
 							<a class="list-group-item" href="#tune.h2.max-frame-size">tune.h2.max-frame-size</a>
+							
+							<a class="list-group-item" href="#tune.h2.zero-copy-fwd-send">tune.h2.zero-copy-fwd-send</a>
 							
 							<a class="list-group-item" href="#tune.http.cookielen">tune.http.cookielen</a>
 							
@@ -3852,6 +3869,8 @@
 							
 							<a class="list-group-item" href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
 							
+							<a class="list-group-item" href="#tune.pt.zero-copy-forwarding">tune.pt.zero-copy-forwarding</a>
+							
 							<a class="list-group-item" href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
@@ -3863,6 +3882,8 @@
 							<a class="list-group-item" href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
 							
 							<a class="list-group-item" href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
+							
+							<a class="list-group-item" href="#tune.quit.zero-copy-fwd-send">tune.quit.zero-copy-fwd-send</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
 							
@@ -4087,7 +4108,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4098,7 +4119,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9-dev12-11</strong></p>
+							<p><strong>version 2.9-dev12-21</strong></p>
 							<p>
 								2023/11/30<br>
 								
@@ -4155,33 +4176,7 @@ Note to documentation contributors :
 					<td><small>1.2.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#1.2">HTTP request</a>
-							</div>
-					<td>
-				</tr>
-				
-			
-				
-				<tr>
-					<td><small>1.2.1.</small></td>
-					<td>
-							<div class="tab">
-							<div class="tab">
-							<a href="#1.2.1">The request line</a>
-							</div>
-							</div>
-					<td>
-				</tr>
-				
-			
-				
-				<tr>
-					<td><small>1.2.2.</small></td>
-					<td>
-							<div class="tab">
-							<div class="tab">
-							<a href="#1.2.2">The request headers</a>
-							</div>
+							<a href="#1.2">Terminology</a>
 							</div>
 					<td>
 				</tr>
@@ -4192,7 +4187,7 @@ Note to documentation contributors :
 					<td><small>1.3.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#1.3">HTTP response</a>
+							<a href="#1.3">HTTP request</a>
 							</div>
 					<td>
 				</tr>
@@ -4204,7 +4199,7 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#1.3.1">The response line</a>
+							<a href="#1.3.1">The request line</a>
 							</div>
 							</div>
 					<td>
@@ -4217,7 +4212,44 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#1.3.2">The response headers</a>
+							<a href="#1.3.2">The request headers</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#1.4">HTTP response</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#1.4.1">The response line</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>1.4.2.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#1.4.2">The response headers</a>
 							</div>
 							</div>
 					<td>
@@ -4968,7 +5000,7 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<div class="tab">
-							<a href="#8.3.2">Logging before waiting for the session to terminate</a>
+							<a href="#8.3.2">Logging before waiting for the stream to terminate</a>
 							</div>
 							</div>
 					<td>
@@ -5017,7 +5049,7 @@ Note to documentation contributors :
 					<td><small>8.5.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#8.5">Session state at disconnection</a>
+							<a href="#8.5">Stream state at disconnection</a>
 							</div>
 					<td>
 				</tr>
@@ -5288,34 +5320,64 @@ on almost anything found in the contents.
 However, it is important to understand how HTTP requests and responses are
 formed, and how HAProxy decomposes them. It will then become easier to write
 correct rules and to debug existing configurations.
+
+First, HTTP is standardized by a series of RFC that HAProxy follows as closely
+as possible:
+  - RFC 9110: HTTP Semantics (explains the meaning of protocol elements)
+  - RFC 9111: HTTP Caching (explains the rules to follow for an HTTP cache)
+  - RFC 9112: HTTP/1.1 (representation, interoperability rules, security)
+  - RFC 9113: HTTP/2   (representation, interoperability rules, security)
+  - RFC 9114: HTTP/3   (representation, interoperability rules, security)
+
+In addition to these, RFC 8999 to 9002 specify the QUIC transport layer used by
+the HTTP/3 protocol.
 </pre></div>
 <a class="anchor" id="1.1" name="1.1"></a>
 <h2 id="chapter-1.1" data-target="1.1"><small><a class="small" href="#1.1">1.1.</a></small> The HTTP transaction model</h2>
 <div><pre class="text">The HTTP protocol is transaction-driven. This means that each request will lead
-to one and only one response. Traditionally, a TCP connection is established
-from the client to the server, a request is sent by the client through the
-connection, the server responds, and the connection is closed. A new request
-will involve a new connection :
+to one and only one response. Originally, with version 1.0 of the protocol,
+there was a single request per connection: a TCP connection is established from
+the client to the server, a request is sent by the client over the connection,
+the server responds, and the connection is closed. A new request then involves
+a new connection :
 
   [CON1] [REQ1] ... [RESP1] [CLO1] [CON2] [REQ2] ... [RESP2] [CLO2] ...
 
-In this mode, called the &quot;HTTP close&quot; mode, there are as many connection
+In this mode, often called the &quot;HTTP close&quot; mode, there are as many connection
 establishments as there are HTTP transactions. Since the connection is closed
 by the server after the response, the client does not need to know the content
-length.
+length, it considers that the response is complete when the connection closes.
+This also means that if some responses are truncated due to network errors, the
+client could mistakenly think a response was complete, and this used to cause
+truncated images to be rendered on screen sometimes.
 
 Due to the transactional nature of the protocol, it was possible to improve it
 to avoid closing a connection between two subsequent transactions. In this mode
 however, it is mandatory that the server indicates the content length for each
 response so that the client does not wait indefinitely. For this, a special
-header is used: &quot;Content-length&quot;. This mode is called the &quot;keep-alive&quot; mode :
+header is used: &quot;Content-length&quot;. This mode is called the &quot;keep-alive&quot; mode,
+and arrived with HTTP/1.1 (some HTTP/1.0 agents support it), and connections
+that are reused between requests are called &quot;persistent connections&quot;:
 
   [CON] [REQ1] ... [RESP1] [REQ2] ... [RESP2] [CLO] ...
 
-Its advantages are a reduced latency between transactions, and less processing
-power required on the server side. It is generally better than the close mode,
-but not always because the clients often limit their concurrent connections to
-a smaller value.
+Its advantages are a reduced latency between transactions, less processing
+power required on the server side, and the ability to detect a truncated
+response. It is generally faster than the close mode, but not always because
+some clients often limit their concurrent connections to a smaller value, and
+this compensates less for poor network connectivity. Also, some servers have to
+keep the connection alive for a long time waiting for a possible new request
+and may experience a high memory usage due to the high number of connections,
+and closing too fast may break some requests that arrived at the moment the
+connection was closed.
+
+In this mode, the response size needs to be known upfront so that's not always
+possible with dynamically generated or compressed contents. For this reason
+another mode was implemented, the &quot;chunked mode&quot;, where instead of announcing
+the size of the whole size at once, the sender only advertises the size of the
+next &quot;chunk&quot; of response it already has in a buffer, and can terminate at any
+moment with a zero-sized chunk. In this mode, the Content-Length header is not
+used.
 
 Another improvement in the communications is the pipelining mode. It still uses
 keep-alive, but the client does not wait for the first response to send the
@@ -5328,19 +5390,43 @@ This can obviously have a tremendous benefit on performance because the network
 latency is eliminated between subsequent requests. Many HTTP agents do not
 correctly support pipelining since there is no way to associate a response with
 the corresponding request in HTTP. For this reason, it is mandatory for the
-server to reply in the exact same order as the requests were received.
+server to reply in the exact same order as the requests were received. In
+practice, after several attempts by various clients to deploy it, it has been
+totally abandonned for its lack of reliability on certain servers. But it is
+mandatory for servers to support it.
 
-The next improvement is the multiplexed mode, as implemented in HTTP/2 and HTTP/3.
-This time, each transaction is assigned a single stream identifier, and all
-streams are multiplexed over an existing connection. Many requests can be sent in
-parallel by the client, and responses can arrive in any order since they also
-carry the stream identifier.
+The next improvement is the multiplexed mode, as implemented in HTTP/2 and
+HTTP/3. In this mode, multiple transactions (i.e. request-response pairs) are
+transmitted in parallel over a single connection, and they all progress at
+their own speed, independent from each other. With multiplexed protocols, a new
+notion of &quot;stream&quot; was introduced, to represent these parallel communications
+happening over the same connection. Each stream is generally assigned a unique
+identifier for a given connection, that is used by both endpoints to know where
+to deliver the data. It is fairly common for clients to start many (up to 100,
+sometimes more) streams in parallel over a same connection, and let the server
+sort them out and respond in any order depending on what response is available.
+The main benefit of the multiplexed mode is that it significantly reduces the
+number of round trips, and speeds up page loading time over high latency
+networks. It is sometimes visibles on sites using many images, where all images
+appear to load in parallel.
 
+These protocols have also improved their efficiency by adopting some mechanisms
+to compress header fields in order to reduce the number of bytes on the wire,
+so that without the appropriate tools, they are not realistically manipulable
+by hand nor readable to the naked eye like HTTP/1 was. For this reason, various
+examples of HTTP messages continue to be represented in literature (including
+this document) using the HTTP/1 syntax even for newer versions of the protocol.
+
+HTTP/2 suffers from some design limitations, such as packet losses affecting
+all streams at once, and if a client takes too much time to retrieve an object
+(e.g. needs to store it on disk), it may slow down its retrieval and make it
+impossible during this time to access the data that is pending behind it. This
+is called &quot;head of line blocking&quot; or &quot;HoL blocking&quot; or sometimes just &quot;HoL&quot;.
 
 HTTP/3 is implemented over QUIC, itself implemented over UDP. QUIC solves the
-head of line blocking at transport level by means of independently treated
+head of line blocking at the transport level by means of independently handled
 streams. Indeed, when experiencing loss, an impacted stream does not affect the
-other streams.
+other streams, and all of them can be accessed in parallel.
 
 By default HAProxy operates in keep-alive mode with regards to persistent
 connections: for each connection it processes each request and response, and
@@ -5349,15 +5435,89 @@ start of a new request. When it receives HTTP/2 connections from a client, it
 processes all the requests in parallel and leaves the connection idling,
 waiting for new requests, just as if it was a keep-alive HTTP connection.
 
-HAProxy supports 4 connection modes :
-  - keep alive    : all requests and responses are processed (default)
-  - tunnel        : only the first request and response are processed,
-                    everything else is forwarded with no analysis (deprecated).
+HAProxy essentially supports 3 connection modes :
+  - keep alive    : all requests and responses are processed, and the client
+                    facing and server facing connections are kept alive for new
+                    requests. This is the default and suits the modern web and
+                    modern protocols (HTTP/2 and HTTP/3).
+
   - server close  : the server-facing connection is closed after the response.
-  - close         : the connection is actively closed after end of response.
+
+  - close         : the connection is actively closed after end of response on
+                    both sides.
+
+In addition to this, by default, the server-facing connection is reusable by
+any request from any client, as mandated by the HTTP protocol specification, so
+any information pertaining to a specific client has to be passed along with
+each request if needed (e.g. client's source adress etc). When HTTP/2 is used
+with a server, by default HAProxy will dedicate this connection to the same
+client to avoid the risk of head of line blocking between clients.
 </pre></div>
 <a class="anchor" id="1.2" name="1.2"></a>
-<h2 id="chapter-1.2" data-target="1.2"><small><a class="small" href="#1.2">1.2.</a></small> HTTP request</h2>
+<h2 id="chapter-1.2" data-target="1.2"><small><a class="small" href="#1.2">1.2.</a></small> Terminology</h2>
+<div><pre class="text">Inside HAProxy, the terminology has evolved a bit over the ages to follow the
+evolutions of the HTTP protocol and its usages. While originally there was no
+significant difference between a connection, a session, a stream or a
+transaction, these ones clarified over time to match closely what exists in the
+modern versions of the HTTP protocol, though some terms remain visible in the
+configuration or the command line interface for the purpose of historical
+compatibility.
+
+Here are some definitions that apply to the current version of HAProxy:
+
+  - connection: a connection is a single, bidiractional communication channel
+    between a remote agent (client or server) and haproxy, at the lowest level
+    possible. Usually it corresponds to a TCP socket established between a pair
+    of IP and ports. On the client-facing side, connections are the very first
+    entities that are instantiated when a client connects to haproxy, and rules
+    applying at the connection level are the earliest ones that apply.
+
+  - session: a session adds some context information associated with a
+    connection. This includes and information specific to the transport layer
+    (e.g. TLS keys etc), or variables. This term has long been used inside
+    HAProxy to denote end-to-end HTTP/1.0 communications between two ends, and
+    as such it remains visible in the name of certain CLI commands or
+    statistics, despite representing streams nowadays, but the help messages
+    and descriptions try to make this unambiguous. It is still valid when it
+    comes to network-level terminology (e.g. TCP sessions inside the operating
+    systems, or TCP sessions across a firewall), or for non-HTTP user-level
+    applications (e.g. a telnet session or an SSH session). It must not be
+    confused with &quot;application sessions&quot; that are used to store a full user
+    context in a cookie and require to be sent to the same server.
+
+  - stream: a stream exactly corresponds to an end-to-end bidirectional
+    communication at the application level, where analysis and transformations
+    may be applied. In HTTP, it contains a single request and its associated
+    response, and is instantiated by the arrival of the request and is finished
+    with the end of delivery of the response. In this context there is a 1:1
+    relation between such a stream and the stream of a multiplexed protocol. In
+    TCP communications there is a single stream per connection.
+
+  - transaction: a transaction is only a pair of a request and the associated
+    response. The term was used in conjunction with sessions before the streams
+    but nowadays there is a 1:1 relation between a transaction and a stream. It
+    is essentially visible in the variables' scope &quot;txn&quot; which is valid during
+    the whole transaction, hence the stream.
+
+  - request: it designates the traffic flowing from the client to the server.
+    It is mainly used for HTTP to indicate where operations are performed. This
+    term also exists for TCP operations to indicate where data are processed.
+    Requests often appear in counters as a unit of traffic or activity. They do
+    not always imply a response (e.g. due to errors), but since there is no
+    spontaneous responses without requests, requests remain a relevant metric
+    of the overall activity. In TCP there are as many requests as connections.
+
+  - response: this designates the traffic flowing from the server to the
+    client, or sometimes from HAProxy to the client, when HAProxy produces the
+    response itself (e.g. an HTTP redirect).
+
+  - service: this generally indicates some internal processing in HAProxy that
+    does not require a server, such as the stats page, the cache, or some Lua
+    code to implement a small application. A service usually reads a request,
+    performs some operations and produces a response.
+</pre></div>
+<a class="anchor" id="1.3" name="1.3"></a>
+<h2 id="chapter-1.3" data-target="1.3"><small><a class="small" href="#1.3">1.3.</a></small> HTTP request</h2>
 <div><pre class="text">First, let's consider this HTTP request :
 
   Line     Contents
@@ -5368,8 +5528,8 @@ HAProxy supports 4 connection modes :
      4     Accept: image/jpeg, image/gif
      5     Accept: image/png
 </pre></div>
-<a class="anchor" id="1.2.1" name="1.2.1"></a>
-<h3 id="chapter-1.2.1" data-target="1.2.1"><small><a class="small" href="#1.2.1">1.2.1.</a></small> The Request line</h3>
+<a class="anchor" id="1.3.1" name="1.3.1"></a>
+<h3 id="chapter-1.3.1" data-target="1.3.1"><small><a class="small" href="#1.3.1">1.3.1.</a></small> The Request line</h3>
 <div><pre class="text">Line 1 is the &quot;request line&quot;. It is always composed of 3 fields :
 
   - a METHOD      : GET
@@ -5417,27 +5577,35 @@ on the server. The part after the question mark is called the &quot;query string
 It is mostly used with GET requests sent to dynamic scripts and is very
 specific to the language, framework or application in use.
 
-HTTP/2 doesn't convey a version information with the request, so the version is
-assumed to be the same as the one of the underlying protocol (i.e. &quot;HTTP/2&quot;).
+HTTP/3 and HTTP/3 do not convey a version information with the request, so the
+version is assumed to be the same as the one of the underlying protocol (i.e.
+&quot;HTTP/2&quot;). In addition, these protocols do not send a request line as one part,
+but split it into individual fields called &quot;pseudo-headers&quot;, whose name start
+with a colon, and which are conveniently reassembled by HAProxy into an
+equivalent request line. For this reason, request lines found in logs may
+slightly differ between HTTP/1.x and HTTP/2 or HTTP/3.
 </pre></div>
-<a class="anchor" id="1.2.2" name="1.2.2"></a>
-<h3 id="chapter-1.2.2" data-target="1.2.2"><small><a class="small" href="#1.2.2">1.2.2.</a></small> The request headers</h3>
+<a class="anchor" id="1.3.2" name="1.3.2"></a>
+<h3 id="chapter-1.3.2" data-target="1.3.2"><small><a class="small" href="#1.3.2">1.3.2.</a></small> The request headers</h3>
 <div><pre class="text">The headers start at the second line. They are composed of a name at the
 beginning of the line, immediately followed by a colon (':'). Traditionally,
 an LWS is added after the colon but that's not required. Then come the values.
 Multiple identical headers may be folded into one single line, delimiting the
 values with commas, provided that their order is respected. This is commonly
 encountered in the &quot;Cookie:&quot; field. A header may span over multiple lines if
-the subsequent lines begin with an LWS. In the example in 1.2, lines 4 and 5
-define a total of 3 values for the &quot;Accept:&quot; header.
+the subsequent lines begin with an LWS. In the example in 1.3, lines 4 and 5
+define a total of 3 values for the &quot;Accept:&quot; header. Finally, all LWS at the
+beginning or at the end of a header are ignored and are not part of the value,
+as per the specification.
 
 Contrary to a common misconception, header names are not case-sensitive, and
 their values are not either if they refer to other header names (such as the
-&quot;Connection:&quot; header). In HTTP/2, header names are always sent in lower case,
-as can be seen when running in debug mode. Internally, all header names are
-normalized to lower case so that HTTP/1.x and HTTP/2 use the exact same
-representation, and they are sent as-is on the other side. This explains why an
-HTTP/1.x request typed with camel case is delivered in lower case.
+&quot;Connection:&quot; header). In HTTP/2 and HTTP/3, header names are always sent in
+lower case, as can be seen when running in debug mode. Internally, all header
+names are normalized to lower case so that HTTP/1.x and HTTP/2 or HTTP/3 use
+the exact same representation, and they are sent as-is on the other side. This
+explains why an HTTP/1.x request typed with camel case is delivered in lower
+case.
 
 The end of the headers is indicated by the first empty line. People often say
 that it's a double line feed, which is not exact, even if a double line feed
@@ -5454,8 +5622,8 @@ Important note:
    is necessary for proper analysis and helps less capable HTTP parsers to work
    correctly and not to be fooled by such complex constructs.
 </pre></div>
-<a class="anchor" id="1.3" name="1.3"></a>
-<h2 id="chapter-1.3" data-target="1.3"><small><a class="small" href="#1.3">1.3.</a></small> HTTP response</h2>
+<a class="anchor" id="1.4" name="1.4"></a>
+<h2 id="chapter-1.4" data-target="1.4"><small><a class="small" href="#1.4">1.4.</a></small> HTTP response</h2>
 <div><pre class="text">An HTTP response looks very much like an HTTP request. Both are called HTTP
 messages. Let's consider this HTTP response :
 
@@ -5472,16 +5640,16 @@ continue to post its request for instance. In the case of a status 100 response
 the requested information will be carried by the next non-100 response message
 following the informational one. This implies that multiple responses may be
 sent to a single request, and that this only works when keep-alive is enabled
-(1xx messages are HTTP/1.1 only). HAProxy handles these messages and is able to
-correctly forward and skip them, and only process the next non-100 response. As
-such, these messages are neither logged nor transformed, unless explicitly
+(1xx messages appeared in HTTP/1.1). HAProxy handles these messages and is able
+to correctly forward and skip them, and only process the next non-100 response.
+As such, these messages are neither logged nor transformed, unless explicitly
 state otherwise. Status 101 messages indicate that the protocol is changing
 over the same connection and that HAProxy must switch to tunnel mode, just as
 if a CONNECT had occurred. Then the Upgrade header would contain additional
 information about the type of protocol the connection is switching to.
 </pre></div>
-<a class="anchor" id="1.3.1" name="1.3.1"></a>
-<h3 id="chapter-1.3.1" data-target="1.3.1"><small><a class="small" href="#1.3.1">1.3.1.</a></small> The response line</h3>
+<a class="anchor" id="1.4.1" name="1.4.1"></a>
+<h3 id="chapter-1.4.1" data-target="1.4.1"><small><a class="small" href="#1.4.1">1.4.1.</a></small> The response line</h3>
 <div><pre class="text">Line 1 is the &quot;response line&quot;. It is always composed of 3 fields :
 
   - a version tag : HTTP/1.1
@@ -5495,11 +5663,19 @@ The status code is always 3-digit. The first digit indicates a general status :
  - 4xx = error caused by the client (e.g. 401, 403, 404)
  - 5xx = error caused by the server (e.g. 500, 502, 503)
 
-Please refer to RFC7231 for the detailed meaning of all such codes. The
-&quot;reason&quot; field is just a hint, but is not parsed by clients. Anything can be
-found there, but it's a common practice to respect the well-established
+Status codes greater than 599 must not be emitted in communications, though
+certain agents may produce them in logs to report their internal statuses.
+Please refer to RFC9110 for the detailed meaning of all such codes. HTTP/2 and
+above do not have a version tag and use the &quot;:status&quot; pseudo-header to report
+the status code.
+
+The &quot;reason&quot; field is just a hint, but is not parsed by clients. Anything can
+be found there, but it's a common practice to respect the well-established
 messages. It can be composed of one or multiple words, such as &quot;OK&quot;, &quot;Found&quot;,
-or &quot;Authentication Required&quot;.
+or &quot;Authentication Required&quot;. It does not exist in HTTP/2 and above and is
+not emitted there. When a response from HTTP/2 or above is transmitted to an
+HTTP/1 client, HAProxy will produce such a common reason field that matches
+the status code.
 
 HAProxy may emit the following status codes by itself :
 
@@ -5529,12 +5705,13 @@ HAProxy may emit the following status codes by itself :
    504  when the response timeout strikes before the server responds
 
 The error 4xx and 5xx codes above may be customized (see &quot;<a href="#errorloc">errorloc</a>&quot; in section
-4.2).
+4.2). Other status codes can be emitted on purpose by specific actions (see the
+&quot;<a href="#deny">deny</a>&quot;, &quot;<a href="#return">return</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; actions in <a href="#4.3">section 4.3</a> for example).
 </pre></div>
-<a class="anchor" id="1.3.2" name="1.3.2"></a>
-<h3 id="chapter-1.3.2" data-target="1.3.2"><small><a class="small" href="#1.3.2">1.3.2.</a></small> The response headers</h3>
+<a class="anchor" id="1.4.2" name="1.4.2"></a>
+<h3 id="chapter-1.4.2" data-target="1.4.2"><small><a class="small" href="#1.4.2">1.4.2.</a></small> The response headers</h3>
 <div><pre class="text">Response headers work exactly like request headers, and as such, HAProxy uses
-the same parsing function for both. Please refer to paragraph 1.2.2 for more
+the same parsing function for both. Please refer to paragraph 1.3.2 for more
 details.
 </pre></div>
 <a class="anchor" id="2" name="2"></a>
@@ -6282,6 +6459,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
+   - <a href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
+   - <a href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
@@ -6290,6 +6469,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
    - <a href="#tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a>
    - <a href="#tune.h2.max-frame-size">tune.h2.max-frame-size</a>
+   - <a href="#tune.h2.zero-copy-fwd-send">tune.h2.zero-copy-fwd-send</a>
    - <a href="#tune.http.cookielen">tune.http.cookielen</a>
    - <a href="#tune.http.logurilen">tune.http.logurilen</a>
    - <a href="#tune.http.maxhdr">tune.http.maxhdr</a>
@@ -6312,12 +6492,14 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.pipesize">tune.pipesize</a>
    - <a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>
    - <a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>
+   - <a href="#tune.pt.zero-copy-forwarding">tune.pt.zero-copy-forwarding</a>
    - <a href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
+   - tune.quic.zero-copy-fwd-send
    - <a href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
    - <a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>
@@ -7527,9 +7709,9 @@ value of 100 disable the limit. The default value is 100. Setting a lower
 value will prevent the compression work from slowing the whole process down
 and from introducing high latencies.
 </pre><a class="anchor" name="maxcomprate"></a><a class="anchor" name="3-maxcomprate"></a><a class="anchor" name="3.2-maxcomprate"></a><a class="anchor" name="maxcomprate (Global parameters)"></a><a class="anchor" name="maxcomprate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxcomprate"></a><a href="#3.2-maxcomprate">maxcomprate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process input compression rate to &lt;number&gt; kilobytes
-per second. For each session, if the maximum is reached, the compression
-level will be decreased during the session. If the maximum is reached at the
-beginning of a session, the session will not compress at all. If the maximum
+per second. For each stream, if the maximum is reached, the compression
+level will be decreased during the stream. If the maximum is reached at the
+beginning of a stream, the stream will not compress at all. If the maximum
 is not reached, the compression level will be increased up to
 tune.comp.maxlevel. A value of zero means there is no limit, this is the
 default value.
@@ -7594,7 +7776,7 @@ note that the sessions are accounted before they enter the SSL stack and not
 after, which also protects the stack against bad handshakes. Also, lowering
 tune.maxaccept can improve fairness.
 </pre><a class="anchor" name="maxzlibmem"></a><a class="anchor" name="3-maxzlibmem"></a><a class="anchor" name="3.2-maxzlibmem"></a><a class="anchor" name="maxzlibmem (Global parameters)"></a><a class="anchor" name="maxzlibmem (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxzlibmem"></a><a href="#3.2-maxzlibmem">maxzlibmem</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of RAM in megabytes per process usable by the zlib.
-When the maximum amount is reached, future sessions will not compress as long
+When the maximum amount is reached, future streams will not compress as long
 as RAM is unavailable. When sets to 0, there is no limit.
 The default value is 0. The value is available in bytes on the UNIX socket
 with &quot;show info&quot; on the line &quot;MaxZlibMemUsage&quot;, the memory used by zlib is
@@ -7704,8 +7886,8 @@ The default value is zero which means unlimited. The minimum non-zero value
 will always be greater than &quot;<a href="#tune.buffers.reserve">tune.buffers.reserve</a>&quot; and should ideally always
 be about twice as large. Forcing this value can be particularly useful to
 limit the amount of memory a process may take, while retaining a sane
-behavior. When this limit is reached, sessions which need a buffer wait for
-another one to be released by another session. Since buffers are dynamically
+behavior. When this limit is reached, streams which need a buffer wait for
+another one to be released by another stream. Since buffers are dynamically
 allocated and released, the waiting time is very short and not perceptible
 provided that limits remain reasonable. In fact sometimes reducing the limit
 may even increase performance by increasing the CPU cache's efficiency. Tests
@@ -7719,7 +7901,7 @@ during memory shortage conditions resulting in failed memory allocations. The
 minimum value is 2 and is also the default. There is no reason a user would
 want to change this value, it's mostly aimed at HAProxy core developers.
 </pre><a class="anchor" name="tune.bufsize"></a><a class="anchor" name="3-tune.bufsize"></a><a class="anchor" name="3.2-tune.bufsize"></a><a class="anchor" name="tune.bufsize (Global parameters)"></a><a class="anchor" name="tune.bufsize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize"></a><a href="#3.2-tune.bufsize">tune.bufsize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the buffer size to this size (in bytes). Lower values allow more
-sessions to coexist in the same amount of RAM, and higher values allow some
+streams to coexist in the same amount of RAM, and higher values allow some
 applications with very large cookies to work. The default value is 16384 and
 can be changed at build time. It is strongly recommended not to change this
 from the default value, as very low values will break some services such as
@@ -7734,7 +7916,7 @@ value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
 </pre><a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
 usage during compression. This value affects CPU usage during compression.
-Each session using compression initializes the compression algorithm with
+Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
 </pre><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global parameters)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
 forwarding by passing data directly from a side to the other one without
@@ -7745,11 +7927,12 @@ generally only be suggested by developers along complex debugging
 sessions. For this reason it is internally marked as experimental, meaning
 that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on a line before this
 directive.
-</pre><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a href="#3.2-tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a></b></div><pre class="text">Disables the zero-copy forwarding of data. It is a mechanism to optimize the
-data fast-forwarding by avoiding to use the channel's buffer. Thanks to this
-directive, it is possible to disable this optimization. Note it also disable
-any kernel tcp splicing.
-</pre><a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
+</pre><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.disable-zero-copy-forwarding"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.disable-zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-zero-copy-forwarding"></a><a href="#3.2-tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a></b></div><pre class="text">Globally disables the zero-copy forwarding of data. It is a mechanism to
+optimize the data fast-forwarding by avoiding to use the channel's buffer.
+Thanks to this directive, it is possible to disable this optimization. Note
+it also disable any kernel tcp splicing.
+</pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
+<a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
 task handler (from event_hdl API). &lt;number&gt; should be included between 1
 and 10000. Large number could cause thread contention as a result of the
 task doing heavy work without interruption, and on the other hand, small
@@ -7768,7 +7951,13 @@ that support it. This is currently only support with epoll. It may noticeably
 reduce the number of epoll_ctl() calls and slightly improve performance in
 certain scenarios. This is still experimental, it may result in frozen
 connections if bugs are still present, and is disabled by default.
-</pre><a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
+</pre><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Global parameters)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a href="#3.2-tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy receives of data for the H1
+multiplexer. It is enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-send</div>
+<a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a href="#3.2-tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the H1
+multiplexer. It is enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-recv</div>
+<a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents, not headers. When
 not set, the common default value set by tune.h2.initial-window-size applies.
@@ -7838,7 +8027,10 @@ for frame sizes larger than buffers. The main purpose of this setting is to
 allow to limit the maximum frame size setting when using large buffers. Too
 large frame sizes might have performance impact or cause some peers to
 misbehave. It is highly recommended not to change this value.
-</pre><a class="anchor" name="tune.http.cookielen"></a><a class="anchor" name="3-tune.http.cookielen"></a><a class="anchor" name="3.2-tune.http.cookielen"></a><a class="anchor" name="tune.http.cookielen (Global parameters)"></a><a class="anchor" name="tune.http.cookielen (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.cookielen"></a><a href="#3.2-tune.http.cookielen">tune.http.cookielen</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum length of captured cookies. This is the maximum value that
+</pre><a class="anchor" name="tune.h2.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.h2.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.h2.zero-copy-fwd-send"></a><a class="anchor" name="tune.h2.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.h2.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.zero-copy-fwd-send"></a><a href="#3.2-tune.h2.zero-copy-fwd-send">tune.h2.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the H2
+multiplexer. It is enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding</div>
+<a class="anchor" name="tune.http.cookielen"></a><a class="anchor" name="3-tune.http.cookielen"></a><a class="anchor" name="3.2-tune.http.cookielen"></a><a class="anchor" name="tune.http.cookielen (Global parameters)"></a><a class="anchor" name="tune.http.cookielen (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.cookielen"></a><a href="#3.2-tune.http.cookielen">tune.http.cookielen</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum length of captured cookies. This is the maximum value that
 the &quot;capture cookie xxx len yyy&quot; will be allowed to take, and any upper value
 will automatically be truncated to this one. It is important not to set too
 high a value because all cookie captures still allocate this size whatever
@@ -7860,7 +8052,7 @@ for all usages, considering that the widely deployed Apache server uses the
 same limit. It can be useful to push this limit further to temporarily allow
 a buggy application to work by the time it gets fixed. The accepted range is
 1..32767. Keep in mind that each new header consumes 32bits of memory for
-each session, so don't push this limit too high.
+each stream, so don't push this limit too high.
 </pre><a class="anchor" name="tune.idle-pool.shared"></a><a class="anchor" name="3-tune.idle-pool.shared"></a><a class="anchor" name="3.2-tune.idle-pool.shared"></a><a class="anchor" name="tune.idle-pool.shared (Global parameters)"></a><a class="anchor" name="tune.idle-pool.shared (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idle-pool.shared"></a><a href="#3.2-tune.idle-pool.shared">tune.idle-pool.shared</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') sharing of idle connection pools between
 threads for a same server. The default is to share them between threads in
 order to minimize the number of persistent connections to a server, and to
@@ -8101,7 +8293,11 @@ much sense in the general case when targeting connection reuse).
 HAProxy globally against the maximum number of file descriptors HAProxy can
 use before we stop putting connection into the idle pool for reuse. The
 default is 20.
-</pre><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This settings defines the maximum number of buffers allocated for a QUIC
+</pre><a class="anchor" name="tune.pt.zero-copy-forwarding"></a><a class="anchor" name="3-tune.pt.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.pt.zero-copy-forwarding"></a><a class="anchor" name="tune.pt.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.pt.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pt.zero-copy-forwarding"></a><a href="#3.2-tune.pt.zero-copy-forwarding">tune.pt.zero-copy-forwarding</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy forwarding of data for the
+pass-through multiplexer. To be used, the kernel splicing must also be
+configured. It is enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, option splice-auto, option splice-request and option splice-response</div>
+<a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This settings defines the maximum number of buffers allocated for a QUIC
 connection on data emission. By default, it is set to 30. QUIC buffers are
 drained on ACK reception. This setting has a direct impact on the throughput
 and memory consumption and can be adjusted according to an estimated round
@@ -8164,7 +8360,10 @@ If &quot;connection&quot; mode is used on global tuning, it will be activated fo
 listener, unless its bind option is set to &quot;listener&quot;. However, if &quot;listener&quot;
 is used globally, it will be forced on every listener instance, regardless of
 their individual configuration.
-</pre><a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
+</pre><a class="anchor" name="tune.quit.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.quit.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.quit.zero-copy-fwd-send"></a><a class="anchor" name="tune.quit.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.quit.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quit.zero-copy-fwd-send"></a><a href="#3.2-tune.quit.zero-copy-fwd-send">tune.quit.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the QUIC
+multiplexer. It is disabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding</div>
+<a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
 size. This can be used QUIC in listener mode and log-forward on the frontend.
 The default system buffers might sometimes be too small for sockets receiving
 lots of aggregated traffic, causing some losses and possibly retransmits (in
@@ -8370,13 +8569,13 @@ all available space is consumed.
 Notice that exceeding the limits at runtime will not result in an error
 message, but values might be cut off or corrupted. So make sure to accurately
 plan for the amount of space needed to store all your variables.
-</pre><a class="anchor" name="tune.zlib.memlevel"></a><a class="anchor" name="3-tune.zlib.memlevel"></a><a class="anchor" name="3.2-tune.zlib.memlevel"></a><a class="anchor" name="tune.zlib.memlevel (Global parameters)"></a><a class="anchor" name="tune.zlib.memlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zlib.memlevel"></a><a href="#3.2-tune.zlib.memlevel">tune.zlib.memlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the memLevel parameter in zlib initialization for each session. It
+</pre><a class="anchor" name="tune.zlib.memlevel"></a><a class="anchor" name="3-tune.zlib.memlevel"></a><a class="anchor" name="3.2-tune.zlib.memlevel"></a><a class="anchor" name="tune.zlib.memlevel (Global parameters)"></a><a class="anchor" name="tune.zlib.memlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zlib.memlevel"></a><a href="#3.2-tune.zlib.memlevel">tune.zlib.memlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the memLevel parameter in zlib initialization for each stream. It
 defines how much memory should be allocated for the internal compression
 state. A value of 1 uses minimum memory but is slow and reduces compression
 ratio, a value of 9 uses maximum memory for optimal speed. Can be a value
 between 1 and 9. The default value is 8.
 </pre><a class="anchor" name="tune.zlib.windowsize"></a><a class="anchor" name="3-tune.zlib.windowsize"></a><a class="anchor" name="3.2-tune.zlib.windowsize"></a><a class="anchor" name="tune.zlib.windowsize (Global parameters)"></a><a class="anchor" name="tune.zlib.windowsize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zlib.windowsize"></a><a href="#3.2-tune.zlib.windowsize">tune.zlib.windowsize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the window size (the size of the history buffer) as a parameter of the
-zlib initialization for each session. Larger values of this parameter result
+zlib initialization for each stream. Larger values of this parameter result
 in better compression at the expense of memory usage. Can be a value between
 8 and 15. The default value is 15.
 </pre></div>
@@ -9836,7 +10035,7 @@ you log if you know your log parser is not smart enough to rely on the
 braces.
 
 There is no limit to the number of captured request headers nor to their
-length, though it is wise to keep them low to limit memory usage per session.
+length, though it is wise to keep them low to limit memory usage per stream.
 In order to keep log format consistent for a same frontend, header captures
 can only be declared in a frontend. It is not possible to specify a capture
 in a &quot;defaults&quot; section.
@@ -9876,7 +10075,7 @@ header which indicates how many bytes are expected to be returned, the
 &quot;Location&quot; header to track redirections.
 
 There is no limit to the number of captured response headers nor to their
-length, though it is wise to keep them low to limit memory usage per session.
+length, though it is wise to keep them low to limit memory usage per stream.
 In order to keep log format consistent for a same frontend, header captures
 can only be declared in a frontend. It is not possible to specify a capture
 in a &quot;defaults&quot; section.
@@ -12256,7 +12455,7 @@ May be used in the following contexts: tcp, http
 </div>
 <pre class="text">In presence of very high loads, the servers will take some time to respond.
 The per-instance connection queue will inflate, and the response time will
-increase respective to the size of the queue times the average per-session
+increase respective to the size of the queue times the average per-stream
 response time. When clients will wait for more than a few seconds, they will
 often hit the &quot;STOP&quot; button on their browser, leaving a useless request in
 the queue, and slowing down other users, and the servers as well, because the
@@ -12268,18 +12467,18 @@ close on the client side, HTTP agents should be conservative and consider
 that the client might only have closed its output channel while waiting for
 the response. However, this introduces risks of congestion when lots of users
 do the same, and is completely useless nowadays because probably no client at
-all will close the session while waiting for the response. Some HTTP agents
+all will close the stream while waiting for the response. Some HTTP agents
 support this behavior (Squid, Apache, HAProxy), and others do not (TUX, most
 hardware-based load balancers). So the probability for a closed input channel
 to represent a user hitting the &quot;STOP&quot; button is close to 100%, and the risk
 of being the single component to break rare but valid traffic is extremely
-low, which adds to the temptation to be able to abort a session early while
+low, which adds to the temptation to be able to abort a stream early while
 still not served and not pollute the servers.
 
 In HAProxy, the user can choose the desired behavior using the option
 &quot;<a href="#option%20abortonclose">abortonclose</a>&quot;. By default (without the option) the behavior is HTTP
 compliant and aborted requests will be served. But when the option is
-specified, a session with an incoming channel closed will be aborted while
+specified, a stream with an incoming channel closed will be aborted while
 it is still possible, either pending in the queue for a connection slot, or
 during the connection establishment if the server has not yet acknowledged
 the connection request. This considerably reduces the queue size and the load
@@ -12488,11 +12687,11 @@ May be used in the following contexts: tcp, http
 <span class="label label-info">Arguments :</span> none
 </div>
 <pre class="text">By default, counters used for statistics calculation are incremented
-only when a session finishes. It works quite well when serving small
+only when a stream finishes. It works quite well when serving small
 objects, but with big ones (for example large images or archives) or
 with A/V streaming, a graph generated from HAProxy counters looks like
 a hedgehog. With this option enabled counters get incremented frequently
-along the session, typically every 5 seconds, which is often enough to
+along the stream, typically every 5 seconds, which is often enough to
 produce clean graphs. Recounting touches a hotpath directly so it is not
 not enabled by default, as it can cause a lot of wakeups for very large
 session counts and cause a small performance drop.
@@ -13202,7 +13401,7 @@ http-keep-alive&quot;.
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot;.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httplog"></a><a class="anchor" name="4-option httplog"></a><a class="anchor" name="4.2-option httplog"></a><a class="anchor" name="option httplog (Proxies)"></a><a class="anchor" name="option httplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httplog"></a><a href="#4.2-option%20httplog">option httplog</a></b> <span style="color: #008">[ clf ]</span></div><pre class="text">Enable logging of HTTP request, session state and timers
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httplog"></a><a class="anchor" name="4-option httplog"></a><a class="anchor" name="4.2-option httplog"></a><a class="anchor" name="option httplog (Proxies)"></a><a class="anchor" name="option httplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httplog"></a><a href="#4.2-option%20httplog">option httplog</a></b> <span style="color: #008">[ clf ]</span></div><pre class="text">Enable logging of HTTP request, stream state and timers
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -13219,7 +13418,7 @@ May be used in the following contexts: http
 <pre class="text">By default, the log output format is very poor, as it only contains the
 source and destination addresses, and the instance name. By specifying
 &quot;<a href="#option%20httplog">option httplog</a>&quot;, each log line turns into a much richer format including,
-but not limited to, the HTTP request, the connection timers, the session
+but not limited to, the HTTP request, the connection timers, the stream
 status, the connections numbers, the captured headers and cookies, the
 frontend, backend and server name, and of course the source address and
 ports.
@@ -13229,7 +13428,7 @@ if it was set by default.
 
 &quot;<a href="#option%20httplog">option httplog</a>&quot; overrides any previous &quot;<a href="#log-format">log-format</a>&quot; directive.
 </pre><div class="page-header"><b>See also :</b> <a href="#8">section 8</a> about logging.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpslog"></a><a class="anchor" name="4-option httpslog"></a><a class="anchor" name="4.2-option httpslog"></a><a class="anchor" name="option httpslog (Proxies)"></a><a class="anchor" name="option httpslog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpslog"></a><a href="#4.2-option%20httpslog">option httpslog</a></b></div><pre class="text">Enable logging of HTTPS request, session state and timers
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpslog"></a><a class="anchor" name="4-option httpslog"></a><a class="anchor" name="4.2-option httpslog"></a><a class="anchor" name="option httpslog (Proxies)"></a><a class="anchor" name="option httpslog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpslog"></a><a href="#4.2-option%20httpslog">option httpslog</a></b></div><pre class="text">Enable logging of HTTPS request, stream state and timers
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -13239,7 +13438,7 @@ May be used in the following contexts: http
 <pre class="text">By default, the log output format is very poor, as it only contains the
 source and destination addresses, and the instance name. By specifying
 &quot;<a href="#option%20httpslog">option httpslog</a>&quot;, each log line turns into a much richer format including,
-but not limited to, the HTTP request, the connection timers, the session
+but not limited to, the HTTP request, the connection timers, the stream
 status, the connections numbers, the captured headers and cookies, the
 frontend, backend and server name, the SSL certificate verification and SSL
 handshake statuses, and of course the source address and ports.
@@ -13263,7 +13462,7 @@ receive data or not.
 
 While this default behavior is desirable for almost all applications, there
 exists a situation where it is desirable to disable it, and only refresh the
-read timeout if there are incoming data. This happens on sessions with large
+read timeout if there are incoming data. This happens on streams with large
 timeouts and low amounts of exchanged data such as telnet session. If the
 server suddenly disappears, the output data accumulates in the system's
 socket buffers, both timeouts are correctly refreshed, and there is no way
@@ -13403,7 +13602,7 @@ May be used in the following contexts: tcp, http
 </div>
 <pre class="text">By default, logs are emitted when all the log format variables and sample
 fetches used in the definition of the log-format string return a value, or
-when the session is terminated. This allows the built in log-format strings
+when the stream is terminated. This allows the built in log-format strings
 to account for the transfer time, or the number of bytes in log messages.
 
 When handling long lived connections such as large file transfers or RDP,
@@ -14129,7 +14328,7 @@ reason, it is strongly recommended to explicitly use &quot;<a href="#option%20cl
 &quot;<a href="#option%20srvtcpka">option srvtcpka</a>&quot; when the configuration is split between frontends and
 backends.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20clitcpka">option clitcpka</a>&quot;, &quot;<a href="#option%20srvtcpka">option srvtcpka</a>&quot;</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option tcplog"></a><a class="anchor" name="4-option tcplog"></a><a class="anchor" name="4.2-option tcplog"></a><a class="anchor" name="option tcplog (Proxies)"></a><a class="anchor" name="option tcplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option tcplog"></a><a href="#4.2-option%20tcplog">option tcplog</a></b></div><pre class="text">Enable advanced logging of TCP connections with session state and timers
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option tcplog"></a><a class="anchor" name="4-option tcplog"></a><a class="anchor" name="4.2-option tcplog"></a><a class="anchor" name="option tcplog (Proxies)"></a><a class="anchor" name="option tcplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option tcplog"></a><a href="#4.2-option%20tcplog">option tcplog</a></b></div><pre class="text">Enable advanced logging of TCP connections with stream state and timers
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -14142,7 +14341,7 @@ May be used in the following contexts: tcp, http
 <pre class="text">By default, the log output format is very poor, as it only contains the
 source and destination addresses, and the instance name. By specifying
 &quot;<a href="#option%20tcplog">option tcplog</a>&quot;, each log line turns into a much richer format including, but
-not limited to, the connection timers, the session status, the connections
+not limited to, the connection timers, the stream status, the connections
 numbers, the frontend, backend and server name, and of course the source
 address and ports. This option is useful for pure TCP proxies in order to
 find which of the client or server disconnects or times out. For normal HTTP
@@ -16883,8 +17082,8 @@ suffixed by the unit, as specified at the top of this document. In TCP mode
 client timeout remains equal to the server timeout in order to avoid complex
 situations to debug. It is a good practice to cover one or several TCP packet
 losses by specifying timeouts that are slightly above multiples of 3 seconds
-(e.g. 4 or 5 seconds). If some long-lived sessions are mixed with short-lived
-sessions (e.g. WebSocket and HTTP), it's worth considering &quot;<a href="#timeout%20tunnel">timeout tunnel</a>&quot;,
+(e.g. 4 or 5 seconds). If some long-lived streams are mixed with short-lived
+streams (e.g. WebSocket and HTTP), it's worth considering &quot;<a href="#timeout%20tunnel">timeout tunnel</a>&quot;,
 which overrides &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20server%20%28Rings%29">Rings</a></li><li><a href="#timeout%20server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; for tunnels, as well as
 &quot;<a href="#timeout%20client-fin">timeout client-fin</a>&quot; for half-closed connections.
 
@@ -17099,8 +17298,8 @@ recommended that the client timeout remains equal to the server timeout in
 order to avoid complex situations to debug. Whatever the expected server
 response times, it is a good practice to cover at least one or several TCP
 packet losses by specifying timeouts that are slightly above multiples of 3
-seconds (e.g. 4 or 5 seconds minimum). If some long-lived sessions are mixed
-with short-lived sessions (e.g. WebSocket and HTTP), it's worth considering
+seconds (e.g. 4 or 5 seconds minimum). If some long-lived streams are mixed
+with short-lived streams (e.g. WebSocket and HTTP), it's worth considering
 &quot;<a href="#timeout%20tunnel">timeout tunnel</a>&quot;, which overrides &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20server%20%28Rings%29">Rings</a></li><li><a href="#timeout%20server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; for
 tunnels.
 
@@ -17634,7 +17833,7 @@ will possibly appear next to some captured HTTP headers. It will then
 automatically appear in the logs, and it will be possible to extract it using
 sample fetch methods to feed it into headers or anything. The length should
 be limited given that this size will be allocated for each capture during the
-whole session life. Note that the length is only usable with &quot;<a href="#http-request">http-request</a>&quot;
+whole stream life. Note that the length is only usable with &quot;<a href="#http-request">http-request</a>&quot;
 rules. Please check <a href="#7.3">section 7.3</a> (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot;
 and &quot;<a href="#capture%20response%20header">capture response header</a>&quot; for more information.
 
@@ -20189,7 +20388,7 @@ Currently, four modes are available:
 See also the &quot;<a href="#check">check</a>&quot;, &quot;<a href="#observe">observe</a>&quot; and &quot;<a href="#error-limit">error-limit</a>&quot;.
 </pre><a class="anchor" name="on-marked-down"></a><a class="anchor" name="5-on-marked-down"></a><a class="anchor" name="5.2-on-marked-down"></a><a class="anchor" name="on-marked-down (Bind and server options)"></a><a class="anchor" name="on-marked-down (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="on-marked-down"></a><a href="#5.2-on-marked-down">on-marked-down</a></b> <span style="color: #080">&lt;action&gt;</span></div><pre class="text">Modify what occurs when a server is marked down.
 Currently one action is available:
-- shutdown-sessions: Shutdown peer sessions. When this setting is enabled,
+- shutdown-sessions: Shutdown peer streams. When this setting is enabled,
   all connections to the server are immediately terminated when the server
   goes down. It might be used if the health check detects more complex cases
   than a simple connection status, and long timeouts would cause the service
@@ -20201,13 +20400,13 @@ Currently one action is available:
 Actions are disabled by default
 </pre><a class="anchor" name="on-marked-up"></a><a class="anchor" name="5-on-marked-up"></a><a class="anchor" name="5.2-on-marked-up"></a><a class="anchor" name="on-marked-up (Bind and server options)"></a><a class="anchor" name="on-marked-up (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="on-marked-up"></a><a href="#5.2-on-marked-up">on-marked-up</a></b> <span style="color: #080">&lt;action&gt;</span></div><pre class="text">Modify what occurs when a server is marked up.
 Currently one action is available:
-- shutdown-backup-sessions: Shutdown sessions on all backup servers. This is
+- shutdown-backup-sessions: Shutdown streams on all backup servers. This is
   done only if the server is not in backup state and if it is not disabled
   (it must have an effective weight &gt; 0). This can be used sometimes to force
   an active server to take all the traffic back after recovery when dealing
   with long sessions (e.g. LDAP, SQL, ...). Doing this can cause more trouble
   than it tries to solve (e.g. incomplete transactions), so use this feature
-  with extreme care. Sessions killed because a server comes up are logged
+  with extreme care. Streams killed because a server comes up are logged
   with an 'U' termination code (for &quot;Up&quot;).
 
 Actions are disabled by default
@@ -22631,8 +22830,8 @@ SHA-&lt;bits&gt;. The default value is 256.
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
 </pre><a class="anchor" name="srv_queue"></a><a class="anchor" name="7-srv_queue"></a><a class="anchor" name="7.3.1-srv_queue"></a><a class="anchor" name="srv_queue (Using ACLs and fetching samples)"></a><a class="anchor" name="srv_queue (Converters)"></a><div class="keyword"><b><a class="anchor" name="srv_queue"></a><a href="#7.3.1-srv_queue">srv_queue</a></b></div><pre class="text">Takes an input value of type string, either a server name or &lt;backend&gt;/&lt;server&gt;
-format and returns the number of queued sessions on that server. Can be used
-in places where we want to look up queued sessions from a dynamic name, like a
+format and returns the number of queued streams on that server. Can be used
+in places where we want to look up queued streams from a dynamic name, like a
 cookie value (e.g. req.cook(SRVID),srv_queue) and then make a decision to break
 persistence or direct a request elsewhere.
 </pre><a class="anchor" name="strcmp"></a><a class="anchor" name="7-strcmp"></a><a class="anchor" name="7.3.1-strcmp"></a><a class="anchor" name="strcmp (Using ACLs and fetching samples)"></a><a class="anchor" name="strcmp (Converters)"></a><div class="keyword"><b><a class="anchor" name="strcmp"></a><a href="#7.3.1-strcmp">strcmp</a></b>(<span style="color: #080">&lt;var&gt;</span>)</div><pre class="text">Compares the contents of &lt;var&gt; with the input value of type string. Returns
@@ -23405,10 +23604,10 @@ ACLs but can also be useful when added to logs. This is normally used to
 switch to an alternate backend when the number of servers is too low to
 to handle some load. It is useful to report a failure when combined with
 &quot;<a href="#monitor%20fail">monitor fail</a>&quot;.
-</pre><a class="anchor" name="prio_class"></a><a class="anchor" name="7-prio_class"></a><a class="anchor" name="7.3.2-prio_class"></a><a class="anchor" name="prio_class (Using ACLs and fetching samples)"></a><a class="anchor" name="prio_class (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="prio_class"></a><a href="#7.3.2-prio_class">prio_class</a></b> : integer</div><pre class="text">Returns the priority class of the current session for http mode or connection
+</pre><a class="anchor" name="prio_class"></a><a class="anchor" name="7-prio_class"></a><a class="anchor" name="7.3.2-prio_class"></a><a class="anchor" name="prio_class (Using ACLs and fetching samples)"></a><a class="anchor" name="prio_class (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="prio_class"></a><a href="#7.3.2-prio_class">prio_class</a></b> : integer</div><pre class="text">Returns the priority class of the current stream for http mode or connection
 for tcp mode. The value will be that set by the last call to &quot;http-request
 set-priority-class&quot; or &quot;tcp-request content set-priority-class&quot;.
-</pre><a class="anchor" name="prio_offset"></a><a class="anchor" name="7-prio_offset"></a><a class="anchor" name="7.3.2-prio_offset"></a><a class="anchor" name="prio_offset (Using ACLs and fetching samples)"></a><a class="anchor" name="prio_offset (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="prio_offset"></a><a href="#7.3.2-prio_offset">prio_offset</a></b> : integer</div><pre class="text">Returns the priority offset of the current session for http mode or
+</pre><a class="anchor" name="prio_offset"></a><a class="anchor" name="7-prio_offset"></a><a class="anchor" name="7.3.2-prio_offset"></a><a class="anchor" name="prio_offset (Using ACLs and fetching samples)"></a><a class="anchor" name="prio_offset (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="prio_offset"></a><a href="#7.3.2-prio_offset">prio_offset</a></b> : integer</div><pre class="text">Returns the priority offset of the current stream for http mode or
 connection for tcp mode. The value will be that set by the last call to
 &quot;http-request set-priority-offset&quot; or &quot;tcp-request content
 set-priority-offset&quot;.
@@ -23502,20 +23701,20 @@ and debugging purposes.
 its value is not unique, transaction IDs may wrap. The wrapping period
 depends on the request rate. In practice, it should not be an issue. For a
 true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot; directive.
-</pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.2-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.2-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this session when
+</pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.2-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.2-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this stream when
 trying to connect to the server. This value is subject to change while the
 connection is not fully established. For HTTP connections, the value may be
 affected by L7 retries.
-</pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Retruns the TCP or HTTP session termination state, as reported in the log. It
-is a 2-characters string, The final session state followed by the event which
-caused its to terminate. See <a href="#8.5">section 8.5</a> about session state at disconnection
+</pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Retruns the TCP or HTTP stream termination state, as reported in the log. It
+is a 2-characters string, The final stream state followed by the event which
+caused its to terminate. See <a href="#8.5">section 8.5</a> about stream state at disconnection
 for the list of possible events. The current value at time the sample fetch
 is evaluated is returned. It is subject to change. Except used with ACLs in
 &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets or in log messages, it will always be &quot;--&quot;.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code><span class="comment"># Return a 429-Too-Many-Requests if session timed out in queue</span>
+<code><span class="comment"># Return a 429-Too-Many-Requests if stream timed out in queue</span>
 http-after-response set-status 429 if { txn.sess_term_state  &quot;sQ&quot; }
 </code></pre>
 </div><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC4122 standard. If the version is not
@@ -23873,7 +24072,7 @@ destination port information to a server using an HTTP header.
 protocols. Currently, these protocols are proxy-protocol and SSL. This is the
 equivalent of %Th in the log-format.  This is reported in milliseconds (ms).
 For more information see Section 8.4 &quot;Timing events&quot;
-</pre><a class="anchor" name="fc.timer.total"></a><a class="anchor" name="7-fc.timer.total"></a><a class="anchor" name="7.3.3-fc.timer.total"></a><a class="anchor" name="fc.timer.total (Using ACLs and fetching samples)"></a><a class="anchor" name="fc.timer.total (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc.timer.total"></a><a href="#7.3.3-fc.timer.total">fc.timer.total</a></b> : integer</div><pre class="text">Total session duration time, between the moment the proxy accepted it and the
+</pre><a class="anchor" name="fc.timer.total"></a><a class="anchor" name="7-fc.timer.total"></a><a class="anchor" name="7.3.3-fc.timer.total"></a><a class="anchor" name="fc.timer.total (Using ACLs and fetching samples)"></a><a class="anchor" name="fc.timer.total (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc.timer.total"></a><a href="#7.3.3-fc.timer.total">fc.timer.total</a></b> : integer</div><pre class="text">Total stream duration time, between the moment the proxy accepted it and the
 moment both ends were closed. This is the equivalent of %Tt in the log-format.
 This is reported in milliseconds (ms). For more information see Section 8.4
 &quot;Timing events&quot;
@@ -25373,7 +25572,7 @@ ACL derivatives :
 response buffer. This is mostly used in ACL. It is important to understand
 that this test does not return false as long as the buffer is changing. This
 means that a check with equality to zero will almost always immediately match
-at the beginning of the session, while a test for more data will wait for
+at the beginning of the stream, while a test for more data will wait for
 that data to come in and return false only when HAProxy is certain that no
 more data will come in. This test was designed to be used with TCP response
 content inspection. But it may also be used in tcp-check based expect rules.
@@ -26253,7 +26452,7 @@ order to avoid confusion. Their equivalence is provided below.
 </div><div><pre class="text">One of HAProxy's strong points certainly lies is its precise logs. It probably
 provides the finest level of information available for such a product, which is
 very important for troubleshooting complex environments. Standard information
-provided in logs include client ports, TCP/HTTP state timers, precise session
+provided in logs include client ports, TCP/HTTP state timers, precise stream
 state at termination and precise termination cause, information about decisions
 to direct traffic to a server, and of course the ability to capture arbitrary
 headers.
@@ -26282,7 +26481,7 @@ delay.
 <div><pre class="text">TCP and HTTP connections can be logged with information such as the date, time,
 source IP address, destination address, connection duration, response times,
 HTTP request, HTTP return code, number of bytes transmitted, conditions
-in which the session ended, and even exchanged cookies values. For example
+in which the stream ended, and even exchanged cookies values. For example
 track a particular user's problems. All messages may be sent to up to two
 syslog servers. Check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword in <a href="#4.2">section 4.2</a> for more information
 about log facilities.
@@ -26489,7 +26688,7 @@ Detailed fields description :
     ended. This indicates the session state, which side caused the end of
     session to happen, and for what reason (timeout, error, ...). The normal
     flags should be &quot;--&quot;, indicating the session was closed by either end with
-    no data remaining in buffers. See below &quot;Session state at disconnection&quot;
+    no data remaining in buffers. See below &quot;Stream state at disconnection&quot;
     for more details.
 
   - &quot;actconn&quot; is the total number of concurrent connections on the process when
@@ -26564,9 +26763,9 @@ Detailed fields description :
 is enabled by when &quot;<a href="#option%20httplog">option httplog</a>&quot; is specified in the frontend. It provides
 the same level of information as the TCP format with additional features which
 are specific to the HTTP protocol. Just like the TCP format, the log is usually
-emitted at the end of the session, unless &quot;<a href="#option%20logasap">option logasap</a>&quot; is specified, which
-generally only makes sense for download sites. A session which matches the
-&quot;<a href="#monitor">monitor</a>&quot; rules will never logged. It is also possible not to log sessions for
+emitted at the end of the stream, unless &quot;<a href="#option%20logasap">option logasap</a>&quot; is specified, which
+generally only makes sense for download sites. A stream which matches the
+&quot;<a href="#monitor">monitor</a>&quot; rules will never logged. It is also possible not to log streams for
 which no data were sent by the client by specifying &quot;<a href="#option%20dontlognull">option dontlognull</a>&quot; in the
 frontend. Successful connections will not be logged if &quot;<a href="#option%20dontlog-normal">option dontlog-normal</a>&quot;
 is specified in the frontend.
@@ -26723,16 +26922,16 @@ Detailed fields description :
     crossing between clients due to application bugs. For more details, please
     consult the section &quot;Capturing HTTP headers and cookies&quot; below.
 
-  - &quot;termination_state&quot; is the condition the session was in when the session
-    ended. This indicates the session state, which side caused the end of
-    session to happen, for what reason (timeout, error, ...), just like in TCP
+  - &quot;termination_state&quot; is the condition the stream was in when the stream
+    ended. This indicates the stream state, which side caused the end of
+    stream to happen, for what reason (timeout, error, ...), just like in TCP
     logs, and information about persistence operations on cookies in the last
     two characters. The normal flags should begin with &quot;--&quot;, indicating the
-    session was closed by either end with no data remaining in buffers. See
-    below &quot;Session state at disconnection&quot; for more details.
+    stream was closed by either end with no data remaining in buffers. See
+    below &quot;Stream state at disconnection&quot; for more details.
 
   - &quot;actconn&quot; is the total number of concurrent connections on the process when
-    the session was logged. It is useful to detect when some per-process system
+    the stream was logged. It is useful to detect when some per-process system
     limits have been reached. For instance, if actconn is close to 512 or 1024
     when multiple connection errors occur, chances are high that the system
     limits the process to use a maximum of 1024 file descriptors and that all
@@ -26740,14 +26939,14 @@ Detailed fields description :
     system.
 
   - &quot;feconn&quot; is the total number of concurrent connections on the frontend when
-    the session was logged. It is useful to estimate the amount of resource
+    the stream was logged. It is useful to estimate the amount of resource
     required to sustain high loads, and to detect when the frontend's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
     has been reached. Most often when this value increases by huge jumps, it is
     because there is congestion on the backend servers, but sometimes it can be
     caused by a denial of service attack.
 
   - &quot;beconn&quot; is the total number of concurrent connections handled by the
-    backend when the session was logged. It includes the total number of
+    backend when the stream was logged. It includes the total number of
     concurrent connections active on servers as well as the number of
     connections pending in queues. It is useful to estimate the amount of
     additional servers needed to support high loads for a given application.
@@ -26756,7 +26955,7 @@ Detailed fields description :
     denial of service attack.
 
   - &quot;<a href="#srv_conn">srv_conn</a>&quot; is the total number of concurrent connections still active on
-    the server when the session was logged. It can never exceed the server's
+    the server when the stream was logged. It can never exceed the server's
     configured &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter. If this value is very often close or equal
     to the server's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, it means that traffic regulation is involved a
     lot, meaning that either the server's maxconn value is too low, or that
@@ -26765,13 +26964,13 @@ Detailed fields description :
     that this server has some trouble causing the requests to take longer to be
     processed than on other servers.
 
-  - &quot;<a href="#retries">retries</a>&quot; is the number of connection retries experienced by this session
+  - &quot;<a href="#retries">retries</a>&quot; is the number of connection retries experienced by this stream
     when trying to connect to the server. It must normally be zero, unless a
     server is being stopped at the same moment the connection was attempted.
     Frequent retries generally indicate either a network problem between
     HAProxy and the server, or a misconfigured system backlog on the server
     preventing new connections from being queued. This field may optionally be
-    prefixed with a '+' sign, indicating that the session has experienced a
+    prefixed with a '+' sign, indicating that the stream has experienced a
     redispatch after the maximal retry count has been reached on the initial
     server. In this case, the server name appearing in the log is the one the
     connection was redispatched to, and not the first one, though both may
@@ -26783,7 +26982,7 @@ Detailed fields description :
     this one in the server queue. It is zero when the request has not gone
     through the server queue. It makes it possible to estimate the approximate
     server's response time by dividing the time spent in queue by the number of
-    requests in the queue. It is worth noting that if a session experiences a
+    requests in the queue. It is worth noting that if a stream experiences a
     redispatch and passes through two server queues, their positions will be
     cumulative. A request should not pass through both the server queue and the
     backend queue unless a redispatch occurs.
@@ -26793,7 +26992,7 @@ Detailed fields description :
     gone through the global queue. It makes it possible to estimate the average
     queue length, which easily translates into a number of missing servers when
     divided by a server's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter. It is worth noting that if a
-    session experiences a redispatch, it may pass twice in the backend's queue,
+    stream experiences a redispatch, it may pass twice in the backend's queue,
     and then both positions will be cumulative. A request should not pass
     through both the server queue and the backend queue unless a redispatch
     occurs.
@@ -26831,9 +27030,9 @@ Detailed fields description :
 extension of the HTTP format (see <a href="#8.2.3">section 8.2.3</a>) to which SSL related
 information are added. It is enabled when &quot;<a href="#option%20httpslog">option httpslog</a>&quot; is specified in the
 frontend. Just like the TCP and HTTP formats, the log is usually emitted at the
-end of the session, unless &quot;<a href="#option%20logasap">option logasap</a>&quot; is specified. A session which
+end of the stream, unless &quot;<a href="#option%20logasap">option logasap</a>&quot; is specified. A stream which
 matches the &quot;<a href="#monitor">monitor</a>&quot; rules will never logged. It is also possible not to log
-sessions for which no data were sent by the client by specifying &quot;option
+streams for which no data were sent by the client by specifying &quot;option
 dontlognull&quot; in the frontend. Successful connections will not be logged if
 &quot;<a href="#option%20dontlog-normal">option dontlog-normal</a>&quot; is specified in the frontend.
 
@@ -27236,9 +27435,9 @@ ask how to disable logging for those checks. There are three possibilities :
     only get the result of a health-check, and the request will not be logged.
 </pre></div>
 <a class="anchor" id="8.3.2" name="8.3.2"></a>
-<h3 id="chapter-8.3.2" data-target="8.3.2"><small><a class="small" href="#8.3.2">8.3.2.</a></small> Logging before waiting for the session to terminate</h3>
+<h3 id="chapter-8.3.2" data-target="8.3.2"><small><a class="small" href="#8.3.2">8.3.2.</a></small> Logging before waiting for the stream to terminate</h3>
 <div><pre class="text">The problem with logging at end of connection is that you have no clue about
-what is happening during very long sessions, such as remote terminal sessions
+what is happening during very long streams, such as remote terminal sessions
 or large file downloads. This problem can be worked around by specifying
 &quot;<a href="#option%20logasap">option logasap</a>&quot; in the frontend. HAProxy will then log as soon as possible,
 just before data transfer begins. This means that in case of TCP, it will still
@@ -27277,7 +27476,7 @@ alternative.
 <h2 id="chapter-8.4" data-target="8.4"><small><a class="small" href="#8.4">8.4.</a></small> Timing events</h2>
 <div><pre class="text">Timers provide a great help in troubleshooting network problems. All values are
 reported in milliseconds (ms). These timers should be used in conjunction with
-the session termination flags. In TCP mode with &quot;<a href="#option%20tcplog">option tcplog</a>&quot; set on the
+the stream termination flags. In TCP mode with &quot;<a href="#option%20tcplog">option tcplog</a>&quot; set on the
 frontend, 3 control points are reported under the form &quot;Tw/Tc/Tt&quot;, and in HTTP
 mode, 5 control points are reported under the form &quot;TR/Tw/Tc/Tr/Ta&quot;. In
 addition, three other measures are provided, &quot;Th&quot;, &quot;Ti&quot;, and &quot;Tq&quot;.
@@ -27410,7 +27609,7 @@ Timings events in TCP mode:
     This timer is named %Ta as a log-format tag, and txn.timer.total as a
     sample fetch.
 
-  - Tt: total session duration time, between the moment the proxy accepted it
+  - Tt: total stream duration time, between the moment the proxy accepted it
     and the moment both ends were closed. The exception is when the &quot;<a href="#option%20logasap">logasap</a>&quot;
     option is specified. In this case, it only equals (Th+Ti+TR+Tw+Tc+Tr), and
     is prefixed with a '+' sign. From this field, we can deduce &quot;Td&quot;, the data
@@ -27442,7 +27641,7 @@ protocol defines retransmit delays of 3, 6, 12... seconds, we know for sure
 that timers close to multiples of 3s are nearly always related to lost packets
 due to network problems (wires, negotiation, congestion). Moreover, if &quot;Ta&quot; or
 &quot;Tt&quot; is close to a timeout value specified in the configuration, it often means
-that a session has been aborted on timeout.
+that a stream has been aborted on timeout.
 
 Most common cases :
 
@@ -27485,48 +27684,48 @@ Other noticeable HTTP log cases ('xx' means any value to be ignored) :
                    except &quot;Ta&quot; which is shorter than reality.
 
   -1/xx/xx/xx/Ta   The client was not able to send a complete request in time
-                   or it aborted too early. Check the session termination flags
+                   or it aborted too early. Check the stream termination flags
                    then &quot;<a href="#timeout%20http-request">timeout http-request</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; settings.
 
   TR/-1/xx/xx/Ta   It was not possible to process the request, maybe because
                    servers were out of order, because the request was invalid
-                   or forbidden by ACL rules. Check the session termination
+                   or forbidden by ACL rules. Check the stream termination
                    flags.
 
   TR/Tw/-1/xx/Ta   The connection could not establish on the server. Either it
                    actively refused it or it timed out after Ta-(TR+Tw) ms.
-                   Check the session termination flags, then check the
+                   Check the stream termination flags, then check the
                    &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20connect%20%28Rings%29">Rings</a></li><li><a href="#timeout%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting. Note that the tarpit action might
                    return similar-looking patterns, with &quot;Tw&quot; equal to the time
                    the client connection was maintained open.
 
   TR/Tw/Tc/-1/Ta   The server has accepted the connection but did not return
                    a complete response in time, or it closed its connection
-                   unexpectedly after Ta-(TR+Tw+Tc) ms. Check the session
+                   unexpectedly after Ta-(TR+Tw+Tc) ms. Check the stream
                    termination flags, then check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20server%20%28Rings%29">Rings</a></li><li><a href="#timeout%20server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting.
 </pre></div>
 <a class="anchor" id="8.5" name="8.5"></a>
-<h2 id="chapter-8.5" data-target="8.5"><small><a class="small" href="#8.5">8.5.</a></small> Session state at disconnection</h2>
-<div><pre class="text">TCP and HTTP logs provide a session termination indicator in the
+<h2 id="chapter-8.5" data-target="8.5"><small><a class="small" href="#8.5">8.5.</a></small> Stream state at disconnection</h2>
+<div><pre class="text">TCP and HTTP logs provide a stream termination indicator in the
 &quot;termination_state&quot; field, just before the number of active connections. It is
 2-characters long in TCP mode, and is extended to 4 characters in HTTP mode,
 each of which has a special meaning :
 
   - On the first character, a code reporting the first event which caused the
-    session to terminate :
+    stream to terminate :
 
         C : the TCP session was unexpectedly aborted by the client.
 
         S : the TCP session was unexpectedly aborted by the server, or the
             server explicitly refused it.
 
-        P : the session was prematurely aborted by the proxy, because of a
-            connection limit enforcement, because a DENY filter was matched,
-            because of a security check which detected and blocked a dangerous
-            error in server response which might have caused information leak
-            (e.g. cacheable cookie).
+        P : the stream or session was prematurely aborted by the proxy, because
+            of a connection limit enforcement, because a DENY filter was
+            matched, because of a security check which detected and blocked a
+            dangerous error in server response which might have caused
+            information leak (e.g. cacheable cookie).
 
-        L : the session was locally processed by HAProxy and was not passed to
+        L : the stream was locally processed by HAProxy and was not passed to
             a server. This is what happens for stats and redirects.
 
         R : a resource on the proxy has been exhausted (memory, sockets, source
@@ -27541,14 +27740,14 @@ each of which has a special meaning :
             would be wise to preventively restart the process after such an
             event too, in case it would be caused by memory corruption.
 
-        D : the session was killed by HAProxy because the server was detected
+        D : the stream was killed by HAProxy because the server was detected
             as down and was configured to kill all connections when going down.
 
-        U : the session was killed by HAProxy on this backup server because an
+        U : the stream was killed by HAProxy on this backup server because an
             active server was detected as up and was configured to kill all
             backup connections when going up.
 
-        K : the session was actively killed by an admin operating on HAProxy.
+        K : the stream was actively killed by an admin operating on HAProxy.
 
         c : the client-side timeout expired while waiting for the client to
             send or receive data.
@@ -27556,10 +27755,10 @@ each of which has a special meaning :
         s : the server-side timeout expired while waiting for the server to
             send or receive data.
 
-        - : normal session completion, both the client and the server closed
+        - : normal stream completion, both the client and the server closed
             with nothing left in the buffers.
 
-  - on the second character, the TCP or HTTP session state when it was closed :
+  - on the second character, the TCP or HTTP stream state when it was closed :
 
         R : the proxy was waiting for a complete, valid REQUEST from the client
             (HTTP mode only). Nothing was sent to any server.
@@ -27576,7 +27775,7 @@ each of which has a special meaning :
         H : the proxy was waiting for complete, valid response HEADERS from the
             server (HTTP only).
 
-        D : the session was in the DATA phase.
+        D : the stream was in the DATA phase.
 
         L : the proxy was still transmitting LAST data to the client while the
             server had already finished. This one is very rare as it can only
@@ -27586,7 +27785,7 @@ each of which has a special meaning :
             during the whole &quot;<a href="#timeout%20tarpit">timeout tarpit</a>&quot; duration or until the client
             closed, both of which will be reported in the &quot;Tw&quot; timer.
 
-        - : normal session completion after end of data transfer.
+        - : normal stream completion after end of data transfer.
 
   - the third character tells whether the persistence cookie was provided by
     the client (only in HTTP mode) :
@@ -27649,9 +27848,9 @@ each of which has a special meaning :
         - : does not apply (no cookie set in configuration).
 
 The combination of the two first flags gives a lot of information about what
-was happening when the session terminated, and why it did terminate. It can be
-helpful to detect server saturation, network troubles, local system resource
-starvation, attacks, etc...
+was happening when the stream or session terminated, and why it did terminate.
+It can be helpful to detect server saturation, network troubles, local system
+resource starvation, attacks, etc...
 
 The most common termination flags combinations are indicated below. They are
 alphabetically sorted, with the lowercase set just after the upper case for
@@ -27670,7 +27869,7 @@ easier finding and understanding.
           caused by a browser crash, by an intermediate equipment between the
           client and HAProxy which decided to actively break the connection,
           by network routing issues between the client and HAProxy, or by a
-          keep-alive session between the server and the client terminated first
+          keep-alive stream between the server and the client terminated first
           by the client.
 
      cD   The client did not send nor acknowledge any data for as long as the
@@ -27687,7 +27886,7 @@ easier finding and understanding.
           also happen when client timeout is smaller than server timeout and
           the server takes too long to respond.
 
-     CQ   The client aborted while its session was queued, waiting for a server
+     CQ   The client aborted while its stream was queued, waiting for a server
           with enough empty slots to accept it. It might be that either all the
           servers were saturated or that the assigned server was taking too
           long a time to respond.
@@ -27718,7 +27917,7 @@ easier finding and understanding.
           zero data transfer to be totally ignored. This will definitely hide
           the errors of people experiencing connectivity issues though.
 
-     CT   The client aborted while its session was tarpitted. It is important to
+     CT   The client aborted while its stream was tarpitted. It is important to
           check if this happens on valid requests, in order to be sure that no
           wrong tarpit rules have been written. If a lot of them happen, it
           might make sense to lower the &quot;<a href="#timeout%20tarpit">timeout tarpit</a>&quot; value to something
@@ -27767,7 +27966,7 @@ easier finding and understanding.
           will suffer from these long response times. The only long term
           solution is to fix the application.
 
-     sQ   The session spent too much time in queue and has been expired. See
+     sQ   The stream spent too much time in queue and has been expired. See
           the &quot;<a href="#timeout%20queue">timeout queue</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20connect%20%28Rings%29">Rings</a></li><li><a href="#timeout%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; settings to find out how to
           fix this if it happens too often. If it often happens massively in
           short periods, it may indicate general problems on the affected
@@ -28758,7 +28957,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev12-11 &ndash; Configuration Manual<br>
+							HAProxy 2.9-dev12-21 &ndash; Configuration Manual<br>
 							<small>, 2023/11/30</small>
 						</div>
 					</div>
