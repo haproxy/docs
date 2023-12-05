@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9-dev12-21 - Management Guide</title>
+		<title>HAProxy version 3.0-dev0 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -614,7 +614,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -625,7 +625,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.9-dev12-21</strong></p>
+							<p><strong>version 3.0-dev0</strong></p>
 							<p>
 								<br>
 								
@@ -1184,8 +1184,8 @@ list of options is :
     enables all trace sources on error level. This can notably be useful to
     detect protocol violations from clients or servers. An optional argument
     can be used to specify a list of various trace configurations using ',' as
-    separator. Each element activates one or all trace sources. Additionnaly,
-    level and verbosity can be optionaly specified on each element using ':' as
+    separator. Each element activates one or all trace sources. Additionally,
+    level and verbosity can be optionally specified on each element using ':' as
     inner separator with trace name.
 
   -m &lt;limit&gt; : limit the total allocatable memory to &lt;limit&gt; megabytes across
@@ -3305,8 +3305,8 @@ caused by protocol violations, often due to invalid characters in header
 names. The report precisely indicates what exact character violated the
 protocol. Other important information such as the exact date the error was
 detected, frontend and backend names, the server name (when known), the
-internal session ID and the source address which has initiated the session
-are reported too.
+internal transaction ID and the source address which has initiated the
+session are reported too.
 
 All characters are returned, and non-printable characters are encoded. The
 most common ones (\t = 9, \n = 10, \r = 13 and \e = 27) are encoded as one
@@ -3341,11 +3341,11 @@ line.
 
 In the example above, we see that the backend &quot;http-in&quot; which has internal
 ID 2 has blocked an invalid response from its server s2 which has internal
-ID 1. The request was on session 54 initiated by source 127.0.0.1 and
-received by frontend fe-eth0 whose ID is 1. The total response length was
-213 bytes when the error was detected, and the error was at byte 23. This
-is the slash ('/') in header name &quot;header/bizarre&quot;, which is not a valid
-HTTP character for a header name.
+ID 1. The request was on transaction 54 (called &quot;session&quot; here) initiated
+by source 127.0.0.1 and received by frontend fe-eth0 whose ID is 1. The
+total response length was 213 bytes when the error was detected, and the
+error was at byte 23. This is the slash ('/') in header name
+&quot;header/bizarre&quot;, which is not a valid HTTP character for a header name.
 </code></pre>
 </div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show events"></a><a class="anchor" name="9-show events"></a><a class="anchor" name="9.3-show events"></a><a class="anchor" name="show events (Statistics and monitoring)"></a><a class="anchor" name="show events (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show events"></a><a href="#9.3-show%20events">show events</a></b> <span style="color: #008">[<span style="color: #080">&lt;sink&gt;</span>]</span> <span style="color: #008">[-w]</span> <span style="color: #008">[-n]</span></div><pre class="text">With no option, this lists all known event sinks and their types. With an
 option, it will dump all available events in the designated sink if it is of
@@ -3760,22 +3760,22 @@ fields and their order per file format version :
    srv_check_addr:              Server health check address.
    srv_agent_addr:              Server health agent address.
    srv_agent_port:              Server health agent port.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b></div><pre class="text">Dump all known sessions. Avoid doing this on slow connections as this can
-be huge. This command is restricted and can only be issued on sockets
-configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;. Note that on machines with
-quickly recycled connections, it is possible that this output reports less
-entries than really exist because it will dump all existing sessions up to
-the last one that was created before the command was entered; those which
-die in the mean time will not appear.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #080">&lt;id&gt;</span> | older <span style="color: #080">&lt;age&gt;</span> | susp | all</div><pre class="text">Display a lot of internal information about the matching sessions. In the
-first form, only the session matching the specified session identifier will
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b></div><pre class="text">Dump all known active streams (formerly called &quot;sessions&quot;). Avoid doing this
+on slow connections as this can be huge. This command is restricted and can
+only be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;. Note
+that on machines with quickly recycled connections, it is possible that this
+output reports less entries than really exist because it will dump all
+existing streams up to the last one that was created before the command was
+entered; those which die in the mean time will not appear.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #080">&lt;id&gt;</span> | older <span style="color: #080">&lt;age&gt;</span> | susp | all</div><pre class="text">Display a lot of internal information about the matching streams. In the
+first form, only the stream matching the specified stream identifier will
 be shown. This identifier is the first field at the beginning of the lines in
-the dumps of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the session pointer). In the
-second form, only sessions older than &lt;age&gt; (in seconds by default) will be
+the dumps of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the stream pointer). In the
+second form, only streams older than &lt;age&gt; (in seconds by default) will be
 shown. Passing &quot;susp&quot; instead will only report entries that are considered as
 suspicious by the developers based on criteria that may in time or vary along
-versions. If &quot;all&quot; is used instead, then all sessions will be dumped. Dumping
-many sessions can produce a huge output, take a lot of time and be CPU
+versions. If &quot;all&quot; is used instead, then all streams will be dumped. Dumping
+many streams can produce a huge output, take a lot of time and be CPU
 intensive, so it's always better to only dump the minimum needed. Those
 information are useless to most users but may be used by haproxy developers
 to troubleshoot a complex bug. The output format is intentionally not
@@ -4355,15 +4355,15 @@ prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown session"></a><a class="anchor" name="9-shutdown session"></a><a class="anchor" name="9.3-shutdown session"></a><a class="anchor" name="shutdown session (Statistics and monitoring)"></a><a class="anchor" name="shutdown session (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown session"></a><a href="#9.3-shutdown%20session">shutdown session</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Immediately terminate the session matching the specified session identifier.
+</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown session"></a><a class="anchor" name="9-shutdown session"></a><a class="anchor" name="9.3-shutdown session"></a><a class="anchor" name="shutdown session (Statistics and monitoring)"></a><a class="anchor" name="shutdown session (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown session"></a><a href="#9.3-shutdown%20session">shutdown session</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Immediately terminate the stream matching the specified stream identifier.
 This identifier is the first field at the beginning of the lines in the dumps
-of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the session pointer). This can be used to
-terminate a long-running session without waiting for a timeout or when an
-endless transfer is ongoing. Such terminated sessions are reported with a 'K'
+of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the stream pointer). This can be used to
+terminate a long-running stream without waiting for a timeout or when an
+endless transfer is ongoing. Such terminated streams are reported with a 'K'
 flag in the logs.
-</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions"></a><a class="anchor" name="9-shutdown sessions"></a><a class="anchor" name="9.3-shutdown sessions"></a><a class="anchor" name="shutdown sessions (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions server"></a><a class="anchor" name="9-shutdown sessions server"></a><a class="anchor" name="9.3-shutdown sessions server"></a><a class="anchor" name="shutdown sessions server (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown sessions server"></a><a href="#9.3-shutdown%20sessions%20server">shutdown sessions server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Immediately terminate all the sessions attached to the specified server. This
-can be used to terminate long-running sessions after a server is put into
-maintenance mode, for instance. Such terminated sessions are reported with a
+</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions"></a><a class="anchor" name="9-shutdown sessions"></a><a class="anchor" name="9.3-shutdown sessions"></a><a class="anchor" name="shutdown sessions (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions server"></a><a class="anchor" name="9-shutdown sessions server"></a><a class="anchor" name="9.3-shutdown sessions server"></a><a class="anchor" name="shutdown sessions server (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown sessions server"></a><a href="#9.3-shutdown%20sessions%20server">shutdown sessions server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Immediately terminate all the streams attached to the specified server. This
+can be used to terminate long-running streams after a server is put into
+maintenance mode, for instance. Such terminated streams are reported with a
 'K' flag in the logs.
 </pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b></div><pre class="text">The &quot;<a href="#trace">trace</a>&quot; command alone lists the trace sources, their current status, and
 their brief descriptions. It is only meant as a menu to enter next levels,
@@ -4597,7 +4597,7 @@ the master. Display the flag &quot;x&quot; in the master CLI prompt.
 
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">experimental-mode<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#experimental-mode%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#experimental-mode%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; in Section 9.3 and &quot;<a href="#mcli-debug-mode">mcli-debug-mode</a>&quot; in 9.4.1.
 </pre><a class="anchor" name="hard-reload"></a><a class="anchor" name="9-hard-reload"></a><a class="anchor" name="9.4.1-hard-reload"></a><a class="anchor" name="hard-reload (Statistics and monitoring)"></a><a class="anchor" name="hard-reload (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="hard-reload"></a><a href="#9.4.1-hard-reload">hard-reload</a></b></div><pre class="text">This command does the same as the &quot;<a href="#reload">reload</a>&quot; command over the master CLI with
-the expection that it does a hard-stop (-st) instead of a stop-stop (-sf) of
+the exception that it does a hard-stop (-st) instead of a stop-stop (-sf) of
 the previous process. This means the previous process does not wait to
 achieve anything before exiting, so all connections will be closed.
 
@@ -5026,7 +5026,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9-dev12-21 &ndash; Management Guide<br>
+							HAProxy 3.0-dev0 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
