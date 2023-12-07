@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev0 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev0-16 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-12" rel="stylesheet" />
@@ -232,7 +232,18 @@
 					<td><small>2.7.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#2.7">Examples</a>
+							<a href="#2.7">Name format for maps and ACLs</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>2.8.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#2.8">Examples</a>
 							</div>
 					<td>
 				</tr>
@@ -3785,6 +3796,8 @@
 							
 							<a class="list-group-item" href="#tune.bufsize">tune.bufsize</a>
 							
+							<a class="list-group-item" href="#tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a>
+							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
 							<a class="list-group-item" href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
@@ -4108,7 +4121,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-12</b> on <b>2023/12/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4119,7 +4132,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-12" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev0</strong></p>
+							<p><strong>version 3.0-dev0-16</strong></p>
 							<p>
 								2023/12/05<br>
 								
@@ -4336,7 +4349,18 @@ Note to documentation contributors :
 					<td><small>2.7.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#2.7">Examples</a>
+							<a href="#2.7">Name format for maps and ACLs</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>2.8.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#2.8">Examples</a>
 							</div>
 					<td>
 				</tr>
@@ -6281,7 +6305,41 @@ for every keyword. Supported units are case insensitive :
 Both time and size formats require integers, decimal notation is not allowed.
 </pre></div>
 <a class="anchor" id="2.7" name="2.7"></a>
-<h2 id="chapter-2.7" data-target="2.7"><small><a class="small" href="#2.7">2.7.</a></small> Examples</h2>
+<h2 id="chapter-2.7" data-target="2.7"><small><a class="small" href="#2.7">2.7.</a></small> Name format for maps and ACLs</h2>
+<div><pre class="text">It is possible to use a list of pattern for maps or ACLs. A list of pattern is
+identified by its name and may be used at different places in the
+configuration. List of pattern are splitted on three categories depending on
+the name format:
+
+  * Lists of pattern based on regular files: It is the default case. The
+    filename, absolute or relative, is used as name. The file must exist
+    otherwise an error is triggered. But it may be empty. The &quot;file@&quot; prefix
+    may also be specificed but it is not part of the name identifying the
+    list. A filename, with or without the prefix, references the same list of
+    pattern.
+
+  * Lists of pattern based on optional files: The filename must be preceeds by
+    &quot;opt@&quot; prefix. The file existence is optional. If the file exists, its
+    content is loaded but no error is reported if not. The prefix is not part
+    of the name identifying the list. It means, for a given filename, Optional
+    files and regular files reference the same list of pattern.
+
+  * Lists of pattern based on virtual files: The name is just an identified. It
+    is not a reference to any file. &quot;virt@&quot; prefix must be used. It is part of
+    the name. Thus it cannot be mixed with other kind of lists.
+
+Virtual files are useful when patterns are fully dynamically managed with no
+patterns on startup and on reload. Optional files may be used in the same
+conditons. But patterns can be dumped in the file, via an external script based
+on the &quot;show map&quot; CLI command for instance. This way, it is possible to keep
+patterns on reload.
+
+Note: Even if it is unlikely, it means no regular file starting with &quot;file@&quot;,
+      &quot;opt@&quot; or &quot;virt@&quot; can be loaded, except by adding &quot;./&quot; explicitly in
+      front of the filename (for instance &quot;file@./virt@map&quot;).
+</pre></div>
+<a class="anchor" id="2.8" name="2.8"></a>
+<h2 id="chapter-2.8" data-target="2.8"><small><a class="small" href="#2.8">2.8.</a></small> Examples</h2>
 <div><pre class="text">    # Simple configuration for an HTTP proxy listening on port 80 on all
     # interfaces and forwarding requests to a single backend &quot;servers&quot; with a
     # single server &quot;server1&quot; listening on 127.0.0.1:8000
@@ -6453,6 +6511,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.buffers.limit">tune.buffers.limit</a>
    - <a href="#tune.buffers.reserve">tune.buffers.reserve</a>
    - <a href="#tune.bufsize">tune.bufsize</a>
+   - <a href="#tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
@@ -7914,7 +7973,11 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
-</pre><a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
+</pre><a class="anchor" name="tune.cache.zero-copy-forwarding"></a><a class="anchor" name="3-tune.cache.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.cache.zero-copy-forwarding"></a><a class="anchor" name="tune.cache.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.cache.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.cache.zero-copy-forwarding"></a><a href="#3.2-tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy forwarding of data for the
+cache applet, when objects are served from the cache to clients. It is
+enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding.</div>
+<a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
@@ -7931,7 +7994,7 @@ directive.
 optimize the data fast-forwarding by avoiding to use the channel's buffer.
 Thanks to this directive, it is possible to disable this optimization. Note
 it also disable any kernel tcp splicing.
-</pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
+</pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.cache.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
 <a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
 task handler (from event_hdl API). &lt;number&gt; should be included between 1
 and 10000. Large number could cause thread contention as a result of the
@@ -17872,13 +17935,13 @@ is the matching method, applied on the header name. Supported matching methods
 are &quot;<a href="#str">str</a>&quot; (exact match), &quot;beg&quot; (prefix match), &quot;end&quot; (suffix match), &quot;<a href="#sub">sub</a>&quot;
 (substring match) and &quot;reg&quot; (regex match). If not specified, exact matching
 method is used.
-</pre><a class="anchor" name="del-map"></a><a class="anchor" name="4-del-map"></a><a class="anchor" name="4.4-del-map"></a><a class="anchor" name="del-map (Proxies)"></a><a class="anchor" name="del-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-map"></a><a href="#4.4-del-map">del-map</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
+</pre><a class="anchor" name="del-map"></a><a class="anchor" name="4-del-map"></a><a class="anchor" name="4.4-del-map"></a><a class="anchor" name="del-map (Proxies)"></a><a class="anchor" name="del-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-map"></a><a href="#4.4-del-map">del-map</a></b>(<span style="color: #080">&lt;map-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   -  |   -  |   -  |          X |  X |  X
 
-This is used to delete an entry from a MAP. The MAP must be loaded from a
-file (even a dummy empty file). The file name of the MAP to be updated is
-passed between parentheses. It takes one argument: &lt;key fmt&gt;, which follows
-log-format rules, to collect content of the entry to delete.
+This is used to delete an entry from a MAP. &lt;map-name&gt; must follow the format
+described in 2.7. about name format for maps and ACLs. The name of the MAP to
+be updated is passed between parentheses. It takes one argument: &lt;key fmt&gt;,
+which follows log-format rules, to collect content of the entry to delete.
 It takes one argument: &quot;file name&quot; It is the equivalent of the &quot;del map&quot;
 command from the stats socket, but can be triggered by an HTTP request or
 response.
@@ -18577,14 +18640,14 @@ condition is met. Valid levels are the 8 syslog levels (see the &quot;<span clas
 keyword) plus the special level &quot;silent&quot; which disables logging for this
 request. This rule is not final so the last matching rule wins. This rule
 can be useful to disable health checks coming from another equipment.
-</pre><a class="anchor" name="set-map"></a><a class="anchor" name="4-set-map"></a><a class="anchor" name="4.4-set-map"></a><a class="anchor" name="set-map (Proxies)"></a><a class="anchor" name="set-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-map"></a><a href="#4.4-set-map">set-map</a></b>(<span style="color: #080">&lt;file-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #080">&lt;value fmt&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
+</pre><a class="anchor" name="set-map"></a><a class="anchor" name="4-set-map"></a><a class="anchor" name="4.4-set-map"></a><a class="anchor" name="set-map (Proxies)"></a><a class="anchor" name="set-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-map"></a><a href="#4.4-set-map">set-map</a></b>(<span style="color: #080">&lt;map-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span> <span style="color: #080">&lt;value fmt&gt;</span></div><pre class="text">Usable in:  TCP RqCon| RqSes| RqCnt| RsCnt|    HTTP Req| Res| Aft
                   -  |   -  |   -  |   -  |          X |  X |  X
 
-This is used to add a new entry into a map. The map must be loaded from a
-file (even a dummy empty file). The file name of the map to be updated is
-passed between parentheses. It takes 2 arguments: &lt;key fmt&gt;, which follows
-log-format rules, used to collect map key, and &lt;value fmt&gt;, which follows
-log-format rules, used to collect content for the new entry.
+This is used to add a new entry into a map. &lt;map-name&gt; must follow the format
+described in 2.7. about name format for maps and ACLs. The name of the MAP to
+be updated is passed between parentheses. It takes 2 arguments: &lt;key fmt&gt;,
+which follows log-format rules, used to collect map key, and &lt;value fmt&gt;,
+which follows log-format rules, used to collect content for the new entry.
 It performs a lookup in the map before insertion, to avoid duplicated (or
 more) values. It is the equivalent of the &quot;set map&quot; command from the
 stats socket, but can be triggered by an HTTP request.
@@ -21205,25 +21268,27 @@ The ACL engine can match these types against patterns of the following types :
 The following ACL flags are currently supported :
 
    -i : ignore case during matching of all subsequent patterns.
-   -f : load patterns from a file.
+   -f : load patterns from a list.
    -m : use a specific pattern matching method
    -n : forbid the DNS resolutions
-   -M : load the file pointed by -f like a map file.
+   -M : load the file pointed by -f like a map.
    -u : force the unique id of the ACL
    -- : force end of flags. Useful when a string looks like one of the flags.
 
-The &quot;-f&quot; flag is followed by the name of a file from which all lines will be
-read as individual values. It is even possible to pass multiple &quot;-f&quot; arguments
-if the patterns are to be loaded from multiple files. Empty lines as well as
-lines beginning with a sharp ('#') will be ignored. All leading spaces and tabs
-will be stripped. If it is absolutely necessary to insert a valid pattern
-beginning with a sharp, just prefix it with a space so that it is not taken for
-a comment. Depending on the data type and match method, HAProxy may load the
-lines into a binary tree, allowing very fast lookups. This is true for IPv4 and
-exact string matching. In this case, duplicates will automatically be removed.
+The &quot;-f&quot; flag is followed by the name that must follow the format described in
+2.7. about name format for maps and ACLs. It is even possible to pass multiple
+&quot;-f&quot; arguments if the patterns are to be loaded from multiple lists. if an
+existing file is referenced, all lines will be read as individual values. Empty
+lines as well as lines beginning with a sharp ('#') will be ignored. All
+leading spaces and tabs will be stripped. If it is absolutely necessary to
+insert a valid pattern beginning with a sharp, just prefix it with a space so
+that it is not taken for a comment. Depending on the data type and match
+method, HAProxy may load the lines into a binary tree, allowing very fast
+lookups. This is true for IPv4 and exact string matching. In this case,
+duplicates will automatically be removed.
 
-The &quot;-M&quot; flag allows an ACL to use a map file. If this flag is set, the file is
-parsed as two column file. The first column contains the patterns used by the
+The &quot;-M&quot; flag allows an ACL to use a map. If this flag is set, the list is
+parsed as two column entries. The first column contains the patterns used by the
 ACL, and the second column contain the samples. The sample can be used later by
 a map. This can be useful in some rare cases where an ACL would just be used to
 check for the existence of a pattern in a map before a mapping is applied.
@@ -22373,16 +22438,17 @@ log-format %[date,ltime(%Y%m%d%H%M%S)]\ %ci:%cp
 </code></pre>
 </div><a class="anchor" name="ltrim"></a><a class="anchor" name="7-ltrim"></a><a class="anchor" name="7.3.1-ltrim"></a><a class="anchor" name="ltrim (Using ACLs and fetching samples)"></a><a class="anchor" name="ltrim (Converters)"></a><div class="keyword"><b><a class="anchor" name="ltrim"></a><a href="#7.3.1-ltrim">ltrim</a></b>(<span style="color: #080">&lt;chars&gt;</span>)</div><pre class="text">Skips any characters from &lt;chars&gt; from the beginning of the string
 representation of the input sample.
-</pre><a class="anchor" name="map"></a><a class="anchor" name="7-map"></a><a class="anchor" name="7.3.1-map"></a><a class="anchor" name="map (Using ACLs and fetching samples)"></a><a class="anchor" name="map (Converters)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#7.3.1-map">map</a></b>(<span style="color: #080">&lt;map_file&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default_value&gt;</span>]</span>)</div><pre class="text">map_&lt;match_type&gt;(&lt;map_file&gt;[,&lt;default_value&gt;])
-map_&lt;match_type&gt;_&lt;output_type&gt;(&lt;map_file&gt;[,&lt;default_value&gt;])
-  Search the input value from &lt;map_file&gt; using the &lt;match_type&gt; matching method,
-  and return the associated value converted to the type &lt;output_type&gt;. If the
-  input value cannot be found in the &lt;map_file&gt;, the converter returns the
-  &lt;default_value&gt;. If the &lt;default_value&gt; is not set, the converter fails and
-  acts as if no input value could be fetched. If the &lt;match_type&gt; is not set, it
-  defaults to &quot;<a href="#str">str</a>&quot;. Likewise, if the &lt;output_type&gt; is not set, it defaults to
-  &quot;<a href="#str">str</a>&quot;. For convenience, the &quot;<a href="#map">map</a>&quot; keyword is an alias for &quot;map_str&quot; and maps a
-  string to another string.
+</pre><a class="anchor" name="map"></a><a class="anchor" name="7-map"></a><a class="anchor" name="7.3.1-map"></a><a class="anchor" name="map (Using ACLs and fetching samples)"></a><a class="anchor" name="map (Converters)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#7.3.1-map">map</a></b>(<span style="color: #080">&lt;map_name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default_value&gt;</span>]</span>)</div><pre class="text">map_&lt;match_type&gt;(&lt;map_name&gt;[,&lt;default_value&gt;])
+map_&lt;match_type&gt;_&lt;output_type&gt;(&lt;map_name&gt;[,&lt;default_value&gt;])
+  Search the input value from &lt;map_name&gt; using the &lt;match_type&gt; matching
+  method, and return the associated value converted to the type &lt;output_type&gt;.
+  If the input value cannot be found in the &lt;map_name&gt;, the converter returns
+  the &lt;default_value&gt;. If the &lt;default_value&gt; is not set, the converter fails
+  and acts as if no input value could be fetched. If the &lt;match_type&gt; is not
+  set, it defaults to &quot;<a href="#str">str</a>&quot;. Likewise, if the &lt;output_type&gt; is not set, it
+  defaults to &quot;<a href="#str">str</a>&quot;. For convenience, the &quot;<a href="#map">map</a>&quot; keyword is an alias for
+  &quot;map_str&quot; and maps a string to another string. &lt;map_name&gt; must follow the
+  format described in 2.7. about name format for maps and ACLs
 
   It is important to avoid overlapping between the keys : IP addresses and
   strings are stored in trees, so the first of the finest match will be used.
@@ -22406,11 +22472,11 @@ map_&lt;match_type&gt;_&lt;output_type&gt;(&lt;map_file&gt;[,&lt;default_value&g
 expression and modify the output replacing back reference (like &quot;\1&quot;) by
 the corresponding match text.
 
-The file contains one key + value per line. Lines which start with '#' are
-ignored, just like empty lines. Leading tabs and spaces are stripped. The key
-is then the first &quot;<a href="#word">word</a>&quot; (series of non-space/tabs characters), and the value
-is what follows this series of space/tab till the end of the line excluding
-trailing spaces/tabs.
+Files referenced by &lt;map_name&gt; contains one key + value per line. Lines which
+start with '#' are ignored, just like empty lines. Leading tabs and spaces
+are stripped. The key is then the first &quot;<a href="#word">word</a>&quot; (series of non-space/tabs
+characters), and the value is what follows this series of space/tab till the
+end of the line excluding trailing spaces/tabs.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -28957,7 +29023,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev0 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev0-16 &ndash; Configuration Manual<br>
 							<small>, 2023/12/05</small>
 						</div>
 					</div>
