@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev0-104 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev0-118 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4121,7 +4121,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2023/12/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4132,7 +4132,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev0-104</strong></p>
+							<p><strong>version 3.0-dev0-118</strong></p>
 							<p>
 								2023/12/05<br>
 								
@@ -5431,7 +5431,7 @@ sometimes more) streams in parallel over a same connection, and let the server
 sort them out and respond in any order depending on what response is available.
 The main benefit of the multiplexed mode is that it significantly reduces the
 number of round trips, and speeds up page loading time over high latency
-networks. It is sometimes visibles on sites using many images, where all images
+networks. It is sometimes visible on sites using many images, where all images
 appear to load in parallel.
 
 These protocols have also improved their efficiency by adopting some mechanisms
@@ -5473,7 +5473,7 @@ HAProxy essentially supports 3 connection modes :
 In addition to this, by default, the server-facing connection is reusable by
 any request from any client, as mandated by the HTTP protocol specification, so
 any information pertaining to a specific client has to be passed along with
-each request if needed (e.g. client's source adress etc). When HTTP/2 is used
+each request if needed (e.g. client's source address etc). When HTTP/2 is used
 with a server, by default HAProxy will dedicate this connection to the same
 client to avoid the risk of head of line blocking between clients.
 </pre></div>
@@ -6308,17 +6308,17 @@ Both time and size formats require integers, decimal notation is not allowed.
 <h2 id="chapter-2.7" data-target="2.7"><small><a class="small" href="#2.7">2.7.</a></small> Name format for maps and ACLs</h2>
 <div><pre class="text">It is possible to use a list of pattern for maps or ACLs. A list of pattern is
 identified by its name and may be used at different places in the
-configuration. List of pattern are splitted on three categories depending on
+configuration. List of pattern are split on three categories depending on
 the name format:
 
   * Lists of pattern based on regular files: It is the default case. The
     filename, absolute or relative, is used as name. The file must exist
     otherwise an error is triggered. But it may be empty. The &quot;file@&quot; prefix
-    may also be specificed but it is not part of the name identifying the
+    may also be specified but it is not part of the name identifying the
     list. A filename, with or without the prefix, references the same list of
     pattern.
 
-  * Lists of pattern based on optional files: The filename must be preceeds by
+  * Lists of pattern based on optional files: The filename must be preceded by
     &quot;opt@&quot; prefix. The file existence is optional. If the file exists, its
     content is loaded but no error is reported if not. The prefix is not part
     of the name identifying the list. It means, for a given filename, Optional
@@ -6329,8 +6329,8 @@ the name format:
     the name. Thus it cannot be mixed with other kind of lists.
 
 Virtual files are useful when patterns are fully dynamically managed with no
-patterns on startup and on reload. Optional files may be used in the same
-conditons. But patterns can be dumped in the file, via an external script based
+patterns on startup and on reload. Optional files may be used under the same
+conditions. But patterns can be dumped in the file, via an external script based
 on the &quot;show map&quot; CLI command for instance. This way, it is possible to keep
 patterns on reload.
 
@@ -17900,7 +17900,7 @@ See <a href="#6.2">section 6.2</a> about cache setup.
 </table></div>
 <pre class="text">This captures sample expression &lt;sample&gt; from the request or response buffer,
 and converts it to a string of at most &lt;len&gt; characters. The resulting string
-is stored into the next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">capture<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#capture%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#capture%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; slot (either request or reponse), so it
+is stored into the next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">capture<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#capture%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#capture%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; slot (either request or response), so it
 will possibly appear next to some captured HTTP headers. It will then
 automatically appear in the logs, and it will be possible to extract it using
 sample fetch methods to feed it into headers or anything. The length should
@@ -18965,7 +18965,7 @@ RST packet with a configurable TTL is sent. When set to a reasonable value,
 the RST packet travels through the local infrastructure, deleting the
 connection in firewalls and other systems, but disappears before reaching
 the client. Future packets from the client will then be dropped already by
-front equipments. These local RSTs protect local resources, but not the
+front equipment. These local RSTs protect local resources, but not the
 client's. This must not be used unless the consequences of doing this are
 fully understood.
 </pre><a class="anchor" name="strict-mode"></a><a class="anchor" name="4-strict-mode"></a><a class="anchor" name="4.4-strict-mode"></a><a class="anchor" name="strict-mode (Proxies)"></a><a class="anchor" name="strict-mode (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="strict-mode"></a><a href="#4.4-strict-mode">strict-mode</a></b> <span style="color: #800">{ on | off }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -19047,7 +19047,7 @@ ones. But this is just a guideline, all may be used everywhere.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;key&gt;   is mandatory, and is a sample expression rule as described in
         <a href="#7.3">section 7.3</a>. It describes what elements of the incoming connection,
-        request or reponse will be analyzed, extracted, combined, and used
+        request or response will be analyzed, extracted, combined, and used
         to select which table entry to update the counters.
 
 &lt;table&gt; is an optional table to be used instead of the default one, which
@@ -19883,7 +19883,7 @@ See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle
 lines and their assignment to multiple groups of threads.
 
 This keyword is compatible with reverse HTTP binds. However, it is forbidden
-to specify a thread set which spans accross several thread groups for such a
+to specify a thread set which spans across several thread groups for such a
 listener as this may caused &quot;<a href="#nbconn">nbconn</a>&quot; to not work as intended.
 </pre><a class="anchor" name="tls-ticket-keys"></a><a class="anchor" name="5-tls-ticket-keys"></a><a class="anchor" name="5.1-tls-ticket-keys"></a><a class="anchor" name="tls-ticket-keys (Bind and server options)"></a><a class="anchor" name="tls-ticket-keys (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-ticket-keys"></a><a href="#5.1-tls-ticket-keys">tls-ticket-keys</a></b> <span style="color: #080">&lt;keyfile&gt;</span></div><pre class="text">Sets the TLS ticket keys file to load the keys from. The keys need to be 48
 or 80 bytes long, depending if aes128 or aes256 is used, encoded with base64
@@ -24046,7 +24046,7 @@ true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot;
 trying to connect to the server. This value is subject to change while the
 connection is not fully established. For HTTP connections, the value may be
 affected by L7 retries.
-</pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Retruns the TCP or HTTP stream termination state, as reported in the log. It
+</pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Returns the TCP or HTTP stream termination state, as reported in the log. It
 is a 2-characters string, The final stream state followed by the event which
 caused its to terminate. See <a href="#8.5">section 8.5</a> about stream state at disconnection
 for the list of possible events. The current value at time the sample fetch
@@ -29307,7 +29307,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev0-104 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev0-118 &ndash; Configuration Manual<br>
 							<small>, 2023/12/05</small>
 						</div>
 					</div>
