@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev1-9 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev1-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1927,11 +1927,15 @@
 							
 							<a class="list-group-item" href="#http-check unset-var">http-check unset-var</a>
 							
+							<a class="list-group-item" href="#http-err-codes">http-err-codes</a>
+							
 							<a class="list-group-item" href="#http-error">http-error</a>
 							
 							<a class="list-group-item" href="#http-error status">http-error status</a>
 							
 							<a class="list-group-item" href="#http-errors">http-errors</a>
+							
+							<a class="list-group-item" href="#http-fail-codes">http-fail-codes</a>
 							
 							<a class="list-group-item" href="#http-request">http-request</a>
 							
@@ -4123,7 +4127,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4134,7 +4138,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev1-9</strong></p>
+							<p><strong>version 3.0-dev1-17</strong></p>
 							<p>
 								2024/01/06<br>
 								
@@ -7002,7 +7006,39 @@ in tcp mode). It applies both in TCP and HTTP mode.
   hard-stop-after 30s
 </code></pre>
 </div><div class="page-header"><b>See also:</b> grace</div>
-<a class="anchor" name="httpclient.resolvers.disabled"></a><a class="anchor" name="3-httpclient.resolvers.disabled"></a><a class="anchor" name="3.1-httpclient.resolvers.disabled"></a><a class="anchor" name="httpclient.resolvers.disabled (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.disabled (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.disabled"></a><a href="#3.1-httpclient.resolvers.disabled">httpclient.resolvers.disabled</a></b> <span style="color: #080">&lt;on|off&gt;</span></div><pre class="text">Disable the DNS resolution of the httpclient. Prevent the creation of the
+<a class="anchor" name="http-err-codes"></a><a class="anchor" name="3-http-err-codes"></a><a class="anchor" name="3.1-http-err-codes"></a><a class="anchor" name="http-err-codes (Global parameters)"></a><a class="anchor" name="http-err-codes (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="http-err-codes"></a><a href="#3.1-http-err-codes">http-err-codes</a></b> <span style="color: #008">[+-]</span><span style="color: #080">&lt;range&gt;</span><span style="color: #008">[,...]</span> <span style="color: #008">[...]</span></div><pre class="text">Replace, reduce or extend the list of status codes that define an error as
+considered by the termination codes and the &quot;http_err_cnt&quot; counter in stick
+tables. The default range for errors is 400 to 499, but in certain contexts
+some users prefer to exclude specific codes, especially when tracking client
+errors (e.g. 404 on systems with dynamically generated contents). See also
+&quot;<a href="#http-fail-codes">http-fail-codes</a>&quot; and &quot;http_err_cnt&quot;.
+
+A range specified without '+' nor '-' redefines the existing range to the new
+one. A range starting with '+' extends the existing range to also include the
+specified one, which may or may not overlap with the existing one. A range
+starting with '-' removes the specified range from the existing one. A range
+consists in a number from 100 to 599, optionally followed by &quot;-&quot; followed by
+another number greater than or equal to the first one to indicate the high
+boundary of the range. Multiple ranges may be delimited by commas for a same
+add/del/ replace operation.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-err-codes 400,402-444,446-480,490   <span class="comment"># sets exactly these codes</span>
+http-err-codes 400-499 -450 +500         <span class="comment"># sets 400 to 500 except 450</span>
+http-err-codes -450-459                  <span class="comment"># removes 450 to 459 from range</span>
+http-err-codes +501,505                  <span class="comment"># adds 501 and 505 to range</span>
+</code></pre>
+</div><a class="anchor" name="http-fail-codes"></a><a class="anchor" name="3-http-fail-codes"></a><a class="anchor" name="3.1-http-fail-codes"></a><a class="anchor" name="http-fail-codes (Global parameters)"></a><a class="anchor" name="http-fail-codes (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="http-fail-codes"></a><a href="#3.1-http-fail-codes">http-fail-codes</a></b> <span style="color: #008">[+-]</span><span style="color: #080">&lt;range&gt;</span><span style="color: #008">[,...]</span> <span style="color: #008">[...]</span></div><pre class="text">Replace, reduce or extend the list of status codes that define a failure as
+considered by the termination codes and the &quot;http_fail_cnt&quot; counter in stick
+tables. The default range for failures is 500 to 599 except 501 and 505 which
+can be triggered by clients, and normally indicate a failure from the server
+to process the request. Some users prefer to exclude certain codes in certain
+contexts where it is known they're not relevant, such as 500 in certain SOAP
+environments as it doesn't translate a server fault there. The syntax is
+exactly the same as for http-err-codes above. See also &quot;<a href="#http-err-codes">http-err-codes</a>&quot; and
+&quot;http_fail_cnt&quot;.
+</pre><a class="anchor" name="httpclient.resolvers.disabled"></a><a class="anchor" name="3-httpclient.resolvers.disabled"></a><a class="anchor" name="3.1-httpclient.resolvers.disabled"></a><a class="anchor" name="httpclient.resolvers.disabled (Global parameters)"></a><a class="anchor" name="httpclient.resolvers.disabled (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="httpclient.resolvers.disabled"></a><a href="#3.1-httpclient.resolvers.disabled">httpclient.resolvers.disabled</a></b> <span style="color: #080">&lt;on|off&gt;</span></div><pre class="text">Disable the DNS resolution of the httpclient. Prevent the creation of the
 &quot;default&quot; resolvers section.
 
 Default value is off.
@@ -8634,11 +8670,6 @@ It is particularly useful for OCSP response that do not have explicit
 expiration times. It must be set to a lower value than
 &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot;. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
 information about the auto update mechanism.
-
-Sets the size of the cache used to store generated certificates to &lt;number&gt;
-entries. This is a LRU cache. Because generating a SSL certificate
-dynamically is expensive, they are cached. The default cache size is set to
-1000 entries.
 </pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global parameters)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
 &quot;<a href="#http-request">http-request</a>&quot; rules. The default value is set at build time by the macro
@@ -29343,7 +29374,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev1-9 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev1-17 &ndash; Configuration Manual<br>
 							<small>, 2024/01/06</small>
 						</div>
 					</div>
