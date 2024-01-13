@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev1-17 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev1-33 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1584,6 +1584,8 @@
 							<a class="list-group-item" href="#declare capture">declare capture</a>
 							
 							<a class="list-group-item" href="#default-bind">default-bind</a>
+							
+							<a class="list-group-item" href="#default-crt">default-crt</a>
 							
 							<a class="list-group-item" href="#default-path">default-path</a>
 							
@@ -4127,7 +4129,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4138,7 +4140,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev1-17</strong></p>
+							<p><strong>version 3.0-dev1-33</strong></p>
 							<p>
 								2024/01/06<br>
 								
@@ -19379,7 +19381,13 @@ TLS extensions, or if the client provides an SNI hostname which does not
 match any certificate, then the first loaded certificate will be presented.
 This means that when loading certificates from a directory, it is highly
 recommended to load the default one first as a file or to ensure that it will
-always be the first one in the directory.
+always be the first one in the directory. In order to chose multiple default
+certificates (1 rsa and 1 ecdsa), there are 3 options:
+- A multi-cert bundle can be configured as the first certificate
+  (`crt foobar.pem` in the configuration where the existing files
+  are `foobar.pem.ecdsa` and `foobar.pem.rsa`.
+- Or a '*' filter for each certificate in a crt-list line.
+- The 'default-crt' keyword can be used.
 
 Note that the same cert may be loaded multiple times without side effects.
 
@@ -19462,7 +19470,10 @@ be used if the provided SNI matches its CN or SAN, even if a matching SNI
 filter is found on any crt-list. The SNI filter !* can be used after the first
 declared certificate to not include its CN and SAN in the SNI tree, so it will
 never match except if no other certificate matches. This way the first
-declared certificate act as a fallback.
+declared certificate act as a fallback. It is also possible to declare a '*'
+filter, which will allow to chose this certificate as default. When multiple
+default certificates are defined, HAProxy is able to chose the right ECDSA or
+RSA one depending on what the client supports.
 
 When no ALPN is set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line's default one is used. If a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line
 has no &quot;<a href="#no-alpn">no-alpn</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; nor &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; set, a default value will be used
@@ -19476,6 +19487,23 @@ crt-list file example:
       cert2.pem [alpn h2,http/1.1]
       certW.pem                   *.domain.tld !secure.domain.tld
       certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.domain.tld
+      default.pem.rsa *
+      default.pem.ecdsa *
+</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
+certificate will be used as a default one. It is possible to add multiple
+default certificates to have an ECDSA and an RSA one, having more is not
+really useful.
+
+A default certificate is used when no &quot;<a href="#strict-sni">strict-sni</a>&quot; option is used on the bind
+line. A default certificate is provided when the servername extension was not
+used by the client, or when the servername does not match any configured
+certificate.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>bind *:443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa crt website.pem.rsa
+</code></pre>
+</div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
 </pre><a class="anchor" name="defer-accept"></a><a class="anchor" name="5-defer-accept"></a><a class="anchor" name="5.1-defer-accept"></a><a class="anchor" name="defer-accept (Bind and server options)"></a><a class="anchor" name="defer-accept (Bind options)"></a><div class="keyword"><b><a class="anchor" name="defer-accept"></a><a href="#5.1-defer-accept">defer-accept</a></b></div><pre class="text">Is an optional keyword which is supported only on certain Linux kernels. It
 states that a connection will only be accepted once some data arrive on it,
 or at worst after the first retransmit. This should be used only on protocols
@@ -29374,7 +29402,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev1-17 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev1-33 &ndash; Configuration Manual<br>
 							<small>, 2024/01/06</small>
 						</div>
 					</div>
