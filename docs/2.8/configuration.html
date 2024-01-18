@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.5 - Configuration Manual</title>
+		<title>HAProxy version 2.8.5-25 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4008,6 +4008,8 @@
 							
 							<a class="list-group-item" href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
 							
+							<a class="list-group-item" href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
+							
 							<a class="list-group-item" href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
@@ -4267,7 +4269,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2023/12/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4278,7 +4280,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.5</strong></p>
+							<p><strong>version 2.8.5-25</strong></p>
 							<p>
 								2023/12/07<br>
 								
@@ -6439,6 +6441,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
+   - <a href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
    - <a href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
    - <a href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
    - <a href="#tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a>
@@ -8034,6 +8037,39 @@ the page load time for complex sites with lots of small objects over high
 latency networks but can also result in using more memory by allowing a
 client to allocate more resources at once. The default value of 100 is
 generally good and it is recommended not to change this value.
+</pre><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a class="anchor" name="3-tune.h2.fe.max-total-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-total-streams"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Global parameters)"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a href="#3.2-tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of total streams processed per incoming
+connection. Once this limit is reached, HAProxy will send a graceful GOAWAY
+frame informing the client that it will close the connection after all
+pending streams have been closed. In practice, clients tend to close as fast
+as possible when receiving this, and to establish a new connection for next
+requests. Doing this is sometimes useful and desired in situations where
+clients stay connected for a very long time and cause some imbalance inside a
+farm. For example, in some highly dynamic environments, it is possible that
+new load balancers are instantiated on the fly to adapt to a load increase,
+and that once the load goes down they should be stopped without breaking
+established connections. By setting a limit here, the connections will have
+a limited lifetime and will be frequently renewed, with some possibly being
+established to other nodes, so that existing resources are quickly released.
+
+It's important to understand that there is an implicit relation between this
+limit and &quot;<a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>&quot; above. Indeed, HAProxy will
+always accept to process any possibly pending streams that might be in flight
+between the client and the frontend, so the advertised limit will always
+automatically be raised by the value configured in max-concurrent-streams,
+and this value will serve as a hard limit above which a violation by a non-
+compliant client will result in the connection being closed. Thus when
+counting the number of requests per connection from the logs, any number
+between max-total-streams and (max-total-streams + max-concurrent-streams)
+may be observed depending on how fast streams are created by the client.
+
+The default value is zero, which enforces no limit beyond those implied by
+the protocol (2^30 ~= 1.07 billion). Values around 1000 may already cause
+frequent connection renewal without causing any perceptible latency to most
+clients. Setting it too low may result in an increase of CPU usage due to
+frequent TLS reconnections, in addition to increased page load time. Please
+note that some load testing tools do not support reconnections and may report
+errors with this setting; as such it may be needed to disable it when running
+performance benchmarks. See also &quot;<a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>&quot;.
 </pre><a class="anchor" name="tune.h2.header-table-size"></a><a class="anchor" name="3-tune.h2.header-table-size"></a><a class="anchor" name="3.2-tune.h2.header-table-size"></a><a class="anchor" name="tune.h2.header-table-size (Global parameters)"></a><a class="anchor" name="tune.h2.header-table-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.header-table-size"></a><a href="#3.2-tune.h2.header-table-size">tune.h2.header-table-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 dynamic header table size. It defaults to 4096 bytes and
 cannot be larger than 65536 bytes. A larger value may help certain clients
 send more compact requests, depending on their capabilities. This amount of
@@ -8519,11 +8555,6 @@ It is particularly useful for OCSP response that do not have explicit
 expiration times. It must be set to a lower value than
 &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot;. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
 information about the auto update mechanism.
-
-Sets the size of the cache used to store generated certificates to &lt;number&gt;
-entries. This is a LRU cache. Because generating a SSL certificate
-dynamically is expensive, they are cached. The default cache size is set to
-1000 entries.
 </pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global parameters)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; rules. The default value is set at build time by the macro
@@ -17045,7 +17076,7 @@ backend https
     stick-table type binary len 32 size 30k expire 30m
 
     acl clienthello req.ssl_hello_type 1
-    acl serverhello rep.ssl_hello_type 2
+    acl serverhello res.ssl_hello_type 2
 
     <span class="comment"># use tcp content accepts to detects ssl client and server hello.</span>
     tcp-request inspect-delay 5s
@@ -26288,8 +26319,7 @@ each of which has a special meaning :
             error in server response which might have caused information leak
             (e.g. cacheable cookie).
 
-        L : the session was locally processed by HAProxy and was not passed to
-            a server. This is what happens for stats and redirects.
+        L : the session was locally processed by HAProxy.
 
         R : a resource on the proxy has been exhausted (memory, sockets, source
             ports, ...). Usually, this appears during the connection phase, and
@@ -26487,8 +26517,18 @@ easier finding and understanding.
           closer to the average reported &quot;Tw&quot; timer, in order not to consume
           resources for just a few attackers.
 
-     LR   The request was intercepted and locally handled by HAProxy. Generally
-          it means that this was a redirect or a stats request.
+     LC   The request was intercepted and locally handled by HAProxy. The
+          request was not sent to the server. It only happens with a redirect
+          because of a &quot;<a href="#redir">redir</a>&quot; parameter on the server line.
+
+     LR   The request was intercepted and locally handled by HAProxy. The
+          request was not sent to the server. Generally it means a redirect was
+          returned, an HTTP return statement was processed or the request was
+          handled by an applet (stats, cache, Prometheus exported, lua applet...).
+
+     LH   The response was intercepted and locally handled by HAProxy. Generally
+          it means a redirect was returned or an HTTP return statement was
+          processed.
 
      SC   The server or an equipment between it and HAProxy explicitly refused
           the TCP connection (the proxy received a TCP RST or an ICMP message
@@ -27520,7 +27560,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.5 &ndash; Configuration Manual<br>
+							HAProxy 2.8.5-25 &ndash; Configuration Manual<br>
 							<small>, 2023/12/07</small>
 						</div>
 					</div>
