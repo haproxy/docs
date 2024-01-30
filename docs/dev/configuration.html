@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev2-6 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4133,7 +4133,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4144,7 +4144,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev2</strong></p>
+							<p><strong>version 3.0-dev2-6</strong></p>
 							<p>
 								2024/01/26<br>
 								
@@ -19178,20 +19178,28 @@ possible to write custom TCP and HTTP services in Lua.
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
-<pre class="text">This will delay the processing of the request or response waiting for the
-payload for at most &lt;time&gt; milliseconds. if &quot;at-least&quot; argument is specified,
-HAProxy stops waiting for the payload when the first &lt;bytes&gt; bytes are
-received. 0 means no limit, it is the default value. Regardless the
-&quot;at-least&quot; argument value, HAProxy stops to wait if the whole payload is
-received or if the request buffer is full.  This action may be used as a
-replacement to &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;.
+<pre class="text">This will delay the processing of the request or response until one of the
+following conditions occurs:
+- The full request body is received, in which case processing proceeds
+  normally.
+- &lt;bytes&gt; bytes have been received, when the &quot;at-least&quot; argument is given and
+  &lt;bytes&gt; is non-zero, in which case processing proceeds normally.
+- The request buffer is full, in which case processing proceeds normally. The
+  size of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
+- The request has been waiting for more than &lt;time&gt; milliseconds. In this
+  case HAProxy will respond with a 408 &quot;Request Timeout&quot; error to the client
+  and stop processing the request. Note that if any of the other conditions
+  happens first, this timeout will not occur even if the full body has
+  not yet been recieved.
+
+This action may be used as a replacement for &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;    is mandatory. It is the maximum time to wait for the body. It
           follows the HAProxy time format and is expressed in milliseconds.
 
 &lt;bytes&gt;   is optional. It is the minimum payload size to receive to stop to
           wait. It follows the HAProxy size format and is expressed in
-          bytes.</pre>
+          bytes. A value of 0 (the default) means no limit.</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Example:</span>
@@ -29435,7 +29443,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev2-6 &ndash; Configuration Manual<br>
 							<small>, 2024/01/26</small>
 						</div>
 					</div>
