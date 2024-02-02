@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-28 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev2-35 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3138,6 +3138,10 @@
 							
 							<a class="list-group-item" href="#set-bandwidth-limit">set-bandwidth-limit</a>
 							
+							<a class="list-group-item" href="#set-bc-mark">set-bc-mark</a>
+							
+							<a class="list-group-item" href="#set-bc-tos">set-bc-tos</a>
+							
 							<a class="list-group-item" href="#set-cookie">set-cookie</a>
 							
 							<a class="list-group-item" href="#set-dst">set-dst</a>
@@ -3145,6 +3149,10 @@
 							<a class="list-group-item" href="#set-dst-port">set-dst-port</a>
 							
 							<a class="list-group-item" href="#set-dumpable">set-dumpable</a>
+							
+							<a class="list-group-item" href="#set-fc-mark">set-fc-mark</a>
+							
+							<a class="list-group-item" href="#set-fc-tos">set-fc-tos</a>
 							
 							<a class="list-group-item" href="#set-header">set-header</a>
 							
@@ -4144,7 +4152,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4155,7 +4163,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev2-28</strong></p>
+							<p><strong>version 3.0-dev2-35</strong></p>
 							<p>
 								2024/01/26<br>
 								
@@ -11998,9 +12006,10 @@ The argument indicates the desired connection reuse strategy :
 
 When http connection sharing is enabled, a great care is taken to respect the
 connection properties and compatibility. Indeed, some properties are specific
-and it is not possibly to reuse it blindly. Those are the SSL SNI, source
-and destination address and proxy protocol block. A connection is reused only
-if it shares the same set of properties with the request.
+and it is not possible to reuse it blindly. Those are the SSL SNI, source
+and destination address, proxy protocol block as well as tos and mark
+sockopts. A connection is reused only if it shares the same set of properties
+with the request.
 
 Also note that connections with certain bogus authentication schemes (relying
 on the connection) like NTLM are marked private and never shared.
@@ -17851,13 +17860,17 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-sc-set-gpt0">sc-set-gpt0</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-send-spoe-group">send-spoe-group</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-bandwidth-limit">set-bandwidth-limit</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-set-bc-mark">set-bc-mark</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-set-bc-tos">set-bc-tos</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-dst">set-dst</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-dst-port">set-dst-port</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td ><a href="#4-set-fc-mark">set-fc-mark</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-set-fc-tos">set-fc-tos</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-header">set-header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-log-level">set-log-level</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-set-map">set-map</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-set-mark">set-mark</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-set-mark"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>set-mark</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-method">set-method</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-nice">set-nice</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-path">set-path</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -17869,14 +17882,14 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-set-src-port">set-src-port</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-status">set-status</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-timeout">set-timeout</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-set-tos">set-tos</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-set-tos"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>set-tos</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-uri">set-uri</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-var">set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-set-var-fmt">set-var-fmt</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-silent-drop">silent-drop</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-strict-mode">strict-mode</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-switch-mode">switch-mode</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-tarpit">tarpit</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-track-sc1">track-sc1</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-track-sc2">track-sc2</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -18709,6 +18722,38 @@ the HTTP payload transfer is limited. The HTTP headers are not considered.
 http-request set-bandwidth-limit my-limit limit 1m period 10s
 </code></pre>
 </div><pre class="text">See <a href="#9.7">section 9.7</a> about bandwidth limitation filter setup.
+</pre><a class="anchor" name="set-bc-mark"></a><a class="anchor" name="4-set-bc-mark"></a><a class="anchor" name="4.4-set-bc-mark"></a><a class="anchor" name="set-bc-mark (Proxies)"></a><a class="anchor" name="set-bc-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-bc-mark"></a><a href="#4.4-set-bc-mark">set-bc-mark</a></b> <span style="color: #800">{ <span style="color: #080">&lt;mark&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+</table></div>
+<pre class="text">This is used to set the Netfilter/IPFW MARK on the backend connection (all
+packets sent to the server) to the value passed in &lt;mark&gt; or &lt;expr&gt; on
+platforms which support it. This value is an unsigned 32 bit value which can
+be matched by netfilter/ipfw and by the routing table or monitoring the
+packets through DTrace. &lt;mark&gt; can be expressed both in decimal or hexadecimal
+format (prefixed by &quot;0x&quot;). Alternatively, &lt;expr&gt; can be used: it is a standard
+HAProxy expression formed by a sample-fetch followed by some converters which
+must resolve to integer type. This action can be useful to force certain
+packets to take a different route (for example a cheaper network path for bulk
+downloads). This works on Linux kernels 2.6.32 and above and requires admin
+privileges, as well on FreeBSD and OpenBSD. The mark will be set for the whole
+duration of the backend/server connection (from connect to close).
+</pre><a class="anchor" name="set-bc-tos"></a><a class="anchor" name="4-set-bc-tos"></a><a class="anchor" name="4.4-set-bc-tos"></a><a class="anchor" name="set-bc-tos (Proxies)"></a><a class="anchor" name="set-bc-tos (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-bc-tos"></a><a href="#4.4-set-bc-tos">set-bc-tos</a></b> <span style="color: #800">{ <span style="color: #080">&lt;tos&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+</table></div>
+<pre class="text">This is used to set the TOS or DSCP field value on the backend connection
+(all packets sent to the server) to the value passed in &lt;tos&gt; or &lt;expr&gt; on
+platforms which support this. This value represents the whole 8 bits of the
+IP TOS field. Note that only the 6 higher bits are used in DSCP or TOS, and
+the two lower bits are always 0. Alternatively, &lt;expr&gt; can be used: it is a
+standard HAProxy expression formed by a sample-fetch followed by some
+converters which must resolve to integer type. This action can be used to
+adjust some routing behavior on inner routers based on some information from
+the request. The tos will be set for the whole duration of the backend/server
+connection (from connect to close).
+
+See RFC 2474, 2597, 3260 and 4594 for more information.
 </pre><a class="anchor" name="set-dst"></a><a class="anchor" name="4-set-dst"></a><a class="anchor" name="4.4-set-dst"></a><a class="anchor" name="set-dst (Proxies)"></a><a class="anchor" name="set-dst (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-dst"></a><a href="#4.4-set-dst">set-dst</a></b> <span style="color: #080">&lt;expr&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -18750,6 +18795,35 @@ http-request set-dst-port int(4000)
 </div><pre class="text">When possible, set-dst-port preserves the original destination address as
 long as the address family supports a port, otherwise it forces the
 destination address to IPv4 &quot;0.0.0.0&quot; before rewriting the port.
+</pre><a class="anchor" name="set-fc-mark"></a><a class="anchor" name="4-set-fc-mark"></a><a class="anchor" name="4.4-set-fc-mark"></a><a class="anchor" name="set-fc-mark (Proxies)"></a><a class="anchor" name="set-fc-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-fc-mark"></a><a href="#4.4-set-fc-mark">set-fc-mark</a></b> <span style="color: #800">{ <span style="color: #080">&lt;mark&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+</table></div>
+<pre class="text">This is used to set the Netfilter/IPFW MARK on all packets sent to the client
+to the value passed in &lt;mark&gt; or &lt;expr&gt; on platforms which support it. This
+value is an unsigned 32 bit value which can be matched by netfilter/ipfw and
+by the routing table or monitoring the packets through DTrace. &lt;mark&gt; can be
+expressed both in decimal or hexadecimal format (prefixed by &quot;0x&quot;).
+Alternatively, &lt;expr&gt; can be used: it is a standard HAProxy expression formed
+by a sample-fetch followed by some converters which must resolve to integer
+type. This action can be useful to force certain packets to take a different
+route (for example a cheaper network path for bulk downloads). This works on
+Linux kernels 2.6.32 and above and requires admin privileges, as well on
+FreeBSD and OpenBSD.
+</pre><a class="anchor" name="set-fc-tos"></a><a class="anchor" name="4-set-fc-tos"></a><a class="anchor" name="4.4-set-fc-tos"></a><a class="anchor" name="set-fc-tos (Proxies)"></a><a class="anchor" name="set-fc-tos (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-fc-tos"></a><a href="#4.4-set-fc-tos">set-fc-tos</a></b> <span style="color: #800">{ <span style="color: #080">&lt;tos | <span style="color: #080">&lt;expr&gt;</span> </span>}</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+</table></div>
+<pre class="text">This is used to set the TOS or DSCP field value of packets sent to the client
+to the value passed in &lt;tos&gt; or &lt;expr&gt; on platforms which support this. This
+value represents the whole 8 bits of the IP TOS field. Note that only the 6
+higher bits are used in DSCP or TOS, and the two lower bits are always 0.
+Alternatively, &lt;expr&gt; can be used: it is a standard HAProxy expression formed
+by a sample-fetch followed by some converters which must resolve to integer
+type. This action can be used to adjust some routing behavior on border
+routers based on some information from the request.
+
+See RFC 2474, 2597, 3260 and 4594 for more information.
 </pre><a class="anchor" name="set-header"></a><a class="anchor" name="4-set-header"></a><a class="anchor" name="4.4-set-header"></a><a class="anchor" name="set-header (Proxies)"></a><a class="anchor" name="set-header (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-header"></a><a href="#4.4-set-header">set-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -18794,19 +18868,7 @@ which follows log-format rules, used to collect content for the new entry.
 It performs a lookup in the map before insertion, to avoid duplicated (or
 more) values. It is the equivalent of the &quot;set map&quot; command from the
 stats socket, but can be triggered by an HTTP request.
-</pre><a class="anchor" name="set-mark"></a><a class="anchor" name="4-set-mark"></a><a class="anchor" name="4.4-set-mark"></a><a class="anchor" name="set-mark (Proxies)"></a><a class="anchor" name="set-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-mark"></a><a href="#4.4-set-mark">set-mark</a></b> <span style="color: #080">&lt;mark&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
-<tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-</table></div>
-<pre class="text">This is used to set the Netfilter/IPFW MARK on all packets sent to the client
-to the value passed in &lt;mark&gt; on platforms which support it. This value is an
-unsigned 32 bit value which can be matched by netfilter/ipfw and by the
-routing table or monitoring the packets through DTrace. It can be expressed
-both in decimal or hexadecimal format (prefixed by &quot;0x&quot;).
-This can be useful to force certain packets to take a different route (for
-example a cheaper network path for bulk downloads). This works on Linux
-kernels 2.6.32 and above and requires admin privileges, as well on FreeBSD
-and OpenBSD.
+</pre><a class="anchor" name="set-mark"></a><a class="anchor" name="4-set-mark"></a><a class="anchor" name="4.4-set-mark"></a><a class="anchor" name="set-mark (Proxies)"></a><a class="anchor" name="set-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-mark"></a><a href="#4.4-set-mark">set-mark</a></b> <span style="color: #080">&lt;mark&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#set-fc-mark">set-fc-mark</a>&quot; (which should be used instead).
 </pre><a class="anchor" name="set-method"></a><a class="anchor" name="4-set-method"></a><a class="anchor" name="4.4-set-method"></a><a class="anchor" name="set-method (Proxies)"></a><a class="anchor" name="set-method (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-method"></a><a href="#4.4-set-method">set-method</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -18980,19 +19042,7 @@ http-request set-timeout server req.hdr(host),map_int(host.lst)
 <code>http-response set-timeout tunnel 5s
 http-response set-timeout server res.hdr(X-Refresh-Seconds),mul(1000)
 </code></pre>
-</div><a class="anchor" name="set-tos"></a><a class="anchor" name="4-set-tos"></a><a class="anchor" name="4.4-set-tos"></a><a class="anchor" name="set-tos (Proxies)"></a><a class="anchor" name="set-tos (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-tos"></a><a href="#4.4-set-tos">set-tos</a></b> <span style="color: #080">&lt;tos&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
-<tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-</table></div>
-<pre class="text">This is used to set the TOS or DSCP field value of packets sent to the client
-to the value passed in &lt;tos&gt; on platforms which support this. This value
-represents the whole 8 bits of the IP TOS field, and can be expressed both in
-decimal or hexadecimal format (prefixed by &quot;0x&quot;). Note that only the 6 higher
-bits are used in DSCP or TOS, and the two lower bits are always 0. This can
-be used to adjust some routing behavior on border routers based on some
-information from the request.
-
-See RFC 2474, 2597, 3260 and 4594 for more information.
+</div><a class="anchor" name="set-tos"></a><a class="anchor" name="4-set-tos"></a><a class="anchor" name="4.4-set-tos"></a><a class="anchor" name="set-tos (Proxies)"></a><a class="anchor" name="set-tos (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-tos"></a><a href="#4.4-set-tos">set-tos</a></b> <span style="color: #080">&lt;tos&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#set-fc-tos">set-fc-tos</a>&quot; (which should be used instead).
 </pre><a class="anchor" name="set-uri"></a><a class="anchor" name="4-set-uri"></a><a class="anchor" name="4.4-set-uri"></a><a class="anchor" name="set-uri (Proxies)"></a><a class="anchor" name="set-uri (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-uri"></a><a href="#4.4-set-uri">set-uri</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -29473,7 +29523,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-28 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev2-35 &ndash; Configuration Manual<br>
 							<small>, 2024/01/26</small>
 						</div>
 					</div>
