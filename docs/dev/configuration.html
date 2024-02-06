@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-61 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev2-72 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3995,6 +3995,8 @@
 							
 							<a class="list-group-item" href="#txn.id32">txn.id32</a>
 							
+							<a class="list-group-item" href="#txn.redispatch">txn.redispatch</a>
+							
 							<a class="list-group-item" href="#txn.sess_term_state">txn.sess_term_state</a>
 							
 							<a class="list-group-item" href="#txn.status">txn.status</a>
@@ -4152,7 +4154,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4163,7 +4165,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev2-61</strong></p>
+							<p><strong>version 3.0-dev2-72</strong></p>
 							<p>
 								2024/01/26<br>
 								
@@ -23867,8 +23869,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-table_avl">table_avl([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-table_cnt">table_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-thread">thread</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-txn.id32">txn.id32</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-txn.conn_retries">txn.conn_retries</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.id32">txn.id32</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.redispatch">txn.redispatch</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
@@ -24225,14 +24228,18 @@ table_avl for other entry counting methods.
 </pre><a class="anchor" name="thread"></a><a class="anchor" name="7-thread"></a><a class="anchor" name="7.3.2-thread"></a><a class="anchor" name="thread (Using ACLs and fetching samples)"></a><a class="anchor" name="thread (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#7.3.2-thread">thread</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread calling
 the function, between 0 and (global.nbthread-1). This is useful for logging
 and debugging purposes.
-</pre><a class="anchor" name="txn.id32"></a><a class="anchor" name="7-txn.id32"></a><a class="anchor" name="7.3.2-txn.id32"></a><a class="anchor" name="txn.id32 (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.id32 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.id32"></a><a href="#7.3.2-txn.id32">txn.id32</a></b> : integer</div><pre class="text">Returns the internal transaction ID. It is a 32bits integer. So, in absolute,
-its value is not unique, transaction IDs may wrap. The wrapping period
-depends on the request rate. In practice, it should not be an issue. For a
-true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot; directive.
 </pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.2-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.2-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this stream when
 trying to connect to the server. This value is subject to change while the
 connection is not fully established. For HTTP connections, the value may be
 affected by L7 retries.
+</pre><a class="anchor" name="txn.id32"></a><a class="anchor" name="7-txn.id32"></a><a class="anchor" name="7.3.2-txn.id32"></a><a class="anchor" name="txn.id32 (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.id32 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.id32"></a><a href="#7.3.2-txn.id32">txn.id32</a></b> : integer</div><pre class="text">Returns the internal transaction ID. It is a 32bits integer. So, in absolute,
+its value is not unique, transaction IDs may wrap. The wrapping period
+depends on the request rate. In practice, it should not be an issue. For a
+true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot; directive.
+</pre><a class="anchor" name="txn.redispatch"></a><a class="anchor" name="7-txn.redispatch"></a><a class="anchor" name="7.3.2-txn.redispatch"></a><a class="anchor" name="txn.redispatch (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.redispatch (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.redispatch"></a><a href="#7.3.2-txn.redispatch">txn.redispatch</a></b> : boolean</div><pre class="text">Returns true if the connection has experienced redispatch upon retry according
+to &quot;<a href="#option%20redispatch">option redispatch</a>&quot; configuration. This value is subject to change while
+the connection is not fully established. For HTTP connections, the value may
+be affected by L7 retries.
 </pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Returns the TCP or HTTP stream termination state, as reported in the log. It
 is a 2-characters string, The final stream state followed by the event which
 caused its to terminate. See <a href="#8.5">section 8.5</a> about stream state at disconnection
@@ -27802,7 +27809,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[accept_date(ms),ms_ltime(&quot;%d/%b/%Y:%H:%M:%S.%3N&quot;)] | date    |
   +---+------+------------------------------------------------------+---------+
   |   | %ms  | Accept date milliseconds                             |         |
-  |   |      | %[accept_date(ms),ms_utime(&quot;%3N&quot;)                    | numeric |
+  |   |      | %[accept_date(ms),ms_utime(&quot;%3N&quot;)]                   | numeric |
   +---+------+------------------------------------------------------+---------+
   | H | %tr  | Request date local (with millisecond resolution)     |         |
   |   |      | %[request_date(ms),ms_ltime(&quot;%d/%b/%Y:%H:%M:%S.%3N&quot;)]| date    |
@@ -27933,7 +27940,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   | H | %r   | http_request                                         | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %rc  | retries                                              | numeric |
-  |   |      | %[txn.conn_retries]                                  |         |
+  |   |      | %[txn.redispatch,iif(+,)]%[txn.conn_retries]         |         |
   +---+------+------------------------------------------------------+---------+
   |   | %rt  | request_counter (HTTP req or TCP session)            | numeric |
   |   |      | %[txn.id32]                                          |         |
@@ -29523,7 +29530,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-61 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev2-72 &ndash; Configuration Manual<br>
 							<small>, 2024/01/26</small>
 						</div>
 					</div>
