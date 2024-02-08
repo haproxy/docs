@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-72 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev2-120 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3819,13 +3819,13 @@
 							
 							<a class="list-group-item" href="#transparent">transparent</a>
 							
+							<a class="list-group-item" href="#tune.applet.zero-copy-forwarding">tune.applet.zero-copy-forwarding</a>
+							
 							<a class="list-group-item" href="#tune.buffers.limit">tune.buffers.limit</a>
 							
 							<a class="list-group-item" href="#tune.buffers.reserve">tune.buffers.reserve</a>
 							
 							<a class="list-group-item" href="#tune.bufsize">tune.bufsize</a>
-							
-							<a class="list-group-item" href="#tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a>
 							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
@@ -4154,7 +4154,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4165,7 +4165,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev2-72</strong></p>
+							<p><strong>version 3.0-dev2-120</strong></p>
 							<p>
 								2024/01/26<br>
 								
@@ -6545,10 +6545,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#spread-checks">spread-checks</a>
    - <a href="#ssl-engine">ssl-engine</a>
    - <a href="#ssl-mode-async">ssl-mode-async</a>
+   - <a href="#tune.applet.zero-copy-forwarding">tune.applet.zero-copy-forwarding</a>
    - <a href="#tune.buffers.limit">tune.buffers.limit</a>
    - <a href="#tune.buffers.reserve">tune.buffers.reserve</a>
    - <a href="#tune.bufsize">tune.bufsize</a>
-   - <a href="#tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
@@ -7973,7 +7973,10 @@ doesn't support moving read/write buffers and is not compliant with
 HAProxy's buffer management. So the asynchronous mode is disabled on
 read/write  operations (it is only enabled during initial and renegotiation
 handshakes).
-</pre><a class="anchor" name="tune.buffers.limit"></a><a class="anchor" name="3-tune.buffers.limit"></a><a class="anchor" name="3.2-tune.buffers.limit"></a><a class="anchor" name="tune.buffers.limit (Global parameters)"></a><a class="anchor" name="tune.buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.buffers.limit"></a><a href="#3.2-tune.buffers.limit">tune.buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets a hard limit on the number of buffers which may be allocated per process.
+</pre><a class="anchor" name="tune.applet.zero-copy-forwarding"></a><a class="anchor" name="3-tune.applet.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.applet.zero-copy-forwarding"></a><a class="anchor" name="tune.applet.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.applet.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.applet.zero-copy-forwarding"></a><a href="#3.2-tune.applet.zero-copy-forwarding">tune.applet.zero-copy-forwarding</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy forwarding of data for the
+applets. It is enabled by default.
+</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding.</div>
+<a class="anchor" name="tune.buffers.limit"></a><a class="anchor" name="3-tune.buffers.limit"></a><a class="anchor" name="3.2-tune.buffers.limit"></a><a class="anchor" name="tune.buffers.limit (Global parameters)"></a><a class="anchor" name="tune.buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.buffers.limit"></a><a href="#3.2-tune.buffers.limit">tune.buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets a hard limit on the number of buffers which may be allocated per process.
 The default value is zero which means unlimited. The minimum non-zero value
 will always be greater than &quot;<a href="#tune.buffers.reserve">tune.buffers.reserve</a>&quot; and should ideally always
 be about twice as large. Forcing this value can be particularly useful to
@@ -8006,11 +8009,7 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
-</pre><a class="anchor" name="tune.cache.zero-copy-forwarding"></a><a class="anchor" name="3-tune.cache.zero-copy-forwarding"></a><a class="anchor" name="3.2-tune.cache.zero-copy-forwarding"></a><a class="anchor" name="tune.cache.zero-copy-forwarding (Global parameters)"></a><a class="anchor" name="tune.cache.zero-copy-forwarding (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.cache.zero-copy-forwarding"></a><a href="#3.2-tune.cache.zero-copy-forwarding">tune.cache.zero-copy-forwarding</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy forwarding of data for the
-cache applet, when objects are served from the cache to clients. It is
-enabled by default.
-</pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding.</div>
-<a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
+</pre><a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
@@ -8027,7 +8026,7 @@ directive.
 optimize the data fast-forwarding by avoiding to use the channel's buffer.
 Thanks to this directive, it is possible to disable this optimization. Note
 it also disable any kernel tcp splicing.
-</pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.cache.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
+</pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.applet.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
 <a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
 task handler (from event_hdl API). &lt;number&gt; should be included between 1
 and 10000. Large number could cause thread contention as a result of the
@@ -29530,7 +29529,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-72 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev2-120 &ndash; Configuration Manual<br>
 							<small>, 2024/01/26</small>
 						</div>
 					</div>
