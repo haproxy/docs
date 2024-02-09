@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-120 - Management Guide</title>
+		<title>HAProxy version 3.0-dev2-140 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -602,6 +602,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-W"><h4>W</h4>
 								
+							<a class="list-group-item" href="#wait">wait</a>
+							
 							<a class="list-group-item" href="#where">where</a>
 						</div><!-- /letter -->
 					</div>
@@ -614,7 +616,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -625,7 +627,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev2-120</strong></p>
+							<p><strong>version 3.0-dev2-140</strong></p>
 							<p>
 								<br>
 								
@@ -4523,7 +4525,17 @@ ssl ocsp-response&quot; commands.
 If the received OCSP response is valid and was properly inserted into the
 local tree, its contents will be displayed on the standard output. The format
 is the same as the one described in &quot;<a href="#show%20ssl%20ocsp-response">show ssl ocsp-response</a>&quot;.
-</pre></div>
+</pre><a class="anchor" name="wait"></a><a class="anchor" name="9-wait"></a><a class="anchor" name="9.3-wait"></a><a class="anchor" name="wait (Statistics and monitoring)"></a><a class="anchor" name="wait (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="wait"></a><a href="#9.3-wait">wait</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">This simply waits for the requested delay before continuing. This can be used
+to collect metrics around a specific interval. The default unit for the delay
+is milliseconds, though other units are accepted if suffixed with the usual
+timer units (s, m, h, d). When used with the 'socat' utility, do not forget
+to extend socat's close timeout to cover the wait time.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ socat -t20 /path/to/socket &lt;&lt;&lt; &quot;show activity; wait 10s; show activity&quot;
+</code></pre>
+</div></div>
 <a class="anchor" id="9.4" name="9.4"></a>
 <h2 id="chapter-9.4" data-target="9.4"><small><a class="small" href="#9.4">9.4.</a></small> Master CLI</h2>
 <div><pre class="text">The master CLI is a socket bound to the master process in master-worker mode.
@@ -5026,7 +5038,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-120 &ndash; Management Guide<br>
+							HAProxy 3.0-dev2-140 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

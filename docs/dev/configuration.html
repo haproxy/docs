@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-120 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev2-140 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1356,6 +1356,8 @@
 							
 							<a class="list-group-item" href="#bc.timer.connect">bc.timer.connect</a>
 							
+							<a class="list-group-item" href="#bc_be_queue">bc_be_queue</a>
+							
 							<a class="list-group-item" href="#bc_dst">bc_dst</a>
 							
 							<a class="list-group-item" href="#bc_dst_port">bc_dst_port</a>
@@ -1375,6 +1377,8 @@
 							<a class="list-group-item" href="#bc_src">bc_src</a>
 							
 							<a class="list-group-item" href="#bc_src_port">bc_src_port</a>
+							
+							<a class="list-group-item" href="#bc_srv_queue">bc_srv_queue</a>
 							
 							<a class="list-group-item" href="#be2dec">be2dec</a>
 							
@@ -2902,6 +2906,10 @@
 							
 							<a class="list-group-item" href="#sc0_get_gpt0">sc0_get_gpt0</a>
 							
+							<a class="list-group-item" href="#sc0_glitch_cnt">sc0_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#sc0_glitch_rate">sc0_glitch_rate</a>
+							
 							<a class="list-group-item" href="#sc0_gpc0_rate">sc0_gpc0_rate</a>
 							
 							<a class="list-group-item" href="#sc0_gpc1_rate">sc0_gpc1_rate</a>
@@ -2954,6 +2962,10 @@
 							
 							<a class="list-group-item" href="#sc1_get_gpt0">sc1_get_gpt0</a>
 							
+							<a class="list-group-item" href="#sc1_glitch_cnt">sc1_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#sc1_glitch_rate">sc1_glitch_rate</a>
+							
 							<a class="list-group-item" href="#sc1_gpc0_rate">sc1_gpc0_rate</a>
 							
 							<a class="list-group-item" href="#sc1_gpc1_rate">sc1_gpc1_rate</a>
@@ -3005,6 +3017,10 @@
 							<a class="list-group-item" href="#sc2_get_gpc1">sc2_get_gpc1</a>
 							
 							<a class="list-group-item" href="#sc2_get_gpt0">sc2_get_gpt0</a>
+							
+							<a class="list-group-item" href="#sc2_glitch_cnt">sc2_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#sc2_glitch_rate">sc2_glitch_rate</a>
 							
 							<a class="list-group-item" href="#sc2_gpc0_rate">sc2_gpc0_rate</a>
 							
@@ -3063,6 +3079,10 @@
 							<a class="list-group-item" href="#sc_get_gpt">sc_get_gpt</a>
 							
 							<a class="list-group-item" href="#sc_get_gpt0">sc_get_gpt0</a>
+							
+							<a class="list-group-item" href="#sc_glitch_cnt">sc_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#sc_glitch_rate">sc_glitch_rate</a>
 							
 							<a class="list-group-item" href="#sc_gpc0_rate">sc_gpc0_rate</a>
 							
@@ -3273,6 +3293,10 @@
 							<a class="list-group-item" href="#src_get_gpt">src_get_gpt</a>
 							
 							<a class="list-group-item" href="#src_get_gpt0">src_get_gpt0</a>
+							
+							<a class="list-group-item" href="#src_glitch_cnt">src_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#src_glitch_rate">src_glitch_rate</a>
 							
 							<a class="list-group-item" href="#src_gpc0_rate">src_gpc0_rate</a>
 							
@@ -3669,6 +3693,10 @@
 							
 							<a class="list-group-item" href="#table_expire">table_expire</a>
 							
+							<a class="list-group-item" href="#table_glitch_cnt">table_glitch_cnt</a>
+							
+							<a class="list-group-item" href="#table_glitch_rate">table_glitch_rate</a>
+							
 							<a class="list-group-item" href="#table_gpc">table_gpc</a>
 							
 							<a class="list-group-item" href="#table_gpc0">table_gpc0</a>
@@ -3995,7 +4023,7 @@
 							
 							<a class="list-group-item" href="#txn.id32">txn.id32</a>
 							
-							<a class="list-group-item" href="#txn.redispatch">txn.redispatch</a>
+							<a class="list-group-item" href="#txn.redispatched">txn.redispatched</a>
 							
 							<a class="list-group-item" href="#txn.sess_term_state">txn.sess_term_state</a>
 							
@@ -4154,7 +4182,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4165,7 +4193,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev2-120</strong></p>
+							<p><strong>version 3.0-dev2-140</strong></p>
 							<p>
 								2024/01/26<br>
 								
@@ -23425,6 +23453,17 @@ set: this makes the converter succeed and return &lt;default_value&gt;. If the k
 is found the converter returns the key expiration delay associated with the
 input sample in the designated table.
 See also the table_idle sample fetch keyword.
+</pre><a class="anchor" name="table_glitch_cnt"></a><a class="anchor" name="7-table_glitch_cnt"></a><a class="anchor" name="7.3.1-table_glitch_cnt"></a><a class="anchor" name="table_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_glitch_cnt (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_glitch_cnt"></a><a href="#7.3.1-table_glitch_cnt">table_glitch_cnt</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
+the specified table. If the key is not found in the table, integer value zero
+is returned. Otherwise the converter returns the cumulative number of front
+connection glitches associated with the input sample in the designated table.
+See also the sc_glitch_cnt sample fetch keyword and fc_glitches for the value
+measured on the current front connection.
+</pre><a class="anchor" name="table_glitch_rate"></a><a class="anchor" name="7-table_glitch_rate"></a><a class="anchor" name="7.3.1-table_glitch_rate"></a><a class="anchor" name="table_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="table_glitch_rate (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_glitch_rate"></a><a href="#7.3.1-table_glitch_rate">table_glitch_rate</a></b>(<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a look up in
+the specified table. If the key is not found in the table, integer value zero
+is returned. Otherwise the converter returns the average front connection
+glitch rate associated with the input sample in the designated table. See
+also the sc_glitch_rate sample fetch keyword.
 </pre><a class="anchor" name="table_gpc"></a><a class="anchor" name="7-table_gpc"></a><a class="anchor" name="7.3.1-table_gpc"></a><a class="anchor" name="table_gpc (Using ACLs and fetching samples)"></a><a class="anchor" name="table_gpc (Converters)"></a><div class="keyword"><b><a class="anchor" name="table_gpc"></a><a href="#7.3.1-table_gpc">table_gpc</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;table&gt;</span>)</div><pre class="text">Uses the string representation of the input sample to perform a lookup in
 the specified table. If the key is not found in the table, integer value zero
 is returned. Otherwise the converter returns the current value of the
@@ -23868,9 +23907,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-table_avl">table_avl([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-table_cnt">table_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-thread">thread</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-txn.conn_retries">txn.conn_retries</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-txn.id32">txn.id32</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-txn.redispatch">txn.redispatch</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
@@ -24227,18 +24264,10 @@ table_avl for other entry counting methods.
 </pre><a class="anchor" name="thread"></a><a class="anchor" name="7-thread"></a><a class="anchor" name="7.3.2-thread"></a><a class="anchor" name="thread (Using ACLs and fetching samples)"></a><a class="anchor" name="thread (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#7.3.2-thread">thread</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread calling
 the function, between 0 and (global.nbthread-1). This is useful for logging
 and debugging purposes.
-</pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.2-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.2-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this stream when
-trying to connect to the server. This value is subject to change while the
-connection is not fully established. For HTTP connections, the value may be
-affected by L7 retries.
 </pre><a class="anchor" name="txn.id32"></a><a class="anchor" name="7-txn.id32"></a><a class="anchor" name="7.3.2-txn.id32"></a><a class="anchor" name="txn.id32 (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.id32 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.id32"></a><a href="#7.3.2-txn.id32">txn.id32</a></b> : integer</div><pre class="text">Returns the internal transaction ID. It is a 32bits integer. So, in absolute,
 its value is not unique, transaction IDs may wrap. The wrapping period
 depends on the request rate. In practice, it should not be an issue. For a
 true unique ID, see &quot;<a href="#unique-id-format">unique-id-format</a>&quot; directive.
-</pre><a class="anchor" name="txn.redispatch"></a><a class="anchor" name="7-txn.redispatch"></a><a class="anchor" name="7.3.2-txn.redispatch"></a><a class="anchor" name="txn.redispatch (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.redispatch (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.redispatch"></a><a href="#7.3.2-txn.redispatch">txn.redispatch</a></b> : boolean</div><pre class="text">Returns true if the connection has experienced redispatch upon retry according
-to &quot;<a href="#option%20redispatch">option redispatch</a>&quot; configuration. This value is subject to change while
-the connection is not fully established. For HTTP connections, the value may
-be affected by L7 retries.
 </pre><a class="anchor" name="txn.sess_term_state"></a><a class="anchor" name="7-txn.sess_term_state"></a><a class="anchor" name="7.3.2-txn.sess_term_state"></a><a class="anchor" name="txn.sess_term_state (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.sess_term_state (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="txn.sess_term_state"></a><a href="#7.3.2-txn.sess_term_state">txn.sess_term_state</a></b> : string</div><pre class="text">Returns the TCP or HTTP stream termination state, as reported in the log. It
 is a 2-characters string, The final stream state followed by the event which
 caused its to terminate. See <a href="#8.5">section 8.5</a> about stream state at disconnection
@@ -24289,6 +24318,7 @@ Summary of sample fetch methods in this section and their respective types:
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-accept_date">accept_date([&lt;unit&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc.timer.connect">bc.timer.connect</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_be_queue">bc_be_queue</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_dst">bc_dst</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-bc_dst_port">bc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_err">bc_err</a></td><td >integer</td></tr>
@@ -24297,17 +24327,20 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bc_http_major">bc_http_major</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_src">bc_src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-bc_src_port">bc_src_port</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_srv_queue">bc_srv_queue</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_id">be_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_name">be_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-bc_rtt">bc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_rttvar">bc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_server_timeout">be_server_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_tunnel_timeout">be_tunnel_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bytes_in">bytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_tunnel_timeout">cur_tunnel_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-dst">dst</a></td><td >ip</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-dst_conn">dst_conn</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-dst_is_local">dst_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-dst_port">dst_port</a></td><td >integer</td></tr>
@@ -24324,11 +24357,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_lost">fc_lost</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_pp_authority">fc_pp_authority</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_pp_unique_id">fc_pp_unique_id</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_pp_tlv">fc_pp_tlv(&lt;id&gt;)</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_rcvd_proxy">fc_rcvd_proxy</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_reordering">fc_reordering</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_retrans">fc_retrans</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_rtt">fc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_rttvar">fc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
@@ -24345,11 +24378,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_bytes_in_rate">sc1_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_bytes_in_rate">sc2_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_bytes_out_rate">sc_bytes_out_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_bytes_out_rate">sc2_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_clr_gpc">sc_clr_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_clr_gpc0">sc0_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24366,11 +24399,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_conn_cur">sc_conn_cur(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_cur">sc0_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_conn_cur">sc2_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_rate">sc_conn_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_rate">sc0_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_rate">sc1_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_conn_rate">sc2_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc">sc_get_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc0">sc_get_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24386,12 +24419,20 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_get_gpt0">sc0_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_get_gpt0">sc1_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpt0">sc2_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_glitch_cnt">sc_glitch_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc0_glitch_cnt">sc0_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_glitch_cnt">sc1_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_glitch_cnt">sc2_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc_glitch_rate">sc_glitch_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc0_glitch_rate">sc0_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc1_glitch_rate">sc1_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-sc2_glitch_rate">sc2_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc_rate">sc_gpc_rate(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc0_rate">sc_gpc0_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_gpc0_rate">sc1_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24400,6 +24441,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_cnt">sc1_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_err_rate">sc_http_err_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_rate">sc0_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_rate">sc1_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24412,7 +24454,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_http_fail_rate">sc0_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_fail_rate">sc1_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_cnt">sc0_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24421,6 +24462,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_http_req_rate">sc0_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_rate">sc1_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_req_rate">sc2_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_inc_gpc">sc_inc_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_inc_gpc0">sc0_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24433,7 +24475,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_kbytes_in">sc0_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_kbytes_in">sc2_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24442,6 +24483,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_sess_cnt">sc_sess_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_sess_cnt">sc0_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_sess_cnt">sc1_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_sess_cnt">sc2_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_sess_rate">sc_sess_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_sess_rate">sc0_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24454,7 +24496,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_trackers">sc_trackers(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_trackers">sc0_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_trackers">sc1_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_trackers">sc2_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_id">so_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
@@ -24463,6 +24504,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_bytes_out_rate">src_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc">src_clr_gpc(&lt;idx&gt;,[&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc0">src_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_clr_gpc1">src_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_cnt">src_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_cur">src_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24475,7 +24517,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_gpc_rate">src_gpc_rate(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc0_rate">src_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc1_rate">src_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_err_rate">src_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24484,6 +24525,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_http_req_rate">src_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_inc_gpc">src_inc_gpc(&lt;idx&gt;,[&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_inc_gpc0">src_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_inc_gpc1">src_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_is_local">src_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-src_kbytes_in">src_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24494,6 +24536,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_updt_conn_cnt">src_updt_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_id">srv_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_name">srv_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-txn.conn_retries">txn.conn_retries</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-txn.redispatched">txn.redispatched</a></td><td >boolean</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="accept_date"></a><a class="anchor" name="7-accept_date"></a><a class="anchor" name="7.3.3-accept_date"></a><a class="anchor" name="accept_date (Using ACLs and fetching samples)"></a><a class="anchor" name="accept_date (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="accept_date"></a><a href="#7.3.3-accept_date">accept_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the connection was received by HAProxy
 (which might be very slightly different from the date observed on the
@@ -24513,6 +24557,8 @@ It is useful when a time resolution of less than a second is needed.
 </pre><a class="anchor" name="bc.timer.connect"></a><a class="anchor" name="7-bc.timer.connect"></a><a class="anchor" name="7.3.3-bc.timer.connect"></a><a class="anchor" name="bc.timer.connect (Using ACLs and fetching samples)"></a><a class="anchor" name="bc.timer.connect (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc.timer.connect"></a><a href="#7.3.3-bc.timer.connect">bc.timer.connect</a></b> : integer</div><pre class="text">Total time to establish the TCP connection to the server.  This is the
 equivalent of %Tc in the log-format. This is reported in milliseconds (ms).
 For more information see Section 8.4 &quot;Timing events&quot;
+</pre><a class="anchor" name="bc_be_queue"></a><a class="anchor" name="7-bc_be_queue"></a><a class="anchor" name="7.3.3-bc_be_queue"></a><a class="anchor" name="bc_be_queue (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_be_queue (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_be_queue"></a><a href="#7.3.3-bc_be_queue">bc_be_queue</a></b> : integer</div><pre class="text">Number of streams de-queued while waiting for a connection slot on the
+target backend. This is the equivalent of %bq in the log-format.
 </pre><a class="anchor" name="bc_dst"></a><a class="anchor" name="7-bc_dst"></a><a class="anchor" name="7.3.3-bc_dst"></a><a class="anchor" name="bc_dst (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_dst (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_dst"></a><a href="#7.3.3-bc_dst">bc_dst</a></b> : ip</div><pre class="text">This is the destination ip address of the connection on the server side,
 which is the server address HAProxy connected to. It is of type IP and works
 on both IPv4 and IPv6 tables.  On IPv6 tables, IPv4 address is mapped to its
@@ -24547,6 +24593,8 @@ IPv4 and IPv6 tables. On IPv6 tables, IPv4 addresses are mapped to their IPv6
 equivalent, according to RFC 4291.
 </pre><a class="anchor" name="bc_src_port"></a><a class="anchor" name="7-bc_src_port"></a><a class="anchor" name="7.3.3-bc_src_port"></a><a class="anchor" name="bc_src_port (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_src_port (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_src_port"></a><a href="#7.3.3-bc_src_port">bc_src_port</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the TCP source port of the
 connection on the server side, which is the port HAProxy connected from.
+</pre><a class="anchor" name="bc_srv_queue"></a><a class="anchor" name="7-bc_srv_queue"></a><a class="anchor" name="7.3.3-bc_srv_queue"></a><a class="anchor" name="bc_srv_queue (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_srv_queue (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_srv_queue"></a><a href="#7.3.3-bc_srv_queue">bc_srv_queue</a></b> : integer</div><pre class="text">Number of streams de-queued while waiting for a connection slot on the
+target server. This is the equivalent of %sq in the log-format.
 </pre><a class="anchor" name="be_id"></a><a class="anchor" name="7-be_id"></a><a class="anchor" name="7.3.3-be_id"></a><a class="anchor" name="be_id (Using ACLs and fetching samples)"></a><a class="anchor" name="be_id (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_id"></a><a href="#7.3.3-be_id">be_id</a></b> : integer</div><pre class="text">Returns an integer containing the current backend's id. It can be used in
 frontends with responses to check which backend processed the request. If
 used in a frontend and no backend was used, it returns the current
@@ -24574,6 +24622,8 @@ also the &quot;<a href="#cur_server_timeout">cur_server_timeout</a>&quot;.
 </pre><a class="anchor" name="be_tunnel_timeout"></a><a class="anchor" name="7-be_tunnel_timeout"></a><a class="anchor" name="7.3.3-be_tunnel_timeout"></a><a class="anchor" name="be_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_tunnel_timeout"></a><a href="#7.3.3-be_tunnel_timeout">be_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the tunnel timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_tunnel_timeout">cur_tunnel_timeout</a>&quot;.
+</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes uploaded from the client to the server.
+</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">This is the number of bytes transmitted from the server to the client.
 </pre><a class="anchor" name="cur_server_timeout"></a><a class="anchor" name="7-cur_server_timeout"></a><a class="anchor" name="7.3.3-cur_server_timeout"></a><a class="anchor" name="cur_server_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_server_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_server_timeout"></a><a href="#7.3.3-cur_server_timeout">cur_server_timeout</a></b> : integer</div><pre class="text">Returns the currently applied server timeout in millisecond for the stream.
 In the default case, this will be equal to be_server_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_server_timeout">be_server_timeout</a>&quot;.
@@ -24860,6 +24910,24 @@ This fetch applies only to the 'gpt' array data_type (and not on
 the legacy 'gpt0' data-type). See also src_get_gpt.
 </pre><a class="anchor" name="sc_get_gpt0"></a><a class="anchor" name="7-sc_get_gpt0"></a><a class="anchor" name="7.3.3-sc_get_gpt0"></a><a class="anchor" name="sc_get_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="sc_get_gpt0 (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc_get_gpt0"></a><a href="#7.3.3-sc_get_gpt0">sc_get_gpt0</a></b>(<span style="color: #080">&lt;ctr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc0_get_gpt0"></a><a class="anchor" name="7-sc0_get_gpt0"></a><a class="anchor" name="7.3.3-sc0_get_gpt0"></a><a class="anchor" name="sc0_get_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="sc0_get_gpt0 (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc0_get_gpt0"></a><a href="#7.3.3-sc0_get_gpt0">sc0_get_gpt0</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc1_get_gpt0"></a><a class="anchor" name="7-sc1_get_gpt0"></a><a class="anchor" name="7.3.3-sc1_get_gpt0"></a><a class="anchor" name="sc1_get_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="sc1_get_gpt0 (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc1_get_gpt0"></a><a href="#7.3.3-sc1_get_gpt0">sc1_get_gpt0</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc2_get_gpt0"></a><a class="anchor" name="7-sc2_get_gpt0"></a><a class="anchor" name="7.3.3-sc2_get_gpt0"></a><a class="anchor" name="sc2_get_gpt0 (Using ACLs and fetching samples)"></a><a class="anchor" name="sc2_get_gpt0 (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc2_get_gpt0"></a><a href="#7.3.3-sc2_get_gpt0">sc2_get_gpt0</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the value of the first General Purpose Tag associated to the
 currently tracked counters. See also src_get_gpt0.
+</pre><a class="anchor" name="sc_glitch_cnt"></a><a class="anchor" name="7-sc_glitch_cnt"></a><a class="anchor" name="7.3.3-sc_glitch_cnt"></a><a class="anchor" name="sc_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="sc_glitch_cnt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc_glitch_cnt"></a><a href="#7.3.3-sc_glitch_cnt">sc_glitch_cnt</a></b>(<span style="color: #080">&lt;ctr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc0_glitch_cnt"></a><a class="anchor" name="7-sc0_glitch_cnt"></a><a class="anchor" name="7.3.3-sc0_glitch_cnt"></a><a class="anchor" name="sc0_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="sc0_glitch_cnt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc0_glitch_cnt"></a><a href="#7.3.3-sc0_glitch_cnt">sc0_glitch_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc1_glitch_cnt"></a><a class="anchor" name="7-sc1_glitch_cnt"></a><a class="anchor" name="7.3.3-sc1_glitch_cnt"></a><a class="anchor" name="sc1_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="sc1_glitch_cnt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc1_glitch_cnt"></a><a href="#7.3.3-sc1_glitch_cnt">sc1_glitch_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc2_glitch_cnt"></a><a class="anchor" name="7-sc2_glitch_cnt"></a><a class="anchor" name="7.3.3-sc2_glitch_cnt"></a><a class="anchor" name="sc2_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="sc2_glitch_cnt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc2_glitch_cnt"></a><a href="#7.3.3-sc2_glitch_cnt">sc2_glitch_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the cumulative number of front connection glitches that were observed
+on connections associated with the currently tracked counters. Usually these
+result in requests or connections to be aborted so the returned value will
+often correspond to past connections. There is no good nor bad value, but a
+poor quality client may occasionally cause a few glitches per connection,
+while a very bogus or malevolent client may quickly cause thousands of events
+to be added on a connection. See also fc_glitches for the number affecting
+the current connection, src_glitch_cnt to look them up per source, and
+sc_glitch_rate for the event rate measurements.
+</pre><a class="anchor" name="sc_glitch_rate"></a><a class="anchor" name="7-sc_glitch_rate"></a><a class="anchor" name="7.3.3-sc_glitch_rate"></a><a class="anchor" name="sc_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc_glitch_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc_glitch_rate"></a><a href="#7.3.3-sc_glitch_rate">sc_glitch_rate</a></b>(<span style="color: #080">&lt;ctr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc0_glitch_rate"></a><a class="anchor" name="7-sc0_glitch_rate"></a><a class="anchor" name="7.3.3-sc0_glitch_rate"></a><a class="anchor" name="sc0_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc0_glitch_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc0_glitch_rate"></a><a href="#7.3.3-sc0_glitch_rate">sc0_glitch_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc1_glitch_rate"></a><a class="anchor" name="7-sc1_glitch_rate"></a><a class="anchor" name="7.3.3-sc1_glitch_rate"></a><a class="anchor" name="sc1_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc1_glitch_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc1_glitch_rate"></a><a href="#7.3.3-sc1_glitch_rate">sc1_glitch_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><a class="anchor" name="sc2_glitch_rate"></a><a class="anchor" name="7-sc2_glitch_rate"></a><a class="anchor" name="7.3.3-sc2_glitch_rate"></a><a class="anchor" name="sc2_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc2_glitch_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc2_glitch_rate"></a><a href="#7.3.3-sc2_glitch_rate">sc2_glitch_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the average rate at which front connection glitches were observed for
+the currently tracked counters, measured in amount of events over the period
+configured in the table. Usually these glitches result in requests or
+connections to be aborted so the returned value will often be related to past
+connections. There is no good nor bad value, but a poor quality client may
+occasionally cause a few glitches per connection, hence a low rate is
+generally expected. However, a very bogus or malevolent client may quickly
+cause thousands of events to be added per connection, and maintain a high
+rate here. See also src_glitch_rate and sc_glitch_cnt.
 </pre><a class="anchor" name="sc_gpc_rate"></a><a class="anchor" name="7-sc_gpc_rate"></a><a class="anchor" name="7.3.3-sc_gpc_rate"></a><a class="anchor" name="sc_gpc_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="sc_gpc_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="sc_gpc_rate"></a><a href="#7.3.3-sc_gpc_rate">sc_gpc_rate</a></b>(<span style="color: #080">&lt;idx&gt;</span>,<span style="color: #080">&lt;ctr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the average increment rate of the General Purpose Counter at the
 index &lt;idx&gt; of the array associated to the tracked counter of ID &lt;ctr&gt; from
 the current proxy's table or from the designated stick-table &lt;table&gt;.
@@ -25064,6 +25132,25 @@ See also the sc_get_gpt sample fetch keyword.
 incoming connection's source address in the current proxy's stick-table or in
 the designated stick-table. If the address is not found, zero is returned.
 See also sc/sc0/sc1/sc2_get_gpt0.
+</pre><a class="anchor" name="src_glitch_cnt"></a><a class="anchor" name="7-src_glitch_cnt"></a><a class="anchor" name="7.3.3-src_glitch_cnt"></a><a class="anchor" name="src_glitch_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="src_glitch_cnt (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="src_glitch_cnt"></a><a href="#7.3.3-src_glitch_cnt">src_glitch_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the cumulative number of front connection glitches that were observed
+on connections from the current connection's source address. Usually these
+result in requests or connections to be aborted so the returned value will
+often correspond to past connections. There is no good nor bad value, but a
+poor quality client may occasionally cause a few glitches per connection,
+while a very bogus or malevolent client may quickly cause thousands of events
+to be added on a connection. See also fc_glitches for the number affecting
+the current connection, sc_glitch_cnt to look them up in currently tracked
+counters, and src_glitch_rate for the event rate measurements.
+</pre><a class="anchor" name="src_glitch_rate"></a><a class="anchor" name="7-src_glitch_rate"></a><a class="anchor" name="7.3.3-src_glitch_rate"></a><a class="anchor" name="src_glitch_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="src_glitch_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="src_glitch_rate"></a><a href="#7.3.3-src_glitch_rate">src_glitch_rate</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the average rate at which front connection glitches were observed for
+on connections from the current connection's source address, measured in
+amount of events over the period configured in the table. Usually these
+glitches result in requests or connections to be aborted so the returned
+value will often be related to past connections. There is no good nor bad
+value, but a poor quality client may occasionally cause a few glitches per
+connection, hence a low rate is generally expected. However, a very bogus or
+malevolent client may quickly cause thousands of events to be added per
+connection, and maintain a high rate here. See also sc_glitch_rate and
+src_glitch_cnt.
 </pre><a class="anchor" name="src_gpc_rate"></a><a class="anchor" name="7-src_gpc_rate"></a><a class="anchor" name="7.3.3-src_gpc_rate"></a><a class="anchor" name="src_gpc_rate (Using ACLs and fetching samples)"></a><a class="anchor" name="src_gpc_rate (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="src_gpc_rate"></a><a href="#7.3.3-src_gpc_rate">src_gpc_rate</a></b>(<span style="color: #080">&lt;idx&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the average increment rate of the General Purpose Counter at the
 index &lt;idx&gt; of the array associated to the incoming connection's
 source address in the current proxy's stick-table or in the designated
@@ -25205,6 +25292,14 @@ debugging. It can also be used in a tcp-check or an http-check ruleset.
 </pre><a class="anchor" name="srv_name"></a><a class="anchor" name="7-srv_name"></a><a class="anchor" name="7.3.3-srv_name"></a><a class="anchor" name="srv_name (Using ACLs and fetching samples)"></a><a class="anchor" name="srv_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="srv_name"></a><a href="#7.3.3-srv_name">srv_name</a></b> : string</div><pre class="text">Returns a string containing the server's name when processing the response.
 While it's almost only used with ACLs, it may be used for logging or
 debugging. It can also be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="txn.conn_retries"></a><a class="anchor" name="7-txn.conn_retries"></a><a class="anchor" name="7.3.3-txn.conn_retries"></a><a class="anchor" name="txn.conn_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.conn_retries (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="txn.conn_retries"></a><a href="#7.3.3-txn.conn_retries">txn.conn_retries</a></b> : integer</div><pre class="text">Returns the the number of connection retries experienced by this stream when
+trying to connect to the server. This value is subject to change while the
+connection is not fully established. For HTTP connections, the value may be
+affected by L7 retries.
+</pre><a class="anchor" name="txn.redispatched"></a><a class="anchor" name="7-txn.redispatched"></a><a class="anchor" name="7.3.3-txn.redispatched"></a><a class="anchor" name="txn.redispatched (Using ACLs and fetching samples)"></a><a class="anchor" name="txn.redispatched (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="txn.redispatched"></a><a href="#7.3.3-txn.redispatched">txn.redispatched</a></b> : boolean</div><pre class="text">Returns true if the connection has experienced redispatch upon retry according
+to &quot;<a href="#option%20redispatch">option redispatch</a>&quot; configuration. This value is subject to change while
+the connection is not fully established. For HTTP connections, the value may
+be affected by L7 retries.
 </pre></div>
 <a class="anchor" id="7.3.4" name="7.3.4"></a>
 <h3 id="chapter-7.3.4" data-target="7.3.4"><small><a class="small" href="#7.3.4">7.3.4.</a></small> Fetching samples at Layer 5</h3>
@@ -26211,8 +26306,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-base32">base32</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-base32%2Bsrc">base32+src</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-baseq">baseq</a></td><td >string</td></tr>
-<tr><td ><a href="#7-bytes_in">bytes_in</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-capture.req.hdr">capture.req.hdr(&lt;idx&gt;)</a></td><td >string</td></tr>
 <tr><td ><a href="#7-capture.req.method">capture.req.method</a></td><td >string</td></tr>
 <tr><td ><a href="#7-capture.req.uri">capture.req.uri</a></td><td >string</td></tr>
@@ -26227,9 +26320,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-cook">cook([&lt;name&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-req.cook_cnt">req.cook_cnt([&lt;name&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cook_cnt">cook_cnt([&lt;name&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-req.cook_val">req.cook_val([&lt;name&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cook_val">cook_val([&lt;name&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-req.cook_names">req.cook_names([&lt;delim&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-cookie">cookie([&lt;name&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-hdr">hdr([&lt;name&gt;[,&lt;occ&gt;]])</a></td><td >string</td></tr>
@@ -26248,9 +26341,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-req.timer.hdr">req.timer.hdr</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-req.timer.idle">req.timer.idle</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-req.timer.queue">req.timer.queue</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-req.timer.tq">req.timer.tq</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.timer.hdr">res.timer.hdr</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-http_auth">http_auth(&lt;userlist&gt;)</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-http_auth_bearer">http_auth_bearer([&lt;header&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-http_auth_group">http_auth_group(&lt;userlist&gt;)</a></td><td >string</td></tr>
@@ -26269,9 +26362,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-res.body_len">res.body_len</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.body_size">res.body_size</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.cache_hit">res.cache_hit</a></td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-res.cache_name">res.cache_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-res.comp">res.comp</a></td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-res.comp_algo">res.comp_algo</a></td><td >string</td></tr>
 <tr><td ><a href="#7-res.cook">res.cook([&lt;name&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-scook">scook([&lt;name&gt;])</a></td><td >string</td></tr>
@@ -26290,9 +26383,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-shdr_ip">shdr_ip([&lt;name&gt;[,&lt;occ&gt;]])</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-res.hdr_names">res.hdr_names([&lt;delim&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-res.hdr_val">res.hdr_val([&lt;name&gt;[,&lt;occ&gt;]])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-shdr_val">shdr_val([&lt;name&gt;[,&lt;occ&gt;]])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.hdrs">res.hdrs</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-res.hdrs_bin">res.hdrs_bin</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-res.ver">res.ver</a></td><td >string</td></tr>
 <tr><td ><a href="#7-resp_ver">resp_ver</a></td><td >string</td></tr>
@@ -26343,9 +26436,7 @@ per-URL counters.
 the request with the query-string, which starts at the first slash. Using this
 instead of &quot;<a href="#base">base</a>&quot; allows one to properly identify the target resource, for
 statistics or caching use cases. See also &quot;<a href="#path">path</a>&quot;, &quot;<a href="#pathq">pathq</a>&quot; and &quot;<a href="#base">base</a>&quot;.
-</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.6-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.6-bytes_in">bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes uploaded from the client to the server.
-</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.6-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.6-bytes_out">bytes_out</a></b> : integer
-   This is the number of bytes transmitted from the server to the client.</div><a class="anchor" name="capture.req.hdr"></a><a class="anchor" name="7-capture.req.hdr"></a><a class="anchor" name="7.3.6-capture.req.hdr"></a><a class="anchor" name="capture.req.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.hdr"></a><a href="#7.3.6-capture.req.hdr">capture.req.hdr</a></b>(<span style="color: #080">&lt;idx&gt;</span>) : string</div><pre class="text">This extracts the content of the header captured by the &quot;capture request
+</pre><a class="anchor" name="capture.req.hdr"></a><a class="anchor" name="7-capture.req.hdr"></a><a class="anchor" name="7.3.6-capture.req.hdr"></a><a class="anchor" name="capture.req.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.hdr"></a><a href="#7.3.6-capture.req.hdr">capture.req.hdr</a></b>(<span style="color: #080">&lt;idx&gt;</span>) : string</div><pre class="text">This extracts the content of the header captured by the &quot;capture request
 header&quot;, idx is the position of the capture keyword in the configuration.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture%20request%20header">capture request header</a>&quot;.</div>
 <a class="anchor" name="capture.req.method"></a><a class="anchor" name="7-capture.req.method"></a><a class="anchor" name="7.3.6-capture.req.method"></a><a class="anchor" name="capture.req.method (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.method (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.method"></a><a href="#7.3.6-capture.req.method">capture.req.method</a></b> : string</div><pre class="text">This extracts the METHOD of an HTTP request. It can be used in both request
@@ -27803,6 +27894,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[accept_date,ltime(&quot;%d/%b/%Y:%H:%M:%S %z&quot;)]         | date    |
   +---+------+------------------------------------------------------+---------+
   |   | %Ts  | Accept date as a UNIX timestamp                      | numeric |
+  |   |      | %[accept_date]                                       |         |
   +---+------+------------------------------------------------------+---------+
   |   | %t   | Accept date local (with millisecond resolution)      |         |
   |   |      | %[accept_date(ms),ms_ltime(&quot;%d/%b/%Y:%H:%M:%S.%3N&quot;)] | date    |
@@ -27864,8 +27956,10 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   | H | %CS  | captured_response_cookie                             | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %H   | hostname                                             | string  |
+  |   |      | %[hostname]                                          |         |
   +---+------+------------------------------------------------------+---------+
   | H | %HM  | HTTP method (ex: POST)                               | string  |
+  |   |      | %[method]
   +---+------+------------------------------------------------------+---------+
   | H | %HP  | HTTP request URI without query string                | string  |
   +---+------+------------------------------------------------------+---------+
@@ -27894,6 +27988,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[be_name]                                           | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %bc  | beconn      (backend concurrent connections)         | numeric |
+  |   |      | %[be_conn]                                           |         |
   +---+------+------------------------------------------------------+---------+
   |   | %bi  | backend_source_ip       (connecting address)         |         |
   |   |      | %[bc_src]                                            | IP      |
@@ -27902,6 +27997,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[bc_src_port]                                       | numeric |
   +---+------+------------------------------------------------------+---------+
   |   | %bq  | backend_queue                                        | numeric |
+  |   |      | %[bc_be_queue]                                       |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ci  | client_ip                 (accepted address)         |         |
   |   |      | %[src]                                               | IP      |
@@ -27910,8 +28006,10 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[src_port]                                          | numeric |
   +---+------+------------------------------------------------------+---------+
   |   | %f   | frontend_name                                        | string  |
+  |   |      | %[fe_name]                                           |         |
   +---+------+------------------------------------------------------+---------+
   |   | %fc  | feconn     (frontend concurrent connections)         | numeric |
+  |   |      | %[fe_conn]                                           |         |
   +---+------+------------------------------------------------------+---------+
   |   | %fi  | frontend_ip              (accepting address)         |         |
   |   |      | %[dst]                                               | IP      |
@@ -27939,12 +28037,13 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   | H | %r   | http_request                                         | string  |
   +---+------+------------------------------------------------------+---------+
   |   | %rc  | retries                                              | numeric |
-  |   |      | %[txn.redispatch,iif(+,)]%[txn.conn_retries]         |         |
+  |   |      | %[txn.redispatched,iif(+,)]%[txn.conn_retries]       |         |
   +---+------+------------------------------------------------------+---------+
   |   | %rt  | request_counter (HTTP req or TCP session)            | numeric |
   |   |      | %[txn.id32]                                          |         |
   +---+------+------------------------------------------------------+---------+
   |   | %s   | server_name                                          | string  |
+  |   |      | %[srv_name]                                          |         |
   +---+------+------------------------------------------------------+---------+
   |   | %sc  | srv_conn     (server concurrent connections)         | numeric |
   +---+------+------------------------------------------------------+---------+
@@ -27955,6 +28054,7 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
   |   |      | %[bc_dst_port]                                       | numeric |
   +---+------+------------------------------------------------------+---------+
   |   | %sq  | srv_queue                                            | numeric |
+  |   |      | %[bc_srv_queue]                                      |         |
   +---+------+------------------------------------------------------+---------+
   | S | %sslc| ssl_ciphers (ex: AES-SHA)                            |         |
   |   |      | %[ssl_fc_cipher]                                     | string  |
@@ -29529,7 +29629,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-120 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev2-140 &ndash; Configuration Manual<br>
 							<small>, 2024/01/26</small>
 						</div>
 					</div>
