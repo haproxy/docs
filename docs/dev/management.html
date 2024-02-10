@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev2-140 - Management Guide</title>
+		<title>HAProxy version 3.0-dev2-146 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -616,7 +616,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -627,7 +627,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev2-140</strong></p>
+							<p><strong>version 3.0-dev2-146</strong></p>
 							<p>
 								<br>
 								
@@ -4525,15 +4525,37 @@ ssl ocsp-response&quot; commands.
 If the received OCSP response is valid and was properly inserted into the
 local tree, its contents will be displayed on the standard output. The format
 is the same as the one described in &quot;<a href="#show%20ssl%20ocsp-response">show ssl ocsp-response</a>&quot;.
-</pre><a class="anchor" name="wait"></a><a class="anchor" name="9-wait"></a><a class="anchor" name="9.3-wait"></a><a class="anchor" name="wait (Statistics and monitoring)"></a><a class="anchor" name="wait (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="wait"></a><a href="#9.3-wait">wait</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">This simply waits for the requested delay before continuing. This can be used
-to collect metrics around a specific interval. The default unit for the delay
-is milliseconds, though other units are accepted if suffixed with the usual
-timer units (s, m, h, d). When used with the 'socat' utility, do not forget
-to extend socat's close timeout to cover the wait time.
+</pre><a class="anchor" name="wait"></a><a class="anchor" name="9-wait"></a><a class="anchor" name="9.3-wait"></a><a class="anchor" name="wait (Statistics and monitoring)"></a><a class="anchor" name="wait (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="wait"></a><a href="#9.3-wait">wait</a></b> <span style="color: #800">{ -h | <span style="color: #080">&lt;delay&gt;</span> }</span> <span style="color: #008">[<span style="color: #080">&lt;condition&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;args&gt;</span>...]</span>]</span></div><pre class="text">In its simplest form without any condition, this simply waits for the
+requested delay before continuing. This can be used to collect metrics around
+a specific interval.
+
+With a condition and optional arguments, the command will wait for the
+specified condition to be satisfied, to unrecoverably fail, or to remain
+unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
+
+- srv-unused &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to be
+  removable, i.e. be in maintenance and no longer have any connection on it.
+  Some conditions will never be accepted (e.g. not in maintenance) and will
+  cause the report of a specific error message indicating what condition is
+  not met. The server might even have been removed in parallel and no longer
+  exit. If everything is OK before the delay, a success is returned and the
+  operation is terminated.
+
+The default unit for the delay is milliseconds, though other units are
+accepted if suffixed with the usual timer units (us, ms, s, m, h, d). When
+used with the 'socat' utility, do not forget to extend socat's close timeout
+to cover the wait time. Passing &quot;-h&quot; as the first or second argument provides
+the command's usage.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>$ socat -t20 /path/to/socket &lt;&lt;&lt; &quot;show activity; wait 10s; show activity&quot;
+<code>$ socat -t20 /path/to/socket - &lt;&lt;&lt; &quot;show activity; wait 10s; show activity&quot;
+
+$ socat -t5 /path/to/socket - &lt;&lt;&lt; &quot;
+    disable server px/srv1
+    shutdown sessions server px/srv1
+    wait 2s srv-unused px/srv1
+    del server px/srv1&quot;
 </code></pre>
 </div></div>
 <a class="anchor" id="9.4" name="9.4"></a>
@@ -5038,7 +5060,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev2-140 &ndash; Management Guide<br>
+							HAProxy 3.0-dev2-146 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
