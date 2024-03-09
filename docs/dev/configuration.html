@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev4-46 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev4-51 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1290,6 +1290,8 @@
 							<a class="list-group-item" href="#addr">addr</a>
 							
 							<a class="list-group-item" href="#aes_gcm_dec">aes_gcm_dec</a>
+							
+							<a class="list-group-item" href="#aes_gcm_enc">aes_gcm_enc</a>
 							
 							<a class="list-group-item" href="#agent-addr">agent-addr</a>
 							
@@ -4184,7 +4186,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4195,7 +4197,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev4-46</strong></p>
+							<p><strong>version 3.0-dev4-51</strong></p>
 							<p>
 								2024/02/23<br>
 								
@@ -22265,6 +22267,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-add">add(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-add_item">add_item(delim,[var][,suff]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-aes_gcm_dec">aes_gcm_dec(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-and">and(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-b64dec">b64dec</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-base64">base64</a></td><td >binary</td><td >string</td></tr>
@@ -22280,8 +22283,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-da-csv-conv">da-csv-conv(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-debug">debug([prefix][,destination])</a></td><td >any</td><td >same</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-debug">debug([prefix][,destination])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-digest">digest(algorithm)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-div">div(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-djb2">djb2([avalanche])</a></td><td >binary</td><td >integer</td></tr>
@@ -22301,8 +22304,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path,[output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path],[output_type])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path],[output_type])</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path],[output_type])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-language">language(value[,default])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-length">length</a></td><td >string</td><td >integer</td></tr>
@@ -22322,8 +22325,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
-<tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-param">param(name,[delim])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-port_only">port_only</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-protobuf">protobuf(field_number,[field_type])</a></td><td >binary</td><td >binary</td></tr>
@@ -22343,8 +22346,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_out_rate">table_bytes_out_rate(table)</a></td><td >string</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_conn_cnt">table_conn_cnt(table)</a></td><td >string</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_conn_cnt">table_conn_cnt(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cur">table_conn_cur(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_rate">table_conn_rate(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_expire">table_expire(table[,default_value])</a></td><td >string</td><td >integer</td></tr>
@@ -22364,8 +22367,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_http_req_rate">table_http_req_rate(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_idle">table_idle(table[,default_value])</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_in">table_kbytes_in(table)</a></td><td >string</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_kbytes_out">table_kbytes_out(table)</a></td><td >string</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_kbytes_out">table_kbytes_out(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_server_id">table_server_id(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt(table)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate(table)</a></td><td >string</td><td >integer</td></tr>
@@ -22385,6 +22388,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-x509_v_err_str">x509_v_err_str</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-xor">xor(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-xxh3">xxh3([seed])</a></td><td >binary</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-xxh32">xxh32([seed])</a></td><td >binary</td><td >integer</td></tr>
 </table><pre class="text">The detailed list of converter keywords follows:
 </pre><a class="anchor" name="51d.single"></a><a class="anchor" name="7-51d.single"></a><a class="anchor" name="7.3.1-51d.single"></a><a class="anchor" name="51d.single (Using ACLs and fetching samples)"></a><a class="anchor" name="51d.single (Converters)"></a><div class="keyword"><b><a class="anchor" name="51d.single"></a><a href="#7.3.1-51d.single">51d.single</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>)</div><pre class="text">Returns values for the properties requested as a string, where values are
@@ -22456,6 +22460,18 @@ converter requires at least OpenSSL 1.0.1.
 <pre class="prettyprint">
 <code>http-response set-header X-Decrypted-Text %[var(txn.enc),\
   aes_gcm_dec(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==,txn.aead_tag)]
+</code></pre>
+</div><a class="anchor" name="aes_gcm_enc"></a><a class="anchor" name="7-aes_gcm_enc"></a><a class="anchor" name="7.3.1-aes_gcm_enc"></a><a class="anchor" name="aes_gcm_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_enc"></a><a href="#7.3.1-aes_gcm_enc">aes_gcm_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-GCM, AES192-GCM or
+AES256-GCM algorithm, depending on the &lt;bits&gt; parameter. &lt;nonce&gt; and &lt;key&gt;
+parameters must be base64 encoded. Last parameter, &lt;aead_tag&gt;, must be a
+variable. The AEAD tag will be stored base64 encoded into that variable.
+The returned result is in raw byte format. The &lt;nonce&gt; and &lt;key&gt; can either
+be strings or variables. This converter requires at least OpenSSL 1.0.1.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-response set-header X-Encrypted-Text %[var(txn.plain),\
+  aes_gcm_enc(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==,txn.aead_tag)]
 </code></pre>
 </div><a class="anchor" name="and"></a><a class="anchor" name="7-and"></a><a class="anchor" name="7.3.1-and"></a><a class="anchor" name="and (Using ACLs and fetching samples)"></a><a class="anchor" name="and (Converters)"></a><div class="keyword"><b><a class="anchor" name="and"></a><a href="#7.3.1-and">and</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Performs a bitwise &quot;AND&quot; between &lt;value&gt; and the input value of type signed
 integer, and returns the result as an signed integer. &lt;value&gt; can be a
@@ -29647,7 +29663,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev4-46 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev4-51 &ndash; Configuration Manual<br>
 							<small>, 2024/02/23</small>
 						</div>
 					</div>
