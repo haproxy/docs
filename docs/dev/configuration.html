@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev5 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev5-8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3873,9 +3873,13 @@
 							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
 							
+							<a class="list-group-item" href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
+							
 							<a class="list-group-item" href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
 							
@@ -4186,7 +4190,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4197,7 +4201,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev5</strong></p>
+							<p><strong>version 3.0-dev5-8</strong></p>
 							<p>
 								2024/03/09<br>
 								
@@ -6589,8 +6593,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
    - <a href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
+   - <a href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+   - <a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
    - <a href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
@@ -7396,14 +7402,34 @@ cipher configuration, please check the &quot;<a href="#ssl-default-bind-ciphersu
 Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
 </pre><a class="anchor" name="ssl-default-bind-ciphersuites"></a><a class="anchor" name="3-ssl-default-bind-ciphersuites"></a><a class="anchor" name="3.1-ssl-default-bind-ciphersuites"></a><a class="anchor" name="ssl-default-bind-ciphersuites (Global parameters)"></a><a class="anchor" name="ssl-default-bind-ciphersuites (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-ciphersuites"></a><a href="#3.1-ssl-default-bind-ciphersuites">ssl-default-bind-ciphersuites</a></b> <span style="color: #080">&lt;ciphersuites&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in and
 OpenSSL 1.1.1 or later was used to build HAProxy. It sets the default string
-describing the list of cipher algorithms in &quot;cipher suite&quot; format that are
-negotiated during the TLS handshake for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not
-explicitly define theirs. The format of the string is defined in &quot;man 1
-ciphers&quot; from OpenSSL man pages under the section &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. For cipher
-configuration for TLSv1.2 and earlier using the &quot;OpenSSL&quot; ciphers format,
-please check the &quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-keyword for more information.
-</pre><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a href="#3.1-ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+describing the list of cipher algorithms (&quot;cipher suite&quot;) that are negotiated
+during the TLSv1.3 handshake for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
+theirs. The format of the string is defined in
+&quot;man 1 ciphers&quot; from OpenSSL man pages under the section &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. For
+cipher configuration for TLSv1.2 and earlier, please check the
+&quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. This setting might accept TLSv1.2
+ciphersuites however this is an undocumented behavior and not recommended as
+it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+
+Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>global
+    ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+    ssl-default-bind-ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a href="#3.1-ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of signature algorithms related to
 client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
 theirs. The format of the string is a colon-delimited list of signature
@@ -7456,14 +7482,14 @@ For TLSv1.3 cipher configuration, please check the
 &quot;<a href="#ssl-default-server-ciphersuites">ssl-default-server-ciphersuites</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword
 for more information.
 </pre><a class="anchor" name="ssl-default-server-ciphersuites"></a><a class="anchor" name="3-ssl-default-server-ciphersuites"></a><a class="anchor" name="3.1-ssl-default-server-ciphersuites"></a><a class="anchor" name="ssl-default-server-ciphersuites (Global parameters)"></a><a class="anchor" name="ssl-default-server-ciphersuites (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-ciphersuites"></a><a href="#3.1-ssl-default-server-ciphersuites">ssl-default-server-ciphersuites</a></b> <span style="color: #080">&lt;ciphersuites&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in and
-OpenSSL 1.1.1 or later was used to build HAProxy. It sets the default string
-describing the list of cipher algorithms in &quot;cipher suite&quot; format that are
-negotiated during the TLS handshake with the server, for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines
-which do not explicitly define theirs. The format of the string is defined in
+OpenSSL 1.1.1 or later was used to build HAProxy. It sets the default
+string describing the list of cipher algorithms that are negotiated during
+the TLSv1.3 handshake with the server, for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not
+explicitly define theirs. The format of the string is defined in
 &quot;man 1 ciphers&quot; from OpenSSL man pages under the section &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. For
-cipher configuration for TLSv1.2 and earlier using the &quot;OpenSSL&quot; cipher
-format, please check the &quot;<a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>&quot; keyword. Please check the
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+cipher configuration for TLSv1.2 and earlier, please check the
+&quot;<a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for
+more information.
 </pre><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a class="anchor" name="3-ssl-default-server-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-server-client-sigalgs"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a href="#3.1-ssl-default-server-client-sigalgs">ssl-default-server-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of signature algorithms related to
 client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
@@ -8085,6 +8111,15 @@ multiplexer. It is enabled by default.
 <a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a href="#3.2-tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the H1
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-recv</div>
+<a class="anchor" name="tune.h2.be.glitches-threshold"></a><a class="anchor" name="3-tune.h2.be.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.be.glitches-threshold"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.glitches-threshold"></a><a href="#3.2-tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a backend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 servers may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus servers.
+</pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches</div>
 <a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents, not headers. When
@@ -8105,7 +8140,16 @@ line blocking&quot; tends to cause cascade effect on download speed for all
 clients sharing a connection (keep tune.h2.be.initial-window-size low in this
 case). It is highly recommended not to increase this value; some might find
 it optimal to run at low values (1..5 typically).
-</pre><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
+</pre><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 clientss may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus clients.
+</pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches</div>
+<a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents (i.e. the body of
 POST requests), not headers. When not set, the common default value set by
@@ -19477,12 +19521,29 @@ information and recommendations see e.g.
 cipher configuration, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
 </pre><a class="anchor" name="ciphersuites"></a><a class="anchor" name="5-ciphersuites"></a><a class="anchor" name="5.1-ciphersuites"></a><a class="anchor" name="ciphersuites (Bind and server options)"></a><a class="anchor" name="ciphersuites (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ciphersuites"></a><a href="#5.1-ciphersuites">ciphersuites</a></b> <span style="color: #080">&lt;ciphersuites&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in and
 OpenSSL 1.1.1 or later was used to build HAProxy. It sets the string describing
-the list of cipher algorithms in &quot;cipher suite&quot; format that are negotiated
-during the TLS handshake. The format of the string is defined in &quot;man 1
-ciphers&quot; from OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section. For cipher
-configuration for TLSv1.2 and earlier using the &quot;OpenSSL&quot; ciphers format,
-please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
-</pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the list of cipher algorithms (&quot;cipher suite&quot;) that are negotiated during the
+TLSv1.3 handshake. The format of the string is defined in &quot;man 1 ciphers&quot; from
+OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section. For cipher configuration
+for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
+This setting might accept TLSv1.2 ciphersuites however this is an
+undocumented behavior and not recommended as it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of signature algorithms related to client
 authentication that are negotiated . The format of the string is defined in
 &quot;man 3 SSL_CTX_set1_client_sigalgs&quot; from the OpenSSL man pages. It is not
@@ -20468,11 +20529,11 @@ cipher configuration, please check the &quot;<span class="dropdown"><a class="dr
 
 This setting is only available when support for OpenSSL was built in and
 OpenSSL 1.1.1 or later was used to build HAProxy. This option sets the string
-describing the list of cipher algorithms in &quot;cipher suite&quot; format that is
-negotiated during the TLS handshake with the server. The format of the string
-is defined in &quot;man 1 ciphers&quot; from OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
-section. For cipher configuration for TLSv1.2 and earlier using the &quot;OpenSSL&quot;
-cipher format, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
+describing the list of cipher algorithms that is negotiated during the TLS
+1.3 handshake with the server. The format of the string is defined in
+&quot;man 1 ciphers&quot; from OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section.
+For cipher configuration for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+keyword.
 </pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.2-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.2-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This setting is only available when support for OpenSSL was built in. It sets
@@ -29663,7 +29724,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev5 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev5-8 &ndash; Configuration Manual<br>
 							<small>, 2024/03/09</small>
 						</div>
 					</div>
