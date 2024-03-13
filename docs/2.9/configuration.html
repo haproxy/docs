@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.6 - Configuration Manual</title>
+		<title>HAProxy version 2.9.6-9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1353,6 +1353,8 @@
 							
 							<a class="list-group-item" href="#bc_err_str">bc_err_str</a>
 							
+							<a class="list-group-item" href="#bc_glitches">bc_glitches</a>
+							
 							<a class="list-group-item" href="#bc_http_major">bc_http_major</a>
 							
 							<a class="list-group-item" href="#bc_rtt">bc_rtt</a>
@@ -1742,6 +1744,8 @@
 							<a class="list-group-item" href="#fc_err_str">fc_err_str</a>
 							
 							<a class="list-group-item" href="#fc_fackets">fc_fackets</a>
+							
+							<a class="list-group-item" href="#fc_glitches">fc_glitches</a>
 							
 							<a class="list-group-item" href="#fc_http_major">fc_http_major</a>
 							
@@ -3812,9 +3816,13 @@
 							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
 							
+							<a class="list-group-item" href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
+							
 							<a class="list-group-item" href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
 							
@@ -4123,7 +4131,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4134,7 +4142,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.6</strong></p>
+							<p><strong>version 2.9.6-9</strong></p>
 							<p>
 								2024/02/26<br>
 								
@@ -6480,8 +6488,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
    - <a href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
    - <a href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
+   - <a href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+   - <a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
    - <a href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
@@ -7940,6 +7950,15 @@ multiplexer. It is enabled by default.
 <a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a href="#3.2-tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the H1
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-recv</div>
+<a class="anchor" name="tune.h2.be.glitches-threshold"></a><a class="anchor" name="3-tune.h2.be.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.be.glitches-threshold"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.glitches-threshold"></a><a href="#3.2-tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a backend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 servers may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus servers.
+</pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches</div>
 <a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents, not headers. When
@@ -7960,7 +7979,16 @@ line blocking&quot; tends to cause cascade effect on download speed for all
 clients sharing a connection (keep tune.h2.be.initial-window-size low in this
 case). It is highly recommended not to increase this value; some might find
 it optimal to run at low values (1..5 typically).
-</pre><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
+</pre><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 clientss may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus clients.
+</pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches</div>
+<a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents (i.e. the body of
 POST requests), not headers. When not set, the common default value set by
@@ -23898,6 +23926,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bc_dst_port">bc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_err">bc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_err_str">bc_err_str</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bc_glitches">bc_glitches</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_http_major">bc_http_major</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_src">bc_src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-bc_src_port">bc_src_port</a></td><td >integer</td></tr>
@@ -23911,8 +23940,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_tunnel_timeout">cur_tunnel_timeout</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-dst">dst</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-dst_conn">dst_conn</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-dst_is_local">dst_is_local</a></td><td >boolean</td></tr>
@@ -23925,15 +23954,16 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_err">fc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_err_str">fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_fackets">fc_fackets</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_glitches">fc_glitches</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_http_major">fc_http_major</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_lost">fc_lost</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_pp_authority">fc_pp_authority</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_pp_unique_id">fc_pp_unique_id</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_pp_tlv">fc_pp_tlv(&lt;id&gt;)</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_rcvd_proxy">fc_rcvd_proxy</a></td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_reordering">fc_reordering</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_retrans">fc_retrans</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_rtt">fc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_rttvar">fc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
@@ -23952,9 +23982,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_bytes_in_rate">sc2_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_bytes_out_rate">sc_bytes_out_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_bytes_out_rate">sc2_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_clr_gpc">sc_clr_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_clr_gpc0">sc0_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -23973,9 +24003,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_conn_cur">sc2_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_rate">sc_conn_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_conn_rate">sc0_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_rate">sc1_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_conn_rate">sc2_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc">sc_get_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc0">sc_get_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -23994,9 +24024,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_gpc_rate">sc_gpc_rate(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc0_rate">sc_gpc0_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_gpc0_rate">sc1_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24015,9 +24045,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_http_fail_cnt">sc2_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_fail_rate">sc_http_fail_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_fail_rate">sc0_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_http_fail_rate">sc1_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_cnt">sc0_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24036,9 +24066,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_inc_gpc1">sc1_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_inc_gpc1">sc2_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_kbytes_in">sc0_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_kbytes_in">sc2_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24057,9 +24087,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_tracked">sc1_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-sc2_tracked">sc2_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-sc_trackers">sc_trackers(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_trackers">sc0_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_trackers">sc1_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_trackers">sc2_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_id">so_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
@@ -24078,9 +24108,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_get_gpt">src_get_gpt(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpt0">src_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc_rate">src_gpc_rate(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_gpc0_rate">src_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc1_rate">src_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_err_rate">src_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -24099,6 +24129,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_updt_conn_cnt">src_updt_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_id">srv_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_name">srv_name</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-txn.conn_retries">txn.conn_retries</a></td><td >integer</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="accept_date"></a><a class="anchor" name="7-accept_date"></a><a class="anchor" name="7.3.3-accept_date"></a><a class="anchor" name="accept_date (Using ACLs and fetching samples)"></a><a class="anchor" name="accept_date (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="accept_date"></a><a href="#7.3.3-accept_date">accept_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the connection was received by HAProxy
@@ -24132,6 +24163,18 @@ and their corresponding error message.
 backend connection, resulting in a connection failure. See the
 &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of error codes and their
 corresponding error message.
+</pre><a class="anchor" name="bc_glitches"></a><a class="anchor" name="7-bc_glitches"></a><a class="anchor" name="7.3.3-bc_glitches"></a><a class="anchor" name="bc_glitches (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_glitches (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_glitches"></a><a href="#7.3.3-bc_glitches">bc_glitches</a></b> : integer</div><pre class="text">Returns the number of protocol glitches counted on the backend connection.
+These generally cover protocol violations as well as small anomalies that
+generally indicate a bogus or misbehaving server that may cause trouble in
+the infrastructure (e.g. cause connections to be aborted early, inducing
+frequent TLS renegotiations). These may also be caused by too large responses
+that cannot fit into a single buffer, explaining HTTP 502 errors. Ideally
+this number should remain zero, though it's generally fine if it remains very
+low compared to the total number of requests. These values should normally
+not be considered as alarming (especially small ones), though a sudden jump
+may indicate an anomaly somewhere. Not all protocol multiplexers measure this
+metric and the only way to get more details about the events is to enable
+traces to capture all exchanges.
 </pre><a class="anchor" name="bc_http_major"></a><a class="anchor" name="7-bc_http_major"></a><a class="anchor" name="7.3.3-bc_http_major"></a><a class="anchor" name="bc_http_major (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_http_major (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_http_major"></a><a href="#7.3.3-bc_http_major">bc_http_major</a></b> : integer</div><pre class="text">Returns the backend connection's HTTP major version encoding, which may be 1
 for HTTP/0.9 to HTTP/1.1 or 2 for HTTP/2. Note, this is based on the on-wire
 encoding and not the version present in the request header.
@@ -24291,6 +24334,21 @@ full list of error codes and their corresponding error messages :
 connection. If the server connection is not established, if the connection is
 not TCP or if the operating system does not support TCP_INFO, for example
 Linux kernels before 2.4, the sample fetch fails.
+</pre><a class="anchor" name="fc_glitches"></a><a class="anchor" name="7-fc_glitches"></a><a class="anchor" name="7.3.3-fc_glitches"></a><a class="anchor" name="fc_glitches (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_glitches (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_glitches"></a><a href="#7.3.3-fc_glitches">fc_glitches</a></b> : integer</div><pre class="text">Returns the number of protocol glitches counted on the frontend connection.
+These generally cover protocol violations as well as small anomalies that
+generally indicate a bogus or misbehaving client that may cause trouble in
+the infrastructure, such as excess of errors in the logs, or many connections
+being aborted early, inducing frequent TLS renegotiations. These may also be
+caused by too large requests that cannot fit into a single buffer, explaining
+HTTP 400 errors. Ideally this number should remain zero, though it may be
+possible that some browsers playing with the protocol boundaries trigger it
+once in a while. These values should normally not be considered as alarming
+(especially small ones), though a sudden jump may indicate an anomaly
+somewhere. Large values (i.e. hundreds to thousands per connection, or as
+many as the requests) may indicate a purposely built client that is trying to
+fingerprint or attack the protocol stack. Not all protocol multiplexers
+measure this metric, and the only way to get more details about the events is
+to enable traces to capture all exchanges.
 </pre><a class="anchor" name="fc_http_major"></a><a class="anchor" name="7-fc_http_major"></a><a class="anchor" name="7.3.3-fc_http_major"></a><a class="anchor" name="fc_http_major (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_http_major (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_http_major"></a><a href="#7.3.3-fc_http_major">fc_http_major</a></b> : integer</div><pre class="text">Reports the front connection's HTTP major version encoding, which may be 1
 for HTTP/0.9 to HTTP/1.1 or 2 for HTTP/2. Note, this is based on the on-wire
 encoding and not on the version present in the request header.
@@ -29110,7 +29168,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.6 &ndash; Configuration Manual<br>
+							HAProxy 2.9.6-9 &ndash; Configuration Manual<br>
 							<small>, 2024/02/26</small>
 						</div>
 					</div>
