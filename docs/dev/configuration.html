@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev5-8 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev5-11 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3420,6 +3420,8 @@
 							
 							<a class="list-group-item" href="#ssl-reuse">ssl-reuse</a>
 							
+							<a class="list-group-item" href="#ssl-security-level">ssl-security-level</a>
+							
 							<a class="list-group-item" href="#ssl-server-verify">ssl-server-verify</a>
 							
 							<a class="list-group-item" href="#ssl-skip-self-issued-ca">ssl-skip-self-issued-ca</a>
@@ -4190,7 +4192,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4201,7 +4203,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev5-8</strong></p>
+							<p><strong>version 3.0-dev5-11</strong></p>
 							<p>
 								2024/03/09<br>
 								
@@ -6541,6 +6543,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ssl-propquery">ssl-propquery</a>
    - <a href="#ssl-provider">ssl-provider</a>
    - <a href="#ssl-provider-path">ssl-provider-path</a>
+   - <a href="#ssl-security-level">ssl-security-level</a>
    - <a href="#ssl-server-verify">ssl-server-verify</a>
    - <a href="#ssl-skip-self-issued-ca">ssl-skip-self-issued-ca</a>
    - <a href="#stats">stats</a>
@@ -7665,7 +7668,16 @@ ssl-load-extra-files sctl ocsp issuer
 ssl-load-extra-files none
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, <a href="#5.1">section 5.1</a> about bind options and <a href="#5.2">section 5.2</a> about server options.</div>
-<a class="anchor" name="ssl-server-verify"></a><a class="anchor" name="3-ssl-server-verify"></a><a class="anchor" name="3.1-ssl-server-verify"></a><a class="anchor" name="ssl-server-verify (Global parameters)"></a><a class="anchor" name="ssl-server-verify (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-server-verify"></a><a href="#3.1-ssl-server-verify">ssl-server-verify</a></b> <span style="color: #008">[none|required]</span></div><pre class="text">The default behavior for SSL verify on servers side. If specified to 'none',
+<a class="anchor" name="ssl-security-level"></a><a class="anchor" name="3-ssl-security-level"></a><a class="anchor" name="3.1-ssl-security-level"></a><a class="anchor" name="ssl-security-level (Global parameters)"></a><a class="anchor" name="ssl-security-level (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-security-level"></a><a href="#3.1-ssl-security-level">ssl-security-level</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive allows to chose the OpenSSL security level as described in
+https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set_security_level.html
+The security level will be applied to every SSL contextes in HAProxy.
+Only a value between 0 and 5 is supported.
+
+The default value depends on your OpenSSL version, distribution and how was
+compiled the library.
+
+This directive requires at least OpenSSL 1.1.1.
+</pre><a class="anchor" name="ssl-server-verify"></a><a class="anchor" name="3-ssl-server-verify"></a><a class="anchor" name="3.1-ssl-server-verify"></a><a class="anchor" name="ssl-server-verify (Global parameters)"></a><a class="anchor" name="ssl-server-verify (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-server-verify"></a><a href="#3.1-ssl-server-verify">ssl-server-verify</a></b> <span style="color: #008">[none|required]</span></div><pre class="text">The default behavior for SSL verify on servers side. If specified to 'none',
 servers certificates are not verified. The default is 'required' except if
 forced using cmdline option '-dV'.
 </pre><a class="anchor" name="ssl-skip-self-issued-ca"></a><a class="anchor" name="3-ssl-skip-self-issued-ca"></a><a class="anchor" name="3.1-ssl-skip-self-issued-ca"></a><a class="anchor" name="ssl-skip-self-issued-ca (Global parameters)"></a><a class="anchor" name="ssl-skip-self-issued-ca (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-skip-self-issued-ca"></a><a href="#3.1-ssl-skip-self-issued-ca">ssl-skip-self-issued-ca</a></b></div><pre class="text">Self issued CA, aka x509 root CA, is the anchor for chain validation: as a
@@ -29724,7 +29736,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev5-8 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev5-11 &ndash; Configuration Manual<br>
 							<small>, 2024/03/09</small>
 						</div>
 					</div>
