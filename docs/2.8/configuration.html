@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.7 - Configuration Manual</title>
+		<title>HAProxy version 2.8.7-9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1300,6 +1300,8 @@
 							
 							<a class="list-group-item" href="#bc_err_str">bc_err_str</a>
 							
+							<a class="list-group-item" href="#bc_glitches">bc_glitches</a>
+							
 							<a class="list-group-item" href="#bc_http_major">bc_http_major</a>
 							
 							<a class="list-group-item" href="#bc_rtt">bc_rtt</a>
@@ -1645,6 +1647,8 @@
 							<a class="list-group-item" href="#fc_err_str">fc_err_str</a>
 							
 							<a class="list-group-item" href="#fc_fackets">fc_fackets</a>
+							
+							<a class="list-group-item" href="#fc_glitches">fc_glitches</a>
 							
 							<a class="list-group-item" href="#fc_http_major">fc_http_major</a>
 							
@@ -4011,9 +4015,13 @@
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
 							
+							<a class="list-group-item" href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
+							
 							<a class="list-group-item" href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
 							
@@ -4282,7 +4290,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/02/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4293,7 +4301,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.7</strong></p>
+							<p><strong>version 2.8.7-9</strong></p>
 							<p>
 								2024/02/26<br>
 								
@@ -6454,8 +6462,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
+   - <a href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+   - <a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
    - <a href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
@@ -7984,7 +7994,16 @@ that support it. This is currently only support with epoll. It may noticeably
 reduce the number of epoll_ctl() calls and slightly improve performance in
 certain scenarios. This is still experimental, it may result in frozen
 connections if bugs are still present, and is disabled by default.
-</pre><a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
+</pre><a class="anchor" name="tune.h2.be.glitches-threshold"></a><a class="anchor" name="3-tune.h2.be.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.be.glitches-threshold"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.be.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.glitches-threshold"></a><a href="#3.2-tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a backend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 servers may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus servers.
+</pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches</div>
+<a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents, not headers. When
 not set, the common default value set by tune.h2.initial-window-size applies.
@@ -8004,7 +8023,16 @@ line blocking&quot; tends to cause cascade effect on download speed for all
 clients sharing a connection (keep tune.h2.be.initial-window-size low in this
 case). It is highly recommended not to increase this value; some might find
 it optimal to run at low values (1..5 typically).
-</pre><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
+</pre><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some H2 clientss may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus clients.
+</pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches</div>
+<a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents (i.e. the body of
 POST requests), not headers. When not set, the common default value set by
@@ -23150,6 +23178,18 @@ and their corresponding error message.
 backend connection, resulting in a connection failure. See the
 &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of error codes and their
 corresponding error message.
+</pre><a class="anchor" name="bc_glitches"></a><a class="anchor" name="7-bc_glitches"></a><a class="anchor" name="7.3.3-bc_glitches"></a><a class="anchor" name="bc_glitches (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_glitches (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_glitches"></a><a href="#7.3.3-bc_glitches">bc_glitches</a></b> : integer</div><pre class="text">Returns the number of protocol glitches counted on the backend connection.
+These generally cover protocol violations as well as small anomalies that
+generally indicate a bogus or misbehaving server that may cause trouble in
+the infrastructure (e.g. cause connections to be aborted early, inducing
+frequent TLS renegotiations). These may also be caused by too large responses
+that cannot fit into a single buffer, explaining HTTP 502 errors. Ideally
+this number should remain zero, though it's generally fine if it remains very
+low compared to the total number of requests. These values should normally
+not be considered as alarming (especially small ones), though a sudden jump
+may indicate an anomaly somewhere. Not all protocol multiplexers measure this
+metric and the only way to get more details about the events is to enable
+traces to capture all exchanges.
 </pre><a class="anchor" name="bc_http_major"></a><a class="anchor" name="7-bc_http_major"></a><a class="anchor" name="7.3.3-bc_http_major"></a><a class="anchor" name="bc_http_major (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_http_major (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_http_major"></a><a href="#7.3.3-bc_http_major">bc_http_major</a></b> : integer</div><pre class="text">Returns the backend connection's HTTP major version encoding, which may be 1
 for HTTP/0.9 to HTTP/1.1 or 2 for HTTP/2. Note, this is based on the on-wire
 encoding and not the version present in the request header.
@@ -23293,6 +23333,21 @@ full list of error codes and their corresponding error messages :
 connection. If the server connection is not established, if the connection is
 not TCP or if the operating system does not support TCP_INFO, for example
 Linux kernels before 2.4, the sample fetch fails.
+</pre><a class="anchor" name="fc_glitches"></a><a class="anchor" name="7-fc_glitches"></a><a class="anchor" name="7.3.3-fc_glitches"></a><a class="anchor" name="fc_glitches (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_glitches (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_glitches"></a><a href="#7.3.3-fc_glitches">fc_glitches</a></b> : integer</div><pre class="text">Returns the number of protocol glitches counted on the frontend connection.
+These generally cover protocol violations as well as small anomalies that
+generally indicate a bogus or misbehaving client that may cause trouble in
+the infrastructure, such as excess of errors in the logs, or many connections
+being aborted early, inducing frequent TLS renegotiations. These may also be
+caused by too large requests that cannot fit into a single buffer, explaining
+HTTP 400 errors. Ideally this number should remain zero, though it may be
+possible that some browsers playing with the protocol boundaries trigger it
+once in a while. These values should normally not be considered as alarming
+(especially small ones), though a sudden jump may indicate an anomaly
+somewhere. Large values (i.e. hundreds to thousands per connection, or as
+many as the requests) may indicate a purposely built client that is trying to
+fingerprint or attack the protocol stack. Not all protocol multiplexers
+measure this metric, and the only way to get more details about the events is
+to enable traces to capture all exchanges.
 </pre><a class="anchor" name="fc_http_major"></a><a class="anchor" name="7-fc_http_major"></a><a class="anchor" name="7.3.3-fc_http_major"></a><a class="anchor" name="fc_http_major (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_http_major (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_http_major"></a><a href="#7.3.3-fc_http_major">fc_http_major</a></b> : integer</div><pre class="text">Reports the front connection's HTTP major version encoding, which may be 1
 for HTTP/0.9 to HTTP/1.1 or 2 for HTTP/2. Note, this is based on the on-wire
 encoding and not on the version present in the request header.
@@ -27610,7 +27665,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.7 &ndash; Configuration Manual<br>
+							HAProxy 2.8.7-9 &ndash; Configuration Manual<br>
 							<small>, 2024/02/26</small>
 						</div>
 					</div>
