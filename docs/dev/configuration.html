@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev5-33 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev5-44 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4194,7 +4194,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4205,7 +4205,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev5-33</strong></p>
+							<p><strong>version 3.0-dev5-44</strong></p>
 							<p>
 								2024/03/09<br>
 								
@@ -12124,7 +12124,11 @@ sockopts. A connection is reused only if it shares the same set of properties
 with the request.
 
 Also note that connections with certain bogus authentication schemes (relying
-on the connection) like NTLM are marked private and never shared.
+on the connection) like NTLM are marked private if possible and never shared.
+This won't be the case however when using a protocol with multiplexing
+abilities and using reuse mode level value greater than the default &quot;safe&quot;
+strategy as in this case nothing prevents the connection from being already
+shared.
 
 A connection pool is involved and configurable with &quot;<a href="#pool-max-conn">pool-max-conn</a>&quot;.
 
@@ -19968,8 +19972,8 @@ can be configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl
 
 Whenever an OCSP response is updated by the auto update task or following a
 call to the &quot;update ssl ocsp-response&quot; CLI command, a dedicated log line is
-emitted. It follows a dedicated log-format that contains the following header
-&quot;%ci:%cp [%tr] %ft&quot; and is followed by specific OCSP-related information:
+emitted. It follows a dedicated format that contains the following header
+&quot;&lt;OCSP-UPDATE&gt;&quot; and is followed by specific OCSP-related information:
   - the path of the corresponding frontend certificate
   - a numerical update status
   - a textual update status
@@ -19989,12 +19993,12 @@ regular HTTP log-format will be emitted.
 Here are two examples of such log lines, with a successful OCSP update log
 line first and then an example of an HTTP error with the two different lines
 (lines were spit and the URL was shortened for readability):
-  &lt;134&gt;Mar  6 11:16:53 haproxy[14872]: -:- [06/Mar/2023:11:16:52.808] \
-          &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 &quot;Update successful&quot; 0 1
+  &lt;133&gt;Mar  6 11:16:53 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 \
+          &quot;Update successful&quot; 0 1
 
-  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:54.207] \
-          &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 &quot;HTTP error&quot; 1 0
-  &lt;134&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] \
+  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 \
+          &quot;HTTP error&quot; 1 0
+  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] \
           &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} \
           &quot;GET http://127.0.0.1:12345/MEMwQT HTTP/1.1&quot;
 
@@ -29747,7 +29751,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev5-33 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev5-44 &ndash; Configuration Manual<br>
 							<small>, 2024/03/09</small>
 						</div>
 					</div>
