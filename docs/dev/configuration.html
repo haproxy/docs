@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev5-49 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev5-112 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3979,6 +3979,8 @@
 							
 							<a class="list-group-item" href="#tune.recv_enough">tune.recv_enough</a>
 							
+							<a class="list-group-item" href="#tune.ring.queues">tune.ring.queues</a>
+							
 							<a class="list-group-item" href="#tune.runqueue-depth">tune.runqueue-depth</a>
 							
 							<a class="list-group-item" href="#tune.sched.low-latency">tune.sched.low-latency</a>
@@ -4194,7 +4196,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4205,7 +4207,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev5-49</strong></p>
+							<p><strong>version 3.0-dev5-112</strong></p>
 							<p>
 								2024/03/09<br>
 								
@@ -6647,6 +6649,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>
    - <a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>
    - <a href="#tune.recv_enough">tune.recv_enough</a>
+   - <a href="#tune.ring.queues">tune.ring.queues</a>
    - <a href="#tune.runqueue-depth">tune.runqueue-depth</a>
    - <a href="#tune.sched.low-latency">tune.sched.low-latency</a>
    - <a href="#tune.sndbuf.backend">tune.sndbuf.backend</a>
@@ -8617,6 +8620,13 @@ socket buffers. One of them is that a read returns more than &lt;recv_enough&gt;
 bytes, which defaults to 10136 (7 segments of 1448 each). This default value
 may be changed by this setting to better deal with workloads involving lots
 of short messages such as telnet or SSH sessions.
+</pre><a class="anchor" name="tune.ring.queues"></a><a class="anchor" name="3-tune.ring.queues"></a><a class="anchor" name="3.2-tune.ring.queues"></a><a class="anchor" name="tune.ring.queues (Global parameters)"></a><a class="anchor" name="tune.ring.queues (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ring.queues"></a><a href="#3.2-tune.ring.queues">tune.ring.queues</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of write queues in front of ring buffers. This can have an
+effect on the CPU usage of traces during debugging sessions, and both too
+low or too large a value can have an important effect. The good value was
+determined experimentally by developers and there should be no reason to
+try to change it unless instructed to do so in order to try to address
+specific issues. Such a setting should not be left in the configuration
+across version upgrades because its optimal value may evolve over time.
 </pre><a class="anchor" name="tune.runqueue-depth"></a><a class="anchor" name="3-tune.runqueue-depth"></a><a class="anchor" name="3.2-tune.runqueue-depth"></a><a class="anchor" name="tune.runqueue-depth (Global parameters)"></a><a class="anchor" name="tune.runqueue-depth (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.runqueue-depth"></a><a href="#3.2-tune.runqueue-depth">tune.runqueue-depth</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of task that can be processed at once when running
 tasks. The default value depends on the number of threads but sits between 35
 and 280, which tend to show the highest request rates and lowest latencies.
@@ -29751,7 +29761,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev5-49 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev5-112 &ndash; Configuration Manual<br>
 							<small>, 2024/03/09</small>
 						</div>
 					</div>
