@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.6-9 - Configuration Manual</title>
+		<title>HAProxy version 2.9.6-73 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4131,7 +4131,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4142,7 +4142,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.6-9</strong></p>
+							<p><strong>version 2.9.6-73</strong></p>
 							<p>
 								2024/02/26<br>
 								
@@ -6527,6 +6527,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
+   - <a href="#tune.quic.reorder-ratio">tune.quic.reorder-ratio</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
    - <a href="#tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a>
@@ -7269,9 +7270,29 @@ during the TLSv1.3 handshake for all &quot;<span class="dropdown"><a class="drop
 theirs. The format of the string is defined in
 &quot;man 1 ciphers&quot; from OpenSSL man pages under the section &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. For
 cipher configuration for TLSv1.2 and earlier, please check the
-&quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more
-information.
-</pre><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a href="#3.1-ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+&quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. This setting might accept TLSv1.2
+ciphersuites however this is an undocumented behavior and not recommended as
+it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+
+Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>global
+    ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+    ssl-default-bind-ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-bind-client-sigalgs"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-bind-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-client-sigalgs"></a><a href="#3.1-ssl-default-bind-client-sigalgs">ssl-default-bind-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of signature algorithms related to
 client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
 theirs. The format of the string is a colon-delimited list of signature
@@ -9936,10 +9957,12 @@ May be used in the following contexts: tcp, http
               listen on. If unset, all IPv4 addresses of the system will be
               listened on. The same will apply for '*' or the system's
               special address &quot;0.0.0.0&quot;. The IPv6 equivalent is '::'. Note
-              that if you bind a frontend to multiple UDP addresses you have
-              no guarantee about the address which will be used to respond.
-              This is why &quot;0.0.0.0&quot; addresses and lists of comma-separated
-              IP addresses have been forbidden to bind QUIC addresses.
+              that for UDP, specific OS features are required when binding
+              on multiple addresses to ensure the correct network interface
+              and source address will be used on response. In other way,
+              for QUIC listeners only bind on multiple addresses if running
+              with a modern enough systems.
+
               Optionally, an address family prefix may be used before the
               address to force the family regardless of the address format,
               which can be useful to specify a path to a unix socket with
@@ -19312,7 +19335,25 @@ the list of cipher algorithms (&quot;cipher suite&quot;) that are negotiated dur
 TLSv1.3 handshake. The format of the string is defined in &quot;man 1 ciphers&quot; from
 OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section. For cipher configuration
 for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
-</pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+This setting might accept TLSv1.2 ciphersuites however this is an
+undocumented behavior and not recommended as it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of signature algorithms related to client
 authentication that are negotiated . The format of the string is defined in
 &quot;man 3 SSL_CTX_set1_client_sigalgs&quot; from the OpenSSL man pages. It is not
@@ -29168,7 +29209,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.6-9 &ndash; Configuration Manual<br>
+							HAProxy 2.9.6-73 &ndash; Configuration Manual<br>
 							<small>, 2024/02/26</small>
 						</div>
 					</div>
