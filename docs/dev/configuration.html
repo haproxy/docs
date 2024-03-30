@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev6-21 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev6-26 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4198,7 +4198,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/03/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4209,7 +4209,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev6-21</strong></p>
+							<p><strong>version 3.0-dev6-26</strong></p>
 							<p>
 								2024/03/26<br>
 								
@@ -9867,6 +9867,7 @@ May be used in the following contexts: tcp, http, log
               them off when unused, and regularly checks backend queue to
               turn new servers on when the queue inflates. Alternatively,
               using &quot;<a href="#http-check%20send-state">http-check send-state</a>&quot; may inform servers on the load.
+              This algorithm is not usable in LOG mode.
 
   hash        Takes a regular sample expression in argument. The expression
               is evaluated for each request and hashed according to the
@@ -10048,8 +10049,7 @@ May be used in the following contexts: tcp, http, log
               the log messages. When the server goes DOWN, the next server
               in the list takes its place. When a previously DOWN server
               goes back UP it is added at the end of the list so that the
-              sticky server doesn't change until it becomes DOWN. This
-              algorithm is only usable for backends in LOG mode.
+              sticky server doesn't change until it becomes DOWN.
 
 &lt;arguments&gt; is an optional list of arguments which may be needed by some
             algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot;, &quot;uri&quot; and &quot;log-hash&quot;
@@ -10057,7 +10057,7 @@ May be used in the following contexts: tcp, http, log
 </div>
 <pre class="text">The load balancing algorithm of a backend is set to roundrobin when no other
 algorithm, mode nor option have been set. The algorithm may only be set once
-for each backend. In backends in LOG mode, server &quot;<a href="#weight">weight</a>&quot; is always ignored.
+for each backend.
 
 With authentication schemes that require the same connection like NTLM, URI
 based algorithms must not be used, as they would cause subsequent requests
@@ -29774,7 +29774,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev6-21 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev6-26 &ndash; Configuration Manual<br>
 							<small>, 2024/03/26</small>
 						</div>
 					</div>
