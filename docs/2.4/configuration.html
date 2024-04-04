@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.25-7 - Configuration Manual</title>
+		<title>HAProxy version 2.4.25-49 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3757,7 +3757,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/01/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3768,7 +3768,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.25-7</strong></p>
+							<p><strong>version 2.4.25-49</strong></p>
 							<p>
 								2023/12/14<br>
 								
@@ -6397,9 +6397,29 @@ during the TLSv1.3 handshake for all &quot;<span class="dropdown"><a class="drop
 theirs. The format of the string is defined in
 &quot;man 1 ciphers&quot; from OpenSSL man pages under the section &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. For
 cipher configuration for TLSv1.2 and earlier, please check the
-&quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more
-information.
-</pre><a class="anchor" name="ssl-default-bind-curves"></a><a class="anchor" name="3-ssl-default-bind-curves"></a><a class="anchor" name="3.1-ssl-default-bind-curves"></a><a class="anchor" name="ssl-default-bind-curves (Global parameters)"></a><a class="anchor" name="ssl-default-bind-curves (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-curves"></a><a href="#3.1-ssl-default-bind-curves">ssl-default-bind-curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+&quot;<a href="#ssl-default-bind-ciphers">ssl-default-bind-ciphers</a>&quot; keyword. This setting might accept TLSv1.2
+ciphersuites however this is an undocumented behavior and not recommended as
+it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+
+Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>global
+    ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+    ssl-default-bind-ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="ssl-default-bind-curves"></a><a class="anchor" name="3-ssl-default-bind-curves"></a><a class="anchor" name="3.1-ssl-default-bind-curves"></a><a class="anchor" name="ssl-default-bind-curves (Global parameters)"></a><a class="anchor" name="ssl-default-bind-curves (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-curves"></a><a href="#3.1-ssl-default-bind-curves">ssl-default-bind-curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of elliptic curves algorithms (&quot;curve
 suite&quot;) that are negotiated during the SSL/TLS handshake with ECDHE. The format
 of the string is a colon-delimited list of curve name.
@@ -11035,20 +11055,28 @@ further &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dro
 <code>http-request use-service prometheus-exporter if { path /metrics }
 </code></pre>
 </div><a class="anchor" name="http-request"></a><a class="anchor" name="4-http-request"></a><a class="anchor" name="4.2-http-request"></a><a class="anchor" name="http-request (Proxies)"></a><a class="anchor" name="http-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request wait-for-body"></a><a class="anchor" name="4-http-request wait-for-body"></a><a class="anchor" name="4.2-http-request wait-for-body"></a><a class="anchor" name="http-request wait-for-body (Proxies)"></a><a class="anchor" name="http-request wait-for-body (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-request wait-for-body time"></a><a class="anchor" name="4-http-request wait-for-body time"></a><a class="anchor" name="4.2-http-request wait-for-body time"></a><a class="anchor" name="http-request wait-for-body time (Proxies)"></a><a class="anchor" name="http-request wait-for-body time (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-request wait-for-body time"></a><a href="#4.2-http-request%20wait-for-body%20time">http-request wait-for-body time</a></b> <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[ at-least <span style="color: #080">&lt;bytes&gt;</span> ]</span>
-             <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This will delay the processing of the request waiting for the payload for at
-most &lt;time&gt; milliseconds. if &quot;at-least&quot; argument is specified, HAProxy stops
-to wait the payload when the first &lt;bytes&gt; bytes are received. 0 means no
-limit, it is the default value. Regardless the &quot;at-least&quot; argument value,
-HAProxy stops to wait if the whole payload is received or if the request
-buffer is full.  This action may be used as a replacement to &quot;option
-http-buffer-request&quot;.
+             <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">This will delay the processing of the request or response until one of the
+following conditions occurs:
+- The full request body is received, in which case processing proceeds
+  normally.
+- &lt;bytes&gt; bytes have been received, when the &quot;at-least&quot; argument is given and
+  &lt;bytes&gt; is non-zero, in which case processing proceeds normally.
+- The request buffer is full, in which case processing proceeds normally. The
+  size of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
+- The request has been waiting for more than &lt;time&gt; milliseconds. In this
+  case HAProxy will respond with a 408 &quot;Request Timeout&quot; error to the client
+  and stop processing the request. Note that if any of the other conditions
+  happens first, this timeout will not occur even if the full body has
+  not yet been recieved.
+
+This action may be used as a replacement for &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;    is mandatory. It is the maximum time to wait for the body. It
           follows the HAProxy time format and is expressed in milliseconds.
 
 &lt;bytes&gt;   is optional. It is the minimum payload size to receive to stop to
           wait. It follows the HAProxy size format and is expressed in
-          bytes.</pre>
+          bytes. A value of 0 (the default) means no limit.</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Example:</span>
@@ -17242,7 +17270,25 @@ the list of cipher algorithms (&quot;cipher suite&quot;) that are negotiated dur
 TLSv1.3 handshake. The format of the string is defined in &quot;man 1 ciphers&quot; from
 OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section. For cipher configuration
 for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
-</pre><a class="anchor" name="crl-file"></a><a class="anchor" name="5-crl-file"></a><a class="anchor" name="5.1-crl-file"></a><a class="anchor" name="crl-file (Bind and server options)"></a><a class="anchor" name="crl-file (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crl-file"></a><a href="#5.1-crl-file">crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
+This setting might accept TLSv1.2 ciphersuites however this is an
+undocumented behavior and not recommended as it could be inconsistent or buggy.
+The default TLSv1.3 ciphersuites of OpenSSL are:
+&quot;TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256&quot;
+
+TLSv1.3 only supports 5 ciphersuites:
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+- TLS_AES_128_CCM_SHA256
+- TLS_AES_128_CCM_8_SHA256
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+</code></pre>
+</div><a class="anchor" name="crl-file"></a><a class="anchor" name="5-crl-file"></a><a class="anchor" name="5.1-crl-file"></a><a class="anchor" name="crl-file (Bind and server options)"></a><a class="anchor" name="crl-file (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crl-file"></a><a href="#5.1-crl-file">crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 designates a PEM file from which to load certificate revocation list used
 to verify client's certificate. You need to provide a certificate revocation
 list for every certificate of your certificate authority chain.
@@ -24714,7 +24760,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.25-7 &ndash; Configuration Manual<br>
+							HAProxy 2.4.25-49 &ndash; Configuration Manual<br>
 							<small>, 2023/12/14</small>
 						</div>
 					</div>
