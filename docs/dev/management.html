@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev6-63 - Management Guide</title>
+		<title>HAProxy version 3.0-dev6-73 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -216,7 +216,7 @@
 				<tr>
 					<td><br><b><small>13.</small></b></td>
 					<td>
-							<a href="#13"><br><b>Security considerations</b></a>
+							<a href="#13"><br><b>1      Linux capabilities support</b></a>
 					<td>
 				</tr>
 				
@@ -229,6 +229,15 @@
 						<input class="form-control" type="text" name="filter" id="filter" onkeyup="filterKeywords(this.value)" placeholder="Enter keyword to search...">
 						
 							
+								<div class="letter" id="letter--"><h4>-</h4>
+								
+							<a class="list-group-item" href="#-">-</a>
+							
+							<a class="list-group-item" href="#- cap_net_admin">- cap_net_admin</a>
+							
+							<a class="list-group-item" href="#- cap_net_bind_service">- cap_net_bind_service</a>
+							
+                                                                </div> <!-- /letter -->
 								<div class="letter" id="letter-A"><h4>A</h4>
 								
 							<a class="list-group-item" href="#abort">abort</a>
@@ -616,7 +625,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -627,7 +636,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev6-63</strong></p>
+							<p><strong>version 3.0-dev6-73</strong></p>
 							<p>
 								<br>
 								
@@ -817,7 +826,7 @@
 				<tr>
 					<td><br><b><small>13.</small></b></td>
 					<td>
-							<a href="#13"><br><b>Security considerations</b></a>
+							<a href="#13"><br><b>1      Linux capabilities support</b></a>
 					<td>
 				</tr>
 				
@@ -1228,14 +1237,14 @@ list of options is :
   -sf &lt;pid&gt;* : send the &quot;finish&quot; signal (SIGUSR1) to older processes after boot
     completion to ask them to finish what they are doing and to leave. &lt;pid&gt;
     is a list of pids to signal (one per argument). The list ends on any
-    option starting with a &quot;-&quot;. It is not a problem if the list of pids is
+    option starting with a &quot;<a href="#-">-</a>&quot;. It is not a problem if the list of pids is
     empty, so that it can be built on the fly based on the result of a command
     like &quot;pidof&quot; or &quot;pgrep&quot;.
 
   -st &lt;pid&gt;* : send the &quot;terminate&quot; signal (SIGTERM) to older processes after
     boot completion to terminate them immediately without finishing what they
     were doing. &lt;pid&gt; is a list of pids to signal (one per argument). The list
-    is ends on any option starting with a &quot;-&quot;. It is not a problem if the list
+    is ends on any option starting with a &quot;<a href="#-">-</a>&quot;. It is not a problem if the list
     of pids is empty, so that it can be built on the fly based on the result of
     a command like &quot;pidof&quot; or &quot;pgrep&quot;.
 
@@ -3536,7 +3545,7 @@ the list of the peers belonging to all the &quot;peers&quot; sections are listed
 &lt;peers section&gt; is specified, only the information about the peers belonging
 to this &quot;peers&quot; section are dumped. When &quot;dict&quot; is specified before the peers
 section name, the entire Tx/Rx dictionary caches will also be dumped (very
-large). Passing &quot;-&quot; may be required to dump a peers section called &quot;dict&quot;.
+large). Passing &quot;<a href="#-">-</a>&quot; may be required to dump a peers section called &quot;dict&quot;.
 
 Here are two examples of outputs where hostA, hostB and hostC peers belong to
 &quot;sharedlb&quot; peers sections. Only hostA and hostB are connected. Only hostA has
@@ -4344,7 +4353,7 @@ was set), as well as the number of dropped events in this sink, followed by a
 brief description of the source. If a source name is specified, a detailed
 list of all events supported by the source, and their status for each action
 (report, start, pause, stop), indicated by a &quot;+&quot; if they are enabled, or a
-&quot;-&quot; otherwise. All these events are independent and an event might trigger
+&quot;<a href="#-">-</a>&quot; otherwise. All these events are independent and an event might trigger
 a start without being reported and conversely.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show version"></a><a class="anchor" name="9-show version"></a><a class="anchor" name="9.3-show version"></a><a class="anchor" name="show version (Statistics and monitoring)"></a><a class="anchor" name="show version (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show version"></a><a href="#9.3-show%20version">show version</a></b></div><pre class="text">Show the version of the current HAProxy process. This is available from
 master and workers CLI.
@@ -4387,7 +4396,7 @@ see other &quot;<a href="#trace">trace</a>&quot; commands below.
 to terminate a debugging session or as an emergency action to be used in case
 complex traces were enabled on multiple sources and impact the service.
 </pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> event <span style="color: #008">[ <span style="color: #008">[+|-|!]</span><span style="color: #080">&lt;name&gt;</span> ]</span></div><pre class="text">Without argument, this will list all the events supported by the designated
-source. They are prefixed with a &quot;-&quot; if they are not enabled, or a &quot;+&quot; if
+source. They are prefixed with a &quot;<a href="#-">-</a>&quot; if they are not enabled, or a &quot;+&quot; if
 they are enabled. It is important to note that a single trace may be labelled
 with multiple events, and as long as any of the enabled events matches one of
 the events labelled on the trace, the event will be passed to the trace
@@ -5069,11 +5078,80 @@ A safe configuration will have :
 
       stats socket /var/run/haproxy.stat uid hatop gid hatop mode 600
 </pre></div>
+<a class="anchor" id="13" name="13"></a>
+<div class="page-header"><h1 id="chapter-13" data-target="13"><small><a class="small" href="#13">13.</a></small> 1 Linux capabilities support</h1>
+</div><div><pre class="text">Since version v2.9 haproxy supports Linux capabilities. If the binary is
+compiled with USE_LINUX_CAP=1, it is able to preserve capabilities given in
+'setcap' keyword during switching from root user to a non-root.
+
+Since version v3.1 haproxy also checks if capabilities given in 'setcap'
+keyword were set in its binary file permitted set by administrator
+(capget syscall). If this a case it performs transition of these capabilities
+in its process effective set (capset syscall), while running as a non-root
+user.
+
+This was done to avoid all potential use cases when haproxy starts and runs as
+root: transparent proxy mode, binding to priviledged ports.
+
+'setcap' keyword supports following network capabilities:
+</pre><a class="anchor" name="-"></a><a class="anchor" name="13--"></a><a class="anchor" name="13--"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_admin"></a><a class="anchor" name="13-- cap_net_admin"></a><a class="anchor" name="13-- cap_net_admin"></a><a class="anchor" name="- cap_net_admin (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_admin (1      Linux capabilities support)"></a><div class="keyword"><b><a class="anchor" name="- cap_net_admin"></a><a href="#13--%20cap_net_admin">- cap_net_admin</a></b></div><pre class="text">- cap_net_raw (subset of cap_net_admin)
+</pre><a class="anchor" name="-"></a><a class="anchor" name="13--"></a><a class="anchor" name="13--"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_bind_service"></a><a class="anchor" name="13-- cap_net_bind_service"></a><a class="anchor" name="13-- cap_net_bind_service"></a><a class="anchor" name="- cap_net_bind_service (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_bind_service (1      Linux capabilities support)"></a><div class="keyword"><b><a class="anchor" name="- cap_net_bind_service"></a><a href="#13--%20cap_net_bind_service">- cap_net_bind_service</a></b></div><pre class="text">Haproxy never does the transition of these capabilities from its permitted set
+to the effective, if they are not listed as 'setcap' argument. See more
+information about 'setcap' keyword and supported capabilities in the chapter
+3.1 Process management and security in the Configuration guide.
+
+Administrator may add needed capabilities in the haproxy binary file permitted
+set with the following command:
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># setcap cap_net_admin,cap_net_bind_service=p /usr/local/sbin/haproxy</span>
+</code></pre>
+</div><pre class="text">Added capabilities will be seen in process permitted set after its start.
+If the same capabilities are the arguments of 'setcap' keyword, they could be
+also seen in the process effective set. This could be check with the following
+command:
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># grep Cap /proc/&lt;haproxy PID&gt;/status</span>
+CapInh:        0000000000000000
+CapPrm:        0000000000001400
+CapEff:        0000000000001400
+CapBnd:        000001ffffffffff
+CapAmb:        0000000000000000
+</code></pre>
+</div><pre class="text">See more details about setcap and capabilities sets in Linux man pages
+(capabilities(7)).
+
+In some cases like transparent proxying, binding socket to a specific network
+interface, using set-mark action, configuration file parser detects that
+cap_net_admin or cap_net_raw capabilities are needed. Then, during
+initialization stage, haproxy process checks, if these capabilities could be
+put in its effective set. If it's not possible due to capget or capset syscall
+failure (restrictions set on syscalls by some security modules like SELinux,
+Seccomp, etc), process emits diagnostic warnings (start with -dD).
+
+Due to support of many different platforms with different system settings,
+it's impossible for the parser to deduce from the configuration file, if
+binding to privileged ports will be done. So, in the case of insufficient
+priviledges (run as non-root) process will terminate only with an alert
+message like below. It's up to a user to recheck its configuration and
+capabilities set for haproxy binary.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ haproxy -dD -f haproxy.cfg
+...
+[ALERT]    (96797) : Binding [haproxy.cfg:36] for frontend fe: cannot bind socket (Permission denied) for [0.0.0.0:80]
+[ALERT]    (96797) : [haproxy.main()] Some protocols failed to start their listeners! Exiting.
+</code></pre>
+</div></div>
 
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev6-63 &ndash; Management Guide<br>
+							HAProxy 3.0-dev6-73 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
