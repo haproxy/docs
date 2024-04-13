@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev7-42 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev7-57 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -374,6 +374,17 @@
 					<td>
 							<div class="tab">
 							<a href="#3.11">HTTPClient tuning</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.12.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#3.12">Certificate Storage</a>
 							</div>
 					<td>
 				</tr>
@@ -2104,6 +2115,8 @@
 							<a class="list-group-item" href="#level">level</a>
 							
 							<a class="list-group-item" href="#limited-quic">limited-quic</a>
+							
+							<a class="list-group-item" href="#load">load</a>
 							
 							<a class="list-group-item" href="#load-server-state-from-file">load-server-state-from-file</a>
 							
@@ -4208,7 +4221,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4219,7 +4232,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev7-42</strong></p>
+							<p><strong>version 3.0-dev7-57</strong></p>
 							<p>
 								2024/04/06<br>
 								
@@ -4578,6 +4591,17 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<a href="#3.11">HTTPClient tuning</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.12.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#3.12">Certificate Storage</a>
 							</div>
 					<td>
 				</tr>
@@ -9425,6 +9449,56 @@ httpclient.
 </div>
 <pre class="text">The default value is 5000ms.
 </pre></div>
+<a class="anchor" id="3.12" name="3.12"></a>
+<h2 id="chapter-3.12" data-target="3.12"><small><a class="small" href="#3.12">3.12.</a></small> Certificate Storage</h2>
+<div><pre class="text">HAProxy uses an internal storage mecanism to load and store certificates used
+in the configuration. This storage can be configured by using a &quot;crt-store&quot;
+section. It allows to configure certificate definitions and which files should
+be loaded in it. A certificate definition must be written before it is used
+elsewhere in the configuration.
+
+Files in the certificate storage can also be updated dynamically with the CLI.
+See &quot;set ssl cert&quot; in the <a href="#9.3">section 9.3</a> of the management guide.
+
+Currently only the &quot;<a href="#load">load</a>&quot; keyword is supported in the &quot;crt-store&quot; section:
+</pre><a class="anchor" name="load"></a><a class="anchor" name="3-load"></a><a class="anchor" name="3.12-load"></a><a class="anchor" name="load (Global parameters)"></a><a class="anchor" name="load (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="load"></a><a href="#3.12-load">load</a></b> <span style="color: #008">[crt <span style="color: #080">&lt;filename&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Load SSL files in the certificate storage.
+</pre><div class="separator">
+<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">crt &lt;filename&gt;     This argument is mandatory, it loads a PEM which must
+                   contain the public certificate but could also contain
+                   the intermediate certificates and the private key.
+                   If no private key is provided in this file, a key can be
+                   provided with the &quot;key&quot; keyword.
+
+key &lt;filename&gt;     This argument is optional. Load a private key in PEM
+                   format. If a private key was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;,
+                   it will overwrite it.
+
+ocsp &lt;filename&gt;    This argument is optional, it loads an OCSP response in
+                   DER format. It can be updated with the CLI.
+
+issuer &lt;filename&gt;  This argument is optional. Load the OCSP issuer in PEM
+                   format. In order to identify which certificate an OCSP
+                   Response applies to, the issuer's certificate is necessary.
+                   If the issuer's certificate is not found in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file,
+                   it could be loaded from a file with this argument.
+
+sctl &lt;filename&gt;    This argument is optional. Support for Certificate
+                   Transparency (RFC6962) TLS extension is enabled. The file
+                   must contain a valid Signed Certificate Timestamp List,
+                   as described in RFC. File is parsed to check basic syntax,
+                   but no signatures are verified.</pre>
+</div>
+<div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>crt-store
+    load crt &quot;site1.crt&quot; key &quot;site1.key&quot; ocsp &quot;site1.ocsp&quot;
+    load crt &quot;site2.crt&quot; key &quot;site2.key&quot;
+
+frontend in
+    bind *:443 ssl crt &quot;site1.crt&quot; crt &quot;site2.crt&quot;
+</code></pre>
+</div></div>
 <a class="anchor" id="4" name="4"></a>
 <div class="page-header"><h1 id="chapter-4" data-target="4"><small><a class="small" href="#4">4.</a></small> Proxies</h1>
 </div><div><pre class="text">Proxy configuration can be located in a set of sections :
@@ -29834,7 +29908,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev7-42 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev7-57 &ndash; Configuration Manual<br>
 							<small>, 2024/04/06</small>
 						</div>
 					</div>
