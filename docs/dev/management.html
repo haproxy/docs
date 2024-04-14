@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev7-57 - Management Guide</title>
+		<title>HAProxy version 3.0-dev7-60 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -625,7 +625,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -636,7 +636,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev7-57</strong></p>
+							<p><strong>version 3.0-dev7-60</strong></p>
 							<p>
 								<br>
 								
@@ -842,7 +842,7 @@ familiar with troubleshooting utilities such as strace and tcpdump.
 </pre></div>
 <a class="anchor" id="2" name="2"></a>
 <div class="page-header"><h1 id="chapter-2" data-target="2"><small><a class="small" href="#2">2.</a></small> Quick reminder about HAProxy's architecture</h1>
-</div><div><pre class="text">HAProxy is a multi-threaded, event-driven, non-blocking daemon. This means is
+</div><div><pre class="text">HAProxy is a multi-threaded, event-driven, non-blocking daemon. This means it
 uses event multiplexing to schedule all of its activities instead of relying on
 the system to schedule between multiple activities. Most of the time it runs as
 a single process, so the output of &quot;ps aux&quot; on a system will report only one
@@ -917,7 +917,7 @@ passed on the command line. The actual syntax is :
 arguments. Without any option, HAProxy displays the help page with a reminder
 about supported options. Available options may vary slightly based on the
 operating system. A fair number of these options overlap with an equivalent one
-if the &quot;global&quot; section. In this case, the command line always has precedence
+in the &quot;global&quot; section. In this case, the command line always has precedence
 over the configuration file, so that the command line can be used to quickly
 enforce some settings without touching the configuration files. The current
 list of options is :
@@ -1244,7 +1244,7 @@ list of options is :
   -st &lt;pid&gt;* : send the &quot;terminate&quot; signal (SIGTERM) to older processes after
     boot completion to terminate them immediately without finishing what they
     were doing. &lt;pid&gt; is a list of pids to signal (one per argument). The list
-    is ends on any option starting with a &quot;<a href="#-">-</a>&quot;. It is not a problem if the list
+    ends on any option starting with a &quot;<a href="#-">-</a>&quot;. It is not a problem if the list
     of pids is empty, so that it can be built on the fly based on the result of
     a command like &quot;pidof&quot; or &quot;pgrep&quot;.
 
@@ -2332,7 +2332,7 @@ Limitations do exist: the length of the whole buffer passed to the CLI must
 not be greater than tune.bfsize and the pattern &quot;&lt;&lt;&quot; must not be glued to the
 last word of the line.
 
-When entering a paylod while in interactive mode, the prompt will change from
+When entering a payload while in interactive mode, the prompt will change from
 &quot;&gt; &quot; to &quot;+ &quot;.
 
 It is important to understand that when multiple haproxy processes are started
@@ -2655,7 +2655,7 @@ See also &quot;<a href="#new%20ssl%20ca-file">new ssl ca-file</a>&quot;, &quot;<
 </pre><a class="anchor" name="commit"></a><a class="anchor" name="9-commit"></a><a class="anchor" name="9.3-commit"></a><a class="anchor" name="commit (Statistics and monitoring)"></a><a class="anchor" name="commit (Unix Socket commands)"></a><a class="anchor" name="commit ssl"></a><a class="anchor" name="9-commit ssl"></a><a class="anchor" name="9.3-commit ssl"></a><a class="anchor" name="commit ssl (Statistics and monitoring)"></a><a class="anchor" name="commit ssl (Unix Socket commands)"></a><a class="anchor" name="commit ssl cert"></a><a class="anchor" name="9-commit ssl cert"></a><a class="anchor" name="9.3-commit ssl cert"></a><a class="anchor" name="commit ssl cert (Statistics and monitoring)"></a><a class="anchor" name="commit ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="commit ssl cert"></a><a href="#9.3-commit%20ssl%20cert">commit ssl cert</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Commit a temporary SSL certificate update transaction.
 
 In the case of an existing certificate (in a &quot;Used&quot; state in &quot;show ssl
-cert&quot;), generate every SSL contextes and SNIs it need, insert them, and
+cert&quot;), generate every SSL contexts and SNIs it needs, insert them, and
 remove the previous ones. Replace in memory the previous SSL certificates
 everywhere the &lt;filename&gt; was used in the configuration. Upon failure it
 doesn't remove or insert anything. Once the temporary transaction is
@@ -2726,7 +2726,7 @@ numbers, use &quot;show ssl crt-list -n &lt;crtlist&gt;&quot;.
 </pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del server"></a><a class="anchor" name="9-del server"></a><a class="anchor" name="9.3-del server"></a><a class="anchor" name="del server (Statistics and monitoring)"></a><a class="anchor" name="del server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del server"></a><a href="#9.3-del%20server">del server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Remove a server attached to the backend &lt;backend&gt;. All servers are eligible,
 except servers which are referenced by other configuration elements. The
 server must be put in maintenance mode prior to its deletion.  The operation
-is cancelled if the serveur still has active or idle connection or its
+is cancelled if the server still has active or idle connection or its
 connection queue is not empty.
 </pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable agent"></a><a class="anchor" name="9-disable agent"></a><a class="anchor" name="9.3-disable agent"></a><a class="anchor" name="disable agent (Statistics and monitoring)"></a><a class="anchor" name="disable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable agent"></a><a href="#9.3-disable%20agent">disable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the auxiliary agent check as temporarily stopped.
 
@@ -4692,7 +4692,7 @@ This command allows you to perform a synchronous reload, the command will
 return a reload status, once the reload was performed. Be careful with the
 timeout if a tool is used to parse it, it is only returned once the
 configuration is parsed and the new worker is forked. The &quot;socat&quot; command uses
-a timeout of 0.5s by default so it will quits before showing the message if
+a timeout of 0.5s by default so it will quit before showing the message if
 the reload is too long. &quot;ncat&quot; does not have a timeout by default.
 When compiled with USE_SHM_OPEN=1, the reload command is also able to dump
 the startup-logs of the master.
@@ -4773,7 +4773,7 @@ using regular expressions involving the dollar symbol).
 
 Environment variables also make it convenient to write configurations which are
 expected to work on various sites where only the address changes. It can also
-permit to remove passwords from some configs. Example below where the the file
+permit to remove passwords from some configs. Example below where the file
 &quot;site1.env&quot; file is sourced by the init script upon startup :
 
   $ cat site1.env
@@ -5091,7 +5091,7 @@ in its process effective set (capset syscall), while running as a non-root
 user.
 
 This was done to avoid all potential use cases when haproxy starts and runs as
-root: transparent proxy mode, binding to priviledged ports.
+root: transparent proxy mode, binding to privileged ports.
 
 'setcap' keyword supports following network capabilities:
 </pre><a class="anchor" name="-"></a><a class="anchor" name="13--"></a><a class="anchor" name="13--"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_admin"></a><a class="anchor" name="13-- cap_net_admin"></a><a class="anchor" name="13-- cap_net_admin"></a><a class="anchor" name="- cap_net_admin (1      Linux capabilities support)"></a><a class="anchor" name="- cap_net_admin (1      Linux capabilities support)"></a><div class="keyword"><b><a class="anchor" name="- cap_net_admin"></a><a href="#13--%20cap_net_admin">- cap_net_admin</a></b></div><pre class="text">- cap_net_raw (subset of cap_net_admin)
@@ -5135,7 +5135,7 @@ Seccomp, etc), process emits diagnostic warnings (start with -dD).
 Due to support of many different platforms with different system settings,
 it's impossible for the parser to deduce from the configuration file, if
 binding to privileged ports will be done. So, in the case of insufficient
-priviledges (run as non-root) process will terminate only with an alert
+privileges (run as non-root) process will terminate only with an alert
 message like below. It's up to a user to recheck its configuration and
 capabilities set for haproxy binary.
 </pre><div class="separator">
@@ -5151,7 +5151,7 @@ capabilities set for haproxy binary.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev7-57 &ndash; Management Guide<br>
+							HAProxy 3.0-dev7-60 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
