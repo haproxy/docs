@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev7-78 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev7-87 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4226,7 +4226,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4237,7 +4237,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev7-78</strong></p>
+							<p><strong>version 3.0-dev7-87</strong></p>
 							<p>
 								2024/04/06<br>
 								
@@ -9472,7 +9472,12 @@ See &quot;set ssl cert&quot; in the <a href="#9.3">section 9.3</a> of the manage
 Currently only the &quot;<a href="#load">load</a>&quot; keyword is supported in the &quot;crt-store&quot; section:
 </pre><a class="anchor" name="load"></a><a class="anchor" name="3-load"></a><a class="anchor" name="3.12-load"></a><a class="anchor" name="load (Global parameters)"></a><a class="anchor" name="load (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="load"></a><a href="#3.12-load">load</a></b> <span style="color: #008">[crt <span style="color: #080">&lt;filename&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Load SSL files in the certificate storage.
 </pre><div class="separator">
-<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">crt &lt;filename&gt;     This argument is mandatory, it loads a PEM which must
+<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">alias &lt;string&gt;     Optional argument. Allow to name the certificate with an
+                   alias, so it can be referenced with it in the
+                   configuration. An alias must be prefixed with '@/' when
+                   called elsewhere in the configuration.
+
+crt &lt;filename&gt;     This argument is mandatory, it loads a PEM which must
                    contain the public certificate but could also contain
                    the intermediate certificates and the private key.
                    If no private key is provided in this file, a key can be
@@ -9501,11 +9506,11 @@ sctl &lt;filename&gt;    This argument is optional. Support for Certificate
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>crt-store
-    load crt &quot;site1.crt&quot; key &quot;site1.key&quot; ocsp &quot;site1.ocsp&quot;
+    load crt &quot;site1.crt&quot; key &quot;site1.key&quot; ocsp &quot;site1.ocsp&quot; alias &quot;site1&quot;
     load crt &quot;site2.crt&quot; key &quot;site2.key&quot;
 
 frontend in
-    bind *:443 ssl crt &quot;site1.crt&quot; crt &quot;site2.crt&quot;
+    bind *:443 ssl crt &quot;@/site1&quot; crt &quot;site2.crt&quot;
 </code></pre>
 </div></div>
 <a class="anchor" id="4" name="4"></a>
@@ -11331,7 +11336,7 @@ backend dynamic
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="guid"></a><a class="anchor" name="4-guid"></a><a class="anchor" name="4.2-guid"></a><a class="anchor" name="guid (Proxies)"></a><a class="anchor" name="guid (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="guid"></a><a href="#4.2-guid">guid</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specify a case-sensitive global unique ID for this proxy. This must be unique
-accross all haproxy configuration on every object types. Format is left
+across all haproxy configuration on every object types. Format is left
 unspecified to allow the user to select its naming policy. The only
 restriction is its length which cannot be greater than 127 characters. All
 alphanumerical values and '.', ':', '-' and '_' characters are valid.
@@ -20817,7 +20822,7 @@ This option enforces use of TLSv1.3 only when SSL is used to communicate with
 the server. This option is also available on global statement
 &quot;<a href="#ssl-default-server-options">ssl-default-server-options</a>&quot;. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-min-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-min-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-min-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and ssl-max-ver&quot;.
 </pre><a class="anchor" name="guid"></a><a class="anchor" name="5-guid"></a><a class="anchor" name="5.2-guid"></a><a class="anchor" name="guid (Bind and server options)"></a><a class="anchor" name="guid (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="guid"></a><a href="#5.2-guid">guid</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specify a case-sensitive global unique ID for this server. This must be
-unique accross all haproxy configuration on every object types. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+unique across all haproxy configuration on every object types. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 proxy keyword description for more information on its format.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.2-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.2-id">id</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
@@ -29917,7 +29922,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev7-78 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev7-87 &ndash; Configuration Manual<br>
 							<small>, 2024/04/06</small>
 						</div>
 					</div>
