@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev7-99 - Management Guide</title>
+		<title>HAProxy version 3.0-dev8 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -625,7 +625,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -636,7 +636,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev7-99</strong></p>
+							<p><strong>version 3.0-dev8</strong></p>
 							<p>
 								<br>
 								
@@ -1204,13 +1204,15 @@ list of options is :
     level and verbosity can be optionally specified on each element using ':' as
     inner separator with trace name.
 
-  -m &lt;limit&gt; : limit the total allocatable memory to &lt;limit&gt; megabytes across
-    all processes. This may cause some connection refusals or some slowdowns
-    depending on the amount of memory needed for normal operations. This is
-    mostly used to force the processes to work in a constrained resource usage
-    scenario. It is important to note that the memory is not shared between
-    processes, so in a multi-process scenario, this value is first divided by
-    global.nbproc before forking.
+  -m &lt;limit&gt; : limit allocatable memory, which is used to keep process's data,
+    to &lt;limit&gt; megabytes. This may cause some connection refusals or some
+    slowdowns depending on the amount of memory needed for normal operations.
+    This is mostly used to force haproxy process to work in a constrained
+    resource consumption scenario. It is important to note that the memory is
+    not shared between haproxy processes and a child process created via fork()
+    system call inherits its parent's resource limits. So, in a master-worker
+    mode this memory limit is separately applied to the master and its forked
+    worker process.
 
   -n &lt;limit&gt; : limits the per-process connection limit to &lt;limit&gt;. This is
     equivalent to the global section's keyword &quot;maxconn&quot;. It has precedence
@@ -5151,7 +5153,7 @@ capabilities set for haproxy binary.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev7-99 &ndash; Management Guide<br>
+							HAProxy 3.0-dev8 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

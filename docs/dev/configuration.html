@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev7-99 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3466,13 +3466,23 @@
 							
 							<a class="list-group-item" href="#ssl_bc_cipher">ssl_bc_cipher</a>
 							
+							<a class="list-group-item" href="#ssl_bc_client_early_traffic_secret">ssl_bc_client_early_traffic_secret</a>
+							
+							<a class="list-group-item" href="#ssl_bc_client_handshake_traffic_secret">ssl_bc_client_handshake_traffic_secret</a>
+							
 							<a class="list-group-item" href="#ssl_bc_client_random">ssl_bc_client_random</a>
 							
+							<a class="list-group-item" href="#ssl_bc_client_traffic_secret_0">ssl_bc_client_traffic_secret_0</a>
+							
 							<a class="list-group-item" href="#ssl_bc_curve">ssl_bc_curve</a>
+							
+							<a class="list-group-item" href="#ssl_bc_early_exporter_secret">ssl_bc_early_exporter_secret</a>
 							
 							<a class="list-group-item" href="#ssl_bc_err">ssl_bc_err</a>
 							
 							<a class="list-group-item" href="#ssl_bc_err_str">ssl_bc_err_str</a>
+							
+							<a class="list-group-item" href="#ssl_bc_exporter_secret">ssl_bc_exporter_secret</a>
 							
 							<a class="list-group-item" href="#ssl_bc_is_resumed">ssl_bc_is_resumed</a>
 							
@@ -3480,7 +3490,11 @@
 							
 							<a class="list-group-item" href="#ssl_bc_protocol">ssl_bc_protocol</a>
 							
+							<a class="list-group-item" href="#ssl_bc_server_handshake_traffic_secret">ssl_bc_server_handshake_traffic_secret</a>
+							
 							<a class="list-group-item" href="#ssl_bc_server_random">ssl_bc_server_random</a>
+							
+							<a class="list-group-item" href="#ssl_bc_server_traffic_secret_0">ssl_bc_server_traffic_secret_0</a>
 							
 							<a class="list-group-item" href="#ssl_bc_session_id">ssl_bc_session_id</a>
 							
@@ -4230,7 +4244,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4241,9 +4255,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev7-99</strong></p>
+							<p><strong>version 3.0-dev8</strong></p>
 							<p>
-								2024/04/06<br>
+								2024/04/19<br>
 								
 							</p>
 						</div>
@@ -8791,13 +8805,16 @@ converted.
 
 SSLKEYLOGFILE Label             |  Sample fetches for the Secrets
 --------------------------------|-----------------------------------------
-CLIENT_EARLY_TRAFFIC_SECRET     |  %[ssl_fc_client_early_traffic_secret]
-CLIENT_HANDSHAKE_TRAFFIC_SECRET |  %[ssl_fc_client_handshake_traffic_secret]
-SERVER_HANDSHAKE_TRAFFIC_SECRET |  %[ssl_fc_server_handshake_traffic_secret]
-CLIENT_TRAFFIC_SECRET_0         |  %[ssl_fc_client_traffic_secret_0]
-SERVER_TRAFFIC_SECRET_0         |  %[ssl_fc_server_traffic_secret_0]
-EXPORTER_SECRET                 |  %[ssl_fc_exporter_secret]
-EARLY_EXPORTER_SECRET           |  %[ssl_fc_early_exporter_secret]
+CLIENT_EARLY_TRAFFIC_SECRET     |  %[ssl_xx_client_early_traffic_secret]
+CLIENT_HANDSHAKE_TRAFFIC_SECRET |  %[ssl_xx_client_handshake_traffic_secret]
+SERVER_HANDSHAKE_TRAFFIC_SECRET |  %[ssl_xx_server_handshake_traffic_secret]
+CLIENT_TRAFFIC_SECRET_0         |  %[ssl_xx_client_traffic_secret_0]
+SERVER_TRAFFIC_SECRET_0         |  %[ssl_xx_server_traffic_secret_0]
+EXPORTER_SECRET                 |  %[ssl_xx_exporter_secret]
+EARLY_EXPORTER_SECRET           |  %[ssl_xx_early_exporter_secret]
+
+These fetches exists for frontend (fc) or backend (bc) sides, replace &quot;xx&quot; by
+&quot;fc&quot; or &quot;bc&quot; to use the right side.
 
 This is only available with OpenSSL 1.1.1, and useful with TLS1.3 session.
 
@@ -8805,6 +8822,17 @@ If you want to generate the content of a SSLKEYLOGFILE with TLS &lt; 1.3, you
 only need this line:
 
 &quot;CLIENT_RANDOM %[ssl_fc_client_random,hex] %[ssl_fc_session_key,hex]&quot;
+
+A complete keylog could be generate with a log-format these way, even though
+this is not ideal for syslog:
+
+  log-format &quot;CLIENT_EARLY_TRAFFIC_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_client_early_traffic_secret]\n
+              CLIENT_HANDSHAKE_TRAFFIC_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_client_handshake_traffic_secret]\n
+              SERVER_HANDSHAKE_TRAFFIC_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_server_handshake_traffic_secret]\n
+              CLIENT_TRAFFIC_SECRET_0 %[ssl_bc_client_random,hex] %[ssl_bc_client_traffic_secret_0]\n
+              SERVER_TRAFFIC_SECRET_0 %[ssl_bc_client_random,hex] %[ssl_bc_server_traffic_secret_0]\n
+              EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_exporter_secret]\n
+              EARLY_EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_early_exporter_secret]&quot;
 </pre><a class="anchor" name="tune.ssl.lifetime"></a><a class="anchor" name="3-tune.ssl.lifetime"></a><a class="anchor" name="3.2-tune.ssl.lifetime"></a><a class="anchor" name="tune.ssl.lifetime (Global parameters)"></a><a class="anchor" name="tune.ssl.lifetime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.lifetime"></a><a href="#3.2-tune.ssl.lifetime">tune.ssl.lifetime</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets how long a cached SSL session may remain valid. This time is expressed
 in seconds and defaults to 300 (5 min). It is important to understand that it
 does not guarantee that sessions will last that long, because if the cache is
@@ -25637,6 +25665,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_alpn">ssl_bc_alpn</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_cipher">ssl_bc_cipher</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_client_random">ssl_bc_client_random</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_client_early_traffic_secret">ssl_bc_client_early_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_client_handshake_traffic_secret">ssl_bc_client_handshake_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_client_traffic_secret_0">ssl_bc_client_traffic_secret_0</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_exporter_secret">ssl_bc_exporter_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_early_exporter_secret">ssl_bc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_curve">ssl_bc_curve</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_err">ssl_bc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_bc_err_str">ssl_bc_err_str</a></td><td >string</td></tr>
@@ -25644,6 +25677,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_npn">ssl_bc_npn</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_protocol">ssl_bc_protocol</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_unique_id">ssl_bc_unique_id</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_server_handshake_traffic_secret">ssl_bc_server_handshake_traffic_secret</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_bc_server_traffic_secret_0">ssl_bc_server_traffic_secret_0</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_bc_server_random">ssl_bc_server_random</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_id">ssl_bc_session_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_key">ssl_bc_session_key</a></td><td >binary</td></tr>
@@ -25651,7 +25687,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_ca_err">ssl_c_ca_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_ca_err_depth">ssl_c_ca_err_depth</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_chain_der">ssl_c_chain_der</a></td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_der">ssl_c_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_c_err">ssl_c_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_i_dn">ssl_c_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -25665,6 +25700,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_sig_alg">ssl_c_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_used">ssl_c_used</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_c_verify">ssl_c_verify</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_version">ssl_c_version</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_f_der">ssl_f_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_i_dn">ssl_f_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -25672,7 +25708,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_f_notafter">ssl_f_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_notbefore">ssl_f_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_s_dn">ssl_f_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_f_serial">ssl_f_serial</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
@@ -25686,6 +25721,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_cipherlist_str">ssl_fc_cipherlist_str([&lt;filter_option&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_cipherlist_xxh">ssl_fc_cipherlist_xxh</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_curve">ssl_fc_curve</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_eclist_bin">ssl_fc_eclist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
@@ -25693,7 +25729,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_client_early_traffic_secret">ssl_fc_client_early_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_client_handshake_traffic_secret">ssl_fc_client_handshake_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_client_traffic_secret_0">ssl_fc_client_traffic_secret_0</a></td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_exporter_secret">ssl_fc_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_early_exporter_secret">ssl_fc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
@@ -25707,6 +25742,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_protocol_hello_id">ssl_fc_protocol_hello_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_unique_id">ssl_fc_unique_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_server_handshake_traffic_secret">ssl_fc_server_handshake_traffic_secret</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_server_traffic_secret_0">ssl_fc_server_traffic_secret_0</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_server_random">ssl_fc_server_random</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_session_id">ssl_fc_session_id</a></td><td >binary</td></tr>
@@ -25714,7 +25750,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_sni">ssl_fc_sni</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_key_alg">ssl_s_key_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_notafter">ssl_s_notafter</a></td><td >string</td></tr>
@@ -25768,6 +25803,41 @@ http-check ruleset.
 was made over an SSL/TLS transport layer. It is useful to to decrypt traffic
 sent using ephemeral ciphers. This requires OpenSSL &gt;= 1.1.0, or BoringSSL.
 It can be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="ssl_bc_client_early_traffic_secret"></a><a class="anchor" name="7-ssl_bc_client_early_traffic_secret"></a><a class="anchor" name="7.3.4-ssl_bc_client_early_traffic_secret"></a><a class="anchor" name="ssl_bc_client_early_traffic_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_client_early_traffic_secret (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_client_early_traffic_secret"></a><a href="#7.3.4-ssl_bc_client_early_traffic_secret">ssl_bc_client_early_traffic_secret</a></b> : string</div><pre class="text">Return the CLIENT_EARLY_TRAFFIC_SECRET as an hexadecimal string for the
+back connection when the outgoing connection was made over a TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
+</pre><a class="anchor" name="ssl_bc_client_handshake_traffic_secret"></a><a class="anchor" name="7-ssl_bc_client_handshake_traffic_secret"></a><a class="anchor" name="7.3.4-ssl_bc_client_handshake_traffic_secret"></a><a class="anchor" name="ssl_bc_client_handshake_traffic_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_client_handshake_traffic_secret (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_client_handshake_traffic_secret"></a><a href="#7.3.4-ssl_bc_client_handshake_traffic_secret">ssl_bc_client_handshake_traffic_secret</a></b> : string</div><pre class="text">Return the CLIENT_HANDSHAKE_TRAFFIC_SECRET as an hexadecimal string for the
+bacl connection when the outgoing connection was made over a TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
+</pre><a class="anchor" name="ssl_bc_client_traffic_secret_0"></a><a class="anchor" name="7-ssl_bc_client_traffic_secret_0"></a><a class="anchor" name="7.3.4-ssl_bc_client_traffic_secret_0"></a><a class="anchor" name="ssl_bc_client_traffic_secret_0 (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_client_traffic_secret_0 (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_client_traffic_secret_0"></a><a href="#7.3.4-ssl_bc_client_traffic_secret_0">ssl_bc_client_traffic_secret_0</a></b> : string</div><pre class="text">Return the CLIENT_TRAFFIC_SECRET_0 as an hexadecimal string for the
+back connection when the outgoing connection was made over a TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
+</pre><a class="anchor" name="ssl_bc_exporter_secret"></a><a class="anchor" name="7-ssl_bc_exporter_secret"></a><a class="anchor" name="7.3.4-ssl_bc_exporter_secret"></a><a class="anchor" name="ssl_bc_exporter_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_exporter_secret (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_exporter_secret"></a><a href="#7.3.4-ssl_bc_exporter_secret">ssl_bc_exporter_secret</a></b> : string</div><pre class="text">Return the EXPORTER_SECRET as an hexadecimal string for the
+back connection when the outgoing connection was made over a TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
+</pre><a class="anchor" name="ssl_bc_early_exporter_secret"></a><a class="anchor" name="7-ssl_bc_early_exporter_secret"></a><a class="anchor" name="7.3.4-ssl_bc_early_exporter_secret"></a><a class="anchor" name="ssl_bc_early_exporter_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_early_exporter_secret (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_early_exporter_secret"></a><a href="#7.3.4-ssl_bc_early_exporter_secret">ssl_bc_early_exporter_secret</a></b> : string</div><pre class="text">Return the EARLY_EXPORTER_SECRET as an hexadecimal string for the
+back connection when the outgoing connection was made over an TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
 </pre><a class="anchor" name="ssl_bc_curve"></a><a class="anchor" name="7-ssl_bc_curve"></a><a class="anchor" name="7.3.4-ssl_bc_curve"></a><a class="anchor" name="ssl_bc_curve (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_curve (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_curve"></a><a href="#7.3.4-ssl_bc_curve">ssl_bc_curve</a></b> : string</div><pre class="text">Returns the name of the curve used in the key agreement when the outgoing
 connection was made over an SSL/TLS transport layer. This requires
 OpenSSL &gt;= 3.0.0.
@@ -25803,6 +25873,20 @@ http-check ruleset.
 returns the TLS unique ID as defined in RFC5929 <a href="#3">section 3</a>. The unique id
 can be encoded to base64 using the converter: &quot;ssl_bc_unique_id,base64&quot;. It
 can be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="ssl_bc_server_handshake_traffic_secret"></a><a class="anchor" name="7-ssl_bc_server_handshake_traffic_secret"></a><a class="anchor" name="7.3.4-ssl_bc_server_handshake_traffic_secret"></a><a class="anchor" name="ssl_bc_server_handshake_traffic_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_server_handshake_traffic_secret (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_server_handshake_traffic_secret"></a><a href="#7.3.4-ssl_bc_server_handshake_traffic_secret">ssl_bc_server_handshake_traffic_secret</a></b> : string</div><pre class="text">Return the SERVER_HANDSHAKE_TRAFFIC_SECRET as an hexadecimal string for the
+back connection when the outgoing connection was made over a TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
+</pre><a class="anchor" name="ssl_bc_server_traffic_secret_0"></a><a class="anchor" name="7-ssl_bc_server_traffic_secret_0"></a><a class="anchor" name="7.3.4-ssl_bc_server_traffic_secret_0"></a><a class="anchor" name="ssl_bc_server_traffic_secret_0 (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_server_traffic_secret_0 (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_server_traffic_secret_0"></a><a href="#7.3.4-ssl_bc_server_traffic_secret_0">ssl_bc_server_traffic_secret_0</a></b> : string</div><pre class="text">Return the SERVER_TRAFFIC_SECRET_0 as an hexadecimal string for the
+back connection when the outgoing connection was made over an TLS 1.3
+transport layer.
+Require OpenSSL &gt;= 1.1.1. This is one of the keys dumped by the OpenSSL
+keylog callback to generate the SSLKEYLOGFILE. The SSL Key logging must be
+activated with &quot;tune.ssl.keylog on&quot; in the global section. See also
+&quot;<a href="#tune.ssl.keylog">tune.ssl.keylog</a>&quot;
 </pre><a class="anchor" name="ssl_bc_server_random"></a><a class="anchor" name="7-ssl_bc_server_random"></a><a class="anchor" name="7.3.4-ssl_bc_server_random"></a><a class="anchor" name="ssl_bc_server_random (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_server_random (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_server_random"></a><a href="#7.3.4-ssl_bc_server_random">ssl_bc_server_random</a></b> : binary</div><pre class="text">Returns the server random of the back connection when the incoming connection
 was made over an SSL/TLS transport layer. It is useful to to decrypt traffic
 sent using ephemeral ciphers. This requires OpenSSL &gt;= 1.1.0, or BoringSSL.
@@ -29951,8 +30035,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev7-99 &ndash; Configuration Manual<br>
-							<small>, 2024/04/06</small>
+							HAProxy 3.0-dev8 &ndash; Configuration Manual<br>
+							<small>, 2024/04/19</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
