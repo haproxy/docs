@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev8-21 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev8-81 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3686,6 +3686,8 @@
 							
 							<a class="list-group-item" href="#stats uri">stats uri</a>
 							
+							<a class="list-group-item" href="#stats-file">stats-file</a>
+							
 							<a class="list-group-item" href="#status">status</a>
 							
 							<a class="list-group-item" href="#stick (Alphabetically sorted keywords reference)">stick (Alphabetically sorted keywords reference)</a>
@@ -4244,7 +4246,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4255,7 +4257,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev8-21</strong></p>
+							<p><strong>version 3.0-dev8-81</strong></p>
 							<p>
 								2024/04/19<br>
 								
@@ -6612,6 +6614,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ssl-server-verify">ssl-server-verify</a>
    - <a href="#ssl-skip-self-issued-ca">ssl-skip-self-issued-ca</a>
    - <a href="#stats">stats</a>
+   - <a href="#stats-file">stats-file</a>
    - <a href="#strict-limits">strict-limits</a>
    - <a href="#uid">uid</a>
    - <a href="#ulimit-n">ulimit-n</a>
@@ -7788,6 +7791,9 @@ restrict access to some users or their access rights. Please consult
 </pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global parameters)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats timeout"></a><a class="anchor" name="3-stats timeout"></a><a class="anchor" name="3.1-stats timeout"></a><a class="anchor" name="stats timeout (Global parameters)"></a><a class="anchor" name="stats timeout (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats timeout"></a><a href="#3.1-stats%20timeout">stats timeout</a></b> <span style="color: #080">&lt;timeout, in milliseconds&gt;</span></div><pre class="text">The default timeout on the stats socket is set to 10 seconds. It is possible
 to change this value with &quot;<a href="#stats%20timeout">stats timeout</a>&quot;. The value must be passed in
 milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
+</pre><a class="anchor" name="stats-file"></a><a class="anchor" name="3-stats-file"></a><a class="anchor" name="3.1-stats-file"></a><a class="anchor" name="stats-file (Global parameters)"></a><a class="anchor" name="stats-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats-file"></a><a href="#3.1-stats-file">stats-file</a></b> <span style="color: #080">&lt;path&gt;</span></div><pre class="text">Path to a generated haproxy stats-file. On startup haproxy will preload the
+values to its internal counters. Use the CLI command &quot;dump stats-file&quot; to
+produce such stats-file. See the management manual for more details.
 </pre><a class="anchor" name="strict-limits"></a><a class="anchor" name="3-strict-limits"></a><a class="anchor" name="3.1-strict-limits"></a><a class="anchor" name="strict-limits (Global parameters)"></a><a class="anchor" name="strict-limits (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="strict-limits"></a><a href="#3.1-strict-limits">strict-limits</a></b></div><pre class="text">Makes process fail at startup when a setrlimit fails. HAProxy tries to set the
 best setrlimit according to what has been calculated. If it fails, it will
 emit a warning. This option is here to guarantee an explicit failure of
@@ -28273,6 +28279,30 @@ Flags are :
   * X: hexadecimal representation (IPs, Ports, %Ts, %rt, %pid)
   * E: escape characters '&quot;', '\' and ']' in a string with '\' as prefix
        (intended purpose is for the RFC5424 structured-data log formats)
+  * bin: try to preserve binary data, this can be useful with sample
+         expressions that output binary data in order to preserve the original
+         data. Be careful however, because it can obviously generate non-
+         printable chars, including NULL-byte, which most syslog endpoints
+         don't expect. Thus it is mainly intended for use with set-var-fmt,
+         rings and binary-capable log endpoints.
+         This option can only be set globally (with %o), it will be ignored
+         if set on an individual node's options.
+  * json: automatically encode value in JSON format
+          (when set globally, only named format variables are considered)
+          Incomplete numerical values (e.g.: '%B' when logasap is used),
+          which are normally prefixed with '+' without encoding, will be
+          encoded as-is. Also, '+E' option will be ignored.
+  * cbor: automatically encode value in CBOR format
+          (when set globally, only named format variables are considered)
+          By default, cbor encoded data is represented in HEX form so
+          that it remains printable on stdout an can be used with usual
+          syslog endpoints.
+          As with json encoding, incomplete numerical values will be encoded
+          as-is and '+E' option will be ignored.
+          When combined with '+bin' option, it will directly generate raw
+          binary CBOR payload. Be careful, because it will obviously generate
+          non-printable chars, thus it is mainly intented for use with
+          set-var-fmt, rings and binary-capable log endpoints.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -28280,6 +28310,9 @@ Flags are :
 log-format %{+Q}o\ %t\ %s\ %{-Q}r
 
 log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
+
+log-format &quot;%{+json}o %(request)r %(custom_expr)[str(custom)]&quot;
+log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
 </code></pre>
 </div><pre class="text">Please refer to the table below for currently defined variables :
 
@@ -30036,7 +30069,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev8-21 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev8-81 &ndash; Configuration Manual<br>
 							<small>, 2024/04/19</small>
 						</div>
 					</div>
