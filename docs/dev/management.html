@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev8-81 - Management Guide</title>
+		<title>HAProxy version 3.0-dev9 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -640,7 +640,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -651,7 +651,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0-dev8-81</strong></p>
+							<p><strong>version 3.0-dev9</strong></p>
 							<p>
 								<br>
 								
@@ -4590,13 +4590,13 @@ With a condition and optional arguments, the command will wait for the
 specified condition to be satisfied, to unrecoverably fail, or to remain
 unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
 
-- srv-unused &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to be
-  removable, i.e. be in maintenance and no longer have any connection on it.
-  Some conditions will never be accepted (e.g. not in maintenance) and will
-  cause the report of a specific error message indicating what condition is
-  not met. The server might even have been removed in parallel and no longer
-  exit. If everything is OK before the delay, a success is returned and the
-  operation is terminated.
+- srv-removable &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to
+  be removable, i.e. be in maintenance and no longer have any connection on
+  it.  Some conditions will never be accepted (e.g. not in maintenance) and
+  will cause the report of a specific error message indicating what condition
+  is not met. The server might even have been removed in parallel and no
+  longer exit. If everything is OK before the delay, a success is returned
+  and the operation is terminated.
 
 The default unit for the delay is milliseconds, though other units are
 accepted if suffixed with the usual timer units (us, ms, s, m, h, d). When
@@ -4611,7 +4611,7 @@ the command's usage.
 $ socat -t5 /path/to/socket - &lt;&lt;&lt; &quot;
     disable server px/srv1
     shutdown sessions server px/srv1
-    wait 2s srv-unused px/srv1
+    wait 2s srv-removable px/srv1
     del server px/srv1&quot;
 </code></pre>
 </div></div>
@@ -5206,7 +5206,7 @@ capabilities set for haproxy binary.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev8-81 &ndash; Management Guide<br>
+							HAProxy 3.0-dev9 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
