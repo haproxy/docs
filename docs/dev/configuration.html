@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev9 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev9-9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2468,6 +2468,8 @@
 							
 							<a class="list-group-item" href="#ocsp-update">ocsp-update</a>
 							
+							<a class="list-group-item" href="#ocsp_update.http_proxy">ocsp_update.http_proxy</a>
+							
 							<a class="list-group-item" href="#odd">odd</a>
 							
 							<a class="list-group-item" href="#on-error">on-error</a>
@@ -4246,7 +4248,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4257,7 +4259,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev9</strong></p>
+							<p><strong>version 3.0-dev9-9</strong></p>
 							<p>
 								2024/04/27<br>
 								
@@ -6586,6 +6588,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#nbthread">nbthread</a>
    - <a href="#node">node</a>
    - <a href="#numa-cpu-mapping">numa-cpu-mapping</a>
+   - <a href="#ocsp_update.http_proxy">ocsp_update.http_proxy</a>
    - <a href="#pidfile">pidfile</a>
    - <a href="#pp2-never-send-local">pp2-never-send-local</a>
    - <a href="#presetenv">presetenv</a>
@@ -7357,6 +7360,9 @@ numa-cpu-mapping'. This automatic binding is also not applied if a nbthread
 statement is present in the configuration, or the affinity of the process is
 already specified, for example via the 'cpu-map' directive or the taskset
 utility.
+</pre><a class="anchor" name="ocsp_update.http_proxy"></a><a class="anchor" name="3-ocsp_update.http_proxy"></a><a class="anchor" name="3.1-ocsp_update.http_proxy"></a><a class="anchor" name="ocsp_update.http_proxy (Global parameters)"></a><a class="anchor" name="ocsp_update.http_proxy (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp_update.http_proxy"></a><a href="#3.1-ocsp_update.http_proxy">ocsp_update.http_proxy</a></b> <span style="color: #080">&lt;address&gt;</span><span style="color: #008">[:port]</span></div><pre class="text">Allow to use an HTTP proxy for the OCSP updates. This only works with HTTP,
+HTTPS is not supported. This option will allow the OCSP updater to send
+absolute URI in the request to the proxy.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global parameters)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
@@ -30069,7 +30075,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev9 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev9-9 &ndash; Configuration Manual<br>
 							<small>, 2024/04/27</small>
 						</div>
 					</div>
