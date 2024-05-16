@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev11-4 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev11-20 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4256,7 +4256,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4267,7 +4267,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev11-4</strong></p>
+							<p><strong>version 3.0-dev11-20</strong></p>
 							<p>
 								2024/05/10<br>
 								
@@ -8436,10 +8436,17 @@ good enough distribution. The default is &quot;on&quot;.
 </pre><a class="anchor" name="tune.lua.forced-yield"></a><a class="anchor" name="3-tune.lua.forced-yield"></a><a class="anchor" name="3.2-tune.lua.forced-yield"></a><a class="anchor" name="tune.lua.forced-yield (Global parameters)"></a><a class="anchor" name="tune.lua.forced-yield (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.forced-yield"></a><a href="#3.2-tune.lua.forced-yield">tune.lua.forced-yield</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive forces the Lua engine to execute a yield each &lt;number&gt; of
 instructions executed. This permits interrupting a long script and allows the
 HAProxy scheduler to process other tasks like accepting connections or
-forwarding traffic. The default value is 10000 instructions. If HAProxy often
-executes some Lua code but more responsiveness is required, this value can be
-lowered. If the Lua code is quite long and its result is absolutely required
-to process the data, the &lt;number&gt; can be increased.
+forwarding traffic. The default value is 10000 instructions for scripts loaded
+using &quot;<a href="#lua-load-per-thread">lua-load-per-thread</a>&quot; and MAX(500, 10000 / nbthread) instructions for
+scripts loaded using &quot;<a href="#lua-load">lua-load</a>&quot; (it was found to be an optimal value for
+performance while taking care of not creating thread contention with multiple
+threads competing for the global lua lock).
+
+If HAProxy often executes some Lua code but more responsiveness is required,
+this value can be lowered. If the Lua code is quite long and its result is
+absolutely required to process the data, the &lt;number&gt; can be increased, but
+the value should be set wisely as in multithreading context it could increase
+contention.
 </pre><a class="anchor" name="tune.lua.maxmem"></a><a class="anchor" name="3-tune.lua.maxmem"></a><a class="anchor" name="3.2-tune.lua.maxmem"></a><a class="anchor" name="tune.lua.maxmem (Global parameters)"></a><a class="anchor" name="tune.lua.maxmem (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.maxmem"></a><a href="#3.2-tune.lua.maxmem">tune.lua.maxmem</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of RAM in megabytes per process usable by Lua. By
 default it is zero which means unlimited. It is important to set a limit to
 ensure that a bug in a script will not result in the system running out of
@@ -24645,7 +24652,7 @@ is evaluated is returned. It is subject to change. Except used with ACLs in
 <code><span class="comment"># Return a 429-Too-Many-Requests if stream timed out in queue</span>
 http-after-response set-status 429 if { txn.sess_term_state  &quot;sQ&quot; }
 </code></pre>
-</div><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC4122 standard. If the version is not
+</div><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC 9562 standard. If the version is not
 specified, a UUID version 4 (fully random) is returned.
 
 Versions 4 and 7 are supported.
@@ -30117,7 +30124,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev11-4 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev11-20 &ndash; Configuration Manual<br>
 							<small>, 2024/05/10</small>
 						</div>
 					</div>
