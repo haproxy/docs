@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev11-20 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev11-26 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4013,6 +4013,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
 							
+							<a class="list-group-item" href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
+							
 							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
@@ -4256,7 +4258,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4267,7 +4269,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev11-20</strong></p>
+							<p><strong>version 3.0-dev11-26</strong></p>
 							<p>
 								2024/05/10<br>
 								
@@ -6712,6 +6714,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.pt.zero-copy-forwarding">tune.pt.zero-copy-forwarding</a>
    - <a href="#tune.quic.cc-hystart">tune.quic.cc-hystart</a>
    - <a href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
+   - <a href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
@@ -8633,7 +8636,16 @@ connection on data emission. By default, it is set to 30. QUIC buffers are
 drained on ACK reception. This setting has a direct impact on the throughput
 and memory consumption and can be adjusted according to an estimated round
 time-trip. Each buffer is tune.bufsize.
-</pre><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3.2-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a href="#3.2-tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the QUIC max_idle_timeout transport parameters in milliseconds for
+</pre><a class="anchor" name="tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="3-tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="3.2-tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="tune.quic.frontend.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.glitches-threshold"></a><a href="#3.2-tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
+that connection will automatically be killed. This allows to automatically
+kill misbehaving connections without having to write explicit rules for them.
+The default value is zero, indicating that no threshold is set so that no
+event will cause a connection to be closed. Beware that some QUIC clients may
+occasionally cause a few glitches over long lasting connection, so any non-
+zero value here should probably be in the hundreds or thousands to be
+effective without affecting slightly bogus clients.
+</pre><div class="page-header"><b>See also:</b> fc_glitches</div>
+<a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="3.2-tune.quic.frontend.max-idle-timeout"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-idle-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-idle-timeout"></a><a href="#3.2-tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the QUIC max_idle_timeout transport parameters in milliseconds for
 frontends which determines the period of time after which a connection silently
 closes if it has remained inactive during an effective period of time deduced
 from the two max_idle_timeout values announced by the two endpoints:
@@ -30124,7 +30136,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev11-20 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev11-26 &ndash; Configuration Manual<br>
 							<small>, 2024/05/10</small>
 						</div>
 					</div>
