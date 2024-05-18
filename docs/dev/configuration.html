@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev11-26 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev11-53 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2476,7 +2476,15 @@
 							
 							<a class="list-group-item" href="#ocsp-update">ocsp-update</a>
 							
+							<a class="list-group-item" href="#ocsp-update.disable">ocsp-update.disable</a>
+							
 							<a class="list-group-item" href="#ocsp-update.httpproxy">ocsp-update.httpproxy</a>
+							
+							<a class="list-group-item" href="#ocsp-update.maxdelay">ocsp-update.maxdelay</a>
+							
+							<a class="list-group-item" href="#ocsp-update.mindelay">ocsp-update.mindelay</a>
+							
+							<a class="list-group-item" href="#ocsp-update.mode">ocsp-update.mode</a>
 							
 							<a class="list-group-item" href="#odd">odd</a>
 							
@@ -4075,8 +4083,6 @@
 							
 							<a class="list-group-item" href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>
 							
-							<a class="list-group-item" href="#tune.ssl.ocsp-update.mode">tune.ssl.ocsp-update.mode</a>
-							
 							<a class="list-group-item" href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
 							
 							<a class="list-group-item" href="#tune.stick-counters">tune.stick-counters</a>
@@ -4258,7 +4264,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4269,7 +4275,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev11-26</strong></p>
+							<p><strong>version 3.0-dev11-53</strong></p>
 							<p>
 								2024/05/10<br>
 								
@@ -6598,7 +6604,11 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#nbthread">nbthread</a>
    - <a href="#node">node</a>
    - <a href="#numa-cpu-mapping">numa-cpu-mapping</a>
+   - <a href="#ocsp-update.disable">ocsp-update.disable</a>
+   - <a href="#ocsp-update.maxdelay">ocsp-update.maxdelay</a>
+   - <a href="#ocsp-update.mindelay">ocsp-update.mindelay</a>
    - <a href="#ocsp-update.httpproxy">ocsp-update.httpproxy</a>
+   - <a href="#ocsp-update.mode">ocsp-update.mode</a>
    - <a href="#pidfile">pidfile</a>
    - <a href="#pp2-never-send-local">pp2-never-send-local</a>
    - <a href="#presetenv">presetenv</a>
@@ -6745,8 +6755,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
    - <a href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
-   - <a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>
-   - <a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>
+   - tune.ssl.ocsp-update.maxdelay (deprecated)
+   - tune.ssl.ocsp-update.mindelay (deprecated)
    - <a href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
    - <a href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
    - <a href="#tune.vars.reqres-max-size">tune.vars.reqres-max-size</a>
@@ -7371,9 +7381,28 @@ numa-cpu-mapping'. This automatic binding is also not applied if a nbthread
 statement is present in the configuration, or the affinity of the process is
 already specified, for example via the 'cpu-map' directive or the taskset
 utility.
+</pre><a class="anchor" name="ocsp-update.disable"></a><a class="anchor" name="3-ocsp-update.disable"></a><a class="anchor" name="3.1-ocsp-update.disable"></a><a class="anchor" name="ocsp-update.disable (Global parameters)"></a><a class="anchor" name="ocsp-update.disable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.disable"></a><a href="#3.1-ocsp-update.disable">ocsp-update.disable</a></b> <span style="color: #008">[ on | off ]</span></div><pre class="text">Disable completely the ocsp-update in HAProxy. Any ocsp-update configuration
+will be ignored. Default is &quot;off&quot;.
+See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
+mechanism.
 </pre><a class="anchor" name="ocsp-update.httpproxy"></a><a class="anchor" name="3-ocsp-update.httpproxy"></a><a class="anchor" name="3.1-ocsp-update.httpproxy"></a><a class="anchor" name="ocsp-update.httpproxy (Global parameters)"></a><a class="anchor" name="ocsp-update.httpproxy (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.httpproxy"></a><a href="#3.1-ocsp-update.httpproxy">ocsp-update.httpproxy</a></b> <span style="color: #080">&lt;address&gt;</span><span style="color: #008">[:port]</span></div><pre class="text">Allow to use an HTTP proxy for the OCSP updates. This only works with HTTP,
 HTTPS is not supported. This option will allow the OCSP updater to send
 absolute URI in the request to the proxy.
+</pre><a class="anchor" name="ocsp-update.maxdelay"></a><a class="anchor" name="3-ocsp-update.maxdelay"></a><a class="anchor" name="3.1-ocsp-update.maxdelay"></a><a class="anchor" name="ocsp-update.maxdelay (Global parameters)"></a><a class="anchor" name="ocsp-update.maxdelay (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.maxdelay"></a><a href="#3.1-ocsp-update.maxdelay">ocsp-update.maxdelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3.1-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a href="#3.1-tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">Sets the maximum interval between two automatic updates of the same OCSP
+response. This time is expressed in seconds and defaults to 3600 (1 hour). It
+must be set to a higher value than &quot;<a href="#ocsp-update.mindelay">ocsp-update.mindelay</a>&quot;. See
+option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update mechanism.
+</pre><a class="anchor" name="ocsp-update.mindelay"></a><a class="anchor" name="3-ocsp-update.mindelay"></a><a class="anchor" name="3.1-ocsp-update.mindelay"></a><a class="anchor" name="ocsp-update.mindelay (Global parameters)"></a><a class="anchor" name="ocsp-update.mindelay (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.mindelay"></a><a href="#3.1-ocsp-update.mindelay">ocsp-update.mindelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3.1-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a href="#3.1-tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">Sets the minimum interval between two automatic updates of the same OCSP
+response. This time is expressed in seconds and defaults to 300 (5 minutes).
+It is particularly useful for OCSP response that do not have explicit
+expiration times. It must be set to a lower value than
+&quot;<a href="#ocsp-update.maxdelay">ocsp-update.maxdelay</a>&quot;. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
+information about the auto update mechanism.
+</pre><a class="anchor" name="ocsp-update.mode"></a><a class="anchor" name="3-ocsp-update.mode"></a><a class="anchor" name="3.1-ocsp-update.mode"></a><a class="anchor" name="ocsp-update.mode (Global parameters)"></a><a class="anchor" name="ocsp-update.mode (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.mode"></a><a href="#3.1-ocsp-update.mode">ocsp-update.mode</a></b> <span style="color: #008">[ on | off ]</span></div><pre class="text">Sets the default ocsp-update mode for all certificates used in the
+configuration. This global option can be superseded by the crt-list
+&quot;<a href="#ocsp-update">ocsp-update</a>&quot; option. This option is set to &quot;off&quot; by default.
+See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
+mechanism.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global parameters)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
@@ -8893,23 +8922,6 @@ tune.idletimer above). See also tune.ssl.hard-maxrecord.
 entries. This is a LRU cache. Because generating a SSL certificate
 dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
-</pre><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="3.2-tune.ssl.ocsp-update.maxdelay"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.maxdelay (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.maxdelay"></a><a href="#3.2-tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum interval between two automatic updates of the same OCSP
-response. This time is expressed in seconds and defaults to 3600 (1 hour). It
-must be set to a higher value than &quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot;. See
-option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update mechanism.
-</pre><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="3.2-tune.ssl.ocsp-update.mindelay"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.mindelay (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.mindelay"></a><a href="#3.2-tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the minimum interval between two automatic updates of the same OCSP
-response. This time is expressed in seconds and defaults to 300 (5 minutes).
-It is particularly useful for OCSP response that do not have explicit
-expiration times. It must be set to a lower value than
-&quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot;. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
-information about the auto update mechanism.
-</pre><a class="anchor" name="tune.ssl.ocsp-update.mode"></a><a class="anchor" name="3-tune.ssl.ocsp-update.mode"></a><a class="anchor" name="3.2-tune.ssl.ocsp-update.mode"></a><a class="anchor" name="tune.ssl.ocsp-update.mode (Global parameters)"></a><a class="anchor" name="tune.ssl.ocsp-update.mode (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ocsp-update.mode"></a><a href="#3.2-tune.ssl.ocsp-update.mode">tune.ssl.ocsp-update.mode</a></b> <span style="color: #008">[ on | off ]</span></div><pre class="text">Sets the default ocsp-update mode for all certificates used in the
-configuration. This global option can be superseded by the crt-list
-&quot;<a href="#ocsp-update">ocsp-update</a>&quot; option but an error will be raised if a given certificate has
-two distinct configurations simultaneously. This option is set to &quot;off&quot; by
-default.
-See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
-mechanism.
 </pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global parameters)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
 &quot;<a href="#http-request">http-request</a>&quot; rules. The default value is set at build time by the macro
@@ -30136,7 +30148,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev11-26 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev11-53 &ndash; Configuration Manual<br>
 							<small>, 2024/05/10</small>
 						</div>
 					</div>
