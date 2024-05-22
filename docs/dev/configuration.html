@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev12 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev12-15 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -385,6 +385,19 @@
 					<td>
 							<div class="tab">
 							<a href="#3.12">Certificate Storage</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.12.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#3.12.1">Load options</a>
+							</div>
 							</div>
 					<td>
 				</tr>
@@ -1314,6 +1327,8 @@
 							
 							<a class="list-group-item" href="#agent-send">agent-send</a>
 							
+							<a class="list-group-item" href="#alias">alias</a>
+							
 							<a class="list-group-item" href="#allow">allow</a>
 							
 							<a class="list-group-item" href="#allow-0rtt (Bind options)">allow-0rtt (Bind options)</a>
@@ -1514,7 +1529,9 @@
 							
 							<a class="list-group-item" href="#ciphersuites (Server and default-server options)">ciphersuites (Server and default-server options)</a>
 							
-							<a class="list-group-item" href="#client-sigalgs">client-sigalgs</a>
+							<a class="list-group-item" href="#client-sigalgs (Bind options)">client-sigalgs (Bind options)</a>
+							
+							<a class="list-group-item" href="#client-sigalgs (Server and default-server options)">client-sigalgs (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#clitcpka-cnt">clitcpka-cnt</a>
 							
@@ -1577,6 +1594,8 @@
 							<a class="list-group-item" href="#crl-file (Bind options)">crl-file (Bind options)</a>
 							
 							<a class="list-group-item" href="#crl-file (Server and default-server options)">crl-file (Server and default-server options)</a>
+							
+							<a class="list-group-item" href="#crt (Load options)">crt (Load options)</a>
 							
 							<a class="list-group-item" href="#crt (Bind options)">crt (Bind options)</a>
 							
@@ -2092,6 +2111,8 @@
 							
 							<a class="list-group-item" href="#ipv6">ipv6</a>
 							
+							<a class="list-group-item" href="#issuer">issuer</a>
+							
 							<a class="list-group-item" href="#issuers-chain-path">issuers-chain-path</a>
 							
                                                                 </div> <!-- /letter -->
@@ -2110,6 +2131,8 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-K"><h4>K</h4>
 								
+							<a class="list-group-item" href="#key">key</a>
+							
 							<a class="list-group-item" href="#key-base (Process management and security)">key-base (Process management and security)</a>
 							
 							<a class="list-group-item" href="#key-base (Certificate Storage)">key-base (Certificate Storage)</a>
@@ -2473,6 +2496,8 @@
 								<div class="letter" id="letter-O"><h4>O</h4>
 								
 							<a class="list-group-item" href="#observe">observe</a>
+							
+							<a class="list-group-item" href="#ocsp">ocsp</a>
 							
 							<a class="list-group-item" href="#ocsp-update">ocsp-update</a>
 							
@@ -3178,6 +3203,8 @@
 							
 							<a class="list-group-item" href="#scook_val">scook_val</a>
 							
+							<a class="list-group-item" href="#sctl">sctl</a>
+							
 							<a class="list-group-item" href="#sdbm">sdbm</a>
 							
 							<a class="list-group-item" href="#secure_memcmp">secure_memcmp</a>
@@ -3296,7 +3323,9 @@
 							
 							<a class="list-group-item" href="#shdr_val">shdr_val</a>
 							
-							<a class="list-group-item" href="#sigalgs">sigalgs</a>
+							<a class="list-group-item" href="#sigalgs (Bind options)">sigalgs (Bind options)</a>
+							
+							<a class="list-group-item" href="#sigalgs (Server and default-server options)">sigalgs (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#silent-drop">silent-drop</a>
 							
@@ -4264,7 +4293,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4275,7 +4304,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev12</strong></p>
+							<p><strong>version 3.0-dev12-15</strong></p>
 							<p>
 								2024/05/18<br>
 								
@@ -4645,6 +4674,19 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<a href="#3.12">Certificate Storage</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.12.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#3.12.1">Load options</a>
+							</div>
 							</div>
 					<td>
 				</tr>
@@ -6948,7 +6990,7 @@ cpu-map 3/1-40   40-79,120-159  <span class="comment"># node1, siblings 0 &amp; 
 cpu-map 4/1-40   40-79,120-159
 </code></pre>
 </div><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
-path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
+path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
 prevail and ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#crt-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="daemon"></a><a class="anchor" name="3-daemon"></a><a class="anchor" name="3.1-daemon"></a><a class="anchor" name="daemon (Global parameters)"></a><a class="anchor" name="daemon (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="daemon"></a><a href="#3.1-daemon">daemon</a></b></div><pre class="text">Makes the process fork into background. This is the recommended mode of
 operation. It is equivalent to the command line &quot;-D&quot; argument. It can be
@@ -7250,18 +7292,18 @@ the &quot;ping&quot; command), then it is possible to disable this protection by
 explicitly adding this directive in the global section. If enabled, it is
 possible to turn it back off by prefixing it with the &quot;no&quot; keyword.
 </pre><a class="anchor" name="issuers-chain-path"></a><a class="anchor" name="3-issuers-chain-path"></a><a class="anchor" name="3.1-issuers-chain-path"></a><a class="anchor" name="issuers-chain-path (Global parameters)"></a><a class="anchor" name="issuers-chain-path (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="issuers-chain-path"></a><a href="#3.1-issuers-chain-path">issuers-chain-path</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a directory to load certificate chain for issuer completion. All
-files must be in PEM format. For certificates loaded with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or &quot;<a href="#crt-list">crt-list</a>&quot;,
+files must be in PEM format. For certificates loaded with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or &quot;<a href="#crt-list">crt-list</a>&quot;,
 if certificate chain is not included in PEM (also commonly known as
 intermediate certificate), HAProxy will complete chain if the issuer of the
 certificate corresponds to the first certificate of the chain loaded with
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot;.
-A &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file with PrivateKey+Certificate+IntermediateCA2+IntermediateCA1
+A &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file with PrivateKey+Certificate+IntermediateCA2+IntermediateCA1
 could be replaced with PrivateKey+Certificate. HAProxy will complete the
 chain if a file with IntermediateCA2+IntermediateCA1 is present in
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot; directory. All other certificates with the same issuer
 will share the chain in memory.
 </pre><a class="anchor" name="key-base"></a><a class="anchor" name="3-key-base"></a><a class="anchor" name="3.1-key-base"></a><a class="anchor" name="key-base (Global parameters)"></a><a class="anchor" name="key-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="key-base"></a><a href="#3.1-key-base">key-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL private keys from when a relative
-path is used with &quot;key&quot; directives. Absolute locations specified prevail and
+path is used with &quot;<a href="#key">key</a>&quot; directives. Absolute locations specified prevail and
 ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">key-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#key-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#key-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;. This option only works with a crt-store load line.
 </pre><a class="anchor" name="limited-quic"></a><a class="anchor" name="3-limited-quic"></a><a class="anchor" name="3.1-limited-quic"></a><a class="anchor" name="limited-quic (Global parameters)"></a><a class="anchor" name="limited-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="limited-quic"></a><a href="#3.1-limited-quic">limited-quic</a></b></div><pre class="text">This setting must be used to explicitly enable the QUIC listener bindings when
 haproxy is compiled against a TLS/SSL stack without QUIC support, typically
@@ -7746,7 +7788,7 @@ frontend side and will not work for backend certificates.
 
 Starting from HAProxy 2.3, the bundles are not loaded in the same OpenSSL
 certificate store, instead it will loads each certificate in a separate
-store which is equivalent to declaring multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. OpenSSL 1.1.1 is
+store which is equivalent to declaring multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. OpenSSL 1.1.1 is
 required to achieve this. Which means that bundles are now used only for
 backward compatibility and are not mandatory anymore to do an hybrid RSA/ECC
 bind configuration.
@@ -7768,7 +7810,7 @@ this bundle into HAProxy, specify the base name only:
 a cert bundle.
 
 HAProxy will load all PEM files in the bundle as if they were configured
-separately in several &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
+separately in several &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 
 The bundle loading does not have an impact anymore on the directory loading
 since files are loading separately.
@@ -7779,19 +7821,19 @@ required to commit them.
 OCSP files (.ocsp), issuer files (.issuer), Certificate Transparency (.sctl)
 as well as private keys (.key) are supported with multi-cert bundling.
 
-&quot;sctl&quot;: Try to load &quot;&lt;basename&gt;.sctl&quot; for each crt keyword. If provided for
+&quot;<a href="#sctl">sctl</a>&quot;: Try to load &quot;&lt;basename&gt;.sctl&quot; for each crt keyword. If provided for
 a backend certificate, it will be loaded but will not have any functional
 impact.
 
-&quot;ocsp&quot;: Try to load &quot;&lt;basename&gt;.ocsp&quot; for each crt keyword. If provided for
+&quot;<a href="#ocsp">ocsp</a>&quot;: Try to load &quot;&lt;basename&gt;.ocsp&quot; for each crt keyword. If provided for
 a backend certificate, it will be loaded but will not have any functional
 impact.
 
-&quot;issuer&quot;: Try to load &quot;&lt;basename&gt;.issuer&quot; if the issuer of the OCSP file is
+&quot;<a href="#issuer">issuer</a>&quot;: Try to load &quot;&lt;basename&gt;.issuer&quot; if the issuer of the OCSP file is
 not provided in the PEM file. If provided for a backend certificate, it will
 be loaded but will not have any functional impact.
 
-&quot;key&quot;: If the private key was not provided by the PEM file, try to load a
+&quot;<a href="#key">key</a>&quot;: If the private key was not provided by the PEM file, try to load a
 file &quot;&lt;basename&gt;.key&quot; containing a private key.
 
 The default behavior is &quot;all&quot;.
@@ -7802,7 +7844,7 @@ The default behavior is &quot;all&quot;.
 ssl-load-extra-files sctl ocsp issuer
 ssl-load-extra-files none
 </code></pre>
-</div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, <a href="#5.1">section 5.1</a> about bind options and <a href="#5.2">section 5.2</a> about server options.</div>
+</div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, <a href="#5.1">section 5.1</a> about bind options and <a href="#5.2">section 5.2</a> about server options.</div>
 <a class="anchor" name="ssl-security-level"></a><a class="anchor" name="3-ssl-security-level"></a><a class="anchor" name="3.1-ssl-security-level"></a><a class="anchor" name="ssl-security-level (Global parameters)"></a><a class="anchor" name="ssl-security-level (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-security-level"></a><a href="#3.1-ssl-security-level">ssl-security-level</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive allows to chose the OpenSSL security level as described in
 https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set_security_level.html
 The security level will be applied to every SSL contextes in HAProxy.
@@ -9560,46 +9602,16 @@ The following keywords are supported in the &quot;crt-store&quot; section :
   - <a href="#key-base">key-base</a>
   - <a href="#load">load</a>
 </pre><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.12-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.12-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
-path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified prevail and
+path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified prevail and
 ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#crt-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;. When used in a crt-store, the crt-base of the global
 section is ignored.
 </pre><a class="anchor" name="key-base"></a><a class="anchor" name="3-key-base"></a><a class="anchor" name="3.12-key-base"></a><a class="anchor" name="key-base (Global parameters)"></a><a class="anchor" name="key-base (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="key-base"></a><a href="#3.12-key-base">key-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL private keys from when a relative
-path is used with &quot;key&quot; directives. Absolute locations specified prevail and
+path is used with &quot;<a href="#key">key</a>&quot; directives. Absolute locations specified prevail and
 ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">key-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#key-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#key-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;. When used in a crt-store, the key-base of the global
 section is ignored.
-</pre><a class="anchor" name="load"></a><a class="anchor" name="3-load"></a><a class="anchor" name="3.12-load"></a><a class="anchor" name="load (Global parameters)"></a><a class="anchor" name="load (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="load"></a><a href="#3.12-load">load</a></b> <span style="color: #008">[crt <span style="color: #080">&lt;filename&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Load SSL files in the certificate storage.
+</pre><a class="anchor" name="load"></a><a class="anchor" name="3-load"></a><a class="anchor" name="3.12-load"></a><a class="anchor" name="load (Global parameters)"></a><a class="anchor" name="load (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="load"></a><a href="#3.12-load">load</a></b> <span style="color: #008">[crt <span style="color: #080">&lt;filename&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Load SSL files in the certificate storage. For the parameter list, see section
+&quot;3.12.1. Load options&quot;
 </pre><div class="separator">
-<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">alias &lt;string&gt;     Optional argument. Allow to name the certificate with an
-                   alias, so it can be referenced with it in the
-                   configuration. An alias must be prefixed with '@/' when
-                   called elsewhere in the configuration.
-
-crt &lt;filename&gt;     This argument is mandatory, it loads a PEM which must
-                   contain the public certificate but could also contain
-                   the intermediate certificates and the private key.
-                   If no private key is provided in this file, a key can be
-                   provided with the &quot;key&quot; keyword.
-
-key &lt;filename&gt;     This argument is optional. Load a private key in PEM
-                   format. If a private key was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;,
-                   it will overwrite it.
-
-ocsp &lt;filename&gt;    This argument is optional, it loads an OCSP response in
-                   DER format. It can be updated with the CLI.
-
-issuer &lt;filename&gt;  This argument is optional. Load the OCSP issuer in PEM
-                   format. In order to identify which certificate an OCSP
-                   Response applies to, the issuer's certificate is necessary.
-                   If the issuer's certificate is not found in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file,
-                   it could be loaded from a file with this argument.
-
-sctl &lt;filename&gt;    This argument is optional. Support for Certificate
-                   Transparency (RFC6962) TLS extension is enabled. The file
-                   must contain a valid Signed Certificate Timestamp List,
-                   as described in RFC. File is parsed to check basic syntax,
-                   but no signatures are verified.</pre>
-</div>
-<div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>crt-store
@@ -9619,6 +9631,124 @@ frontend in2
     bind *:443 ssl crt &quot;@web/site1&quot; crt &quot;site2.crt&quot;  crt &quot;@web/site3&quot; crt &quot;@web/site4.crt&quot;
 </code></pre>
 </div></div>
+<a class="anchor" id="3.12.1" name="3.12.1"></a>
+<h3 id="chapter-3.12.1" data-target="3.12.1"><small><a class="small" href="#3.12.1">3.12.1.</a></small> Load options</h3>
+<div><pre class="text">Load SSL files in the certificate storage. The load keyword can take multiple
+parameters which are listed below. These keywords are also usable in a
+crt-list.
+</pre><a class="anchor" name="crt"></a><a class="anchor" name="3-crt"></a><a class="anchor" name="3.12.1-crt"></a><a class="anchor" name="crt (Global parameters)"></a><a class="anchor" name="crt (Load options)"></a><div class="keyword"><b><a class="anchor" name="crt"></a><a href="#3.12.1-crt">crt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is mandatory, it loads a PEM which must contain the public
+certificate but could also contain the intermediate certificates and the
+private key.  If no private key is provided in this file, a key can be provided
+with the &quot;<a href="#key">key</a>&quot; keyword.
+</pre><a class="anchor" name="alias"></a><a class="anchor" name="3-alias"></a><a class="anchor" name="3.12.1-alias"></a><a class="anchor" name="alias (Global parameters)"></a><a class="anchor" name="alias (Load options)"></a><div class="keyword"><b><a class="anchor" name="alias"></a><a href="#3.12.1-alias">alias</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Optional argument. Allow to name the certificate with an alias, so it can be
+referenced with it in the configuration. An alias must be prefixed with '@/'
+when called elsewhere in the configuration.
+</pre><a class="anchor" name="key"></a><a class="anchor" name="3-key"></a><a class="anchor" name="3.12.1-key"></a><a class="anchor" name="key (Global parameters)"></a><a class="anchor" name="key (Load options)"></a><div class="keyword"><b><a class="anchor" name="key"></a><a href="#3.12.1-key">key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Load a private key in PEM format. If a private key
+was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, it will overwrite it.
+</pre><a class="anchor" name="ocsp"></a><a class="anchor" name="3-ocsp"></a><a class="anchor" name="3.12.1-ocsp"></a><a class="anchor" name="ocsp (Global parameters)"></a><a class="anchor" name="ocsp (Load options)"></a><div class="keyword"><b><a class="anchor" name="ocsp"></a><a href="#3.12.1-ocsp">ocsp</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional, it loads an OCSP response in DER format. It can
+be updated with the CLI.
+</pre><a class="anchor" name="issuer"></a><a class="anchor" name="3-issuer"></a><a class="anchor" name="3.12.1-issuer"></a><a class="anchor" name="issuer (Global parameters)"></a><a class="anchor" name="issuer (Load options)"></a><div class="keyword"><b><a class="anchor" name="issuer"></a><a href="#3.12.1-issuer">issuer</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Load the OCSP issuer in PEM format. In order to
+identify which certificate an OCSP Response applies to, the issuer's
+certificate is necessary.  If the issuer's certificate is not found in the
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file, it could be loaded from a file with this argument.
+</pre><a class="anchor" name="sctl"></a><a class="anchor" name="3-sctl"></a><a class="anchor" name="3.12.1-sctl"></a><a class="anchor" name="sctl (Global parameters)"></a><a class="anchor" name="sctl (Load options)"></a><div class="keyword"><b><a class="anchor" name="sctl"></a><a href="#3.12.1-sctl">sctl</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Support for Certificate Transparency (RFC6962) TLS
+extension is enabled. The file must contain a valid Signed Certificate
+Timestamp List, as described in RFC. File is parsed to check basic syntax,
+but no signatures are verified.
+</pre><a class="anchor" name="ocsp-update"></a><a class="anchor" name="3-ocsp-update"></a><a class="anchor" name="3.12.1-ocsp-update"></a><a class="anchor" name="ocsp-update (Global parameters)"></a><a class="anchor" name="ocsp-update (Load options)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update"></a><a href="#3.12.1-ocsp-update">ocsp-update</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Enable automatic OCSP response update when set to 'on', disable it otherwise.
+Its value defaults to 'off'.
+To enable the OCSP auto update on a bind line, you can use this option in a
+crt-store or you can use the global option &quot;tune.ocsp-update.mode&quot;.
+If a given certificate is used in multiple crt-lists with different values of
+the 'ocsp-update' set, an error will be raised. Likewise, if a certificate
+inherits from the global option on a bind line and has an incompatible
+explicit 'ocsp-update' option set in a crt-list, the same error will be
+raised.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code>Here is an example configuration enabling it with a crt-list:
+</code></pre>
+</div><pre class="text">haproxy.cfg:
+    frontend fe
+        bind :443 ssl crt-list haproxy.list
+
+haproxy.list:
+    server_cert.pem [ocsp-update on] foo.bar
+
+Here is an example configuration enabling it with a crt-store:
+
+haproxy.cfg:
+
+    crt-store
+      load crt foobar.pem ocsp-update on
+
+    frontend fe
+        bind :443 ssl crt foobar.pem
+
+When the option is set to 'on', we will try to get an ocsp response whenever
+an ocsp uri is found in the frontend's certificate. The only limitation of
+this mode is that the certificate's issuer will have to be known in order for
+the OCSP certid to be built.
+Each OCSP response will be updated at least once an hour, and even more
+frequently if a given OCSP response has an expire date earlier than this one
+hour limit. A minimum update interval of 5 minutes will still exist in order
+to avoid updating too often responses that have a really short expire time or
+even no 'Next Update' at all. Because of this hard limit, please note that
+when auto update is set to 'on', any OCSP response loaded during init will
+not be updated until at least 5 minutes, even if its expire time ends before
+now+5m. This should not be too much of a hassle since an OCSP response must
+be valid when it gets loaded during init (its expire time must be in the
+future) so it is unlikely that this response expires in such a short time
+after init.
+On the other hand, if a certificate has an OCSP uri specified and no OCSP
+response, setting this option to 'on' for the given certificate will ensure
+that the OCSP response gets fetched automatically right after init.
+The default minimum and maximum delays (5 minutes and 1 hour respectively)
+can be configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
+&quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
+
+Whenever an OCSP response is updated by the auto update task or following a
+call to the &quot;update ssl ocsp-response&quot; CLI command, a dedicated log line is
+emitted. It follows a dedicated format that contains the following header
+&quot;&lt;OCSP-UPDATE&gt;&quot; and is followed by specific OCSP-related information:
+  - the path of the corresponding frontend certificate
+  - a numerical update status
+  - a textual update status
+  - the number of update failures for the given response
+  - the number of update successes for the givan response
+See &quot;show ssl ocsp-updates&quot; CLI command for a full list of error codes and
+error messages. This line is emitted regardless of the success or failure of
+the concerned OCSP response update.
+The OCSP request/response is sent and received through an http_client
+instance that has the dontlog-normal option set and that uses the regular
+HTTP log format in case of error (unreachable OCSP responder for instance).
+If such an error occurs, another log line that contains HTTP-related
+information will then be emitted alongside the &quot;regular&quot; OCSP one (which will
+likely have &quot;HTTP error&quot; as text status). But if a purely HTTP error happens
+(unreachable OCSP responder for instance), an extra log line that follows the
+regular HTTP log-format will be emitted.
+Here are two examples of such log lines, with a successful OCSP update log
+line first and then an example of an HTTP error with the two different lines
+(lines were spit and the URL was shortened for readability):
+  &lt;133&gt;Mar  6 11:16:53 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 \
+          &quot;Update successful&quot; 0 1
+
+  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 \
+          &quot;HTTP error&quot; 1 0
+  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] \
+          &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} \
+          &quot;GET http://127.0.0.1:12345/MEMwQT HTTP/1.1&quot;
+
+Troubleshooting:
+A common error that can happen with let's encrypt certificates is if the DNS
+resolution provides an IPv6 address and your system does not have a valid
+outgoing IPv6 route. In such a case, you can either create the appropriate
+route or set the &quot;httpclient.resolvers.prefer ipv4&quot; option in the global
+section.
+In case of &quot;OCSP response check failure&quot; error, you might want to check that
+the issuer certificate that you provided is valid.
+</pre></div>
 <a class="anchor" id="4" name="4"></a>
 <div class="page-header"><h1 id="chapter-4" data-target="4"><small><a class="small" href="#4">4.</a></small> Proxies</h1>
 </div><div><pre class="text">Proxy configuration can be located in a set of sections :
@@ -19933,11 +20063,38 @@ filter per certificate, with the following format for each line :
 
       &lt;crtfile&gt; [\[&lt;sslbindconf&gt; ...\]] [[!]&lt;snifilter&gt; ...]
 
-sslbindconf supports &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">allow-0rtt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#allow-0rtt%20%28Bind%20options%29">Bind options</a></li><li><a href="#allow-0rtt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot;,
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ecdhe">ecdhe</a>&quot;, &quot;<a href="#no-ca-names">no-ca-names</a>&quot;,
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">verify<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#verify%20%28Bind%20options%29">Bind options</a></li><li><a href="#verify%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; configuration. With BoringSSL and Openssl &gt;= 1.1.1
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-min-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-min-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-min-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; are also supported. It overrides the
-configuration set in bind line for the certificate.
+sslbindconf supports the following keywords from the bind line
+(see Section 5.1. Bind options):
+
+- <a href="#allow-0rtt">allow-0rtt</a>
+- <a href="#alpn">alpn</a>
+- <a href="#ca-file">ca-file</a>
+- <a href="#ca-verify-file">ca-verify-file</a>
+- <a href="#ciphers">ciphers</a>
+- <a href="#ciphersuites">ciphersuites</a>
+- <a href="#client-sigalgs">client-sigalgs</a>
+- <a href="#crl-file">crl-file</a>
+- <a href="#curves">curves</a>
+- <a href="#ecdhe">ecdhe</a>
+- <a href="#no-alpn">no-alpn</a>
+- <a href="#no-ca-names">no-ca-names</a>
+- <a href="#npn">npn</a>
+- <a href="#sigalgs">sigalgs</a>
+- <a href="#ssl-min-ver">ssl-min-ver</a>
+- <a href="#ssl-max-ver">ssl-max-ver</a>
+- <a href="#verify">verify</a>
+
+sslbindconf also supports the following keywords from the crt-store load
+keyword (see Section 3.12.1. Load options):
+
+- <a href="#crt">crt</a>
+- <a href="#key">key</a>
+- <a href="#ocsp">ocsp</a>
+- <a href="#issuer">issuer</a>
+- <a href="#sctl">sctl</a>
+- <a href="#ocsp-update">ocsp-update</a>
+
+It overrides the configuration set in bind line for the certificate.
 
 Wildcards are supported in the SNI filter. Negative filter are also supported,
 useful in combination with a wildcard filter to exclude a particular SNI, or
@@ -19945,7 +20102,7 @@ after the first certificate to exclude a pattern from its CN or Subject Alt
 Name (SAN). The certificates will be presented to clients who provide a valid
 TLS Server Name Indication field matching one of the SNI filters. If no SNI
 filter is specified, the CN and SAN are used. This directive may be specified
-multiple times. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. The default
+multiple times. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. The default
 certificate is still needed to meet OpenSSL expectations. If it is not used,
 the 'strict-sni' option may be used.
 
@@ -19981,7 +20138,7 @@ crt-list file example:
       certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.domain.tld
       default.pem.rsa *
       default.pem.ecdsa *
-</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
+</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
 certificate will be used as a default one. It is possible to add multiple
 default certificates to have an ECDSA and an RSA one, having more is not
 really useful.
@@ -19995,7 +20152,7 @@ certificate.
 <pre class="prettyprint">
 <code>bind *:443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa crt website.pem.rsa
 </code></pre>
-</div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
+</div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
 </pre><a class="anchor" name="defer-accept"></a><a class="anchor" name="5-defer-accept"></a><a class="anchor" name="5.1-defer-accept"></a><a class="anchor" name="defer-accept (Bind and server options)"></a><a class="anchor" name="defer-accept (Bind options)"></a><div class="keyword"><b><a class="anchor" name="defer-accept"></a><a href="#5.1-defer-accept">defer-accept</a></b></div><pre class="text">Is an optional keyword which is supported only on certain Linux kernels. It
 states that a connection will only be accepted once some data arrive on it,
 or at worst after the first retransmit. This should be used only on protocols
@@ -20201,89 +20358,6 @@ only available starting with OpenSSL 1.0.2. If HTTP/2 is desired on an older
 version of OpenSSL, NPN might still be used as most clients still support it
 at the time of writing this. It is possible to enable both NPN and ALPN
 though it probably doesn't make any sense out of testing.
-</pre><a class="anchor" name="ocsp-update"></a><a class="anchor" name="5-ocsp-update"></a><a class="anchor" name="5.1-ocsp-update"></a><a class="anchor" name="ocsp-update (Bind and server options)"></a><a class="anchor" name="ocsp-update (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update"></a><a href="#5.1-ocsp-update">ocsp-update</a></b> <span style="color: #008">[ off | on ]</span> (crt-list only)</div><pre class="text">Enable automatic OCSP response update when set to 'on', disable it otherwise.
-Its value defaults to 'off'.
-Please note that for now, this option can only be used in a crt-list line, it
-cannot be used directly on a bind line. It lies in this &quot;Bind options&quot;
-section because it is still a frontend option. For now, the only way to
-enable OCSP auto update on a bind line certificate is via the global option
-&quot;tune.ocsp-update.mode&quot;.
-If a given certificate is used in multiple crt-lists with different values of
-the 'ocsp-update' set, an error will be raised. Likewise, if a certificate
-inherits from the global option on a bind line and has an incompatible
-explicit 'ocsp-update' option set in a crt-list, the same error will be
-raised.
-Here is an example configuration enabling it:
-
-haproxy.cfg:
-    frontend fe
-        bind :443 ssl crt-list haproxy.list
-
-haproxy.list:
-    server_cert.pem [ocsp-update on] foo.bar
-
-When the option is set to 'on', we will try to get an ocsp response whenever
-an ocsp uri is found in the frontend's certificate. The only limitation of
-this mode is that the certificate's issuer will have to be known in order for
-the OCSP certid to be built.
-Each OCSP response will be updated at least once an hour, and even more
-frequently if a given OCSP response has an expire date earlier than this one
-hour limit. A minimum update interval of 5 minutes will still exist in order
-to avoid updating too often responses that have a really short expire time or
-even no 'Next Update' at all. Because of this hard limit, please note that
-when auto update is set to 'on', any OCSP response loaded during init will
-not be updated until at least 5 minutes, even if its expire time ends before
-now+5m. This should not be too much of a hassle since an OCSP response must
-be valid when it gets loaded during init (its expire time must be in the
-future) so it is unlikely that this response expires in such a short time
-after init.
-On the other hand, if a certificate has an OCSP uri specified and no OCSP
-response, setting this option to 'on' for the given certificate will ensure
-that the OCSP response gets fetched automatically right after init.
-The default minimum and maximum delays (5 minutes and 1 hour respectively)
-can be configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
-&quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
-
-Whenever an OCSP response is updated by the auto update task or following a
-call to the &quot;update ssl ocsp-response&quot; CLI command, a dedicated log line is
-emitted. It follows a dedicated format that contains the following header
-&quot;&lt;OCSP-UPDATE&gt;&quot; and is followed by specific OCSP-related information:
-  - the path of the corresponding frontend certificate
-  - a numerical update status
-  - a textual update status
-  - the number of update failures for the given response
-  - the number of update successes for the givan response
-See &quot;show ssl ocsp-updates&quot; CLI command for a full list of error codes and
-error messages. This line is emitted regardless of the success or failure of
-the concerned OCSP response update.
-The OCSP request/response is sent and received through an http_client
-instance that has the dontlog-normal option set and that uses the regular
-HTTP log format in case of error (unreachable OCSP responder for instance).
-If such an error occurs, another log line that contains HTTP-related
-information will then be emitted alongside the &quot;regular&quot; OCSP one (which will
-likely have &quot;HTTP error&quot; as text status). But if a purely HTTP error happens
-(unreachable OCSP responder for instance), an extra log line that follows the
-regular HTTP log-format will be emitted.
-Here are two examples of such log lines, with a successful OCSP update log
-line first and then an example of an HTTP error with the two different lines
-(lines were spit and the URL was shortened for readability):
-  &lt;133&gt;Mar  6 11:16:53 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/foo.pem 1 \
-          &quot;Update successful&quot; 0 1
-
-  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: &lt;OCSP-UPDATE&gt; /path_to_cert/bar.pem 2 \
-          &quot;HTTP error&quot; 1 0
-  &lt;133&gt;Mar  6 11:18:55 haproxy[14872]: -:- [06/Mar/2023:11:18:52.200] \
-          &lt;OCSP-UPDATE&gt; -/- 2/0/-1/-1/3009 503 217 - - SC-- 0/0/0/0/3 0/0 {} \
-          &quot;GET http://127.0.0.1:12345/MEMwQT HTTP/1.1&quot;
-
-Troubleshooting:
-A common error that can happen with let's encrypt certificates is if the DNS
-resolution provides an IPv6 address and your system does not have a valid
-outgoing IPv6 route. In such a case, you can either create the appropriate
-route or set the &quot;httpclient.resolvers.prefer ipv4&quot; option in the global
-section.
-In case of &quot;OCSP response check failure&quot; error, you might want to check that
-the issuer certificate that you provided is valid.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
@@ -20379,7 +20453,7 @@ recommended to use this setting unless compatibility with a middlebox is
 required.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
-certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
+certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
 appear in clear text, so that ACLs and HTTP processing will only have access
 to deciphered contents. SSLv3 is disabled per default, use &quot;ssl-min-ver SSLv3&quot;
 to enable it.
@@ -20397,7 +20471,7 @@ SSL/TLS negotiation is allowed only if the client provided an SNI that matches
 a certificate. The default certificate is not used. This option also allows
 starting without any certificate on a bind line, so an empty directory could
 be used and filled later from the stats socket.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
+See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
 the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
@@ -23354,9 +23428,9 @@ map_&lt;match_type&gt;_&lt;output_type&gt;(&lt;map_name&gt;[,&lt;default_value&g
 expression and modify the output replacing back reference (like &quot;\1&quot;) by
 the corresponding match text.
 
-Output type &quot;key&quot; means that it is the matched entry's key (as found in the
+Output type &quot;<a href="#key">key</a>&quot; means that it is the matched entry's key (as found in the
 map file) that will be returned as a string instead of the value. Note that
-optional &lt;default_value&gt; argument is not supported when &quot;key&quot; output type is
+optional &lt;default_value&gt; argument is not supported when &quot;<a href="#key">key</a>&quot; output type is
 used.
 
 Files referenced by &lt;map_name&gt; contains one key + value per line. Lines which
@@ -23373,7 +23447,7 @@ end of the line excluding trailing spaces/tabs.
  |       |       |         |        `- trailing spaces ignored
  |       |       |         `---------- value
  |       |       `-------------------- middle spaces ignored
- |       `---------------------------- key
+ |       `---------------------------- <a href="#key">key</a>
  `------------------------------------ leading spaces ignored
 </code></pre>
 </div><a class="anchor" name="mod"></a><a class="anchor" name="7-mod"></a><a class="anchor" name="7.3.1-mod"></a><a class="anchor" name="mod (Using ACLs and fetching samples)"></a><a class="anchor" name="mod (Converters)"></a><div class="keyword"><b><a class="anchor" name="mod"></a><a href="#7.3.1-mod">mod</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Divides the input value of type signed integer by &lt;value&gt;, and returns the
@@ -30148,7 +30222,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev12 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev12-15 &ndash; Configuration Manual<br>
 							<small>, 2024/05/18</small>
 						</div>
 					</div>
