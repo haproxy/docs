@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev12-38 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1950,6 +1950,10 @@
 							
 							<a class="list-group-item" href="#hard-stop-after">hard-stop-after</a>
 							
+							<a class="list-group-item" href="#harden.reject-privileged-ports.quic">harden.reject-privileged-ports.quic</a>
+							
+							<a class="list-group-item" href="#harden.reject-privileged-ports.tcp">harden.reject-privileged-ports.tcp</a>
+							
 							<a class="list-group-item" href="#hash-balance-factor">hash-balance-factor</a>
 							
 							<a class="list-group-item" href="#hash-key">hash-key</a>
@@ -2675,6 +2679,8 @@
 							<a class="list-group-item" href="#pid">pid</a>
 							
 							<a class="list-group-item" href="#pidfile">pidfile</a>
+							
+							<a class="list-group-item" href="#pool-conn-name">pool-conn-name</a>
 							
 							<a class="list-group-item" href="#pool-low-conn">pool-low-conn</a>
 							
@@ -3894,6 +3900,8 @@
 							
 							<a class="list-group-item" href="#thread-groups">thread-groups</a>
 							
+							<a class="list-group-item" href="#thread-hard-limit">thread-hard-limit</a>
+							
 							<a class="list-group-item" href="#timeout">timeout</a>
 							
 							<a class="list-group-item" href="#timeout check">timeout check</a>
@@ -4293,7 +4301,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4304,9 +4312,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev12-38</strong></p>
+							<p><strong>version 3.0-dev13</strong></p>
 							<p>
-								2024/05/18<br>
+								2024/05/24<br>
 								
 							</p>
 						</div>
@@ -5657,7 +5665,8 @@ is called &quot;head of line blocking&quot; or &quot;HoL blocking&quot; or somet
 HTTP/3 is implemented over QUIC, itself implemented over UDP. QUIC solves the
 head of line blocking at the transport level by means of independently handled
 streams. Indeed, when experiencing loss, an impacted stream does not affect the
-other streams, and all of them can be accessed in parallel.
+other streams, and all of them can be accessed in parallel. QUIC also provides
+connection migration support but currently haproxy does not support it.
 
 By default HAProxy operates in keep-alive mode with regards to persistent
 connections: for each connection it processes each request and response, and
@@ -6631,6 +6640,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#h1-case-adjust-file">h1-case-adjust-file</a>
    - <a href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
    - <a href="#hard-stop-after">hard-stop-after</a>
+   - <a href="#harden.reject-privileged-ports.tcp">harden.reject-privileged-ports.tcp</a>
+   - <a href="#harden.reject-privileged-ports.quic">harden.reject-privileged-ports.quic</a>
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
@@ -7228,7 +7239,12 @@ in tcp mode). It applies both in TCP and HTTP mode.
   hard-stop-after 30s
 </code></pre>
 </div><div class="page-header"><b>See also:</b> grace</div>
-<a class="anchor" name="http-err-codes"></a><a class="anchor" name="3-http-err-codes"></a><a class="anchor" name="3.1-http-err-codes"></a><a class="anchor" name="http-err-codes (Global parameters)"></a><a class="anchor" name="http-err-codes (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="http-err-codes"></a><a href="#3.1-http-err-codes">http-err-codes</a></b> <span style="color: #008">[+-]</span><span style="color: #080">&lt;range&gt;</span><span style="color: #008">[,...]</span> <span style="color: #008">[...]</span></div><pre class="text">Replace, reduce or extend the list of status codes that define an error as
+<a class="anchor" name="harden.reject-privileged-ports.tcp"></a><a class="anchor" name="3-harden.reject-privileged-ports.tcp"></a><a class="anchor" name="3.1-harden.reject-privileged-ports.tcp"></a><a class="anchor" name="harden.reject-privileged-ports.tcp (Global parameters)"></a><a class="anchor" name="harden.reject-privileged-ports.tcp (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="harden.reject-privileged-ports.tcp"></a><a href="#3.1-harden.reject-privileged-ports.tcp">harden.reject-privileged-ports.tcp</a></b> <span style="color: #800">{ on | off }</span></div><a class="anchor" name="harden.reject-privileged-ports.quic"></a><a class="anchor" name="3-harden.reject-privileged-ports.quic"></a><a class="anchor" name="3.1-harden.reject-privileged-ports.quic"></a><a class="anchor" name="harden.reject-privileged-ports.quic (Global parameters)"></a><a class="anchor" name="harden.reject-privileged-ports.quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="harden.reject-privileged-ports.quic"></a><a href="#3.1-harden.reject-privileged-ports.quic">harden.reject-privileged-ports.quic</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Toggle per protocol protection which forbid communication with clients which
+use privileged ports as their source port. This range of ports is defined
+according to RFC 6335. By default, protection is active for QUIC protocol as
+this behavior is suspicious and may be used as a spoofing or DNS/NTP
+amplification attack.
+</pre><a class="anchor" name="http-err-codes"></a><a class="anchor" name="3-http-err-codes"></a><a class="anchor" name="3.1-http-err-codes"></a><a class="anchor" name="http-err-codes (Global parameters)"></a><a class="anchor" name="http-err-codes (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="http-err-codes"></a><a href="#3.1-http-err-codes">http-err-codes</a></b> <span style="color: #008">[+-]</span><span style="color: #080">&lt;range&gt;</span><span style="color: #008">[,...]</span> <span style="color: #008">[...]</span></div><pre class="text">Replace, reduce or extend the list of status codes that define an error as
 considered by the termination codes and the &quot;http_err_cnt&quot; counter in stick
 tables. The default range for errors is 400 to 499, but in certain contexts
 some users prefer to exclude specific codes, especially when tracking client
@@ -7409,7 +7425,8 @@ started in foreground. On some platforms supporting CPU affinity, the default
 bound to upon startup. This means that the thread count can easily be
 adjusted from the calling process using commands like &quot;taskset&quot; or &quot;cpuset&quot;.
 Otherwise, this value defaults to 1. The default value is reported in the
-output of &quot;haproxy -vv&quot;.
+output of &quot;haproxy -vv&quot;. Note that values set here or automatically detected
+are subject to the limit set by &quot;<a href="#thread-hard-limit">thread-hard-limit</a>&quot; (if set).
 </pre><a class="anchor" name="no-quic"></a><a class="anchor" name="3-no-quic"></a><a class="anchor" name="3.1-no-quic"></a><a class="anchor" name="no-quic (Global parameters)"></a><a class="anchor" name="no-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="no-quic"></a><a href="#3.1-no-quic">no-quic</a></b></div><pre class="text">Disable QUIC transport protocol. All the QUIC listeners will still be created.
 But they will not bind their addresses. Hence, no QUIC traffic will be
 processed by haproxy. See also &quot;<a href="#quic_enabled">quic_enabled</a>&quot; sample fetch.
@@ -7533,7 +7550,7 @@ set. The sample fetch functions and converters permitted in the expression
 are only those using internal data, typically 'int(value)' or 'str(value)'.
 It is possible to reference previously allocated variables as well. These
 variables will then be readable (and modifiable) from the regular rule sets.
-Please see <a href="#8.2.4">section 8.2.4</a> for details on the log-format syntax.
+Please see <a href="#8.2.6">section 8.2.6</a> for details on the Custom log format syntax.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -7903,6 +7920,17 @@ sharing between threads to limit contention, at the expense of some extra
 configuration efforts. It is also the only way to use more than 64 threads
 since up to 64 threads per group may be configured. The maximum number of
 groups is configured at compile time and defaults to 16. See also &quot;<a href="#nbthread">nbthread</a>&quot;.
+</pre><a class="anchor" name="thread-hard-limit"></a><a class="anchor" name="3-thread-hard-limit"></a><a class="anchor" name="3.1-thread-hard-limit"></a><a class="anchor" name="thread-hard-limit (Global parameters)"></a><a class="anchor" name="thread-hard-limit (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="thread-hard-limit"></a><a href="#3.1-thread-hard-limit">thread-hard-limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This setting is used to enforce a limit to the number of threads, either
+detected, or configured. This is particularly useful on operating systems
+where the number of threads is automatically detected, where a number of
+threads lower than the number of CPUs is desired in generic and portable
+configurations. Indeed, while &quot;<a href="#nbthread">nbthread</a>&quot; enforces a number of threads that
+will result in a warning and bad performance if higher than CPUs available,
+thread-hard-limit will only cap the maximum value and automatically limit
+the number of threads to no higher than this value, but will not raise lower
+values. If &quot;<a href="#nbthread">nbthread</a>&quot; is forced to a higher value, thread-hard-limit wins,
+and a warning is emitted in so that the configuration anomaly can be
+fixed. By default there is no limit. See also &quot;<a href="#nbthread">nbthread</a>&quot;.
 </pre><a class="anchor" name="trace"></a><a class="anchor" name="3-trace"></a><a class="anchor" name="3.1-trace"></a><a class="anchor" name="trace (Global parameters)"></a><a class="anchor" name="trace (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#3.1-trace">trace</a></b> <span style="color: #080">&lt;args...&gt;</span></div><pre class="text">This command configures one &quot;<a href="#trace">trace</a>&quot; subsystem statement. Each of them can be
 found in the management manual, and follow the exact same syntax. Only one
 statement per line is permitted (i.e. if some long trace configurations using
@@ -11453,7 +11481,7 @@ May be used in the following contexts: tcp, http, log
 <pre class="text">Also requires &quot;<a href="#email-alert%20mailers">email-alert mailers</a>&quot; and &quot;<a href="#email-alert%20to">email-alert to</a>&quot; to be set
 and if so sending email alerts is enabled for the proxy.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#email-alert%20from">email-alert from</a>&quot;, &quot;<a href="#email-alert%20level">email-alert level</a>&quot;, &quot;<a href="#email-alert%20mailers">email-alert mailers</a>&quot;, &quot;<a href="#email-alert%20myhostname">email-alert myhostname</a>&quot;, <a href="#3.6">section 3.6</a> about mailers.</div>
-<a class="anchor" name="error-log-format"></a><a class="anchor" name="4-error-log-format"></a><a class="anchor" name="4.2-error-log-format"></a><a class="anchor" name="error-log-format (Proxies)"></a><a class="anchor" name="error-log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="error-log-format"></a><a href="#4.2-error-log-format">error-log-format</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specifies the log format string to use in case of connection error on the frontend side.
+<a class="anchor" name="error-log-format"></a><a class="anchor" name="4-error-log-format"></a><a class="anchor" name="4.2-error-log-format"></a><a class="anchor" name="error-log-format (Proxies)"></a><a class="anchor" name="error-log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="error-log-format"></a><a href="#4.2-error-log-format">error-log-format</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">Specifies the log format string to use in case of connection error on the frontend side.
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -11467,8 +11495,8 @@ that would be concerned by the &quot;<a href="#option%20log-separate-errors">log
 connection errors described in <a href="#8.2.5">section 8.2.5</a>.
 
 If the directive is used in a defaults section, all subsequent frontends will
-use the same log format. Please see <a href="#8.2.4">section 8.2.4</a> which covers the log format
-string in depth.
+use the same log format. Please see <a href="#8.2.6">section 8.2.6</a> which covers the custom log
+format string in depth.
 
 &quot;<a href="#error-log-format">error-log-format</a>&quot; directive overrides previous &quot;<a href="#error-log-format">error-log-format</a>&quot;
 directives.
@@ -11938,12 +11966,13 @@ tout-status &lt;st&gt;   is optional and can be used to set the check status if
 on-success &lt;fmt&gt;   is optional and can be used to customize the
                    informational message reported in logs if the expect
                    rule is successfully evaluated and if it is the last rule
-                   in the tcp-check ruleset. &lt;fmt&gt; is a log-format string.
+                   in the tcp-check ruleset. &lt;fmt&gt; is a Custom log format
+                   string (see <a href="#8.2.6">section 8.2.6</a>).
 
 on-error &lt;fmt&gt;     is optional and can be used to customize the
                    informational message reported in logs if an error
                    occurred during the expect rule evaluation. &lt;fmt&gt; is a
-                   log-format string.
+                   Custom log format string (see <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;match&gt;   is a keyword indicating how to look for a specific pattern in the
           response. The keyword may be one of &quot;<a href="#status">status</a>&quot;, &quot;rstatus&quot;, &quot;<a href="#hdr">hdr</a>&quot;,
@@ -11989,17 +12018,18 @@ out, the check obviously fails. The available matches are :
                     match), &quot;end&quot; (suffix match), &quot;<a href="#sub">sub</a>&quot; (substring match) or
                     &quot;reg&quot; (regex match). If not specified, exact matching
                     method is used. If the &quot;name-lf&quot; parameter is used,
-                    &lt;name&gt; is evaluated as a log-format string. If &quot;value-lf&quot;
-                    parameter is used, &lt;value&gt; is evaluated as a log-format
-                    string. These parameters cannot be used with the regex
-                    matching method. Finally, the header value is considered
-                    as comma-separated list. Note that matchings are case
-                    insensitive on the header names.
+                    &lt;name&gt; is evaluated as a Custom log format string (see
+                    <a href="#8.2.6">section 8.2.6</a>). If &quot;value-lf&quot; parameter is used, &lt;value&gt;
+                    is evaluated as a log-format string. These parameters
+                    cannot be used with the regex matching method. Finally,
+                    the header value is considered as comma-separated
+                    list. Note that matchings are case insensitive on the
+                    header names.
 
   fhdr { name | name-lf } [ -m &lt;meth&gt; ] &lt;name&gt;
        [ { value | value-lf } [ -m &lt;meth&gt; ] &lt;value&gt; :
                     test the specified full header pattern on the HTTP
-                    response headers. It does exactly the same than &quot;<a href="#hdr">hdr</a>&quot;
+                    response headers. It does exactly the same as the &quot;<a href="#hdr">hdr</a>&quot;
                     keyword, except the full header value is tested, commas
                     are not considered as delimiters.
 
@@ -12022,12 +12052,13 @@ out, the check obviously fails. The available matches are :
                     of a dynamic page, or to detect a failure when a specific
                     error appears on the check page (e.g. a stack trace).
 
-  string-lf &lt;fmt&gt; : test a log-format string match in the HTTP response body.
-                    A health check response will be considered valid if the
-                    response's body contains the  string resulting of the
-                    evaluation of &lt;fmt&gt;, which follows the log-format rules.
-                    If prefixed with &quot;!&quot;, then the response will be
-                    considered invalid if the body contains the string.
+  string-lf &lt;fmt&gt; : test a Custom log format string (see <a href="#8.2.6">section 8.2.6</a>) match
+                    in the HTTP response body. A health check response will
+                    be considered valid if the response's body contains the
+                    string resulting of the evaluation of &lt;fmt&gt;, which
+                    follows the log-format rules. If prefixed with &quot;!&quot;, then
+                    the response will be considered invalid if the body
+                    contains the string.
 
 It is important to note that the responses will be limited to a certain size
 defined by the global &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option, which defaults to 16384 bytes.
@@ -12090,9 +12121,10 @@ uri &lt;uri&gt;      is optional and set the URI referenced in the HTTP requests
                other URI. Query strings are permitted.
 
 uri-lf &lt;fmt&gt;   is optional and set the URI referenced in the HTTP requests
-               using the log-format string &lt;fmt&gt;. It defaults to &quot;/&quot; which
-               is accessible by default on almost any server, but may be
-               changed to any other URI. Query strings are permitted.
+               using the Custom log format &lt;fmt&gt; (see <a href="#8.2.6">section 8.2.6</a>). It
+               defaults to &quot;/&quot; which is accessible by default on almost any
+               server, but may be changed to any other URI. Query strings
+               are permitted.
 
 ver &lt;version&gt;  is the optional HTTP version string. It defaults to
                &quot;HTTP/1.0&quot; but some servers might behave incorrectly in HTTP
@@ -12102,16 +12134,16 @@ ver &lt;version&gt;  is the optional HTTP version string. It defaults to
 
 hdr &lt;name&gt; &lt;fmt&gt;  adds the HTTP header field whose name is specified in
                   &lt;name&gt; and whose value is defined by &lt;fmt&gt;, which follows
-                  to the log-format rules.
+                  the Custom log format rules described in <a href="#8.2.6">section 8.2.6</a>.
 
 body &lt;string&gt;  add the body defined by &lt;string&gt; to the request sent during
                HTTP health checks. If defined, the &quot;Content-Length&quot; header
                is thus automatically added to the request.
 
-body-lf &lt;fmt&gt;  add the body defined by the log-format string &lt;fmt&gt; to the
-               request sent during HTTP health checks. If defined, the
-               &quot;Content-Length&quot; header is thus automatically added to the
-               request.</pre>
+body-lf &lt;fmt&gt;  add the body defined by the Custom log format &lt;fmt&gt; (see
+               <a href="#8.2.6">section 8.2.6</a>) to the request sent during HTTP health
+               checks. If defined, the &quot;Content-Length&quot; header is thus
+               automatically added to the request.</pre>
 </div>
 <pre class="text">In addition to the request line defined by the &quot;<a href="#option%20httpchk">option httpchk</a>&quot; directive,
 this one is the valid way to add some headers and optionally a body to the
@@ -12211,8 +12243,8 @@ May be used in the following contexts: tcp, http
 
 &lt;expr&gt;      Is a sample-fetch expression potentially followed by converters.
 
-&lt;fmt&gt;       This is the value expressed using log-format rules (see Custom
-            Log Format in <a href="#8.2.4">section 8.2.4</a>).</pre>
+&lt;fmt&gt;       This is the value expressed using Custom log format (see Custom
+            Log Format in <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Examples :</span>
@@ -12294,7 +12326,7 @@ lf-file &lt;file&gt;       specifies the file to use as response payload. If the
                      file is not empty, its content-type must be set as
                      argument to &quot;content-type&quot;, otherwise, any
                      &quot;content-type&quot; argument is ignored. &lt;file&gt; is
-                     evaluated as a log-format string.
+                     evaluated as a Custom log format (see <a href="#8.2.6">section 8.2.6</a>).
 
 lf-string &lt;str&gt;      specifies the log-format string to use as response
                      payload. The content-type must always be set as
@@ -12302,8 +12334,9 @@ lf-string &lt;str&gt;      specifies the log-format string to use as response
 
 hdr &lt;name&gt; &lt;fmt&gt;     adds to the response the HTTP header field whose name
                      is specified in &lt;name&gt; and whose value is defined by
-                     &lt;fmt&gt;, which follows to the log-format rules.
-                     This parameter is ignored if an errorfile is used.</pre>
+                     &lt;fmt&gt;, which follows the Custom log format rules (see
+                     <a href="#8.2.6">section 8.2.6</a>). This parameter is ignored if an
+                     errorfile is used.</pre>
 </div>
 <pre class="text">This directive may be used instead of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, to define a custom error
 message. As &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive, it is used for errors detected and
@@ -12514,10 +12547,11 @@ The argument indicates the desired connection reuse strategy :
 
 When http connection sharing is enabled, a great care is taken to respect the
 connection properties and compatibility. Indeed, some properties are specific
-and it is not possible to reuse it blindly. Those are the SSL SNI, source
-and destination address, proxy protocol block as well as tos and mark
-sockopts. A connection is reused only if it shares the same set of properties
-with the request.
+and it is not possible to reuse it blindly. Those are the source and
+destination address, proxy protocol block as well as tos and mark sockopts.
+It is also possible to manually define an extra expression identifier using
+&quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; server keyword, or &quot;<a href="#sni">sni</a>&quot; as a fallback. A connection is
+reused only if it shares the same set of properties with the request.
 
 Also note that connections with certain bogus authentication schemes (relying
 on the connection) like NTLM are marked private if possible and never shared.
@@ -12893,7 +12927,7 @@ log tcp@127.0.0.1:514 local0 notice notice  <span class="comment"># same but lim
                                             <span class="comment"># level and send in tcp</span>
 log &quot;${LOCAL_SYSLOG}:514&quot; local0 notice   <span class="comment"># send to local server</span>
 </code></pre>
-</div><a class="anchor" name="log-format"></a><a class="anchor" name="4-log-format"></a><a class="anchor" name="4.2-log-format"></a><a class="anchor" name="log-format (Proxies)"></a><a class="anchor" name="log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format"></a><a href="#4.2-log-format">log-format</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specifies the log format string to use for traffic logs
+</div><a class="anchor" name="log-format"></a><a class="anchor" name="4-log-format"></a><a class="anchor" name="4.2-log-format"></a><a class="anchor" name="log-format (Proxies)"></a><a class="anchor" name="log-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format"></a><a href="#4.2-log-format">log-format</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">Specifies the custom log format string to use for traffic logs
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12903,14 +12937,15 @@ May be used in the following contexts: tcp, http
 <pre class="text">This directive specifies the log format string that will be used for all logs
 resulting from traffic passing through the frontend using this line. If the
 directive is used in a defaults section, all subsequent frontends will use
-the same log format. Please see <a href="#8.2.4">section 8.2.4</a> which covers the log format
-string in depth.
+the same log format. Please see <a href="#8.2.6">section 8.2.6</a> which covers the custom log
+format string in depth.
+
 A specific log-format used only in case of connection error can also be
 defined, see the &quot;<a href="#error-log-format">error-log-format</a>&quot; option.
 
 &quot;<a href="#log-format">log-format</a>&quot; directive overrides previous &quot;<a href="#option%20tcplog">option tcplog</a>&quot;, &quot;<a href="#log-format">log-format</a>&quot;,
 &quot;<a href="#option%20httplog">option httplog</a>&quot; and &quot;<a href="#option%20httpslog">option httpslog</a>&quot; directives.
-</pre><a class="anchor" name="log-format-sd"></a><a class="anchor" name="4-log-format-sd"></a><a class="anchor" name="4.2-log-format-sd"></a><a class="anchor" name="log-format-sd (Proxies)"></a><a class="anchor" name="log-format-sd (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format-sd"></a><a href="#4.2-log-format-sd">log-format-sd</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Specifies the RFC5424 structured-data log format string
+</pre><a class="anchor" name="log-format-sd"></a><a class="anchor" name="4-log-format-sd"></a><a class="anchor" name="4.2-log-format-sd"></a><a class="anchor" name="log-format-sd (Proxies)"></a><a class="anchor" name="log-format-sd (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log-format-sd"></a><a href="#4.2-log-format-sd">log-format-sd</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">Specifies the Custom log format string used to produce RFC5424 structured-data
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12920,7 +12955,7 @@ May be used in the following contexts: tcp, http
 <pre class="text">This directive specifies the RFC5424 structured-data log format string that
 will be used for all logs resulting from traffic passing through the frontend
 using this line. If the directive is used in a defaults section, all
-subsequent frontends will use the same log format. Please see <a href="#8.2.4">section 8.2.4</a>
+subsequent frontends will use the same log format. Please see <a href="#8.2.6">section 8.2.6</a>
 which covers the log format string in depth.
 
 See https://tools.ietf.org/html/rfc5424#section-6.3 for more information
@@ -15237,8 +15272,8 @@ response. If no condition is specified, the redirect applies unconditionally.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;loc&gt;     With &quot;<a href="#redirect%20location">redirect location</a>&quot;, the exact value in &lt;loc&gt; is placed into
           the HTTP &quot;Location&quot; header. When used in an &quot;<a href="#http-request">http-request</a>&quot; rule,
-          &lt;loc&gt; value follows the log-format rules and can include some
-          dynamic values (see Custom Log Format in <a href="#8.2.4">section 8.2.4</a>).
+          &lt;loc&gt; value follows the Custom log format rules and can include
+          some dynamic values (see Custom log format in <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;pfx&gt;     With &quot;<a href="#redirect%20prefix">redirect prefix</a>&quot;, the &quot;Location&quot; header is built from the
           concatenation of &lt;pfx&gt; and the complete URI path, including the
@@ -15246,9 +15281,9 @@ response. If no condition is specified, the redirect applies unconditionally.
           below). As a special case, if &lt;pfx&gt; equals exactly &quot;/&quot;, then
           nothing is inserted before the original URI. It allows one to
           redirect to the same URL (for instance, to insert a cookie). When
-          used in an &quot;<a href="#http-request">http-request</a>&quot; rule, &lt;pfx&gt; value follows the log-format
-          rules and can include some dynamic values (see Custom Log Format
-          in <a href="#8.2.4">section 8.2.4</a>).
+          used in an &quot;<a href="#http-request">http-request</a>&quot; rule, &lt;pfx&gt; value follows the Custom
+          Log Format rules and can include some dynamic values (see Custom
+          Log Format in <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;sch&gt;     With &quot;<a href="#redirect%20scheme">redirect scheme</a>&quot;, then the &quot;Location&quot; header is built by
           concatenating &lt;sch&gt; with &quot;://&quot; then the first occurrence of the
@@ -15259,8 +15294,8 @@ response. If no condition is specified, the redirect applies unconditionally.
           returned, which most recent browsers interpret as redirecting to
           the same host. This directive is mostly used to redirect HTTP to
           HTTPS. When used in an &quot;<a href="#http-request">http-request</a>&quot; rule, &lt;sch&gt; value follows
-          the log-format rules and can include some dynamic values (see
-          Custom Log Format in <a href="#8.2.4">section 8.2.4</a>).
+          the Custom log format rules and can include some dynamic values
+          (see Custom log format in <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;code&gt;    The code is optional. It indicates which type of HTTP redirection
           is desired. Only codes 301, 302, 303, 307 and 308 are supported,
@@ -17067,12 +17102,13 @@ tout-status &lt;st&gt;   is optional and can be used to set the check status if
 on-success &lt;fmt&gt;   is optional and can be used to customize the
                    informational message reported in logs if the expect
                    rule is successfully evaluated and if it is the last rule
-                   in the tcp-check ruleset. &lt;fmt&gt; is a log-format string.
+                   in the tcp-check ruleset. &lt;fmt&gt; is a Custom log format
+                   (see <a href="#8.2.6">section 8.2.6</a>).
 
 on-error &lt;fmt&gt;     is optional and can be used to customize the
                    informational message reported in logs if an error
                    occurred during the expect rule evaluation. &lt;fmt&gt; is a
-                   log-format string.
+                   Custom log format (see <a href="#8.2.6">section 8.2.6</a>).
 
 status-code &lt;expr&gt; is optional and can be used to set the check status code
                    reported in logs, on success or on error. &lt;expr&gt; is a
@@ -17105,12 +17141,13 @@ status-code &lt;expr&gt; is optional and can be used to set the check status cod
                     will be considered invalid if the body matches the
                     expression.
 
-  string-lf &lt;fmt&gt; : test a log-format string match in the response's buffer.
+  string-lf &lt;fmt&gt; : test a Custom log format match in the response's buffer.
                     A health check response will be considered valid if the
                     response's buffer contains the  string resulting of the
-                    evaluation of &lt;fmt&gt;, which follows the log-format rules.
-                    If prefixed with &quot;!&quot;, then the response will be
-                    considered invalid if the buffer contains the string.
+                    evaluation of &lt;fmt&gt;, which follows the Custom log format
+                    rules described in <a href="#8.2.6">section 8.2.6</a>. If prefixed with &quot;!&quot;,
+                    then the response will be considered invalid if the
+                    buffer contains the string.
 
   binary &lt;hexstring&gt; : test the exact string in its hexadecimal form matches
                        in the response buffer. A health check response will
@@ -17127,16 +17164,16 @@ status-code &lt;expr&gt; is optional and can be used to set the check status cod
                     pattern should work on at-most half the response buffer
                     size.
 
-  binary-lf &lt;hexfmt&gt; : test a log-format string in its hexadecimal form
-                       match in the response's buffer. A health check response
-                       will be considered valid if the response's buffer
-                       contains the hexadecimal string resulting of the
-                       evaluation of &lt;fmt&gt;, which follows the log-format
-                       rules. If prefixed with &quot;!&quot;, then the response will be
-                       considered invalid if the buffer contains the
-                       hexadecimal string. The hexadecimal string is converted
-                       in a binary string before matching the response's
-                       buffer.
+  binary-lf &lt;hexfmt&gt; : test a Custom log format in its hexadecimal form match
+                       in the response's buffer. A health check response will
+                       be considered valid if the response's buffer contains
+                       the hexadecimal string resulting of the evaluation of
+                       &lt;fmt&gt;, which follows the Custom log format rules (see
+                       <a href="#8.2.6">section 8.2.6</a>). If prefixed with &quot;!&quot;, then the
+                       response will be considered invalid if the buffer
+                       contains the hexadecimal string. The hexadecimal
+                       string is converted in a binary string before matching
+                       the response's buffer.
 
 It is important to note that the responses will be limited to a certain size
 defined by the global &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option, which defaults to 16384 bytes.
@@ -17170,7 +17207,7 @@ tcp-check send QUIT\r\n
 tcp-check expect string +OK
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot;, &quot;<a href="#tcp-check%20send-binary">tcp-check send-binary</a>&quot;, &quot;<a href="#http-check%20expect">http-check expect</a>&quot;, tune.bufsize</div>
-<a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send"></a><a class="anchor" name="4-tcp-check send"></a><a class="anchor" name="4.2-tcp-check send"></a><a class="anchor" name="tcp-check send (Proxies)"></a><a class="anchor" name="tcp-check send (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send"></a><a href="#4.2-tcp-check%20send">tcp-check send</a></b> <span style="color: #080">&lt;data&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-lf"></a><a class="anchor" name="4-tcp-check send-lf"></a><a class="anchor" name="4.2-tcp-check send-lf"></a><a class="anchor" name="tcp-check send-lf (Proxies)"></a><a class="anchor" name="tcp-check send-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-lf"></a><a href="#4.2-tcp-check%20send-lf">tcp-check send-lf</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify a string or a log-format string to be sent as a question during a
+<a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send"></a><a class="anchor" name="4-tcp-check send"></a><a class="anchor" name="4.2-tcp-check send"></a><a class="anchor" name="tcp-check send (Proxies)"></a><a class="anchor" name="tcp-check send (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send"></a><a href="#4.2-tcp-check%20send">tcp-check send</a></b> <span style="color: #080">&lt;data&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-lf"></a><a class="anchor" name="4-tcp-check send-lf"></a><a class="anchor" name="4.2-tcp-check send-lf"></a><a class="anchor" name="tcp-check send-lf (Proxies)"></a><a class="anchor" name="tcp-check send-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-lf"></a><a href="#4.2-tcp-check%20send-lf">tcp-check send-lf</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify a string or a Custom log format to be sent as a question during a
 generic health check
 
 May be used in the following contexts: tcp, http, log
@@ -17184,8 +17221,8 @@ May be used in the following contexts: tcp, http, log
 &lt;data&gt;         is the string that will be sent during a generic health
                check session.
 
-&lt;fmt&gt;          is the log-format string that will be sent, once evaluated,
-               during a generic health check session.</pre>
+&lt;fmt&gt;          is the Custom log format that will be sent, once evaluated,
+               during a generic health check session (see <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Examples :</span>
@@ -17196,7 +17233,7 @@ tcp-check send info\ replication\r\n
 tcp-check expect string role:master
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;, &quot;<a href="#tcp-check%20send-binary">tcp-check send-binary</a>&quot;, tune.bufsize</div>
-<a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary"></a><a class="anchor" name="4-tcp-check send-binary"></a><a class="anchor" name="4.2-tcp-check send-binary"></a><a class="anchor" name="tcp-check send-binary (Proxies)"></a><a class="anchor" name="tcp-check send-binary (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary"></a><a href="#4.2-tcp-check%20send-binary">tcp-check send-binary</a></b> <span style="color: #080">&lt;hexstring&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary-lf"></a><a class="anchor" name="4-tcp-check send-binary-lf"></a><a class="anchor" name="4.2-tcp-check send-binary-lf"></a><a class="anchor" name="tcp-check send-binary-lf (Proxies)"></a><a class="anchor" name="tcp-check send-binary-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary-lf"></a><a href="#4.2-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></b> <span style="color: #080">&lt;hexfmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify an hex digits string or an hex digits log-format string to be sent as
+<a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary"></a><a class="anchor" name="4-tcp-check send-binary"></a><a class="anchor" name="4.2-tcp-check send-binary"></a><a class="anchor" name="tcp-check send-binary (Proxies)"></a><a class="anchor" name="tcp-check send-binary (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary"></a><a href="#4.2-tcp-check%20send-binary">tcp-check send-binary</a></b> <span style="color: #080">&lt;hexstring&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary-lf"></a><a class="anchor" name="4-tcp-check send-binary-lf"></a><a class="anchor" name="4.2-tcp-check send-binary-lf"></a><a class="anchor" name="tcp-check send-binary-lf (Proxies)"></a><a class="anchor" name="tcp-check send-binary-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary-lf"></a><a href="#4.2-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></b> <span style="color: #080">&lt;hexfmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify an hex digits string or an hex digits Custom log format to be sent as
 a binary question during a raw tcp health check
 
 May be used in the following contexts: tcp, http, log
@@ -17210,9 +17247,9 @@ May be used in the following contexts: tcp, http, log
 &lt;hexstring&gt;    is the hexadecimal string that will be send, once converted
                to binary, during a generic health check session.
 
-&lt;hexfmt&gt;       is the hexadecimal log-format string that will be send, once
+&lt;hexfmt&gt;       is the hexadecimal Custom log format that will be send, once
                evaluated and converted to binary, during a generic health
-               check session.</pre>
+               check session (see <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Examples :</span>
@@ -17247,8 +17284,8 @@ May be used in the following contexts: tcp, http, log
 
 &lt;expr&gt;      Is a sample-fetch expression potentially followed by converters.
 
-&lt;fmt&gt;       This is the value expressed using log-format rules (see Custom
-            Log Format in <a href="#8.2.4">section 8.2.4</a>).</pre>
+&lt;fmt&gt;       This is the value expressed using Custom log format rules (see
+            Custom log format in <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Examples :</span>
@@ -18120,7 +18157,7 @@ The &quot;<a href="#option%20transparent">transparent</a>&quot; keyword is depre
 Note that contrary to a common belief, this option does NOT make HAProxy
 present the client's IP to the server when establishing the connection.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#option%20transparent">option transparent</a>&quot;</div>
-<a class="anchor" name="unique-id-format"></a><a class="anchor" name="4-unique-id-format"></a><a class="anchor" name="4.2-unique-id-format"></a><a class="anchor" name="unique-id-format (Proxies)"></a><a class="anchor" name="unique-id-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="unique-id-format"></a><a href="#4.2-unique-id-format">unique-id-format</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Generate a unique ID for each request.
+<a class="anchor" name="unique-id-format"></a><a class="anchor" name="4-unique-id-format"></a><a class="anchor" name="4.2-unique-id-format"></a><a class="anchor" name="unique-id-format (Proxies)"></a><a class="anchor" name="unique-id-format (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="unique-id-format"></a><a href="#4.2-unique-id-format">unique-id-format</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">Generate a unique ID for each request.
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -18128,12 +18165,12 @@ May be used in the following contexts: tcp, http
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
 </table></div>
 <div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;string&gt;   is a log-format string.</pre>
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;fmt&gt;   is a Custom log format string (see <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <pre class="text">This keyword creates a ID for each request using the custom log format. A
 unique ID is useful to trace a request passing through many components of
 a complex infrastructure. The newly created ID may also be logged using the
-%ID tag the log-format string.
+%ID tag the Custom log format string.
 
 The format should be composed from elements that are guaranteed to be
 unique when combined together. For instance, if multiple HAProxy instances
@@ -18189,7 +18226,8 @@ May be used in the following contexts: tcp, http
 </table></div>
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;backend&gt;   is the name of a valid backend or &quot;listen&quot; section, or a
-            &quot;<a href="#log-format">log-format</a>&quot; string resolving to a backend name.
+            Custom log format resolving to a backend name (see Custom
+            Log Format in <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;condition&gt; is a condition composed of ACLs, as described in <a href="#7">section 7</a>. If
             it is omitted, the rule is unconditionally applied.</pre>
@@ -18221,7 +18259,7 @@ must decode several protocols on a unique port, one of them being HTTP.
 
 When &lt;backend&gt; is a simple name, it is resolved at configuration time, and an
 error is reported if the specified backend does not exist. If &lt;backend&gt; is
-a log-format string instead, no check may be done at configuration time, so
+a Custom log format instead, no check may be done at configuration time, so
 the backend name is resolved dynamically at run time. If the resulting
 backend name does not correspond to any valid backend, no other rule is
 evaluated, and the default_backend directive is applied instead. Note that
@@ -18253,7 +18291,8 @@ May be used in the following contexts: tcp, http
 </table></div>
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;server&gt;    is the name of a valid server in the same backend section
-            or a &quot;<a href="#log-format">log-format</a>&quot; string resolving to a server name.
+            or a Custom log format string resolving to a server name
+            (see <a href="#8.2.6">section 8.2.6</a>).
 
 &lt;condition&gt; is a condition composed of ACLs, as described in <a href="#7">section 7</a>.</pre>
 </div>
@@ -18302,10 +18341,10 @@ server  default 192.168.0.2:443 check
 </code></pre>
 </div><pre class="text">When &lt;server&gt; is a simple name, it is checked against existing servers in the
 configuration and an error is reported if the specified server does not exist.
-If it is a log-format, no check is performed when parsing the configuration,
-and if we can't resolve a valid server name at runtime but the use-server rule
-was conditioned by an ACL returning true, no other use-server rule is applied
-and we fall back to load balancing.
+If it is a Custom log format, no check is performed when parsing the
+configuration, and if we can't resolve a valid server name at runtime but the
+use-server rule was conditioned by an ACL returning true, no other use-server
+rule is applied and we fall back to load balancing.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#use_backend">use_backend</a>&quot;, <a href="#5">section 5</a> about server and <a href="#7">section 7</a> about ACLs.</div>
 </div>
 <a class="anchor" id="4.3" name="4.3"></a>
@@ -18431,22 +18470,22 @@ below.
 <pre class="text">This is used to add a new entry into an ACL. The ACL must be loaded from a
 file (even a dummy empty file). The file name of the ACL to be updated is
 passed between parentheses. It takes one argument: &lt;key fmt&gt;, which follows
-log-format rules, to collect content of the new entry. It performs a lookup
-in the ACL before insertion, to avoid duplicated (or more) values.
-It is the equivalent of the &quot;add acl&quot; command from the stats socket, but can
-be triggered by an HTTP request.
+Custom log format rules described in <a href="#8.2.6">section 8.2.6</a>, to collect content of the
+new entry. It performs a lookup in the ACL before insertion, to avoid
+duplicated (or more) values. It is the equivalent of the &quot;add acl&quot; command
+from the stats socket, but can be triggered by an HTTP request.
 </pre><a class="anchor" name="add-header"></a><a class="anchor" name="4-add-header"></a><a class="anchor" name="4.4-add-header"></a><a class="anchor" name="add-header (Proxies)"></a><a class="anchor" name="add-header (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="add-header"></a><a href="#4.4-add-header">add-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
 <pre class="text">This appends an HTTP header field whose name is specified in &lt;name&gt; and
-whose value is defined by &lt;fmt&gt; which follows the log-format rules (see
-Custom Log Format in <a href="#8.2.4">section 8.2.4</a>). This is particularly useful to pass
+whose value is defined by &lt;fmt&gt; which follows the Custom log format rules
+(see Custom log format in <a href="#8.2.6">section 8.2.6</a>). This is particularly useful to pass
 connection-specific information to the server (e.g. the client's SSL
-certificate), or to combine several headers into one. This rule is not
-final, so it is possible to add other similar rules. Note that header
-addition is performed immediately, so one rule might reuse the resulting
-header from a previous rule.
+certificate), or to combine several headers into one. This rule is not final,
+so it is possible to add other similar rules. Note that header addition is
+performed immediately, so one rule might reuse the resulting header from a
+previous rule.
 </pre><a class="anchor" name="allow"></a><a class="anchor" name="4-allow"></a><a class="anchor" name="4.4-allow"></a><a class="anchor" name="allow (Proxies)"></a><a class="anchor" name="allow (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="allow"></a><a href="#4.4-allow">allow</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -18469,8 +18508,9 @@ address.
 An extra parameter &lt;expr&gt; can be specified. Its value is interpreted as a
 sample expression to name the connection inside the server idle pool. When
 routing an outgoing request through this server, this name will be matched
-against the 'sni' parameter of the server line. Otherwise, the connection
-will have no name and will only match requests without SNI.
+against the 'pool-conn-name' parameter of the server line, or 'sni' as a
+fallback. Otherwise, the connection will have no extra identifier and will
+only match requests without name.
 
 This rule is only valid for frontend in HTTP mode. Also all listeners must
 not require a protocol different from HTTP/2.
@@ -18563,9 +18603,9 @@ significant resources on servers with certain protocols.
 <pre class="text">This is used to delete an entry from an ACL. The ACL must be loaded from a
 file (even a dummy empty file). The file name of the ACL to be updated is
 passed between parentheses. It takes one argument: &lt;key fmt&gt;, which follows
-log-format rules, to collect content of the entry to delete.
-It is the equivalent of the &quot;del acl&quot; command from the stats socket, but can
-be triggered by an HTTP request or response.
+Custom log format rules of <a href="#8.2.6">section 8.2.6</a>, to collect content of the entry to
+delete.  It is the equivalent of the &quot;del acl&quot; command from the stats socket,
+but can be triggered by an HTTP request or response.
 </pre><a class="anchor" name="del-header"></a><a class="anchor" name="4-del-header"></a><a class="anchor" name="4.4-del-header"></a><a class="anchor" name="del-header (Proxies)"></a><a class="anchor" name="del-header (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-header"></a><a href="#4.4-del-header">del-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ -m <span style="color: #080">&lt;meth&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -18582,10 +18622,10 @@ method is used.
 <pre class="text">This is used to delete an entry from a MAP. &lt;map-name&gt; must follow the format
 described in 2.7. about name format for maps and ACLs. The name of the MAP to
 be updated is passed between parentheses. It takes one argument: &lt;key fmt&gt;,
-which follows log-format rules, to collect content of the entry to delete.
-It takes one argument: &quot;file name&quot; It is the equivalent of the &quot;del map&quot;
-command from the stats socket, but can be triggered by an HTTP request or
-response.
+which follows Custom log format rules of <a href="#8.2.6">section 8.2.6</a>, to collect content of
+the entry to delete.  It takes one argument: &quot;file name&quot; It is the equivalent
+of the &quot;del map&quot; command from the stats socket, but can be triggered by an
+HTTP request or response.
 </pre><a class="anchor" name="deny"></a><a class="anchor" name="4-deny"></a><a class="anchor" name="4.4-deny"></a><a class="anchor" name="deny (Proxies)"></a><a class="anchor" name="deny (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="deny"></a><a href="#4.4-deny">deny</a></b> <span style="color: #008">[ <span style="color: #800">{ status | deny_status }</span> <span style="color: #080">&lt;code&gt;</span> ]</span> <span style="color: #008">[ content-type <span style="color: #080">&lt;type&gt;</span> ]</span>
      <span style="color: #008">[ <span style="color: #800">{ default-errorfiles | errorfile <span style="color: #080">&lt;file&gt;</span> | errorfiles <span style="color: #080">&lt;name&gt;</span> |
        file <span style="color: #080">&lt;file&gt;</span> | lf-file <span style="color: #080">&lt;file&gt;</span> | string <span style="color: #080">&lt;str&gt;</span> | lf-string <span style="color: #080">&lt;fmt&gt;</span> }</span> ]</span>
@@ -18673,10 +18713,10 @@ backend be
 </table></div>
 <pre class="text">This is used to build an HTTP 103 Early Hints response prior to any other one.
 This appends an HTTP header field to this response whose name is specified in
-&lt;name&gt; and whose value is defined by &lt;fmt&gt; which follows the log-format rules
-(see Custom Log Format in <a href="#8.2.4">section 8.2.4</a>). This is particularly useful to pass
-to the client some Link headers to preload resources required to render the
-HTML documents.
+&lt;name&gt; and whose value is defined by &lt;fmt&gt; which follows the Custom Log
+Format rules (see Custom log format in <a href="#8.2.6">section 8.2.6</a>). This is particularly
+useful to pass to the client some Link headers to preload resources required
+to render the HTML documents.
 
 See RFC 8297 for more information.
 </pre><a class="anchor" name="expect-netscaler-cip"></a><a class="anchor" name="4-expect-netscaler-cip"></a><a class="anchor" name="4.4-expect-netscaler-cip"></a><a class="anchor" name="expect-netscaler-cip (Proxies)"></a><a class="anchor" name="expect-netscaler-cip (Alphabetically sorted actions reference)"></a><a class="anchor" name="expect-netscaler-cip layer4"></a><a class="anchor" name="4-expect-netscaler-cip layer4"></a><a class="anchor" name="4.4-expect-netscaler-cip layer4"></a><a class="anchor" name="expect-netscaler-cip layer4 (Proxies)"></a><a class="anchor" name="expect-netscaler-cip layer4 (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="expect-netscaler-cip layer4"></a><a href="#4.4-expect-netscaler-cip%20layer4">expect-netscaler-cip layer4</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -18859,7 +18899,7 @@ in a HTTP 400 Bad Request being returned.
 <pre class="text">This performs an HTTP redirection based on a redirect rule. This is exactly
 the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; statement except that it inserts a redirect rule
 which is processed in the middle of other &quot;<a href="#http-request">http-request</a>&quot; or &quot;<a href="#http-response">http-response</a>&quot;
-rules and that these rules use the &quot;<a href="#log-format">log-format</a>&quot; strings. For responses, only
+rules and that these rules use the Custom log format. For responses, only
 the &quot;location&quot; type of redirect is permitted. In addition, when a redirect is
 performed during a response, the transfer from the server to HAProxy is
 interrupted so that no payload can be forwarded to the client. This may cause
@@ -19085,19 +19125,20 @@ are followed to create the response :
   used as the response payload. If the file is not empty, its content-type
   must be set as argument to &quot;content-type&quot;. Otherwise, any &quot;content-type&quot;
   argument is ignored. With a &quot;lf-file&quot; argument, the file's content is
-  evaluated as a log-format string. With a &quot;file&quot; argument, it is considered
-  as a raw content.
+  evaluated as a Custom log format (see <a href="#8.2.6">section 8.2.6</a>). With a &quot;file&quot;
+  argument, it is considered as a raw content.
 
 * If a &quot;string&quot; or &quot;lf-string&quot; argument is specified, the defined string is
   used as the response payload. The content-type must always be set as
   argument to &quot;content-type&quot;. With a &quot;lf-string&quot; argument, the string is
-  evaluated as a log-format string. With a &quot;string&quot; argument, it is
-  considered as a raw string.
+  evaluated as a Custom log format (see <a href="#8.2.6">section 8.2.6</a>). With a &quot;string&quot;
+  argument, it is considered as a raw string.
 
 When the response is not based on an errorfile, it is possible to append HTTP
 header fields to the response using &quot;<a href="#hdr">hdr</a>&quot; arguments. Otherwise, all &quot;<a href="#hdr">hdr</a>&quot;
 arguments are ignored. For each one, the header name is specified in &lt;name&gt;
-and its value is defined by &lt;fmt&gt; which follows the log-format rules.
+and its value is defined by &lt;fmt&gt; which follows the Custom log format rules
+described in <a href="#8.2.6">section 8.2.6</a>.
 
 Note that the generated response must be smaller than a buffer. And to avoid
 any warning, when an errorfile or a raw file is loaded, the buffer space
@@ -19375,11 +19416,12 @@ can be useful to disable health checks coming from another equipment.
 <pre class="text">This is used to add a new entry into a map. &lt;map-name&gt; must follow the format
 described in 2.7. about name format for maps and ACLs. The name of the MAP to
 be updated is passed between parentheses. It takes 2 arguments: &lt;key fmt&gt;,
-which follows log-format rules, used to collect map key, and &lt;value fmt&gt;,
-which follows log-format rules, used to collect content for the new entry.
-It performs a lookup in the map before insertion, to avoid duplicated (or
-more) values. It is the equivalent of the &quot;set map&quot; command from the
-stats socket, but can be triggered by an HTTP request.
+which follows Custom log format rules described in <a href="#8.2.6">section 8.2.6</a>, used to
+collect map key, and &lt;value fmt&gt;, which follows Custom log format rules, used
+to collect content for the new entry. It performs a lookup in the map before
+insertion, to avoid duplicated (or more) values. It is the equivalent of the
+&quot;set map&quot; command from the stats socket, but can be triggered by an HTTP
+request.
 </pre><a class="anchor" name="set-mark"></a><a class="anchor" name="4-set-mark"></a><a class="anchor" name="4.4-set-mark"></a><a class="anchor" name="set-mark (Proxies)"></a><a class="anchor" name="set-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-mark"></a><a href="#4.4-set-mark">set-mark</a></b> <span style="color: #080">&lt;mark&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#set-fc-mark">set-fc-mark</a>&quot; (which should be used instead).
 </pre><a class="anchor" name="set-method"></a><a class="anchor" name="4-set-method"></a><a class="anchor" name="4.4-set-method"></a><a class="anchor" name="set-method (Proxies)"></a><a class="anchor" name="set-method (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-method"></a><a href="#4.4-set-method">set-method</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -19596,8 +19638,8 @@ inline.
 &lt;expr&gt;      Is a standard HAProxy expression formed by a sample-fetch
             followed by some converters.
 
-&lt;fmt&gt;       This is the value expressed using log-format rules (see Custom
-            Log Format in <a href="#8.2.4">section 8.2.4</a>).</pre>
+&lt;fmt&gt;       This is the value expressed using Custom log format rules (see
+            Custom log format in <a href="#8.2.6">section 8.2.6</a>).</pre>
 </div>
 <pre class="text">All scopes are usable for HTTP rules, but scopes &quot;<a href="#proc">proc</a>&quot; and &quot;sess&quot; are the
 only usable ones in rule sets which do not have access to contents such as
@@ -21343,6 +21385,12 @@ Currently one action is available:
   with an 'U' termination code (for &quot;Up&quot;).
 
 Actions are disabled by default
+</pre><a class="anchor" name="pool-conn-name"></a><a class="anchor" name="5-pool-conn-name"></a><a class="anchor" name="5.2-pool-conn-name"></a><a class="anchor" name="pool-conn-name (Bind and server options)"></a><a class="anchor" name="pool-conn-name (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-conn-name"></a><a href="#5.2-pool-conn-name">pool-conn-name</a></b> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">May be used in the following contexts: http
+
+Set an expression which will be interpreted to differentiate connections
+inside the server idle pool. On reuse, only connection with identical name
+will be eligible. If SNI expression is defined but not this parameter, it
+will act as idle pool identifier to guarantee that SNI match on reuse.
 </pre><a class="anchor" name="pool-low-conn"></a><a class="anchor" name="5-pool-low-conn"></a><a class="anchor" name="5.2-pool-low-conn"></a><a class="anchor" name="pool-low-conn (Bind and server options)"></a><a class="anchor" name="pool-low-conn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-low-conn"></a><a href="#5.2-pool-low-conn">pool-low-conn</a></b> <span style="color: #080">&lt;max&gt;</span></div><pre class="text">May be used in the following contexts: http
 
 Set a low threshold on the number of idling connections for a server, below
@@ -22897,7 +22945,7 @@ converter requires at least OpenSSL 1.0.1.
 <code>http-response set-header X-Decrypted-Text %[var(txn.enc),\
   aes_gcm_dec(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==,txn.aead_tag)]
 </code></pre>
-</div><a class="anchor" name="aes_gcm_enc"></a><a class="anchor" name="7-aes_gcm_enc"></a><a class="anchor" name="7.3.1-aes_gcm_enc"></a><a class="anchor" name="aes_gcm_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_enc"></a><a href="#7.3.1-aes_gcm_enc">aes_gcm_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-GCM, AES192-GCM or
+</div><a class="anchor" name="aes_gcm_enc"></a><a class="anchor" name="7-aes_gcm_enc"></a><a class="anchor" name="7.3.1-aes_gcm_enc"></a><a class="anchor" name="aes_gcm_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_enc"></a><a href="#7.3.1-aes_gcm_enc">aes_gcm_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span>)</div><pre class="text">Encrypts the raw byte input using the AES128-GCM, AES192-GCM or
 AES256-GCM algorithm, depending on the &lt;bits&gt; parameter. &lt;nonce&gt; and &lt;key&gt;
 parameters must be base64 encoded. Last parameter, &lt;aead_tag&gt;, must be a
 variable. The AEAD tag will be stored base64 encoded into that variable.
@@ -25165,11 +25213,11 @@ alter this address. See &quot;dst-port&quot; for details.
 </pre><a class="anchor" name="fc_err"></a><a class="anchor" name="7-fc_err"></a><a class="anchor" name="7.3.3-fc_err"></a><a class="anchor" name="fc_err (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_err (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_err"></a><a href="#7.3.3-fc_err">fc_err</a></b> : integer</div><pre class="text">Returns the ID of the error that might have occurred on the current
 connection. Any strictly positive value of this fetch indicates that the
 connection did not succeed and would result in an error log being output (as
-described in <a href="#8.2.6">section 8.2.6</a>). See the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of
+described in <a href="#8.2.5">section 8.2.5</a>). See the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of
 error codes and their corresponding error message.
 </pre><a class="anchor" name="fc_err_str"></a><a class="anchor" name="7-fc_err_str"></a><a class="anchor" name="7.3.3-fc_err_str"></a><a class="anchor" name="fc_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_err_str (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_err_str"></a><a href="#7.3.3-fc_err_str">fc_err_str</a></b> : string</div><pre class="text">Returns an error message describing what problem happened on the current
 connection, resulting in a connection failure. This string corresponds to the
-&quot;message&quot; part of the error log format (see <a href="#8.2.6">section 8.2.6</a>). See below for a
+&quot;message&quot; part of the error log format (see <a href="#8.2.5">section 8.2.5</a>). See below for a
 full list of error codes and their corresponding error messages :
 
 +----+---------------------------------------------------------------------------+
@@ -26530,7 +26578,7 @@ Warning : Following sample fetches are ignored if used from HTTP proxies. They
           HTTP proxies use structured content. Thus raw representation of
           these data are meaningless. A warning is emitted if an ACL relies on
           one of the following sample fetches. But it is not possible to detect
-          all invalid usage (for instance inside a log-format string or a
+          all invalid usage (for instance inside a Custom log format or a
           sample expression). So be careful.
 
 Summary of sample fetch methods in this section and their respective types:
@@ -28396,14 +28444,36 @@ regular traffic log (see option httplog or option httpslog).
 </pre></div>
 <a class="anchor" id="8.2.6" name="8.2.6"></a>
 <h3 id="chapter-8.2.6" data-target="8.2.6"><small><a class="small" href="#8.2.6">8.2.6.</a></small> Custom log format</h3>
-<div><pre class="text">When the default log formats are not sufficient, it is possible to define new
-ones in very fine details. As creating a log-format from scratch is not always
-a trivial task, it is strongly recommended to first have a look at the existing
-formats (&quot;<a href="#option%20tcplog">option tcplog</a>&quot;, &quot;<a href="#option%20httplog">option httplog</a>&quot;, &quot;<a href="#option%20httpslog">option httpslog</a>&quot;), pick the one
-looking the closest to the expectation, copy its &quot;<a href="#log-format">log-format</a>&quot; equivalent string
-and adjust it.
+<div><pre class="text">Historically, custom log formats were only used to produce logs. But their
+convenience when used to produce a string by assembling multiple complex
+expressions has got them adopted by many directives which used to take only
+a string in argument and which may now also take an such a Custom log format
+definition. Such arguments, which are commonly designated by &quot;&lt;fmt&gt;&quot; in this
+document, are defined exactly the same way as the argument to the &quot;<a href="#log-format">log-format</a>&quot;
+directive, described here.
 
-HAProxy understands some log format variables. % precedes log format variables.
+When it comes to logs and when the default log formats are not sufficient, it
+is possible to define new ones in very fine details. As creating a log-format
+from scratch is not always a trivial task, it is strongly recommended to first
+have a look at the existing formats (&quot;<a href="#option%20tcplog">option tcplog</a>&quot;, &quot;<a href="#option%20httplog">option httplog</a>&quot;, &quot;option
+httpslog&quot;), pick the one looking the closest to the expectation, copy its
+&quot;<a href="#log-format">log-format</a>&quot; equivalent string and adjust it.
+
+A Custom log format definition is a single argument from a configuration
+perspective. This means that it may not contain blanks (spaces or tabs), unless
+these blanks are escaped using the backslash character ('\'), or the whole
+definition is enclosed between quotes (which is the recommended way to use
+them). The use of unquoted format strings is not recommended anymore as history
+has shown that it was very error prone since a single missing backslash
+character could result in silent truncation of the format. Such configurations
+are still commonly encountered due to the massive adoption of log formats after
+version 1.5-dev9, 3 years before quotes were usable, but it is recommended to
+convert them to quoted strings and to drop the backslashes now.
+
+HAProxy understands some log format variables, preceeded by character '%'.
+In order to emit a verbatim '%', it must be preceded by another '%' resulting
+in '%%'.
+
 Variables can take arguments using braces ('{}'), and multiple arguments are
 separated by commas within the braces. Flags may be added or removed by
 prefixing them with a '+' or '-' sign.
@@ -28415,12 +28485,23 @@ variables on the same format string. This is particularly handy with quoted
 If a variable is named between square brackets ('[' .. ']') then it is used
 as a sample expression rule (see <a href="#7.3">section 7.3</a>). This it useful to add some
 less common information such as the client's SSL certificate's DN, or to log
-the key that would be used to store an entry into a stick table.
+the key that would be used to store an entry into a stick table. It is also
+commonly used with non-log actions (header manipulation, variables etc).
 
-Note: spaces must be escaped. In configuration directives &quot;<a href="#log-format">log-format</a>&quot;,
-&quot;<a href="#log-format-sd">log-format-sd</a>&quot; and &quot;<a href="#unique-id-format">unique-id-format</a>&quot;, spaces are considered as
-delimiters and are merged. In order to emit a verbatim '%', it must be
-preceded by another '%' resulting in '%%'.
+Due to the original goal of custom log formats to be used for logging only,
+there is a special case made of non-printable and unsafe characters (those
+outside ASCII codes 32 to 126 plus a few other ones) depending where they are
+used. Section 8.6 describes what's done exactly for logs in order to make sure
+one will not send unsafe codes that alter the readability of the output in a
+terminal. When used to form header fields, health checks or payload responses,
+the rules are less strict and only characters forbidden in HTTP header fields
+are replaced by their hexadecimal encoding preceded by character '%'. This is
+normally not a problem, but it might affect the output when the character was
+expected to be reproduced verbatim (e.g. when building an error page or a full
+response payload, where line feeds could appear as &quot;%0A&quot;).
+
+Note: in configuration directives &quot;<a href="#log-format">log-format</a>&quot;, &quot;<a href="#log-format-sd">log-format-sd</a>&quot; and
+&quot;<a href="#unique-id-format">unique-id-format</a>&quot;, spaces are considered as delimiters and are merged.
 
 Note: when using the RFC5424 syslog message format, the characters '&quot;',
 '\' and ']' inside PARAM-VALUE should be escaped with '\' as prefix (see
@@ -29871,8 +29952,8 @@ to 1.
 This option may be overwritten if the variable FCGI_MPXS_CONNS is retrieved
 during connection establishment. It is disabled by default.
 </pre><a class="anchor" name="set-param"></a><a class="anchor" name="10-set-param"></a><a class="anchor" name="10.1.1-set-param"></a><a class="anchor" name="set-param (FastCGI applications)"></a><a class="anchor" name="set-param (Fcgi-app section)"></a><div class="keyword"><b><a class="anchor" name="set-param"></a><a href="#10.1.1-set-param">set-param</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Set a FastCGI parameter that should be passed to this application. Its
-value, defined by &lt;fmt&gt; must follows the log-format rules (see <a href="#8.2.4">section 8.2.4</a>
-&quot;Custom Log format&quot;). It may optionally be followed by an ACL-based
+value, defined by &lt;fmt&gt; must follows the Custom log format rules (see section
+8.2.6 &quot;Custom Log format&quot;). It may optionally be followed by an ACL-based
 condition, in which case it will only be evaluated if the condition is true.
 
 With this directive, it is possible to overwrite the value of default FastCGI
@@ -30219,8 +30300,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev12-38 &ndash; Configuration Manual<br>
-							<small>, 2024/05/18</small>
+							HAProxy 3.0-dev13 &ndash; Configuration Manual<br>
+							<small>, 2024/05/24</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
