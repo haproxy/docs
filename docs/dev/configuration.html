@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev13 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev13-9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4181,6 +4181,8 @@
 							
 							<a class="list-group-item" href="#upper">upper</a>
 							
+							<a class="list-group-item" href="#uptime">uptime</a>
+							
 							<a class="list-group-item" href="#url">url</a>
 							
 							<a class="list-group-item" href="#url32">url32</a>
@@ -4301,7 +4303,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4312,7 +4314,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev13</strong></p>
+							<p><strong>version 3.0-dev13-9</strong></p>
 							<p>
 								2024/05/24<br>
 								
@@ -9733,8 +9735,8 @@ On the other hand, if a certificate has an OCSP uri specified and no OCSP
 response, setting this option to 'on' for the given certificate will ensure
 that the OCSP response gets fetched automatically right after init.
 The default minimum and maximum delays (5 minutes and 1 hour respectively)
-can be configured by the &quot;<a href="#tune.ssl.ocsp-update.maxdelay">tune.ssl.ocsp-update.maxdelay</a>&quot; and
-&quot;<a href="#tune.ssl.ocsp-update.mindelay">tune.ssl.ocsp-update.mindelay</a>&quot; global options.
+can be configured by the &quot;<a href="#ocsp-update.maxdelay">ocsp-update.maxdelay</a>&quot; and &quot;<a href="#ocsp-update.mindelay">ocsp-update.mindelay</a>&quot;
+global options.
 
 Whenever an OCSP response is updated by the auto update task or following a
 call to the &quot;update ssl ocsp-response&quot; CLI command, a dedicated log line is
@@ -14322,7 +14324,7 @@ May be used in the following contexts: tcp, http
 <div class="separator">
 <span class="label label-info">Arguments :</span> none
 </div>
-<pre class="text">By default, logs are emitted when all the log format variables and sample
+<pre class="text">By default, logs are emitted when all the log format aliases and sample
 fetches used in the definition of the log-format string return a value, or
 when the stream is terminated. This allows the built in log-format strings
 to account for the transfer time, or the number of bytes in log messages.
@@ -18170,7 +18172,7 @@ May be used in the following contexts: tcp, http
 <pre class="text">This keyword creates a ID for each request using the custom log format. A
 unique ID is useful to trace a request passing through many components of
 a complex infrastructure. The newly created ID may also be logged using the
-%ID tag the Custom log format string.
+%ID alias in the Custom log format string.
 
 The format should be composed from elements that are guaranteed to be
 unique when combined together. For instance, if multiple HAProxy instances
@@ -24798,7 +24800,8 @@ is evaluated is returned. It is subject to change. Except used with ACLs in
 <code><span class="comment"># Return a 429-Too-Many-Requests if stream timed out in queue</span>
 http-after-response set-status 429 if { txn.sess_term_state  &quot;sQ&quot; }
 </code></pre>
-</div><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC 9562 standard. If the version is not
+</div><a class="anchor" name="uptime"></a><a class="anchor" name="7-uptime"></a><a class="anchor" name="7.3.2-uptime"></a><a class="anchor" name="uptime (Using ACLs and fetching samples)"></a><a class="anchor" name="uptime (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uptime"></a><a href="#7.3.2-uptime">uptime</a></b> : integer</div><pre class="text">Returns the uptime of the current HAProxy worker in seconds.
+</pre><a class="anchor" name="uuid"></a><a class="anchor" name="7-uuid"></a><a class="anchor" name="7.3.2-uuid"></a><a class="anchor" name="uuid (Using ACLs and fetching samples)"></a><a class="anchor" name="uuid (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="uuid"></a><a href="#7.3.2-uuid">uuid</a></b>(<span style="color: #008">[<span style="color: #080">&lt;version&gt;</span>]</span>) : string</div><pre class="text">Returns a UUID following the RFC 9562 standard. If the version is not
 specified, a UUID version 4 (fully random) is returned.
 
 Versions 4 and 7 are supported.
@@ -26629,7 +26632,7 @@ bs.aborted: boolean
 
 bs.rst_code: integer
   Returns the reset code received from the server for the current stream. The
-  code of the H2 RST_STEAM frame or the QUIC STOP_SENDING frame received from
+  code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
   the server is returned. The sample fetch fails if no abort was received or if
   the server stream is not an H2/QUIC stream.
 </pre><a class="anchor" name="distcc_body"></a><a class="anchor" name="7-distcc_body"></a><a class="anchor" name="7.3.5-distcc_body"></a><a class="anchor" name="distcc_body (Using ACLs and fetching samples)"></a><a class="anchor" name="distcc_body (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="distcc_body"></a><a href="#7.3.5-distcc_body">distcc_body</a></b>(<span style="color: #080">&lt;token&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) : binary</div><pre class="text">Parses a distcc message and returns the body associated to occurrence #&lt;occ&gt;
@@ -26666,8 +26669,8 @@ fs.aborted: boolean
 
 fs.rst_code: integer
   Returns the reset code received from the client for the current stream. The
-  code of the H2 RST_STEAM frame or the QUIC STOP_SENDING frame received from the
-  client is returned. The sample fetch fails if no abort was received or
+  code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
+  the client is returned. The sample fetch fails if no abort was received or
   if the client stream is not an H2/QUIC stream.
 </pre><a class="anchor" name="payload"></a><a class="anchor" name="7-payload"></a><a class="anchor" name="7.3.5-payload"></a><a class="anchor" name="payload (Using ACLs and fetching samples)"></a><a class="anchor" name="payload (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload"></a><a href="#7.3.5-payload">payload</a></b>(<span style="color: #080">&lt;offset&gt;</span>,<span style="color: #080">&lt;length&gt;</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload">req.payload</a>&quot; when used in the context of a request (e.g.
 &quot;<a href="#stick%20on">stick on</a>&quot;, &quot;<a href="#stick%20match">stick match</a>&quot;), and for &quot;<a href="#res.payload">res.payload</a>&quot; when used in the context of
@@ -27130,7 +27133,7 @@ In case of doubt about the fetch direction, please use the explicit ones.
 Note that contrary to the hdr() sample fetch method, the hdr_* ACL keywords
 unambiguously apply to the request headers.
 </pre><a class="anchor" name="request_date"></a><a class="anchor" name="7-request_date"></a><a class="anchor" name="7.3.6-request_date"></a><a class="anchor" name="request_date (Using ACLs and fetching samples)"></a><a class="anchor" name="request_date (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="request_date"></a><a href="#7.3.6-request_date">request_date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;unit&gt;</span>]</span>) : integer</div><pre class="text">This is the exact date when the first byte of the HTTP request was received
-by HAProxy (log-format tag %tr). This is computed from accept_date +
+by HAProxy (log-format alias %tr). This is computed from accept_date +
 handshake time (%Th) + idle time (%Ti).
 
 Returns a value in number of seconds since epoch.
@@ -27342,8 +27345,8 @@ appear in the request when the rule is evaluated. The default delimiter is
 the comma (',') but it may be overridden as an optional argument &lt;delim&gt;. In
 this case, only the first character of &lt;delim&gt; is considered.
 </pre><a class="anchor" name="req.ver"></a><a class="anchor" name="7-req.ver"></a><a class="anchor" name="7.3.6-req.ver"></a><a class="anchor" name="req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.ver"></a><a href="#7.3.6-req.ver">req.ver</a></b> : string</div><a class="anchor" name="req_ver"></a><a class="anchor" name="7-req_ver"></a><a class="anchor" name="7.3.6-req_ver"></a><a class="anchor" name="req_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req_ver"></a><a href="#7.3.6-req_ver">req_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP request, for example &quot;1.1&quot;. This can
-be useful for ACL. For logs use the &quot;%HV&quot; log variable. Some predefined ACL
-already check for versions 1.0 and 1.1.
+be useful for ACL. For logs use the &quot;%HV&quot; logformat alias. Some predefined
+ACL already check for versions 1.0 and 1.1.
 
 Common values are &quot;1.0&quot;, &quot;1.1&quot;, &quot;2.0&quot; or &quot;3.0&quot;.
 
@@ -28470,23 +28473,40 @@ are still commonly encountered due to the massive adoption of log formats after
 version 1.5-dev9, 3 years before quotes were usable, but it is recommended to
 convert them to quoted strings and to drop the backslashes now.
 
-HAProxy understands some log format variables, preceeded by character '%'.
-In order to emit a verbatim '%', it must be preceded by another '%' resulting
-in '%%'.
+A log format definition is made of any number of log format items separated
+by text and spaces. A log format item starts with character '%'. In order to
+emit a verbatim '%', it must be preceded by another '%' resulting in '%%'.
 
-Variables can take arguments using braces ('{}'), and multiple arguments are
-separated by commas within the braces. Flags may be added or removed by
-prefixing them with a '+' or '-' sign.
+Logformat items may either be aliases or sample expressions:
 
-Special variable &quot;%o&quot; may be used to propagate its flags to all other
-variables on the same format string. This is particularly handy with quoted
-(&quot;Q&quot;) and escaped (&quot;E&quot;) string formats.
-
-If a variable is named between square brackets ('[' .. ']') then it is used
+If an item is named between square brackets ('[' .. ']') then it is used
 as a sample expression rule (see <a href="#7.3">section 7.3</a>). This it useful to add some
 less common information such as the client's SSL certificate's DN, or to log
 the key that would be used to store an entry into a stick table. It is also
 commonly used with non-log actions (header manipulation, variables etc).
+
+Else if the item is named using an alpha-numerical name, it is an alias.
+(Refer to the table below for the list of available aliases)
+
+Items can take arguments using braces ('{}'), and multiple arguments are
+separated by commas within the braces. Flags may be added or removed by
+prefixing them with a '+' or '-' sign (see below for the list of available
+flags).
+
+Special alias &quot;%o&quot; may be used to propagate its flags to all other
+logformat items on the same format string. This is particularly handy with
+quoted (&quot;Q&quot;) and escaped (&quot;E&quot;) string formats.
+
+Items can optionally be named using ('()'). The name must be provided right
+after '%' (before arguments). It will automatically be used as key name when
+encoding flag such as &quot;<a href="#json">json</a>&quot; or &quot;cbor&quot; is set. When no encoding flag is
+specified (default), item name will be ignored. It is also possible to force
+the item's output to a given type by appending ':type' after the name, like
+this: %(itemname:itemtype)aliasname or %(itemname:itemtype)[expr] where
+itemtype may be 'str', 'sint' or 'bool'. Specifying the type is only relevant
+when an encoding method is used. Also, it is supported to provide an empty name
+to force the output type on an anonymous item: %(:itemtype), ie: when encoding
+is not set globally, see flags definitions below for more information.
 
 Due to the original goal of custom log formats to be used for logging only,
 there is a special case made of non-printable and unsafe characters (those
@@ -28508,7 +28528,7 @@ Note: when using the RFC5424 syslog message format, the characters '&quot;',
 https://tools.ietf.org/html/rfc5424#section-6.3.3 for more details). In
 such cases, the use of the flag &quot;E&quot; should be considered.
 
-Flags are :
+Supported item flags are (may be enabled/disabled from item's arguments):
   * Q: quote a string
   * X: hexadecimal representation (IPs, Ports, %Ts, %rt, %pid)
   * E: escape characters '&quot;', '\' and ']' in a string with '\' as prefix
@@ -28520,14 +28540,14 @@ Flags are :
          don't expect. Thus it is mainly intended for use with set-var-fmt,
          rings and binary-capable log endpoints.
          This option can only be set globally (with %o), it will be ignored
-         if set on an individual node's options.
+         if set on an individual item's options.
   * json: automatically encode value in JSON format
-          (when set globally, only named format variables are considered)
+          (when set globally, only named logformat items are considered)
           Incomplete numerical values (e.g.: '%B' when logasap is used),
           which are normally prefixed with '+' without encoding, will be
           encoded as-is. Also, '+E' option will be ignored.
   * cbor: automatically encode value in CBOR format
-          (when set globally, only named format variables are considered)
+          (when set globally, only named logformat items are considered)
           By default, cbor encoded data is represented in HEX form so
           that it remains printable on stdout an can be used with usual
           syslog endpoints.
@@ -28548,13 +28568,13 @@ log-format-sd %{+Q,+E}o\ [exampleSDID@1234\ header=%[capture.req.hdr(0)]]
 log-format &quot;%{+json}o %(request)r %(custom_expr)[str(custom)]&quot;
 log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
 </code></pre>
-</div><pre class="text">Please refer to the table below for currently defined variables :
+</div><pre class="text">Please refer to the table below for currently defined aliases :
 
   +---+------+------------------------------------------------------+---------+
-  | R | var  | field name (8.2.2 and 8.2.3 for description)         | type    |
+  | R | alias| field name (8.2.2 and 8.2.3 for description)         | type    |
   |   |      | sample fetch alternative                             |         |
   +===+======+======================================================+=========+
-  |   | %o   | special variable, apply flags on all next var        |         |
+  |   | %o   | special, apply flags on all following items          |         |
   +---+------+------------------------------------------------------+---------+
   |                          date formats                                     |
   +---+------+------------------------------------------------------+---------+
@@ -28847,7 +28867,7 @@ Timings events in TCP mode:
     all request to calculate the amortized value. The second and subsequent
     request will always report zero here.
 
-    This timer is named %Th as a log-format tag, and fc.timer.handshake as a
+    This timer is named %Th as a log-format alias, and fc.timer.handshake as a
     sample fetch.
 
   - Ti: is the idle time before the HTTP request (HTTP mode only). This timer
@@ -28860,7 +28880,7 @@ Timings events in TCP mode:
     pending until they need it. This delay will be reported as the idle time. A
     value of -1 indicates that nothing was received on the connection.
 
-    This timer is named %Ti as a log-format tag, and req.timer.idle as a
+    This timer is named %Ti as a log-format alias, and req.timer.idle as a
     sample fetch.
 
   - TR: total time to get the client request (HTTP mode only). It's the time
@@ -28871,7 +28891,7 @@ Timings events in TCP mode:
     since most requests fit in a single packet. A large time may indicate a
     request typed by hand during a test.
 
-    This timer is named %TR as a log-format tag, and req.timer.hdr as a
+    This timer is named %TR as a log-format alias, and req.timer.hdr as a
     sample fetch.
 
   - Tq: total time to get the client request from the accept date or since the
@@ -28882,7 +28902,7 @@ Timings events in TCP mode:
     it in favor of TR nowadays, as the idle time adds a lot of noise to the
     reports.
 
-    This timer is named %Tq as a log-format tag, and req.timer.tq as a
+    This timer is named %Tq as a log-format alias, and req.timer.tq as a
     sample fetch.
 
   - Tw: total time spent in the queues waiting for a connection slot. It
@@ -28891,7 +28911,7 @@ Timings events in TCP mode:
     requests. The value &quot;-1&quot; means that the request was killed before reaching
     the queue, which is generally what happens with invalid or denied requests.
 
-    This timer is named %Tw as a log-format tag, and req.timer.queue as a
+    This timer is named %Tw as a log-format alias, and req.timer.queue as a
     sample fetch.
 
   - Tc: total time to establish the TCP connection to the server. It's the time
@@ -28900,7 +28920,7 @@ Timings events in TCP mode:
     the matching SYN/ACK packet in return. The value &quot;-1&quot; means that the
     connection never established.
 
-    This timer is named %Tc as a log-format tag, and bc.timer.connect as a
+    This timer is named %Tc as a log-format alias, and bc.timer.connect as a
     sample fetch.
 
   - Tr: server response time (HTTP mode only). It's the time elapsed between
@@ -28915,7 +28935,7 @@ Timings events in TCP mode:
     header (empty line) was never seen, most likely because the server timeout
     stroke before the server managed to process the request.
 
-    This timer is named %Tr as a log-format tag, and res.timer.hdr as a
+    This timer is named %Tr as a log-format alias, and res.timer.hdr as a
     sample fetch.
 
   - Td: this is the total transfer time of the response payload till the last
@@ -28925,7 +28945,7 @@ Timings events in TCP mode:
     The data sent are not guaranteed to be received by the client, they can be
     stuck in either the kernel or the network.
 
-    This timer is named %Td as a log-format tag, and res.timer.data as a
+    This timer is named %Td as a log-format alias, and res.timer.data as a
     sample fetch.
 
   - Ta: total active time for the HTTP request, between the moment the proxy
@@ -28940,7 +28960,7 @@ Timings events in TCP mode:
     Timers with &quot;-1&quot; values have to be excluded from this equation. Note that
     &quot;Ta&quot; can never be negative.
 
-    This timer is named %Ta as a log-format tag, and txn.timer.total as a
+    This timer is named %Ta as a log-format alias, and txn.timer.total as a
     sample fetch.
 
   - Tt: total stream duration time, between the moment the proxy accepted it
@@ -28955,7 +28975,7 @@ Timings events in TCP mode:
     mode, &quot;Ti&quot;, &quot;Tq&quot; and &quot;Tr&quot; have to be excluded too. Note that &quot;Tt&quot; can never
     be negative and that for HTTP, Tt is simply equal to (Th+Ti+Ta).
 
-    This timer is named %Tt as a log-format tag, and fc.timer.total as a
+    This timer is named %Tt as a log-format alias, and fc.timer.total as a
     sample fetch.
 
   - Tu: total estimated time as seen from client, between the moment the proxy
@@ -28967,7 +28987,7 @@ Timings events in TCP mode:
     option is specified. In this case, it only equals (Th+TR+Tw+Tc+Tr), and is
     prefixed with a '+' sign.
 
-    This timer is named %Tu as a log-format tag, and txn.timer.user as a
+    This timer is named %Tu as a log-format alias, and txn.timer.user as a
     sample fetch.
 
 These timers provide precious indications on trouble causes. Since the TCP
@@ -30300,7 +30320,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev13 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev13-9 &ndash; Configuration Manual<br>
 							<small>, 2024/05/24</small>
 						</div>
 					</div>
