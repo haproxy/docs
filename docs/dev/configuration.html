@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0-dev13-9 - Configuration Manual</title>
+		<title>HAProxy version 3.0-dev13-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4303,7 +4303,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/05/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4314,7 +4314,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0-dev13-9</strong></p>
+							<p><strong>version 3.0-dev13-17</strong></p>
 							<p>
 								2024/05/24<br>
 								
@@ -12491,12 +12491,29 @@ May be used in the following contexts: http
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
-<pre class="text">By default, a connection established between HAProxy and the backend server
-which is considered safe for reuse is moved back to the server's idle
-connections pool so that any other request can make use of it. This is the
-&quot;safe&quot; strategy below.
+<pre class="text">In order to avoid the cost of setting up new connections to backend servers
+for each HTTP request, HAProxy tries to keep such idle connections opened
+after being used. These connections are specific to a server and are stored
+in a list called a pool, and are grouped together by a set of common key
+properties. Subsequent HTTP requests will cause a lookup of a compatible
+connection sharing identical properties in the associated pool and result in
+this connection being reused instead of establishing a new one.
 
-The argument indicates the desired connection reuse strategy :
+A limit on the number of idle connections to keep on a server can be
+specified via the &quot;<a href="#pool-max-conn">pool-max-conn</a>&quot; server keyword. Unused connections are
+periodically purged according to the &quot;<a href="#pool-purge-delay">pool-purge-delay</a>&quot; interval.
+
+The following connection properties are used to determine if an idle
+connection is eligible for reuse on a given request:
+- source and destination addresses
+- proxy protocol
+- TOS and mark socket options
+- connection name, determined either by the result of the evaluation of the
+  &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; expression if present, otherwise by the &quot;<a href="#sni">sni</a>&quot; expression
+
+In some occasions, connection lookup or reuse is not performed due to extra
+restrictions. This is determined by the reuse strategy specified via the
+keyword argument:
 
   - &quot;never&quot;  : idle connections are never shared between sessions. This mode
                may be enforced to cancel a different strategy inherited from
@@ -12547,26 +12564,12 @@ The argument indicates the desired connection reuse strategy :
                gains as &quot;aggressive&quot; but with more risks. It should only be
                used when it improves the situation over &quot;aggressive&quot;.
 
-When http connection sharing is enabled, a great care is taken to respect the
-connection properties and compatibility. Indeed, some properties are specific
-and it is not possible to reuse it blindly. Those are the source and
-destination address, proxy protocol block as well as tos and mark sockopts.
-It is also possible to manually define an extra expression identifier using
-&quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; server keyword, or &quot;<a href="#sni">sni</a>&quot; as a fallback. A connection is
-reused only if it shares the same set of properties with the request.
-
 Also note that connections with certain bogus authentication schemes (relying
 on the connection) like NTLM are marked private if possible and never shared.
 This won't be the case however when using a protocol with multiplexing
 abilities and using reuse mode level value greater than the default &quot;safe&quot;
 strategy as in this case nothing prevents the connection from being already
 shared.
-
-A connection pool is involved and configurable with &quot;<a href="#pool-max-conn">pool-max-conn</a>&quot;.
-
-Note: connection reuse improves the accuracy of the &quot;server maxconn&quot; setting,
-because almost no new connection will be established while idle connections
-remain available. This is particularly true with the &quot;always&quot; strategy.
 
 The rules to decide to keep an idle connection opened or to close it after
 processing are also governed by the &quot;<a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>&quot; (default: 20%)
@@ -12580,12 +12583,12 @@ but HTTP/1 connections on the backend, may observe a lower reuse rate because
 too few connections are kept open. It may be desirable in this case to adjust
 such thresholds or simply to increase the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; value.
 
-Similarly, when thread groups are explicitly enabled, it is important to
-understand that idle connections are only usable between threads from a same
-group. As such it may happen that unfair load between groups leads to more
-idle connections being needed, causing a lower reuse rate. The same solution
-may then be applied (increase global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or increase pool ratios).
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;, &quot;server maxconn&quot;, &quot;<a href="#thread-groups">thread-groups</a>&quot;, &quot;<a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>&quot;, &quot;<a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>&quot;</div>
+When thread groups are explicitly enabled, it is important to understand that
+idle connections are only usable between threads from a same group. As such
+it may happen that unfair load between groups leads to more idle connections
+being needed, causing a lower reuse rate. The same solution may then be
+applied (increase global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or increase pool ratios).
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;, &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot;, &quot;<a href="#pool-max-conn">pool-max-conn</a>&quot;, &quot;<a href="#pool-purge-delay">pool-purge-delay</a>&quot;, &quot;server maxconn&quot;, &quot;<a href="#sni">sni</a>&quot;, &quot;<a href="#thread-groups">thread-groups</a>&quot;, &quot;<a href="#tune.pool-high-fd-ratio">tune.pool-high-fd-ratio</a>&quot;, &quot;<a href="#tune.pool-low-fd-ratio">tune.pool-low-fd-ratio</a>&quot;</div>
 <a class="anchor" name="http-send-name-header"></a><a class="anchor" name="4-http-send-name-header"></a><a class="anchor" name="4.2-http-send-name-header"></a><a class="anchor" name="http-send-name-header (Proxies)"></a><a class="anchor" name="http-send-name-header (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-send-name-header"></a><a href="#4.2-http-send-name-header">http-send-name-header</a></b> <span style="color: #008">[<span style="color: #080">&lt;header&gt;</span>]</span></div><pre class="text">Add the server name to a request. Use the header string given by &lt;header&gt;
 
 May be used in the following contexts: http
@@ -18507,20 +18510,18 @@ The connection is reversed to the backend side and inserted into the idle
 pool of server &lt;srv&gt;. This may only be used with servers having an 'rhttp@'
 address.
 
-An extra parameter &lt;expr&gt; can be specified. Its value is interpreted as a
-sample expression to name the connection inside the server idle pool. When
-routing an outgoing request through this server, this name will be matched
-against the 'pool-conn-name' parameter of the server line, or 'sni' as a
-fallback. Otherwise, the connection will have no extra identifier and will
-only match requests without name.
-
-This rule is only valid for frontend in HTTP mode. Also all listeners must
-not require a protocol different from HTTP/2.
+The connection is inserted into the server idle pool with a name defined by
+the result of the &lt;expr&gt; evaluation. This is the name that will be matched
+against by requests subject to &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; or &quot;<a href="#sni">sni</a>&quot; parameter. See
+&quot;<a href="#http-reuse">http-reuse</a>&quot; for more details.
 
 Reverse HTTP is currently still in active development. Configuration
 mechanism may change in the future. For this reason it is internally marked
 as experimental, meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on
 a line before this directive.
+
+Note that a very similar but independent protocol is under development. See
+https://www.ietf.org/archive/id/draft-bt-httpbis-reverse-http-00.html.
 </pre><a class="anchor" name="auth"></a><a class="anchor" name="4-auth"></a><a class="anchor" name="4.4-auth"></a><a class="anchor" name="auth (Proxies)"></a><a class="anchor" name="auth (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="auth"></a><a href="#4.4-auth">auth</a></b> <span style="color: #008">[realm <span style="color: #080">&lt;realm&gt;</span>]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -21389,11 +21390,18 @@ Currently one action is available:
 Actions are disabled by default
 </pre><a class="anchor" name="pool-conn-name"></a><a class="anchor" name="5-pool-conn-name"></a><a class="anchor" name="5.2-pool-conn-name"></a><a class="anchor" name="pool-conn-name (Bind and server options)"></a><a class="anchor" name="pool-conn-name (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-conn-name"></a><a href="#5.2-pool-conn-name">pool-conn-name</a></b> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">May be used in the following contexts: http
 
-Set an expression which will be interpreted to differentiate connections
-inside the server idle pool. On reuse, only connection with identical name
-will be eligible. If SNI expression is defined but not this parameter, it
-will act as idle pool identifier to guarantee that SNI match on reuse.
-</pre><a class="anchor" name="pool-low-conn"></a><a class="anchor" name="5-pool-low-conn"></a><a class="anchor" name="5.2-pool-low-conn"></a><a class="anchor" name="pool-low-conn (Bind and server options)"></a><a class="anchor" name="pool-low-conn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-low-conn"></a><a href="#5.2-pool-low-conn">pool-low-conn</a></b> <span style="color: #080">&lt;max&gt;</span></div><pre class="text">May be used in the following contexts: http
+When a backend connection is established, this expression is evaluated to
+generate the connection name. This name is one of the key properties of the
+connection in the idle server pool. See the &quot;<a href="#http-reuse">http-reuse</a>&quot; keyword. When a
+request looks up an existing idle connection, this expression is evaluated to
+match an identical connection.
+
+In context where SSL SNI is used for backend connection, the connection name
+is automatically assigned to the result of the &quot;<a href="#sni">sni</a>&quot; expression. This suits
+the most common usage. For more advanced setup, &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; may be used
+to override this.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#http-reuse">http-reuse</a>&quot;, &quot;<a href="#sni">sni</a>&quot;</div>
+<a class="anchor" name="pool-low-conn"></a><a class="anchor" name="5-pool-low-conn"></a><a class="anchor" name="5.2-pool-low-conn"></a><a class="anchor" name="pool-low-conn (Bind and server options)"></a><a class="anchor" name="pool-low-conn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-low-conn"></a><a href="#5.2-pool-low-conn">pool-low-conn</a></b> <span style="color: #080">&lt;max&gt;</span></div><pre class="text">May be used in the following contexts: http
 
 Set a low threshold on the number of idling connections for a server, below
 which a thread will not try to steal a connection from another thread. This
@@ -21702,6 +21710,9 @@ are allowed to use different host names over the same connection). If
 name will also be matched against the server certificate's names. See the
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">verify<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#verify%20%28Bind%20options%29">Bind options</a></li><li><a href="#verify%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directive for more details. If you want to set a SNI for health
 checks, see the &quot;<a href="#check-sni">check-sni</a>&quot; directive for more details.
+
+By default, the SNI is assigned to the connection name for &quot;<a href="#http-reuse">http-reuse</a>&quot;,
+unless overriden by the &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; server keyword.
 </pre><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;pl&gt;</span><span style="color: #008">[-<span style="color: #080">&lt;ph&gt;</span>]</span>]</span> <span style="color: #008">[usesrc <span style="color: #800">{ <span style="color: #080">&lt;addr2&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port2&gt;</span>]</span> | client | clientip }</span> ]</span></div><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[usesrc <span style="color: #800">{ <span style="color: #080">&lt;addr2&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port2&gt;</span>]</span> | hdr_ip(<span style="color: #080">&lt;hdr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) }</span> ]</span></div><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;pl&gt;</span><span style="color: #008">[-<span style="color: #080">&lt;ph&gt;</span>]</span>]</span> <span style="color: #008">[interface <span style="color: #080">&lt;name&gt;</span>]</span> ...</div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter sets the source address which will be used when
@@ -28665,6 +28676,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |   |      | HTTP/%[req.ver]                                      |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ID  | unique-id                                            | string  |
+  |   |      | %[unique-id]                                         |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ST  | status_code                                          | numeric |
   |   |      | %[txn.status]                                        |         |
@@ -30320,7 +30332,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0-dev13-9 &ndash; Configuration Manual<br>
+							HAProxy 3.0-dev13-17 &ndash; Configuration Manual<br>
 							<small>, 2024/05/24</small>
 						</div>
 					</div>
