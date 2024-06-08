@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.9-73 - Configuration Manual</title>
+		<title>HAProxy version 2.8.9-80 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4294,7 +4294,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4305,7 +4305,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.9-73</strong></p>
+							<p><strong>version 2.8.9-80</strong></p>
 							<p>
 								2024/04/05<br>
 								
@@ -13070,7 +13070,11 @@ and destination address and proxy protocol block. A connection is reused only
 if it shares the same set of properties with the request.
 
 Also note that connections with certain bogus authentication schemes (relying
-on the connection) like NTLM are marked private and never shared.
+on the connection) like NTLM are marked private if possible and never shared.
+This won't be the case however when using a protocol with multiplexing
+abilities and using reuse mode level value greater than the default &quot;safe&quot;
+strategy as in this case nothing prevents the connection from being already
+shared.
 
 A connection pool is involved and configurable with &quot;<a href="#pool-max-conn">pool-max-conn</a>&quot;.
 
@@ -27734,7 +27738,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.9-73 &ndash; Configuration Manual<br>
+							HAProxy 2.8.9-80 &ndash; Configuration Manual<br>
 							<small>, 2024/04/05</small>
 						</div>
 					</div>
