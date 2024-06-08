@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6.17-23 - Management Guide</title>
+		<title>HAProxy version 2.6.17-81 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -592,7 +592,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/04/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -603,7 +603,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.6.17-23</strong></p>
+							<p><strong>version 2.6.17-81</strong></p>
 							<p>
 								<br>
 								
@@ -1190,11 +1190,16 @@ list of options is :
   -x &lt;unix_socket&gt; : connect to the specified socket and try to retrieve any
     listening sockets from the old process, and use them instead of trying to
     bind new ones. This is useful to avoid missing any new connection when
-    reloading the configuration on Linux. The capability must be enable on the
-    stats socket using &quot;expose-fd listeners&quot; in your configuration.
-    In master-worker mode, the master will use this option upon a reload with
-    the &quot;sockpair@&quot; syntax, which allows the master to connect directly to a
-    worker without using stats socket declared in the configuration.
+    reloading the configuration on Linux.
+
+    Without master-worker mode, the capability must be enable on the stats
+    socket using &quot;expose-fd listeners&quot; in your configuration.
+
+    In master-worker mode, it does not need &quot;expose-fd listeners&quot;, the master
+    will use automatically this option upon a reload with the &quot;sockpair@&quot;
+    syntax, which allows the master to connect directly to a worker without using
+    any stats socket declared in the configuration. If you want to disable this,
+    you can pass -x /dev/null.
 
 A safe way to start HAProxy from an init file consists in forcing the daemon
 mode, storing existing pids to a pid file and using this pid file to notify
@@ -4700,7 +4705,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6.17-23 &ndash; Management Guide<br>
+							HAProxy 2.6.17-81 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
