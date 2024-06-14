@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev0-66 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev0-89 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -969,6 +969,19 @@
 							<div class="tab">
 							<div class="tab">
 							<a href="#8.3.4">Disabling logging of successful connections</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>8.3.5.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#8.3.5">Log profiles</a>
 							</div>
 							</div>
 					<td>
@@ -2186,6 +2199,8 @@
 							
 							<a class="list-group-item" href="#log-forward">log-forward</a>
 							
+							<a class="list-group-item" href="#log-profile">log-profile</a>
+							
 							<a class="list-group-item" href="#log-proto">log-proto</a>
 							
 							<a class="list-group-item" href="#log-send-hostname">log-send-hostname</a>
@@ -2197,6 +2212,8 @@
 							<a class="list-group-item" href="#log-tag (Process management and security)">log-tag (Process management and security)</a>
 							
 							<a class="list-group-item" href="#log-tag (Alphabetically sorted keywords reference)">log-tag (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#log-tag (Log profiles)">log-tag (Log profiles)</a>
 							
 							<a class="list-group-item" href="#lower">lower</a>
 							
@@ -2516,6 +2533,8 @@
 							<a class="list-group-item" href="#ocsp-update.mode">ocsp-update.mode</a>
 							
 							<a class="list-group-item" href="#odd">odd</a>
+							
+							<a class="list-group-item" href="#on">on</a>
 							
 							<a class="list-group-item" href="#on-error">on-error</a>
 							
@@ -4303,7 +4322,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4314,7 +4333,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev0-66</strong></p>
+							<p><strong>version 3.1-dev0-89</strong></p>
 							<p>
 								2024/05/29<br>
 								
@@ -5268,6 +5287,19 @@ Note to documentation contributors :
 							<div class="tab">
 							<div class="tab">
 							<a href="#8.3.4">Disabling logging of successful connections</a>
+							</div>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>8.3.5.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#8.3.5">Log profiles</a>
 							</div>
 							</div>
 					<td>
@@ -7336,7 +7368,7 @@ the configuration parsing.
 This option will also set the HAPROXY_LOCALPEER environment variable.
 See also &quot;-L&quot; in the management guide and &quot;<a href="#peers">peers</a>&quot; section below.
 </pre><a class="anchor" name="log"></a><a class="anchor" name="3-log"></a><a class="anchor" name="3.1-log"></a><a class="anchor" name="log (Global parameters)"></a><a class="anchor" name="log (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#3.1-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
-    <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[max level <span style="color: #008">[min level]</span>]</span></div><pre class="text">Adds a global syslog server. Several global servers can be defined. They
+    <span style="color: #008">[profile <span style="color: #080">&lt;prof&gt;</span>]</span> <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[max level <span style="color: #008">[min level]</span>]</span></div><pre class="text">Adds a global syslog server. Several global servers can be defined. They
 will receive logs for starts and exits, as well as all logs from proxies
 configured with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; option for proxies for more details.
 </pre><a class="anchor" name="log-send-hostname"></a><a class="anchor" name="3-log-send-hostname"></a><a class="anchor" name="3.1-log-send-hostname"></a><a class="anchor" name="log-send-hostname (Global parameters)"></a><a class="anchor" name="log-send-hostname (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log-send-hostname"></a><a href="#3.1-log-send-hostname">log-send-hostname</a></b> <span style="color: #008">[<span style="color: #080">&lt;string&gt;</span>]</span></div><pre class="text">Sets the hostname field in the syslog header. If optional &quot;string&quot; parameter
@@ -7347,7 +7379,7 @@ the logs.
 </pre><a class="anchor" name="log-tag"></a><a class="anchor" name="3-log-tag"></a><a class="anchor" name="3.1-log-tag"></a><a class="anchor" name="log-tag (Global parameters)"></a><a class="anchor" name="log-tag (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="log-tag"></a><a href="#3.1-log-tag">log-tag</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Sets the tag field in the syslog header to this string. It defaults to the
 program name as launched from the command line, which usually is &quot;haproxy&quot;.
 Sometimes it can be useful to differentiate between multiple processes
-running on the same host. See also the per-proxy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive.
+running on the same host. See also the per-proxy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#log-tag%20%28Log%20profiles%29">Log profiles</a></li></ul></span>&quot; directive.
 </pre><a class="anchor" name="lua-load"></a><a class="anchor" name="3-lua-load"></a><a class="anchor" name="3.1-lua-load"></a><a class="anchor" name="lua-load (Global parameters)"></a><a class="anchor" name="lua-load (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="lua-load"></a><a href="#3.1-lua-load">lua-load</a></b> <span style="color: #080">&lt;file&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg1&gt;</span> <span style="color: #008">[ <span style="color: #080">&lt;arg2&gt;</span> <span style="color: #008">[ ... ]</span> ]</span> ]</span></div><pre class="text">This global directive loads and executes a Lua file in the shared context
 that is visible to all threads. Any variable set in such a context is visible
 from any thread. This is the easiest and recommended way to load Lua programs
@@ -8526,7 +8558,7 @@ which spreads the incoming traffic to all threads a &quot;<span class="dropdown"
 run on instead of taking them for itself. This provides a smoother traffic
 distribution and scales much better, especially in environments where threads
 may be unevenly loaded due to external activity (network interrupts colliding
-with one thread for example). The default mode, &quot;on&quot;, optimizes the choice of
+with one thread for example). The default mode, &quot;<a href="#on">on</a>&quot;, optimizes the choice of
 a thread by picking in a sample the one with the less connections. It is
 often the best choice when connections are long-lived as it manages to keep
 all threads busy. A second mode, &quot;fair&quot;, instead cycles through all threads
@@ -8536,7 +8568,7 @@ the probability to find the least loaded thread with the first mode is low.
 Finally it is possible to forcefully disable the redistribution mechanism
 using &quot;off&quot; for troubleshooting, or for situations where connections are
 short-lived and it is estimated that the operating system already provides a
-good enough distribution. The default is &quot;on&quot;.
+good enough distribution. The default is &quot;<a href="#on">on</a>&quot;.
 </pre><a class="anchor" name="tune.lua.forced-yield"></a><a class="anchor" name="3-tune.lua.forced-yield"></a><a class="anchor" name="3.2-tune.lua.forced-yield"></a><a class="anchor" name="tune.lua.forced-yield (Global parameters)"></a><a class="anchor" name="tune.lua.forced-yield (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.forced-yield"></a><a href="#3.2-tune.lua.forced-yield">tune.lua.forced-yield</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive forces the Lua engine to execute a yield each &lt;number&gt; of
 instructions executed. This permits interrupting a long script and allows the
 HAProxy scheduler to process other tasks like accepting connections or
@@ -12731,7 +12763,7 @@ Content of the file /etc/haproxy/states/bk would be like this:
   1 bk 2 s2 127.0.0.1 2 0 12 12 4 6 3 4 6 0 0
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#server-state-file">server-state-file</a>&quot;, &quot;<a href="#server-state-file-name">server-state-file-name</a>&quot;, and &quot;show servers state&quot;</div>
 <a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><a class="anchor" name="log global"></a><a class="anchor" name="4-log global"></a><a class="anchor" name="4.2-log global"></a><a class="anchor" name="log global (Proxies)"></a><a class="anchor" name="log global (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log global"></a><a href="#4.2-log%20global">log global</a></b></div><a class="anchor" name="log"></a><a class="anchor" name="4-log"></a><a class="anchor" name="4.2-log"></a><a class="anchor" name="log (Proxies)"></a><a class="anchor" name="log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="log"></a><a href="#4.2-log">log</a></b> <span style="color: #080">&lt;target&gt;</span> <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> <span style="color: #008">[format <span style="color: #080">&lt;format&gt;</span>]</span> <span style="color: #008">[sample <span style="color: #080">&lt;ranges&gt;</span>:<span style="color: #080">&lt;sample_size&gt;</span>]</span>
-    <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no log"></a><a class="anchor" name="4-no log"></a><a class="anchor" name="4.2-no log"></a><a class="anchor" name="no log (Proxies)"></a><a class="anchor" name="no log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no log"></a><a href="#4.2-no%20log">no log</a></b></div><pre class="text">Enable per-instance logging of events and traffic.
+    <span style="color: #008">[profile <span style="color: #080">&lt;prof&gt;</span>]</span> <span style="color: #080">&lt;facility&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;minlevel&gt;</span>]</span>]</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no log"></a><a class="anchor" name="4-no log"></a><a class="anchor" name="4.2-no log"></a><a class="anchor" name="no log (Proxies)"></a><a class="anchor" name="no log (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no log"></a><a href="#4.2-no%20log">no log</a></b></div><pre class="text">Enable per-instance logging of events and traffic.
 
 May be used in the following contexts: tcp, http, log
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12745,10 +12777,9 @@ May be used in the following contexts: tcp, http, log
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">global     should be used when the instance's logging parameters are the
            same as the global ones. This is the most common usage. &quot;global&quot;
-           replaces &lt;target&gt;, &lt;facility&gt; and &lt;level&gt; with those of the log
-           entries found in the &quot;global&quot; section. Only one &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-           statement may be used per instance, and this form takes no other
-           parameter.
+           replaces all log arguments with those of the log entries found
+           in the &quot;global&quot; section. Only one &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log global<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20global%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20global%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement may be
+           used per instance, and this form takes no other parameter.
 
 &lt;target&gt;   indicates where to send the logs. It takes the same format as
            for the &quot;global&quot; section's logs, and can be one of :
@@ -12874,6 +12905,10 @@ May be used in the following contexts: tcp, http, log
             be used in containers or during development, where the severity
             only depends on the file descriptor used (stdout/stderr).
 
+&lt;prof&gt;     name of the optional &quot;<a href="#log-profile">log-profile</a>&quot; section that will be
+           considered during the log building process to override some
+           log options. Check out &quot;8.3.5. Log profiles&quot; for more info.
+
 &lt;facility&gt; must be one of the 24 standard syslog facilities :
 
                kern   user   mail   daemon auth   syslog lpr    news
@@ -12975,7 +13010,7 @@ differentiate customer instances running in the same process. In the backend,
 logs about servers up/down will use this tag. As a hint, it can be convenient
 to set a log-tag related to a hosted customer in a defaults section then put
 all the frontends and backends for that customer, then start another customer
-in a new defaults section. See also the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive.
+in a new defaults section. See also the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#log-tag%20%28Log%20profiles%29">Log profiles</a></li></ul></span>&quot; directive.
 </pre><a class="anchor" name="max-keep-alive-queue"></a><a class="anchor" name="4-max-keep-alive-queue"></a><a class="anchor" name="4.2-max-keep-alive-queue"></a><a class="anchor" name="max-keep-alive-queue (Proxies)"></a><a class="anchor" name="max-keep-alive-queue (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="max-keep-alive-queue"></a><a href="#4.2-max-keep-alive-queue">max-keep-alive-queue</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Set the maximum server queue size for maintaining keep-alive connections
 
 May be used in the following contexts: http
@@ -28519,6 +28554,22 @@ Special alias &quot;%o&quot; may be used to propagate its flags to all other
 logformat items on the same format string. This is particularly handy with
 quoted (&quot;Q&quot;) and escaped (&quot;E&quot;) string formats.
 
+Special alias &quot;%OG&quot; may be used to retrieve the log origin (when / where
+the log was generated) in a human readable format. It is particularly useful
+with &quot;<a href="#option%20logasap">option logasap</a>&quot; because some log variables or sample fetches could report
+incomplete values or behave diffently depending on when / where the logformat
+expression was evaluated. Possible values are:
+  - &quot;sess_error&quot;: log was generated during session error handling
+  - &quot;sess_killed&quot;: log was generated during session abortion (killed
+    embryonic session)
+  - &quot;txn_accept&quot;: log was generated right after frontend conn was accepted
+  - &quot;txn_request&quot;: log was generated after client request was received
+  - &quot;txn_connect&quot;: log was generated after backend connection establishment
+  - &quot;txn_response&quot;: log was generated during server response handling
+  - &quot;txn_close&quot;: log was generated at the final txn step, before closing
+  - &quot;unspec&quot;: unknown or not specified
+&quot;%OG&quot; is only relevant in logging context.
+
 Items can optionally be named using ('()'). The name must be provided right
 after '%' (before arguments). It will automatically be used as key name when
 encoding flag such as &quot;<a href="#json">json</a>&quot; or &quot;cbor&quot; is set. When no encoding flag is
@@ -28745,6 +28796,8 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |   | %hsl | captured_response_headers CLF style                  | string  |
   |   |      |                                                      | list    |
   +---+------+------------------------------------------------------+---------+
+  | L | %OG  | human readable log origin                            | string  |
+  +---+------+------------------------------------------------------+---------+
   |   | %pid | PID                                                  |         |
   |   |      | %[pid]                                               | numeric |
   +---+------+------------------------------------------------------+---------+
@@ -28782,7 +28835,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   | H | %tsc | termination_state with cookie status                 | string  |
   +---+------+------------------------------------------------------+---------+
 
-    R = Restrictions : H = mode http only ; S = SSL only
+    R = Restrictions : H = mode http only ; S = SSL only ; L = log only
 </pre></div>
 <a class="anchor" id="8.3" name="8.3"></a>
 <h2 id="chapter-8.3" data-target="8.3"><small><a class="small" href="#8.3">8.3.</a></small> Advanced logging options</h2>
@@ -28849,6 +28902,75 @@ too. Of course, doing is is really discouraged as it will remove most of the
 useful information from the logs. Do this only if you have no other
 alternative.
 </pre></div>
+<a class="anchor" id="8.3.5" name="8.3.5"></a>
+<h3 id="chapter-8.3.5" data-target="8.3.5"><small><a class="small" href="#8.3.5">8.3.5.</a></small> Log profiles</h3>
+<div><pre class="text">While some directives such as &quot;<a href="#log-format">log-format</a>&quot;, &quot;<a href="#log-format-sd">log-format-sd</a>&quot;, &quot;<a href="#error-log-format">error-log-format</a>&quot;
+or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#log-tag%20%28Log%20profiles%29">Log profiles</a></li></ul></span>&quot; make it possible to configure log formatting globally or at the
+proxy level, it may be relevant to configure such settings as close as possible
+to the log endpoints, that is, per &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive.
+
+This is where &quot;<a href="#log-profile">log-profile</a>&quot; section comes into play: &quot;<a href="#log-profile">log-profile</a>&quot; may be
+defined anywhere in the configuration. This section accepts a set of different
+keywords that are used to describe how the logs emitted for a given `log`
+directive should be built.
+
+From a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive, one can choose to use a specific log-profile by its
+name. The same profile may be used from multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directives.
+</pre><a class="anchor" name="log-profile"></a><a class="anchor" name="8-log-profile"></a><a class="anchor" name="8.3.5-log-profile"></a><a class="anchor" name="log-profile (Logging)"></a><a class="anchor" name="log-profile (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="log-profile"></a><a href="#8.3.5-log-profile">log-profile</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Creates a new log profile identified as &lt;name&gt;
+</pre><a class="anchor" name="log-tag"></a><a class="anchor" name="8-log-tag"></a><a class="anchor" name="8.3.5-log-tag"></a><a class="anchor" name="log-tag (Logging)"></a><a class="anchor" name="log-tag (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="log-tag"></a><a href="#8.3.5-log-tag">log-tag</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Override syslog log tag set globally or per-proxy using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#log-tag%20%28Log%20profiles%29">Log profiles</a></li></ul></span>&quot; directive.
+</pre><a class="anchor" name="on"></a><a class="anchor" name="8-on"></a><a class="anchor" name="8.3.5-on"></a><a class="anchor" name="on (Logging)"></a><a class="anchor" name="on (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="on"></a><a href="#8.3.5-on">on</a></b> <span style="color: #080">&lt;step&gt;</span> <span style="color: #008">[format <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[sd <span style="color: #080">&lt;sd_fmt&gt;</span>]</span></div><pre class="text">Override the log-format string normally used to build the log line at
+&lt;step&gt; logging step. &lt;fmt&gt; is used to override &quot;<a href="#log-format">log-format</a>&quot; or
+&quot;<a href="#error-log-format">error-log-format</a>&quot; strings (depending on the &lt;step&gt;) whereas &lt;sd_fmt&gt; is
+used to override &quot;<a href="#log-format-sd">log-format-sd</a>&quot; string. Possible values for &lt;step&gt; are:
+
+- &quot;<a href="#accept">accept</a>&quot;   : override log-format if the log is generated right after
+               frontend conn was accepted
+- &quot;request&quot;  : override log-format if the log is generated after client
+               request was received
+- &quot;connect&quot;  : override log-format if the log is generated after backend
+               connection establishment
+- &quot;response&quot; : override log-format if the log is generated during server
+               response handling
+- &quot;<a href="#close">close</a>&quot;    : override log-format if the log is generated at the final
+               transaction (txn) step
+- &quot;error&quot;    : override error-log-format for if the log is generated due
+               to a transaction error
+- &quot;any&quot;      : override both log-format and error-log-format for all logging
+               steps, unless a more precise step override is declared.
+
+This setting is only relevant for &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directives used from contexts where
+using &quot;<a href="#log-format">log-format</a>&quot; directive makes sense (e.g.: http and tcp proxies).
+Else it will simply be ignored.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>log-profile myprof
+
+  log-tag &quot;custom-tag&quot;
+
+  on error format &quot;%ci: error&quot;
+  on any sd &quot;custom-sd&quot;
+
+listen myproxy
+  mode http
+  option httplog
+  log-tag &quot;normal&quot;
+
+  log stdout format rfc5424 local0
+  <span class="comment"># success:</span>
+  <span class="comment"># &lt;134&gt;1 2024-06-12T10:09:11.823400+02:00 - normal 224482 - - 127.0.0.1:53594 [12/Jun/2024:10:09:11.814] myproxy myproxy/&lt;NOSRV&gt; 0/-1/-1/-1/0 200 49 - - LR-- 1/1/0/0/0 0/0 &quot;GET / HTTP/1.1&quot;</span>
+  <span class="comment">#</span>
+  <span class="comment"># error:</span>
+  <span class="comment"># &lt;134&gt;1 2024-06-12T10:09:44.810929+02:00 - normal 224482 - - 127.0.0.1:59258 [12/Jun/2024:10:09:44.426] myproxy myproxy/&lt;NOSRV&gt; -1/-1/-1/-1/384 400 0 - - CR-- 1/1/0/0/0 0/0 &quot;&lt;BADREQ&gt;&quot;</span>
+
+  log 127.0.0.1:514 format rfc5424 profile myprof local0
+  <span class="comment"># success:</span>
+  <span class="comment"># &lt;134&gt;1 2024-06-12T10:09:11.823428+02:00 - custom-tag 224482 - custom-sd 127.0.0.1:53594 [12/Jun/2024:10:09:11.814] myproxy myproxy/&lt;NOSRV&gt; 0/-1/-1/-1/0 200 49 - - LR-- 1/1/0/0/0 0/0 &quot;GET / HTTP/1.1&quot;</span>
+  <span class="comment">#</span>
+  <span class="comment"># error:</span>
+  <span class="comment"># &lt;134&gt;1 2024-06-12T10:09:51.566524+02:00 - custom-tag 224482 - - 127.0.0.1: error</span>
+</code></pre>
+</div></div>
 <a class="anchor" id="8.4" name="8.4"></a>
 <h2 id="chapter-8.4" data-target="8.4"><small><a class="small" href="#8.4">8.4.</a></small> Timing events</h2>
 <div><pre class="text">Timers provide a great help in troubleshooting network problems. All values are
@@ -30148,7 +30270,7 @@ applications. All these variables may be overwritten, with caution though.
   |                   | current HAProxy version.                            |
   |                   |                                                     |
   +-------------------+-----------------------------------------------------+
-  | HTTPS             | Set to a non-empty value (&quot;on&quot;) if the script was   |
+  | HTTPS             | Set to a non-empty value (&quot;<a href="#on">on</a>&quot;) if the script was   |
   |                   | queried through the HTTPS protocol.                 |
   |                   |                                                     |
   +-------------------+-----------------------------------------------------+
@@ -30343,7 +30465,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev0-66 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev0-89 &ndash; Configuration Manual<br>
 							<small>, 2024/05/29</small>
 						</div>
 					</div>
