@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.2 - Management Guide</title>
+		<title>HAProxy version 3.0.2-16 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -642,7 +642,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -653,7 +653,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0.2</strong></p>
+							<p><strong>version 3.0.2-16</strong></p>
 							<p>
 								<br>
 								
@@ -2622,7 +2622,8 @@ returned by &quot;<a href="#show%20map">show map</a>&quot;. Note that if the ref
 shared with a acl, this acl will be also cleared. By default only the current
 version of the map is cleared (the one being matched against). However it is
 possible to specify another version using '@' followed by this version.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear table"></a><a class="anchor" name="9-clear table"></a><a class="anchor" name="9.3-clear table"></a><a class="anchor" name="clear table (Statistics and monitoring)"></a><a class="anchor" name="clear table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear table"></a><a href="#9.3-clear%20table">clear table</a></b> <span style="color: #080">&lt;table&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Remove entries from the stick-table &lt;table&gt;.
+</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear table"></a><a class="anchor" name="9-clear table"></a><a class="anchor" name="9.3-clear table"></a><a class="anchor" name="clear table (Statistics and monitoring)"></a><a class="anchor" name="clear table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear table"></a><a href="#9.3-clear%20table">clear table</a></b> <span style="color: #080">&lt;table&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span> |
+                    <span style="color: #008">[ ptr <span style="color: #080">&lt;ptr&gt;</span> ]</span></div><pre class="text">Remove entries from the stick-table &lt;table&gt;.
 
 This is typically used to unblock some users complaining they have been
 abusively denied access to a service, but this can also be used to clear some
@@ -2650,6 +2651,12 @@ the ACLs :
 When the key form is used the entry &lt;key&gt; is removed.  The key must be of the
 same type as the table, which currently is limited to IPv4, IPv6, integer and
 string.
+
+When the ptr form is used the entry &lt;ptr&gt; is removed. &lt;ptr&gt; is written in
+the form 0xffff and must correspond to the address returned by a previous
+&quot;<a href="#show%20table">show table</a>&quot; command. Matching an entry using its pointer may be relevant if
+the entry cannot be matched using the key due to empty key or incompatible
+characters on the cli.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -2659,16 +2666,26 @@ string.
       bytes_out_rate(60000)=187
 &gt;&gt;&gt; 0x80e6a80: key=127.0.0.2 use=0 exp=3594740 gpc0=1 conn_rate(30000)=10 \
       bytes_out_rate(60000)=191
+&gt;&gt;&gt; 0x80e6b40: key=127.0.0.3 use=0 exp=3594743 gpc0=2 conn_rate(30000)=10 \
+      bytes_out_rate(60000)=200
 
     $ echo &quot;clear table http_proxy key 127.0.0.1&quot; | socat stdio /tmp/sock1
 
     $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:1</span>
 &gt;&gt;&gt; 0x80e6a80: key=127.0.0.2 use=0 exp=3594740 gpc0=1 conn_rate(30000)=10 \
+&gt;&gt;&gt; 0x80e6b40: key=127.0.0.3 use=0 exp=3594743 gpc0=2 conn_rate(30000)=10 \
+      bytes_out_rate(60000)=200
       bytes_out_rate(60000)=191
     $ echo &quot;clear table http_proxy data.gpc0 eq 1&quot; | socat stdio /tmp/sock1
     $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:1</span>
+&gt;&gt;&gt; 0x80e6b40: key=127.0.0.3 use=0 exp=3594743 gpc0=2 conn_rate(30000)=10 \
+      bytes_out_rate(60000)=200
+
+    $ echo &quot;clear table http_proxy ptr 0x80e6b40&quot; | socat stdio /tmp/sock1
+    $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
+&gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:0</span>
 </code></pre>
 </div><pre class="text">commit acl @&lt;ver&gt; &lt;acl&gt;
   Commit all changes made to version &lt;ver&gt; of ACL &lt;acl&gt;, and deletes all past
@@ -3202,12 +3219,18 @@ ultimate key, while the penultimate one is used for encryption (others just
 decrypt). The oldest TLS key present is overwritten. &lt;id&gt; is either a numeric
 #&lt;id&gt; or &lt;file&gt; returned by &quot;<a href="#show%20tls-keys">show tls-keys</a>&quot;. &lt;tlskey&gt; is a base64 encoded 48
 or 80 bits TLS ticket key (ex. openssl rand 80 | openssl base64 -A).
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set table"></a><a class="anchor" name="9-set table"></a><a class="anchor" name="9.3-set table"></a><a class="anchor" name="set table (Statistics and monitoring)"></a><a class="anchor" name="set table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set table"></a><a href="#9.3-set%20table">set table</a></b> <span style="color: #080">&lt;table&gt;</span> key <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;data_type&gt;</span> <span style="color: #080">&lt;value&gt;</span>]</span>*</div><pre class="text">Create or update a stick-table entry in the table. If the key is not present,
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set table"></a><a class="anchor" name="9-set table"></a><a class="anchor" name="9.3-set table"></a><a class="anchor" name="set table (Statistics and monitoring)"></a><a class="anchor" name="set table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set table"></a><a href="#9.3-set%20table">set table</a></b> <span style="color: #080">&lt;table&gt;</span> key <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;data_type&gt;</span> <span style="color: #080">&lt;value&gt;</span>]</span>*</div><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set table"></a><a class="anchor" name="9-set table"></a><a class="anchor" name="9.3-set table"></a><a class="anchor" name="set table (Statistics and monitoring)"></a><a class="anchor" name="set table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set table"></a><a href="#9.3-set%20table">set table</a></b> <span style="color: #080">&lt;table&gt;</span> ptr <span style="color: #080">&lt;ptr&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;data_type&gt;</span> <span style="color: #080">&lt;value&gt;</span>]</span>*</div><pre class="text">Create or update a stick-table entry in the table. If the key is not present,
 an entry is inserted. See stick-table in <a href="#4.2">section 4.2</a> to find all possible
 values for &lt;data_type&gt;. The most likely use consists in dynamically entering
 entries for source IP addresses, with a flag in gpc0 to dynamically block an
 IP address or affect its quality of service. It is possible to pass multiple
 data_types in a single call.
+
+Optional ptr lookup may be used instead of key lookup for an existing entry:
+&lt;ptr&gt; is written in the form 0xffff and must correspond to the address
+returned by a previous &quot;<a href="#show%20table">show table</a>&quot; command. Matching an entry using its
+pointer may be relevant if the entry cannot be matched using the key due to
+empty key or imcompatible characters on the cli.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set timeout"></a><a class="anchor" name="9-set timeout"></a><a class="anchor" name="9.3-set timeout"></a><a class="anchor" name="set timeout (Statistics and monitoring)"></a><a class="anchor" name="set timeout (Unix Socket commands)"></a><a class="anchor" name="set timeout cli"></a><a class="anchor" name="9-set timeout cli"></a><a class="anchor" name="9.3-set timeout cli"></a><a class="anchor" name="set timeout cli (Statistics and monitoring)"></a><a class="anchor" name="set timeout cli (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set timeout cli"></a><a href="#9.3-set%20timeout%20cli">set timeout cli</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Change the CLI interface timeout for current connection. This can be useful
 during long debugging sessions where the user needs to constantly inspect
 some indicators without being disconnected. The delay is passed in seconds.
@@ -4290,7 +4313,8 @@ entries currently in use.
 &gt;&gt;&gt; <span class="comment"># table: front_pub, type: ip, size:204800, used:171454</span>
 &gt;&gt;&gt; <span class="comment"># table: back_rdp, type: ip, size:204800, used:0</span>
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;type&gt;</span> ...]</span>]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Dump contents of stick-table &lt;name&gt;. In this mode, a first line of generic
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;type&gt;</span> ...]</span>]</span> |
+                  <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span> | <span style="color: #008">[ ptr <span style="color: #080">&lt;ptr&gt;</span> ]</span></div><pre class="text">Dump contents of stick-table &lt;name&gt;. In this mode, a first line of generic
 information about the table is reported as with &quot;<a href="#show%20table">show table</a>&quot;, then all
 entries are dumped. Since this can be quite heavy, it is possible to specify
 a filter in order to specify what entries to display.
@@ -4314,6 +4338,12 @@ defined during build time (4 by default).
 When the key form is used the entry &lt;key&gt; is shown.  The key must be of the
 same type as the table, which currently is limited to IPv4, IPv6, integer,
 and string.
+
+When the ptr form is used the entry &lt;ptr&gt; is shown. &lt;ptr&gt; is written in
+the form 0xffff and must correspond to the address returned by a previous
+&quot;<a href="#show%20table">show table</a>&quot; command. Matching an entry using its pointer may be relevant if
+the entry cannot be matched using the key due empty key or incompatible
+characters on the cli.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -4336,6 +4366,12 @@ and string.
       bytes_out_rate(60000)=191
 
     $ echo &quot;show table http_proxy key 127.0.0.2&quot; | \
+        socat stdio /tmp/sock1
+&gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:2</span>
+&gt;&gt;&gt; 0x80e6a80: key=127.0.0.2 use=0 exp=3594740 gpc0=1 conn_rate(30000)=10 \
+      bytes_out_rate(60000)=191
+
+    $ echo &quot;show table http_proxy ptr 0x80e6a80&quot; | \
         socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:2</span>
 &gt;&gt;&gt; 0x80e6a80: key=127.0.0.2 use=0 exp=3594740 gpc0=1 conn_rate(30000)=10 \
@@ -5243,7 +5279,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.2 &ndash; Management Guide<br>
+							HAProxy 3.0.2-16 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
