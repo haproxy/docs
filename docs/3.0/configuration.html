@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.2-16 - Configuration Manual</title>
+		<title>HAProxy version 3.0.2-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4303,7 +4303,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4314,7 +4314,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0.2-16</strong></p>
+							<p><strong>version 3.0.2-17</strong></p>
 							<p>
 								2024/06/14<br>
 								
@@ -19992,8 +19992,15 @@ recommended to use this setting if no specific usecase was identified.
 designates a PEM file from which to load certificate revocation list used
 to verify client's certificate. You need to provide a certificate revocation
 list for every certificate of your certificate authority chain.
-</pre><a class="anchor" name="crt"></a><a class="anchor" name="5-crt"></a><a class="anchor" name="5.1-crt"></a><a class="anchor" name="crt (Bind and server options)"></a><a class="anchor" name="crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crt"></a><a href="#5.1-crt">crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
-designates a PEM file containing both the required certificates and any
+</pre><a class="anchor" name="crt"></a><a class="anchor" name="5-crt"></a><a class="anchor" name="5.1-crt"></a><a class="anchor" name="crt (Bind and server options)"></a><a class="anchor" name="crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crt"></a><a href="#5.1-crt">crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in.
+
+HAProxy uses a cache system, the files are loaded only once in the certificate
+storage, and each next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword will use this cached version. When the
+certificate was declared in a &quot;crt-store&quot;, the certificate storage is
+populated from there and don't try to load additional files by detecting file
+extensions.
+
+It designates a PEM file containing both the required certificates and any
 associated private keys. This file can be built by concatenating multiple
 PEM files into one (e.g. cat cert.pem key.pem &gt; combined.pem). If your CA
 requires an intermediate certificate, this can also be concatenated into this
@@ -30343,7 +30350,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.2-16 &ndash; Configuration Manual<br>
+							HAProxy 3.0.2-17 &ndash; Configuration Manual<br>
 							<small>, 2024/06/14</small>
 						</div>
 					</div>
