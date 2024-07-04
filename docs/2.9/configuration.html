@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.9-10 - Configuration Manual</title>
+		<title>HAProxy version 2.9.9-18 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4139,7 +4139,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4150,7 +4150,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.9-10</strong></p>
+							<p><strong>version 2.9.9-18</strong></p>
 							<p>
 								2024/06/14<br>
 								
@@ -7115,10 +7115,18 @@ paths if that does not exist either.
 See https://www.lua.org/pil/8.1.html for the details within the Lua
 documentation.
 </pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global parameters)"></a><a class="anchor" name="master-worker (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker"></a><a href="#3.1-master-worker">master-worker</a></b> <span style="color: #008">[no-exit-on-failure]</span></div><pre class="text">Master-worker mode. It is equivalent to the command line &quot;-W&quot; argument.
-This mode will launch a &quot;master&quot; which will monitor the &quot;workers&quot;. Using
-this mode, you can reload HAProxy directly by sending a SIGUSR2 signal to
-the master. The master-worker mode is compatible either with the foreground
-or daemon mode.
+
+This mode will launch a &quot;master&quot; which will fork a &quot;worker&quot; after reading the
+configuration to process the traffic. The master is used as a process manager
+which will monitor the &quot;workers&quot;.
+
+Using this mode, you can reload HAProxy directly by sending a SIGUSR2 signal
+to the master. Reloading will ask the master to read the configuration again
+and fork a new worker. The previous worker will be kept until the end of its
+jobs.
+
+The master-worker mode is compatible either with the foreground or daemon
+mode.
 
 By default, if a worker exits with a bad return code, in the case of a
 segfault for example, all workers will be killed, and the master will leave.
@@ -29247,7 +29255,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.9-10 &ndash; Configuration Manual<br>
+							HAProxy 2.9.9-18 &ndash; Configuration Manual<br>
 							<small>, 2024/06/14</small>
 						</div>
 					</div>
