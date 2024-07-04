@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.10 - Management Guide</title>
+		<title>HAProxy version 2.8.10-24 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -610,7 +610,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -621,7 +621,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 2.8.10</strong></p>
+							<p><strong>version 2.8.10-24</strong></p>
 							<p>
 								<br>
 								
@@ -1127,6 +1127,11 @@ list of options is :
         the byte's value to -dM but using this option allows to disable/enable
         use of a previously set value.
 
+  -dR : disable SO_REUSEPORT socket option on listening ports. It is equivalent
+    to the &quot;global&quot; section's &quot;noreuseport&quot; keyword. This may be applied in
+    multi-threading scenarios, when load distribution issues observed among the
+    haproxy threads (could be monitored with top).
+
   -dS : disable use of the splice() system call. It is equivalent to the
     &quot;global&quot; section's &quot;nosplice&quot; keyword. This may be used when splice() is
     suspected to behave improperly or to cause performance issues, or when
@@ -1175,6 +1180,12 @@ list of options is :
     list of address resolution methods for all servers, ensuring that even if
     the libc fails to resolve an address, the startup sequence is not
     interrupted.
+
+  -dv : disable the use of the &quot;evports&quot; poller. It is equivalent to the
+    &quot;global&quot; section's keyword &quot;noevports&quot;. It is mostly useful when suspecting
+    a bug related to this poller. On systems supporting event ports (SunOS
+    derived from Solaris 10 and later), the fallback will generally be the
+    &quot;poll&quot; poller.
 
   -m &lt;limit&gt; : limit the total allocatable memory to &lt;limit&gt; megabytes across
     all processes. This may cause some connection refusals or some slowdowns
@@ -3723,8 +3734,8 @@ returned in src/dumpstats.c
 
 The special id &quot;all&quot; dumps the states of all sessions, which must be avoided
 as much as possible as it is highly CPU intensive and can take a lot of time.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show stat"></a><a class="anchor" name="9-show stat"></a><a class="anchor" name="9.3-show stat"></a><a class="anchor" name="show stat (Statistics and monitoring)"></a><a class="anchor" name="show stat (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show stat"></a><a href="#9.3-show%20stat">show stat</a></b> <span style="color: #008">[domain <span style="color: #080">&lt;dns|proxy&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>}</span> <span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;sid&gt;</span>]</span> <span style="color: #008">[typed|json]</span> \
-          <span style="color: #008">[desc]</span> <span style="color: #008">[up|no-maint]</span></div><pre class="text">Dump statistics. The domain is used to select which statistics to print; dns
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show stat"></a><a class="anchor" name="9-show stat"></a><a class="anchor" name="9.3-show stat"></a><a class="anchor" name="show stat (Statistics and monitoring)"></a><a class="anchor" name="show stat (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show stat"></a><a href="#9.3-show%20stat">show stat</a></b> <span style="color: #008">[domain <span style="color: #080">&lt;resolvers|proxy&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>}</span> <span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;sid&gt;</span>]</span> \
+          <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[up|no-maint]</span></div><pre class="text">Dump statistics. The domain is used to select which statistics to print; dns
 and proxy are available for now. By default, the CSV format is used; you can
 activate the extended typed output format described in the section above if
 &quot;typed&quot; is passed after the other arguments; or in JSON if &quot;json&quot; is passed
@@ -4960,7 +4971,7 @@ A safe configuration will have :
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.10 &ndash; Management Guide<br>
+							HAProxy 2.8.10-24 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
