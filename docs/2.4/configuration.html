@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.27-1 - Configuration Manual</title>
+		<title>HAProxy version 2.4.27-9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3757,7 +3757,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/06/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3768,7 +3768,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.27-1</strong></p>
+							<p><strong>version 2.4.27-9</strong></p>
 							<p>
 								2024/06/18<br>
 								
@@ -17227,18 +17227,6 @@ preference, like below :
      bind :443 ssl crt pub.pem alpn h2,http/1.1
 </pre><a class="anchor" name="backlog"></a><a class="anchor" name="5-backlog"></a><a class="anchor" name="5.1-backlog"></a><a class="anchor" name="backlog (Bind and server options)"></a><a class="anchor" name="backlog (Bind options)"></a><div class="keyword"><b><a class="anchor" name="backlog"></a><a href="#5.1-backlog">backlog</a></b> <span style="color: #080">&lt;backlog&gt;</span></div><pre class="text">Sets the socket's backlog to this value. If unspecified or 0, the frontend's
 backlog is used instead, which generally defaults to the maxconn value.
-</pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
-the string describing the list of elliptic curves algorithms (&quot;curve suite&quot;)
-that are negotiated during the SSL/TLS handshake with ECDHE. The format of the
-string is a colon-delimited list of curve name.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<a href="#curves">curves</a>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
-</code></pre>
-</div><a class="anchor" name="ecdhe"></a><a class="anchor" name="5-ecdhe"></a><a class="anchor" name="5.1-ecdhe"></a><a class="anchor" name="ecdhe (Bind and server options)"></a><a class="anchor" name="ecdhe (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ecdhe"></a><a href="#5.1-ecdhe">ecdhe</a></b> <span style="color: #080">&lt;named curve&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
-the named curve (RFC 4492) used to generate ECDH ephemeral keys. By default,
-used named curve is prime256v1.
 </pre><a class="anchor" name="ca-file"></a><a class="anchor" name="5-ca-file"></a><a class="anchor" name="5.1-ca-file"></a><a class="anchor" name="ca-file (Bind and server options)"></a><a class="anchor" name="ca-file (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ca-file"></a><a href="#5.1-ca-file">ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 designates a PEM file from which to load CA certificates used to verify
 client's certificate.
@@ -17412,7 +17400,16 @@ crt-list file example:
       cert2.pem [alpn h2,http/1.1]
       certW.pem                   *.domain.tld !secure.domain.tld
       certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.domain.tld
-</pre><a class="anchor" name="defer-accept"></a><a class="anchor" name="5-defer-accept"></a><a class="anchor" name="5.1-defer-accept"></a><a class="anchor" name="defer-accept (Bind and server options)"></a><a class="anchor" name="defer-accept (Bind options)"></a><div class="keyword"><b><a class="anchor" name="defer-accept"></a><a href="#5.1-defer-accept">defer-accept</a></b></div><pre class="text">Is an optional keyword which is supported only on certain Linux kernels. It
+</pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the string describing the list of elliptic curves algorithms (&quot;curve suite&quot;)
+that are negotiated during the SSL/TLS handshake with ECDHE. The format of the
+string is a colon-delimited list of curve name.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<a href="#curves">curves</a>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
+</code></pre>
+</div><a class="anchor" name="defer-accept"></a><a class="anchor" name="5-defer-accept"></a><a class="anchor" name="5.1-defer-accept"></a><a class="anchor" name="defer-accept (Bind and server options)"></a><a class="anchor" name="defer-accept (Bind options)"></a><div class="keyword"><b><a class="anchor" name="defer-accept"></a><a href="#5.1-defer-accept">defer-accept</a></b></div><pre class="text">Is an optional keyword which is supported only on certain Linux kernels. It
 states that a connection will only be accepted once some data arrive on it,
 or at worst after the first retransmit. This should be used only on protocols
 for which the client talks first (e.g. HTTP). It can slightly improve
@@ -17423,6 +17420,9 @@ broken in all kernels up to 2.6.31, as the connection is never accepted until
 the client talks. This can cause issues with front firewalls which would see
 an established connection while the proxy will only see it in SYN_RECV. This
 option is only supported on TCPv4/TCPv6 sockets and ignored by other ones.
+</pre><a class="anchor" name="ecdhe"></a><a class="anchor" name="5-ecdhe"></a><a class="anchor" name="5.1-ecdhe"></a><a class="anchor" name="ecdhe (Bind and server options)"></a><a class="anchor" name="ecdhe (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ecdhe"></a><a href="#5.1-ecdhe">ecdhe</a></b> <span style="color: #080">&lt;named curve&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+the named curve (RFC 4492) used to generate ECDH ephemeral keys. By default,
+used named curve is prime256v1.
 </pre><a class="anchor" name="expose-fd"></a><a class="anchor" name="5-expose-fd"></a><a class="anchor" name="5.1-expose-fd"></a><a class="anchor" name="expose-fd (Bind and server options)"></a><a class="anchor" name="expose-fd (Bind options)"></a><a class="anchor" name="expose-fd listeners"></a><a class="anchor" name="5-expose-fd listeners"></a><a class="anchor" name="5.1-expose-fd listeners"></a><a class="anchor" name="expose-fd listeners (Bind and server options)"></a><a class="anchor" name="expose-fd listeners (Bind options)"></a><div class="keyword"><b><a class="anchor" name="expose-fd listeners"></a><a href="#5.1-expose-fd%20listeners">expose-fd listeners</a></b></div><pre class="text">This option is only usable with the stats socket. It gives your stats socket
 the capability to pass listeners FD to another HAProxy process.
 During a reload with the master-worker mode, the process is automatically
@@ -17497,16 +17497,6 @@ sockets. &lt;level&gt; can be one of :
   counters).
 - &quot;admin&quot; should be used with care, as everything is permitted (e.g. clear
   all counters).
-</pre><a class="anchor" name="severity-output"></a><a class="anchor" name="5-severity-output"></a><a class="anchor" name="5.1-severity-output"></a><a class="anchor" name="severity-output (Bind and server options)"></a><a class="anchor" name="severity-output (Bind options)"></a><div class="keyword"><b><a class="anchor" name="severity-output"></a><a href="#5.1-severity-output">severity-output</a></b> <span style="color: #080">&lt;format&gt;</span></div><pre class="text">This setting is used with the stats sockets only to configure severity
-level output prepended to informational feedback messages. Severity
-level of messages can range between 0 and 7, conforming to syslog
-rfc5424. Valid and successful socket commands requesting data
-(i.e. &quot;show map&quot;, &quot;get acl foo&quot; etc.) will never have a severity level
-prepended. It is ignored by other sockets. &lt;format&gt; can be one of :
-- &quot;none&quot; (default) no severity level is prepended to feedback messages.
-- &quot;number&quot; severity level is prepended as a number.
-- &quot;string&quot; severity level is prepended as a string following the
-  rfc5424 convention.
 </pre><a class="anchor" name="maxconn"></a><a class="anchor" name="5-maxconn"></a><a class="anchor" name="5.1-maxconn"></a><a class="anchor" name="maxconn (Bind and server options)"></a><a class="anchor" name="maxconn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#5.1-maxconn">maxconn</a></b> <span style="color: #080">&lt;maxconn&gt;</span></div><pre class="text">Limits the sockets to this number of concurrent connections. Extraneous
 connections will remain in the system's backlog until a connection is
 released. If unspecified, the limit will be the same as the frontend's
@@ -17649,6 +17639,16 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
+</pre><a class="anchor" name="severity-output"></a><a class="anchor" name="5-severity-output"></a><a class="anchor" name="5.1-severity-output"></a><a class="anchor" name="severity-output (Bind and server options)"></a><a class="anchor" name="severity-output (Bind options)"></a><div class="keyword"><b><a class="anchor" name="severity-output"></a><a href="#5.1-severity-output">severity-output</a></b> <span style="color: #080">&lt;format&gt;</span></div><pre class="text">This setting is used with the stats sockets only to configure severity
+level output prepended to informational feedback messages. Severity
+level of messages can range between 0 and 7, conforming to syslog
+rfc5424. Valid and successful socket commands requesting data
+(i.e. &quot;show map&quot;, &quot;get acl foo&quot; etc.) will never have a severity level
+prepended. It is ignored by other sockets. &lt;format&gt; can be one of :
+- &quot;none&quot; (default) no severity level is prepended to feedback messages.
+- &quot;number&quot; severity level is prepended as a number.
+- &quot;string&quot; severity level is prepended as a string following the
+  rfc5424 convention.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
 certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
@@ -17716,16 +17716,6 @@ This keyword is available only when HAProxy is built with USE_LINUX_TPROXY=1.
 This parameter is only compatible with TCPv4 and TCPv6 sockets, depending on
 kernel version. Some distribution kernels include backports of the feature,
 so check for support with your vendor.
-</pre><a class="anchor" name="v4v6"></a><a class="anchor" name="5-v4v6"></a><a class="anchor" name="5.1-v4v6"></a><a class="anchor" name="v4v6 (Bind and server options)"></a><a class="anchor" name="v4v6 (Bind options)"></a><div class="keyword"><b><a class="anchor" name="v4v6"></a><a href="#5.1-v4v6">v4v6</a></b></div><pre class="text">Is an optional keyword which is supported only on most recent systems
-including Linux kernels &gt;= 2.4.21. It is used to bind a socket to both IPv4
-and IPv6 when it uses the default address. Doing so is sometimes necessary
-on systems which bind to IPv6 only by default. It has no effect on non-IPv6
-sockets, and is overridden by the &quot;<a href="#v6only">v6only</a>&quot; option.
-</pre><a class="anchor" name="v6only"></a><a class="anchor" name="5-v6only"></a><a class="anchor" name="5.1-v6only"></a><a class="anchor" name="v6only (Bind and server options)"></a><a class="anchor" name="v6only (Bind options)"></a><div class="keyword"><b><a class="anchor" name="v6only"></a><a href="#5.1-v6only">v6only</a></b></div><pre class="text">Is an optional keyword which is supported only on most recent systems
-including Linux kernels &gt;= 2.4.21. It is used to bind a socket to IPv6 only
-when it uses the default address. Doing so is sometimes preferred to doing it
-system-wide as it is per-listener. It has no effect on non-IPv6 sockets and
-has precedence over the &quot;<a href="#v4v6">v4v6</a>&quot; option.
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="5-uid"></a><a class="anchor" name="5.1-uid"></a><a class="anchor" name="uid (Bind and server options)"></a><a class="anchor" name="uid (Bind options)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#5.1-uid">uid</a></b> <span style="color: #080">&lt;uid&gt;</span></div><pre class="text">Sets the owner of the UNIX sockets to the designated system uid. It can also
 be set by default in the global section's &quot;<a href="#unix-bind">unix-bind</a>&quot; statement. Note that
 some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%29">Programs</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
@@ -17736,6 +17726,16 @@ be set by default in the global section's &quot;<a href="#unix-bind">unix-bind</
 some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
 setting except that the user name is used instead of its uid. This setting is
 ignored by non UNIX sockets.
+</pre><a class="anchor" name="v4v6"></a><a class="anchor" name="5-v4v6"></a><a class="anchor" name="5.1-v4v6"></a><a class="anchor" name="v4v6 (Bind and server options)"></a><a class="anchor" name="v4v6 (Bind options)"></a><div class="keyword"><b><a class="anchor" name="v4v6"></a><a href="#5.1-v4v6">v4v6</a></b></div><pre class="text">Is an optional keyword which is supported only on most recent systems
+including Linux kernels &gt;= 2.4.21. It is used to bind a socket to both IPv4
+and IPv6 when it uses the default address. Doing so is sometimes necessary
+on systems which bind to IPv6 only by default. It has no effect on non-IPv6
+sockets, and is overridden by the &quot;<a href="#v6only">v6only</a>&quot; option.
+</pre><a class="anchor" name="v6only"></a><a class="anchor" name="5-v6only"></a><a class="anchor" name="5.1-v6only"></a><a class="anchor" name="v6only (Bind and server options)"></a><a class="anchor" name="v6only (Bind options)"></a><div class="keyword"><b><a class="anchor" name="v6only"></a><a href="#5.1-v6only">v6only</a></b></div><pre class="text">Is an optional keyword which is supported only on most recent systems
+including Linux kernels &gt;= 2.4.21. It is used to bind a socket to IPv6 only
+when it uses the default address. Doing so is sometimes preferred to doing it
+system-wide as it is per-listener. It has no effect on non-IPv6 sockets and
+has precedence over the &quot;<a href="#v4v6">v4v6</a>&quot; option.
 </pre><a class="anchor" name="verify"></a><a class="anchor" name="5-verify"></a><a class="anchor" name="5.1-verify"></a><a class="anchor" name="verify (Bind and server options)"></a><a class="anchor" name="verify (Bind options)"></a><div class="keyword"><b><a class="anchor" name="verify"></a><a href="#5.1-verify">verify</a></b> <span style="color: #008">[none|optional|required]</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. If set
 to 'none', client certificate is not requested. This is the default. In other
 cases, a client certificate is requested. If the client does not provide a
@@ -24764,7 +24764,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.27-1 &ndash; Configuration Manual<br>
+							HAProxy 2.4.27-9 &ndash; Configuration Manual<br>
 							<small>, 2024/06/18</small>
 						</div>
 					</div>
