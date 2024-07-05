@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev2-14 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev2-18 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4322,7 +4322,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4333,7 +4333,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev2-14</strong></p>
+							<p><strong>version 3.1-dev2-18</strong></p>
 							<p>
 								2024/06/29<br>
 								
@@ -7133,9 +7133,14 @@ large values here (in the order of 1 billion), which will consume way too
 much RAM for regular usage. The fd-hard-limit setting is provided to enforce
 a possibly lower bound to this limit. This means that it will always respect
 the system-imposed limits when they are below &lt;number&gt; but the specified
-value will be used if system-imposed limits are higher. In the example below,
-no other setting is specified and the maxconn value will automatically adapt
-to the lower of &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and the system-imposed limit:
+value will be used if system-imposed limits are higher. By default
+fd-hard-limit is set to 1048576. This default could be changed via
+DEFAULT_MAXFD compile-time variable, that could serve as the maximum (kernel)
+system limit, if RLIMIT_NOFILE hard limit is extremely large. fd-hard-limit
+set in global section allows to temporarily override the value provided via
+DEFAULT_MAXFD at the build-time. In the example below, no other setting is
+specified and the maxconn value will automatically adapt to the lower of
+&quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and the RLIMIT_NOFILE limit:
 
     global
         # use as many FDs as possible but no more than 50000
@@ -8129,18 +8134,25 @@ is not reached, the compression level will be increased up to
 tune.comp.maxlevel. A value of zero means there is no limit, this is the
 default value.
 </pre><a class="anchor" name="maxconn"></a><a class="anchor" name="3-maxconn"></a><a class="anchor" name="3.2-maxconn"></a><a class="anchor" name="maxconn (Global parameters)"></a><a class="anchor" name="maxconn (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#3.2-maxconn">maxconn</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of concurrent connections to &lt;number&gt;. It
-is equivalent to the command-line argument &quot;-n&quot;. Proxies will stop accepting
-connections when this limit is reached. The &quot;<a href="#ulimit-n">ulimit-n</a>&quot; parameter is
-automatically adjusted according to this value. See also &quot;<a href="#ulimit-n">ulimit-n</a>&quot;. Note:
-the &quot;select&quot; poller cannot reliably use more than 1024 file descriptors on
-some platforms. If your platform only supports select and reports &quot;select
-FAILED&quot; on startup, you need to reduce maxconn until it works (slightly
-below 500 in general). If this value is not set, it will automatically be
-calculated based on the current file descriptors limit reported by the
-&quot;ulimit -n&quot; command, possibly reduced to a lower value if a memory limit
-is enforced, based on the buffer size, memory allocated to compression, SSL
-cache size, and use or not of SSL and the associated maxsslconn (which can
-also be automatic). In any case, the fd-hard-limit applies if set.
+is equivalent to the command-line argument &quot;-n&quot;. The value provided in
+command-line argument via &quot;-n&quot; takes the precedence over the maxconn value set
+in the global section. Haproxy process could be also compiled with
+SYSTEM_MAXCONN compile-time variable, which is served in this case as the
+system maxconn maximum. Again, the command-line &quot;-n&quot; argument allows at
+runtime to bypass SYSTEM_MAXCONN limit, if set. Proxies will stop accepting
+connections when maxconn is reached. The process soft file descriptor limit
+(could be obtained with &quot;ulimit -n&quot; command) is automatically adjusted
+according to provided maxconn. See also &quot;<a href="#ulimit-n">ulimit-n</a>&quot;. Note: the &quot;select&quot; poller
+cannot reliably use more than 1024 file descriptors on some platforms. If your
+platform only supports select and reports &quot;select FAILED&quot; on startup, you need
+to reduce the maxconn until it works (slightly below 500 in general). If
+maxconn value is not set, it will be automatically calculated based on the
+current file descriptors limits, reported by the &quot;ulimit -nH&quot; command (we take
+the maximum between the hard and soft values), then automatic value will be
+possibly reduced by &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and by memory limit, if the latter was
+enforced via &quot;-m&quot; command line option. Automatic value is also dependent from
+the buffer size, memory allocated to compression, SSL cache size, and the use
+or not of SSL and the associated maxsslconn (which can also be automatic).
 </pre><div class="page-header"><b>See also:</b> fd-hard-limit, ulimit-n</div>
 <a class="anchor" name="maxconnrate"></a><a class="anchor" name="3-maxconnrate"></a><a class="anchor" name="3.2-maxconnrate"></a><a class="anchor" name="maxconnrate (Global parameters)"></a><a class="anchor" name="maxconnrate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconnrate"></a><a href="#3.2-maxconnrate">maxconnrate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of connections per second to &lt;number&gt;.
 Proxies will stop accepting connections when this limit is reached. It can be
@@ -30488,7 +30500,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev2-14 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev2-18 &ndash; Configuration Manual<br>
 							<small>, 2024/06/29</small>
 						</div>
 					</div>
