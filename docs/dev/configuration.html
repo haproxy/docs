@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev4-12 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev4-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1971,6 +1971,8 @@
 							<a class="list-group-item" href="#h1-case-adjust">h1-case-adjust</a>
 							
 							<a class="list-group-item" href="#h1-case-adjust-file">h1-case-adjust-file</a>
+							
+							<a class="list-group-item" href="#h1-do-not-close-on-insecure-transfer-encoding">h1-do-not-close-on-insecure-transfer-encoding</a>
 							
 							<a class="list-group-item" href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
 							
@@ -4345,7 +4347,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4356,7 +4358,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev4-12</strong></p>
+							<p><strong>version 3.1-dev4-17</strong></p>
 							<p>
 								2024/07/24<br>
 								
@@ -6792,6 +6794,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>
    - <a href="#h1-case-adjust">h1-case-adjust</a>
    - <a href="#h1-case-adjust-file">h1-case-adjust-file</a>
+   - <a href="#h1-do-not-close-on-insecure-transfer-encoding">h1-do-not-close-on-insecure-transfer-encoding</a>
    - <a href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
    - <a href="#hard-stop-after">hard-stop-after</a>
    - <a href="#harden.reject-privileged-ports.tcp">harden.reject-privileged-ports.tcp</a>
@@ -7330,6 +7333,30 @@ HAProxy rejects HTTP/1.0 GET/HEAD/DELETE requests with a payload.
 
 However, it may be an issue with some old clients. In this case, this global
 option may be set.
+</pre><a class="anchor" name="h1-do-not-close-on-insecure-transfer-encoding"></a><a class="anchor" name="3-h1-do-not-close-on-insecure-transfer-encoding"></a><a class="anchor" name="3.1-h1-do-not-close-on-insecure-transfer-encoding"></a><a class="anchor" name="h1-do-not-close-on-insecure-transfer-encoding (Global parameters)"></a><a class="anchor" name="h1-do-not-close-on-insecure-transfer-encoding (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-do-not-close-on-insecure-transfer-encoding"></a><a href="#3.1-h1-do-not-close-on-insecure-transfer-encoding">h1-do-not-close-on-insecure-transfer-encoding</a></b></div><pre class="text">As mandated by the HTTP/1.1 specification (RFC9112#6.1), the presence of both
+a Transfer-Encoding header field and a Content-Length header field in the
+same message represents a serious risk of conveying a content smuggling
+attack if there are any HTTP/1.0 agent anywhere in the upstream of downstream
+chain, and when facing this, an agent must absolutely close the connection
+after the response so as to prevent any exploitation. But this may have a
+performance impact on some very old clients, especially if they need to
+renegotiate a TLS connection for every request. This option is present to
+ask HAProxy not to enforce this rule, and to just sanitize the message but
+leave the connection alive after the response. This may only be done when
+absolutely certain that no HTTP/1.0 agents are present in the chain and that
+all implementations before HAProxy are fully HTTP/1.1 compliant regarding the
+rules that apply to these header fields. In any case, HAProxy will continue
+to ignore and drop the extraneous Content-Length header so as not to confuse
+the next hop.
+
+When enabling this option to work around an old broken client or server, it
+is important to understand that regardless of the need or not for this
+option, such an agent violating this rule faces a risk to see its messages
+truncated by old agents that would consider Content-Length and ignore
+Transfer-Encoding, since the cumulated size of the encoded chunk sizes are
+not being accounted for. As such, the rule above is not just a matter of
+security but also of taking care of getting rid of agents that may face
+communication trouble due to incompatibilities with older ones.
 </pre><a class="anchor" name="h1-case-adjust"></a><a class="anchor" name="3-h1-case-adjust"></a><a class="anchor" name="3.1-h1-case-adjust"></a><a class="anchor" name="h1-case-adjust (Global parameters)"></a><a class="anchor" name="h1-case-adjust (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-case-adjust"></a><a href="#3.1-h1-case-adjust">h1-case-adjust</a></b> <span style="color: #080">&lt;from&gt;</span> <span style="color: #080">&lt;to&gt;</span></div><pre class="text">Defines the case adjustment to apply, when enabled, to the header name
 &lt;from&gt;, to change it to &lt;to&gt; before sending it to HTTP/1 clients or
 servers. &lt;from&gt; must be in lower case, and &lt;from&gt; and &lt;to&gt; must not differ
@@ -30646,7 +30673,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev4-12 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev4-17 &ndash; Configuration Manual<br>
 							<small>, 2024/07/24</small>
 						</div>
 					</div>
