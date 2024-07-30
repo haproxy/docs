@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.10-25 - Configuration Manual</title>
+		<title>HAProxy version 2.8.10-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4294,7 +4294,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4305,7 +4305,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.10-25</strong></p>
+							<p><strong>version 2.8.10-47</strong></p>
 							<p>
 								2024/06/14<br>
 								
@@ -6813,9 +6813,14 @@ large values here (in the order of 1 billion), which will consume way too
 much RAM for regular usage. The fd-hard-limit setting is provided to enforce
 a possibly lower bound to this limit. This means that it will always respect
 the system-imposed limits when they are below &lt;number&gt; but the specified
-value will be used if system-imposed limits are higher. In the example below,
-no other setting is specified and the maxconn value will automatically adapt
-to the lower of &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and the system-imposed limit:
+value will be used if system-imposed limits are higher. By default
+fd-hard-limit is set to 1048576. This default could be changed via
+DEFAULT_MAXFD compile-time variable, that could serve as the maximum (kernel)
+system limit, if RLIMIT_NOFILE hard limit is extremely large. fd-hard-limit
+set in global section allows to temporarily override the value provided via
+DEFAULT_MAXFD at the build-time. In the example below, no other setting is
+specified and the maxconn value will automatically adapt to the lower of
+&quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and the RLIMIT_NOFILE limit:
 
     global
         # use as many FDs as possible but no more than 50000
@@ -6997,6 +7002,10 @@ could be replaced with PrivateKey+Certificate. HAProxy will complete the
 chain if a file with IntermediateCA2+IntermediateCA1 is present in
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot; directory. All other certificates with the same issuer
 will share the chain in memory.
+
+The OCSP features are not able to use the completed chain from
+'issuers-chain-path', please use an additionnal .issuer file if you want to
+achieve OCSP stapling.
 </pre><a class="anchor" name="limited-quic"></a><a class="anchor" name="3-limited-quic"></a><a class="anchor" name="3.1-limited-quic"></a><a class="anchor" name="limited-quic (Global parameters)"></a><a class="anchor" name="limited-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="limited-quic"></a><a href="#3.1-limited-quic">limited-quic</a></b></div><pre class="text">This setting must be used to explicitly enable the QUIC listener bindings when
 haproxy is compiled against a TLS/SSL stack without QUIC support, typically
 OpenSSL. It has no effect when haproxy is compiled against a TLS/SSL stack
@@ -7812,18 +7821,25 @@ is not reached, the compression level will be increased up to
 tune.comp.maxlevel. A value of zero means there is no limit, this is the
 default value.
 </pre><a class="anchor" name="maxconn"></a><a class="anchor" name="3-maxconn"></a><a class="anchor" name="3.2-maxconn"></a><a class="anchor" name="maxconn (Global parameters)"></a><a class="anchor" name="maxconn (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#3.2-maxconn">maxconn</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of concurrent connections to &lt;number&gt;. It
-is equivalent to the command-line argument &quot;-n&quot;. Proxies will stop accepting
-connections when this limit is reached. The &quot;<a href="#ulimit-n">ulimit-n</a>&quot; parameter is
-automatically adjusted according to this value. See also &quot;<a href="#ulimit-n">ulimit-n</a>&quot;. Note:
-the &quot;select&quot; poller cannot reliably use more than 1024 file descriptors on
-some platforms. If your platform only supports select and reports &quot;select
-FAILED&quot; on startup, you need to reduce maxconn until it works (slightly
-below 500 in general). If this value is not set, it will automatically be
-calculated based on the current file descriptors limit reported by the
-&quot;ulimit -n&quot; command, possibly reduced to a lower value if a memory limit
-is enforced, based on the buffer size, memory allocated to compression, SSL
-cache size, and use or not of SSL and the associated maxsslconn (which can
-also be automatic). In any case, the fd-hard-limit applies if set.
+is equivalent to the command-line argument &quot;-n&quot;. The value provided in
+command-line argument via &quot;-n&quot; takes the precedence over the maxconn value set
+in the global section. Haproxy process could be also compiled with
+SYSTEM_MAXCONN compile-time variable, which is served in this case as the
+system maxconn maximum. Again, the command-line &quot;-n&quot; argument allows at
+runtime to bypass SYSTEM_MAXCONN limit, if set. Proxies will stop accepting
+connections when maxconn is reached. The process soft file descriptor limit
+(could be obtained with &quot;ulimit -n&quot; command) is automatically adjusted
+according to provided maxconn. See also &quot;<a href="#ulimit-n">ulimit-n</a>&quot;. Note: the &quot;select&quot; poller
+cannot reliably use more than 1024 file descriptors on some platforms. If your
+platform only supports select and reports &quot;select FAILED&quot; on startup, you need
+to reduce the maxconn until it works (slightly below 500 in general). If
+maxconn value is not set, it will be automatically calculated based on the
+current file descriptors limits, reported by the &quot;ulimit -nH&quot; command (we take
+the maximum between the hard and soft values), then automatic value will be
+possibly reduced by &quot;<a href="#fd-hard-limit">fd-hard-limit</a>&quot; and by memory limit, if the latter was
+enforced via &quot;-m&quot; command line option. Automatic value is also dependent from
+the buffer size, memory allocated to compression, SSL cache size, and the use
+or not of SSL and the associated maxsslconn (which can also be automatic).
 </pre><div class="page-header"><b>See also:</b> fd-hard-limit, ulimit-n</div>
 <a class="anchor" name="maxconnrate"></a><a class="anchor" name="3-maxconnrate"></a><a class="anchor" name="3.2-maxconnrate"></a><a class="anchor" name="maxconnrate (Global parameters)"></a><a class="anchor" name="maxconnrate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="maxconnrate"></a><a href="#3.2-maxconnrate">maxconnrate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum per-process number of connections per second to &lt;number&gt;.
 Proxies will stop accepting connections when this limit is reached. It can be
@@ -18478,14 +18494,47 @@ new request do not refresh the timeout and are not counted as a new request.
 There is also another difference between the two timeouts : when a connection
 expires during timeout http-keep-alive, no error is returned, the connection
 just closes. If the connection expires in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; while waiting for a
-connection to complete, a HTTP 408 error is returned.
+request to complete, an HTTP 408 error is returned to the client before
+closing the connection, unless &quot;<a href="#option%20http-ignore-probes">option http-ignore-probes</a>&quot; is set in the
+frontend.
 
-In general it is optimal to set this value to a few tens to hundreds of
-milliseconds, to allow users to fetch all objects of a page at once but
-without waiting for further clicks. Also, if set to a very small value (e.g.
-1 millisecond) it will probably only accept pipelined requests but not the
-non-pipelined ones. It may be a nice trade-off for very large sites running
-with tens to hundreds of thousands of clients.
+In general &quot;<a href="#timeout%20http-keep-alive">timeout http-keep-alive</a>&quot; is best used to prevent clients from
+holding open an otherwise idle connection too long on sites seeing large
+amounts of short connections. This can be accomplished by setting the value
+to a few tens to hundreds of milliseconds in HTTP/1.1. This will close the
+connection after the client requests a page without having to hold that
+connection open to wait for more activity from the client. In that scenario,
+a new activity from the browser would result in a new handshake at the TCP
+and/or SSL layer. A common use case for this is HTTP sites serving only a
+redirect to the HTTPS page. Such connections are better not kept idle too
+long because they won't be reused, unless maybe to fetch a favicon.
+
+Another use case is the exact opposite: some sites want to permit clients
+to reuse idle connections for a long time (e.g. 30 seconds to one minute) but
+do not want to wait that long for the first request, in order to avoid a very
+inexpensive attack vector. In this case, the http-keep-alive timeout would be
+set to a large value, but http-request would remain low (a few seconds).
+
+When set to a very small value additional requests that are not pipelined
+are likely going to be handled over another connection unless the requests
+are truly pipelined, which is very rare with HTTP/1.1 (requests being sent
+back-to-back without waiting for a response). Most HTTP/1.1 implementations
+send a request, wait for a response and then send another request. A small
+value here for HTTP/1.1 may be advantageous to use less memory and sockets
+for sites with hundreds of thousands of clients, at the expense of an
+increase in handshake computation costs.
+
+Special care should be taken with small values when dealing with HTTP/2. The
+nature of HTTP/2 is to multiplex requests over a connection in order to save
+on the overhead of reconnecting the TCP and/or SSL layers. The protocol also
+uses control frames which cope poorly with early TCP connection closures, on
+very rare occasions this may result in truncated responses when data are
+destroyed in flight after leaving HAProxy (which then cannot even log an
+error). A suggested low starting value for HTTP/2 connections would be around
+4 seconds. This would prevent most modern keep-alive implementations from
+needlessly holding open stale connections, and at the same time would allow
+subsequent requests to reuse the connection. However, this should be adjusted
+as needed and is simply a starting point.
 
 If this parameter is not set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; timeout applies, and if both
 are not set, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">timeout client<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#timeout%20client%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#timeout%20client%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; still applies at the lower level. It should be
@@ -27746,7 +27795,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.10-25 &ndash; Configuration Manual<br>
+							HAProxy 2.8.10-47 &ndash; Configuration Manual<br>
 							<small>, 2024/06/14</small>
 						</div>
 					</div>
