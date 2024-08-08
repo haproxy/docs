@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev4-47 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev5 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1466,6 +1466,8 @@
 							
 							<a class="list-group-item" href="#bool (Fetching samples from internal states)">bool (Fetching samples from internal states)</a>
 							
+							<a class="list-group-item" href="#bs.debug_str">bs.debug_str</a>
+							
 							<a class="list-group-item" href="#bs.id">bs.id</a>
 							
 							<a class="list-group-item" href="#busy-polling">busy-polling</a>
@@ -1933,6 +1935,8 @@
 							<a class="list-group-item" href="#force-tlsv13">force-tlsv13</a>
 							
 							<a class="list-group-item" href="#format">format</a>
+							
+							<a class="list-group-item" href="#fs.debug_str">fs.debug_str</a>
 							
 							<a class="list-group-item" href="#fs.id">fs.id</a>
 							
@@ -4347,7 +4351,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4358,9 +4362,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev4-47</strong></p>
+							<p><strong>version 3.1-dev5</strong></p>
 							<p>
-								2024/07/24<br>
+								2024/08/07<br>
 								
 							</p>
 						</div>
@@ -26856,13 +26860,15 @@ Warning : Following sample fetches are ignored if used from HTTP proxies. They
 Summary of sample fetch methods in this section and their respective types:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
-<tr><td ><a href="#7-bs.id">bs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bs.aborted">bs.aborted</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-bs.debug_str">bs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bs.id">bs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bs.rst_code">bs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-distcc_body">distcc_body(&lt;token&gt;[,&lt;occ&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-distcc_param">distcc_param(&lt;token&gt;[,&lt;occ&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-fs.id">fs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fs.aborted">fs.aborted</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-fs.debug_str">fs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fs.id">fs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fs.rst_code">fs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-payload">payload(&lt;offset&gt;,&lt;length&gt;)</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-payload_lv">payload_lv(&lt;offset1&gt;,&lt;length&gt;[,&lt;offset2&gt;])</a></td><td >binary</td></tr>
@@ -26892,12 +26898,32 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-rep_ssl_hello_type">rep_ssl_hello_type</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 </table><pre class="text">Detailed list:
-</pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the server side. It is the
-  multiplexer's responsibility to return the appropriate information.
 
 bs.aborted: boolean
   Returns true is an abort was received from the server for the current
   stream. Otherwise false is returned.
+</pre><a class="anchor" name="bs.debug_str"></a><a class="anchor" name="7-bs.debug_str"></a><a class="anchor" name="7.3.5-bs.debug_str"></a><a class="anchor" name="bs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.debug_str (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.debug_str"></a><a href="#7.3.5-bs.debug_str">bs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
+troubleshooting sessions. It extracts some internal states from the lower
+layers of the backend stream and connection, and arranges them as a string,
+generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
+&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
+from, and is an arithmetic OR (or a sum) of the following values:
+   - socket layer: 16
+   - connection layer: 8
+   - transport layer (e.g. SSL): 4
+   - mux connection: 2
+   - mux stream: 1
+
+These values might change across versions. The default value of zero is
+special and enables all layers. Please do not rely on the output of this
+function for long-term production monitoring. It is meant to evolve even
+within a stable branch, as the needs for increased details arise. One use
+typical use case is to concatenate these information at the very end of a
+log-format, along with fs.debug_str(). Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the server side. It is the
+  multiplexer's responsibility to return the appropriate information.
 
 bs.rst_code: integer
   Returns the reset code received from the server for the current stream. The
@@ -26928,13 +26954,32 @@ tcp-request content accept if { distcc_param(DOTI) -m found }
 <span class="comment"># send large files to the big farm</span>
 use_backend big_farm if { distcc_param(DOTI) gt 1000000 }
 </code></pre>
-</div><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.5-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.5-fs.id">fs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the client side. It is the
-  multiplexer's responsibility to return the appropriate information. For
-  instance, on a raw TCP, 0 is always returned because there is no stream.
-
-fs.aborted: boolean
+</div><pre class="text">fs.aborted: boolean
   Returns true is an abort was received from the client for the current
   stream. Otherwise false is returned.
+</pre><a class="anchor" name="fs.debug_str"></a><a class="anchor" name="7-fs.debug_str"></a><a class="anchor" name="7.3.5-fs.debug_str"></a><a class="anchor" name="fs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.debug_str (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.debug_str"></a><a href="#7.3.5-fs.debug_str">fs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
+troubleshooting sessions. It extracts some internal states from the lower
+layers of the frontend stream and connection, and arranges them as a string,
+generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
+&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
+from, and is an arithmetic OR (or a sum) of the following values:
+   - socket layer: 16
+   - connection layer: 8
+   - transport layer (e.g. SSL): 4
+   - mux connection: 2
+   - mux stream: 1
+
+These values might change across versions. The default value of zero is
+special and enables all layers. Please do not rely on the output of this
+function for long-term production monitoring. It is meant to evolve even
+within a stable branch, as the needs for increased details arise. One use
+typical use case is to concatenate these information at the very end of a
+log-format, along with bs.debug_str(). Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.5-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.5-fs.id">fs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the client side. It is the
+  multiplexer's responsibility to return the appropriate information. For
+  instance, on a raw TCP, 0 is always returned because there is no stream.
 
 fs.rst_code: integer
   Returns the reset code received from the client for the current stream. The
@@ -30683,8 +30728,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev4-47 &ndash; Configuration Manual<br>
-							<small>, 2024/07/24</small>
+							HAProxy 3.1-dev5 &ndash; Configuration Manual<br>
+							<small>, 2024/08/07</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev4-47 - Management Guide</title>
+		<title>HAProxy version 3.1-dev5 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -642,7 +642,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -653,7 +653,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.1-dev4-47</strong></p>
+							<p><strong>version 3.1-dev5</strong></p>
 							<p>
 								<br>
 								
@@ -4519,7 +4519,28 @@ name prefixed by a '-' or a '!'.
 
 One way to completely disable a trace source is to pass &quot;event none&quot;, and
 this source will instantly be totally ignored.
-</pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> level <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span>]</span></div><pre class="text">Without argument, this will list all trace levels for this source, and the
+</pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> follow <span style="color: #080">&lt;other_source&gt;</span></div><pre class="text">This permits the source &lt;source&gt; to also emit traces when the other source
+&lt;other_source&gt; is locked on a criteria and the same criteria matches for the
+current source as well. For example, if a source is locked on a session,
+following that source from another one will make that other one emit traces
+for all events related to this session. This may be used to some extents to
+track backend requests along with the associated frontend connections. The
+&quot;session&quot; source makes this easier by providing a &quot;<a href="#new">new</a>&quot; and an &quot;end&quot; events
+that are usable for lock-on processing. Note that the source &lt;source&gt; does
+not need to have its traces enabled in this case, and its tracing state will
+not be affected either. It is, however, possible that some events may be
+missing if they do not contain information that allow to correlate them with
+the tracked element. The meta-source &quot;all&quot; may also be used with this
+command: in this case, all sources will follow &lt;other_source&gt;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>trace session lock session
+trace session start sess_new
+trace session pause sess_end
+trace h1 follow session
+</code></pre>
+</div><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> level <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span>]</span></div><pre class="text">Without argument, this will list all trace levels for this source, and the
 current one will be indicated by a star ('*') prepended in front of it. With
 an argument, this will change the trace level to the specified level. Detail
 levels are a form of filters that are applied before reporting the events.
@@ -4557,7 +4578,9 @@ currently 5 distinct levels for a trace :
 It is highly recommended to always use the &quot;<a href="#user">user</a>&quot; level only and switch to
 other levels only if instructed to do so by a developer. Also it is a good
 idea to first configure the events before switching to higher levels, as it
-may save from dumping many lines if no filter is applied.
+may save from dumping many lines if no filter is applied. The meta-source
+&quot;all&quot; may also be used with this command: in this case, the level will be
+applied to all existing sources at once.
 </pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> lock <span style="color: #008">[criterion]</span></div><pre class="text">Without argument, this will list all the criteria supported by this source
 for lock-on processing, and display the current choice by a star ('*') in
 front of it. Lock-on means that the source will focus on the first matching
@@ -4622,7 +4645,9 @@ beginning to the anomaly.
    ring buffers should be available as well. When a name is specified, the sink
    instantly changes for the specified source. Events are not changed during a
    sink change. In the worst case some may be lost if an invalid sink is used
-   (or &quot;none&quot;), but operations do continue to a different destination.</div><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> verbosity <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span>]</span></div><pre class="text">Without argument, this will list all verbosity levels for this source, and the
+   (or &quot;none&quot;), but operations do continue to a different destination. The
+   meta-source &quot;all&quot; may also be used with this command: in this case, the
+   sink will be applied to all existing sources at once.</div><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> verbosity <span style="color: #008">[<span style="color: #080">&lt;level&gt;</span>]</span></div><pre class="text">Without argument, this will list all verbosity levels for this source, and the
 current one will be indicated by a star ('*') prepended in front of it. With
 an argument, this will change the verbosity level to the specified one.
 
@@ -5279,7 +5304,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev4-47 &ndash; Management Guide<br>
+							HAProxy 3.1-dev5 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
