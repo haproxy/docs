@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev5-25 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev5-26 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4351,7 +4351,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4362,7 +4362,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev5-25</strong></p>
+							<p><strong>version 3.1-dev5-26</strong></p>
 							<p>
 								2024/08/07<br>
 								
@@ -29175,10 +29175,16 @@ From a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="drop
 name. The same profile may be used from multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Peers%29">Peers</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directives.
 </pre><a class="anchor" name="log-profile"></a><a class="anchor" name="8-log-profile"></a><a class="anchor" name="8.3.5-log-profile"></a><a class="anchor" name="log-profile (Logging)"></a><a class="anchor" name="log-profile (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="log-profile"></a><a href="#8.3.5-log-profile">log-profile</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Creates a new log profile identified as &lt;name&gt;
 </pre><a class="anchor" name="log-tag"></a><a class="anchor" name="8-log-tag"></a><a class="anchor" name="8.3.5-log-tag"></a><a class="anchor" name="log-tag (Logging)"></a><a class="anchor" name="log-tag (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="log-tag"></a><a href="#8.3.5-log-tag">log-tag</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Override syslog log tag set globally or per-proxy using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log-tag<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log-tag%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log-tag%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#log-tag%20%28Log%20profiles%29">Log profiles</a></li></ul></span>&quot; directive.
-</pre><a class="anchor" name="on"></a><a class="anchor" name="8-on"></a><a class="anchor" name="8.3.5-on"></a><a class="anchor" name="on (Logging)"></a><a class="anchor" name="on (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="on"></a><a href="#8.3.5-on">on</a></b> <span style="color: #080">&lt;step&gt;</span> <span style="color: #008">[format <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[sd <span style="color: #080">&lt;sd_fmt&gt;</span>]</span></div><pre class="text">Override the log-format string normally used to build the log line at
+</pre><a class="anchor" name="on"></a><a class="anchor" name="8-on"></a><a class="anchor" name="8.3.5-on"></a><a class="anchor" name="on (Logging)"></a><a class="anchor" name="on (Log profiles)"></a><div class="keyword"><b><a class="anchor" name="on"></a><a href="#8.3.5-on">on</a></b> <span style="color: #080">&lt;step&gt;</span> <span style="color: #008">[drop]</span> <span style="color: #008">[format <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[sd <span style="color: #080">&lt;sd_fmt&gt;</span>]</span></div><pre class="text">Override the log-format string normally used to build the log line at
 &lt;step&gt; logging step. &lt;fmt&gt; is used to override &quot;<a href="#log-format">log-format</a>&quot; or
 &quot;<a href="#error-log-format">error-log-format</a>&quot; strings (depending on the &lt;step&gt;) whereas &lt;sd_fmt&gt; is
-used to override &quot;<a href="#log-format-sd">log-format-sd</a>&quot; string. Possible values for &lt;step&gt; are:
+used to override &quot;<a href="#log-format-sd">log-format-sd</a>&quot; string (both can be combined).
+
+&quot;drop&quot; special keyword may be used to specify that no log should be
+emitted for the given &lt;step&gt;. It takes precedence over &quot;<a href="#format">format</a>&quot; and
+&quot;sd&quot; if previously defined.
+
+Possible values for &lt;step&gt; are:
 
 - &quot;<a href="#accept">accept</a>&quot;   : override log-format if the log is generated right after
                frontend conn was accepted
@@ -29206,6 +29212,7 @@ Else it will simply be ignored.
   log-tag &quot;custom-tag&quot;
 
   on error format &quot;%ci: error&quot;
+  on connect drop
   on any sd &quot;custom-sd&quot;
 
 listen myproxy
@@ -30728,7 +30735,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev5-25 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev5-26 &ndash; Configuration Manual<br>
 							<small>, 2024/08/07</small>
 						</div>
 					</div>
