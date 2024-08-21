@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev5-26 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev5-58 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4008,6 +4008,8 @@
 							
 							<a class="list-group-item" href="#tune.bufsize">tune.bufsize</a>
 							
+							<a class="list-group-item" href="#tune.bufsize.small">tune.bufsize.small</a>
+							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
 							<a class="list-group-item" href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
@@ -4104,13 +4106,13 @@
 							
 							<a class="list-group-item" href="#tune.quic.disable-udp-gso">tune.quic.disable-udp-gso</a>
 							
-							<a class="list-group-item" href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
-							
 							<a class="list-group-item" href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+							
+							<a class="list-group-item" href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>
 							
 							<a class="list-group-item" href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
 							
@@ -4351,7 +4353,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4362,7 +4364,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev5-26</strong></p>
+							<p><strong>version 3.1-dev5-58</strong></p>
 							<p>
 								2024/08/07<br>
 								
@@ -6893,6 +6895,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.buffers.limit">tune.buffers.limit</a>
    - <a href="#tune.buffers.reserve">tune.buffers.reserve</a>
    - <a href="#tune.bufsize">tune.bufsize</a>
+   - <a href="#tune.bufsize.small">tune.bufsize.small</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
@@ -6938,10 +6941,10 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.pt.zero-copy-forwarding">tune.pt.zero-copy-forwarding</a>
    - <a href="#tune.quic.cc-hystart">tune.quic.cc-hystart</a>
    - <a href="#tune.quic.disable-udp-gso">tune.quic.disable-udp-gso</a>
-   - <a href="#tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a>
    - <a href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+   - <a href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
    - <a href="#tune.quic.reorder-ratio">tune.quic.reorder-ratio</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
@@ -8495,6 +8498,15 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
+</pre><a class="anchor" name="tune.bufsize.small"></a><a class="anchor" name="3-tune.bufsize.small"></a><a class="anchor" name="3.2-tune.bufsize.small"></a><a class="anchor" name="tune.bufsize.small (Global parameters)"></a><a class="anchor" name="tune.bufsize.small (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.small"></a><a href="#3.2-tune.bufsize.small">tune.bufsize.small</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size in bytes for small buffers. The defaults value is 1024.
+
+These buffers are designed to be used in some specific contexts where memory
+consumption is restrained but it seems unnecessary to allocate a full buffer.
+If however a small buffer is not sufficient, a reallocation is automatically
+done to switch to a standard size buffer.
+
+For the moment, it is used only by HTTP/3 protocol to emit the response
+headers.
 </pre><a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global parameters)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
@@ -8943,11 +8955,6 @@ control algorithms which may cause high packet loss. It is disabled by default.
 datagrams via a single system call which is more efficient for large
 transfer. It may be useful to disable it on developers suggestion when
 suspecting an issue on emission.
-</pre><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="3.2-tune.quic.frontend.conn-tx-buffers.limit"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.conn-tx-buffers.limit"></a><a href="#3.2-tune.quic.frontend.conn-tx-buffers.limit">tune.quic.frontend.conn-tx-buffers.limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This settings defines the maximum number of buffers allocated for a QUIC
-connection on data emission. By default, it is set to 30. QUIC buffers are
-drained on ACK reception. This setting has a direct impact on the throughput
-and memory consumption and can be adjusted according to an estimated round
-time-trip. Each buffer is tune.bufsize.
 </pre><a class="anchor" name="tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="3-tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="3.2-tune.quic.frontend.glitches-threshold"></a><a class="anchor" name="tune.quic.frontend.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.glitches-threshold"></a><a href="#3.2-tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
 that connection will automatically be killed. This allows to automatically
 kill misbehaving connections without having to write explicit rules for them.
@@ -8972,6 +8979,17 @@ will be authorized to open. This determines the number of concurrent client
 requests.
 
 The default value is 100.
+</pre><a class="anchor" name="tune.quic.frontend.max-window-size"></a><a class="anchor" name="3-tune.quic.frontend.max-window-size"></a><a class="anchor" name="3.2-tune.quic.frontend.max-window-size"></a><a class="anchor" name="tune.quic.frontend.max-window-size (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-window-size"></a><a href="#3.2-tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the default maximum window size for the congestion controller of a
+single QUIC connection. The value must be written as an integer with an
+optional suffix 'k', 'm' or 'g'. It must be between 10k and 4g.
+
+QUIC multiplexer also uses the current congestion window size to determine if
+it can allocate new stream buffers on data emission. As such, the maximum
+congestion window size also serves as a limit on this allocator.
+
+The default value is 480k.
+
+See also the &quot;<a href="#quic-cc-algo">quic-cc-algo</a>&quot; bind option.
 </pre><a class="anchor" name="tune.quic.max-frame-loss"></a><a class="anchor" name="3-tune.quic.max-frame-loss"></a><a class="anchor" name="3.2-tune.quic.max-frame-loss"></a><a class="anchor" name="tune.quic.max-frame-loss (Global parameters)"></a><a class="anchor" name="tune.quic.max-frame-loss (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.max-frame-loss"></a><a href="#3.2-tune.quic.max-frame-loss">tune.quic.max-frame-loss</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the limit for which a single QUIC frame can be marked as lost. If
 exceeded, the connection is considered as failing and is closed immediately.
 
@@ -15256,7 +15274,7 @@ reason, it is strongly recommended to explicitly use &quot;<a href="#option%20cl
 &quot;<a href="#option%20srvtcpka">option srvtcpka</a>&quot; when the configuration is split between frontends and
 backends.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20clitcpka">option clitcpka</a>&quot;, &quot;<a href="#option%20srvtcpka">option srvtcpka</a>&quot;</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option tcplog"></a><a class="anchor" name="4-option tcplog"></a><a class="anchor" name="4.2-option tcplog"></a><a class="anchor" name="option tcplog (Proxies)"></a><a class="anchor" name="option tcplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option tcplog"></a><a href="#4.2-option%20tcplog">option tcplog</a></b></div><pre class="text">Enable advanced logging of TCP connections with stream state and timers
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option tcplog"></a><a class="anchor" name="4-option tcplog"></a><a class="anchor" name="4.2-option tcplog"></a><a class="anchor" name="option tcplog (Proxies)"></a><a class="anchor" name="option tcplog (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option tcplog"></a><a href="#4.2-option%20tcplog">option tcplog</a></b> <span style="color: #008">[clf]</span></div><pre class="text">Enable advanced logging of TCP connections with stream state and timers
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -15264,7 +15282,13 @@ May be used in the following contexts: tcp, http
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
 </table></div>
 <div class="separator">
-<span class="label label-info">Arguments :</span> none
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">clf       if the &quot;clf&quot; argument is added, then the output format will be
+          the CLF format instead of HAProxy's default TCP format. You can
+          use this when you need to feed HAProxy's logs through a specific
+          log analyzer which only support the CLF format and which is not
+          extensible.  Since this expects an HTTP format some of the
+          values have been pre set. The http request will show as TCP and
+          the response code will show as 000.</pre>
 </div>
 <pre class="text">By default, the log output format is very poor, as it only contains the
 source and destination addresses, and the instance name. By specifying
@@ -20689,13 +20713,13 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno }</span></div><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno }</span>(max_window)</div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | nocc }</span></div><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | nocc }</span>(<span style="color: #080">&lt;max_window&gt;</span>)</div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
 to those used by TCP. An optional value in bytes may be used to specify the
-maximum window size. It must be greater than 1k and smaller than 4g.
+maximum window size. It must be greater than 10k and smaller than 4g.
 
 Default value: cubic
-Default window value: tune.quic.frontend.conn-tx-buffers.limit * tune.bufsize
+Default window value: &quot;<a href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>&quot;
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -20704,7 +20728,11 @@ quic-cc-algo newreno
 <span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
 quic-cc-algo cubic(1m)
 </code></pre>
-</div><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">This is a QUIC specific setting which forces the use of the QUIC Retry feature
+</div><pre class="text">A special value &quot;nocc&quot; may be used to force a fixed congestion window always
+set at the maximum size. It is reserved for debugging scenarios to remove any
+side effects caused by the congestion controller. It must not be used in
+production as it can quickly lead to network issues such as a high loss rate.
+</pre><a class="anchor" name="quic-force-retry"></a><a class="anchor" name="5-quic-force-retry"></a><a class="anchor" name="5.1-quic-force-retry"></a><a class="anchor" name="quic-force-retry (Bind and server options)"></a><a class="anchor" name="quic-force-retry (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-force-retry"></a><a href="#5.1-quic-force-retry">quic-force-retry</a></b></div><pre class="text">This is a QUIC specific setting which forces the use of the QUIC Retry feature
 for all the connection attempts to the configured QUIC listeners. It consists
 in verifying the peers are able to receive packets at the transport address
 they used to initiate a new connection, sending them a Retry packet which
@@ -28178,6 +28206,14 @@ Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quot; to see
     # or using the HAPROXY_TCP_LOG_FMT variable
     log-format &quot;${HAPROXY_TCP_LOG_FMT}&quot;
 
+And the CLF log format is internally declared as a custom log format based on
+this exact string:
+
+    # strict equivalent of &quot;option tcplog clf&quot;
+    log-format &quot;%{Q}o %{-Q}ci - - [%T] \&quot;TCP \&quot; 000 %B \&quot;\&quot; \&quot;\&quot; %cp \
+                %ms %ft %b %s %Th %Tw %Tc %Tt %U %ts-- %ac %fc %bc \
+                %sc %rc %sq %bq \&quot;\&quot; \&quot;\&quot; &quot;
+
 A few fields may slightly vary depending on some configuration options, those
 are marked with a star ('*') after the field name below.
 </pre><div class="separator">
@@ -30735,7 +30771,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev5-26 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev5-58 &ndash; Configuration Manual<br>
 							<small>, 2024/08/07</small>
 						</div>
 					</div>
