@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev5-58 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev6 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4104,6 +4104,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.cc-hystart">tune.quic.cc-hystart</a>
 							
+							<a class="list-group-item" href="#tune.quic.cc.cubic.min-losses">tune.quic.cc.cubic.min-losses</a>
+							
 							<a class="list-group-item" href="#tune.quic.disable-udp-gso">tune.quic.disable-udp-gso</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
@@ -4353,7 +4355,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4364,9 +4366,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev5-58</strong></p>
+							<p><strong>version 3.1-dev6</strong></p>
 							<p>
-								2024/08/07<br>
+								2024/08/21<br>
 								
 							</p>
 						</div>
@@ -8951,6 +8953,23 @@ configured. It is enabled by default.
 <a class="anchor" name="tune.quic.cc-hystart"></a><a class="anchor" name="3-tune.quic.cc-hystart"></a><a class="anchor" name="3.2-tune.quic.cc-hystart"></a><a class="anchor" name="tune.quic.cc-hystart (Global parameters)"></a><a class="anchor" name="tune.quic.cc-hystart (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.cc-hystart"></a><a href="#3.2-tune.quic.cc-hystart">tune.quic.cc-hystart</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disabled ('off') the HyStart++ (RFC 9406) algorithm for
 QUIC connections used as a replacement for the slow start phase of congestion
 control algorithms which may cause high packet loss. It is disabled by default.
+</pre><a class="anchor" name="tune.quic.cc.cubic.min-losses"></a><a class="anchor" name="3-tune.quic.cc.cubic.min-losses"></a><a class="anchor" name="3.2-tune.quic.cc.cubic.min-losses"></a><a class="anchor" name="tune.quic.cc.cubic.min-losses (Global parameters)"></a><a class="anchor" name="tune.quic.cc.cubic.min-losses (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.cc.cubic.min-losses"></a><a href="#3.2-tune.quic.cc.cubic.min-losses">tune.quic.cc.cubic.min-losses</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Defines how many lost packets are needed for the Cubic congestion control
+algorithm to really consider a loss event. Normally, any loss event is
+considered as the result of a congestion and is sufficient for Cubic to
+restart from a smaller window. But experiments show that there can be a
+variety of causes for losses that are not at all caused by congestion and
+that can simply be qualified of spurious losses, and for which adjusting the
+window will have no effect, except slowing communication down. Poor radio
+signal, out-of-order delivery, high CPU usage on a client causing random
+delays, as well as system timer imprecision can be among the common causes
+for this. This setting allows to make Cubic a bit more tolerant to spurious
+losses, by changing the minimum number of cumulated losses between two ACKs
+to be considered as a loss event, which defaults to 1. Some significant gains
+have been observed experimentally, but always accompanied with an aggravation
+of the bandwidth wasted on retransmits, and an increased risk of saturation
+of congested links. The value 2 may be used for short periods of time to
+compare some metrics. Never go beyond 2 without an expert's prior analysis of
+the situation. The default and minimum value is 1. Always use 1.
 </pre><a class="anchor" name="tune.quic.disable-udp-gso"></a><a class="anchor" name="3-tune.quic.disable-udp-gso"></a><a class="anchor" name="3.2-tune.quic.disable-udp-gso"></a><a class="anchor" name="tune.quic.disable-udp-gso (Global parameters)"></a><a class="anchor" name="tune.quic.disable-udp-gso (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.disable-udp-gso"></a><a href="#3.2-tune.quic.disable-udp-gso">tune.quic.disable-udp-gso</a></b></div><pre class="text">Disable UDP GSO emission. This kernel feature allows to emit multiple
 datagrams via a single system call which is more efficient for large
 transfer. It may be useful to disable it on developers suggestion when
@@ -30771,8 +30790,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev5-58 &ndash; Configuration Manual<br>
-							<small>, 2024/08/07</small>
+							HAProxy 3.1-dev6 &ndash; Configuration Manual<br>
+							<small>, 2024/08/21</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
