@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev6-10 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev6-19 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3721,7 +3721,11 @@
 							
 							<a class="list-group-item" href="#ssl_fc_session_key">ssl_fc_session_key</a>
 							
+							<a class="list-group-item" href="#ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin</a>
+							
 							<a class="list-group-item" href="#ssl_fc_sni">ssl_fc_sni</a>
+							
+							<a class="list-group-item" href="#ssl_fc_supported_versions_bin">ssl_fc_supported_versions_bin</a>
 							
 							<a class="list-group-item" href="#ssl_fc_unique_id">ssl_fc_unique_id</a>
 							
@@ -4355,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4366,7 +4370,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev6-10</strong></p>
+							<p><strong>version 3.1-dev6-19</strong></p>
 							<p>
 								2024/08/21<br>
 								
@@ -26248,7 +26252,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_server_random">ssl_fc_server_random</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_session_id">ssl_fc_session_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_session_key">ssl_fc_session_key</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_sni">ssl_fc_sni</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_fc_supported_versions_bin">ssl_fc_supported_versions_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
@@ -26261,6 +26267,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_s_sha1">ssl_s_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_sig_alg">ssl_s_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_version">ssl_s_version</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-txn.timer.user">txn.timer.user</a></td><td >integer</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="51d.all"></a><a class="anchor" name="7-51d.all"></a><a class="anchor" name="7.3.4-51d.all"></a><a class="anchor" name="51d.all (Using ACLs and fetching samples)"></a><a class="anchor" name="51d.all (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="51d.all"></a><a href="#7.3.4-51d.all">51d.all</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>) : string</div><pre class="text">Returns values for the properties requested as a string, where values are
@@ -26806,6 +26813,15 @@ every few minutes.
 connection was made over an SSL/TLS transport layer. It is useful to decrypt
 traffic sent using ephemeral ciphers. This requires OpenSSL &gt;= 1.1.0, or
 BoringSSL.
+</pre><a class="anchor" name="ssl_fc_sigalgs_bin"></a><a class="anchor" name="7-ssl_fc_sigalgs_bin"></a><a class="anchor" name="7.3.4-ssl_fc_sigalgs_bin"></a><a class="anchor" name="ssl_fc_sigalgs_bin (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_sigalgs_bin (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_sigalgs_bin"></a><a href="#7.3.4-ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin</a></b>(<span style="color: #008">[<span style="color: #080">&lt;filter_option&gt;</span>]</span>) : binary</div><pre class="text">Returns the content of the signatures_algorithms (13) TLS extension presented
+during the Client Hello. It provides a binary list of 2-bytes algorithms
+defined in the TLS RFC: https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3.
+
+This value can return only if the value &quot;<a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>&quot; is set
+greater than 0. Setting &lt;filter_option&gt; allows to filter returned data.
+Accepted values:
+0 : return the full list of ciphers (default)
+1 : exclude GREASE (RFC8701) values from the output
 </pre><a class="anchor" name="ssl_fc_sni"></a><a class="anchor" name="7-ssl_fc_sni"></a><a class="anchor" name="7.3.4-ssl_fc_sni"></a><a class="anchor" name="ssl_fc_sni (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_sni (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_sni"></a><a href="#7.3.4-ssl_fc_sni">ssl_fc_sni</a></b> : string</div><pre class="text">This extracts the Server Name Indication TLS extension (SNI) field from an
 incoming connection made via an SSL/TLS transport layer and locally
 deciphered by HAProxy. The result (when present) typically is a string
@@ -26831,6 +26847,15 @@ to the &quot;<a href="#sni">sni</a>&quot; server keyword, unless the backend wor
 ACL derivatives :
   ssl_fc_sni_end : suffix match
   ssl_fc_sni_reg : regex match
+</pre><a class="anchor" name="ssl_fc_supported_versions_bin"></a><a class="anchor" name="7-ssl_fc_supported_versions_bin"></a><a class="anchor" name="7.3.4-ssl_fc_supported_versions_bin"></a><a class="anchor" name="ssl_fc_supported_versions_bin (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_supported_versions_bin (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_supported_versions_bin"></a><a href="#7.3.4-ssl_fc_supported_versions_bin">ssl_fc_supported_versions_bin</a></b>(<span style="color: #008">[<span style="color: #080">&lt;filter_option&gt;</span>]</span>) : binary</div><pre class="text">Returns the content of the supported_versions (43) TLS extension presented
+during the Client Hello. It provides a binary list of 2-bytes versions.
+TLSv1.3 (0x0304), TLSv1.2 (0x0303).
+
+This value can return only if the value &quot;<a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>&quot; is set
+greater than 0. Setting &lt;filter_option&gt; allows to filter returned data.
+Accepted values:
+0 : return the full list of ciphers (default)
+1 : exclude GREASE (RFC8701) values from the output
 </pre><a class="anchor" name="ssl_fc_use_keysize"></a><a class="anchor" name="7-ssl_fc_use_keysize"></a><a class="anchor" name="7.3.4-ssl_fc_use_keysize"></a><a class="anchor" name="ssl_fc_use_keysize (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_fc_use_keysize (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_fc_use_keysize"></a><a href="#7.3.4-ssl_fc_use_keysize">ssl_fc_use_keysize</a></b> : integer</div><pre class="text">Returns the symmetric cipher key size used in bits when the incoming
 connection was made over an SSL/TLS transport layer.
 </pre><a class="anchor" name="ssl_s_der"></a><a class="anchor" name="7-ssl_s_der"></a><a class="anchor" name="7.3.4-ssl_s_der"></a><a class="anchor" name="ssl_s_der (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_der (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_der"></a><a href="#7.3.4-ssl_s_der">ssl_s_der</a></b> : binary</div><pre class="text">Returns the DER formatted certificate presented by the server when the
@@ -30798,7 +30823,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev6-10 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev6-19 &ndash; Configuration Manual<br>
 							<small>, 2024/08/21</small>
 						</div>
 					</div>
