@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev6-38 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev6-43 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4359,7 +4359,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/08/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4370,7 +4370,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev6-38</strong></p>
+							<p><strong>version 3.1-dev6-43</strong></p>
 							<p>
 								2024/08/21<br>
 								
@@ -16801,7 +16801,7 @@ backend smtp
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, about ACLs and sample fetching.</div>
 <a class="anchor" name="stick-table"></a><a class="anchor" name="4-stick-table"></a><a class="anchor" name="4.2-stick-table"></a><a class="anchor" name="stick-table (Proxies)"></a><a class="anchor" name="stick-table (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="4-stick-table type"></a><a class="anchor" name="4.2-stick-table type"></a><a class="anchor" name="stick-table type (Proxies)"></a><a class="anchor" name="stick-table type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#4.2-stick-table%20type">stick-table type</a></b> <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
             size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[peers <span style="color: #080">&lt;peersect&gt;</span>]</span> <span style="color: #008">[srvkey <span style="color: #080">&lt;srvkey&gt;</span>]</span>
-            <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*</div><pre class="text">Configure the stickiness table for the current section
+            <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>* <span style="color: #008">[brates-factor <span style="color: #080">&lt;factor&gt;</span>]</span></div><pre class="text">Configure the stickiness table for the current section
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -16920,7 +16920,14 @@ May be used in the following contexts: tcp, http
             type which is not stored, the ACL will simply not match. Some
             data types require an argument which must be passed just after
             the type between parenthesis. See below for the supported data
-            types and their arguments.</pre>
+            types and their arguments.
+
+&lt;factor&gt;    is used to define a factor to be applied on in/out bytes rate.
+            Instead of counting each bytes, blocks of bytes are counted.
+            Internally, rates are defined on 32-bits counters. By using this
+            parameter, it is possible to have rates exceeding the 4G on the
+            defined period. The factor must be greater than 0 and lower or
+            equal to 1024.</pre>
 </div>
 <pre class="text">The data types that can be stored with an entry are the following :
   - server_id : this is an integer which holds the numeric ID of the server a
@@ -30845,7 +30852,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev6-38 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev6-43 &ndash; Configuration Manual<br>
 							<small>, 2024/08/21</small>
 						</div>
 					</div>
