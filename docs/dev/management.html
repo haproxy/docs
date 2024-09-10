@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev7-5 - Management Guide</title>
+		<title>HAProxy version 3.1-dev7-12 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -343,6 +343,10 @@
 							
 							<a class="list-group-item" href="#dump">dump</a>
 							
+							<a class="list-group-item" href="#dump ssl">dump ssl</a>
+							
+							<a class="list-group-item" href="#dump ssl cert">dump ssl cert</a>
+							
 							<a class="list-group-item" href="#dump stats-file">dump stats-file</a>
 							
                                                                 </div> <!-- /letter -->
@@ -642,7 +646,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -653,7 +657,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.1-dev7-5</strong></p>
+							<p><strong>version 3.1-dev7-12</strong></p>
 							<p>
 								<br>
 								
@@ -2865,6 +2869,21 @@ their numeric ID, prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
+</pre><a class="anchor" name="dump"></a><a class="anchor" name="9-dump"></a><a class="anchor" name="9.3-dump"></a><a class="anchor" name="dump (Statistics and monitoring)"></a><a class="anchor" name="dump (Unix Socket commands)"></a><a class="anchor" name="dump ssl"></a><a class="anchor" name="9-dump ssl"></a><a class="anchor" name="9.3-dump ssl"></a><a class="anchor" name="dump ssl (Statistics and monitoring)"></a><a class="anchor" name="dump ssl (Unix Socket commands)"></a><a class="anchor" name="dump ssl cert"></a><a class="anchor" name="9-dump ssl cert"></a><a class="anchor" name="9.3-dump ssl cert"></a><a class="anchor" name="dump ssl cert (Statistics and monitoring)"></a><a class="anchor" name="dump ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="dump ssl cert"></a><a href="#9.3-dump%20ssl%20cert">dump ssl cert</a></b> <span style="color: #080">&lt;certfile&gt;</span></div><pre class="text">Dump a certificate loaded into HAProxy memory. This will dump the certificate
+in PEM format, the private key, then the leaf certificate and finally the
+chain will be dumped. You can also dump a transaction by prefixing the
+filename by an asterisk.
+This is useful in order to save certificates on the filesystem when it was
+updated on the CLI and not on the filesystem.
+
+This command is restricted and can only be issued on sockets configured for
+level &quot;admin&quot;.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;dump ssl cert cert1.pem&quot; | socat /tmp/sock1 -
+</code></pre>
+</div><pre class="text">$ echo &quot;dump ssl cert cert1.pem&quot; | socat /tmp/sock1 - | openssl storeutl -noout -text /dev/stdin
 </pre><a class="anchor" name="dump"></a><a class="anchor" name="9-dump"></a><a class="anchor" name="9.3-dump"></a><a class="anchor" name="dump (Statistics and monitoring)"></a><a class="anchor" name="dump (Unix Socket commands)"></a><a class="anchor" name="dump stats-file"></a><a class="anchor" name="9-dump stats-file"></a><a class="anchor" name="9.3-dump stats-file"></a><a class="anchor" name="dump stats-file (Statistics and monitoring)"></a><a class="anchor" name="dump stats-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="dump stats-file"></a><a href="#9.3-dump%20stats-file">dump stats-file</a></b></div><pre class="text">Generate a stats-file which can be used to preload haproxy counters values on
 startup. See &quot;Stats-file&quot; section for more detail.
 </pre><a class="anchor" name="enable"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="enable agent"></a><a class="anchor" name="9-enable agent"></a><a class="anchor" name="9.3-enable agent"></a><a class="anchor" name="enable agent (Statistics and monitoring)"></a><a class="anchor" name="enable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="enable agent"></a><a href="#9.3-enable%20agent">enable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Resume auxiliary agent check that was temporarily stopped.
@@ -5304,7 +5323,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev7-5 &ndash; Management Guide<br>
+							HAProxy 3.1-dev7-12 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
