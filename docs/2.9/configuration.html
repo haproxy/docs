@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.10-29 - Configuration Manual</title>
+		<title>HAProxy version 2.9.10-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4139,7 +4139,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4150,7 +4150,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.10-29</strong></p>
+							<p><strong>version 2.9.10-47</strong></p>
 							<p>
 								2024/09/03<br>
 								
@@ -27115,6 +27115,8 @@ instead. Refer to <a href="#8.2.6">section 8.2.6</a> &quot;Custom log format&quo
     # strict equivalent of &quot;<a href="#option%20httplog">option httplog</a>&quot;
     log-format &quot;%ci:%cp [%tr] %ft %b/%s %TR/%Tw/%Tc/%Tr/%Ta %ST %B %CC \
                 %CS %tsc %ac/%fc/%bc/%sc/%rc %sq/%bq %hr %hs %{+Q}r&quot;
+    # or using the HAPROXY_HTTP_LOG_FMT variable
+    log-format &quot;${HAPROXY_HTTP_LOG_FMT}&quot;
 
 And the CLF log format is internally declared as a custom log format based on
 this exact string:
@@ -27123,8 +27125,6 @@ this exact string:
     log-format &quot;%{+Q}o %{-Q}ci - - [%trg] %r %ST %B \&quot;\&quot; \&quot;\&quot; %cp \
                 %ms %ft %b %s %TR %Tw %Tc %Tr %Ta %tsc %ac %fc \
                 %bc %sc %rc %sq %bq %CC %CS %hrl %hsl&quot;
-    # or using the HAPROXY_HTTP_LOG_FMT variable
-    log-format &quot;${HAPROXY_HTTP_LOG_FMT}&quot;
 
 Most fields are shared with the TCP log, some being different. A few fields may
 slightly vary depending on some configuration options. Those ones are marked
@@ -29304,7 +29304,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.10-29 &ndash; Configuration Manual<br>
+							HAProxy 2.9.10-47 &ndash; Configuration Manual<br>
 							<small>, 2024/09/03</small>
 						</div>
 					</div>
