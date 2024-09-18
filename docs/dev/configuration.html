@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev7-29 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev7-46 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2368,6 +2368,10 @@
 							
 							<a class="list-group-item" href="#no option accept-invalid-http-response">no option accept-invalid-http-response</a>
 							
+							<a class="list-group-item" href="#no option accept-unsafe-violations-in-http-request">no option accept-unsafe-violations-in-http-request</a>
+							
+							<a class="list-group-item" href="#no option accept-unsafe-violations-in-http-response">no option accept-unsafe-violations-in-http-response</a>
+							
 							<a class="list-group-item" href="#no option allbackups">no option allbackups</a>
 							
 							<a class="list-group-item" href="#no option checkcache">no option checkcache</a>
@@ -2570,6 +2574,10 @@
 							<a class="list-group-item" href="#option accept-invalid-http-request">option accept-invalid-http-request</a>
 							
 							<a class="list-group-item" href="#option accept-invalid-http-response">option accept-invalid-http-response</a>
+							
+							<a class="list-group-item" href="#option accept-unsafe-violations-in-http-request">option accept-unsafe-violations-in-http-request</a>
+							
+							<a class="list-group-item" href="#option accept-unsafe-violations-in-http-response">option accept-unsafe-violations-in-http-response</a>
 							
 							<a class="list-group-item" href="#option allbackups">option allbackups</a>
 							
@@ -4361,7 +4369,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4372,7 +4380,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev7-29</strong></p>
+							<p><strong>version 3.1-dev7-46</strong></p>
 							<p>
 								2024/09/05<br>
 								
@@ -10202,6 +10210,11 @@ with &quot;default&quot; in order to restore default settings regardless of what
 specified in a previous &quot;defaults&quot; section. Keywords supported in defaults
 sections marked with &quot;(!)&quot; are only supported in named defaults sections, not
 anonymous ones.
+
+Note: Some dangerous and not recommanded directives are intentionnaly not
+      listed in the following matrix. It is on purpose. These directives are
+      documentated. But by not listing them below is one more way to discourage
+      anyone to use it.
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-acl">acl</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -10271,8 +10284,6 @@ anonymous ones.
 <tr><td ><a href="#4-monitor%20fail">monitor fail</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-monitor-uri">monitor-uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20abortonclose"><span class="pull-right"><span>(*)</span></span>option abortonclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20accept-invalid-http-request"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-option%20accept-invalid-http-response"><span class="pull-right"><span>(*)</span></span>option accept-invalid-http-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20allbackups"><span class="pull-right"><span>(*)</span></span>option allbackups</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20checkcache"><span class="pull-right"><span>(*)</span></span>option checkcache</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20clitcpka"><span class="pull-right"><span>(*)</span></span>option clitcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -10287,9 +10298,9 @@ anonymous ones.
 <tr><td ><a href="#4-option%20http-buffer-request"><span class="pull-right"><span>(*)</span></span>option http-buffer-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-ignore-probes"><span class="pull-right"><span>(*)</span></span>option http-ignore-probes</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20http-keep-alive"><span class="pull-right"><span>(*)</span></span>option http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20http-no-delay"><span class="pull-right"><span>(*)</span></span>option http-no-delay</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-pretend-keepalive"><span class="pull-right"><span>(*)</span></span>option http-pretend-keepalive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20http-restrict-req-hdr-names">option http-restrict-req-hdr-names</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-server-close"><span class="pull-right"><span>(*)</span></span>option http-server-close</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-use-proxy-header"><span class="pull-right"><span>(*)</span></span>option http-use-proxy-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -10308,9 +10319,9 @@ anonymous ones.
 <tr><td ><a href="#4-option%20originalto">option originalto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20persist"><span class="pull-right"><span>(*)</span></span>option persist</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20pgsql-check">option pgsql-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20prefer-last-server"><span class="pull-right"><span>(*)</span></span>option prefer-last-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20redispatch"><span class="pull-right"><span>(*)</span></span>option redispatch</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20redis-check">option redis-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20smtpchk">option smtpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20socket-stats"><span class="pull-right"><span>(*)</span></span>option socket-stats</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -10329,9 +10340,9 @@ anonymous ones.
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-external-check%20command">external-check command</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-external-check%20path">external-check path</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-persist%20rdp-cookie">persist rdp-cookie</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-quic-initial">quic-initial</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-rate-limit%20sessions">rate-limit sessions</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-redirect">redirect</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-retries">retries</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -10350,9 +10361,9 @@ anonymous ones.
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20realm">stats realm</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20refresh">stats refresh</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20scope">stats scope</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-desc">stats show-desc</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20show-legends">stats show-legends</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -10371,9 +10382,9 @@ anonymous ones.
 <tr><td ><a href="#4-tcp-check%20set-var">tcp-check set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20unset-var">tcp-check unset-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20connection">tcp-request connection</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-request%20content">tcp-request content</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20inspect-delay">tcp-request inspect-delay</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-request%20session">tcp-request session</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-tcp-response%20content">tcp-response content</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-response%20inspect-delay">tcp-response inspect-delay</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -10392,9 +10403,9 @@ anonymous ones.
 <tr><td ><a href="#4-transparent"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-unique-id-format">unique-id-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-unique-id-header">unique-id-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-use_backend">use_backend</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-use-fcgi-app">use-fcgi-app</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-use-server">use-server</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
 <a class="anchor" id="4.2" name="4.2"></a>
@@ -13467,7 +13478,15 @@ reduces the response time for other users.
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#timeout%20queue">timeout queue</a>&quot; and server's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<a href="#maxqueue">maxqueue</a>&quot; parameters</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-invalid-http-request"></a><a class="anchor" name="4-option accept-invalid-http-request"></a><a class="anchor" name="4.2-option accept-invalid-http-request"></a><a class="anchor" name="option accept-invalid-http-request (Proxies)"></a><a class="anchor" name="option accept-invalid-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-invalid-http-request"></a><a href="#4.2-option%20accept-invalid-http-request">option accept-invalid-http-request</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-invalid-http-request"></a><a class="anchor" name="4-no option accept-invalid-http-request"></a><a class="anchor" name="4.2-no option accept-invalid-http-request"></a><a class="anchor" name="no option accept-invalid-http-request (Proxies)"></a><a class="anchor" name="no option accept-invalid-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-invalid-http-request"></a><a href="#4.2-no%20option%20accept-invalid-http-request">no option accept-invalid-http-request</a></b></div><pre class="text">Enable or disable relaxing of HTTP request parsing
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-invalid-http-request"></a><a class="anchor" name="4-option accept-invalid-http-request"></a><a class="anchor" name="4.2-option accept-invalid-http-request"></a><a class="anchor" name="option accept-invalid-http-request (Proxies)"></a><a class="anchor" name="option accept-invalid-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-invalid-http-request"></a><a href="#4.2-option%20accept-invalid-http-request">option accept-invalid-http-request</a></b>     <span class="label label-warning">(deprecated)</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-invalid-http-request"></a><a class="anchor" name="4-no option accept-invalid-http-request"></a><a class="anchor" name="4.2-no option accept-invalid-http-request"></a><a class="anchor" name="no option accept-invalid-http-request (Proxies)"></a><a class="anchor" name="no option accept-invalid-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-invalid-http-request"></a><a href="#4.2-no%20option%20accept-invalid-http-request">no option accept-invalid-http-request</a></b>  <span class="label label-warning">(deprecated)</span></div><pre class="text">Enable or disable relaxing of HTTP request parsing
+
+The &quot;<a href="#option%20accept-invalid-http-request">accept-invalid-http-request</a>&quot; keyword is deprecated, use &quot;option
+accept-unsafe-violations-in-http-request&quot; instead.
+</pre><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-invalid-http-response"></a><a class="anchor" name="4-option accept-invalid-http-response"></a><a class="anchor" name="4.2-option accept-invalid-http-response"></a><a class="anchor" name="option accept-invalid-http-response (Proxies)"></a><a class="anchor" name="option accept-invalid-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-invalid-http-response"></a><a href="#4.2-option%20accept-invalid-http-response">option accept-invalid-http-response</a></b>     <span class="label label-warning">(deprecated)</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-invalid-http-response"></a><a class="anchor" name="4-no option accept-invalid-http-response"></a><a class="anchor" name="4.2-no option accept-invalid-http-response"></a><a class="anchor" name="no option accept-invalid-http-response (Proxies)"></a><a class="anchor" name="no option accept-invalid-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-invalid-http-response"></a><a href="#4.2-no%20option%20accept-invalid-http-response">no option accept-invalid-http-response</a></b>  <span class="label label-warning">(deprecated)</span></div><pre class="text">Enable or disable relaxing of HTTP response parsing
+
+The &quot;<a href="#option%20accept-invalid-http-response">accept-invalid-http-response</a>&quot; keyword is deprecated, use &quot;option
+accept-unsafe-violations-in-http-response&quot; instead.
+</pre><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="4-option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="4.2-option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="option accept-unsafe-violations-in-http-request (Proxies)"></a><a class="anchor" name="option accept-unsafe-violations-in-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-unsafe-violations-in-http-request"></a><a href="#4.2-option%20accept-unsafe-violations-in-http-request">option accept-unsafe-violations-in-http-request</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="4-no option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="4.2-no option accept-unsafe-violations-in-http-request"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-request (Proxies)"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-unsafe-violations-in-http-request"></a><a href="#4.2-no%20option%20accept-unsafe-violations-in-http-request">no option accept-unsafe-violations-in-http-request</a></b></div><pre class="text">Enable or disable relaxing of HTTP request parsing
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -13477,40 +13496,58 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span> none
 </div>
-<pre class="text">By default, HAProxy complies with RFC7230 in terms of message parsing. This
-means that invalid characters in header names are not permitted and cause an
-error to be returned to the client. This is the desired behavior as such
-forbidden characters are essentially used to build attacks exploiting server
-weaknesses, and bypass security filtering. Sometimes, a buggy browser or
-server will emit invalid header names for whatever reason (configuration,
-implementation) and the issue will not be immediately fixed. In such a case,
-it is possible to relax HAProxy's header name parser to accept any character
-even if that does not make sense, by specifying this option. Similarly, the
-list of characters allowed to appear in a URI is well defined by RFC3986, and
-chars 0-31, 32 (space), 34 ('&quot;'), 60 ('&lt;'), 62 ('&gt;'), 92 ('\'), 94 ('^'), 96
-('`'), 123 ('{'), 124 ('|'), 125 ('}'), 127 (delete) and anything above are
-not allowed at all. HAProxy always blocks a number of them (0..32, 127). The
-remaining ones are blocked by default unless this option is enabled. This
-option also relaxes the test on the HTTP version, it allows HTTP/0.9 requests
-to pass through (no version specified), as well as different protocol names
-(e.g. RTSP), and multiple digits for both the major and the minor version.
-Finally, this option also allows incoming URLs to contain fragment references
-('#' after the path).
+<pre class="text">By default, HAProxy complies with the different HTTP RFCs in terms of message
+parsing. This means the message parsing is quite strict and causes an error
+to be returned to the client for malformed messages. This is the desired
+behavior as such malformed messages are essentially used to build attacks
+exploiting server weaknesses, and bypass security filtering. Sometimes, a
+buggy browser will not respect these RCFs for whatever reason (configuration,
+implementation...) and the issue will not be immediately fixed. In such case,
+it is possible to relax HAProxy's parser to accept some invalid requests by
+specifying this option. Most of rules concern the H1 parsing for historical
+reason. Newer HTTP versions tends to be cleaner and applications follow more
+stickly these protocols.
+
+When this option is set, the following rules are observed:
+
+  * In H1 only, invalid characters, including NULL character, in header name
+    will be accepted;
+
+  * In H1 only, NULL character in header value will be accepted;
+
+  * The list of characters allowed to appear in a URI is well defined by
+    RFC3986, and chars 0-31, 32 (space), 34 ('&quot;'), 60 ('&lt;'), 62 ('&gt;'), 92
+    ('\'), 94 ('^'), 96 ('`'), 123 ('{'), 124 ('|'), 125 ('}'), 127 (delete)
+    and anything above are normally not allowed. But here, in H1 only,
+    HAProxy will only block a number of them (0..32, 127);
+
+  * In H1 and H2, URLs containing fragment references ('#' after the path)
+    will be accepted;
+
+  * In H1 only, no check will be performed on the authority for CONNECT
+    requests;
+
+  * In H1 only, no check will be performed against the authority and the Host
+    header value.
+
+  * In H1 only, tests on the HTTP version will be relaxed. It will allow
+    HTTP/0.9 GET requests to pass through (no version specified), as well as
+    different protocol names (e.g. RTSP), and multiple digits for both the
+    major and the minor version.
 
 This option should never be enabled by default as it hides application bugs
 and open security breaches. It should only be deployed after a problem has
 been confirmed.
 
-When this option is enabled, erroneous header names will still be accepted in
-requests, but the complete request will be captured in order to permit later
-analysis using the &quot;show errors&quot; request on the UNIX stats socket. Similarly,
-requests containing invalid chars in the URI part will be logged. Doing this
-also helps confirming that the issue has been solved.
+When this option is enabled, invalid but accepted H1 requests will be
+captured in order to permit later analysis using the &quot;show errors&quot; request on
+the UNIX stats socket.Doing this also helps confirming that the issue has
+been solved.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20accept-invalid-http-response">option accept-invalid-http-response</a>&quot; and &quot;show errors&quot; on the stats socket.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-invalid-http-response"></a><a class="anchor" name="4-option accept-invalid-http-response"></a><a class="anchor" name="4.2-option accept-invalid-http-response"></a><a class="anchor" name="option accept-invalid-http-response (Proxies)"></a><a class="anchor" name="option accept-invalid-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-invalid-http-response"></a><a href="#4.2-option%20accept-invalid-http-response">option accept-invalid-http-response</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-invalid-http-response"></a><a class="anchor" name="4-no option accept-invalid-http-response"></a><a class="anchor" name="4.2-no option accept-invalid-http-response"></a><a class="anchor" name="no option accept-invalid-http-response (Proxies)"></a><a class="anchor" name="no option accept-invalid-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-invalid-http-response"></a><a href="#4.2-no%20option%20accept-invalid-http-response">no option accept-invalid-http-response</a></b></div><pre class="text">Enable or disable relaxing of HTTP response parsing
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20accept-unsafe-violations-in-http-response">option accept-unsafe-violations-in-http-response</a>&quot; and &quot;show errors&quot; on the stats socket.</div>
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="4-option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="4.2-option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="option accept-unsafe-violations-in-http-response (Proxies)"></a><a class="anchor" name="option accept-unsafe-violations-in-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option accept-unsafe-violations-in-http-response"></a><a href="#4.2-option%20accept-unsafe-violations-in-http-response">option accept-unsafe-violations-in-http-response</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="4-no option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="4.2-no option accept-unsafe-violations-in-http-response"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-response (Proxies)"></a><a class="anchor" name="no option accept-unsafe-violations-in-http-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option accept-unsafe-violations-in-http-response"></a><a href="#4.2-no%20option%20accept-unsafe-violations-in-http-response">no option accept-unsafe-violations-in-http-response</a></b></div><pre class="text">Enable or disable relaxing of HTTP response parsing
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -13520,17 +13557,28 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span> none
 </div>
-<pre class="text">By default, HAProxy complies with RFC7230 in terms of message parsing. This
-means that invalid characters in header names are not permitted and cause an
-error to be returned to the client. This is the desired behavior as such
-forbidden characters are essentially used to build attacks exploiting server
-weaknesses, and bypass security filtering. Sometimes, a buggy browser or
-server will emit invalid header names for whatever reason (configuration,
-implementation) and the issue will not be immediately fixed. In such a case,
-it is possible to relax HAProxy's header name parser to accept any character
-even if that does not make sense, by specifying this option. This option also
-relaxes the test on the HTTP version format, it allows multiple digits for
-both the major and the minor version.
+<pre class="text">Similarly to &quot;<a href="#option%20accept-unsafe-violations-in-http-request">option accept-unsafe-violations-in-http-request</a>&quot;, this option
+may be used to relax parsing rules of HTTP responses. It should only be
+enabled for trusted legacy servers to accept some invalid responses. Most of
+rules concern the H1 parsing for historical reason. Newer HTTP versions tends
+to be cleaner and applications follow more stickly these protocols.
+
+When this option is set, the following rules are observed:
+
+  * In H1 only, invalid characters, including NULL character, in header name
+    will be accepted;
+
+  * In H1 only, NULL character in header value will be accepted;
+
+  * In H1 only, empty values or several &quot;chunked&quot; value occurrences for
+    Transfer-Encoding header will be accepted;
+
+  * In H1 only, no check will be performed against the authority and the Host
+    header value.
+
+  * In H1 only, tests on the HTTP version will be relaxed. It will allow
+    different protocol names (e.g. RTSP), and multiple digits for both the
+    major and the minor version.
 
 This option should never be enabled by default as it hides application bugs
 and open security breaches. It should only be deployed after a problem has
@@ -13543,7 +13591,7 @@ Doing this also helps confirming that the issue has been solved.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20accept-invalid-http-request">option accept-invalid-http-request</a>&quot; and &quot;show errors&quot; on the stats socket.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20accept-unsafe-violations-in-http-request">option accept-unsafe-violations-in-http-request</a>&quot; and &quot;show errors&quot; on the stats socket.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option allbackups"></a><a class="anchor" name="4-option allbackups"></a><a class="anchor" name="4.2-option allbackups"></a><a class="anchor" name="option allbackups (Proxies)"></a><a class="anchor" name="option allbackups (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option allbackups"></a><a href="#4.2-option%20allbackups">option allbackups</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option allbackups"></a><a class="anchor" name="4-no option allbackups"></a><a class="anchor" name="4.2-no option allbackups"></a><a class="anchor" name="no option allbackups (Proxies)"></a><a class="anchor" name="no option allbackups (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option allbackups"></a><a href="#4.2-no%20option%20allbackups">no option allbackups</a></b></div><pre class="text">Use either all backup servers at a time or only the first one
 
 May be used in the following contexts: tcp, http, log
@@ -27761,8 +27809,8 @@ used to match exact file names (e.g. &quot;/login.php&quot;), or directory parts
 the derivative forms. See also the &quot;<a href="#url">url</a>&quot; and &quot;<a href="#base">base</a>&quot; fetch methods. Please
 note that any fragment reference in the URI ('#' after the path) is strictly
 forbidden by the HTTP standard and will be rejected. However, if the frontend
-receiving the request has &quot;<a href="#option%20accept-invalid-http-request">option accept-invalid-http-request</a>&quot;, then this
-fragment part will be accepted and will also appear in the path.
+receiving the request has &quot;<a href="#option%20accept-unsafe-violations-in-http-request">option accept-unsafe-violations-in-http-request</a>&quot;,
+then this fragment part will be accepted and will also appear in the path.
 
 ACL derivatives :
   path     : exact string match
@@ -27781,8 +27829,8 @@ HTTP/2, an absolute URI is often used. This sample fetch will return the same
 result in both cases. Please note that any fragment reference in the URI ('#'
 after the path) is strictly forbidden by the HTTP standard and will be
 rejected. However, if the frontend receiving the request has &quot;option
-accept-invalid-http-request&quot;, then this fragment part will be accepted and
-will also appear in the path.
+accept-unsafe-violations-in-http-request&quot;, then this fragment part will be
+accepted and will also appear in the path.
 </pre><a class="anchor" name="query"></a><a class="anchor" name="7-query"></a><a class="anchor" name="7.3.6-query"></a><a class="anchor" name="query (Using ACLs and fetching samples)"></a><a class="anchor" name="query (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="query"></a><a href="#7.3.6-query">query</a></b> : string</div><pre class="text">This extracts the request's query string, which starts after the first
 question mark. If no question mark is present, this fetch returns nothing. If
 a question mark is present but nothing follows, it returns an empty string.
@@ -27979,8 +28027,8 @@ not match in &quot;<a href="#path">path</a>&quot;, and for which there is alread
 also &quot;<a href="#path">path</a>&quot; and &quot;<a href="#base">base</a>&quot;. Please note that any fragment reference in the URI
 ('#' after the path) is strictly forbidden by the HTTP standard and will be
 rejected. However, if the frontend receiving the request has &quot;option
-accept-invalid-http-request&quot;, then this fragment part will be accepted and
-will also appear in the url.
+accept-unsafe-violations-in-http-request&quot;, then this fragment part will be
+accepted and will also appear in the url.
 
 ACL derivatives :
   url     : exact string match
@@ -30899,7 +30947,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev7-29 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev7-46 &ndash; Configuration Manual<br>
 							<small>, 2024/09/05</small>
 						</div>
 					</div>
