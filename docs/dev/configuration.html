@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev8-11 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev8-13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4369,7 +4369,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4380,7 +4380,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev8-11</strong></p>
+							<p><strong>version 3.1-dev8-13</strong></p>
 							<p>
 								2024/09/18<br>
 								
@@ -9550,14 +9550,20 @@ level the former table is named &quot;/t1&quot;, the latter is again named &quot
 <h2 id="chapter-3.6" data-target="3.6"><small><a class="small" href="#3.6">3.6.</a></small> Mailers</h2>
 <div><pre class="text">It is possible to send email alerts when the state of servers changes.
 If configured email alerts are sent to each mailer that is configured
-in a mailers section. Email is sent to mailers using SMTP.
+in a mailers section. Email is sent to mailers through Lua (see
+examples/lua/mailers.lua).
 </pre><a class="anchor" name="mailers"></a><a class="anchor" name="3-mailers"></a><a class="anchor" name="3.6-mailers"></a><a class="anchor" name="mailers (Global parameters)"></a><a class="anchor" name="mailers (Mailers)"></a><div class="keyword"><b><a class="anchor" name="mailers"></a><a href="#3.6-mailers">mailers</a></b> <span style="color: #080">&lt;mailersect&gt;</span></div><pre class="text">Creates a new mailer list with the name &lt;mailersect&gt;. It is an
 independent section which is referenced by one or more proxies.
 </pre><a class="anchor" name="mailer"></a><a class="anchor" name="3-mailer"></a><a class="anchor" name="3.6-mailer"></a><a class="anchor" name="mailer (Global parameters)"></a><a class="anchor" name="mailer (Mailers)"></a><div class="keyword"><b><a class="anchor" name="mailer"></a><a href="#3.6-mailer">mailer</a></b> <span style="color: #080">&lt;mailername&gt;</span> <span style="color: #080">&lt;ip&gt;</span>:<span style="color: #080">&lt;port&gt;</span></div><pre class="text">Defines a mailer inside a mailers section.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>mailers mymailers
+<code>global
+    <span class="comment"># mailers.lua file as provided in the git repository</span>
+    <span class="comment"># adjust path as needed</span>
+    lua-load examples/lua/mailers.lua
+
+mailers mymailers
     mailer smtp1 192.168.0.1:587
     mailer smtp2 192.168.0.2:587
 
@@ -30947,7 +30953,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev8-11 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev8-13 &ndash; Configuration Manual<br>
 							<small>, 2024/09/18</small>
 						</div>
 					</div>
