@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev8-59 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev8-67 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -297,6 +297,19 @@
 					<td>
 							<div class="tab">
 							<a href="#3.3">Debugging</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.3.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#3.3.1">Traces</a>
+							</div>
 							</div>
 					<td>
 				</tr>
@@ -4008,6 +4021,8 @@
 							
 							<a class="list-group-item" href="#trace">trace</a>
 							
+							<a class="list-group-item" href="#traces">traces</a>
+							
 							<a class="list-group-item" href="#track">track</a>
 							
 							<a class="list-group-item" href="#track-sc0">track-sc0</a>
@@ -4373,7 +4388,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/09/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4384,7 +4399,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev8-59</strong></p>
+							<p><strong>version 3.1-dev8-67</strong></p>
 							<p>
 								2024/09/18<br>
 								
@@ -4666,6 +4681,19 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<a href="#3.3">Debugging</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>3.3.1.</small></td>
+					<td>
+							<div class="tab">
+							<div class="tab">
+							<a href="#3.3.1">Traces</a>
+							</div>
 							</div>
 					<td>
 				</tr>
@@ -8164,23 +8192,6 @@ the number of threads to no higher than this value, but will not raise lower
 values. If &quot;<a href="#nbthread">nbthread</a>&quot; is forced to a higher value, thread-hard-limit wins,
 and a warning is emitted in so that the configuration anomaly can be
 fixed. By default there is no limit. See also &quot;<a href="#nbthread">nbthread</a>&quot;.
-</pre><a class="anchor" name="trace"></a><a class="anchor" name="3-trace"></a><a class="anchor" name="3.1-trace"></a><a class="anchor" name="trace (Global parameters)"></a><a class="anchor" name="trace (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#3.1-trace">trace</a></b> <span style="color: #080">&lt;args...&gt;</span></div><pre class="text">This command configures one &quot;<a href="#trace">trace</a>&quot; subsystem statement. Each of them can be
-found in the management manual, and follow the exact same syntax. Only one
-statement per line is permitted (i.e. if some long trace configurations using
-semi-colons are to be imported, they must be placed one per line). Any output
-that the &quot;<a href="#trace">trace</a>&quot; command would produce will be emitted during the parsing
-step of the section. Most of the time these will be errors and warnings, but
-certain incomplete commands might list permissible choices. This command is
-not meant for regular use, it will generally only be suggested by developers
-along complex debugging sessions. For this reason it is internally marked as
-experimental, meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must appear on a
-line before any &quot;<a href="#trace">trace</a>&quot; statement. Note that these directives are parsed on
-the fly, so referencing a ring buffer that is only declared further will not
-work. For such use cases it is suggested to place another &quot;global&quot; section
-with only the &quot;<a href="#trace">trace</a>&quot; statements after the declaration of that ring. It is
-important to keep in mind that depending on the trace level and details,
-enabling traces can severely degrade the global performance. Please refer to
-the management manual for the statements syntax.
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="3-uid"></a><a class="anchor" name="3.1-uid"></a><a class="anchor" name="uid (Global parameters)"></a><a class="anchor" name="uid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#3.1-uid">uid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process's user ID to &lt;number&gt;. It is recommended that the user ID
 is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with superuser privileges in order to be able to switch to another
@@ -9337,6 +9348,49 @@ configuration clean and forward-compatible. Note that &quot;haproxy -c&quot; wil
 report errors in such a case. This option is equivalent to command line
 argument &quot;-dW&quot;.
 </pre></div>
+<a class="anchor" id="3.3.1" name="3.3.1"></a>
+<h3 id="chapter-3.3.1" data-target="3.3.1"><small><a class="small" href="#3.3.1">3.3.1.</a></small> Traces</h3>
+<div><pre class="text">For debugging purpose, it is possible to activate traces on an HAProxy's
+subsystem. This will dump debug messages about a specific subsystem. It is a
+very powerful tool to diagnose issues. Traces can be dynamically configured via
+the CLI. It is also possible to predefined some settings in the configuration
+file, in dedicated &quot;<a href="#traces">traces</a>&quot; sections. More details about traces can be found in
+the management guide. It remains a developper tools used during complex
+debugging sessions.  It is pretty verbose and have a cost, so use it with
+caution. And because it is a developper tool, there is no warranty about the
+backward compatibility of this section.
+</pre><a class="anchor" name="traces"></a><a class="anchor" name="3-traces"></a><a class="anchor" name="3.3.1-traces"></a><a class="anchor" name="traces (Global parameters)"></a><a class="anchor" name="traces (Traces)"></a><div class="keyword"><b><a class="anchor" name="traces"></a><a href="#3.3.1-traces">traces</a></b></div><pre class="text">Starts a new traces section. One or multiple &quot;<a href="#traces">traces</a>&quot; section may be
+used. All direcitives are evaluated in the declararion order, the last ones
+overriding previous ones.
+</pre><a class="anchor" name="trace"></a><a class="anchor" name="3-trace"></a><a class="anchor" name="3.3.1-trace"></a><a class="anchor" name="trace (Global parameters)"></a><a class="anchor" name="trace (Traces)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#3.3.1-trace">trace</a></b> <span style="color: #080">&lt;source&gt;</span> <span style="color: #080">&lt;args...&gt;</span></div><pre class="text">Configures on &quot;<a href="#trace">trace</a>&quot; subsystem. Each of them can be found in the management
+manual, and follow the exact same syntax. Any output that the &quot;<a href="#trace">trace</a>&quot;
+command would produce will be emitted during the parsing step of the
+section. Most of the time these will be errors and warnings, but certain
+incomplete commands might list permissible choices. This command is not meant
+for regular use, it will generally only be suggested by developers along
+complex debugging sessions. Note that these directives are parsed on the fly,
+so referencing a ring buffer that is only declared further will not work. It
+is important to keep in mind that depending on the trace level and details,
+enabling traces can severely degrade the global performance. Please refer to
+the management manual for the statements syntax.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ring buf1
+  size 10485760 <span class="comment"># 10MB</span>
+  format timed
+  backing-file /tmp/h1.traces
+
+ring buf2
+  size 10485760 <span class="comment"># 10MB</span>
+  format timed
+  backing-file /tmp/h2.traces
+
+traces
+  trace h1 sink buf1 level developer verbosity complete start now
+  trace h2 sink buf1 level developer verbosity complete start now
+</code></pre>
+</div></div>
 <a class="anchor" id="3.4" name="3.4"></a>
 <h2 id="chapter-3.4" data-target="3.4"><small><a class="small" href="#3.4">3.4.</a></small> Userlists</h2>
 <div><pre class="text">It is possible to control access to frontend/backend/listen sections or to
@@ -14388,7 +14442,7 @@ front of an existing proxy.
 
 This option should normally never be used, except in front of a proxy.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpclose">option httpclose</a>&quot;, and &quot;<a href="#option%20http-server-close">option http-server-close</a>&quot;.</div>
-<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;uri&gt;</span></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;uri&gt;</span></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;uri&gt;</span> <span style="color: #080">&lt;version&gt;</span></div><pre class="text">Enables HTTP protocol to check on the servers health
+<a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;uri&gt;</span></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;uri&gt;</span></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;uri&gt;</span> <span style="color: #080">&lt;version&gt;</span></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpchk"></a><a class="anchor" name="4-option httpchk"></a><a class="anchor" name="4.2-option httpchk"></a><a class="anchor" name="option httpchk (Proxies)"></a><a class="anchor" name="option httpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpchk"></a><a href="#4.2-option%20httpchk">option httpchk</a></b> <span style="color: #080">&lt;method&gt;</span> <span style="color: #080">&lt;uri&gt;</span> <span style="color: #080">&lt;version&gt;</span> <span style="color: #080">&lt;host&gt;</span></div><pre class="text">Enables HTTP protocol to check on the servers health
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -14409,7 +14463,10 @@ May be used in the following contexts: tcp, http
 &lt;version&gt; is the optional HTTP version string. It defaults to &quot;HTTP/1.0&quot;
           but some servers might behave incorrectly in HTTP 1.0, so turning
           it to HTTP/1.1 may sometimes help. Note that the Host field is
-          mandatory in HTTP/1.1, use &quot;<a href="#http-check%20send">http-check send</a>&quot; directive to add it.</pre>
+          mandatory in HTTP/1.1.
+
+&lt;host&gt;    is the optional HTTP Host header value. It is not set by default.
+          It is a log-format string.</pre>
 </div>
 <pre class="text">By default, server health checks only consist in trying to establish a TCP
 connection. When &quot;<a href="#option%20httpchk">option httpchk</a>&quot; is specified, a complete HTTP request is
@@ -31013,7 +31070,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev8-59 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev8-67 &ndash; Configuration Manual<br>
 							<small>, 2024/09/18</small>
 						</div>
 					</div>
