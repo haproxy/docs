@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev9-20 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev9-21 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1936,6 +1936,8 @@
 							<a class="list-group-item" href="#fix_is_valid">fix_is_valid</a>
 							
 							<a class="list-group-item" href="#fix_tag_value">fix_tag_value</a>
+							
+							<a class="list-group-item" href="#force-cfg-parser-pause">force-cfg-parser-pause</a>
 							
 							<a class="list-group-item" href="#force-persist">force-persist</a>
 							
@@ -4390,7 +4392,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4401,7 +4403,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev9-20</strong></p>
+							<p><strong>version 3.1-dev9-21</strong></p>
 							<p>
 								2024/10/03<br>
 								
@@ -9327,7 +9329,22 @@ between 0 and 4294967295. This is the key that will be used by default by CLI
 commands when anonymized mode is enabled. This key may also be set at runtime
 from the CLI command &quot;set anon global-key&quot;. See also command line argument
 &quot;-dC&quot; in the management manual.
-</pre><a class="anchor" name="quick-exit"></a><a class="anchor" name="3-quick-exit"></a><a class="anchor" name="3.3-quick-exit"></a><a class="anchor" name="quick-exit (Global parameters)"></a><a class="anchor" name="quick-exit (Debugging)"></a><div class="keyword"><b><a class="anchor" name="quick-exit"></a><a href="#3.3-quick-exit">quick-exit</a></b></div><pre class="text">This speeds up the old process exit upon reload by skipping the releasing of
+</pre><a class="anchor" name="force-cfg-parser-pause"></a><a class="anchor" name="3-force-cfg-parser-pause"></a><a class="anchor" name="3.3-force-cfg-parser-pause"></a><a class="anchor" name="force-cfg-parser-pause (Global parameters)"></a><a class="anchor" name="force-cfg-parser-pause (Debugging)"></a><div class="keyword"><b><a class="anchor" name="force-cfg-parser-pause"></a><a href="#3.3-force-cfg-parser-pause">force-cfg-parser-pause</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This command is pausing the configuration parser for &lt;timeout&gt; milliseconds.
+This is useful for development or for testing timeouts of init scripts,
+particularly to simulate a very long reload.
+It requires the expose-experimental-directives to be set.
+
+&lt;timeout&gt; is the timeout value specified in milliseconds by default, but
+            can be in any other unit if the number is suffixed by the unit,
+            as explained at the top of this document.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>global
+    expose-experimental-directives
+    force-cfg-parser-pause 10s
+</code></pre>
+</div><a class="anchor" name="quick-exit"></a><a class="anchor" name="3-quick-exit"></a><a class="anchor" name="3.3-quick-exit"></a><a class="anchor" name="quick-exit (Global parameters)"></a><a class="anchor" name="quick-exit (Debugging)"></a><div class="keyword"><b><a class="anchor" name="quick-exit"></a><a href="#3.3-quick-exit">quick-exit</a></b></div><pre class="text">This speeds up the old process exit upon reload by skipping the releasing of
 memory objects and listeners, since all of these are reclaimed by the
 operating system at the process' death. The gains are only marginal (in the
 order of a few hundred milliseconds for huge configurations at most). The
@@ -31102,7 +31119,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev9-20 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev9-21 &ndash; Configuration Manual<br>
 							<small>, 2024/10/03</small>
 						</div>
 					</div>
