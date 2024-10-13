@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev9-21 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev9-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4069,6 +4069,8 @@
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
 							
+							<a class="list-group-item" href="#tune.h2.be.rxbuf">tune.h2.be.rxbuf</a>
+							
 							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
@@ -4076,6 +4078,8 @@
 							<a class="list-group-item" href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.rxbuf">tune.h2.fe.rxbuf</a>
 							
 							<a class="list-group-item" href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
 							
@@ -4392,7 +4396,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4403,7 +4407,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev9-21</strong></p>
+							<p><strong>version 3.1-dev9-50</strong></p>
 							<p>
 								2024/10/03<br>
 								
@@ -8608,7 +8612,8 @@ from HAProxy. This setting only affects payload contents, not headers. When
 not set, the common default value set by tune.h2.initial-window-size applies.
 It can make sense to slightly increase this value to allow faster downloads
 or to reduce CPU usage on the servers, at the expense of creating unfairness
-between clients. It doesn't affect resource usage.
+between clients. It is better to use tune.h2.be.rxbuf instead, which does not
+cause any unfairness. It doesn't affect resource usage.
 </pre><div class="page-header"><b>See also:</b> tune.h2.initial-window-size.</div>
 <a class="anchor" name="tune.h2.be.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.be.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.be.max-concurrent-streams"></a><a class="anchor" name="tune.h2.be.max-concurrent-streams (Global parameters)"></a><a class="anchor" name="tune.h2.be.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.max-concurrent-streams"></a><a href="#3.2-tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of concurrent streams per outgoing connection
 (i.e. the number of outstanding requests on a single connection to a server).
@@ -8622,7 +8627,20 @@ line blocking&quot; tends to cause cascade effect on download speed for all
 clients sharing a connection (keep tune.h2.be.initial-window-size low in this
 case). It is highly recommended not to increase this value; some might find
 it optimal to run at low values (1..5 typically).
-</pre><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
+</pre><a class="anchor" name="tune.h2.be.rxbuf"></a><a class="anchor" name="3-tune.h2.be.rxbuf"></a><a class="anchor" name="3.2-tune.h2.be.rxbuf"></a><a class="anchor" name="tune.h2.be.rxbuf (Global parameters)"></a><a class="anchor" name="tune.h2.be.rxbuf (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.rxbuf"></a><a href="#3.2-tune.h2.be.rxbuf">tune.h2.be.rxbuf</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the HTTP/2 receive buffer size for outgoing connections, in bytes. This
+size will be rounded up to the next multiple of tune.bufsize and will be
+shared between all streams uploading data (both HEADERS and DATA frames). In
+any case, one buffer will always be granted to each stream, and 7/8 of the
+unused buffers will be shared between streams downloading payload, allowing
+to significantly improve upload performance and avoid head-of-line blocking
+(HoL) on backend connections shared between multiple clients when http-reuse
+is set to &quot;always&quot;. The advertised per-stream window is automatically
+adjusted to reflect the available space so that in practice it should not be
+required to touch tune.h2.be.initial-window-size. If less than the size
+required to deal with all streams is set, this minimum will be used. The
+default value is about 1600k (100 streams with 16kB buffers each).
+</pre><div class="page-header"><b>See also:</b> tune.h2.be.initial-window-size, tune.h2.fe.rxbuf, http-reuse.</div>
+<a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global parameters)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
 that connection will automatically be killed. This allows to automatically
 kill misbehaving connections without having to write explicit rules for them.
 The default value is zero, indicating that no threshold is set so that no
@@ -8636,11 +8654,12 @@ number of bytes the client can upload before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents (i.e. the body of
 POST requests), not headers. When not set, the common default value set by
 tune.h2.initial-window-size applies. It can make sense to increase this value
-to allow faster uploads. The default value of 65536 allows up to 5 Mbps of
-bandwidth per client over a 100 ms ping time, and 500 Mbps for 1 ms ping
-time. It doesn't affect resource usage. Using too large values may cause
-clients to experience a lack of responsiveness if pages are accessed in
-parallel to large uploads.
+to allow faster uploads. The default value equals tune.bufsize (16384) and
+allows at least 1.25 Mbps of bandwidth per stream over a 100 ms ping time,
+and 125 Mbps for 1 ms ping time. It doesn't affect resource usage. Using too
+large values may cause clients to experience a lack of responsiveness if
+pages are accessed in parallel to large uploads. It is better to use
+tune.h2.fe.rxbuf instead, which does not cause any unfairness.
 </pre><div class="page-header"><b>See also:</b> tune.h2.initial-window-size.</div>
 <a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Global parameters)"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a href="#3.2-tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of concurrent streams per incoming connection
 (i.e. the number of outstanding requests on a single connection from a
@@ -8683,7 +8702,19 @@ frequent TLS reconnections, in addition to increased page load time. Please
 note that some load testing tools do not support reconnections and may report
 errors with this setting; as such it may be needed to disable it when running
 performance benchmarks. See also &quot;<a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>&quot;.
-</pre><a class="anchor" name="tune.h2.header-table-size"></a><a class="anchor" name="3-tune.h2.header-table-size"></a><a class="anchor" name="3.2-tune.h2.header-table-size"></a><a class="anchor" name="tune.h2.header-table-size (Global parameters)"></a><a class="anchor" name="tune.h2.header-table-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.header-table-size"></a><a href="#3.2-tune.h2.header-table-size">tune.h2.header-table-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 dynamic header table size. It defaults to 4096 bytes and
+</pre><a class="anchor" name="tune.h2.fe.rxbuf"></a><a class="anchor" name="3-tune.h2.fe.rxbuf"></a><a class="anchor" name="3.2-tune.h2.fe.rxbuf"></a><a class="anchor" name="tune.h2.fe.rxbuf (Global parameters)"></a><a class="anchor" name="tune.h2.fe.rxbuf (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.rxbuf"></a><a href="#3.2-tune.h2.fe.rxbuf">tune.h2.fe.rxbuf</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the HTTP/2 receive buffer size for incoming connections, in bytes. This
+size will be rounded up to the next multiple of tune.bufsize and will be
+shared between all streams uploading data (both HEADERS and DATA frames). In
+any case, one buffer will always be granted to each stream, and 7/8 of the
+unused buffers will be shared between streams uploading payload, allowing to
+significantly improve upload performance. The advertised per-stream window is
+automatically adjusted to reflect the available space so that in practice it
+should not be required to touch tune.h2.fe.initial-window-size. If less than
+the size required to deal with all streams is set, this minimum will be used.
+The default value of 1600k (100 streams with 16kB buffers each) permits
+roughly 130 Mbps of upload speed for a client with a 100ms RTT.
+</pre><div class="page-header"><b>See also:</b> tune.h2.fe.initial-window-size and tune.h2.be.rxbuf.</div>
+<a class="anchor" name="tune.h2.header-table-size"></a><a class="anchor" name="3-tune.h2.header-table-size"></a><a class="anchor" name="3.2-tune.h2.header-table-size"></a><a class="anchor" name="tune.h2.header-table-size (Global parameters)"></a><a class="anchor" name="tune.h2.header-table-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.header-table-size"></a><a href="#3.2-tune.h2.header-table-size">tune.h2.header-table-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 dynamic header table size. It defaults to 4096 bytes and
 cannot be larger than 65536 bytes. A larger value may help certain clients
 send more compact requests, depending on their capabilities. This amount of
 memory is consumed for each HTTP/2 connection. It is recommended not to
@@ -8691,12 +8722,17 @@ change it.
 </pre><a class="anchor" name="tune.h2.initial-window-size"></a><a class="anchor" name="3-tune.h2.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.initial-window-size"></a><a class="anchor" name="tune.h2.initial-window-size (Global parameters)"></a><a class="anchor" name="tune.h2.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.initial-window-size"></a><a href="#3.2-tune.h2.initial-window-size">tune.h2.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the default value for the HTTP/2 initial window size, on both incoming
 and outgoing connections. This value is used for incoming connections when
 tune.h2.fe.initial-window-size is not set, and by outgoing connections when
-tune.h2.be.initial-window-size is not set. The default value is 65536, which
-for uploads roughly allows up to 5 Mbps of bandwidth per client over a
-network showing a 100 ms ping time, or 500 Mbps over a 1-ms local network.
-Given that changing the default value will both increase upload speeds and
-cause more unfairness between clients on downloads, it is recommended to
-instead use the side-specific settings tune.h2.fe.initial-window-size and
+tune.h2.be.initial-window-size is not set. This setting is used both as the
+initial value and as a minimum per stream. The default value equals 16384
+(tune.bufsize), which for uploads roughly allows at least 1.25 Mbps of
+bandwidth per stream over a network showing a 100 ms ping time, or 125 Mbps
+over a 1-ms local network. When less receive buffers than the maximum are in
+use, within the limits defined by tune.h2.be.rxbuf and tune.h2.fe.rxbuf,
+unused buffers will be shared between receiving streams. As such there is
+normally no point in changing this default setting. Given that changing this
+default value will both increase upload speeds and cause more unfairness
+between clients on downloads, it is recommended to instead use the side-
+specific settings tune.h2.fe.initial-window-size and
 tune.h2.be.initial-window-size.
 </pre><a class="anchor" name="tune.h2.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.max-concurrent-streams"></a><a class="anchor" name="tune.h2.max-concurrent-streams (Global parameters)"></a><a class="anchor" name="tune.h2.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.max-concurrent-streams"></a><a href="#3.2-tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the default HTTP/2 maximum number of concurrent streams per connection
 (i.e. the number of outstanding requests on a single connection). This value
@@ -31119,7 +31155,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev9-21 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev9-50 &ndash; Configuration Manual<br>
 							<small>, 2024/10/03</small>
 						</div>
 					</div>
