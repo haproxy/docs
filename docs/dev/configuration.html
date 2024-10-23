@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev10-40 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev10-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4356,6 +4356,8 @@
 							
 							<a class="list-group-item" href="#weight">weight</a>
 							
+							<a class="list-group-item" href="#when">when</a>
+							
 							<a class="list-group-item" href="#word">word</a>
 							
 							<a class="list-group-item" href="#ws">ws</a>
@@ -4400,7 +4402,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4411,7 +4413,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev10-40</strong></p>
+							<p><strong>version 3.1-dev10-50</strong></p>
 							<p>
 								2024/10/16<br>
 								
@@ -23575,9 +23577,10 @@ The following keywords are supported:
 <tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-us_utime">us_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-utime">utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
+<tr><td ><a href="#7-when">when(condition)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-word">word(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-wt6">wt6([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-wt6">wt6([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-x509_v_err_str">x509_v_err_str</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-xor">xor(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-xxh3">xxh3([seed])</a></td><td >binary</td><td >integer</td></tr>
@@ -24963,7 +24966,68 @@ and &quot;<a href="#us_utime">us_utime</a>&quot;.
 <span class="comment"># e.g.  20140710162350 127.0.0.1:57325</span>
 log-format %[date,utime(%Y%m%d%H%M%S)]\ %ci:%cp
 </code></pre>
-</div><a class="anchor" name="word"></a><a class="anchor" name="7-word"></a><a class="anchor" name="7.3.1-word"></a><a class="anchor" name="word (Using ACLs and fetching samples)"></a><a class="anchor" name="word (Converters)"></a><div class="keyword"><b><a class="anchor" name="word"></a><a href="#7.3.1-word">word</a></b>(<span style="color: #080">&lt;index&gt;</span>,<span style="color: #080">&lt;delimiters&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;count&gt;</span>]</span>)</div><pre class="text">Extracts the nth word counting from the beginning (positive index) or from
+</div><a class="anchor" name="when"></a><a class="anchor" name="7-when"></a><a class="anchor" name="7.3.1-when"></a><a class="anchor" name="when (Using ACLs and fetching samples)"></a><a class="anchor" name="when (Converters)"></a><div class="keyword"><b><a class="anchor" name="when"></a><a href="#7.3.1-when">when</a></b>(<span style="color: #080">&lt;condition&gt;</span>)</div><pre class="text">Evaluates the condition and when true, passes the input sample as-is to the
+output, otherwise return nothing. This is designed specifically to produce
+some rarely needed data that should only be emitted under certain conditions,
+such as debugging information when an error is met.
+
+The condition is made of a keyword among the list below, optionally preceeded
+by an exclamation mark ('!') to negate it:
+
+  - &quot;error&quot; returns true when an error was encountered during the processing
+    of the request or stream. It uses the same rules as &quot;<a href="#option%20dontlog-normal">dontlog-normal</a>&quot;
+    (e.g. a successful redispatch counts as an error).
+
+  - &quot;<a href="#option%20forwarded">forwarded</a>&quot; returns true when the request was forwarded to a backend
+    server
+
+  - &quot;normal&quot; returns true when no error happened (this is equivalent to
+    &quot;!error&quot;).
+
+  - &quot;processed&quot; returns true when the request was either forwarded to a
+    backend server, or processed by an applet.
+
+  - &quot;<a href="#stopping">stopping</a>&quot; returns true if the process is currently stopping when the
+    rule is evaluated
+
+  - &quot;toapplet&quot; returns true when the request was processed by an applet.
+
+Note that the content is evaluated in any case, so doing this does not avoid
+the generation of that information. It's only meant to avoid producing that
+information.
+
+An example would be to add backend stream debugging information in the logs
+only when an error was encountered during processing, or logging extra
+information when stopping, etc.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># log &quot;dbg={-}&quot; when fine, or &quot;dbg={... debug info ...}&quot; on error:</span>
+log-format &quot;$HAPROXY_HTTP_LOG_FMT dbg={%[bs.debug_str,when(!normal)]}&quot;
+
+Here, the &quot;dbg&quot; field in the log will only contain an dash ('-') to
+indicate a missing content when the rule is not validated, and will emit a
+whole debugging block when it is.
+</code></pre>
+</div><pre class="text">Example
+  # only emit the backend src/port when a real connection was issued:
+  log-format &quot;$HAPROXY_HTTP_LOG_FMT \
+             src=[%[bc_src,when(forwarded)]:%[bc_src_port,when(forwarded)]]&quot;
+
+Since it kills the evaluation of the expression when it is not true, it is
+also possible to use it to stop a subsequent converter from being called.
+This may for example be used to call the debug() converter only upon error,
+to log an element only when absolutely necessary.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># emit the whole response headers list to stderr only on error and only</span>
+<span class="comment"># when the output is a connection. We abuse a dummy variable here.</span>
+http-after-response set-var(res.test) \
+              res.hdrs,when(error),when(forwarded),debug(hdrs,stderr)
+</code></pre>
+</div><div class="page-header"><b>See also:</b> debug converter</div>
+<a class="anchor" name="word"></a><a class="anchor" name="7-word"></a><a class="anchor" name="7.3.1-word"></a><a class="anchor" name="word (Using ACLs and fetching samples)"></a><a class="anchor" name="word (Converters)"></a><div class="keyword"><b><a class="anchor" name="word"></a><a href="#7.3.1-word">word</a></b>(<span style="color: #080">&lt;index&gt;</span>,<span style="color: #080">&lt;delimiters&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;count&gt;</span>]</span>)</div><pre class="text">Extracts the nth word counting from the beginning (positive index) or from
 the end (negative index) considering given delimiters from an input string.
 Indexes start at 1 or -1 and delimiters are a string formatted list of chars.
 Empty words are skipped. This means that delimiters at the start or end of
@@ -31205,7 +31269,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev10-40 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev10-50 &ndash; Configuration Manual<br>
 							<small>, 2024/10/16</small>
 						</div>
 					</div>
