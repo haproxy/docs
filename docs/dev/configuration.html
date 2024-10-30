@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev10-89 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev10-102 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4402,7 +4402,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4413,7 +4413,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev10-89</strong></p>
+							<p><strong>version 3.1-dev10-102</strong></p>
 							<p>
 								2024/10/16<br>
 								
@@ -10954,6 +10954,11 @@ May be used in the following contexts: tcp, http
                   only in log-forward sections.
                 - 'unix@'  -&gt; address is a path to a local unix socket
                 - 'abns@'  -&gt; address is in abstract namespace (Linux only).
+                - 'abnsz@'  -&gt; address is in abstract namespace (Linux only)
+                   but it is explicitly zero-terminated. This means no \0
+                   padding is used to complete sun_path. It is useful to
+                   interconnect with programs that don't implement the
+                   default abns naming logic that haproxy uses.
                 - 'fd@&lt;n&gt;' -&gt; use file descriptor &lt;n&gt; inherited from the
                   parent. The fd must be bound and may or may not already
                   be listening.
@@ -11047,11 +11052,12 @@ listen external_bind_app1
 listen h3_quic_proxy
     bind quic4@10.0.0.1:8888 ssl crt /etc/mycrt
 </code></pre>
-</div><pre class="text">Note: regarding Linux's abstract namespace sockets, HAProxy uses the whole
-      sun_path length is used for the address length. Some other programs
-      such as socat use the string length only by default. Pass the option
-      &quot;,unix-tightsocklen=0&quot; to any abstract socket definition in socat to
-      make it compatible with HAProxy's.
+</div><pre class="text">Note: regarding Linux's abstract namespace sockets, &quot;abns&quot; HAProxy sockets
+      uses the whole sun_path length is used for the address length. Some
+      other programs such as socat use the string length only by default.
+      Pass the option &quot;,unix-tightsocklen=0&quot; to any abstract socket
+      definition in socat to make it compatible with HAProxy's, or use the
+      &quot;abnsz&quot; HAProxy socket family instead.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#option%20forwardfor">option forwardfor</a>&quot;, &quot;<a href="#unix-bind">unix-bind</a>&quot; and the PROXY protocol documentation, and <a href="#5">section 5</a> about bind options.</div>
 <a class="anchor" name="capture"></a><a class="anchor" name="4-capture"></a><a class="anchor" name="4.2-capture"></a><a class="anchor" name="capture (Proxies)"></a><a class="anchor" name="capture (Alphabetically sorted keywords reference)"></a><a class="anchor" name="capture cookie"></a><a class="anchor" name="4-capture cookie"></a><a class="anchor" name="4.2-capture cookie"></a><a class="anchor" name="capture cookie (Proxies)"></a><a class="anchor" name="capture cookie (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="capture cookie"></a><a href="#4.2-capture%20cookie">capture cookie</a></b> <span style="color: #080">&lt;name&gt;</span> len <span style="color: #080">&lt;length&gt;</span></div><pre class="text">Capture and log a cookie in the request and in the response.
 
@@ -16036,6 +16042,11 @@ May be used in the following contexts: tcp, http, log
                 - 'ipv6@'  -&gt; address is always IPv6
                 - 'unix@'  -&gt; address is a path to a local unix socket
                 - 'abns@'  -&gt; address is in abstract namespace (Linux only)
+                - 'abnsz@'  -&gt; address is in abstract namespace (Linux only)
+                   but it is explicitly zero-terminated. This means no \0
+                   padding is used to complete sun_path. It is useful to
+                   interconnect with programs that don't implement the
+                   default abns naming logic that haproxy uses.
                 - 'sockpair@' -&gt; address is the FD of a connected unix
                   socket or of a socketpair. During a connection, the
                   backend creates a pair of connected sockets, and passes
@@ -16072,11 +16083,12 @@ server backup &quot;${SRV_BACKUP}:1080&quot; backup
 server www1_dc1 &quot;${LAN_DC1}.101:80&quot;
 server www1_dc2 &quot;${LAN_DC2}.101:80&quot;
 </code></pre>
-</div><pre class="text">Note: regarding Linux's abstract namespace sockets, HAProxy uses the whole
-      sun_path length is used for the address length. Some other programs
-      such as socat use the string length only by default. Pass the option
-      &quot;,unix-tightsocklen=0&quot; to any abstract socket definition in socat to
-      make it compatible with HAProxy's.
+</div><pre class="text">Note: regarding Linux's abstract namespace sockets, &quot;abns&quot; HAProxy sockets
+      uses the whole sun_path length is used for the address length. Some
+      other programs such as socat use the string length only by default.
+      Pass the option &quot;,unix-tightsocklen=0&quot; to any abstract socket
+      definition in socat to make it compatible with HAProxy's, or use the
+      &quot;abnsz&quot; HAProxy socket family instead.
 </pre><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#http-send-name-header">http-send-name-header</a>&quot; and <a href="#5">section 5</a> about server options</div>
 <a class="anchor" name="server-state-file-name"></a><a class="anchor" name="4-server-state-file-name"></a><a class="anchor" name="4.2-server-state-file-name"></a><a class="anchor" name="server-state-file-name (Proxies)"></a><a class="anchor" name="server-state-file-name (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="server-state-file-name"></a><a href="#4.2-server-state-file-name">server-state-file-name</a></b> <span style="color: #008">[ <span style="color: #800">{ use-backend-name | <span style="color: #080">&lt;file&gt;</span> }</span> ]</span></div><pre class="text">Set the server state file to read, load and apply to servers available in
 this backend.
@@ -16162,6 +16174,9 @@ May be used in the following contexts: tcp, http
             - 'ipv6@' -&gt; address is always IPv6
             - 'unix@' -&gt; address is a path to a local unix socket
             - 'abns@' -&gt; address is in abstract namespace (Linux only)
+            - 'abnsz@'  -&gt; address is in zero-terminated abstract namespace
+                           (Linux only)
+
           You may want to reference some environment variables in the
           address parameter, see <a href="#2.3">section 2.3</a> about environment variables.
 
@@ -31113,6 +31128,9 @@ socket type and the transport method.
 <h2 id="chapter-11.1" data-target="11.1"><small><a class="small" href="#11.1">11.1.</a></small> Address family prefixes</h2>
 <div><pre class="text">'abns@&lt;name&gt;' following &lt;name&gt; is an abstract namespace (Linux only).
 
+'abnsz@&lt;name&gt;' following &lt;name&gt; is a zero-terminated abstract namespace
+               (Linux only).
+
 'fd@&lt;n&gt;'      following address is a file descriptor &lt;n&gt; inherited from the
               parent. The fd must be bound and may or may not already be
               listening.
@@ -31269,7 +31287,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev10-89 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev10-102 &ndash; Configuration Manual<br>
 							<small>, 2024/10/16</small>
 						</div>
 					</div>
