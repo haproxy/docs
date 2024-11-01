@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev10-112 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev10-125 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2197,6 +2197,8 @@
 								
 							<a class="list-group-item" href="#language">language</a>
 							
+							<a class="list-group-item" href="#last_entity">last_entity</a>
+							
 							<a class="list-group-item" href="#last_rule_file">last_rule_file</a>
 							
 							<a class="list-group-item" href="#last_rule_line">last_rule_line</a>
@@ -4354,6 +4356,8 @@
 							
 							<a class="list-group-item" href="#wait_end">wait_end</a>
 							
+							<a class="list-group-item" href="#waiting_entity">waiting_entity</a>
+							
 							<a class="list-group-item" href="#weight">weight</a>
 							
 							<a class="list-group-item" href="#when">when</a>
@@ -4402,7 +4406,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/10/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4413,7 +4417,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev10-112</strong></p>
+							<p><strong>version 3.1-dev10-125</strong></p>
 							<p>
 								2024/10/16<br>
 								
@@ -25174,6 +25178,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-int">int(&lt;integer&gt;)</a></td><td >signed</td></tr>
 <tr><td ><a href="#7-ipv4">ipv4(&lt;ipv4&gt;)</a></td><td >ipv4</td></tr>
 <tr><td ><a href="#7-ipv6">ipv6(&lt;ipv6&gt;)</a></td><td >ipv6</td></tr>
+<tr><td ><a href="#7-last_entity">last_entity</a></td><td >string</td></tr>
 <tr><td ><a href="#7-last_rule_file">last_rule_file</a></td><td >string</td></tr>
 <tr><td ><a href="#7-last_rule_line">last_rule_line</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-lat_ns_avg">lat_ns_avg</a></td><td >integer</td></tr>
@@ -25189,8 +25194,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-rand">rand([&lt;range&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_conn">srv_conn([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_conn_free">srv_conn_free([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-srv_is_up">srv_is_up([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >boolean</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_is_up">srv_is_up([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_sess_rate">srv_sess_rate([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_iweight">srv_iweight([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
@@ -25205,6 +25210,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
+<tr><td ><a href="#7-waiting_entity">waiting_entity</a></td><td >string</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
@@ -25399,7 +25405,36 @@ frontend mail
 </pre><a class="anchor" name="int"></a><a class="anchor" name="7-int"></a><a class="anchor" name="7.3.2-int"></a><a class="anchor" name="int (Using ACLs and fetching samples)"></a><a class="anchor" name="int (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="int"></a><a href="#7.3.2-int">int</a></b>(<span style="color: #080">&lt;integer&gt;</span>) : signed integer</div><pre class="text">Returns a signed integer.
 </pre><a class="anchor" name="ipv4"></a><a class="anchor" name="7-ipv4"></a><a class="anchor" name="7.3.2-ipv4"></a><a class="anchor" name="ipv4 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv4 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv4"></a><a href="#7.3.2-ipv4">ipv4</a></b>(<span style="color: #080">&lt;ipv4&gt;</span>) : ipv4</div><pre class="text">Returns an ipv4.
 </pre><a class="anchor" name="ipv6"></a><a class="anchor" name="7-ipv6"></a><a class="anchor" name="7.3.2-ipv6"></a><a class="anchor" name="ipv6 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv6 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv6"></a><a href="#7.3.2-ipv6">ipv6</a></b>(<span style="color: #080">&lt;ipv6&gt;</span>) : ipv6</div><pre class="text">Returns an ipv6.
-</pre><a class="anchor" name="last_rule_file"></a><a class="anchor" name="7-last_rule_file"></a><a class="anchor" name="7.3.2-last_rule_file"></a><a class="anchor" name="last_rule_file (Using ACLs and fetching samples)"></a><a class="anchor" name="last_rule_file (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="last_rule_file"></a><a href="#7.3.2-last_rule_file">last_rule_file</a></b> : string</div><pre class="text">This returns the name of the configuration file containing the last final
+</pre><a class="anchor" name="last_entity"></a><a class="anchor" name="7-last_entity"></a><a class="anchor" name="7.3.2-last_entity"></a><a class="anchor" name="last_entity (Using ACLs and fetching samples)"></a><a class="anchor" name="last_entity (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="last_entity"></a><a href="#7.3.2-last_entity">last_entity</a></b> : string</div><pre class="text">This returns the identity of the last entity that was evaluated during stream
+analysis. It may be the final rule that matched or the filter that
+interrupted the processing.
+
+A final rule is one that terminates the evaluation of the rule set (like an
+&quot;<a href="#accept">accept</a>&quot;, &quot;<a href="#deny">deny</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot;). This works for TCP request and response
+rules acting on the &quot;content&quot; rulesets, and on HTTP rules from
+&quot;<a href="#http-request">http-request</a>&quot;, &quot;<a href="#http-response">http-response</a>&quot; and &quot;<a href="#http-after-response">http-after-response</a>&quot; rule sets. The
+legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; rulesets are not supported (such information is not stored
+there), and neither &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot; nor &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;
+rulesets are supported because the information is stored at the stream level
+and streams do not exist during these rules. In that case, the returned value
+is equivalent to &quot;last_rule_file:last_rule_line&quot;.
+See also &quot;<a href="#last_rule_file">last_rule_file</a>&quot;, &quot;<a href="#last_rule_line">last_rule_line</a>&quot;.
+
+For a filter, its identifier is returned as defined by the developers. If
+this identifier is not defined, an hexadecimal value is returned
+corresponding to an unique internal identifier.
+
+The main purpose of this function is to be able to report in logs the last
+entity that interrupted a processing, in order to help debugging issues. The
+information returned on entities may changed in time and must not be used for
+something else than debugging.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Log the last entity, if any, and only if an error is reported</span>
+log-format &quot;$HAPROXY_HTTP_LOG_FMT %{Q}[last_entity,when(error)]
+</code></pre>
+</div><a class="anchor" name="last_rule_file"></a><a class="anchor" name="7-last_rule_file"></a><a class="anchor" name="7.3.2-last_rule_file"></a><a class="anchor" name="last_rule_file (Using ACLs and fetching samples)"></a><a class="anchor" name="last_rule_file (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="last_rule_file"></a><a href="#7.3.2-last_rule_file">last_rule_file</a></b> : string</div><pre class="text">This returns the name of the configuration file containing the last final
 rule that was matched during stream analysis. A final rule is one that
 terminates the evaluation of the rule set (like an &quot;<a href="#accept">accept</a>&quot;, &quot;<a href="#deny">deny</a>&quot; or
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot;). This works for TCP request and response rules acting on the
@@ -25583,7 +25618,31 @@ Versions 4 and 7 are supported.
 sample fetch fails, unless a default value is provided, in which case it will
 return it as a string. Empty strings are permitted. See <a href="#2.8">section 2.8</a> about
 variables for details.
-</pre></div>
+</pre><a class="anchor" name="waiting_entity"></a><a class="anchor" name="7-waiting_entity"></a><a class="anchor" name="7.3.2-waiting_entity"></a><a class="anchor" name="waiting_entity (Using ACLs and fetching samples)"></a><a class="anchor" name="waiting_entity (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="waiting_entity"></a><a href="#7.3.2-waiting_entity">waiting_entity</a></b> : string</div><pre class="text">This returns the identity of the entity that was waiting to continue its
+processing when an error or a timeout was encountered. It may be the a rule
+or a filter for instance. However, this list is not exhaustive and the format
+of all possible entities is not forcefully documented.
+
+When the entity is a rule, its location is returned. It is the configuration
+file containing the rule followed by the line where the rule is defined in
+this file, separated by a colon.
+
+For a filter, its identifier is returned as defined by the developers. If
+this identifier is not defined, an hexadecimal value is returned
+corresponding to an unique internal identifier.
+
+The main purpose of this function is to be able to report in logs the entity
+blocking the stream analysis when an error or a timeout was encountered,
+interrupting this processing, in order to help debugging issues. The
+information returned on entities may changed in time and must not be used for
+something else than debugging.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Log the waiting entity, if any, and only if an error is reported</span>
+log-format &quot;$HAPROXY_HTTP_LOG_FMT %{Q}[waiting_entity,when(error)]
+</code></pre>
+</div></div>
 <a class="anchor" id="7.3.3" name="7.3.3"></a>
 <h3 id="chapter-7.3.3" data-target="7.3.3"><small><a class="small" href="#7.3.3">7.3.3.</a></small> Fetching samples at Layer 4</h3>
 <div><pre class="text">The layer 4 usually describes just the transport layer which in HAProxy is
@@ -31306,7 +31365,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev10-112 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev10-125 &ndash; Configuration Manual<br>
 							<small>, 2024/10/16</small>
 						</div>
 					</div>
