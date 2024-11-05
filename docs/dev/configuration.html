@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev11 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev11-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4183,6 +4183,10 @@
 							
 							<a class="list-group-item" href="#tune.recv_enough">tune.recv_enough</a>
 							
+							<a class="list-group-item" href="#tune.renice.runtime">tune.renice.runtime</a>
+							
+							<a class="list-group-item" href="#tune.renice.startup">tune.renice.startup</a>
+							
 							<a class="list-group-item" href="#tune.ring.queues">tune.ring.queues</a>
 							
 							<a class="list-group-item" href="#tune.runqueue-depth">tune.runqueue-depth</a>
@@ -4406,7 +4410,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4417,7 +4421,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev11</strong></p>
+							<p><strong>version 3.1-dev11-1</strong></p>
 							<p>
 								2024/11/01<br>
 								
@@ -7024,6 +7028,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
    - <a href="#tune.quic.socket-owner">tune.quic.socket-owner</a>
    - <a href="#tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a>
+   - <a href="#tune.renice.runtime">tune.renice.runtime</a>
+   - <a href="#tune.renice.startup">tune.renice.startup</a>
    - <a href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
    - <a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>
    - <a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>
@@ -9146,6 +9152,20 @@ their individual configuration.
 </pre><a class="anchor" name="tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="tune.quic.zero-copy-fwd-send (Global parameters)"></a><a class="anchor" name="tune.quic.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.zero-copy-fwd-send"></a><a href="#3.2-tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the QUIC
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding</div>
+<a class="anchor" name="tune.renice.runtime"></a><a class="anchor" name="3-tune.renice.runtime"></a><a class="anchor" name="3.2-tune.renice.runtime"></a><a class="anchor" name="tune.renice.runtime (Global parameters)"></a><a class="anchor" name="tune.renice.runtime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.renice.runtime"></a><a href="#3.2-tune.renice.runtime">tune.renice.runtime</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This configuration option takes a value between -20 and 19. It applies a
+scheduling priority as documented in man 2 setpriority. This priority is
+applied after the configuration parsing, which means only the worker or the
+standalone process will apply it. It is usually configured to set a higher
+priority than a process doing configuration parsing (tune.renice.startup).
+</pre><div class="page-header"><b>See also:</b> tune.renice.startup</div>
+<a class="anchor" name="tune.renice.startup"></a><a class="anchor" name="3-tune.renice.startup"></a><a class="anchor" name="3.2-tune.renice.startup"></a><a class="anchor" name="tune.renice.startup (Global parameters)"></a><a class="anchor" name="tune.renice.startup (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.renice.startup"></a><a href="#3.2-tune.renice.startup">tune.renice.startup</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This configuration option takes a value between -20 and 19. It applies a
+scheduling priority as documented in man 2 setpriority. This priority is
+applied before applying the rest of the configuration which can be useful if
+you want to lower the priority for configuration parsing. This is applied on
+the standalone process or the worker before configuration parsing. Once the
+configuration is parsed, the previous priority is restored unless
+tune.renice.runtime is used.
+</pre><div class="page-header"><b>See also:</b> tune.renice.runtime</div>
 <a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
 size. This can be used QUIC in listener mode and log-forward on the frontend.
 The default system buffers might sometimes be too small for sockets receiving
@@ -31365,7 +31385,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev11 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev11-1 &ndash; Configuration Manual<br>
 							<small>, 2024/11/01</small>
 						</div>
 					</div>
