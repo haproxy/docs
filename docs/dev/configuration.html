@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev11-1 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev11-13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1429,6 +1429,8 @@
 							
 							<a class="list-group-item" href="#bc_err">bc_err</a>
 							
+							<a class="list-group-item" href="#bc_err_name">bc_err_name</a>
+							
 							<a class="list-group-item" href="#bc_err_str">bc_err_str</a>
 							
 							<a class="list-group-item" href="#bc_glitches">bc_glitches</a>
@@ -1840,6 +1842,8 @@
 							<a class="list-group-item" href="#fc_dst_port">fc_dst_port</a>
 							
 							<a class="list-group-item" href="#fc_err">fc_err</a>
+							
+							<a class="list-group-item" href="#fc_err_name">fc_err_name</a>
 							
 							<a class="list-group-item" href="#fc_err_str">fc_err_str</a>
 							
@@ -4410,7 +4414,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4421,7 +4425,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev11-1</strong></p>
+							<p><strong>version 3.1-dev11-13</strong></p>
 							<p>
 								2024/11/01<br>
 								
@@ -25689,6 +25693,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bc_dst">bc_dst</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-bc_dst_port">bc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_err">bc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bc_err_name">bc_err_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-bc_err_str">bc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-bc_glitches">bc_glitches</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_http_major">bc_http_major</a></td><td >integer</td></tr>
@@ -25702,8 +25707,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bc_rtt">bc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bc_rttvar">bc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_server_timeout">be_server_timeout</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-be_tunnel_timeout">be_tunnel_timeout</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-be_tunnel_timeout">be_tunnel_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bytes_in">bytes_in</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
@@ -25719,12 +25724,13 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_dst_is_local">fc_dst_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_dst_port">fc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_err">fc_err</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_err_name">fc_err_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_err_str">fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_fackets">fc_fackets</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_glitches">fc_glitches</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_http_major">fc_http_major</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_lost">fc_lost</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_nb_streams">fc_nb_streams</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_pp_authority">fc_pp_authority</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_pp_unique_id">fc_pp_unique_id</a></td><td >string</td></tr>
@@ -25743,9 +25749,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fe_defbe">fe_defbe</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fe_client_timeout">fe_client_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.timer.data">res.timer.data</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_bytes_in_rate">sc_bytes_in_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_bytes_in_rate">sc1_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25764,9 +25770,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_clr_gpc1">sc2_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_conn_cnt">sc0_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cnt">sc1_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_conn_cnt">sc2_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_cur">sc_conn_cur(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_cur">sc0_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25785,9 +25791,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_get_gpc1">sc0_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_get_gpc1">sc1_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpc1">sc2_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_get_gpt">sc_get_gpt(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpt0">sc_get_gpt0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_get_gpt0">sc0_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_get_gpt0">sc1_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpt0">sc2_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25806,9 +25812,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc1_rate">sc2_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_err_cnt">sc_http_err_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_cnt">sc1_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25827,9 +25833,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_cnt">sc0_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_req_cnt">sc2_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_req_rate">sc_http_req_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_rate">sc0_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_rate">sc1_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25848,9 +25854,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_kbytes_in">sc2_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_kbytes_out">sc2_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_sess_cnt">sc_sess_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_sess_cnt">sc0_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25869,9 +25875,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_trackers">sc1_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_trackers">sc2_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_id">so_id</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-src">src</a></td><td >ip</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_bytes_in_rate">src_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_bytes_out_rate">src_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc">src_clr_gpc(&lt;idx&gt;,[&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25890,9 +25896,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_gpc_rate">src_gpc_rate(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc0_rate">src_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc1_rate">src_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_err_rate">src_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_fail_rate">src_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_req_cnt">src_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -25941,6 +25947,10 @@ connection on the server side, which is the port HAProxy connected to.
 </pre><a class="anchor" name="bc_err"></a><a class="anchor" name="7-bc_err"></a><a class="anchor" name="7.3.3-bc_err"></a><a class="anchor" name="bc_err (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_err (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_err"></a><a href="#7.3.3-bc_err">bc_err</a></b> : integer</div><pre class="text">Returns the ID of the error that might have occurred on the current backend
 connection. See the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of error codes
 and their corresponding error message.
+</pre><a class="anchor" name="bc_err_name"></a><a class="anchor" name="7-bc_err_name"></a><a class="anchor" name="7.3.3-bc_err_name"></a><a class="anchor" name="bc_err_name (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_err_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_err_name"></a><a href="#7.3.3-bc_err_name">bc_err_name</a></b> : string</div><pre class="text">Returns the internal error name describing what problem happened on the
+backend connection, resulting in a connection failure. This string is made of
+a single word and is empty when no error is present. It corresponds to the
+&quot;<a href="#name">name</a>&quot; column in the table presented in the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; keyword.
 </pre><a class="anchor" name="bc_err_str"></a><a class="anchor" name="7-bc_err_str"></a><a class="anchor" name="7.3.3-bc_err_str"></a><a class="anchor" name="bc_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="bc_err_str (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bc_err_str"></a><a href="#7.3.3-bc_err_str">bc_err_str</a></b> : string</div><pre class="text">Returns an error message describing what problem happened on the current
 backend connection, resulting in a connection failure. See the
 &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of error codes and their
@@ -26065,59 +26075,76 @@ connection. Any strictly positive value of this fetch indicates that the
 connection did not succeed and would result in an error log being output (as
 described in <a href="#8.2.5">section 8.2.5</a>). See the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; fetch for a full list of
 error codes and their corresponding error message.
+</pre><a class="anchor" name="fc_err_name"></a><a class="anchor" name="7-fc_err_name"></a><a class="anchor" name="7.3.3-fc_err_name"></a><a class="anchor" name="fc_err_name (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_err_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_err_name"></a><a href="#7.3.3-fc_err_name">fc_err_name</a></b> : string</div><pre class="text">Returns the internal error name describing what problem happened on the
+frontend connection, resulting in a connection failure. This string is made
+of a single word and is empty when no error is present. It corresponds to the
+&quot;<a href="#name">name</a>&quot; column in the table presented in the &quot;<a href="#fc_err_str">fc_err_str</a>&quot; keyword.
 </pre><a class="anchor" name="fc_err_str"></a><a class="anchor" name="7-fc_err_str"></a><a class="anchor" name="7.3.3-fc_err_str"></a><a class="anchor" name="fc_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_err_str (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_err_str"></a><a href="#7.3.3-fc_err_str">fc_err_str</a></b> : string</div><pre class="text">Returns an error message describing what problem happened on the current
 connection, resulting in a connection failure. This string corresponds to the
 &quot;message&quot; part of the error log format (see <a href="#8.2.5">section 8.2.5</a>). See below for a
 full list of error codes and their corresponding error messages :
 
-+----+---------------------------------------------------------------------------+
-| ID | message                                                                   |
-+----+---------------------------------------------------------------------------+
-| 0  | &quot;Success&quot;                                                                 |
-| 1  | &quot;Reached configured maxconn value&quot;                                        |
-| 2  | &quot;Too many sockets on the process&quot;                                         |
-| 3  | &quot;Too many sockets on the system&quot;                                          |
-| 4  | &quot;Out of system buffers&quot;                                                   |
-| 5  | &quot;Protocol or address family not supported&quot;                                |
-| 6  | &quot;General socket error&quot;                                                    |
-| 7  | &quot;Source port range exhausted&quot;                                             |
-| 8  | &quot;Can't bind to source address&quot;                                            |
-| 9  | &quot;Out of local source ports on the system&quot;                                 |
-| 10 | &quot;Local source address already in use&quot;                                     |
-| 11 | &quot;Connection closed while waiting for PROXY protocol header&quot;               |
-| 12 | &quot;Connection error while waiting for PROXY protocol header&quot;                |
-| 13 | &quot;Timeout while waiting for PROXY protocol header&quot;                         |
-| 14 | &quot;Truncated PROXY protocol header received&quot;                                |
-| 15 | &quot;Received something which does not look like a PROXY protocol header&quot;     |
-| 16 | &quot;Received an invalid PROXY protocol header&quot;                               |
-| 17 | &quot;Received an unhandled protocol in the PROXY protocol header&quot;             |
-| 18 | &quot;Connection closed while waiting for NetScaler Client IP header&quot;          |
-| 19 | &quot;Connection error while waiting for NetScaler Client IP header&quot;           |
-| 20 | &quot;Timeout while waiting for a NetScaler Client IP header&quot;                  |
-| 21 | &quot;Truncated NetScaler Client IP header received&quot;                           |
-| 22 | &quot;Received an invalid NetScaler Client IP magic number&quot;                    |
-| 23 | &quot;Received an unhandled protocol in the NetScaler Client IP header&quot;        |
-| 24 | &quot;Connection closed during SSL handshake&quot;                                  |
-| 25 | &quot;Connection error during SSL handshake&quot;                                   |
-| 26 | &quot;Timeout during SSL handshake&quot;                                            |
-| 27 | &quot;Too many SSL connections&quot;                                                |
-| 28 | &quot;Out of memory when initializing an SSL connection&quot;                       |
-| 29 | &quot;Rejected a client-initiated SSL renegotiation attempt&quot;                   |
-| 30 | &quot;SSL client CA chain cannot be verified&quot;                                  |
-| 31 | &quot;SSL client certificate not trusted&quot;                                      |
-| 32 | &quot;Server presented an SSL certificate different from the configured one&quot;   |
-| 33 | &quot;Server presented an SSL certificate different from the expected one&quot;     |
-| 34 | &quot;SSL handshake failure&quot;                                                   |
-| 35 | &quot;SSL handshake failure after heartbeat&quot;                                   |
-| 36 | &quot;Stopped a TLSv1 heartbeat attack (CVE-2014-0160)&quot;                        |
-| 37 | &quot;Attempt to use SSL on an unknown target (internal error)&quot;                |
-| 38 | &quot;Server refused early data&quot;                                               |
-| 39 | &quot;SOCKS4 Proxy write error during handshake&quot;                               |
-| 40 | &quot;SOCKS4 Proxy read error during handshake&quot;                                |
-| 41 | &quot;SOCKS4 Proxy deny the request&quot;                                           |
-| 42 | &quot;SOCKS4 Proxy handshake aborted by server&quot;                                |
-| 43 | &quot;SSL fatal error&quot;                                                         |
-+----+---------------------------------------------------------------------------+
++----+------------------+-------------------------------------------------------------------------+
+| ID | name             | message                                                                 |
++----+------------------+-------------------------------------------------------------------------+
+| 0  | -                | &quot;Success&quot;                                                               |
+| 1  | CONF_FDLIM       | &quot;Reached configured maxconn value&quot;                                      |
+| 2  | PROC_FDLIM       | &quot;Too many sockets on the process&quot;                                       |
+| 3  | SYS_FDLIM        | &quot;Too many sockets on the system&quot;                                        |
+| 4  | SYS_MEMLIM       | &quot;Out of system buffers&quot;                                                 |
+| 5  | NOPROTO          | &quot;Protocol or address family not supported&quot;                              |
+| 6  | SOCK_ERR         | &quot;General socket error&quot;                                                  |
+| 7  | PORT_RANGE       | &quot;Source port range exhausted&quot;                                           |
+| 8  | CANT_BIND        | &quot;Can't bind to source address&quot;                                          |
+| 9  | FREE_PORTS       | &quot;Out of local source ports on the system&quot;                               |
+| 10 | ADDR_INUSE       | &quot;Local source address already in use&quot;                                   |
+| 11 | PRX_EMPTY        | &quot;Connection closed while waiting for PROXY protocol header&quot;             |
+| 12 | PRX_ABORT        | &quot;Connection error while waiting for PROXY protocol header&quot;              |
+| 13 | PRX_TIMEOUT      | &quot;Timeout while waiting for PROXY protocol header&quot;                       |
+| 14 | PRX_TRUNCATED    | &quot;Truncated PROXY protocol header received&quot;                              |
+| 15 | PRX_NOT_HDR      | &quot;Received something which does not look like a PROXY protocol header&quot;   |
+| 16 | PRX_BAD_HDR      | &quot;Received an invalid PROXY protocol header&quot;                             |
+| 17 | PRX_BAD_PROTO    | &quot;Received an unhandled protocol in the PROXY protocol header&quot;           |
+| 18 | CIP_EMPTY        | &quot;Connection closed while waiting for NetScaler Client IP header&quot;        |
+| 19 | CIP_ABORT        | &quot;Connection error while waiting for NetScaler Client IP header&quot;         |
+| 20 | CIP_TIMEOUT      | &quot;Timeout while waiting for a NetScaler Client IP header&quot;                |
+| 21 | CIP_TRUNCATED    | &quot;Truncated NetScaler Client IP header received&quot;                         |
+| 22 | CIP_BAD_MAGIC    | &quot;Received an invalid NetScaler Client IP magic number&quot;                  |
+| 23 | CIP_BAD_PROTO    | &quot;Received an unhandled protocol in the NetScaler Client IP header&quot;      |
+| 24 | SSL_EMPTY        | &quot;Connection closed during SSL handshake&quot;                                |
+| 25 | SSL_ABORT        | &quot;Connection error during SSL handshake&quot;                                 |
+| 26 | SSL_TIMEOUT      | &quot;Timeout during SSL handshake&quot;                                          |
+| 27 | SSL_TOO_MANY     | &quot;Too many SSL connections&quot;                                              |
+| 28 | SSL_NO_MEM       | &quot;Out of memory when initializing an SSL connection&quot;                     |
+| 29 | SSL_RENEG        | &quot;Rejected a client-initiated SSL renegotiation attempt&quot;                 |
+| 30 | SSL_CA_FAIL      | &quot;SSL client CA chain cannot be verified&quot;                                |
+| 31 | SSL_CRT_FAIL     | &quot;SSL client certificate not trusted&quot;                                    |
+| 32 | SSL_MISMATCH     | &quot;Server presented an SSL certificate different from the configured one&quot; |
+| 33 | SSL_MISMATCH_SNI | &quot;Server presented an SSL certificate different from the expected one&quot;   |
+| 34 | SSL_HANDSHAKE    | &quot;SSL handshake failure&quot;                                                 |
+| 35 | SSL_HANDSHAKE_HB | &quot;SSL handshake failure after heartbeat&quot;                                 |
+| 36 | SSL_KILLED_HB    | &quot;Stopped a TLSv1 heartbeat attack (CVE-2014-0160)&quot;                      |
+| 37 | SSL_NO_TARGET    | &quot;Attempt to use SSL on an unknown target (internal error)&quot;              |
+| 38 | SSL_EARLY_FAILED | &quot;Server refused early data&quot;                                             |
+| 39 | SOCKS4_SEND      | &quot;SOCKS4 Proxy write error during handshake&quot;                             |
+| 40 | SOCKS4_RECV      | &quot;SOCKS4 Proxy read error during handshake&quot;                              |
+| 41 | SOCKS4_DENY      | &quot;SOCKS4 Proxy deny the request&quot;                                         |
+| 42 | SOCKS4_ABORT     | &quot;SOCKS4 Proxy handshake aborted by server&quot;                              |
+| 43 | SSL_FATAL        | &quot;SSL fatal error&quot;                                                       |
+| 44 | REVERSE          | &quot;Reverse connect failure&quot;                                               |
+| 45 | POLLERR          | &quot;Poller reported POLLERR&quot;                                               |
+| 46 | EREFUSED         | &quot;ECONNREFUSED returned by OS&quot;                                           |
+| 47 | ERESET           | &quot;ECONNRESET returned by OS&quot;                                             |
+| 48 | EUNREACH         | &quot;ENETUNREACH returned by OS&quot;                                            |
+| 49 | ENOMEM           | &quot;ENOMEM returned by OS&quot;                                                 |
+| 50 | EBADF            | &quot;EBADF returned by OS&quot;                                                  |
+| 51 | EFAULT           | &quot;EFAULT returned by OS&quot;                                                 |
+| 52 | EINVAL           | &quot;EINVAL returned by OS&quot;                                                 |
+| 53 | ENCONN           | &quot;ENCONN returned by OS&quot;                                                 |
+| 54 | ENSOCK           | &quot;ENSOCK returned by OS&quot;                                                 |
+| 55 | ENOBUFS          | &quot;ENOBUFS returned by OS&quot;                                                |
+| 56 | EPIPE            | &quot;EPIPE returned by OS&quot;                                                  |
++----+------------------+-------------------------------------------------------------------------+
 </pre><a class="anchor" name="fc_fackets"></a><a class="anchor" name="7-fc_fackets"></a><a class="anchor" name="7.3.3-fc_fackets"></a><a class="anchor" name="fc_fackets (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_fackets (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_fackets"></a><a href="#7.3.3-fc_fackets">fc_fackets</a></b> : integer</div><pre class="text">Returns the fack counter measured by the kernel for the client
 connection. If the server connection is not established, if the connection is
 not TCP or if the operating system does not support TCP_INFO, for example
@@ -31385,7 +31412,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev11-1 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev11-13 &ndash; Configuration Manual<br>
 							<small>, 2024/11/01</small>
 						</div>
 					</div>
