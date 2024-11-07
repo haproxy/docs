@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev11-13 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev11-31 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4366,6 +4366,8 @@
 							
 							<a class="list-group-item" href="#waiting_entity">waiting_entity</a>
 							
+							<a class="list-group-item" href="#warn-blocked-traffic-after">warn-blocked-traffic-after</a>
+							
 							<a class="list-group-item" href="#weight">weight</a>
 							
 							<a class="list-group-item" href="#when">when</a>
@@ -4414,7 +4416,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4425,7 +4427,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev11-13</strong></p>
+							<p><strong>version 3.1-dev11-31</strong></p>
 							<p>
 								2024/11/01<br>
 								
@@ -7070,6 +7072,7 @@ The following keywords are supported in the &quot;global&quot; section :
  * Debugging
    - <a href="#anonkey">anonkey</a>
    - <a href="#quiet">quiet</a>
+   - <a href="#warn-blocked-traffic-after">warn-blocked-traffic-after</a>
    - <a href="#zero-warning">zero-warning</a>
 
  * HTTPClient
@@ -9423,6 +9426,22 @@ this allows to bypass it. It is better not to use this unless instructed to
 do so by developers.
 </pre><a class="anchor" name="quiet"></a><a class="anchor" name="3-quiet"></a><a class="anchor" name="3.3-quiet"></a><a class="anchor" name="quiet (Global parameters)"></a><a class="anchor" name="quiet (Debugging)"></a><div class="keyword"><b><a class="anchor" name="quiet"></a><a href="#3.3-quiet">quiet</a></b></div><pre class="text">Do not display any message during startup. It is equivalent to the command-
 line argument &quot;-q&quot;.
+</pre><a class="anchor" name="warn-blocked-traffic-after"></a><a class="anchor" name="3-warn-blocked-traffic-after"></a><a class="anchor" name="3.3-warn-blocked-traffic-after"></a><a class="anchor" name="warn-blocked-traffic-after (Global parameters)"></a><a class="anchor" name="warn-blocked-traffic-after (Debugging)"></a><div class="keyword"><b><a class="anchor" name="warn-blocked-traffic-after"></a><a href="#3.3-warn-blocked-traffic-after">warn-blocked-traffic-after</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">This allows to adjust the delay after which a stuck task blocking the traffic
+will trigger the emission of a warning on the standard error output. The
+delay is expressed in milliseconds and defaults to 100 ms. Permitted values
+must be comprised between 1 ms and 1000 ms included. Lower values will
+trigger warnings frequently and higher ones will rarely. The watchdog will
+kill a runaway task that fails to respond twice for one second anyway, so a
+1000 ms warning delay will normally not trigger any warning. It is
+recommended to stay with values between 10 and 100ms to detect configuration
+anomalies that may degrade the user's experience, causing long response times
+or jerkiness on interactive sessions. For example, a poorly designed Lua
+sample-fetch function doing heavy computations, or a very large map_reg or
+map_regm map file with a very high evaluation cost may cause such trouble.
+For comparison a TLS handshake can eat between one and two milliseconds, and
+compressing a 16kB HTTP response buffer is around one millisecond. The output
+contains a thread dump of the offending task with a backtrace and some
+context that helps figure where the time is being spent.
 </pre><a class="anchor" name="zero-warning"></a><a class="anchor" name="3-zero-warning"></a><a class="anchor" name="3.3-zero-warning"></a><a class="anchor" name="zero-warning (Global parameters)"></a><a class="anchor" name="zero-warning (Debugging)"></a><div class="keyword"><b><a class="anchor" name="zero-warning"></a><a href="#3.3-zero-warning">zero-warning</a></b></div><pre class="text">When this option is set, HAProxy will refuse to start if any warning was
 emitted while processing the configuration and applying it. It means that
 warnings about bad combinations of parameters, warnings about very high
@@ -31412,7 +31431,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev11-13 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev11-31 &ndash; Configuration Manual<br>
 							<small>, 2024/11/01</small>
 						</div>
 					</div>
