@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev13 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev13-8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4416,7 +4416,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4427,7 +4427,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev13</strong></p>
+							<p><strong>version 3.1-dev13-8</strong></p>
 							<p>
 								2024/11/15<br>
 								
@@ -8556,7 +8556,7 @@ for use only during memory shortage conditions resulting in failed memory
 allocations. The minimum value is 0 and the default is 4. There is no reason
 a user would want to change this value, unless a core developer suggests to
 change it for a very specific reason.
-</pre><a class="anchor" name="tune.bufsize"></a><a class="anchor" name="3-tune.bufsize"></a><a class="anchor" name="3.2-tune.bufsize"></a><a class="anchor" name="tune.bufsize (Global parameters)"></a><a class="anchor" name="tune.bufsize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize"></a><a href="#3.2-tune.bufsize">tune.bufsize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the buffer size to this size (in bytes). Lower values allow more
+</pre><a class="anchor" name="tune.bufsize"></a><a class="anchor" name="3-tune.bufsize"></a><a class="anchor" name="3.2-tune.bufsize"></a><a class="anchor" name="tune.bufsize (Global parameters)"></a><a class="anchor" name="tune.bufsize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize"></a><a href="#3.2-tune.bufsize">tune.bufsize</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the buffer size to this size (in bytes). Lower values allow more
 streams to coexist in the same amount of RAM, and higher values allow some
 applications with very large cookies to work. The default value is 16384 and
 can be changed at build time. It is strongly recommended not to change this
@@ -8570,7 +8570,7 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
-</pre><a class="anchor" name="tune.bufsize.small"></a><a class="anchor" name="3-tune.bufsize.small"></a><a class="anchor" name="3.2-tune.bufsize.small"></a><a class="anchor" name="tune.bufsize.small (Global parameters)"></a><a class="anchor" name="tune.bufsize.small (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.small"></a><a href="#3.2-tune.bufsize.small">tune.bufsize.small</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size in bytes for small buffers. The defaults value is 1024.
+</pre><a class="anchor" name="tune.bufsize.small"></a><a class="anchor" name="3-tune.bufsize.small"></a><a class="anchor" name="3.2-tune.bufsize.small"></a><a class="anchor" name="tune.bufsize.small (Global parameters)"></a><a class="anchor" name="tune.bufsize.small (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.small"></a><a href="#3.2-tune.bufsize.small">tune.bufsize.small</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in bytes for small buffers. The defaults value is 1024.
 
 These buffers are designed to be used in some specific contexts where memory
 consumption is restrained but it seems unnecessary to allocate a full buffer.
@@ -9031,7 +9031,7 @@ threaded machines if unbound, and may also increase the traffic latency
 during the initial batched transfer between an older and a newer process.
 Conversely low values may also incur higher CPU overhead, and take longer
 to complete. The default value is 200 and it is suggested not to change it.
-</pre><a class="anchor" name="tune.pipesize"></a><a class="anchor" name="3-tune.pipesize"></a><a class="anchor" name="3.2-tune.pipesize"></a><a class="anchor" name="tune.pipesize (Global parameters)"></a><a class="anchor" name="tune.pipesize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pipesize"></a><a href="#3.2-tune.pipesize">tune.pipesize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the kernel pipe buffer size to this size (in bytes). By default, pipes
+</pre><a class="anchor" name="tune.pipesize"></a><a class="anchor" name="3-tune.pipesize"></a><a class="anchor" name="3.2-tune.pipesize"></a><a class="anchor" name="tune.pipesize (Global parameters)"></a><a class="anchor" name="tune.pipesize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pipesize"></a><a href="#3.2-tune.pipesize">tune.pipesize</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the kernel pipe buffer size to this size (in bytes). By default, pipes
 are the default size for the system. But sometimes when using TCP splicing,
 it can improve performance to increase pipe sizes, especially if it is
 suspected that pipes are not filled and that many calls to splice() are
@@ -9175,7 +9175,7 @@ the standalone process or the worker before configuration parsing. Once the
 configuration is parsed, the previous priority is restored unless
 tune.renice.runtime is used.
 </pre><div class="page-header"><b>See also:</b> tune.renice.runtime</div>
-<a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
+<a class="anchor" name="tune.rcvbuf.backend"></a><a class="anchor" name="3-tune.rcvbuf.backend"></a><a class="anchor" name="3.2-tune.rcvbuf.backend"></a><a class="anchor" name="tune.rcvbuf.backend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.backend"></a><a href="#3.2-tune.rcvbuf.backend">tune.rcvbuf.backend</a></b>  <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.rcvbuf.frontend"></a><a class="anchor" name="3-tune.rcvbuf.frontend"></a><a class="anchor" name="3.2-tune.rcvbuf.frontend"></a><a class="anchor" name="tune.rcvbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.frontend"></a><a href="#3.2-tune.rcvbuf.frontend">tune.rcvbuf.frontend</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">For the kernel socket receive buffer size on non-connected sockets to this
 size. This can be used QUIC in listener mode and log-forward on the frontend.
 The default system buffers might sometimes be too small for sockets receiving
 lots of aggregated traffic, causing some losses and possibly retransmits (in
@@ -9188,14 +9188,14 @@ by the expected number of connections. The kernel may trim large values. See
 also &quot;<a href="#tune.rcvbuf.client">tune.rcvbuf.client</a>&quot; and &quot;<a href="#tune.rcvbuf.server">tune.rcvbuf.server</a>&quot; for their connected socket
 counter parts, as well as &quot;<a href="#tune.sndbuf.backend">tune.sndbuf.backend</a>&quot; and &quot;<a href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>&quot;
 for the send setting.
-</pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
+</pre><a class="anchor" name="tune.rcvbuf.client"></a><a class="anchor" name="3-tune.rcvbuf.client"></a><a class="anchor" name="3.2-tune.rcvbuf.client"></a><a class="anchor" name="tune.rcvbuf.client (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.client"></a><a href="#3.2-tune.rcvbuf.client">tune.rcvbuf.client</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.rcvbuf.server"></a><a class="anchor" name="3-tune.rcvbuf.server"></a><a class="anchor" name="3.2-tune.rcvbuf.server"></a><a class="anchor" name="tune.rcvbuf.server (Global parameters)"></a><a class="anchor" name="tune.rcvbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.rcvbuf.server"></a><a href="#3.2-tune.rcvbuf.server">tune.rcvbuf.server</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Forces the kernel socket receive buffer size on the client or the server side
 to the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
 the kernel auto-tune this value depending on the amount of available memory.
 However it can sometimes help to set it to very low values (e.g. 4096) in
 order to save kernel memory by preventing it from buffering too large amounts
 of received data. Lower values will significantly increase CPU usage though.
-</pre><a class="anchor" name="tune.recv_enough"></a><a class="anchor" name="3-tune.recv_enough"></a><a class="anchor" name="3.2-tune.recv_enough"></a><a class="anchor" name="tune.recv_enough (Global parameters)"></a><a class="anchor" name="tune.recv_enough (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.recv_enough"></a><a href="#3.2-tune.recv_enough">tune.recv_enough</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">HAProxy uses some hints to detect that a short read indicates the end of the
+</pre><a class="anchor" name="tune.recv_enough"></a><a class="anchor" name="3-tune.recv_enough"></a><a class="anchor" name="3.2-tune.recv_enough"></a><a class="anchor" name="tune.recv_enough (Global parameters)"></a><a class="anchor" name="tune.recv_enough (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.recv_enough"></a><a href="#3.2-tune.recv_enough">tune.recv_enough</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">HAProxy uses some hints to detect that a short read indicates the end of the
 socket buffers. One of them is that a read returns more than &lt;recv_enough&gt;
 bytes, which defaults to 10136 (7 segments of 1448 each). This default value
 may be changed by this setting to better deal with workloads involving lots
@@ -9224,7 +9224,7 @@ be executed before other ones if they exist. This will permit to lower the
 maximum latency experienced by new requests or connections in the middle of
 massive traffic, at the expense of a higher impact on this large traffic.
 For regular usage it is better to leave this off. The default value is off.
-</pre><a class="anchor" name="tune.sndbuf.backend"></a><a class="anchor" name="3-tune.sndbuf.backend"></a><a class="anchor" name="3.2-tune.sndbuf.backend"></a><a class="anchor" name="tune.sndbuf.backend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.backend"></a><a href="#3.2-tune.sndbuf.backend">tune.sndbuf.backend</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.sndbuf.frontend"></a><a class="anchor" name="3-tune.sndbuf.frontend"></a><a class="anchor" name="3.2-tune.sndbuf.frontend"></a><a class="anchor" name="tune.sndbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.frontend"></a><a href="#3.2-tune.sndbuf.frontend">tune.sndbuf.frontend</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">For the kernel socket send buffer size on non-connected sockets to this size.
+</pre><a class="anchor" name="tune.sndbuf.backend"></a><a class="anchor" name="3-tune.sndbuf.backend"></a><a class="anchor" name="3.2-tune.sndbuf.backend"></a><a class="anchor" name="tune.sndbuf.backend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.backend"></a><a href="#3.2-tune.sndbuf.backend">tune.sndbuf.backend</a></b>  <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.sndbuf.frontend"></a><a class="anchor" name="3-tune.sndbuf.frontend"></a><a class="anchor" name="3.2-tune.sndbuf.frontend"></a><a class="anchor" name="tune.sndbuf.frontend (Global parameters)"></a><a class="anchor" name="tune.sndbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.frontend"></a><a href="#3.2-tune.sndbuf.frontend">tune.sndbuf.frontend</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">For the kernel socket send buffer size on non-connected sockets to this size.
 This can be used for UNIX socket and UDP logging on the backend side, and for
 QUIC in listener mode on the frontend. The default system buffers might
 sometimes be too small for sockets shared between many connections (or log
@@ -9237,7 +9237,7 @@ size per connection multiplied by the expected number of connections. The
 kernel may trim large values. See also &quot;<a href="#tune.sndbuf.client">tune.sndbuf.client</a>&quot; and
 &quot;<a href="#tune.sndbuf.server">tune.sndbuf.server</a>&quot; for their connected socket counter parts, as well as
 &quot;<a href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>&quot; and &quot;<a href="#tune.rcvbuf.frontend">tune.rcvbuf.frontend</a>&quot; for the receive setting.
-</pre><a class="anchor" name="tune.sndbuf.client"></a><a class="anchor" name="3-tune.sndbuf.client"></a><a class="anchor" name="3.2-tune.sndbuf.client"></a><a class="anchor" name="tune.sndbuf.client (Global parameters)"></a><a class="anchor" name="tune.sndbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.client"></a><a href="#3.2-tune.sndbuf.client">tune.sndbuf.client</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.sndbuf.server"></a><a class="anchor" name="3-tune.sndbuf.server"></a><a class="anchor" name="3.2-tune.sndbuf.server"></a><a class="anchor" name="tune.sndbuf.server (Global parameters)"></a><a class="anchor" name="tune.sndbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.server"></a><a href="#3.2-tune.sndbuf.server">tune.sndbuf.server</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Forces the kernel socket send buffer size on the client or the server side to
+</pre><a class="anchor" name="tune.sndbuf.client"></a><a class="anchor" name="3-tune.sndbuf.client"></a><a class="anchor" name="3.2-tune.sndbuf.client"></a><a class="anchor" name="tune.sndbuf.client (Global parameters)"></a><a class="anchor" name="tune.sndbuf.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.client"></a><a href="#3.2-tune.sndbuf.client">tune.sndbuf.client</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.sndbuf.server"></a><a class="anchor" name="3-tune.sndbuf.server"></a><a class="anchor" name="3.2-tune.sndbuf.server"></a><a class="anchor" name="tune.sndbuf.server (Global parameters)"></a><a class="anchor" name="tune.sndbuf.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.server"></a><a href="#3.2-tune.sndbuf.server">tune.sndbuf.server</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Forces the kernel socket send buffer size on the client or the server side to
 the specified value in bytes. This value applies to all TCP/HTTP frontends
 and backends. It should normally never be set, and the default size (0) lets
 the kernel auto-tune this value depending on the amount of available memory.
@@ -25058,13 +25058,14 @@ and &quot;<a href="#us_utime">us_utime</a>&quot;.
 <span class="comment"># e.g.  20140710162350 127.0.0.1:57325</span>
 log-format %[date,utime(%Y%m%d%H%M%S)]\ %ci:%cp
 </code></pre>
-</div><a class="anchor" name="when"></a><a class="anchor" name="7-when"></a><a class="anchor" name="7.3.1-when"></a><a class="anchor" name="when (Using ACLs and fetching samples)"></a><a class="anchor" name="when (Converters)"></a><div class="keyword"><b><a class="anchor" name="when"></a><a href="#7.3.1-when">when</a></b>(<span style="color: #080">&lt;condition&gt;</span>)</div><pre class="text">Evaluates the condition and when true, passes the input sample as-is to the
+</div><a class="anchor" name="when"></a><a class="anchor" name="7-when"></a><a class="anchor" name="7.3.1-when"></a><a class="anchor" name="when (Using ACLs and fetching samples)"></a><a class="anchor" name="when (Converters)"></a><div class="keyword"><b><a class="anchor" name="when"></a><a href="#7.3.1-when">when</a></b>(<span style="color: #080">&lt;condition&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;args&gt;</span>...]</span>)</div><pre class="text">Evaluates the condition and when true, passes the input sample as-is to the
 output, otherwise return nothing. This is designed specifically to produce
 some rarely needed data that should only be emitted under certain conditions,
 such as debugging information when an error is met.
 
 The condition is made of a keyword among the list below, optionally preceeded
-by an exclamation mark ('!') to negate it:
+by an exclamation mark ('!') to negate it, and optionally suffixed by some
+arguments specific to that condition:
 
   - &quot;error&quot; returns true when an error was encountered during the processing
     of the request or stream. It uses the same rules as &quot;<a href="#option%20dontlog-normal">dontlog-normal</a>&quot;
@@ -25084,6 +25085,12 @@ by an exclamation mark ('!') to negate it:
 
   - &quot;toapplet&quot; returns true when the request was processed by an applet.
 
+  - &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acl%20%28Fcgi-app%20section%29">Fcgi-app section</a></li><li><a href="#acl%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#acl%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot; returns true when the ACL designated by the next argument evaluates
+    to true. Note that the ACL is evaluated inline by the converter, so that
+    what it refers to must be valid in that context. A particular use case
+    consists in evaluating if the total transfer time is too long or not
+    before deciding to log detauls from abnormally long transfers.
+
 Note that the content is evaluated in any case, so doing this does not avoid
 the generation of that information. It's only meant to avoid producing that
 information.
@@ -25102,6 +25109,13 @@ indicate a missing content when the rule is not validated, and will emit a
 whole debugging block when it is.
 </code></pre>
 </div><pre class="text">Example
+  # log &quot;dbg={-}&quot; when fine, or &quot;dbg={... debug info ...}&quot; on slow transfers
+  acl slow_xfer res.timer.data ge 10000   # more than 10s is slow
+  log-format &quot;$HAPROXY_HTTP_LOG_FMT                                         \
+              fsdbg={%[fs.debug_str,when(acl,slow_xfer)]}                   \
+              bsdbg={%[bs.debug_str,when(acl,slow_xfer)]}&quot;
+
+Example
   # only emit the backend src/port when a real connection was issued:
   log-format &quot;$HAPROXY_HTTP_LOG_FMT \
              src=[%[bc_src,when(forwarded)]:%[bc_src_port,when(forwarded)]]&quot;
@@ -31444,7 +31458,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev13 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev13-8 &ndash; Configuration Manual<br>
 							<small>, 2024/11/15</small>
 						</div>
 					</div>
