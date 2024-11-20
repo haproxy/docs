@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev13-8 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev13-67 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1481,9 +1481,13 @@
 							
 							<a class="list-group-item" href="#bool (Fetching samples from internal states)">bool (Fetching samples from internal states)</a>
 							
+							<a class="list-group-item" href="#bs.aborted">bs.aborted</a>
+							
 							<a class="list-group-item" href="#bs.debug_str">bs.debug_str</a>
 							
 							<a class="list-group-item" href="#bs.id">bs.id</a>
+							
+							<a class="list-group-item" href="#bs.rst_code">bs.rst_code</a>
 							
 							<a class="list-group-item" href="#busy-polling">busy-polling</a>
 							
@@ -1957,9 +1961,13 @@
 							
 							<a class="list-group-item" href="#format">format</a>
 							
+							<a class="list-group-item" href="#fs.aborted">fs.aborted</a>
+							
 							<a class="list-group-item" href="#fs.debug_str">fs.debug_str</a>
 							
 							<a class="list-group-item" href="#fs.id">fs.id</a>
+							
+							<a class="list-group-item" href="#fs.rst_code">fs.rst_code</a>
 							
 							<a class="list-group-item" href="#fullconn">fullconn</a>
 							
@@ -4159,13 +4167,13 @@
 							
 							<a class="list-group-item" href="#tune.quic.disable-udp-gso">tune.quic.disable-udp-gso</a>
 							
+							<a class="list-group-item" href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>
+							
 							<a class="list-group-item" href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
-							
-							<a class="list-group-item" href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>
 							
 							<a class="list-group-item" href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
 							
@@ -4416,7 +4424,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4427,7 +4435,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev13-8</strong></p>
+							<p><strong>version 3.1-dev13-67</strong></p>
 							<p>
 								2024/11/15<br>
 								
@@ -5969,7 +5977,7 @@ on the server. The part after the question mark is called the &quot;query string
 It is mostly used with GET requests sent to dynamic scripts and is very
 specific to the language, framework or application in use.
 
-HTTP/3 and HTTP/3 do not convey a version information with the request, so the
+HTTP/2 and HTTP/3 do not convey a version information with the request, so the
 version is assumed to be the same as the one of the underlying protocol (i.e.
 &quot;HTTP/2&quot;). In addition, these protocols do not send a request line as one part,
 but split it into individual fields called &quot;pseudo-headers&quot;, whose name start
@@ -7030,7 +7038,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
-   - <a href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>
+   - <a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
    - <a href="#tune.quic.reorder-ratio">tune.quic.reorder-ratio</a>
    - <a href="#tune.quic.retry-threshold">tune.quic.retry-threshold</a>
@@ -9100,7 +9108,7 @@ will be authorized to open. This determines the number of concurrent client
 requests.
 
 The default value is 100.
-</pre><a class="anchor" name="tune.quic.frontend.max-window-size"></a><a class="anchor" name="3-tune.quic.frontend.max-window-size"></a><a class="anchor" name="3.2-tune.quic.frontend.max-window-size"></a><a class="anchor" name="tune.quic.frontend.max-window-size (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-window-size"></a><a href="#3.2-tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the default maximum window size for the congestion controller of a
+</pre><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3.2-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a href="#3.2-tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the default maximum window size for the congestion controller of a
 single QUIC connection. The value must be written as an integer with an
 optional suffix 'k', 'm' or 'g'. It must be between 10k and 4g.
 
@@ -11737,7 +11745,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 425, 429, 500, 501, 502, 503, and 504.
+          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;file&gt;    designates a file containing the full HTTP response. It is
           recommended to follow the common practice of appending &quot;.http&quot; to
@@ -11788,8 +11796,8 @@ May be used in the following contexts: http
 
 &lt;code&gt;  is a HTTP status code. Several status code may be listed.
         Currently, HAProxy is capable of generating codes 200, 400, 401,
-        403, 404, 405, 407, 408, 410, 413, 425, 429, 500, 501, 502, 503,
-        and 504.</pre>
+        403, 404, 405, 407, 408, 410, 413, 414, 425, 429, 431, 500, 501,
+        502, 503, and 504.</pre>
 </div>
 <pre class="text">Errors defined in the http-errors section with the name &lt;name&gt; are imported
 in the current proxy. If no status code is specified, all error files of the
@@ -11815,7 +11823,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 425, 429, 500, 501, 502, 503, and 504.
+          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;url&gt;     it is the exact contents of the &quot;Location&quot; header. It may contain
           either a relative URI to an error page hosted on the same site,
@@ -11847,7 +11855,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 425, 429, 500, 501, 502, 503, and 504.
+          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;url&gt;     it is the exact contents of the &quot;Location&quot; header. It may contain
           either a relative URI to an error page hosted on the same site,
@@ -12735,8 +12743,8 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">status &lt;code&gt;        is the HTTP status code. It must be specified.
                      Currently, HAProxy is capable of generating codes
-                     200, 400, 401, 403, 404, 405, 407, 408, 410, 413, 425,
-                     429, 500, 501, 502, 503, and 504.
+                     200, 400, 401, 403, 404, 405, 407, 408, 410, 413,
+                     414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 content-type &lt;type&gt;  is the response content type, for instance
                      &quot;text/plain&quot;. This parameter is ignored and should be
@@ -15906,13 +15914,26 @@ response. If no condition is specified, the redirect applies unconditionally.
     that for a browser, a sole cookie name without an equal sign is
     different from a cookie with an equal sign.
 
+  - &quot;set-cookie-fmt &lt;fmt&gt;&quot;
+    It is equivaliant to the option above, except the &quot;Set-Cookie&quot; header
+    will be filled with the result of the log-format string &lt;fmt&gt;
+    evaluation. Be carefull to respect the &quot;NAME[=value]&quot; format because no
+    special check are performed during the configuration parsing.
+
   - &quot;clear-cookie NAME[=]&quot;
     A &quot;Set-Cookie&quot; header will be added with NAME (and optionally &quot;=&quot;), but
     with the &quot;Max-Age&quot; attribute set to zero. This will tell the browser to
     delete this cookie. It is useful for instance on logout pages. It is
     important to note that clearing the cookie &quot;NAME&quot; will not remove a
     cookie set with &quot;NAME=value&quot;. You have to clear the cookie &quot;NAME=&quot; for
-    that, because the browser makes the difference.</pre>
+    that, because the browser makes the difference.
+
+  - &quot;keep-query&quot;
+    When this keyword is used in a location-based redirection, then the
+    query-string of the original URI, if any, will be appended to the
+    location. If no query-string is found, nothing is added. If the
+    location already contains a query-string, the original one will be
+    appended with the '&amp;' delimiter.</pre>
 </div>
 <div class="separator">
 <span class="label label-success">Example:</span>
@@ -19770,21 +19791,22 @@ are followed to create the response :
 * If &quot;default-errorfiles&quot; argument is set, the proxy's errorfiles are
   considered.  If the &quot;<a href="#status">status</a>&quot; argument is defined, it must be one of the
   status code handled by HAProxy (200, 400, 403, 404, 405, 408, 410, 413,
-  425, 429, 500, 501, 502, 503, and 504). The &quot;content-type&quot; argument, if
-  any, is ignored.
+  414, 425, 429, 431, 500, 501, 502, 503, and 504). The &quot;content-type&quot;
+  argument, if any, is ignored.
 
 * If a specific errorfile is defined, with an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; argument, the
   corresponding file, containing a full HTTP response, is returned. Only the
   &quot;<a href="#status">status</a>&quot; argument is considered. It must be one of the status code handled
-  by HAProxy (200, 400, 403, 404, 405, 408, 410, 413, 425, 429, 500, 501,
-  502, 503, and 504). The &quot;content-type&quot; argument, if any, is ignored.
+  by HAProxy (200, 400, 403, 404, 405, 408, 410, 413, 414, 425, 429, 431,
+  500, 501, 502, 503, and 504). The &quot;content-type&quot; argument, if any, is
+  ignored.
 
 * If an http-errors section is defined, with an &quot;<a href="#errorfiles">errorfiles</a>&quot; argument, the
   corresponding file in the specified http-errors section, containing a full
   HTTP response, is returned. Only the &quot;<a href="#status">status</a>&quot; argument is considered. It
   must be one of the status code handled by HAProxy (200, 400, 403, 404, 405,
-  408, 410, 413, 425, 429, 500, 501, 502, 503, and 504). The &quot;content-type&quot;
-  argument, if any, is ignored.
+  408, 410, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504).
+  The &quot;content-type&quot; argument, if any, is ignored.
 
 * If a &quot;file&quot; or a &quot;lf-file&quot; argument is specified, the file's content is
   used as the response payload. If the file is not empty, its content-type
@@ -21104,13 +21126,28 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | nocc }</span></div><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | nocc }</span>(<span style="color: #080">&lt;max_window&gt;</span>)</div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic<span style="color: #008">[-pacing]</span> | newreno | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
-to those used by TCP. An optional value in bytes may be used to specify the
-maximum window size. It must be greater than 10k and smaller than 4g.
+to those used by TCP.
 
 Default value: cubic
-Default window value: &quot;<a href="#tune.quic.frontend.max-window-size">tune.quic.frontend.max-window-size</a>&quot;
+
+It is possible to active pacing if the algorithm is compatible. This is done
+by using the suffix &quot;-pacing&quot; after the algorithm name. Pacing purpose is to
+smooth emission of data without burst to reduce network loss. In some
+scenario, it can significantly improve network throughput. However, it can
+also increase CPU usage if haproxy is forced to wait too long between each
+emission. Pacing support is still experimental, as such it requires
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
+
+For further customization, a list of parameters can be specified after the
+algorithm token. It must be written between parenthesis, separated by a comma
+operator. Each argument is optional and can be empty if needed. Here is the
+mandatory order of each parameters :
+- maximum window size in bytes. It must be greater than 10k and smaller than
+  4g. By default &quot;<a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>&quot; value is used.
+- count of datagrams to emit in a burst if pacing is activated. It must be
+  between the default value of 1 and 1024.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21118,6 +21155,8 @@ Default window value: &quot;<a href="#tune.quic.frontend.max-window-size">tune.q
 quic-cc-algo newreno
 <span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
 quic-cc-algo cubic(1m)
+<span class="comment"># cubic with pacing on top of it, with burst limited to 12 datagrams</span>
+quic-cc-algo cubic-pacing(,12)
 </code></pre>
 </div><pre class="text">A special value &quot;nocc&quot; may be used to force a fixed congestion window always
 set at the maximum size. It is reserved for debugging scenarios to remove any
@@ -21377,7 +21416,22 @@ words delimited by spaces, tabs or commas in any order, each consisting of :
   Values in this format will set the weight proportional to the initial
   weight of a server as configured when HAProxy starts. Note that a zero
   weight is reported on the stats page as &quot;DRAIN&quot; since it has the same
-  effect on the server (it's removed from the LB farm).
+  effect on the server (it's removed from the LB farm). It is the legacy way
+  to set the weight of a server. Setting it with the &quot;weight:&quot; prefix is
+  preferred.
+
+- The string &quot;weight:&quot; following by an positive interger or a positive
+  interger percentage, with no space. If the value ends with the '%' sign,
+  then the new weight will be proportional to the initially weight of the
+  server. Otherwise, the value is considered as an absolute weight and must
+  be between 0 and 256. Servers which are part of a farm running a static
+  load-balancing algorithm have stricter limitations because the weight
+  cannot change once set. Thus for these servers, the only accepted values
+  are 0 and 100% (or 0 and the initial weight). Changes take effect
+  immediately, though certain LB algorithms require a certain amount of
+  requests to consider changes. Note that a zero weight is reported on the
+  stats page as &quot;DRAIN&quot; since it has the same effect on the server (it's
+  removed from the LB farm).
 
 - The string &quot;maxconn:&quot; followed by an integer (no space between). Values
   in this format will set the maxconn of a server. The maximum number of
@@ -25280,6 +25334,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
+<tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-waiting_entity">waiting_entity</a></td><td >string</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
@@ -25688,7 +25743,30 @@ Versions 4 and 7 are supported.
 sample fetch fails, unless a default value is provided, in which case it will
 return it as a string. Empty strings are permitted. See <a href="#2.8">section 2.8</a> about
 variables for details.
-</pre><a class="anchor" name="waiting_entity"></a><a class="anchor" name="7-waiting_entity"></a><a class="anchor" name="7.3.2-waiting_entity"></a><a class="anchor" name="waiting_entity (Using ACLs and fetching samples)"></a><a class="anchor" name="waiting_entity (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="waiting_entity"></a><a href="#7.3.2-waiting_entity">waiting_entity</a></b> : string</div><pre class="text">This returns the identity of the entity that was waiting to continue its
+</pre><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.2-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.2-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
+not fetch. It is only used in ACLs, in conjunction with content analysis to
+avoid returning a wrong verdict early. It may also be used to delay some
+actions, such as a delayed reject for some special addresses. Since it either
+stops the rules evaluation or immediately returns true, it is recommended to
+use this acl as the last one in a rule. Please note that the default ACL
+&quot;WAIT_END&quot; is always usable without prior declaration. This test was designed
+to be used with TCP request content inspection.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># delay every incoming request by 2 seconds</span>
+tcp-request inspect-delay 2s
+tcp-request content accept if WAIT_END
+
+<span class="comment"># don't immediately tell bad guys they are rejected</span>
+tcp-request inspect-delay 10s
+acl goodguys src 10.0.0.0/24
+acl badguys  src 10.0.1.0/24
+tcp-request content accept if goodguys
+tcp-request content reject if badguys WAIT_END
+tcp-request content reject
+</code></pre>
+</div><a class="anchor" name="waiting_entity"></a><a class="anchor" name="7-waiting_entity"></a><a class="anchor" name="7.3.2-waiting_entity"></a><a class="anchor" name="waiting_entity (Using ACLs and fetching samples)"></a><a class="anchor" name="waiting_entity (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="waiting_entity"></a><a href="#7.3.2-waiting_entity">waiting_entity</a></b> : string</div><pre class="text">This returns the identity of the entity that was waiting to continue its
 processing when an error or a timeout was encountered. It may be the a rule
 or a filter for instance. However, this list is not exhaustive and the format
 of all possible entities is not forcefully documented.
@@ -26773,6 +26851,14 @@ Summary of sample fetch methods in this section and their respective types:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-51d.all">51d.all(&lt;prop&gt;[,&lt;prop&gt;*])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bs.aborted">bs.aborted</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-bs.debug_str">bs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bs.id">bs.id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bs.rst_code">bs.rst_code</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fs.aborted">fs.aborted</a></td><td >boolean</td></tr>
+<tr><td ><a href="#7-fs.debug_str">fs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fs.id">fs.id</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fs.rst_code">fs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_bc">ssl_bc</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_bc_alg_keysize">ssl_bc_alg_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_bc_alpn">ssl_bc_alpn</a></td><td >string</td></tr>
@@ -26784,6 +26870,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_exporter_secret">ssl_bc_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_early_exporter_secret">ssl_bc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_curve">ssl_bc_curve</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_bc_err">ssl_bc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_bc_err_str">ssl_bc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_is_resumed">ssl_bc_is_resumed</a></td><td >boolean</td></tr>
@@ -26792,7 +26879,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_unique_id">ssl_bc_unique_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_server_handshake_traffic_secret">ssl_bc_server_handshake_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_server_traffic_secret_0">ssl_bc_server_traffic_secret_0</a></td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_bc_server_random">ssl_bc_server_random</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_id">ssl_bc_session_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_key">ssl_bc_session_key</a></td><td >binary</td></tr>
@@ -26805,6 +26891,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_i_dn">ssl_c_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_key_alg">ssl_c_key_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_notbefore">ssl_c_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_r_dn">ssl_c_r_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_s_dn">ssl_c_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -26813,7 +26900,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_sha1">ssl_c_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_c_sig_alg">ssl_c_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_used">ssl_c_used</a></td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_verify">ssl_c_verify</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_version">ssl_c_version</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_f_der">ssl_f_der</a></td><td >binary</td></tr>
@@ -26826,6 +26912,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc">ssl_fc</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_alg_keysize">ssl_fc_alg_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_alpn">ssl_fc_alpn</a></td><td >string</td></tr>
@@ -26834,7 +26921,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_cipherlist_hex">ssl_fc_cipherlist_hex([&lt;filter_option&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_cipherlist_str">ssl_fc_cipherlist_str([&lt;filter_option&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_cipherlist_xxh">ssl_fc_cipherlist_xxh</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_curve">ssl_fc_curve</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_eclist_bin">ssl_fc_eclist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
@@ -26847,6 +26933,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_early_exporter_secret">ssl_fc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_has_crt">ssl_fc_has_crt</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_early">ssl_fc_has_early</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_sni">ssl_fc_has_sni</a></td><td >boolean</td></tr>
@@ -26855,7 +26942,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_protocol">ssl_fc_protocol</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_protocol_hello_id">ssl_fc_protocol_hello_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_unique_id">ssl_fc_unique_id</a></td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_server_handshake_traffic_secret">ssl_fc_server_handshake_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_server_traffic_secret_0">ssl_fc_server_traffic_secret_0</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_server_random">ssl_fc_server_random</a></td><td >binary</td></tr>
@@ -26868,6 +26954,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_key_alg">ssl_s_key_alg</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_s_notafter">ssl_s_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_notbefore">ssl_s_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -26876,7 +26963,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_s_sha1">ssl_s_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_sig_alg">ssl_s_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_version">ssl_s_version</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-txn.timer.user">txn.timer.user</a></td><td >integer</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="51d.all"></a><a class="anchor" name="7-51d.all"></a><a class="anchor" name="7.3.4-51d.all"></a><a class="anchor" name="51d.all (Using ACLs and fetching samples)"></a><a class="anchor" name="51d.all (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="51d.all"></a><a href="#7.3.4-51d.all">51d.all</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>) : string</div><pre class="text">Returns values for the properties requested as a string, where values are
@@ -26896,10 +26982,67 @@ frontend http-in
   http-request set-header X-51D-DeviceTypeMobileTablet \
     %[51d.all(DeviceType,IsMobile,IsTablet)]
 </code></pre>
-</div><a class="anchor" name="ssl_bc"></a><a class="anchor" name="7-ssl_bc"></a><a class="anchor" name="7.3.4-ssl_bc"></a><a class="anchor" name="ssl_bc (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc"></a><a href="#7.3.4-ssl_bc">ssl_bc</a></b> : boolean</div><pre class="text">Returns true when the back connection was made via an SSL/TLS transport
+</div><a class="anchor" name="bs.aborted"></a><a class="anchor" name="7-bs.aborted"></a><a class="anchor" name="7.3.4-bs.aborted"></a><a class="anchor" name="bs.aborted (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.aborted (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.aborted"></a><a href="#7.3.4-bs.aborted">bs.aborted</a></b> : boolean</div><pre class="text">Returns true is an abort was received from the server for the current
+stream. Otherwise false is returned.
+</pre><a class="anchor" name="bs.debug_str"></a><a class="anchor" name="7-bs.debug_str"></a><a class="anchor" name="7.3.4-bs.debug_str"></a><a class="anchor" name="bs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.debug_str (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.debug_str"></a><a href="#7.3.4-bs.debug_str">bs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
+troubleshooting sessions. It extracts some internal states from the lower
+layers of the backend stream and connection, and arranges them as a string,
+generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
+&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
+from, and is an arithmetic OR (or a sum) of the following values:
+   - socket layer: 16
+   - connection layer: 8
+   - transport layer (e.g. SSL): 4
+   - mux connection: 2
+   - mux stream: 1
+
+These values might change across versions. The default value of zero is
+special and enables all layers. Please do not rely on the output of this
+function for long-term production monitoring. It is meant to evolve even
+within a stable branch, as the needs for increased details arise. One use
+typical use case is to concatenate these information at the very end of a
+log-format, along with fs.debug_str(). Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.4-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.4-bs.id">bs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the server side. It is the
+multiplexer's responsibility to return the appropriate information.
+</pre><a class="anchor" name="bs.rst_code"></a><a class="anchor" name="7-bs.rst_code"></a><a class="anchor" name="7.3.4-bs.rst_code"></a><a class="anchor" name="bs.rst_code (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.rst_code (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.rst_code"></a><a href="#7.3.4-bs.rst_code">bs.rst_code</a></b> : integer</div><pre class="text">Returns the reset code received from the server for the current stream. The
+code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
+the server is returned. The sample fetch fails if no abort was received or if
+the server stream is not an H2/QUIC stream.
+</pre><a class="anchor" name="ssl_bc"></a><a class="anchor" name="7-ssl_bc"></a><a class="anchor" name="7.3.4-ssl_bc"></a><a class="anchor" name="ssl_bc (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc"></a><a href="#7.3.4-ssl_bc">ssl_bc</a></b> : boolean</div><pre class="text">Returns true when the back connection was made via an SSL/TLS transport
 layer and is locally deciphered. This means the outgoing connection was made
 to a server with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. It can be used in a tcp-check or an
 http-check ruleset.
+</pre><a class="anchor" name="fs.aborted"></a><a class="anchor" name="7-fs.aborted"></a><a class="anchor" name="7.3.4-fs.aborted"></a><a class="anchor" name="fs.aborted (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.aborted (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.aborted"></a><a href="#7.3.4-fs.aborted">fs.aborted</a></b> : boolean</div><pre class="text">Returns true is an abort was received from the client for the current
+stream. Otherwise false is returned.
+</pre><a class="anchor" name="fs.debug_str"></a><a class="anchor" name="7-fs.debug_str"></a><a class="anchor" name="7.3.4-fs.debug_str"></a><a class="anchor" name="fs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.debug_str (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.debug_str"></a><a href="#7.3.4-fs.debug_str">fs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
+troubleshooting sessions. It extracts some internal states from the lower
+layers of the frontend stream and connection, and arranges them as a string,
+generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
+&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
+from, and is an arithmetic OR (or a sum) of the following values:
+   - socket layer: 16
+   - connection layer: 8
+   - transport layer (e.g. SSL): 4
+   - mux connection: 2
+   - mux stream: 1
+
+These values might change across versions. The default value of zero is
+special and enables all layers. Please do not rely on the output of this
+function for long-term production monitoring. It is meant to evolve even
+within a stable branch, as the needs for increased details arise. One use
+typical use case is to concatenate these information at the very end of a
+log-format, along with bs.debug_str(). Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.4-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.4-fs.id">fs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the client side. It is the
+multiplexer's responsibility to return the appropriate information. For
+instance, on a raw TCP, 0 is always returned because there is no stream.
+</pre><a class="anchor" name="fs.rst_code"></a><a class="anchor" name="7-fs.rst_code"></a><a class="anchor" name="7.3.4-fs.rst_code"></a><a class="anchor" name="fs.rst_code (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.rst_code (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.rst_code"></a><a href="#7.3.4-fs.rst_code">fs.rst_code</a></b> : integer</div><pre class="text">Returns the reset code received from the client for the current stream. The
+code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
+the client is returned. The sample fetch fails if no abort was received or
+if the client stream is not an H2/QUIC stream.
 </pre><a class="anchor" name="ssl_bc_alg_keysize"></a><a class="anchor" name="7-ssl_bc_alg_keysize"></a><a class="anchor" name="7.3.4-ssl_bc_alg_keysize"></a><a class="anchor" name="ssl_bc_alg_keysize (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_alg_keysize (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_alg_keysize"></a><a href="#7.3.4-ssl_bc_alg_keysize">ssl_bc_alg_keysize</a></b> : integer</div><pre class="text">Returns the symmetric cipher key size supported in bits when the outgoing
 connection was made over an SSL/TLS transport layer. It can be used in a
 tcp-check or an http-check ruleset.
@@ -27549,16 +27692,8 @@ Warning : Following sample fetches are ignored if used from HTTP proxies. They
 Summary of sample fetch methods in this section and their respective types:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
-<tr><td ><a href="#7-bs.aborted">bs.aborted</a></td><td >boolean</td></tr>
-<tr><td ><a href="#7-bs.debug_str">bs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
-<tr><td ><a href="#7-bs.id">bs.id</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-bs.rst_code">bs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-distcc_body">distcc_body(&lt;token&gt;[,&lt;occ&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-distcc_param">distcc_param(&lt;token&gt;[,&lt;occ&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-fs.aborted">fs.aborted</a></td><td >boolean</td></tr>
-<tr><td ><a href="#7-fs.debug_str">fs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
-<tr><td ><a href="#7-fs.id">fs.id</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-fs.rst_code">fs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-payload">payload(&lt;offset&gt;,&lt;length&gt;)</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-payload_lv">payload_lv(&lt;offset1&gt;,&lt;length&gt;[,&lt;offset2&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-req.len">req.len</a></td><td >integer</td></tr>
@@ -27585,40 +27720,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-res.payload_lv">res.payload_lv(&lt;offset1&gt;,&lt;length&gt;[,&lt;offset2&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-res.ssl_hello_type">res.ssl_hello_type</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-rep_ssl_hello_type">rep_ssl_hello_type</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 </table><pre class="text">Detailed list:
-
-bs.aborted: boolean
-  Returns true is an abort was received from the server for the current
-  stream. Otherwise false is returned.
-</pre><a class="anchor" name="bs.debug_str"></a><a class="anchor" name="7-bs.debug_str"></a><a class="anchor" name="7.3.5-bs.debug_str"></a><a class="anchor" name="bs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.debug_str (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.debug_str"></a><a href="#7.3.5-bs.debug_str">bs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
-troubleshooting sessions. It extracts some internal states from the lower
-layers of the backend stream and connection, and arranges them as a string,
-generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
-&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
-from, and is an arithmetic OR (or a sum) of the following values:
-   - socket layer: 16
-   - connection layer: 8
-   - transport layer (e.g. SSL): 4
-   - mux connection: 2
-   - mux stream: 1
-
-These values might change across versions. The default value of zero is
-special and enables all layers. Please do not rely on the output of this
-function for long-term production monitoring. It is meant to evolve even
-within a stable branch, as the needs for increased details arise. One use
-typical use case is to concatenate these information at the very end of a
-log-format, along with fs.debug_str(). Example:
-
-   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
-</pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the server side. It is the
-  multiplexer's responsibility to return the appropriate information.
-
-bs.rst_code: integer
-  Returns the reset code received from the server for the current stream. The
-  code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
-  the server is returned. The sample fetch fails if no abort was received or if
-  the server stream is not an H2/QUIC stream.
 </pre><a class="anchor" name="distcc_body"></a><a class="anchor" name="7-distcc_body"></a><a class="anchor" name="7.3.5-distcc_body"></a><a class="anchor" name="distcc_body (Using ACLs and fetching samples)"></a><a class="anchor" name="distcc_body (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="distcc_body"></a><a href="#7.3.5-distcc_body">distcc_body</a></b>(<span style="color: #080">&lt;token&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) : binary</div><pre class="text">Parses a distcc message and returns the body associated to occurrence #&lt;occ&gt;
 of the token &lt;token&gt;. Occurrences start at 1, and when unspecified, any may
 match though in practice only the first one is checked for now. This can be
@@ -27643,39 +27745,7 @@ tcp-request content accept if { distcc_param(DOTI) -m found }
 <span class="comment"># send large files to the big farm</span>
 use_backend big_farm if { distcc_param(DOTI) gt 1000000 }
 </code></pre>
-</div><pre class="text">fs.aborted: boolean
-  Returns true is an abort was received from the client for the current
-  stream. Otherwise false is returned.
-</pre><a class="anchor" name="fs.debug_str"></a><a class="anchor" name="7-fs.debug_str"></a><a class="anchor" name="7.3.5-fs.debug_str"></a><a class="anchor" name="fs.debug_str (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.debug_str (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.debug_str"></a><a href="#7.3.5-fs.debug_str">fs.debug_str</a></b>(<span style="color: #008">[<span style="color: #080">&lt;bitmap&gt;</span>]</span>) : string</div><pre class="text">This function is meant to be used by developers during certain complex
-troubleshooting sessions. It extracts some internal states from the lower
-layers of the frontend stream and connection, and arranges them as a string,
-generally in the form of a series of &quot;name=value&quot; delimited with spaces. The
-&lt;bitmap&gt; optional argument indicates what layer(s) to extract information
-from, and is an arithmetic OR (or a sum) of the following values:
-   - socket layer: 16
-   - connection layer: 8
-   - transport layer (e.g. SSL): 4
-   - mux connection: 2
-   - mux stream: 1
-
-These values might change across versions. The default value of zero is
-special and enables all layers. Please do not rely on the output of this
-function for long-term production monitoring. It is meant to evolve even
-within a stable branch, as the needs for increased details arise. One use
-typical use case is to concatenate these information at the very end of a
-log-format, along with bs.debug_str(). Example:
-
-   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
-</pre><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.5-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.5-fs.id">fs.id</a></b> : integer</div><pre class="text">  Returns the multiplexer's stream ID on the client side. It is the
-  multiplexer's responsibility to return the appropriate information. For
-  instance, on a raw TCP, 0 is always returned because there is no stream.
-
-fs.rst_code: integer
-  Returns the reset code received from the client for the current stream. The
-  code of the H2 RST_STREAM frame or the QUIC STOP_SENDING frame received from
-  the client is returned. The sample fetch fails if no abort was received or
-  if the client stream is not an H2/QUIC stream.
-</pre><a class="anchor" name="payload"></a><a class="anchor" name="7-payload"></a><a class="anchor" name="7.3.5-payload"></a><a class="anchor" name="payload (Using ACLs and fetching samples)"></a><a class="anchor" name="payload (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload"></a><a href="#7.3.5-payload">payload</a></b>(<span style="color: #080">&lt;offset&gt;</span>,<span style="color: #080">&lt;length&gt;</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload">req.payload</a>&quot; when used in the context of a request (e.g.
+</div><a class="anchor" name="payload"></a><a class="anchor" name="7-payload"></a><a class="anchor" name="7.3.5-payload"></a><a class="anchor" name="payload (Using ACLs and fetching samples)"></a><a class="anchor" name="payload (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload"></a><a href="#7.3.5-payload">payload</a></b>(<span style="color: #080">&lt;offset&gt;</span>,<span style="color: #080">&lt;length&gt;</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload">req.payload</a>&quot; when used in the context of a request (e.g.
 &quot;<a href="#stick%20on">stick on</a>&quot;, &quot;<a href="#stick%20match">stick match</a>&quot;), and for &quot;<a href="#res.payload">res.payload</a>&quot; when used in the context of
 a response such as in &quot;stick store response&quot;.
 </pre><a class="anchor" name="payload_lv"></a><a class="anchor" name="7-payload_lv"></a><a class="anchor" name="7.3.5-payload_lv"></a><a class="anchor" name="payload_lv (Using ACLs and fetching samples)"></a><a class="anchor" name="payload_lv (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="payload_lv"></a><a href="#7.3.5-payload_lv">payload_lv</a></b>(<span style="color: #080">&lt;offset1&gt;</span>,<span style="color: #080">&lt;length&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;offset2&gt;</span>]</span>) : binary <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#req.payload_lv">req.payload_lv</a>&quot; when used in the context of a request
@@ -27872,30 +27942,7 @@ contents found in the response buffer and not to contents deciphered via an
 SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 option. This is mostly used in ACL to detect presence of an SSL hello message
 that is supposed to contain an SSL session ID usable for stickiness.
-</pre><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.5-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.5-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
-not fetch. It is only used in ACLs, in conjunction with content analysis to
-avoid returning a wrong verdict early. It may also be used to delay some
-actions, such as a delayed reject for some special addresses. Since it either
-stops the rules evaluation or immediately returns true, it is recommended to
-use this acl as the last one in a rule. Please note that the default ACL
-&quot;WAIT_END&quot; is always usable without prior declaration. This test was designed
-to be used with TCP request content inspection.
-</pre><div class="separator">
-<span class="label label-success">Examples :</span>
-<pre class="prettyprint">
-<code><span class="comment"># delay every incoming request by 2 seconds</span>
-tcp-request inspect-delay 2s
-tcp-request content accept if WAIT_END
-
-<span class="comment"># don't immediately tell bad guys they are rejected</span>
-tcp-request inspect-delay 10s
-acl goodguys src 10.0.0.0/24
-acl badguys  src 10.0.1.0/24
-tcp-request content accept if goodguys
-tcp-request content reject if badguys WAIT_END
-tcp-request content reject
-</code></pre>
-</div></div>
+</pre></div>
 <a class="anchor" id="7.3.6" name="7.3.6"></a>
 <h3 id="chapter-7.3.6" data-target="7.3.6"><small><a class="small" href="#7.3.6">7.3.6.</a></small> Fetching HTTP samples (Layer 7)</h3>
 <div><pre class="text">It is possible to fetch samples from HTTP contents, requests and responses.
@@ -30039,9 +30086,10 @@ Timings events in TCP mode:
     instance during a POST request, the time already runs, and this can distort
     apparent response time. For this reason, it's generally wise not to trust
     too much this field for POST requests initiated from clients behind an
-    untrusted network. A value of &quot;-1&quot; here means that the last the response
-    header (empty line) was never seen, most likely because the server timeout
-    stroke before the server managed to process the request.
+    untrusted network. A value of &quot;-1&quot; here means that the last response header
+    (empty line) was never seen, most likely because the server timeout stroke
+    before the server managed to process the request or because the server
+    returned an invalid response.
 
     This timer is named %Tr as a log-format alias, and res.timer.hdr as a
     sample fetch.
@@ -31458,7 +31506,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev13-8 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev13-67 &ndash; Configuration Manual<br>
 							<small>, 2024/11/15</small>
 						</div>
 					</div>
