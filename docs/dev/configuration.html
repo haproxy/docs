@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev13-67 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev13-100 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4424,7 +4424,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4435,7 +4435,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev13-67</strong></p>
+							<p><strong>version 3.1-dev13-100</strong></p>
 							<p>
 								2024/11/15<br>
 								
@@ -6384,6 +6384,26 @@ double quotes inside (so that the double quotes are not stripped again):
                                           arg2 ___________/    /
                                           arg3 _______________/
 
+But in this case it's important to note that delimiters embedded into the
+higher level string remain pure characters and are not delimiters anymore. It
+particularly means that spaces and tabs around commas are part of the string.
+The example below is wrong on multiple points:
+
+    http-request set-path '%[path, regsub(&quot;(foo|bar)&quot;, blah, g)]'
+    ------------ --------  --------------------------------------
+       word1       word2    word3=%[path, regsub(&quot;(foo|bar)&quot;, blah, g)]
+                                        |--------|---------||-----|--|
+                       converter=&quot; regsub&quot; _/        /         /   /
+                                    arg1=(foo|bar) _/         /   /
+                                     arg2=&quot; blah&quot; ___________/   /
+                                        arg3=&quot; g&quot; ______________/
+
+The single fact of surrounding commas with spaces resulted in the spaces being
+part of the field itself, hence the converter &quot; regsub&quot; (starting with a
+space), which won't be found and will trigger an error, but more subtly, the
+replacement string &quot; blah&quot; will insert a space in the output. A good rule of
+thumb is to never insert unneeded spaces inside expressions.
+
 When using regular expressions, it can happen that the dollar ('$') character
 appears in the expression or that a backslash ('\') is used in the replacement
 string. In this case these ones will also be processed inside the double quotes
@@ -6445,67 +6465,137 @@ log &quot;${LOCAL_SYSLOG-127.0.0.1}:514&quot; local0 notice  <span class="commen
 user &quot;$HAPROXY_USER&quot;
 </code></pre>
 </div><pre class="text">Some variables are defined by HAProxy, they can be used in the configuration
-file, or could be inherited by a program (See 3.7. Programs):
+file, or could be inherited by a program (See 3.7. Programs). These variables
+are listed in the matrix below, and they are classified among four categories:
 
-* HAPROXY_LOCALPEER: defined at the startup of the process which contains the
-  name of the local peer. (See &quot;-L&quot; in the management guide.)
+  * usable: the variable is accessible from the configuration, either to be
+    resolved as-is, or used within conditional blocks or predicates to enable
+    or disable this some configuration fragments, as described in <a href="#2.4">section 2.4</a>
+    &quot;Conditional blocks&quot;.
 
-* HAPROXY_CFGFILES: list of the configuration files loaded by HAProxy,
-  separated by semicolons. Can be useful in the case you specified a
-  directory.
+  * modifiable: the variable can be redefined or unset in the configuration via
+    &quot;<a href="#setenv">setenv</a>&quot;/&quot;<a href="#unsetenv">unsetenv</a>&quot; keywords.
 
-* HAPROXY_HTTP_LOG_FMT: contains the value of the default HTTP log format as
-  defined in <a href="#8.2.3">section 8.2.3</a> &quot;HTTP log format&quot;. It can be used to override the
-  default log format without having to copy the whole original definition.
+  * listed: the variable is listed in CLI's &quot;show env&quot; command output,
+    described in <a href="#9.3">section 9.3</a> &quot;Unix Sockets commands&quot; of the management guide.
 
-* HAPROXY_HTTP_CLF_LOG_FMT: contains the value of the default HTTP CLF log
-  format as defined in <a href="#8.2.3">section 8.2.3</a> &quot;HTTP log format&quot;. It can be used to
-  override the default log format without having to copy the whole original
-  definition.
+  * exported: variable is exported to launch programs in a modified environment
+    (See <a href="#3.7">section 3.7</a> &quot;Programs&quot;). Note that this does not apply to external
+    checks which have their own rules regarding exported variables.
+
+There also two subcategories &quot;master&quot; and &quot;worker&quot;, respectively marked 'M' and
+'W' in the table below, showing the differences between the two processes when
+HAProxy is launched in master-worker mode.
+
+  * master: the variable is set and accessible from the master process. So, it
+    will appear in the master CLI's &quot;show env&quot; output and it can be used in
+    conditional blocks or directives to enable some special settings for the
+    master (see examples in <a href="#2.4">section 2.4</a> &quot;Conditional blocks&quot;).
+
+  * worker: the variable is set and accessible from the worker process. It will
+    appear in the worker CLI's &quot;show env&quot; (or the master CLI's &quot;@1 show env&quot;)
+    and it may as well condition some worker process parameters (see examples
+    from <a href="#2.4">section 2.4</a> &quot;Conditional blocks&quot;).
+
+In standalone mode (without &quot;-W&quot; option nor the &quot;<a href="#master-worker">master-worker</a>&quot; keyword) the
+process behaves like a worker, except for variables &quot;HAPROXY_MASTER_CLI&quot; and
+&quot;HAPROXY_MWORKER&quot; which are not defined.
+
+Some variables are marked as not usable and not modifiable:
+
+  * HAPROXY_CFGFILES
+  * HAPROXY_MWORKER
+  * HAPROXY_CLI
+  * HAPROXY_MASTER_CLI
+  * HAPROXY_LOCALPEER
+
+Their values are undefined during configuration parsing, they are set later
+during the initialization. So, it's recommended not to use these variables
+within conditional blocks and not to reference them in the global section's
+&quot;<a href="#setenv">setenv</a>&quot;/&quot;<a href="#resetenv">resetenv</a>&quot;/&quot;<a href="#unsetenv">unsetenv</a>&quot; keywords.
+
+The table below summaries the status of each variable for the different working
+modes:
+
+  +--------------------------+----------+---------+------------+-----------+
+  |        variable          | exported | usable  | modifiable |  listed   |
+  |                          |          +---------+------------+-----------+
+  |                          |          |  M | W  |   M  |  W  |  M  |  W  |
+  +--------------------------+----------+----+----+------+-----+-----+-----+
+  | HAPROXY_STARTUP_VERSION  |    X     |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_BRANCH           |    X     |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_CFGFILES         |    X     |    |    |      |     |  X  |  X  |
+  | HAPROXY_MWORKER          |    X     |    |    |      |     |  X  |  X  |
+  | HAPROXY_CLI              |          |    |    |      |     |     |  X  |
+  | HAPROXY_MASTER_CLI       |          |    |    |      |     |  X  |     |
+  | HAPROXY_LOCALPEER        |          |    |    |      |     |     |  X  |
+  | HAPROXY_HTTP_LOG_FMT     |          |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTP_CLF_LOG_FMT |          |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTPS_LOG_FMT    |          |    | X  |      |  X  |     |     |
+  | HAPROXY_TCP_LOG_FMT      |          |    | X  |      |  X  |     |     |
+  +--------------------------+----------+----+----+------+-----+-----+-----+
+
+The variables in question are the following:
+
+  * HAPROXY_LOCALPEER: defined at the startup of the process which contains the
+    name of the local peer. (See &quot;-L&quot; in the management guide.)
+
+  * HAPROXY_CFGFILES: list of the configuration files loaded by HAProxy,
+    separated by semicolons. Can be useful in the case you specified a
+    directory.
+
+  * HAPROXY_HTTP_LOG_FMT: contains the value of the default HTTP log format as
+    defined in <a href="#8.2.3">section 8.2.3</a> &quot;HTTP log format&quot;. It can be used to override the
+    default log format without having to copy the whole original definition.
+
+  * HAPROXY_HTTP_CLF_LOG_FMT: contains the value of the default HTTP CLF log
+    format as defined in <a href="#8.2.3">section 8.2.3</a> &quot;HTTP log format&quot;. It can be used to
+    override the default log format without having to copy the whole original
+    definition.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># Add the rule that gave the final verdict to the log</span>
 log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=last_rule_file:last_rule_line&quot;
 </code></pre>
-</div><pre class="text">* HAPROXY_HTTPS_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for HTTPS log
-  format as defined in <a href="#8.2.4">section 8.2.4</a> &quot;HTTPS log format&quot;.
+</div><pre class="text">  * HAPROXY_HTTPS_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for HTTPS log
+    format as defined in <a href="#8.2.4">section 8.2.4</a> &quot;HTTPS log format&quot;.
 
-* HAPROXY_TCP_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for TCP log format
-  as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
+  * HAPROXY_TCP_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for TCP log format
+    as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
 
-* HAPROXY_TCP_CLF_LOG_FMT: similar to HAPROXY_HTTP_CLF_LOG_FMT but for TCP CLF
-  log format as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
+  * HAPROXY_TCP_CLF_LOG_FMT: similar to HAPROXY_HTTP_CLF_LOG_FMT but for TCP
+    CLF log format as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
 
-* HAPROXY_MWORKER: In master-worker mode, this variable is set to 1.
+  * HAPROXY_MWORKER: In master-worker mode, this variable is set to 1.
 
-* HAPROXY_CLI: configured listeners addresses of the stats socket for every
-  processes, separated by semicolons.
+  * HAPROXY_CLI: configured listeners addresses of the stats socket of every
+    processe, these addresses are separated by semicolons.
 
-* HAPROXY_MASTER_CLI: In master-worker mode, listeners addresses of the master
-  CLI, separated by semicolons.
+  * HAPROXY_MASTER_CLI: In master-worker mode, listeners addresses of the master
+    CLI, separated by semicolons.
 
-* HAPROXY_STARTUP_VERSION: contains the version used to start, in master-worker
-  mode this is the version which was used to start the master, even after
-  updating the binary and reloading.
+  * HAPROXY_STARTUP_VERSION: contains the version used to start, in master-
+    worker mode this is the version which was used to start the master, even
+    after updating the binary and reloading.
 
-* HAPROXY_BRANCH: contains the HAProxy branch version (such as &quot;2.8&quot;). It does
-  not contain the full version number. It can be useful in case of migration
-  if resources (such as maps or certificates) are in a path containing the
-  branch number.
+  * HAPROXY_BRANCH: contains the HAProxy branch version (such as &quot;2.8&quot;). It
+    does not contain the full version number. It can be useful in case of
+    migration if resources (such as maps or certificates) are in a path
+    containing the branch number.
 
 In addition, some pseudo-variables are internally resolved and may be used as
 regular variables. Pseudo-variables always start with a dot ('.'), and are the
 only ones where the dot is permitted. The current list of pseudo-variables is:
 
-* .FILE: the name of the configuration file currently being parsed.
+  * .FILE: the name of the configuration file currently being parsed.
 
-* .LINE: the line number of the configuration file currently being parsed,
-  starting at one.
+  * .LINE: the line number of the configuration file currently being parsed,
+    starting at one.
 
-* .SECTION: the name of the section currently being parsed, or its type if the
-  section doesn't have a name (e.g. &quot;global&quot;), or an empty string before the
-  first section.
+  * .SECTION: the name of the section currently being parsed, or its type if
+    the section doesn't have a name (e.g. &quot;global&quot;), or an empty string before
+    the first section.
 
 These variables are resolved at the location where they are parsed. For example
 if a &quot;.LINE&quot; variable is used in a &quot;<a href="#log-format">log-format</a>&quot; directive located in a defaults
@@ -6516,8 +6606,6 @@ proxies.
 This way it is possible to emit information to help locate a rule in variables,
 logs, error statuses, health checks, header values, or even to use line numbers
 to name some config objects like servers for example.
-
-See also &quot;<a href="#external-check%20command">external-check command</a>&quot; for other variables.
 </pre></div>
 <a class="anchor" id="2.4" name="2.4"></a>
 <h2 id="chapter-2.4" data-target="2.4"><small><a class="small" href="#2.4">2.4.</a></small> Conditional blocks</h2>
@@ -6565,6 +6653,54 @@ expression made of any combination of:
   - expressions combined with a logical OR ('||'), which will be evaluated
     from right to left until one returns true
 
+The same line tokenizer and argument parser are used as for the rest of the
+configuration language. Words are split around consecutive series of one or
+more unquoted spaces or tabs, and are reassembled together using a single space
+to delimit them before evaluation, in order to save the user from having to
+quote the entire line. But this also means that spaces surrounding commas or
+parenthesis are definitely part of the value, which is not always expected.
+For example, the expression below:
+
+   .if defined( HAPROXY_MWORKER )
+
+will test for the existence of variable &quot; HAPROXY_MWORKER &quot; (with spaces),
+and this one:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+
+will compare the environment variable &quot;ENABLE_SSL&quot; to the value &quot; 1&quot; (with a
+single leading space). The reason is the line is first split into words like
+this:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+  |---|--------------------|   |--|
+    1           2               3
+
+then the weak quoting is applied and environment variable &quot;$ENABLE_SSL&quot; is
+resolved (let's say for example that ENABLE_SSL=0), and finally the words are
+reassembled into a single string by placing a single space between the words:
+
+   .if streq(0, 1)
+  |---|-------|--|
+    1     2     3
+
+and only then it is parsed as a single expression. The space that was inserted
+between the comma and &quot;1&quot; is still part of the argument value, making this
+argument &quot; 1&quot;:
+
+   .if streq(0, 1)
+  |---|-----|-|--|
+    \    \    \  \_ argument2: &quot; 1&quot;
+     \    \    \___ argument1: &quot;0&quot;
+      \    \_______ function: &quot;streq&quot;
+       \___________ directive: &quot;.if&quot;
+
+It's visible here that even if ENABLE_SSL had been equal to &quot;1&quot;, it wouldn't
+have matched &quot; 1&quot; since the string would differ by one space.
+
+Note: as explained in section &quot;2.2. Quoting and escaping&quot;, a good rule of thumb
+      is to never insert unneeded spaces inside expressions.
+
 Note that like in other languages, the AND operator has precedence over the OR
 operator, so that &quot;A &amp;&amp; B || C &amp;&amp; D&quot; evalues as &quot;(A &amp;&amp; B) || (C &amp;&amp; D)&quot;.
 
@@ -6579,7 +6715,8 @@ The list of currently supported predicates is the following:
 
   - streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
   - strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
-  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in the first one
+  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
+                            the first one.
 
   - version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
                             at least as recent as &lt;ver&gt; otherwise false. The
@@ -6599,11 +6736,40 @@ The list of currently supported predicates is the following:
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>.if defined(HAPROXY_MWORKER)
+<code><span class="comment"># 1. HAPROXY_MWORKER variable is set automatically by HAProxy in master and</span>
+<span class="comment"># in worker process environments (see HAProxy variables matrix from</span>
+<span class="comment"># 2.3. Environment variables). Its presence enables an additional listener.</span>
+
+global
+  master-worker
+
+.if defined(HAPROXY_MWORKER)
     listen mwcli_px
        bind :1111
        ...
 .endif
+
+<span class="comment"># 2. HAPROXY_BRANCH is set automatically by HAProxy in master and in worker</span>
+<span class="comment"># process environments (see HAProxy variables matrix from 2.3. Environment</span>
+<span class="comment"># variables). We check HAPROXY_BRANCH value and conditionally enable</span>
+<span class="comment"># mworker-max-reloads parameter.</span>
+
+global
+  master-worker
+
+.if streq(&quot;$HAPROXY_BRANCH&quot;,3.1)
+     mworker-max-reloads 5
+.endif
+
+<span class="comment"># 3. Some arbitrary environment variables are set by user in the global</span>
+<span class="comment"># section. If HAProxy is started in master-worker mode, they are presented in</span>
+<span class="comment"># master and in worker process environments. We check values of these</span>
+<span class="comment"># variables and conditionally enable ports 80 and 443. Environment variables</span>
+<span class="comment"># checks can be mixed with features and version checks.</span>
+
+global
+  setenv WITH_SSL yes
+  unsetenv SSL_ONLY
 
 .if strneq(&quot;$SSL_ONLY&quot;,yes)
        bind :80
@@ -8800,15 +8966,22 @@ to syslog limits. If you increase this limit, you may also increase the
 'log ... len yyy' parameter. Your syslog daemon may also need specific
 configuration directives too.
 The default value is 1024.
-</pre><a class="anchor" name="tune.http.maxhdr"></a><a class="anchor" name="3-tune.http.maxhdr"></a><a class="anchor" name="3.2-tune.http.maxhdr"></a><a class="anchor" name="tune.http.maxhdr (Global parameters)"></a><a class="anchor" name="tune.http.maxhdr (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.maxhdr"></a><a href="#3.2-tune.http.maxhdr">tune.http.maxhdr</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of headers in a request. When a request comes with a
-number of headers greater than this value (including the first line), it is
-rejected with a &quot;400 Bad Request&quot; status code. Similarly, too large responses
-are blocked with &quot;502 Bad Gateway&quot;. The default value is 101, which is enough
-for all usages, considering that the widely deployed Apache server uses the
-same limit. It can be useful to push this limit further to temporarily allow
-a buggy application to work by the time it gets fixed. The accepted range is
-1..32767. Keep in mind that each new header consumes 32bits of memory for
-each stream, so don't push this limit too high.
+</pre><a class="anchor" name="tune.http.maxhdr"></a><a class="anchor" name="3-tune.http.maxhdr"></a><a class="anchor" name="3.2-tune.http.maxhdr"></a><a class="anchor" name="tune.http.maxhdr (Global parameters)"></a><a class="anchor" name="tune.http.maxhdr (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.maxhdr"></a><a href="#3.2-tune.http.maxhdr">tune.http.maxhdr</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of headers allowed in received HTTP messages. When a
+message comes with a number of headers greater than this value (including the
+first line), it is rejected with a &quot;400 Bad Request&quot; status code for a
+request, or &quot;502 Bad Gateway&quot; for a response. The default value is 101, which
+is enough for all usages, considering that the widely deployed Apache server
+uses the same limit. It can be useful to push this limit further to
+temporarily allow a buggy application to work by the time it gets fixed. The
+accepted range is 1..32767. Keep in mind that each new header consumes 32bits
+of memory for each stream, so don't push this limit too high.
+
+Note that HTTP/1.1 is a text protocol, so there is no special limit when the
+message is sent. The limit during the message parsing is sufficient. HTTP/2
+and HTTP/3 are binary protocols and require an encoding step. A limit is set
+too when headers are encoded to comply to limitation imposed by the
+protocols. This limit is large enough but not documented on purpose. The same
+limit is applied on the first steps of the decoding for the same reason.
 </pre><a class="anchor" name="tune.idle-pool.shared"></a><a class="anchor" name="3-tune.idle-pool.shared"></a><a class="anchor" name="3.2-tune.idle-pool.shared"></a><a class="anchor" name="tune.idle-pool.shared (Global parameters)"></a><a class="anchor" name="tune.idle-pool.shared (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idle-pool.shared"></a><a href="#3.2-tune.idle-pool.shared">tune.idle-pool.shared</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') sharing of idle connection pools between
 threads for a same server. The default is to share them between threads in
 order to minimize the number of persistent connections to a server, and to
@@ -15701,8 +15874,6 @@ Environment variables :
   PATH                    The PATH environment variable used when executing
                           the command may be set using &quot;<a href="#external-check%20path">external-check path</a>&quot;.
 
-See also &quot;2.3. Environment variables&quot; for other variables.
-
 If the command executed and exits with a zero status then the check is
 considered to have passed, otherwise the check is considered to have
 failed.
@@ -21126,7 +21297,7 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic<span style="color: #008">[-pacing]</span> | newreno | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic<span style="color: #008">[-pacing]</span> | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
 to those used by TCP.
 
@@ -21138,7 +21309,10 @@ smooth emission of data without burst to reduce network loss. In some
 scenario, it can significantly improve network throughput. However, it can
 also increase CPU usage if haproxy is forced to wait too long between each
 emission. Pacing support is still experimental, as such it requires
-&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. BBR congestion control algorithm depends on
+the pacing support which is in this case implicitely activated by &quot;bbr&quot;.
+Note that BBR haproxy implementation is still considered as experimental and
+cannot be enabled without &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
 
 For further customization, a list of parameters can be specified after the
 algorithm token. It must be written between parenthesis, separated by a comma
@@ -28018,7 +28192,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-method">method</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-path">path</a></td><td >string</td></tr>
 <tr><td ><a href="#7-pathq">pathq</a></td><td >string</td></tr>
-<tr><td ><a href="#7-query">query</a></td><td >string</td></tr>
+<tr><td ><a href="#7-query">query([&lt;options&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-req.hdr_names">req.hdr_names([&lt;delim&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-req.ver">req.ver</a></td><td >string</td></tr>
 <tr><td ><a href="#7-req_ver">req_ver</a></td><td >string</td></tr>
@@ -28384,12 +28558,19 @@ after the path) is strictly forbidden by the HTTP standard and will be
 rejected. However, if the frontend receiving the request has &quot;option
 accept-unsafe-violations-in-http-request&quot;, then this fragment part will be
 accepted and will also appear in the path.
-</pre><a class="anchor" name="query"></a><a class="anchor" name="7-query"></a><a class="anchor" name="7.3.6-query"></a><a class="anchor" name="query (Using ACLs and fetching samples)"></a><a class="anchor" name="query (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="query"></a><a href="#7.3.6-query">query</a></b> : string</div><pre class="text">This extracts the request's query string, which starts after the first
+</pre><a class="anchor" name="query"></a><a class="anchor" name="7-query"></a><a class="anchor" name="7.3.6-query"></a><a class="anchor" name="query (Using ACLs and fetching samples)"></a><a class="anchor" name="query (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="query"></a><a href="#7.3.6-query">query</a></b>(<span style="color: #008">[<span style="color: #080">&lt;options&gt;</span>]</span>) : string</div><pre class="text">This extracts the request's query string, which starts after the first
 question mark. If no question mark is present, this fetch returns nothing. If
 a question mark is present but nothing follows, it returns an empty string.
 This means it's possible to easily know whether a query string is present
 using the &quot;found&quot; matching method. This fetch is the complement of &quot;<a href="#path">path</a>&quot;
-which stops before the question mark.
+which stops before the question mark and of &quot;query_string&quot;, which include the
+question mark.
+
+An optional parameter may be used to customize the return value. Following
+options are supported:
+
+  - with_qm : Include the question mark at the beginning ot the query string,
+              if not empty.
 </pre><a class="anchor" name="req.hdr_names"></a><a class="anchor" name="7-req.hdr_names"></a><a class="anchor" name="7.3.6-req.hdr_names"></a><a class="anchor" name="req.hdr_names (Using ACLs and fetching samples)"></a><a class="anchor" name="req.hdr_names (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.hdr_names"></a><a href="#7.3.6-req.hdr_names">req.hdr_names</a></b>(<span style="color: #008">[<span style="color: #080">&lt;delim&gt;</span>]</span>) : string</div><pre class="text">This builds a string made from the concatenation of all header names as they
 appear in the request when the rule is evaluated. The default delimiter is
 the comma (',') but it may be overridden as an optional argument &lt;delim&gt;. In
@@ -31506,7 +31687,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev13-67 &ndash; Configuration Manual<br>
+							HAProxy 3.1-dev13-100 &ndash; Configuration Manual<br>
 							<small>, 2024/11/15</small>
 						</div>
 					</div>

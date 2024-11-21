@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev13-67 - Management Guide</title>
+		<title>HAProxy version 3.1-dev13-100 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -652,7 +652,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -663,7 +663,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.1-dev13-67</strong></p>
+							<p><strong>version 3.1-dev13-100</strong></p>
 							<p>
 								<br>
 								
@@ -1027,8 +1027,6 @@ list of options is :
     recommended to use this mode with multiprocess and systemd.
 
   -Ws : master-worker mode with support of `notify` type of systemd service.
-    This option is only available when HAProxy was built with `USE_SYSTEMD`
-    build option enabled.
 
   -c : only performs a check of the configuration files and exits before trying
     to bind. The exit status is zero if everything is OK, or non-zero if an
@@ -3460,14 +3458,14 @@ Variables are dumped in the same format as they are stored or returned by the
 certain configuration files making heavy use of environment variables to
 ensure that they contain the expected values. This command is restricted and
 can only be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show errors"></a><a class="anchor" name="9-show errors"></a><a class="anchor" name="9.3-show errors"></a><a class="anchor" name="show errors (Statistics and monitoring)"></a><a class="anchor" name="show errors (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show errors"></a><a href="#9.3-show%20errors">show errors</a></b> <span style="color: #008">[<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>]</span> <span style="color: #008">[request|response]</span></div><pre class="text">Dump last known request and response errors collected by frontends and
-backends. If &lt;iid&gt; is specified, the limit the dump to errors concerning
-either frontend or backend whose ID is &lt;iid&gt;. Proxy ID &quot;-1&quot; will cause
-all instances to be dumped. If a proxy name is specified instead, its ID
-will be used as the filter. If &quot;request&quot; or &quot;response&quot; is added after the
-proxy name or ID, only request or response errors will be dumped. This
-command is restricted and can only be issued on sockets configured for
-levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show errors"></a><a class="anchor" name="9-show errors"></a><a class="anchor" name="9.3-show errors"></a><a class="anchor" name="show errors (Statistics and monitoring)"></a><a class="anchor" name="show errors (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show errors"></a><a href="#9.3-show%20errors">show errors</a></b> <span style="color: #008">[<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>]</span> <span style="color: #008">[request|response]</span></div><pre class="text">Dump last known HTTP/1.x request and response errors collected by frontends
+and backends. If &lt;iid&gt; is specified, the limit the dump to errors concerning
+either frontend or backend whose ID is &lt;iid&gt;. Proxy ID &quot;-1&quot; will cause all
+instances to be dumped. If a proxy name is specified instead, its ID will be
+used as the filter. If &quot;request&quot; or &quot;response&quot; is added after the proxy name
+or ID, only request or response errors will be dumped. This command is
+restricted and can only be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot;
+or &quot;admin&quot;.
 
 The errors which may be collected are the last request and response errors
 caused by protocol violations, often due to invalid characters in header
@@ -5103,17 +5101,17 @@ connections are handled in parallel, though the &quot;debug2ansi&quot; and &quot
 scripts found in the examples/ directory definitely help here by coloring the
 output.
 
-If a request or response is rejected because HAProxy finds it is malformed, the
-best thing to do is to connect to the CLI and issue &quot;<a href="#show%20errors">show errors</a>&quot;, which will
-report the last captured faulty request and response for each frontend and
-backend, with all the necessary information to indicate precisely the first
-character of the input stream that was rejected. This is sometimes needed to
-prove to customers or to developers that a bug is present in their code. In this
-case it is often possible to relax the checks (but still keep the captures)
-using &quot;option accept-unsafe-violations-in-http-request&quot; or its equivalent for
-responses coming from the server &quot;option
-accept-unsafe-violations-in-http-response&quot;. Please see the configuration manual
-for more details.
+If a HTTP/1.x request or response is rejected because HAProxy finds it is
+malformed, the best thing to do is to connect to the CLI and issue &quot;show
+errors&quot;, which will report the last captured faulty HTTP/1.x request and
+response for each frontend and backend, with all the necessary information to
+indicate precisely the first character of the input stream that was
+rejected. This is sometimes needed to prove to customers or to developers that a
+bug is present in their code. In this case it is often possible to relax the
+checks (but still keep the captures) using &quot;option
+accept-unsafe-violations-in-http-request&quot; or its equivalent for responses coming
+from the server &quot;option accept-unsafe-violations-in-http-response&quot;. Please see
+the configuration manual for more details.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -5393,7 +5391,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev13-67 &ndash; Management Guide<br>
+							HAProxy 3.1-dev13-100 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
