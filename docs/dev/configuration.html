@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1-dev13-100 - Configuration Manual</title>
+		<title>HAProxy version 3.1-dev14 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4424,7 +4424,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4435,9 +4435,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1-dev13-100</strong></p>
+							<p><strong>version 3.1-dev14</strong></p>
 							<p>
-								2024/11/15<br>
+								2024/11/21<br>
 								
 							</p>
 						</div>
@@ -6528,7 +6528,7 @@ modes:
   | HAPROXY_MWORKER          |    X     |    |    |      |     |  X  |  X  |
   | HAPROXY_CLI              |          |    |    |      |     |     |  X  |
   | HAPROXY_MASTER_CLI       |          |    |    |      |     |  X  |     |
-  | HAPROXY_LOCALPEER        |          |    |    |      |     |     |  X  |
+  | HAPROXY_LOCALPEER        |          |    | X  |      |     |     |  X  |
   | HAPROXY_HTTP_LOG_FMT     |          |    | X  |      |  X  |     |     |
   | HAPROXY_HTTP_CLF_LOG_FMT |          |    | X  |      |  X  |     |     |
   | HAPROXY_HTTPS_LOG_FMT    |          |    | X  |      |  X  |     |     |
@@ -21297,22 +21297,22 @@ Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
 instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
 h2&quot; on the bind line.
-</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic<span style="color: #008">[-pacing]</span> | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are similar
 to those used by TCP.
 
 Default value: cubic
 
 It is possible to active pacing if the algorithm is compatible. This is done
-by using the suffix &quot;-pacing&quot; after the algorithm name. Pacing purpose is to
-smooth emission of data without burst to reduce network loss. In some
-scenario, it can significantly improve network throughput. However, it can
-also increase CPU usage if haproxy is forced to wait too long between each
-emission. Pacing support is still experimental, as such it requires
-&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. BBR congestion control algorithm depends on
-the pacing support which is in this case implicitely activated by &quot;bbr&quot;.
-Note that BBR haproxy implementation is still considered as experimental and
-cannot be enabled without &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
+by specifying optional burst argument as described in the next paragraph.
+Pacing purpose is to smooth emission of data without burst to reduce network
+loss. In some scenario, it can significantly improve network throughput.
+However, it can also increase CPU usage if haproxy is forced to wait too long
+between each emission. Pacing support is still experimental, as such it
+requires &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. BBR congestion control algorithm
+depends on the pacing support which is in this case implicitely activated by
+&quot;bbr&quot;. Note that BBR haproxy implementation is still considered as
+experimental and cannot be enabled without &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
 
 For further customization, a list of parameters can be specified after the
 algorithm token. It must be written between parenthesis, separated by a comma
@@ -21320,8 +21320,9 @@ operator. Each argument is optional and can be empty if needed. Here is the
 mandatory order of each parameters :
 - maximum window size in bytes. It must be greater than 10k and smaller than
   4g. By default &quot;<a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>&quot; value is used.
-- count of datagrams to emit in a burst if pacing is activated. It must be
-  between the default value of 1 and 1024.
+- burst size in bytes. By default, it is set to 0, which means unlimited. A
+  positive value up to 1024 can be specified to smooth emission with pacing.
+  See above paragraph for more explanation.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21330,7 +21331,7 @@ quic-cc-algo newreno
 <span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
 quic-cc-algo cubic(1m)
 <span class="comment"># cubic with pacing on top of it, with burst limited to 12 datagrams</span>
-quic-cc-algo cubic-pacing(,12)
+quic-cc-algo cubic(,12)
 </code></pre>
 </div><pre class="text">A special value &quot;nocc&quot; may be used to force a fixed congestion window always
 set at the maximum size. It is reserved for debugging scenarios to remove any
@@ -31687,8 +31688,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1-dev13-100 &ndash; Configuration Manual<br>
-							<small>, 2024/11/15</small>
+							HAProxy 3.1-dev14 &ndash; Configuration Manual<br>
+							<small>, 2024/11/21</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
