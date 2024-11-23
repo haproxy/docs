@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.12-2 - Configuration Manual</title>
+		<title>HAProxy version 2.9.12-27 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4145,7 +4145,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4156,7 +4156,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.12-2</strong></p>
+							<p><strong>version 2.9.12-27</strong></p>
 							<p>
 								2024/11/08<br>
 								
@@ -5626,7 +5626,7 @@ on the server. The part after the question mark is called the &quot;query string
 It is mostly used with GET requests sent to dynamic scripts and is very
 specific to the language, framework or application in use.
 
-HTTP/3 and HTTP/3 do not convey a version information with the request, so the
+HTTP/2 and HTTP/3 do not convey a version information with the request, so the
 version is assumed to be the same as the one of the underlying protocol (i.e.
 &quot;HTTP/2&quot;). In addition, these protocols do not send a request line as one part,
 but split it into individual fields called &quot;pseudo-headers&quot;, whose name start
@@ -6206,6 +6206,54 @@ expression made of any combination of:
   - expressions combined with a logical OR ('||'), which will be evaluated
     from right to left until one returns true
 
+The same line tokenizer and argument parser are used as for the rest of the
+configuration language. Words are split around consecutive series of one or
+more unquoted spaces or tabs, and are reassembled together using a single space
+to delimit them before evaluation, in order to save the user from having to
+quote the entire line. But this also means that spaces surrounding commas or
+parenthesis are definitely part of the value, which is not always expected.
+For example, the expression below:
+
+   .if defined( HAPROXY_MWORKER )
+
+will test for the existence of variable &quot; HAPROXY_MWORKER &quot; (with spaces),
+and this one:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+
+will compare the environment variable &quot;ENABLE_SSL&quot; to the value &quot; 1&quot; (with a
+single leading space). The reason is the line is first split into words like
+this:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+  |---|--------------------|   |--|
+    1           2               3
+
+then the weak quoting is applied and environment variable &quot;$ENABLE_SSL&quot; is
+resolved (let's say for example that ENABLE_SSL=0), and finally the words are
+reassembled into a single string by placing a single space between the words:
+
+   .if streq(0, 1)
+  |---|-------|--|
+    1     2     3
+
+and only then it is parsed as a single expression. The space that was inserted
+between the comma and &quot;1&quot; is still part of the argument value, making this
+argument &quot; 1&quot;:
+
+   .if streq(0, 1)
+  |---|-----|-|--|
+    \    \    \  \_ argument2: &quot; 1&quot;
+     \    \    \___ argument1: &quot;0&quot;
+      \    \_______ function: &quot;streq&quot;
+       \___________ directive: &quot;.if&quot;
+
+It's visible here that even if ENABLE_SSL had been equal to &quot;1&quot;, it wouldn't
+have matched &quot; 1&quot; since the string would differ by one space.
+
+Note: as explained in section &quot;2.2. Quoting and escaping&quot;, a good rule of thumb
+      is to never insert unneeded spaces inside expressions.
+
 Note that like in other languages, the AND operator has precedence over the OR
 operator, so that &quot;A &amp;&amp; B || C &amp;&amp; D&quot; evalues as &quot;(A &amp;&amp; B) || (C &amp;&amp; D)&quot;.
 
@@ -6220,7 +6268,8 @@ The list of currently supported predicates is the following:
 
   - streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
   - strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
-  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in the first one
+  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
+                            the first one.
 
   - version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
                             at least as recent as &lt;ver&gt; otherwise false. The
@@ -8154,15 +8203,22 @@ to syslog limits. If you increase this limit, you may also increase the
 'log ... len yyy' parameter. Your syslog daemon may also need specific
 configuration directives too.
 The default value is 1024.
-</pre><a class="anchor" name="tune.http.maxhdr"></a><a class="anchor" name="3-tune.http.maxhdr"></a><a class="anchor" name="3.2-tune.http.maxhdr"></a><a class="anchor" name="tune.http.maxhdr (Global parameters)"></a><a class="anchor" name="tune.http.maxhdr (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.maxhdr"></a><a href="#3.2-tune.http.maxhdr">tune.http.maxhdr</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of headers in a request. When a request comes with a
-number of headers greater than this value (including the first line), it is
-rejected with a &quot;400 Bad Request&quot; status code. Similarly, too large responses
-are blocked with &quot;502 Bad Gateway&quot;. The default value is 101, which is enough
-for all usages, considering that the widely deployed Apache server uses the
-same limit. It can be useful to push this limit further to temporarily allow
-a buggy application to work by the time it gets fixed. The accepted range is
-1..32767. Keep in mind that each new header consumes 32bits of memory for
-each stream, so don't push this limit too high.
+</pre><a class="anchor" name="tune.http.maxhdr"></a><a class="anchor" name="3-tune.http.maxhdr"></a><a class="anchor" name="3.2-tune.http.maxhdr"></a><a class="anchor" name="tune.http.maxhdr (Global parameters)"></a><a class="anchor" name="tune.http.maxhdr (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.http.maxhdr"></a><a href="#3.2-tune.http.maxhdr">tune.http.maxhdr</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of headers allowed in received HTTP messages. When a
+message comes with a number of headers greater than this value (including the
+first line), it is rejected with a &quot;400 Bad Request&quot; status code for a
+request, or &quot;502 Bad Gateway&quot; for a response. The default value is 101, which
+is enough for all usages, considering that the widely deployed Apache server
+uses the same limit. It can be useful to push this limit further to
+temporarily allow a buggy application to work by the time it gets fixed. The
+accepted range is 1..32767. Keep in mind that each new header consumes 32bits
+of memory for each stream, so don't push this limit too high.
+
+Note that HTTP/1.1 is a text protocol, so there is no special limit when the
+message is sent. The limit during the message parsing is sufficient. HTTP/2
+and HTTP/3 are binary protocols and require an encoding step. A limit is set
+too when headers are encoded to comply to limitation imposed by the
+protocols. This limit is large enough but not documented on purpose. The same
+limit is applied on the first steps of the decoding for the same reason.
 </pre><a class="anchor" name="tune.idle-pool.shared"></a><a class="anchor" name="3-tune.idle-pool.shared"></a><a class="anchor" name="3.2-tune.idle-pool.shared"></a><a class="anchor" name="tune.idle-pool.shared (Global parameters)"></a><a class="anchor" name="tune.idle-pool.shared (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idle-pool.shared"></a><a href="#3.2-tune.idle-pool.shared">tune.idle-pool.shared</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') sharing of idle connection pools between
 threads for a same server. The default is to share them between threads in
 order to minimize the number of persistent connections to a server, and to
@@ -23698,6 +23754,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
+<tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="act_conn"></a><a class="anchor" name="7-act_conn"></a><a class="anchor" name="7.3.2-act_conn"></a><a class="anchor" name="act_conn (Using ACLs and fetching samples)"></a><a class="anchor" name="act_conn (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="act_conn"></a><a href="#7.3.2-act_conn">act_conn</a></b> : integer</div><pre class="text">Returns the total number of active concurrent connections on the process.
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
@@ -24086,7 +24143,30 @@ starts with an indication about its scope. The scopes allowed are:
   &quot;res&quot;  : the variable is shared only during response processing.
 This prefix is followed by a name. The separator is a '.'. The name may only
 contain characters 'a-z', 'A-Z', '0-9', '.' and '_'.
-</pre></div>
+</pre><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.2-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.2-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
+not fetch. It is only used in ACLs, in conjunction with content analysis to
+avoid returning a wrong verdict early. It may also be used to delay some
+actions, such as a delayed reject for some special addresses. Since it either
+stops the rules evaluation or immediately returns true, it is recommended to
+use this acl as the last one in a rule. Please note that the default ACL
+&quot;WAIT_END&quot; is always usable without prior declaration. This test was designed
+to be used with TCP request content inspection.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># delay every incoming request by 2 seconds</span>
+tcp-request inspect-delay 2s
+tcp-request content accept if WAIT_END
+
+<span class="comment"># don't immediately tell bad guys they are rejected</span>
+tcp-request inspect-delay 10s
+acl goodguys src 10.0.0.0/24
+acl badguys  src 10.0.1.0/24
+tcp-request content accept if goodguys
+tcp-request content reject if badguys WAIT_END
+tcp-request content reject
+</code></pre>
+</div></div>
 <a class="anchor" id="7.3.3" name="7.3.3"></a>
 <h3 id="chapter-7.3.3" data-target="7.3.3"><small><a class="small" href="#7.3.3">7.3.3.</a></small> Fetching samples at Layer 4</h3>
 <div><pre class="text">The layer 4 usually describes just the transport layer which in HAProxy is
@@ -25785,7 +25865,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-res.payload_lv">res.payload_lv(&lt;offset1&gt;,&lt;length&gt;[,&lt;offset2&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-res.ssl_hello_type">res.ssl_hello_type</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-rep_ssl_hello_type">rep_ssl_hello_type</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.5-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.5-bs.id">bs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the server side. It is the
 multiplexer's responsibility to return the appropriate information.
@@ -26013,30 +26092,7 @@ contents found in the response buffer and not to contents deciphered via an
 SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 option. This is mostly used in ACL to detect presence of an SSL hello message
 that is supposed to contain an SSL session ID usable for stickiness.
-</pre><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.5-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.5-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
-not fetch. It is only used in ACLs, in conjunction with content analysis to
-avoid returning a wrong verdict early. It may also be used to delay some
-actions, such as a delayed reject for some special addresses. Since it either
-stops the rules evaluation or immediately returns true, it is recommended to
-use this acl as the last one in a rule. Please note that the default ACL
-&quot;WAIT_END&quot; is always usable without prior declaration. This test was designed
-to be used with TCP request content inspection.
-</pre><div class="separator">
-<span class="label label-success">Examples :</span>
-<pre class="prettyprint">
-<code><span class="comment"># delay every incoming request by 2 seconds</span>
-tcp-request inspect-delay 2s
-tcp-request content accept if WAIT_END
-
-<span class="comment"># don't immediately tell bad guys they are rejected</span>
-tcp-request inspect-delay 10s
-acl goodguys src 10.0.0.0/24
-acl badguys  src 10.0.1.0/24
-tcp-request content accept if goodguys
-tcp-request content reject if badguys WAIT_END
-tcp-request content reject
-</code></pre>
-</div></div>
+</pre></div>
 <a class="anchor" id="7.3.6" name="7.3.6"></a>
 <h3 id="chapter-7.3.6" data-target="7.3.6"><small><a class="small" href="#7.3.6">7.3.6.</a></small> Fetching HTTP samples (Layer 7)</h3>
 <div><pre class="text">It is possible to fetch samples from HTTP contents, requests and responses.
@@ -27990,9 +28046,10 @@ Timings events in TCP mode:
     instance during a POST request, the time already runs, and this can distort
     apparent response time. For this reason, it's generally wise not to trust
     too much this field for POST requests initiated from clients behind an
-    untrusted network. A value of &quot;-1&quot; here means that the last the response
-    header (empty line) was never seen, most likely because the server timeout
-    stroke before the server managed to process the request.
+    untrusted network. A value of &quot;-1&quot; here means that the last response header
+    (empty line) was never seen, most likely because the server timeout stroke
+    before the server managed to process the request or because the server
+    returned an invalid response.
 
     This timer is named %Tr as a log-format tag, and res.timer.hdr as a
     sample fetch.
@@ -29379,7 +29436,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.12-2 &ndash; Configuration Manual<br>
+							HAProxy 2.9.12-27 &ndash; Configuration Manual<br>
 							<small>, 2024/11/08</small>
 						</div>
 					</div>
