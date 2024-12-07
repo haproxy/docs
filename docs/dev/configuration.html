@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev0-56 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev0-73 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4424,7 +4424,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4435,7 +4435,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev0-56</strong></p>
+							<p><strong>version 3.2-dev0-73</strong></p>
 							<p>
 								2024/11/26<br>
 								
@@ -22114,13 +22114,8 @@ backend redis-master
 <span class="comment"># pass traffic to the server only after 3 successful health checks</span>
 backend google-backend
   mode http
-  server srv1 google.com:80 check init-state down rise 3
-  server srv2 google.com:80 check init-state down rise 3
-
-<span class="comment"># or</span>
-listen
-  mode http
-  server-template srv 2 google.com:80 check init-state down rise 3
+  server srv1 google.com:80 check init-state fully-down rise 3
+  server srv2 google.com:80 check init-state fully-down rise 3
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#option%20httpchk">option httpchk</a>&quot;</div>
 <a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">May be used in the following contexts: log
@@ -31722,7 +31717,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev0-56 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev0-73 &ndash; Configuration Manual<br>
 							<small>, 2024/11/26</small>
 						</div>
 					</div>
