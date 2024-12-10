@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev0-73 - Management Guide</title>
+		<title>HAProxy version 3.2-dev0-81 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -591,6 +591,8 @@
 							
 							<a class="list-group-item" href="#show ssl providers">show ssl providers</a>
 							
+							<a class="list-group-item" href="#show ssl sni">show ssl sni</a>
+							
 							<a class="list-group-item" href="#show startup-logs">show startup-logs</a>
 							
 							<a class="list-group-item" href="#show stat">show stat</a>
@@ -652,7 +654,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -663,7 +665,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev0-73</strong></p>
+							<p><strong>version 3.2-dev0-81</strong></p>
 							<p>
 								<br>
 								
@@ -4368,6 +4370,41 @@ Loaded providers :
     - fips
     - base
 </code></pre>
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl sni"></a><a class="anchor" name="9-show ssl sni"></a><a class="anchor" name="9.3-show ssl sni"></a><a class="anchor" name="show ssl sni (Statistics and monitoring)"></a><a class="anchor" name="show ssl sni (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl sni"></a><a href="#9.3-show%20ssl%20sni">show ssl sni</a></b> <span style="color: #008">[-f <span style="color: #080">&lt;frontend&gt;</span>]</span></div><pre class="text">Dump every SNI configured for the designated frontend, or all frontends if no
+frontend was specified. It allows to see what SNI are offered for a frontend,
+and to identify if a SNI is defined multiple time by multiple certificates for
+the same frontend.
+
+Columns are separated by a single \t, allowing to parse it simply.
+
+The frontend/bind column shows the frontend name followed by the bind line
+position in the configuration (file:linenum).
+
+The SNI column shows the SNI, it can be either a CN, a SAN or a positive
+filter from a crt-list. Negative filters are not displayed.
+
+The 'type' column shows the encryption algorithm type, it can be &quot;rsa&quot;, &quot;ecdsa&quot; or &quot;dsa&quot;.
+
+The default certificates of a bind line, (which are either declared
+explicitely by 'default-crt' or is implicitely the first certificate of a bind
+line when no 'strict-sni' is used) shows the '*' character in the SNI column.
+
+The 'filename' column can be either a filename from the configuration, or an
+alias declarated in a crt-store.
+
+The 'NotAfter' and 'NotBefore' columns are directly extracted from the X509
+leaf certificate.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;@1 show ssl sni&quot; | socat /var/run/haproxy-master.sock - | column -t -s $'\t'
+<span class="comment"># Frontend/Bind        SNI        Type   Filename             NotAfter                  NotBefore</span>
+li1/haproxy.cfg:10021  machine10  rsa    machine10.pem.rsa    Jun 13 13:37:21 2024 GMT  May 14 13:37:21 2024 GMT
+li1/haproxy.cfg:10021  machine10  ecdsa  machine10.pem.ecdsa  Jun 13 13:37:21 2024 GMT  May 14 13:37:21 2024 GMT
+li1/haproxy.cfg:10021  localhost  rsa    localhost.pem.rsa    Jun 13 13:37:11 2024 GMT  May 14 13:37:11 2024 GMT
+li1/haproxy.cfg:10021  localhost  ecdsa  localhost.pem.ecdsa  Jun 13 13:37:10 2024 GMT  May 14 13:37:10 2024 GMT
+li1/haproxy.cfg:10021  *          rsa    localhost.pem.rsa    Jun 13 13:37:11 2024 GMT  May 14 13:37:11 2024 GMT
+</code></pre>
 </div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show startup-logs"></a><a class="anchor" name="9-show startup-logs"></a><a class="anchor" name="9.3-show startup-logs"></a><a class="anchor" name="show startup-logs (Statistics and monitoring)"></a><a class="anchor" name="show startup-logs (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show startup-logs"></a><a href="#9.3-show%20startup-logs">show startup-logs</a></b></div><pre class="text">Dump all messages emitted during the startup of the current haproxy process,
 each startup-logs buffer is unique to its haproxy worker.
 
@@ -5394,7 +5431,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev0-73 &ndash; Management Guide<br>
+							HAProxy 3.2-dev0-81 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
