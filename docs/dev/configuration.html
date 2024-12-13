@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev1 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev1-7 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3864,6 +3864,8 @@
 							
 							<a class="list-group-item" href="#strcmp">strcmp</a>
 							
+							<a class="list-group-item" href="#stress-level">stress-level</a>
+							
 							<a class="list-group-item" href="#strict-limits">strict-limits</a>
 							
 							<a class="list-group-item" href="#strict-mode">strict-mode</a>
@@ -4424,7 +4426,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4435,7 +4437,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev1</strong></p>
+							<p><strong>version 3.2-dev1-7</strong></p>
 							<p>
 								2024/12/11<br>
 								
@@ -8367,6 +8369,11 @@ milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
 </pre><a class="anchor" name="stats-file"></a><a class="anchor" name="3-stats-file"></a><a class="anchor" name="3.1-stats-file"></a><a class="anchor" name="stats-file (Global parameters)"></a><a class="anchor" name="stats-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats-file"></a><a href="#3.1-stats-file">stats-file</a></b> <span style="color: #080">&lt;path&gt;</span></div><pre class="text">Path to a generated haproxy stats-file. On startup haproxy will preload the
 values to its internal counters. Use the CLI command &quot;dump stats-file&quot; to
 produce such stats-file. See the management manual for more details.
+</pre><a class="anchor" name="stress-level"></a><a class="anchor" name="3-stress-level"></a><a class="anchor" name="3.1-stress-level"></a><a class="anchor" name="stress-level (Global parameters)"></a><a class="anchor" name="stress-level (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stress-level"></a><a href="#3.1-stress-level">stress-level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">Activate alternative code to stress haproxy binary. Level is an integer from
+0 to 9. The default value 0 disable any stressing execution. Levels from 1 to
+9 will increase the stress pressure on the haproxy binary. Note that using
+any positive level can significantly hurt performance. As such it should
+never be activated unless for debugging purpose and on a developer request.
 </pre><a class="anchor" name="strict-limits"></a><a class="anchor" name="3-strict-limits"></a><a class="anchor" name="3.1-strict-limits"></a><a class="anchor" name="strict-limits (Global parameters)"></a><a class="anchor" name="strict-limits (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="strict-limits"></a><a href="#3.1-strict-limits">strict-limits</a></b></div><pre class="text">Makes process fail at startup when a setrlimit fails. HAProxy tries to set the
 best setrlimit according to what has been calculated. If it fails, it will
 emit a warning. This option is here to guarantee an explicit failure of
@@ -31717,7 +31724,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev1 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev1-7 &ndash; Configuration Manual<br>
 							<small>, 2024/12/11</small>
 						</div>
 					</div>
