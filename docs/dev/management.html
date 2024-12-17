@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev1-22 - Management Guide</title>
+		<title>HAProxy version 3.2-dev1-32 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -654,7 +654,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -665,7 +665,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev1-22</strong></p>
+							<p><strong>version 3.2-dev1-32</strong></p>
 							<p>
 								<br>
 								
@@ -4136,7 +4136,7 @@ pretty printer may be helpful. Example :
 
 $ echo &quot;show stat json&quot; | socat /var/run/haproxy.sock stdio | \
   python -m json.tool
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ca-file"></a><a class="anchor" name="9-show ssl ca-file"></a><a class="anchor" name="9.3-show ssl ca-file"></a><a class="anchor" name="show ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ca-file"></a><a href="#9.3-show%20ssl%20ca-file">show ssl ca-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;cafile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CA files loaded into the process and their respective
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ca-file"></a><a class="anchor" name="9-show ssl ca-file"></a><a class="anchor" name="9.3-show ssl ca-file"></a><a class="anchor" name="show ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ca-file"></a><a href="#9.3-show%20ssl%20ca-file">show ssl ca-file</a></b> <span style="color: #008">[<span style="color: #008">[*]</span><span style="color: #008">[\]</span><span style="color: #080">&lt;cafile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CA files loaded into the process and their respective
 certificate counts. The certificates are not used by any frontend or backend
 until their status is &quot;Used&quot;.
 A &quot;@system-ca&quot; entry can appear in the list, it is loaded by the httpclient
@@ -4152,7 +4152,8 @@ details of the certificate having the specified index. Indexes start from 1.
 If the index is invalid (too big for instance), nothing will be displayed.
 This command can be useful to check if a CA file was properly updated.
 You can also display the details of an ongoing transaction by prefixing the
-filename by an asterisk.
+filename by a '*'. If the first character of the filename is a '*', it can be
+escaped with '\*'.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -4184,13 +4185,14 @@ Certificate <span class="comment">#2:</span>
 Serial: 587A1CE5ED855040A0C82BF255FF300ADB7C8136
 [...]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl cert"></a><a class="anchor" name="9-show ssl cert"></a><a class="anchor" name="9.3-show ssl cert"></a><a class="anchor" name="show ssl cert (Statistics and monitoring)"></a><a class="anchor" name="show ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl cert"></a><a href="#9.3-show%20ssl%20cert">show ssl cert</a></b> <span style="color: #008">[<span style="color: #080">&lt;filename&gt;</span>]</span></div><pre class="text">Display the list of certificates loaded into the process. They are not used
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl cert"></a><a class="anchor" name="9-show ssl cert"></a><a class="anchor" name="9.3-show ssl cert"></a><a class="anchor" name="show ssl cert (Statistics and monitoring)"></a><a class="anchor" name="show ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl cert"></a><a href="#9.3-show%20ssl%20cert">show ssl cert</a></b> <span style="color: #008">[<span style="color: #008">[*]</span><span style="color: #008">[\]</span><span style="color: #080">&lt;filename&gt;</span>]</span></div><pre class="text">Display the list of certificates loaded into the process. They are not used
 by any frontend or backend until their status is &quot;Used&quot;.
 If a filename is prefixed by an asterisk, it is a transaction which is not
 committed yet. If a filename is specified, it will show details about the
 certificate. This command can be useful to check if a certificate was well
 updated. You can also display details on a transaction by prefixing the
-filename by an asterisk.
+filename by a '*'. If the first character of the filename is a '*', it can be
+escaped with '\*'.
 This command can also be used to display the details of a certificate's OCSP
 response by suffixing the filename with a &quot;.ocsp&quot; extension. It works for
 committed certificates as well as for ongoing transactions. On a committed
@@ -4221,8 +4223,13 @@ $ echo &quot;@1 show ssl cert *test.local.pem&quot; | socat /var/run/haproxy.mas
 Filename: *test.local.pem
 Status: Unused
 [...]
+
+$ echo &quot;@1 show ssl cert \*.local.pem&quot; | socat /var/run/haproxy.master -
+Filename: *.local.pem
+Status: Used
+[...]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl crl-file"></a><a class="anchor" name="9-show ssl crl-file"></a><a class="anchor" name="9.3-show ssl crl-file"></a><a class="anchor" name="show ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl crl-file"></a><a href="#9.3-show%20ssl%20crl-file">show ssl crl-file</a></b> <span style="color: #008">[<span style="color: #080">&lt;crlfile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CRL files loaded into the process. They are not used
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl crl-file"></a><a class="anchor" name="9-show ssl crl-file"></a><a class="anchor" name="9.3-show ssl crl-file"></a><a class="anchor" name="show ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="show ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl crl-file"></a><a href="#9.3-show%20ssl%20crl-file">show ssl crl-file</a></b> <span style="color: #008">[<span style="color: #008">[*]</span><span style="color: #008">[\]</span><span style="color: #080">&lt;crlfile&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;index&gt;</span>]</span>]</span></div><pre class="text">Display the list of CRL files loaded into the process. They are not used
 by any frontend or backend until their status is &quot;Used&quot;.
 If a filename is prefixed by an asterisk, it is a transaction which is not
 committed yet. If a &lt;crlfile&gt; is specified without &lt;index&gt;, it will show the
@@ -4234,7 +4241,8 @@ details of the list having the specified index. Indexes start from 1.
 If the index is invalid (too big for instance), nothing will be displayed.
 This command can be useful to check if a CRL file was properly updated.
 You can also display the details of an ongoing transaction by prefixing the
-filename by an asterisk.
+filename by a '*'. If the first character of the filename is a '*', it can be
+escaped with '\*'.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -4370,10 +4378,13 @@ Loaded providers :
     - fips
     - base
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl sni"></a><a class="anchor" name="9-show ssl sni"></a><a class="anchor" name="9.3-show ssl sni"></a><a class="anchor" name="show ssl sni (Statistics and monitoring)"></a><a class="anchor" name="show ssl sni (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl sni"></a><a href="#9.3-show%20ssl%20sni">show ssl sni</a></b> <span style="color: #008">[-f <span style="color: #080">&lt;frontend&gt;</span>]</span></div><pre class="text">Dump every SNI configured for the designated frontend, or all frontends if no
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl sni"></a><a class="anchor" name="9-show ssl sni"></a><a class="anchor" name="9.3-show ssl sni"></a><a class="anchor" name="show ssl sni (Statistics and monitoring)"></a><a class="anchor" name="show ssl sni (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl sni"></a><a href="#9.3-show%20ssl%20sni">show ssl sni</a></b> <span style="color: #008">[-f <span style="color: #080">&lt;frontend&gt;</span>]</span> <span style="color: #008">[-A]</span></div><pre class="text">Dump every SNI configured for the designated frontend, or all frontends if no
 frontend was specified. It allows to see what SNI are offered for a frontend,
 and to identify if a SNI is defined multiple times by multiple certificates for
 the same frontend.
+
+The -A option allows to filter the list and only displays the certificates
+that are past the notAfter date, allowing to show only expired certificates.
 
 Columns are separated by a single \t, allowing to parse it simply.
 
@@ -5435,7 +5446,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev1-22 &ndash; Management Guide<br>
+							HAProxy 3.2-dev1-32 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
