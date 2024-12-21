@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev1-74 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev1-75 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4125,6 +4125,8 @@
 							
 							<a class="list-group-item" href="#tune.listener.multi-queue">tune.listener.multi-queue</a>
 							
+							<a class="list-group-item" href="#tune.lua.bool-sample-conversion">tune.lua.bool-sample-conversion</a>
+							
 							<a class="list-group-item" href="#tune.lua.burst-timeout">tune.lua.burst-timeout</a>
 							
 							<a class="list-group-item" href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
@@ -4138,8 +4140,6 @@
 							<a class="list-group-item" href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
 							
 							<a class="list-group-item" href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
-							
-							<a class="list-group-item" href="#tune.lua.smp-preserve-bool">tune.lua.smp-preserve-bool</a>
 							
 							<a class="list-group-item" href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
 							
@@ -4428,7 +4428,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4439,7 +4439,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev1-74</strong></p>
+							<p><strong>version 3.2-dev1-75</strong></p>
 							<p>
 								2024/12/11<br>
 								
@@ -7185,6 +7185,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.http.maxhdr">tune.http.maxhdr</a>
    - <a href="#tune.idle-pool.shared">tune.idle-pool.shared</a>
    - <a href="#tune.idletimer">tune.idletimer</a>
+   - <a href="#tune.lua.bool-sample-conversion">tune.lua.bool-sample-conversion</a>
    - <a href="#tune.lua.burst-timeout">tune.lua.burst-timeout</a>
    - <a href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
    - <a href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
@@ -7192,7 +7193,6 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.lua.maxmem">tune.lua.maxmem</a>
    - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
-   - <a href="#tune.lua.smp-preserve-bool">tune.lua.smp-preserve-bool</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
    - <a href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
    - <a href="#tune.maxaccept">tune.maxaccept</a>
@@ -9052,6 +9052,24 @@ Finally it is possible to forcefully disable the redistribution mechanism
 using &quot;off&quot; for troubleshooting, or for situations where connections are
 short-lived and it is estimated that the operating system already provides a
 good enough distribution. The default is &quot;<a href="#on">on</a>&quot;.
+</pre><a class="anchor" name="tune.lua.bool-sample-conversion"></a><a class="anchor" name="3-tune.lua.bool-sample-conversion"></a><a class="anchor" name="3.2-tune.lua.bool-sample-conversion"></a><a class="anchor" name="tune.lua.bool-sample-conversion (Global parameters)"></a><a class="anchor" name="tune.lua.bool-sample-conversion (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.bool-sample-conversion"></a><a href="#3.2-tune.lua.bool-sample-conversion">tune.lua.bool-sample-conversion</a></b> <span style="color: #800">{ normal | pre-3.1-bug }</span></div><pre class="text">Explicitly tell haproxy how haproxy sample objects should be handled when
+pushed to Lua. Indeed, when leveraging native converters, sample fetches or
+variables from Lua script (to name a few), haproxy converts the internal
+smp type to equivalent Lua type. Because of historical implementation, there
+is an ambiguity around boolean handling: when doing Lua -&gt; haproxy smp
+conversion, booleans are properly preserved, but when doing haproxy
+smp -&gt; Lua conversion, booleans were converted to integers by mistake. This
+means that a sample fetch or converter returning a boolean would return an
+integer 0 or 1 when leveraged from Lua. Unfortunately, in Lua, booleans and
+integers are not interchangeable. Thus, to avoid ambiguities,
+&quot;<a href="#tune.lua.bool-sample-conversion">tune.lua.bool-sample-conversion</a>&quot; must explicitly be set to either &quot;normal&quot;
+(which means dropping the historical behavior for better consistency) or
+&quot;pre-3.1-bug&quot; (enforce historical behavior to prevent existing script logic
+from misbehaving). If the option is not set explicitly and a Lua script is
+loaded from the configuration, haproxy will emit a warning, and the option
+will implicitly default to &quot;pre-3.1-bug&quot; to match with the historical
+behavior. It is recommended to set this option to &quot;normal&quot; after ensuring
+that in-use Lua scripts are properly handling bool haproxy samples as booleans.
 </pre><a class="anchor" name="tune.lua.burst-timeout"></a><a class="anchor" name="3-tune.lua.burst-timeout"></a><a class="anchor" name="3.2-tune.lua.burst-timeout"></a><a class="anchor" name="tune.lua.burst-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.burst-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.burst-timeout"></a><a href="#3.2-tune.lua.burst-timeout">tune.lua.burst-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">The &quot;burst&quot; execution timeout applies to any Lua handler. If the handler
 fails to finish or yield before timeout is reached, it will be aborted to
 prevent thread contention, to prevent traffic from not being served for too
@@ -9146,23 +9164,6 @@ not taken in account. The default timeout is 4s.
 dedicated to the tasks. By default, this timeout isn't set because a task may
 remain alive during of the lifetime of HAProxy. For example, a task used to
 check servers.
-</pre><a class="anchor" name="tune.lua.smp-preserve-bool"></a><a class="anchor" name="3-tune.lua.smp-preserve-bool"></a><a class="anchor" name="3.2-tune.lua.smp-preserve-bool"></a><a class="anchor" name="tune.lua.smp-preserve-bool (Global parameters)"></a><a class="anchor" name="tune.lua.smp-preserve-bool (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.smp-preserve-bool"></a><a href="#3.2-tune.lua.smp-preserve-bool">tune.lua.smp-preserve-bool</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Explicitly tell haproxy how haproxy sample objects should be handled when
-pushed to Lua. Indeed, when using native converters or sample fetches from
-Lua script, haproxy converts the smp type to equivalent Lua type. Because
-of historical implementation, there is an ambiguity around boolean
-handling: when doing Lua -&gt; haproxy smp conversion, booleans are properly
-preserved, but when doing haproxy smp -&gt; Lua conversion, booleans were
-converted to integers. This means that a sample fetch or converter returning
-a boolean would return an integer 0 or 1 when leveraged from Lua.
-Unfortunately, in Lua, booleans and integers are not interchangeable. Thus,
-to avoid ambiguities, &quot;<a href="#tune.lua.smp-preserve-bool">tune.lua.smp-preserve-bool</a>&quot; must explicitly be set to
-either &quot;<a href="#on">on</a>&quot; (which means dropping the historical behavior for better
-consistency) or &quot;off&quot; (enforce historical behavior to prevent existing script
-logic from misbehaving). If the option is not set explicitly and a Lua script
-is loaded from the configuration, haproxy will emit a warning, and the option
-will implicitly default to &quot;off&quot; to match with the historical behavior. When
-possible, it is recommended to set this option to &quot;<a href="#on">on</a>&quot; after ensuring that
-in-use Lua scripts are properly handling bool haproxy samples as booleans.
 </pre><a class="anchor" name="tune.max-checks-per-thread"></a><a class="anchor" name="3-tune.max-checks-per-thread"></a><a class="anchor" name="3.2-tune.max-checks-per-thread"></a><a class="anchor" name="tune.max-checks-per-thread (Global parameters)"></a><a class="anchor" name="tune.max-checks-per-thread (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-checks-per-thread"></a><a href="#3.2-tune.max-checks-per-thread">tune.max-checks-per-thread</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of active checks per thread above which a thread will
 actively try to search a less loaded thread to run the health check, or
 queue it until the number of active checks running on it diminishes. The
@@ -31758,7 +31759,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev1-74 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev1-75 &ndash; Configuration Manual<br>
 							<small>, 2024/12/11</small>
 						</div>
 					</div>
