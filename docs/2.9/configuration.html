@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.9.13 - Configuration Manual</title>
+		<title>HAProxy version 2.9.13-22 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4145,7 +4145,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4156,7 +4156,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.9.13</strong></p>
+							<p><strong>version 2.9.13-22</strong></p>
 							<p>
 								2024/12/12<br>
 								
@@ -6571,13 +6571,14 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.http.maxhdr">tune.http.maxhdr</a>
    - <a href="#tune.idle-pool.shared">tune.idle-pool.shared</a>
    - <a href="#tune.idletimer">tune.idletimer</a>
+   - <a href="#tune.lua.burst-timeout">tune.lua.burst-timeout</a>
    - <a href="#tune.lua.forced-yield">tune.lua.forced-yield</a>
+   - <a href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
+   - <a href="#tune.lua.log.stderr">tune.lua.log.stderr</a>
    - <a href="#tune.lua.maxmem">tune.lua.maxmem</a>
    - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
-   - <a href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
-   - <a href="#tune.lua.log.stderr">tune.lua.log.stderr</a>
    - <a href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
@@ -8278,21 +8279,6 @@ Finally it is possible to forcefully disable the redistribution mechanism
 using &quot;off&quot; for troubleshooting, or for situations where connections are
 short-lived and it is estimated that the operating system already provides a
 good enough distribution. The default is &quot;on&quot;.
-</pre><a class="anchor" name="tune.lua.forced-yield"></a><a class="anchor" name="3-tune.lua.forced-yield"></a><a class="anchor" name="3.2-tune.lua.forced-yield"></a><a class="anchor" name="tune.lua.forced-yield (Global parameters)"></a><a class="anchor" name="tune.lua.forced-yield (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.forced-yield"></a><a href="#3.2-tune.lua.forced-yield">tune.lua.forced-yield</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive forces the Lua engine to execute a yield each &lt;number&gt; of
-instructions executed. This permits interrupting a long script and allows the
-HAProxy scheduler to process other tasks like accepting connections or
-forwarding traffic. The default value is 10000 instructions. If HAProxy often
-executes some Lua code but more responsiveness is required, this value can be
-lowered. If the Lua code is quite long and its result is absolutely required
-to process the data, the &lt;number&gt; can be increased.
-</pre><a class="anchor" name="tune.lua.maxmem"></a><a class="anchor" name="3-tune.lua.maxmem"></a><a class="anchor" name="3.2-tune.lua.maxmem"></a><a class="anchor" name="tune.lua.maxmem (Global parameters)"></a><a class="anchor" name="tune.lua.maxmem (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.maxmem"></a><a href="#3.2-tune.lua.maxmem">tune.lua.maxmem</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of RAM in megabytes per process usable by Lua. By
-default it is zero which means unlimited. It is important to set a limit to
-ensure that a bug in a script will not result in the system running out of
-memory.
-</pre><a class="anchor" name="tune.lua.session-timeout"></a><a class="anchor" name="3-tune.lua.session-timeout"></a><a class="anchor" name="3.2-tune.lua.session-timeout"></a><a class="anchor" name="tune.lua.session-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.session-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.session-timeout"></a><a href="#3.2-tune.lua.session-timeout">tune.lua.session-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua sessions. This is useful for
-preventing infinite loops or spending too much time in Lua. This timeout
-counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
-not taken in account. The default timeout is 4s.
 </pre><a class="anchor" name="tune.lua.burst-timeout"></a><a class="anchor" name="3-tune.lua.burst-timeout"></a><a class="anchor" name="3.2-tune.lua.burst-timeout"></a><a class="anchor" name="tune.lua.burst-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.burst-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.burst-timeout"></a><a href="#3.2-tune.lua.burst-timeout">tune.lua.burst-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">The &quot;burst&quot; execution timeout applies to any Lua handler. If the handler
 fails to finish or yield before timeout is reached, it will be aborted to
 prevent thread contention, to prevent traffic from not being served for too
@@ -8341,14 +8327,13 @@ to be the case, here are some resolution leads:
   - increasing tune.lua.burst-timeout
 
 Setting value to 0 completely disables this protection.
-</pre><a class="anchor" name="tune.lua.service-timeout"></a><a class="anchor" name="3-tune.lua.service-timeout"></a><a class="anchor" name="3.2-tune.lua.service-timeout"></a><a class="anchor" name="tune.lua.service-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.service-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.service-timeout"></a><a href="#3.2-tune.lua.service-timeout">tune.lua.service-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua services. This is useful for
-preventing infinite loops or spending too much time in Lua. This timeout
-counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
-not taken in account. The default timeout is 4s.
-</pre><a class="anchor" name="tune.lua.task-timeout"></a><a class="anchor" name="3-tune.lua.task-timeout"></a><a class="anchor" name="3.2-tune.lua.task-timeout"></a><a class="anchor" name="tune.lua.task-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.task-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.task-timeout"></a><a href="#3.2-tune.lua.task-timeout">tune.lua.task-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Purpose is the same as &quot;<a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>&quot;, but this timeout is
-dedicated to the tasks. By default, this timeout isn't set because a task may
-remain alive during of the lifetime of HAProxy. For example, a task used to
-check servers.
+</pre><a class="anchor" name="tune.lua.forced-yield"></a><a class="anchor" name="3-tune.lua.forced-yield"></a><a class="anchor" name="3.2-tune.lua.forced-yield"></a><a class="anchor" name="tune.lua.forced-yield (Global parameters)"></a><a class="anchor" name="tune.lua.forced-yield (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.forced-yield"></a><a href="#3.2-tune.lua.forced-yield">tune.lua.forced-yield</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive forces the Lua engine to execute a yield each &lt;number&gt; of
+instructions executed. This permits interrupting a long script and allows the
+HAProxy scheduler to process other tasks like accepting connections or
+forwarding traffic. The default value is 10000 instructions. If HAProxy often
+executes some Lua code but more responsiveness is required, this value can be
+lowered. If the Lua code is quite long and its result is absolutely required
+to process the data, the &lt;number&gt; can be increased.
 </pre><a class="anchor" name="tune.lua.log.loggers"></a><a class="anchor" name="3-tune.lua.log.loggers"></a><a class="anchor" name="3.2-tune.lua.log.loggers"></a><a class="anchor" name="tune.lua.log.loggers (Global parameters)"></a><a class="anchor" name="tune.lua.log.loggers (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.log.loggers"></a><a href="#3.2-tune.lua.log.loggers">tune.lua.log.loggers</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') logging the output of LUA scripts via the
 loggers applicable to the current proxy, if any.
 
@@ -8365,6 +8350,22 @@ Please note that, when enabled, this logging is in addition to the logging
 configured via tune.lua.log.loggers.
 
 Defaults to 'auto'.
+</pre><a class="anchor" name="tune.lua.maxmem"></a><a class="anchor" name="3-tune.lua.maxmem"></a><a class="anchor" name="3.2-tune.lua.maxmem"></a><a class="anchor" name="tune.lua.maxmem (Global parameters)"></a><a class="anchor" name="tune.lua.maxmem (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.maxmem"></a><a href="#3.2-tune.lua.maxmem">tune.lua.maxmem</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of RAM in megabytes per process usable by Lua. By
+default it is zero which means unlimited. It is important to set a limit to
+ensure that a bug in a script will not result in the system running out of
+memory.
+</pre><a class="anchor" name="tune.lua.service-timeout"></a><a class="anchor" name="3-tune.lua.service-timeout"></a><a class="anchor" name="3.2-tune.lua.service-timeout"></a><a class="anchor" name="tune.lua.service-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.service-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.service-timeout"></a><a href="#3.2-tune.lua.service-timeout">tune.lua.service-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua services. This is useful for
+preventing infinite loops or spending too much time in Lua. This timeout
+counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
+not taken in account. The default timeout is 4s.
+</pre><a class="anchor" name="tune.lua.session-timeout"></a><a class="anchor" name="3-tune.lua.session-timeout"></a><a class="anchor" name="3.2-tune.lua.session-timeout"></a><a class="anchor" name="tune.lua.session-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.session-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.session-timeout"></a><a href="#3.2-tune.lua.session-timeout">tune.lua.session-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua sessions. This is useful for
+preventing infinite loops or spending too much time in Lua. This timeout
+counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
+not taken in account. The default timeout is 4s.
+</pre><a class="anchor" name="tune.lua.task-timeout"></a><a class="anchor" name="3-tune.lua.task-timeout"></a><a class="anchor" name="3.2-tune.lua.task-timeout"></a><a class="anchor" name="tune.lua.task-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.task-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.task-timeout"></a><a href="#3.2-tune.lua.task-timeout">tune.lua.task-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Purpose is the same as &quot;<a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>&quot;, but this timeout is
+dedicated to the tasks. By default, this timeout isn't set because a task may
+remain alive during of the lifetime of HAProxy. For example, a task used to
+check servers.
 </pre><a class="anchor" name="tune.max-checks-per-thread"></a><a class="anchor" name="3-tune.max-checks-per-thread"></a><a class="anchor" name="3.2-tune.max-checks-per-thread"></a><a class="anchor" name="tune.max-checks-per-thread (Global parameters)"></a><a class="anchor" name="tune.max-checks-per-thread (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-checks-per-thread"></a><a href="#3.2-tune.max-checks-per-thread">tune.max-checks-per-thread</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of active checks per thread above which a thread will
 actively try to search a less loaded thread to run the health check, or
 queue it until the number of active checks running on it diminishes. The
@@ -18015,6 +18016,7 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-switch-mode">switch-mode</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-tarpit">tarpit</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-track-sc0">track-sc0</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-track-sc1">track-sc1</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-track-sc2">track-sc2</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-unset-var">unset-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -21153,7 +21155,17 @@ another one. It is possible to track a server which itself tracks another
 server, provided that at the end of the chain, a server has health checks
 enabled. If &lt;backend&gt; is omitted the current one is used. If disable-on-404 is
 used, it has to be enabled on both proxies.
-</pre><a class="anchor" name="tls-tickets"></a><a class="anchor" name="5-tls-tickets"></a><a class="anchor" name="5.2-tls-tickets"></a><a class="anchor" name="tls-tickets (Bind and server options)"></a><a class="anchor" name="tls-tickets (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="tls-tickets"></a><a href="#5.2-tls-tickets">tls-tickets</a></b></div><pre class="text">This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>backend A
+server a1 1.1.1.1:80 track B/b1
+server a2 1.1.1.2:80 track B/b1
+
+backend B
+server b1 2.2.2.2:80 check
+</code></pre>
+</div><a class="anchor" name="tls-tickets"></a><a class="anchor" name="5-tls-tickets"></a><a class="anchor" name="5.2-tls-tickets"></a><a class="anchor" name="tls-tickets (Bind and server options)"></a><a class="anchor" name="tls-tickets (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="tls-tickets"></a><a href="#5.2-tls-tickets">tls-tickets</a></b></div><pre class="text">This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 setting which would have been inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive as
 default value.
 The TLS ticket mechanism is only used up to TLS 1.2.
@@ -29436,7 +29448,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.9.13 &ndash; Configuration Manual<br>
+							HAProxy 2.9.13-22 &ndash; Configuration Manual<br>
 							<small>, 2024/12/12</small>
 						</div>
 					</div>
