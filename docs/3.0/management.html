@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.7 - Management Guide</title>
+		<title>HAProxy version 3.0.7-41 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -307,6 +307,8 @@
 								
 							<a class="list-group-item" href="#debug">debug</a>
 							
+							<a class="list-group-item" href="#debug counters">debug counters</a>
+							
 							<a class="list-group-item" href="#debug dev">debug dev</a>
 							
 							<a class="list-group-item" href="#del">del</a>
@@ -507,7 +509,9 @@
 							
 							<a class="list-group-item" href="#set weight">set weight</a>
 							
-							<a class="list-group-item" href="#show">show</a>
+							<a class="list-group-item" href="#show (Unix Socket commands)">show (Unix Socket commands)</a>
+							
+							<a class="list-group-item" href="#show (Master CLI commands)">show (Master CLI commands)</a>
 							
 							<a class="list-group-item" href="#show acl">show acl</a>
 							
@@ -642,7 +646,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/12/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -653,7 +657,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.0.7</strong></p>
+							<p><strong>version 3.0.7-41</strong></p>
 							<p>
 								<br>
 								
@@ -2771,6 +2775,36 @@ crt-list&quot;.
 
 See also &quot;<a href="#new%20ssl%20crl-file">new ssl crl-file</a>&quot;, &quot;<a href="#set%20ssl%20crl-file">set ssl crl-file</a>&quot;, &quot;<a href="#abort%20ssl%20crl-file">abort ssl crl-file</a>&quot; and
 &quot;<a href="#add%20ssl%20crt-list">add ssl crt-list</a>&quot;.
+</pre><a class="anchor" name="debug"></a><a class="anchor" name="9-debug"></a><a class="anchor" name="9.3-debug"></a><a class="anchor" name="debug (Statistics and monitoring)"></a><a class="anchor" name="debug (Unix Socket commands)"></a><a class="anchor" name="debug counters"></a><a class="anchor" name="9-debug counters"></a><a class="anchor" name="9.3-debug counters"></a><a class="anchor" name="debug counters (Statistics and monitoring)"></a><a class="anchor" name="debug counters (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="debug counters"></a><a href="#9.3-debug%20counters">debug counters</a></b> <span style="color: #008">[reset|show|all|bug|chk|cnt|glt|?]</span>*</div><pre class="text">List internal counters placed in the code, which may vary depending on some
+build options. Some of them depend on DEBUG_STRICT, others on DEBUG_GLITCHES.
+The command takes a combination of multiple arguments, some defining actions
+and others defining filters:
+  - bug     enables listing the counters for BUG_ON() statements
+  - cnt     enables listing the counters for COUNT_IF() statements
+  - chk     enables listing the counters for CHECK_IF() statements
+  - glt     enables listing the counters for COUNT_GLITCH() statements
+  - all     enables showing counters that never triggered (value 0)
+  - reset   action: resets all specified counters
+  - show    action: shows all specified counters
+
+By default, the action is &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">show<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#show%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#show%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; to show counters, and the listed counters
+are all types with a non-zero value. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">show<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#show%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#show%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; command is implicit when no
+other action is specified, and is only present to ease the production of
+commands from scripts.
+
+The output starts with an integer counter, followed by the type of the
+counter in upper case, then its location in the code (file:line), the
+function name, and optionally &quot;: &quot; followed by a description. Please note
+that the output format might change between major versions, and new types
+and entries might be backported to stable versions for the purpose of
+improved debugging capabilities. Any monitoring performed on them should
+only be done in a very lenient and permissive way, and preferably not.
+
+Normally, end users will not use this command, but they may be invited to do
+so by a developer trying to figure the cause of an issue, looking for CNT or
+GLT entries. By the way, non-zero &quot;CHK&quot; entries are not expected to happen
+and should be reported to developers as they might indicate some incorrect
+assumptions in the code.
 </pre><a class="anchor" name="debug"></a><a class="anchor" name="9-debug"></a><a class="anchor" name="9.3-debug"></a><a class="anchor" name="debug (Statistics and monitoring)"></a><a class="anchor" name="debug (Unix Socket commands)"></a><a class="anchor" name="debug dev"></a><a class="anchor" name="9-debug dev"></a><a class="anchor" name="9.3-debug dev"></a><a class="anchor" name="debug dev (Statistics and monitoring)"></a><a class="anchor" name="debug dev (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="debug dev"></a><a href="#9.3-debug%20dev">debug dev</a></b> <span style="color: #080">&lt;command&gt;</span> <span style="color: #008">[args]</span>*</div><pre class="text">Call a developer-specific command. Only supported on a CLI connection running
 in expert mode (see &quot;expert-mode on&quot;). Such commands are extremely dangerous
 and not forgiving, any misuse may result in a crash of the process. They are
@@ -5279,7 +5313,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.7 &ndash; Management Guide<br>
+							HAProxy 3.0.7-41 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
