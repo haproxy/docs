@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev3-31 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev3-41 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4448,7 +4448,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4459,7 +4459,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev3-31</strong></p>
+							<p><strong>version 3.2-dev3-41</strong></p>
 							<p>
 								2025/01/09<br>
 								
@@ -21377,16 +21377,15 @@ to those used by TCP.
 Default value: cubic
 
 It is possible to enable pacing if the algorithm is compatible. This is done
-by specifying an optional burst argument as described in the next paragraph.
+by setting an optional integer argument as described in the next paragraph.
 The purpose of pacing is to smooth emission of data to reduce network losses.
-In some scenario, it can significantly improve network throughput by avoiding
-retransmissions. However, it can also increase CPU usage if haproxy is forced
-to wait too long between each emission. Pacing support is still experimental,
-as such it requires &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. The BBR congestion
-control algorithm depends on the pacing support which is in this case
-implicitly enabled by choosing the &quot;bbr&quot; algorithm. Note that haproxy's BBR
-implementation is still considered as experimental and cannot be enabled
-without &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
+In most scenario, it can significantly improve network throughput by avoiding
+retransmissions. Pacing support is still experimental, as such it requires
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. The BBR congestion control algorithm
+depends on the pacing support which is in this case implicitly enabled by
+choosing the &quot;bbr&quot; algorithm. Note that haproxy's BBR implementation is still
+considered as experimental and cannot be enabled without
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
 
 For further customization, a list of parameters can be specified after the
 algorithm token. It must be written between parenthesis, separated by a
@@ -21394,16 +21393,10 @@ comma. Each argument is optional and can be empty if needed. Here is the
 mandatory order of each parameters :
 - maximum window size in bytes. It must be greater than 10k and smaller than
   4g. By default &quot;<a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>&quot; value is used.
-- burst size in datagrams. By default, it is set to 0, which means unlimited.
-  A positive value up to 1024 can be specified to smooth emission using
-  pacing. Lower values provide a smoother traffic (hence less losses) at the
-  expense of a higher CPU usage, while higher values will reduce CPU usage
-  and provide a slightly more bursty traffic. Note that a datagram is usually
-  around 1252 bytes, and that a typical receive buffer is 208kB or 170
-  datagrams, so in order to keep the traffic smooth, bursts should only
-  represent a small fraction of this value (between a few units to a few tens
-  at most). See above paragraph for more explanation. This parameter is
-  ignored by BBR.
+- pacing activation. By default, it is set to 0, which means pacing is not
+  used. To activate it, specify a positive value. Burst size will be
+  dynamically adjusted to adapt to the network conditions. This parameter is
+  ignored by BBR as pacing is automatically activated for this algorithm.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21411,8 +21404,8 @@ mandatory order of each parameters :
 quic-cc-algo newreno
 <span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
 quic-cc-algo cubic(1m)
-<span class="comment"># cubic with pacing on top of it, with burst limited to 12 datagrams</span>
-quic-cc-algo cubic(,12)
+<span class="comment"># cubic with pacing activated on top of it</span>
+quic-cc-algo cubic(,1)
 </code></pre>
 </div><pre class="text">A special value &quot;nocc&quot; may be used to force a fixed congestion window always
 set at the maximum size. It is reserved for debugging scenarios to remove any
@@ -31771,7 +31764,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev3-31 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev3-41 &ndash; Configuration Manual<br>
 							<small>, 2025/01/09</small>
 						</div>
 					</div>
