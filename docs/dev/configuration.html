@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev4-29 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev4-56 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4452,7 +4452,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4463,7 +4463,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev4-29</strong></p>
+							<p><strong>version 3.2-dev4-56</strong></p>
 							<p>
 								2025/01/24<br>
 								
@@ -25670,6 +25670,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-str">str(&lt;string&gt;)</a></td><td >string</td></tr>
 <tr><td ><a href="#7-table_avl">table_avl([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-table_cnt">table_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-term_events">term_events</a></td><td >string</td></tr>
 <tr><td ><a href="#7-thread">thread</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-txn.id32">txn.id32</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-txn.sess_term_state">txn.sess_term_state</a></td><td >string</td></tr>
@@ -26053,9 +26054,30 @@ certain connections upon graceful shutdown.
 </pre><a class="anchor" name="str"></a><a class="anchor" name="7-str"></a><a class="anchor" name="7.3.2-str"></a><a class="anchor" name="str (Using ACLs and fetching samples)"></a><a class="anchor" name="str (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="str"></a><a href="#7.3.2-str">str</a></b>(<span style="color: #080">&lt;string&gt;</span>) : string</div><pre class="text">Returns a string.
 </pre><a class="anchor" name="table_avl"></a><a class="anchor" name="7-table_avl"></a><a class="anchor" name="7.3.2-table_avl"></a><a class="anchor" name="table_avl (Using ACLs and fetching samples)"></a><a class="anchor" name="table_avl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="table_avl"></a><a href="#7.3.2-table_avl">table_avl</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the total number of available entries in the current proxy's
 stick-table or in the designated stick-table. See also &quot;<a href="#table_cnt">table_cnt</a>&quot;.
-</pre><a class="anchor" name="table_cnt"></a><a class="anchor" name="7-table_cnt"></a><a class="anchor" name="7.3.2-table_cnt"></a><a class="anchor" name="table_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_cnt (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="table_cnt"></a><a href="#7.3.2-table_cnt">table_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">Returns the total number of entries currently in use in the current proxy's
-stick-table or in the designated stick-table. See also &quot;<a href="#table_conn_cnt">table_conn_cnt</a>&quot; and
-table_avl for other entry counting methods.
+</pre><a class="anchor" name="table_cnt"></a><a class="anchor" name="7-table_cnt"></a><a class="anchor" name="7.3.2-table_cnt"></a><a class="anchor" name="table_cnt (Using ACLs and fetching samples)"></a><a class="anchor" name="table_cnt (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="table_cnt"></a><a href="#7.3.2-table_cnt">table_cnt</a></b>(<span style="color: #008">[<span style="color: #080">&lt;table&gt;</span>]</span>) : integer</div><pre class="text">  Returns the total number of entries currently in use in the current proxy's
+  stick-table or in the designated stick-table. See also &quot;<a href="#table_conn_cnt">table_conn_cnt</a>&quot; and
+  table_avl for other entry counting methods.
+
+term_events: string
+  Returns all known termination events for all entities attached a stream, on
+  client and server sides. A tuple of seven elements is returned with following info:
+
+    - the termination events of the frontend connection
+    - the termination events of the frontend mux connection
+    - the termination events of the frontend stream endpoint descriptor
+      (the mux stream or the applet)
+    - the termination events of the stream
+    - the termination events of the backend stream endpoint descriptor
+      (the mux stream or the applet)
+    - the termination events of the backend mux connection
+    - the termination events of the backend connection
+
+  At each level, the first four events are reported. An empty string is
+  returned if no event was reported yet for a specific level. If termination
+  events are not supported, a &quot;-&quot; is returned.
+
+  It must only be used for debugging purpose. The exact format is not
+  documented because it may evolve depending on developers requirements.
 </pre><a class="anchor" name="thread"></a><a class="anchor" name="7-thread"></a><a class="anchor" name="7.3.2-thread"></a><a class="anchor" name="thread (Using ACLs and fetching samples)"></a><a class="anchor" name="thread (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#7.3.2-thread">thread</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread calling
 the function, between 0 and (global.nbthread-1). This is useful for logging
 and debugging purposes.
@@ -31792,7 +31814,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev4-29 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev4-56 &ndash; Configuration Manual<br>
 							<small>, 2025/01/24</small>
 						</div>
 					</div>
