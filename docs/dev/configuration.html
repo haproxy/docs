@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev4-56 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev4-63 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4167,6 +4167,8 @@
 							
 							<a class="list-group-item" href="#tune.max-checks-per-thread">tune.max-checks-per-thread</a>
 							
+							<a class="list-group-item" href="#tune.max-rules-at-once">tune.max-rules-at-once</a>
+							
 							<a class="list-group-item" href="#tune.maxaccept">tune.maxaccept</a>
 							
 							<a class="list-group-item" href="#tune.maxpollevents">tune.maxpollevents</a>
@@ -4452,7 +4454,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4463,7 +4465,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev4-56</strong></p>
+							<p><strong>version 3.2-dev4-63</strong></p>
 							<p>
 								2025/01/24<br>
 								
@@ -7223,6 +7225,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.maxaccept">tune.maxaccept</a>
    - <a href="#tune.maxpollevents">tune.maxpollevents</a>
    - <a href="#tune.maxrewrite">tune.maxrewrite</a>
+   - <a href="#tune.max-rules-at-once">tune.max-rules-at-once</a>
    - <a href="#tune.memory.hot-size">tune.memory.hot-size</a>
    - <a href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
    - <a href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
@@ -9253,6 +9256,26 @@ to already large requests or to POST requests. It is generally wise to set it
 to about 1024. It is automatically readjusted to half of bufsize if it is
 larger than that. This means you don't have to worry about it when changing
 bufsize.
+</pre><a class="anchor" name="tune.max-rules-at-once"></a><a class="anchor" name="3-tune.max-rules-at-once"></a><a class="anchor" name="3.2-tune.max-rules-at-once"></a><a class="anchor" name="tune.max-rules-at-once (Global parameters)"></a><a class="anchor" name="tune.max-rules-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-rules-at-once"></a><a href="#3.2-tune.max-rules-at-once">tune.max-rules-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of rules that can be evaluated at once in ruleset
+evaluating functions, provided that they support yielding. Indeed, it is
+not rare to see configurations with a large number of &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;
+or &quot;<a href="#http-request">http-request</a>&quot; rules for instance. A large number of rules combined with
+cpu-demanding actions (e.g.: actions that work on content) may create thread
+contention as all the rules from a given ruleset are evaluated under the same
+polling loop if the evaluation is not interrupted. This option ensures that no
+more than &lt;number&gt; number of rules may be excecuted under the same polling
+loop for content-oriented rulesets (those that already support yielding due
+to content inspection). What it does is that it forces the evaluating function
+to yield, so that it comes back on the next polling loop to continues the
+evaluation.
+
+Affected rulesets are:
+ - &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;
+ - &quot;<a href="#tcp-response%20content">tcp-response content</a>&quot;
+ - &quot;<a href="#http-request">http-request</a>&quot;
+ - &quot;<a href="#http-response">http-response</a>&quot;
+
+The default value is 50.
 </pre><a class="anchor" name="tune.memory.hot-size"></a><a class="anchor" name="3-tune.memory.hot-size"></a><a class="anchor" name="3.2-tune.memory.hot-size"></a><a class="anchor" name="tune.memory.hot-size (Global parameters)"></a><a class="anchor" name="tune.memory.hot-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.memory.hot-size"></a><a href="#3.2-tune.memory.hot-size">tune.memory.hot-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the per-thread amount of memory that will be kept hot in the local cache
 and will never be recoverable by other threads. Access to this memory is very
 fast (lockless), and having enough is critical to maintain a good performance
@@ -31814,7 +31837,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev4-56 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev4-63 &ndash; Configuration Manual<br>
 							<small>, 2025/01/24</small>
 						</div>
 					</div>
