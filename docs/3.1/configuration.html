@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1.3-1 - Configuration Manual</title>
+		<title>HAProxy version 3.1.4 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4071,6 +4071,8 @@
 							
 							<a class="list-group-item" href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
 							
+							<a class="list-group-item" href="#tune.epoll.mask-events">tune.epoll.mask-events</a>
+							
 							<a class="list-group-item" href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
 							
 							<a class="list-group-item" href="#tune.fail-alloc">tune.fail-alloc</a>
@@ -4426,7 +4428,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/01/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4437,9 +4439,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1.3-1</strong></p>
+							<p><strong>version 3.1.4</strong></p>
 							<p>
-								2025/01/29<br>
+								2025/02/19<br>
 								
 							</p>
 						</div>
@@ -7159,6 +7161,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
+   - <a href="#tune.epoll.mask-events">tune.epoll.mask-events</a>
    - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
@@ -8775,7 +8778,32 @@ optimize the data fast-forwarding by avoiding to use the channel's buffer.
 Thanks to this directive, it is possible to disable this optimization. Note
 it also disable any kernel tcp splicing.
 </pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.applet.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
-<a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
+<a class="anchor" name="tune.epoll.mask-events"></a><a class="anchor" name="3-tune.epoll.mask-events"></a><a class="anchor" name="3.2-tune.epoll.mask-events"></a><a class="anchor" name="tune.epoll.mask-events (Global parameters)"></a><a class="anchor" name="tune.epoll.mask-events (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.epoll.mask-events"></a><a href="#3.2-tune.epoll.mask-events">tune.epoll.mask-events</a></b> <span style="color: #080">&lt;event<span style="color: #008">[,...]</span>&gt;</span></div><pre class="text">Along HAProxy's history, a few complex issues were met that were caused by
+bugs in the epoll mechanism in the Linux kernel. These ones usually are very
+rare and unreproducible outside the reporter's environment, and may only be
+worked around by disabling epoll and switching to poll instead, which is not
+very satisfying for high performance environments. Each time, issues affect
+only very specific (and rare) event types, and offering the ability to mask
+them can constitute a more acceptable work-around. This options offers this
+possibility by permitting to silently ignore events a few uncommon events
+and replace them with an input (which reports an unspecified incoming event).
+The effect is to avoid the fast error processing paths in certain places and
+only use the common paths. This should never be used unless being invited to
+do so by an expert in order to diagnose or work around a kernel bug.
+
+The option takes a single argument which is a comma-delimited list of words
+each designating an event to be masked. The currently supported list of
+events is:
+  - &quot;err&quot;:   mask the EPOLLERR event
+  - &quot;hup&quot;:   mask the EPOLLHUP events
+  - &quot;rdhup&quot;: mask the EPOLLRDHUP events
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># mask all non-traffic epoll events:</span>
+tune.epoll.mask-events err,hup,rdhup
+</code></pre>
+</div><a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
 task handler (from event_hdl API). &lt;number&gt; should be included between 1
 and 10000. Large number could cause thread contention as a result of the
 task doing heavy work without interruption, and on the other hand, small
@@ -15332,7 +15360,8 @@ May be used in the following contexts: tcp, http
            third retry. You can disable redispatches with a value of 0.</pre>
 </div>
 <pre class="text">In HTTP mode, if a server designated by a cookie is down, clients may
-definitely stick to it because they cannot flush the cookie, so they will not
+definitely stick to it, for example when using &quot;<a href="#option%20persist">option persist</a>&quot; or
+&quot;<a href="#force-persist">force-persist</a>&quot;, because they cannot flush the cookie, so they will not
 be able to access the service anymore.
 
 Specifying &quot;<a href="#option%20redispatch">option redispatch</a>&quot; will allow the proxy to break cookie or
@@ -15364,7 +15393,7 @@ value.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#retries">retries</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20persist">option persist</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;, &quot;<a href="#retries">retries</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redis-check"></a><a class="anchor" name="4-option redis-check"></a><a class="anchor" name="4.2-option redis-check"></a><a class="anchor" name="option redis-check (Proxies)"></a><a class="anchor" name="option redis-check (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redis-check"></a><a href="#4.2-option%20redis-check">option redis-check</a></b></div><pre class="text">Use redis health checks for server testing
 
 May be used in the following contexts: tcp
@@ -21327,16 +21356,15 @@ to those used by TCP.
 Default value: cubic
 
 It is possible to enable pacing if the algorithm is compatible. This is done
-by specifying an optional burst argument as described in the next paragraph.
+by setting an optional integer argument as described in the next paragraph.
 The purpose of pacing is to smooth emission of data to reduce network losses.
-In some scenario, it can significantly improve network throughput by avoiding
-retransmissions. However, it can also increase CPU usage if haproxy is forced
-to wait too long between each emission. Pacing support is still experimental,
-as such it requires &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. The BBR congestion
-control algorithm depends on the pacing support which is in this case
-implicitly enabled by choosing the &quot;bbr&quot; algorithm. Note that haproxy's BBR
-implementation is still considered as experimental and cannot be enabled
-without &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
+In most scenario, it can significantly improve network throughput by avoiding
+retransmissions. Pacing support is still experimental, as such it requires
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;. The BBR congestion control algorithm
+depends on the pacing support which is in this case implicitly enabled by
+choosing the &quot;bbr&quot; algorithm. Note that haproxy's BBR implementation is still
+considered as experimental and cannot be enabled without
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot;.
 
 For further customization, a list of parameters can be specified after the
 algorithm token. It must be written between parenthesis, separated by a
@@ -21344,16 +21372,10 @@ comma. Each argument is optional and can be empty if needed. Here is the
 mandatory order of each parameters :
 - maximum window size in bytes. It must be greater than 10k and smaller than
   4g. By default &quot;<a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>&quot; value is used.
-- burst size in datagrams. By default, it is set to 0, which means unlimited.
-  A positive value up to 1024 can be specified to smooth emission using
-  pacing. Lower values provide a smoother traffic (hence less losses) at the
-  expense of a higher CPU usage, while higher values will reduce CPU usage
-  and provide a slightly more bursty traffic. Note that a datagram is usually
-  around 1252 bytes, and that a typical receive buffer is 208kB or 170
-  datagrams, so in order to keep the traffic smooth, bursts should only
-  represent a small fraction of this value (between a few units to a few tens
-  at most). See above paragraph for more explanation. This parameter is
-  ignored by BBR.
+- pacing activation. By default, it is set to 0, which means pacing is not
+  used. To activate it, specify a positive value. Burst size will be
+  dynamically adjusted to adapt to the network conditions. This parameter is
+  ignored by BBR as pacing is automatically activated for this algorithm.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21361,8 +21383,8 @@ mandatory order of each parameters :
 quic-cc-algo newreno
 <span class="comment"># cubic congestion control algorithm with one megabytes as window</span>
 quic-cc-algo cubic(1m)
-<span class="comment"># cubic with pacing on top of it, with burst limited to 12 datagrams</span>
-quic-cc-algo cubic(,12)
+<span class="comment"># cubic with pacing activated on top of it</span>
+quic-cc-algo cubic(,1)
 </code></pre>
 </div><pre class="text">A special value &quot;nocc&quot; may be used to force a fixed congestion window always
 set at the maximum size. It is reserved for debugging scenarios to remove any
@@ -31730,8 +31752,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1.3-1 &ndash; Configuration Manual<br>
-							<small>, 2025/01/29</small>
+							HAProxy 3.1.4 &ndash; Configuration Manual<br>
+							<small>, 2025/02/19</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
