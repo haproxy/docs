@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev6-17 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev6-18 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1601,6 +1601,10 @@
 							<a class="list-group-item" href="#compression algo-res">compression algo-res</a>
 							
 							<a class="list-group-item" href="#compression direction">compression direction</a>
+							
+							<a class="list-group-item" href="#compression minsize-req">compression minsize-req</a>
+							
+							<a class="list-group-item" href="#compression minsize-res">compression minsize-res</a>
 							
 							<a class="list-group-item" href="#compression offload">compression offload</a>
 							
@@ -4456,7 +4460,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4467,7 +4471,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev6-17</strong></p>
+							<p><strong>version 3.2-dev6-18</strong></p>
 							<p>
 								2025/02/19<br>
 								
@@ -11672,6 +11676,8 @@ Compression is disabled when:
   * The response contains a &quot;Content-Encoding&quot; header, indicating that the
     response is already compressed (see compression offload)
   * The response contains an invalid &quot;ETag&quot; header or multiple ETag headers
+  * The payload size is smaller than the minimum size
+    (see compression minsize-res)
 
 Note: The compression does not emit the Warning header.
 </pre><div class="separator">
@@ -11680,8 +11686,19 @@ Note: The compression does not emit the Warning header.
 <code>compression algo gzip
 compression type text/html text/plain
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#compression%20offload">compression offload</a>&quot;, &quot;<a href="#compression%20direction">compression direction</a>&quot;</div>
-<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression offload"></a><a class="anchor" name="4-compression offload"></a><a class="anchor" name="4.2-compression offload"></a><a class="anchor" name="compression offload (Proxies)"></a><a class="anchor" name="compression offload (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression offload"></a><a href="#4.2-compression%20offload">compression offload</a></b></div><pre class="text">Makes HAProxy work as a compression offloader only.
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#compression%20offload">compression offload</a>&quot;, &quot;<a href="#compression%20direction">compression direction</a>&quot;, &quot;<a href="#compression%20minsize-req">compression minsize-req</a>&quot; and &quot;<a href="#compression%20minsize-res">compression minsize-res</a>&quot;</div>
+<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression minsize-req"></a><a class="anchor" name="4-compression minsize-req"></a><a class="anchor" name="4.2-compression minsize-req"></a><a class="anchor" name="compression minsize-req (Proxies)"></a><a class="anchor" name="compression minsize-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression minsize-req"></a><a href="#4.2-compression%20minsize-req">compression minsize-req</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression minsize-res"></a><a class="anchor" name="4-compression minsize-res"></a><a class="anchor" name="4.2-compression minsize-res"></a><a class="anchor" name="compression minsize-res (Proxies)"></a><a class="anchor" name="compression minsize-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression minsize-res"></a><a href="#4.2-compression%20minsize-res">compression minsize-res</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the minimum payload size in bytes for compression to be applied.
+
+May be used in the following contexts: http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<pre class="text">Payloads smaller than this size will not be compressed, avoiding unnecessary
+CPU overhead for data that would not significantly benefit from compression.
+&quot;minsize-req&quot; applies on requests and &quot;minsize-res&quot; on responses.
+The default value is 0.
+</pre><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression offload"></a><a class="anchor" name="4-compression offload"></a><a class="anchor" name="4.2-compression offload"></a><a class="anchor" name="compression offload (Proxies)"></a><a class="anchor" name="compression offload (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression offload"></a><a href="#4.2-compression%20offload">compression offload</a></b></div><pre class="text">Makes HAProxy work as a compression offloader only.
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -31896,7 +31913,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev6-17 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev6-18 &ndash; Configuration Manual<br>
 							<small>, 2025/02/19</small>
 						</div>
 					</div>
