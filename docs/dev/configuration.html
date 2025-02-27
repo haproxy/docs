@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev6-23 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev6-30 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3882,6 +3882,8 @@
 							
 							<a class="list-group-item" href="#strict-limits">strict-limits</a>
 							
+							<a class="list-group-item" href="#strict-maxconn">strict-maxconn</a>
+							
 							<a class="list-group-item" href="#strict-mode">strict-mode</a>
 							
 							<a class="list-group-item" href="#strict-sni">strict-sni</a>
@@ -4275,6 +4277,8 @@
 							
 							<a class="list-group-item" href="#tune.stick-counters">tune.stick-counters</a>
 							
+							<a class="list-group-item" href="#tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a>
+							
 							<a class="list-group-item" href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
 							
 							<a class="list-group-item" href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
@@ -4460,7 +4464,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4471,7 +4475,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev6-23</strong></p>
+							<p><strong>version 3.2-dev6-30</strong></p>
 							<p>
 								2025/02/19<br>
 								
@@ -7278,6 +7282,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
    - tune.ssl.ocsp-update.maxdelay (deprecated)
    - tune.ssl.ocsp-update.mindelay (deprecated)
+   - <a href="#tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a>
    - <a href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
    - <a href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
    - <a href="#tune.vars.reqres-max-size">tune.vars.reqres-max-size</a>
@@ -9669,6 +9674,16 @@ consumption per request by 320 bytes and will cause this memory to be erased
 for each request, which does have measurable CPU impacts. Conversely, when
 no &quot;track-sc&quot; rules are used, the value may be lowered (0 being valid to
 entirely disable stick-counters).
+</pre><a class="anchor" name="tune.takeover-other-tg-connections"></a><a class="anchor" name="3-tune.takeover-other-tg-connections"></a><a class="anchor" name="3.2-tune.takeover-other-tg-connections"></a><a class="anchor" name="tune.takeover-other-tg-connections (Global parameters)"></a><a class="anchor" name="tune.takeover-other-tg-connections (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.takeover-other-tg-connections"></a><a href="#3.2-tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">By default, we won't attempt to use idle connections from other thread groups.
+This can however be changed. Valid values for &lt;value&gt; are : &quot;none&quot;, the
+default, if used, no attempt will be made to use idle connections from
+other thread groups, &quot;restricted&quot; where we will only attempt to get an idle
+connection from another thread if we're using protocols that can't create
+new connections, such as reverse http, as well as when using strict-maxconn,
+and &quot;full&quot; where we will always look in other thread groups for idle
+connections.
+Note that using connections from other thread groups can occur performance
+penalties, so it should not be used unless really needed.
 </pre><a class="anchor" name="tune.vars.global-max-size"></a><a class="anchor" name="3-tune.vars.global-max-size"></a><a class="anchor" name="3.2-tune.vars.global-max-size"></a><a class="anchor" name="tune.vars.global-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.global-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.global-max-size"></a><a href="#3.2-tune.vars.global-max-size">tune.vars.global-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.proc-max-size"></a><a class="anchor" name="3-tune.vars.proc-max-size"></a><a class="anchor" name="3.2-tune.vars.proc-max-size"></a><a class="anchor" name="tune.vars.proc-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.proc-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.proc-max-size"></a><a href="#3.2-tune.vars.proc-max-size">tune.vars.proc-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.reqres-max-size"></a><a class="anchor" name="3-tune.vars.reqres-max-size"></a><a class="anchor" name="3.2-tune.vars.reqres-max-size"></a><a class="anchor" name="tune.vars.reqres-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.reqres-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.reqres-max-size"></a><a href="#3.2-tune.vars.reqres-max-size">tune.vars.reqres-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.sess-max-size"></a><a class="anchor" name="3-tune.vars.sess-max-size"></a><a class="anchor" name="3.2-tune.vars.sess-max-size"></a><a class="anchor" name="tune.vars.sess-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.sess-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.sess-max-size"></a><a href="#3.2-tune.vars.sess-max-size">tune.vars.sess-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.txn-max-size"></a><a class="anchor" name="3-tune.vars.txn-max-size"></a><a class="anchor" name="3.2-tune.vars.txn-max-size"></a><a class="anchor" name="tune.vars.txn-max-size (Global parameters)"></a><a class="anchor" name="tune.vars.txn-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.txn-max-size"></a><a href="#3.2-tune.vars.txn-max-size">tune.vars.txn-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">These five tunes help to manage the maximum amount of memory used by the
 variables system. &quot;global&quot; limits the overall amount of memory available for
 all scopes. &quot;<a href="#proc">proc</a>&quot; limits the memory for the process scope, &quot;sess&quot; limits the
@@ -22973,6 +22988,18 @@ setting which would have been inherited from &quot;<span class="dropdown"><a cla
 default value.
 It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%29">Peers</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#non-stick">non-stick</a>&quot; setting.
+</pre><a class="anchor" name="strict-maxconn"></a><a class="anchor" name="5-strict-maxconn"></a><a class="anchor" name="5.2-strict-maxconn"></a><a class="anchor" name="strict-maxconn (Bind and server options)"></a><a class="anchor" name="strict-maxconn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="strict-maxconn"></a><a href="#5.2-strict-maxconn">strict-maxconn</a></b></div><pre class="text">May be used in the following contexts: tcp, http
+
+maxconn to servers is a bit of a misnomer, it actually configure the maximum
+number of requests we send to a server, but with idle connections, we may
+have more total connections to the server. If a strict limit of connections
+to a server is required, then adding strict-maxconn can be used. We will
+then never establish more connections to a server than maxconn, and try to
+reuse or kill connections if needed. Please note, however, than it may lead
+to failed requests in case we can't establish a new connection, and no
+idle connection is available. This can happen when 'private&quot; connections
+are established, connections tied only to a session, because authentication
+happened.
 </pre><a class="anchor" name="socks4"></a><a class="anchor" name="5-socks4"></a><a class="anchor" name="5.2-socks4"></a><a class="anchor" name="socks4 (Bind and server options)"></a><a class="anchor" name="socks4 (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="socks4"></a><a href="#5.2-socks4">socks4</a></b> <span style="color: #080">&lt;addr&gt;</span>:<span style="color: #080">&lt;port&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This option enables upstream socks4 tunnel for outgoing connections to the
@@ -31913,7 +31940,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev6-23 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev6-30 &ndash; Configuration Manual<br>
 							<small>, 2025/02/19</small>
 						</div>
 					</div>
