@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev6-57 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev6-68 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2620,6 +2620,8 @@
 							
 							<a class="list-group-item" href="#option allbackups">option allbackups</a>
 							
+							<a class="list-group-item" href="#option assume-rfc6587-ntf">option assume-rfc6587-ntf</a>
+							
 							<a class="list-group-item" href="#option checkcache">option checkcache</a>
 							
 							<a class="list-group-item" href="#option clitcpka">option clitcpka</a>
@@ -2627,6 +2629,8 @@
 							<a class="list-group-item" href="#option contstats">option contstats</a>
 							
 							<a class="list-group-item" href="#option disable-h2-upgrade">option disable-h2-upgrade</a>
+							
+							<a class="list-group-item" href="#option dont-parse-log">option dont-parse-log</a>
 							
 							<a class="list-group-item" href="#option dontlog-normal">option dontlog-normal</a>
 							
@@ -4464,7 +4468,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4475,7 +4479,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev6-57</strong></p>
+							<p><strong>version 3.2-dev6-68</strong></p>
 							<p>
 								2025/02/19<br>
 								
@@ -10338,6 +10342,14 @@ log-forward sylog-loadb
 </div><a class="anchor" name="maxconn"></a><a class="anchor" name="3-maxconn"></a><a class="anchor" name="3.10-maxconn"></a><a class="anchor" name="maxconn (Global parameters)"></a><a class="anchor" name="maxconn (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="maxconn"></a><a href="#3.10-maxconn">maxconn</a></b> <span style="color: #080">&lt;conns&gt;</span></div><pre class="text">Fix the maximum number of concurrent connections on a log forwarder.
 10 is the default.
 </pre><a class="anchor" name="timeout"></a><a class="anchor" name="3-timeout"></a><a class="anchor" name="3.10-timeout"></a><a class="anchor" name="timeout (Global parameters)"></a><a class="anchor" name="timeout (Log forwarding)"></a><a class="anchor" name="timeout client"></a><a class="anchor" name="3-timeout client"></a><a class="anchor" name="3.10-timeout client"></a><a class="anchor" name="timeout client (Global parameters)"></a><a class="anchor" name="timeout client (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="timeout client"></a><a href="#3.10-timeout%20client">timeout client</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Set the maximum inactivity time on the client side.
+</pre><a class="anchor" name="option"></a><a class="anchor" name="3-option"></a><a class="anchor" name="3.10-option"></a><a class="anchor" name="option (Global parameters)"></a><a class="anchor" name="option (Log forwarding)"></a><a class="anchor" name="option assume-rfc6587-ntf"></a><a class="anchor" name="3-option assume-rfc6587-ntf"></a><a class="anchor" name="3.10-option assume-rfc6587-ntf"></a><a class="anchor" name="option assume-rfc6587-ntf (Global parameters)"></a><a class="anchor" name="option assume-rfc6587-ntf (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="option assume-rfc6587-ntf"></a><a href="#3.10-option%20assume-rfc6587-ntf">option assume-rfc6587-ntf</a></b></div><pre class="text">Directs HAProxy to treat incoming TCP log streams always as using
+non-transparent framing. This option simplifies the framing logic and ensures
+consistent handling of messages, particularly useful when dealing with
+improperly formed starting characters.
+</pre><a class="anchor" name="option"></a><a class="anchor" name="3-option"></a><a class="anchor" name="3.10-option"></a><a class="anchor" name="option (Global parameters)"></a><a class="anchor" name="option (Log forwarding)"></a><a class="anchor" name="option dont-parse-log"></a><a class="anchor" name="3-option dont-parse-log"></a><a class="anchor" name="3.10-option dont-parse-log"></a><a class="anchor" name="option dont-parse-log (Global parameters)"></a><a class="anchor" name="option dont-parse-log (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="option dont-parse-log"></a><a href="#3.10-option%20dont-parse-log">option dont-parse-log</a></b></div><pre class="text">Enables HAProxy to relay syslog messages without attempting to parse and
+restructure them, useful for forwarding messages that may not conform to
+traditional formats. This option should be used with the format raw setting on
+destination log targets to ensure the original message content is preserved.
 </pre></div>
 <a class="anchor" id="3.11" name="3.11"></a>
 <h2 id="chapter-3.11" data-target="3.11"><small><a class="small" href="#3.11">3.11.</a></small> HTTPClient tuning</h2>
@@ -31946,7 +31958,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev6-57 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev6-68 &ndash; Configuration Manual<br>
 							<small>, 2025/02/19</small>
 						</div>
 					</div>
