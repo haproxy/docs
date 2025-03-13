@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev7-3 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev7-17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2648,6 +2648,8 @@
 							
 							<a class="list-group-item" href="#option h1-case-adjust-bogus-server">option h1-case-adjust-bogus-server</a>
 							
+							<a class="list-group-item" href="#option host">option host</a>
+							
 							<a class="list-group-item" href="#option http-buffer-request">option http-buffer-request</a>
 							
 							<a class="list-group-item" href="#option http-ignore-probes">option http-ignore-probes</a>
@@ -4468,7 +4470,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4479,7 +4481,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev7-3</strong></p>
+							<p><strong>version 3.2-dev7-17</strong></p>
 							<p>
 								2025/03/07<br>
 								
@@ -10350,6 +10352,39 @@ improperly formed starting characters.
 restructure them, useful for forwarding messages that may not conform to
 traditional formats. This option should be used with the format raw setting on
 destination log targets to ensure the original message content is preserved.
+</pre><a class="anchor" name="option"></a><a class="anchor" name="3-option"></a><a class="anchor" name="3.10-option"></a><a class="anchor" name="option (Global parameters)"></a><a class="anchor" name="option (Log forwarding)"></a><a class="anchor" name="option host"></a><a class="anchor" name="3-option host"></a><a class="anchor" name="3.10-option host"></a><a class="anchor" name="option host (Global parameters)"></a><a class="anchor" name="option host (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="option host"></a><a href="#3.10-option%20host">option host</a></b> <span style="color: #800">{ replace | fill | keep | append }</span></div><pre class="text">Set the host strategy that should be used on the log-forward section
+regarding syslog host field for outbound rfc3164 or rfc5424 messages.
+
+    replace If input message already contains a value for the host field,
+            we replace it by the source IP address from the sender.
+            If input message doesn't contain a value for the host field (ie:
+            '-' as input rfc5424 message or non compliant rfc3164 or rfc5424
+            message), we use the source IP address from the sender as host
+            field.
+
+    fill    If input message already contains a value for the host field,
+            we keep it.
+            If input message doesn't contain a value for the host field
+            (ie: '-' as input rfc5424 message or non compliant rfc3164 or
+            rfc5424 message), we use the source IP address from the sender as
+            host field.
+            (This is the default)
+
+    keep    If input message already contains a value for the host field,
+            we keep it.
+            If input message doesn't contain a value for the host field,
+            we set it to 'localhost' (rfc3164) or '-' (rfc5424).
+
+    append  If input message already contains a value for the host field,
+            we append a comma followed by the IP address from the sender.
+            If input message doesn't contain a value for the host field,
+            we use the source IP address from the sender.
+
+For all options above, if the source IP address from the sender is not
+available (ie: UNIX/ABNS socket), then the resulting strategy is &quot;keep&quot;.
+
+Note that this option is only relevant for rfc3164 or rfc5424 destination
+log format. Else setting the option will have no visible effect.
 </pre></div>
 <a class="anchor" id="3.11" name="3.11"></a>
 <h2 id="chapter-3.11" data-target="3.11"><small><a class="small" href="#3.11">3.11.</a></small> HTTPClient tuning</h2>
@@ -31958,7 +31993,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev7-3 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev7-17 &ndash; Configuration Manual<br>
 							<small>, 2025/03/07</small>
 						</div>
 					</div>
