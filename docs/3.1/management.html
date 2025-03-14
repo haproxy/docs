@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1.5-17 - Management Guide</title>
+		<title>HAProxy version 3.1.5-39 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -652,7 +652,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/02/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -663,7 +663,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.1.5-17</strong></p>
+							<p><strong>version 3.1.5-39</strong></p>
 							<p>
 								<br>
 								
@@ -1947,9 +1947,9 @@ CSV output format for monitoring tools. The same format is provided on the
 Unix socket.
 
 Statistics are regroup in categories labelled as domains, corresponding to the
-multiple components of HAProxy. There are two domains available: proxy and dns.
-If not specified, the proxy domain is selected. Note that only the proxy
-statistics are printed on the HTTP page.
+multiple components of HAProxy. There are two domains available: proxy and
+resolvers. If not specified, the proxy domain is selected. Note that only the
+proxy statistics are printed on the HTTP page.
 </pre></div>
 <a class="anchor" id="9.1" name="9.1"></a>
 <h2 id="chapter-9.1" data-target="9.1"><small><a class="small" href="#9.1">9.1.</a></small> CSV format</h2>
@@ -3944,36 +3944,47 @@ output reports less entries than really exist because it will dump all
 existing streams up to the last one that was created before the command was
 entered; those which die in the mean time will not appear.
 For supported opitons, see below.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #008">[<span style="color: #080">&lt;id&gt;</span> | older <span style="color: #080">&lt;age&gt;</span> | susp | all]</span> <span style="color: #008">[<span style="color: #080">&lt;options&gt;</span>*]</span></div><pre class="text">Display a lot of internal information about the matching streams. In the
-first form, only the stream matching the specified stream identifier will
-be shown. This identifier is the first field at the beginning of the lines in
-the dumps of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the stream pointer). In the
-second form, only streams older than &lt;age&gt; (in seconds by default) will be
-shown. Passing &quot;susp&quot; instead will only report entries that are considered as
-suspicious by the developers based on criteria that may in time or vary along
-versions. If &quot;all&quot; is used instead, then all streams will be dumped. Dumping
-many streams can produce a huge output, take a lot of time and be CPU
-intensive, so it's always better to only dump the minimum needed. Those
-information are useless to most users but may be used by haproxy developers
-to troubleshoot a complex bug. The output format is intentionally not
-documented so that it can freely evolve depending on demands. This output
-is meant to be interpreted while checking function strm_dump_to_buffer() in
-src/stream.c to figure the exact meaning of certain fields.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #008">[<span style="color: #080">&lt;id&gt;</span> | all | help]</span> <span style="color: #008">[<span style="color: #080">&lt;options&gt;</span>*]</span></div><pre class="text">Display a lot of internal information about the matching streams. The command
+knows two output formats: a short one, which is the default when not asking
+for a specific stream identifier, and an extended one when listing designated
+streams. The short format, used by default with &quot;<a href="#show%20sess">show sess</a>&quot;, only dumps one
+stream per line with a few info, and the stream identifier at the beginning
+of the line in hexadecimal (it corresponds to the pointer to the stream).
 
-It is possible to set some options to customize the dump. Here are the
-supported options:
+In the extended form, used by &quot;show sess &lt;id&gt;&quot; or &quot;show sess all&quot;, streams
+are dumped with a huge amount of debugging details over multiple lines
+(around 20 each), and still start with their identifier. The delimiter
+between streams here is the identifier at the beginning of the line; extra
+lines belonging to the same stream start with one or multiple spaces (the
+stream is dumped indented). Dumping many streams can produce a huge output,
+take a lot of time and be CPU intensive, so it's always better to only dump
+the minimum needed. Those information are useless to most users but may be
+used by HAProxy developers to troubleshoot a complex bug. The exact output
+format is intentionally not documented so that it can freely evolve depending
+on requirements, including in stable branches. This output is meant to be
+interpreted while checking function strm_dump_to_buffer() in src/stream.c to
+figure the exact meaning of certain fields.
 
-  - show-uri: Dump the transaction URI, as captured during the request
-    analysis. It is only displayed if it was captured.
+The &quot;<a href="#help">help</a>&quot; argument will show the detailed usage of the command instead of
+dumping streams.
 
-  - help:     dump a more detailed help message instead
+It is possible to set some options to customize the dump or apply some
+filters. Here are the supported options:
+  - backend &lt;b&gt;  only display streams attached to this backend
+  - frontend &lt;f&gt; only display streams attached to this frontend
+  - older &lt;age&gt;  only display streams older than &lt;age&gt; seconds
+  - server &lt;b/s&gt; only show streams attached to this backend+server
+  - show-uri     dump the transaction URI, as captured during the request
+                 analysis. It is only displayed if it was captured.
+  - susp         only show streams considered as suspicious by the developers
+                 based on criteria that may in time or vary along versions.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show stat"></a><a class="anchor" name="9-show stat"></a><a class="anchor" name="9.3-show stat"></a><a class="anchor" name="show stat (Statistics and monitoring)"></a><a class="anchor" name="show stat (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show stat"></a><a href="#9.3-show%20stat">show stat</a></b> <span style="color: #008">[domain <span style="color: #080">&lt;resolvers|proxy&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>}</span> <span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;sid&gt;</span>]</span> \
-          <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[up|no-maint]</span></div><pre class="text">Dump statistics. The domain is used to select which statistics to print; dns
-and proxy are available for now. By default, the CSV format is used; you can
-activate the extended typed output format described in the section above if
-&quot;typed&quot; is passed after the other arguments; or in JSON if &quot;json&quot; is passed
-after the other arguments. By passing &lt;id&gt;, &lt;type&gt; and &lt;sid&gt;, it is possible
-to dump only selected items :
+          <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[up|no-maint]</span></div><pre class="text">Dump statistics. The domain is used to select which statistics to print;
+resolvers and proxy are available for now. By default, the CSV format is used;
+you can activate the extended typed output format described in the section
+above if &quot;typed&quot; is passed after the other arguments; or in JSON if &quot;json&quot; is
+passed after the other arguments. By passing &lt;id&gt;, &lt;type&gt; and &lt;sid&gt;, it is
+possible to dump only selected items :
   - &lt;iid&gt; is a proxy ID, -1 to dump everything. Alternatively, a proxy name
     &lt;proxy&gt; may be specified. In this case, this proxy's ID will be used as
     the ID selector.
@@ -5394,7 +5405,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1.5-17 &ndash; Management Guide<br>
+							HAProxy 3.1.5-39 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
