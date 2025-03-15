@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev7-23 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev7-83 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1629,6 +1629,10 @@
 							<a class="list-group-item" href="#cpl">cpl</a>
 							
 							<a class="list-group-item" href="#cpu-map">cpu-map</a>
+							
+							<a class="list-group-item" href="#cpu-policy">cpu-policy</a>
+							
+							<a class="list-group-item" href="#cpu-set">cpu-set</a>
 							
 							<a class="list-group-item" href="#cpu_calls">cpu_calls</a>
 							
@@ -4470,7 +4474,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4481,7 +4485,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev7-23</strong></p>
+							<p><strong>version 3.2-dev7-83</strong></p>
 							<p>
 								2025/03/07<br>
 								
@@ -7086,6 +7090,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#chroot">chroot</a>
    - <a href="#cluster-secret">cluster-secret</a>
    - <a href="#cpu-map">cpu-map</a>
+   - <a href="#cpu-policy">cpu-policy</a>
+   - <a href="#cpu-set">cpu-set</a>
    - <a href="#crt-base">crt-base</a>
    - <a href="#daemon">daemon</a>
    - <a href="#default-path">default-path</a>
@@ -7480,7 +7486,99 @@ cpu-map 2/1-40   0-39,80-119
 cpu-map 3/1-40   40-79,120-159  <span class="comment"># node1, siblings 0 &amp; 1</span>
 cpu-map 4/1-40   40-79,120-159
 </code></pre>
-</div><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
+</div><a class="anchor" name="cpu-policy"></a><a class="anchor" name="3-cpu-policy"></a><a class="anchor" name="3.1-cpu-policy"></a><a class="anchor" name="cpu-policy (Global parameters)"></a><a class="anchor" name="cpu-policy (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-policy"></a><a href="#3.1-cpu-policy">cpu-policy</a></b> <span style="color: #080">&lt;policy&gt;</span></div><pre class="text">Selects the CPU allocation policy to be used.
+
+On multi-CPU systems, there can be plenty of reasons for not using all
+available CPU cores, and/or for grouping them into different thread groups,
+for performance, latency, cost, or system-wide resource management. The
+&quot;<a href="#cpu-set">cpu-set</a>&quot; directive already allows to evict a number of them, but once done,
+it is necessary to decide how to assign the remaining ones to threads and
+thread groups.
+
+This mapping is normally performed using the &quot;<a href="#cpu-map">cpu-map</a>&quot; directive, though it
+can be particularly difficult to maintain on heterogenous systems.
+
+The &quot;<a href="#cpu-policy">cpu-policy</a>&quot; directive chooses between a small number of allocation
+policies which one to use instead, when &quot;<a href="#cpu-map">cpu-map</a>&quot; is not used. The following
+policies are currently supported:
+
+ - none               no particular post-selection is performed. All enabled
+                      CPUs will be usable, and if the number of threads is
+                      not set, it will be set to the number of available CPUs
+                      but no more than 32 for 32-bit systems or 64 for 64-bit
+                      systems, per thread-group. The number of thread-groups,
+                      if not set, will be set to 1.
+
+ - efficiency         exactly like group-by-cluster below, except that CPU
+                      clusters whose performance is more than twice that of
+                      the next less performant one are evicted. These are
+                      typically &quot;big&quot; or &quot;performance&quot; cores. This means that
+                      if more than one type of CPU cores are detected, only
+                      the efficient one will be used. This can make sense for
+                      use with moderate loads when the most powerful cores
+                      need to be available to the application or a security
+                      component. Some modern CPUs have a large number of such
+                      efficient CPU cores which can collectively deliver a
+                      decent level of performance while using less power.
+
+ - first-usable-node  if the CPUs were not previously restricted at boot (for
+                      example using the &quot;taskset&quot; utility), and if the
+                      &quot;<a href="#nbthread">nbthread</a>&quot; directive was not set, then the first NUMA
+                      node with enabled CPUs will be used, and this number of
+                      CPUs will be used as the number of threads. A single
+                      thread group will be enabled with all of them, within
+                      the limit of 32 or 64 depending on the system. This is
+                      the default policy.
+
+ - group-by-cluster   if neither &quot;<a href="#nbthread">nbthread</a>&quot; not &quot;nbtgroups&quot; were set, then
+                      one thread group is created for each CPU cluster with
+                      available CPUs, each with as many threads as CPUs. All
+                      threads of a group are bound to all CPUs of the cluster
+                      so that intra-group communications remain local to the
+                      cluster without enforcing too strong a binding. The
+                      per-group thread limits and thread-group limits are
+                      respected. This is recommended on multi-socket and NUMA
+                      systems, as well as CPUs with bad inter-CCX latencies.
+
+ - performance        exactly like group-by-cluster above, except that CPU
+                      clusters whose performance is less than half of the
+                      next more performant one are evicted. These are
+                      typically &quot;little&quot; or &quot;efficient&quot; cores, whose addition
+                      generally doesn't bring significant gains and can
+                      easily be counter-productive (e.g. TLS handshakes).
+                      Often, keeping such cores for other tasks such as
+                      network handling is much more effective. On development
+                      systems, these can also be used to run auxiliary tools
+                      such as load generators and monitoring tools.
+
+ - resource           this is like group-by-cluster above, except that only
+                      the smallest and most efficient CPU cluster will be
+                      used, while all other ones will be ignored. This can be
+                      used to limit the resource usage to the strict minimum
+                      that still delivers decent performance, for example to
+                      try to further reduce power consumption or minimize the
+                      number of cores needed on some rented systems for a
+                      sidecar setup, in order to scale the system down more
+                      easily. Note that if a single cluster is present, it
+                      will still be fully used.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#cpu-map">cpu-map</a>&quot;, &quot;<a href="#cpu-set">cpu-set</a>&quot;, &quot;<a href="#nbthread">nbthread</a>&quot;</div>
+<a class="anchor" name="cpu-set"></a><a class="anchor" name="3-cpu-set"></a><a class="anchor" name="3.1-cpu-set"></a><a class="anchor" name="cpu-set (Global parameters)"></a><a class="anchor" name="cpu-set (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-set"></a><a href="#3.1-cpu-set">cpu-set</a></b> <span style="color: #080">&lt;directive&gt;</span>...</div><pre class="text">Allows to symbolically describe what sets of CPUs to run on. The directive
+supports the following keyword:
+  - reset              this undoes any previous limitation that could have
+                       been inherited by a service manager or a &quot;taskset&quot;
+                       command for example.
+  - drop-cpu &lt;set&gt;     do not bind to CPUs in this set
+  - only-cpu &lt;set&gt;     do not bind to CPUs not in this set
+  - drop-node &lt;set&gt;    do not bind to CPUs belonging to this NUMA node
+  - only-node &lt;set&gt;    do not bind to CPUs not belonging to this NUMA node
+  - drop-cluster &lt;set&gt; do not bind to CPUs on this hardware cluster number
+  - only-cluster &lt;set&gt; do not bind to CPUs on other hardware cluster number
+  - drop-core &lt;set&gt;    do not bind to CPUs on this hardware core number
+  - only-core &lt;set&gt;    do not bind to CPUs on other hardware core number
+  - drop-thread &lt;set&gt;  do not bind to CPUs on this hardware thread number
+  - only-thread &lt;set&gt;  do not bind to CPUs on other hardware thread number
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#cpu-policy">cpu-policy</a>&quot;</div>
+<a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
 path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
 prevail and ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#crt-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="daemon"></a><a class="anchor" name="3-daemon"></a><a class="anchor" name="3.1-daemon"></a><a class="anchor" name="daemon (Global parameters)"></a><a class="anchor" name="daemon (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="daemon"></a><a href="#3.1-daemon">daemon</a></b></div><pre class="text">Makes the process fork into background. This is the recommended mode of
@@ -7950,16 +8048,18 @@ are subject to the limit set by &quot;<a href="#thread-hard-limit">thread-hard-l
 </pre><a class="anchor" name="no-quic"></a><a class="anchor" name="3-no-quic"></a><a class="anchor" name="3.1-no-quic"></a><a class="anchor" name="no-quic (Global parameters)"></a><a class="anchor" name="no-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="no-quic"></a><a href="#3.1-no-quic">no-quic</a></b></div><pre class="text">Disable QUIC transport protocol. All the QUIC listeners will still be created.
 But they will not bind their addresses. Hence, no QUIC traffic will be
 processed by haproxy. See also &quot;<a href="#quic_enabled">quic_enabled</a>&quot; sample fetch.
-</pre><a class="anchor" name="numa-cpu-mapping"></a><a class="anchor" name="3-numa-cpu-mapping"></a><a class="anchor" name="3.1-numa-cpu-mapping"></a><a class="anchor" name="numa-cpu-mapping (Global parameters)"></a><a class="anchor" name="numa-cpu-mapping (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="numa-cpu-mapping"></a><a href="#3.1-numa-cpu-mapping">numa-cpu-mapping</a></b></div><pre class="text">If running on a NUMA-aware platform, HAProxy inspects on startup the CPU
+</pre><a class="anchor" name="numa-cpu-mapping"></a><a class="anchor" name="3-numa-cpu-mapping"></a><a class="anchor" name="3.1-numa-cpu-mapping"></a><a class="anchor" name="numa-cpu-mapping (Global parameters)"></a><a class="anchor" name="numa-cpu-mapping (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="numa-cpu-mapping"></a><a href="#3.1-numa-cpu-mapping">numa-cpu-mapping</a></b></div><pre class="text">When running on a NUMA-aware platform with the cpu-policy is set to
+&quot;first-usable-node&quot; (the default one), HAProxy inspects on startup the CPU
 topology of the machine. If a multi-socket machine is detected, the affinity
 is automatically calculated to run on the CPUs of a single node. This is done
 in order to not suffer from the performance penalties caused by the
 inter-socket bus latency. However, if the applied binding is non optimal on a
 particular architecture, it can be disabled with the statement 'no
 numa-cpu-mapping'. This automatic binding is also not applied if a nbthread
-statement is present in the configuration, or the affinity of the process is
+statement is present in the configuration, if the affinity of the process is
 already specified, for example via the 'cpu-map' directive or the taskset
-utility.
+utility, or if the cpu-policy is set to any other value. See also &quot;<a href="#cpu-map">cpu-map</a>&quot;,
+&quot;<a href="#cpu-policy">cpu-policy</a>&quot;, &quot;<a href="#cpu-set">cpu-set</a>&quot;.
 </pre><a class="anchor" name="ocsp-update.disable"></a><a class="anchor" name="3-ocsp-update.disable"></a><a class="anchor" name="3.1-ocsp-update.disable"></a><a class="anchor" name="ocsp-update.disable (Global parameters)"></a><a class="anchor" name="ocsp-update.disable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.disable"></a><a href="#3.1-ocsp-update.disable">ocsp-update.disable</a></b> <span style="color: #008">[ on | off ]</span></div><pre class="text">Disable completely the ocsp-update in HAProxy. Any ocsp-update configuration
 will be ignored. Default is &quot;off&quot;.
 See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
@@ -31993,7 +32093,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev7-23 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev7-83 &ndash; Configuration Manual<br>
 							<small>, 2025/03/07</small>
 						</div>
 					</div>
