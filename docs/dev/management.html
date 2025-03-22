@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev7-110 - Management Guide</title>
+		<title>HAProxy version 3.2-dev8 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -654,7 +654,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -665,7 +665,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev7-110</strong></p>
+							<p><strong>version 3.2-dev8</strong></p>
 							<p>
 								<br>
 								
@@ -3755,17 +3755,19 @@ $ echo &quot;<a href="#show%20peers">show peers</a>&quot; | socat - /tmp/hostB
           last_acked=3 last_pushed=0 last_get=3 teaching_origin=0 update=0
           table:0x55871b5b46a0 id=stkt update=1 localupdate=0 \
             commitupdate=0 syncing=0
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show pools"></a><a class="anchor" name="9-show pools"></a><a class="anchor" name="9.3-show pools"></a><a class="anchor" name="show pools (Statistics and monitoring)"></a><a class="anchor" name="show pools (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show pools"></a><a href="#9.3-show%20pools">show pools</a></b> <span style="color: #008">[byname|bysize|byusage]</span> <span style="color: #008">[match <span style="color: #080">&lt;pfx&gt;</span>]</span> <span style="color: #008">[<span style="color: #080">&lt;nb&gt;</span>]</span></div><pre class="text">Dump the status of internal memory pools. This is useful to track memory
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show pools"></a><a class="anchor" name="9-show pools"></a><a class="anchor" name="9.3-show pools"></a><a class="anchor" name="show pools (Statistics and monitoring)"></a><a class="anchor" name="show pools (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show pools"></a><a href="#9.3-show%20pools">show pools</a></b> <span style="color: #008">[byname|bysize|byusage]</span> <span style="color: #008">[detailed]</span> <span style="color: #008">[match <span style="color: #080">&lt;pfx&gt;</span>]</span> <span style="color: #008">[<span style="color: #080">&lt;nb&gt;</span>]</span></div><pre class="text">Dump the status of internal memory pools. This is useful to track memory
 usage when suspecting a memory leak for example. It does exactly the same
 as the SIGQUIT when running in foreground except that it does not flush the
 pools. The output is not sorted by default. If &quot;byname&quot; is specified, it is
 sorted by pool name; if &quot;bysize&quot; is specified, it is sorted by item size in
 reverse order; if &quot;byusage&quot; is specified, it is sorted by total usage in
 reverse order, and only used entries are shown. It is also possible to limit
-the output to the &lt;nb&gt; first entries (e.g. when sorting by usage). Finally,
-if &quot;match&quot; followed by a prefix is specified, then only pools whose name
-starts with this prefix will be shown. The reported total only concerns pools
-matching the filtering criteria. Example:
+the output to the &lt;nb&gt; first entries (e.g. when sorting by usage). It is
+possible to also dump more internal details, including the list of all pools
+that were merged together, by specifying &quot;detailed&quot;. Finally, if &quot;match&quot;
+followed by a prefix is specified, then only pools whose name starts with
+this prefix will be shown. The reported total only concerns pools matching
+the filtering criteria. Example:
 
   $ socat - /tmp/haproxy.sock &lt;&lt;&lt; &quot;show pools match quic byusage&quot;
   Dumping pools usage. Use SIGQUIT to flush them.
@@ -5469,7 +5471,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev7-110 &ndash; Management Guide<br>
+							HAProxy 3.2-dev8 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
