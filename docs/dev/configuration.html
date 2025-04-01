@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev8-18 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev8-25 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4480,7 +4480,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4491,7 +4491,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev8-18</strong></p>
+							<p><strong>version 3.2-dev8-25</strong></p>
 							<p>
 								2025/03/21<br>
 								
@@ -7537,6 +7537,33 @@ policies are currently supported:
                       thread group will be enabled with all of them, within
                       the limit of 32 or 64 depending on the system. This is
                       the default policy.
+
+ - group-by-2-clusters same as &quot;group-by-cluster&quot; but create a group every
+                      two clusters. This can make sense on CPUs having many
+                      clusters of few cores each, to avoid creating many
+                      groups, or to smooth the distribution a little bit when
+                      not all cores are in use. Please note that it can have
+                      very bad performance effects when the communication
+                      between clusters is slow. This is generally recommended
+                      against.
+
+ - group-by-3-clusters same as &quot;group-by-cluster&quot; but create a group every
+                      three clusters. This can make sense on CPUs having many
+                      clusters of few cores each, to avoid creating many
+                      groups, or to smooth the distribution a little bit when
+                      not all cores are in use. Please note that it can have
+                      very bad performance effects when the communication
+                      between clusters is slow. This is generally recommended
+                      against.
+
+ - group-by-4-clusters same as &quot;group-by-cluster&quot; but create a group every
+                      four clusters. This can make sense on CPUs having many
+                      clusters of few cores each, to avoid creating many
+                      groups, or to smooth the distribution a little bit when
+                      not all cores are in use. Please note that it can have
+                      very bad performance effects when the communication
+                      between clusters is slow. This is generally recommended
+                      against.
 
  - group-by-cluster   if neither &quot;<a href="#nbthread">nbthread</a>&quot; not &quot;nbtgroups&quot; were set, then
                       one thread group is created for each CPU cluster with
@@ -32159,7 +32186,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev8-18 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev8-25 &ndash; Configuration Manual<br>
 							<small>, 2025/03/21</small>
 						</div>
 					</div>
