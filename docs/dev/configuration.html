@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev9-1 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev9-28 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1556,6 +1556,8 @@
 							
 							<a class="list-group-item" href="#check-alpn">check-alpn</a>
 							
+							<a class="list-group-item" href="#check-pool-conn-name">check-pool-conn-name</a>
+							
 							<a class="list-group-item" href="#check-proto">check-proto</a>
 							
 							<a class="list-group-item" href="#check-reuse-pool">check-reuse-pool</a>
@@ -1653,8 +1655,6 @@
 							<a class="list-group-item" href="#crl-file (Server and default-server options)">crl-file (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#crt (Load options)">crt (Load options)</a>
-							
-							<a class="list-group-item" href="#crt (Alphabetically sorted keywords reference)">crt (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#crt (Bind options)">crt (Bind options)</a>
 							
@@ -3608,6 +3608,8 @@
 							
 							<a class="list-group-item" href="#ssl-engine">ssl-engine</a>
 							
+							<a class="list-group-item" href="#ssl-f-use">ssl-f-use</a>
+							
 							<a class="list-group-item" href="#ssl-load-extra-del-ext">ssl-load-extra-del-ext</a>
 							
 							<a class="list-group-item" href="#ssl-load-extra-files">ssl-load-extra-files</a>
@@ -4486,7 +4488,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4497,7 +4499,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev9-1</strong></p>
+							<p><strong>version 3.2-dev9-28</strong></p>
 							<p>
 								2025/04/02<br>
 								
@@ -7620,7 +7622,7 @@ supports the following keyword:
   - only-thread &lt;set&gt;  do not bind to CPUs on other hardware thread number
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#cpu-policy">cpu-policy</a>&quot;</div>
 <a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.1-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.1-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
-path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
+path is used with &quot;crtfile&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified
 prevail and ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#crt-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="daemon"></a><a class="anchor" name="3-daemon"></a><a class="anchor" name="3.1-daemon"></a><a class="anchor" name="daemon (Global parameters)"></a><a class="anchor" name="daemon (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="daemon"></a><a href="#3.1-daemon">daemon</a></b></div><pre class="text">Makes the process fork into background. This is the recommended mode of
 operation. It is equivalent to the command line &quot;-D&quot; argument. It can be
@@ -7956,12 +7958,12 @@ the &quot;ping&quot; command), then it is possible to disable this protection by
 explicitly adding this directive in the global section. If enabled, it is
 possible to turn it back off by prefixing it with the &quot;no&quot; keyword.
 </pre><a class="anchor" name="issuers-chain-path"></a><a class="anchor" name="3-issuers-chain-path"></a><a class="anchor" name="3.1-issuers-chain-path"></a><a class="anchor" name="issuers-chain-path (Global parameters)"></a><a class="anchor" name="issuers-chain-path (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="issuers-chain-path"></a><a href="#3.1-issuers-chain-path">issuers-chain-path</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a directory to load certificate chain for issuer completion. All
-files must be in PEM format. For certificates loaded with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or &quot;<a href="#crt-list">crt-list</a>&quot;,
+files must be in PEM format. For certificates loaded with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or &quot;<a href="#crt-list">crt-list</a>&quot;,
 if certificate chain is not included in PEM (also commonly known as
 intermediate certificate), HAProxy will complete chain if the issuer of the
 certificate corresponds to the first certificate of the chain loaded with
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot;.
-A &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file with PrivateKey+Certificate+IntermediateCA2+IntermediateCA1
+A &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file with PrivateKey+Certificate+IntermediateCA2+IntermediateCA1
 could be replaced with PrivateKey+Certificate. HAProxy will complete the
 chain if a file with IntermediateCA2+IntermediateCA1 is present in
 &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot; directory. All other certificates with the same issuer
@@ -8466,7 +8468,7 @@ frontend side and will not work for backend certificates.
 
 Starting from HAProxy 2.3, the bundles are not loaded in the same OpenSSL
 certificate store, instead it will loads each certificate in a separate
-store which is equivalent to declaring multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. OpenSSL 1.1.1 is
+store which is equivalent to declaring multiple &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;. OpenSSL 1.1.1 is
 required to achieve this. Which means that bundles are now used only for
 backward compatibility and are not mandatory anymore to do an hybrid RSA/ECC
 bind configuration.
@@ -8488,7 +8490,7 @@ this bundle into HAProxy, specify the base name only:
 a cert bundle.
 
 HAProxy will load all PEM files in the bundle as if they were configured
-separately in several &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
+separately in several &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 
 The bundle loading does not have an impact anymore on the directory loading
 since files are loading separately.
@@ -8522,7 +8524,7 @@ The default behavior is &quot;all&quot;.
 ssl-load-extra-files sctl ocsp issuer
 ssl-load-extra-files none
 </code></pre>
-</div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, <a href="#5.1">section 5.1</a> about bind options and <a href="#5.2">section 5.2</a> about server options.</div>
+</div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, <a href="#5.1">section 5.1</a> about bind options and <a href="#5.2">section 5.2</a> about server options.</div>
 <a class="anchor" name="ssl-security-level"></a><a class="anchor" name="3-ssl-security-level"></a><a class="anchor" name="3.1-ssl-security-level"></a><a class="anchor" name="ssl-security-level (Global parameters)"></a><a class="anchor" name="ssl-security-level (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-security-level"></a><a href="#3.1-ssl-security-level">ssl-security-level</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">This directive allows to chose the OpenSSL security level as described in
 https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set_security_level.html
 The security level will be applied to every SSL contextes in HAProxy.
@@ -10630,7 +10632,7 @@ The following keywords are supported in the &quot;crt-store&quot; section :
   - <a href="#key-base">key-base</a>
   - <a href="#load">load</a>
 </pre><a class="anchor" name="crt-base"></a><a class="anchor" name="3-crt-base"></a><a class="anchor" name="3.12-crt-base"></a><a class="anchor" name="crt-base (Global parameters)"></a><a class="anchor" name="crt-base (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="crt-base"></a><a href="#3.12-crt-base">crt-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL certificates from when a relative
-path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified prevail and
+path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directives. Absolute locations specified prevail and
 ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt-base%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#crt-base%20%28Certificate%20Storage%29">Certificate Storage</a></li></ul></span>&quot;. When used in a crt-store, the crt-base of the global
 section is ignored.
 </pre><a class="anchor" name="key-base"></a><a class="anchor" name="3-key-base"></a><a class="anchor" name="3.12-key-base"></a><a class="anchor" name="key-base (Global parameters)"></a><a class="anchor" name="key-base (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="key-base"></a><a href="#3.12-key-base">key-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL private keys from when a relative
@@ -10672,13 +10674,13 @@ with the &quot;<a href="#key">key</a>&quot; keyword.
 referenced with it in the configuration. An alias must be prefixed with '@/'
 when called elsewhere in the configuration.
 </pre><a class="anchor" name="key"></a><a class="anchor" name="3-key"></a><a class="anchor" name="3.12.1-key"></a><a class="anchor" name="key (Global parameters)"></a><a class="anchor" name="key (Load options)"></a><div class="keyword"><b><a class="anchor" name="key"></a><a href="#3.12.1-key">key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Load a private key in PEM format. If a private key
-was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, it will overwrite it.
+was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, it will overwrite it.
 </pre><a class="anchor" name="ocsp"></a><a class="anchor" name="3-ocsp"></a><a class="anchor" name="3.12.1-ocsp"></a><a class="anchor" name="ocsp (Global parameters)"></a><a class="anchor" name="ocsp (Load options)"></a><div class="keyword"><b><a class="anchor" name="ocsp"></a><a href="#3.12.1-ocsp">ocsp</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional, it loads an OCSP response in DER format. It can
 be updated with the CLI.
 </pre><a class="anchor" name="issuer"></a><a class="anchor" name="3-issuer"></a><a class="anchor" name="3.12.1-issuer"></a><a class="anchor" name="issuer (Global parameters)"></a><a class="anchor" name="issuer (Load options)"></a><div class="keyword"><b><a class="anchor" name="issuer"></a><a href="#3.12.1-issuer">issuer</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Load the OCSP issuer in PEM format. In order to
 identify which certificate an OCSP Response applies to, the issuer's
 certificate is necessary.  If the issuer's certificate is not found in the
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file, it could be loaded from a file with this argument.
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; file, it could be loaded from a file with this argument.
 </pre><a class="anchor" name="sctl"></a><a class="anchor" name="3-sctl"></a><a class="anchor" name="3.12.1-sctl"></a><a class="anchor" name="sctl (Global parameters)"></a><a class="anchor" name="sctl (Load options)"></a><div class="keyword"><b><a class="anchor" name="sctl"></a><a href="#3.12.1-sctl">sctl</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Support for Certificate Transparency (RFC6962) TLS
 extension is enabled. The file must contain a valid Signed Certificate
 Timestamp List, as described in RFC. File is parsed to check basic syntax,
@@ -12144,61 +12146,6 @@ cookie SRV insert postonly indirect
 cookie SRV insert indirect nocache maxidle 30m maxlife 8h
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;balance source&quot;, &quot;<a href="#capture%20cookie">capture cookie</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<a href="#ignore-persist">ignore-persist</a>&quot;.</div>
-<a class="anchor" name="crt"></a><a class="anchor" name="4-crt"></a><a class="anchor" name="4.2-crt"></a><a class="anchor" name="crt (Proxies)"></a><a class="anchor" name="crt (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="crt"></a><a href="#4.2-crt">crt</a></b> <span style="color: #080">&lt;crtname&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;sslbindconf&gt;</span> ...]</span>*</div><pre class="text">Assignate a certificate to the current frontend.
-
-May be used in the following contexts: tcp, http
-</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
-<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
-</table></div>
-<div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;sslbindconf&gt; supports the following keywords from the bind line
-(see Section 5.1. Bind options):
-
-- <a href="#allow-0rtt">allow-0rtt</a>
-- <a href="#alpn">alpn</a>
-- <a href="#ca-file">ca-file</a>
-- <a href="#ca-verify-file">ca-verify-file</a>
-- <a href="#ciphers">ciphers</a>
-- <a href="#ciphersuites">ciphersuites</a>
-- <a href="#client-sigalgs">client-sigalgs</a>
-- <a href="#crl-file">crl-file</a>
-- <a href="#curves">curves</a>
-- <a href="#ecdhe">ecdhe</a>
-- <a href="#no-alpn">no-alpn</a>
-- <a href="#no-ca-names">no-ca-names</a>
-- <a href="#npn">npn</a>
-- <a href="#sigalgs">sigalgs</a>
-- <a href="#ssl-min-ver">ssl-min-ver</a>
-- <a href="#ssl-max-ver">ssl-max-ver</a>
-- <a href="#verify">verify</a>
-
-sslbindconf also supports the following keywords from the crt-store load
-keyword (see Section 3.12.1. Load options):
-
-- <a href="#key">key</a>
-- <a href="#ocsp">ocsp</a>
-- <a href="#issuer">issuer</a>
-- <a href="#sctl">sctl</a>
-- ocsp-update</pre>
-</div>
-<pre class="text">Assignate a certificate &lt;crtname&gt; to a crt-list created automatically with the
-frontend name and prefixed by @ (ex: '@frontend1').
-
-This implicit crt-list will be assigned to every &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind lines in a
-frontend that does not already have the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or the &quot;<a href="#crt-list">crt-list</a>&quot; line.
-crt-list commands from the stats socket are effective with this crt-list, so
-one could replace, remove or add certificates and SSL options to it.
-</pre><div class="separator">
-<span class="label label-success">Example :</span>
-<pre class="prettyprint">
-<code>frontend https
-    bind :443 ssl
-    crt foobar.pem.rsa sigalgs &quot;RSA-PSS+SHA256&quot;
-    crt test.foobar.pem
-    crt test2.foobar.crt key test2.foobar.key ocsp test2.foobar.ocsp ocsp-update on
-</code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#crt-list">crt-list</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="declare"></a><a class="anchor" name="4-declare"></a><a class="anchor" name="4.2-declare"></a><a class="anchor" name="declare (Proxies)"></a><a class="anchor" name="declare (Alphabetically sorted keywords reference)"></a><a class="anchor" name="declare capture"></a><a class="anchor" name="4-declare capture"></a><a class="anchor" name="4.2-declare capture"></a><a class="anchor" name="declare capture (Proxies)"></a><a class="anchor" name="declare capture (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="declare capture"></a><a href="#4.2-declare%20capture">declare capture</a></b> <span style="color: #008">[ request | response ]</span> len <span style="color: #080">&lt;length&gt;</span></div><pre class="text">Declares a capture slot.
 
 May be used in the following contexts: tcp, http
@@ -16552,7 +16499,7 @@ response. If no condition is specified, the redirect applies unconditionally.
   - &quot;set-cookie-fmt &lt;fmt&gt;&quot;
     It is equivaliant to the option above, except the &quot;Set-Cookie&quot; header
     will be filled with the result of the log-format string &lt;fmt&gt;
-    evaluation. Be carefull to respect the &quot;NAME[=value]&quot; format because no
+    evaluation. Be careful to respect the &quot;NAME[=value]&quot; format because no
     special check are performed during the configuration parsing.
 
   - &quot;clear-cookie NAME[=]&quot;
@@ -17121,6 +17068,62 @@ backend stats_auth
     stats admin if AUTH_ADMIN
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20http-request">stats http-request</a>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
+<a class="anchor" name="ssl-f-use"></a><a class="anchor" name="4-ssl-f-use"></a><a class="anchor" name="4.2-ssl-f-use"></a><a class="anchor" name="ssl-f-use (Proxies)"></a><a class="anchor" name="ssl-f-use (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="ssl-f-use"></a><a href="#4.2-ssl-f-use">ssl-f-use</a></b> <span style="color: #008">[<span style="color: #080">&lt;sslbindconf&gt;</span> ...]</span>*</div><pre class="text">Assignate a certificate to the current frontend.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;sslbindconf&gt; supports the following keywords from the bind line
+(see Section 5.1. Bind options):
+
+- <a href="#allow-0rtt">allow-0rtt</a>
+- <a href="#alpn">alpn</a>
+- <a href="#ca-file">ca-file</a>
+- <a href="#ca-verify-file">ca-verify-file</a>
+- <a href="#ciphers">ciphers</a>
+- <a href="#ciphersuites">ciphersuites</a>
+- <a href="#client-sigalgs">client-sigalgs</a>
+- <a href="#crl-file">crl-file</a>
+- <a href="#curves">curves</a>
+- <a href="#ecdhe">ecdhe</a>
+- <a href="#no-alpn">no-alpn</a>
+- <a href="#no-ca-names">no-ca-names</a>
+- <a href="#npn">npn</a>
+- <a href="#sigalgs">sigalgs</a>
+- <a href="#ssl-min-ver">ssl-min-ver</a>
+- <a href="#ssl-max-ver">ssl-max-ver</a>
+- <a href="#verify">verify</a>
+
+sslbindconf also supports the following keywords from the crt-store load
+keyword (see Section 3.12.1. Load options):
+
+- <a href="#crt">crt</a>
+- <a href="#key">key</a>
+- <a href="#ocsp">ocsp</a>
+- <a href="#issuer">issuer</a>
+- <a href="#sctl">sctl</a>
+- ocsp-update</pre>
+</div>
+<pre class="text">Assignate a certificate &lt;crtname&gt; to a crt-list created automatically with the
+frontend name and prefixed by @ (ex: '@frontend1').
+
+This implicit crt-list will be assigned to every &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind lines in a
+frontend that does not already have the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or the &quot;<a href="#crt-list">crt-list</a>&quot; line.
+crt-list commands from the stats socket are effective with this crt-list, so
+one could replace, remove or add certificates and SSL options to it.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>frontend https
+    bind :443 ssl
+    ssl-f-use crt foobar.pem.rsa sigalgs &quot;RSA-PSS+SHA256&quot;
+    ssl-f-use crt test.foobar.pem
+    ssl-f-use crt test2.foobar.crt key test2.foobar.key ocsp test2.foobar.ocsp ocsp-update on
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#crt-list">crt-list</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats auth"></a><a class="anchor" name="4-stats auth"></a><a class="anchor" name="4.2-stats auth"></a><a class="anchor" name="stats auth (Proxies)"></a><a class="anchor" name="stats auth (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats auth"></a><a href="#4.2-stats%20auth">stats auth</a></b> <span style="color: #080">&lt;user&gt;</span>:<span style="color: #080">&lt;passwd&gt;</span></div><pre class="text">Enable statistics with authentication and grant access to an account
 
 May be used in the following contexts: http
@@ -17875,8 +17878,8 @@ May be used in the following contexts: tcp, http
             defined period. The factor must be greater than 0 and lower or
             equal to 1024.
 
-[recv-only] indicates that we don't intent to use the table to perform
-            updates on it, but thay we only plan on using the table to
+[recv-only] indicates that we don't intend to use the table to perform
+            updates on it, but that we only plan on using the table to
             retrieve data from a remote peer which we are interested in.
             Indeed, the use of this keyword enables the retrieval of
             local-only values such as conn_cur that are not learned by
@@ -21355,7 +21358,7 @@ list for every certificate of your certificate authority chain.
 </pre><a class="anchor" name="crt"></a><a class="anchor" name="5-crt"></a><a class="anchor" name="5.1-crt"></a><a class="anchor" name="crt (Bind and server options)"></a><a class="anchor" name="crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="crt"></a><a href="#5.1-crt">crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in.
 
 HAProxy uses a cache system, the files are loaded only once in the certificate
-storage, and each next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword will use this cached version. When the
+storage, and each next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword will use this cached version. When the
 certificate was declared in a &quot;crt-store&quot;, the certificate storage is
 populated from there and don't try to load additional files by detecting file
 extensions.
@@ -21489,7 +21492,7 @@ after the first certificate to exclude a pattern from its CN or Subject Alt
 Name (SAN). The certificates will be presented to clients who provide a valid
 TLS Server Name Indication field matching one of the SNI filters. If no SNI
 filter is specified, the CN and SAN are used. This directive may be specified
-multiple times. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. The default
+multiple times. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. The default
 certificate is still needed to meet OpenSSL expectations. If it is not used,
 the 'strict-sni' option may be used.
 
@@ -21526,7 +21529,7 @@ crt-list file example:
       default.pem.rsa *
       default.pem.ecdsa *
       foo.crt [key bar.pem ocsp foo.ocsp ocsp-update on] foo.bar.com
-</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
+</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
 certificate will be used as a default one. It is possible to add multiple
 default certificates to have an ECDSA and an RSA one, having more is not
 really useful.
@@ -21540,7 +21543,7 @@ certificate.
 <pre class="prettyprint">
 <code>bind *:443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa crt website.pem.rsa
 </code></pre>
-</div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
+</div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of elliptic curves algorithms (&quot;curve suite&quot;)
 that are negotiated during the SSL/TLS handshake with ECDHE. The format of the
@@ -21868,7 +21871,7 @@ recommended to use this setting unless compatibility with a middlebox is
 required.
 </pre><a class="anchor" name="ssl"></a><a class="anchor" name="5-ssl"></a><a class="anchor" name="5.1-ssl"></a><a class="anchor" name="ssl (Bind and server options)"></a><a class="anchor" name="ssl (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ssl"></a><a href="#5.1-ssl">ssl</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables SSL deciphering on connections instantiated from this listener. A
-certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
+certificate is necessary (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). All contents in the buffers will
 appear in clear text, so that ACLs and HTTP processing will only have access
 to deciphered contents. SSLv3 is disabled per default, use &quot;ssl-min-ver SSLv3&quot;
 to enable it.
@@ -21886,7 +21889,7 @@ SSL/TLS negotiation is allowed only if the client provided an SNI that matches
 a certificate. The default certificate is not used. This option also allows
 starting without any certificate on a bind line, so an empty directory could
 be used and filled later from the stats socket.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
+See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
 the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
@@ -22269,10 +22272,10 @@ Note that for configuration simplicity, this option is silently ignored if
 any specific check connect option is defined, either on the server line or
 via a custom tcp-check connect rule.
 
-If checks are activated for a reverse HTTP server, this option is mandatory
-for checks to succeed, as by definition these servers do not have the ability
-to initiate connection.
-</pre><a class="anchor" name="check-send-proxy"></a><a class="anchor" name="5-check-send-proxy"></a><a class="anchor" name="5.2-check-send-proxy"></a><a class="anchor" name="check-send-proxy (Bind and server options)"></a><a class="anchor" name="check-send-proxy (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-send-proxy"></a><a href="#5.2-check-send-proxy">check-send-proxy</a></b></div><pre class="text">May be used in the following contexts: tcp, http
+This option is automatically enabled for servers acting as passive reverse
+HTTP gateway, as for those servers connect is only supported through reuse.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#check-pool-conn-name">check-pool-conn-name</a>&quot;</div>
+<a class="anchor" name="check-send-proxy"></a><a class="anchor" name="5-check-send-proxy"></a><a class="anchor" name="5.2-check-send-proxy"></a><a class="anchor" name="check-send-proxy (Bind and server options)"></a><a class="anchor" name="check-send-proxy (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-send-proxy"></a><a href="#5.2-check-send-proxy">check-send-proxy</a></b></div><pre class="text">May be used in the following contexts: tcp, http
 
 This option forces emission of a PROXY protocol line with outgoing health
 checks, regardless of whether the server uses send-proxy or not for the
@@ -22286,7 +22289,14 @@ protocol. See also the &quot;<a href="#send-proxy">send-proxy</a>&quot; option f
 Defines which protocols to advertise with ALPN. The protocol list consists in
 a comma-delimited list of protocol names, for instance: &quot;http/1.1,http/1.0&quot;
 (without quotes). If it is not set, the server ALPN is used.
-</pre><a class="anchor" name="check-proto"></a><a class="anchor" name="5-check-proto"></a><a class="anchor" name="5.2-check-proto"></a><a class="anchor" name="check-proto (Bind and server options)"></a><a class="anchor" name="check-proto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-proto"></a><a href="#5.2-check-proto">check-proto</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http
+</pre><a class="anchor" name="check-pool-conn-name"></a><a class="anchor" name="5-check-pool-conn-name"></a><a class="anchor" name="5.2-check-pool-conn-name"></a><a class="anchor" name="check-pool-conn-name (Bind and server options)"></a><a class="anchor" name="check-pool-conn-name (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-pool-conn-name"></a><a href="#5.2-check-pool-conn-name">check-pool-conn-name</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http
+
+When connection reuse is performed for checks, uses &lt;name&gt; if set as a
+connection identifier to match a corresponding connection in the pool. This
+serves as the equivalent to the &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; server keyword. &quot;<a href="#check-sni">check-sni</a>&quot;
+will also be used as a fallback if the current option is not used.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#check-reuse-pool">check-reuse-pool</a>&quot;</div>
+<a class="anchor" name="check-proto"></a><a class="anchor" name="5-check-proto"></a><a class="anchor" name="5.2-check-proto"></a><a class="anchor" name="check-proto (Bind and server options)"></a><a class="anchor" name="check-proto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-proto"></a><a href="#5.2-check-proto">check-proto</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http
 
 Forces the multiplexer's protocol to use for the server's health-check
 connections. It must be compatible with the health-check type (TCP or
@@ -22539,7 +22549,7 @@ reduce the time spent in the queue.
 </table></div>
 <pre class="text">The &quot;<a href="#init-state">init-state</a>&quot; option sets the initial state of the server:
   - when set to 'fully-up', the server is considered immediately available
-    and can turn to the DOWN sate when ALL health checks fail.
+    and can turn to the DOWN state when ALL health checks fail.
   - when set to 'up' (the default), the server is considered immediately
     available and will initiate a health check that can turn it to the DOWN
     state immediately if it fails.
@@ -23002,7 +23012,7 @@ Available options:
   using an &quot;<a href="#agent-check">agent-check</a>&quot; or through the runtime api.
 
 * prevent-dup-ip
-  Ensure HAProxy's default behavior is enforced on a server: prevent re-using
+  Ensure HAProxy's default behavior is enforced on a server: prevent reusing
   an IP address already set to a server in the same backend and sharing the
   same fqdn.
   This is the opposite of allow-dup-ip.
@@ -32212,7 +32222,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev9-1 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev9-28 &ndash; Configuration Manual<br>
 							<small>, 2025/04/02</small>
 						</div>
 					</div>
