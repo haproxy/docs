@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev9-33 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev9-37 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4488,7 +4488,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4499,7 +4499,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev9-33</strong></p>
+							<p><strong>version 3.2-dev9-37</strong></p>
 							<p>
 								2025/04/02<br>
 								
@@ -21453,83 +21453,118 @@ filter per certificate, with the following format for each line :
 
       &lt;crtfile&gt; [\[&lt;sslbindconf&gt; ...\]] [[!]&lt;snifilter&gt; ...]
 
-sslbindconf supports the following keywords from the bind line
-(see Section 5.1. Bind options):
-
-- <a href="#allow-0rtt">allow-0rtt</a>
-- <a href="#alpn">alpn</a>
-- <a href="#ca-file">ca-file</a>
-- <a href="#ca-verify-file">ca-verify-file</a>
-- <a href="#ciphers">ciphers</a>
-- <a href="#ciphersuites">ciphersuites</a>
-- <a href="#client-sigalgs">client-sigalgs</a>
-- <a href="#crl-file">crl-file</a>
-- <a href="#curves">curves</a>
-- <a href="#ecdhe">ecdhe</a>
-- <a href="#no-alpn">no-alpn</a>
-- <a href="#no-ca-names">no-ca-names</a>
-- <a href="#npn">npn</a>
-- <a href="#sigalgs">sigalgs</a>
-- <a href="#ssl-min-ver">ssl-min-ver</a>
-- <a href="#ssl-max-ver">ssl-max-ver</a>
-- <a href="#verify">verify</a>
-
-sslbindconf also supports the following keywords from the crt-store load
-keyword (see Section 3.12.1. Load options):
-
-- <a href="#crt">crt</a>
-- <a href="#key">key</a>
-- <a href="#ocsp">ocsp</a>
-- <a href="#issuer">issuer</a>
-- <a href="#sctl">sctl</a>
-- <a href="#ocsp-update">ocsp-update</a>
-
-It overrides the configuration set in bind line for the certificate.
-
-Wildcards are supported in the SNI filter. Negative filter are also supported,
-useful in combination with a wildcard filter to exclude a particular SNI, or
-after the first certificate to exclude a pattern from its CN or Subject Alt
-Name (SAN). The certificates will be presented to clients who provide a valid
-TLS Server Name Indication field matching one of the SNI filters. If no SNI
-filter is specified, the CN and SAN are used. This directive may be specified
-multiple times. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. The default
-certificate is still needed to meet OpenSSL expectations. If it is not used,
-the 'strict-sni' option may be used.
-
-Multi-cert bundling (see &quot;<a href="#ssl-load-extra-files">ssl-load-extra-files</a>&quot;) is supported with crt-list,
-as long as only the base name is given in the crt-list. SNI filter will do
-the same work on all bundled certificates.
-
 Empty lines as well as lines beginning with a hash ('#') will be ignored.
 
-The first declared certificate of a bind line is used as the default
-certificate, either from crt or crt-list option, which HAProxy should use in
-the TLS handshake if no other certificate matches. This certificate will also
-be used if the provided SNI matches its CN or SAN, even if a matching SNI
-filter is found on any crt-list. The SNI filter !* can be used after the first
-declared certificate to not include its CN and SAN in the SNI tree, so it will
-never match except if no other certificate matches. This way the first
-declared certificate act as a fallback. It is also possible to declare a '*'
-filter, which will allow to chose this certificate as default. When multiple
-default certificates are defined, HAProxy is able to chose the right ECDSA or
-RSA one depending on what the client supports.
+The crt-list can be manipulated dynamically over the stats socket. (See &quot;add
+ssl crt-list&quot;, &quot;del ssl crt-list&quot;, &quot;show ssl crt-list&quot; in the management
+guide).
 
-When no ALPN is set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line's default one is used. If a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line
-has no &quot;<a href="#no-alpn">no-alpn</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; nor &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">npn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#npn%20%28Bind%20options%29">Bind options</a></li><li><a href="#npn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; set, a default value will be used
-depending on the protocol (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; above). However if the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line has
-a different default, or explicitly disables ALPN using &quot;<a href="#no-alpn">no-alpn</a>&quot;, it is
-possible to force a specific value for a certificate.
+crt-list are usually dedicated files, however a directory loaded with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+directive is represented internally as a crt-list. The &quot;<a href="#ssl-f-use">ssl-f-use</a>&quot; directive
+in a frontend also declares a crt-list linked to this frontend.
 
-crt-list file example:
-      cert1.pem !*
-      # comment
-      cert2.pem [alpn h2,http/1.1]
-      certW.pem                   *.domain.tld !secure.domain.tld
-      certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.domain.tld
-      default.pem.rsa *
-      default.pem.ecdsa *
-      foo.crt [key bar.pem ocsp foo.ocsp ocsp-update on] foo.bar.com
-</pre><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
+crtfile:
+
+  This is the filename of the certificate, or an identifier if it was declared
+  elsewhere (over the CLI or in a crt-store with an alias for example).
+
+  It is possible to use the same &lt;crtfile&gt; on multiple lines with different
+  options and filters.
+
+  Multi-cert bundling (see &quot;<a href="#ssl-load-extra-files">ssl-load-extra-files</a>&quot;) is supported in a
+  crt-list, as long as only the base name is given in &lt;crtfile&gt;. HAProxy
+  will duplicate the crt-list line internally, adding an algorithm extension
+  (.rsa, .ecdsa, .dsa) when loading the file.
+
+sslbindconf:
+
+   &lt;sslbindconf&gt; supports the following keywords from the bind line (see
+   Section 5.1. Bind options):
+
+   - <a href="#allow-0rtt">allow-0rtt</a>
+   - <a href="#alpn">alpn</a>
+   - <a href="#ca-file">ca-file</a>
+   - <a href="#ca-verify-file">ca-verify-file</a>
+   - <a href="#ciphers">ciphers</a>
+   - <a href="#ciphersuites">ciphersuites</a>
+   - <a href="#client-sigalgs">client-sigalgs</a>
+   - <a href="#crl-file">crl-file</a>
+   - <a href="#curves">curves</a>
+   - <a href="#ecdhe">ecdhe</a>
+   - <a href="#no-alpn">no-alpn</a>
+   - <a href="#no-ca-names">no-ca-names</a>
+   - <a href="#npn">npn</a>
+   - <a href="#sigalgs">sigalgs</a>
+   - <a href="#ssl-min-ver">ssl-min-ver</a>
+   - <a href="#ssl-max-ver">ssl-max-ver</a>
+   - <a href="#verify">verify</a>
+
+   &lt;sslbindconf&gt; also supports the following keywords from the crt-store load
+   keyword (see Section 3.12.1. Load options):
+
+   - <a href="#crt">crt</a>
+   - <a href="#key">key</a>
+   - <a href="#ocsp">ocsp</a>
+   - <a href="#issuer">issuer</a>
+   - <a href="#sctl">sctl</a>
+   - <a href="#ocsp-update">ocsp-update</a>
+
+  Parameters from the bind line are inherited in &lt;sslbindconf&gt;, if none were
+  specified, the default options are inherited, the parameters specified in
+  &lt;sslbindconf&gt; overwrite those inherited settings.
+
+snifilter:
+
+  When the &lt;snifilter&gt; parameter is used on a crt-list line, the CN and SAN
+  are not used anymore to select the certificate on this line during the
+  handshake but the &lt;snifilter&gt; is used instead.
+
+  &lt;snifilter&gt; is a list of entries separated by spaces. This list can contain
+  domains, or wildcards. The wildcards are in wildcard DNS format, using a
+  single asterisk as the first character of the entry. It is possible to
+  exclude a domain from a wildcard with a negative filter by specifying a '!'
+  in front of a single domain. Having a ! in front of a * is ignored. Having
+  negative filters without a wildcard on the same line is not supported as
+  well. The special entry '*' is used to specify default certificates, which
+  are used as fallback when no domain matched.
+
+  The certificates will be presented to clients who provide a valid TLS
+  Server Name Indication field matching one of the SNI filters, or the CN and
+  SAN of a &lt;crtfile&gt;. The matching algorithm first looks for a positive domain
+  entry in the list, if not found it will try to look for a wildcard in the
+  list. If a wilcard match, haproxy checks for a negative filter from the
+  same line and unmatch if necessary. In case of multiple key algorithms
+  (RSA,ECDSA,DSA), HAProxy will try to match one certificate per type and
+  chose the right one depending on what is supported by the client.
+
+  If no SNI is presented by the client or if no certificate matched, this
+  will fallback to one of the default certificate. To disable the default
+  certificate fallback, the 'strict-sni' option may be used.
+  When multiple default certificates are defined, HAProxy is able to chose
+  the right ECDSA or RSA one depending on what the client supports.
+
+  The first declared certificate of a bind line is used as a default
+  certificate, either from crt or crt-list option.
+  It is also possible to declare a '*' filter, which will add this
+  certificate to the list of default certificates. To clarify the
+  configuration, the default certificates could be explicited (with a '*'
+  filter) at the beginning of the list, so an implicit default is not added
+  before.
+
+  The &quot;show ssl sni&quot; command on the stats socket could be used to debug your
+  configuration. (See &quot;show ssl sni&quot; in the management guide)
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># comment</span>
+default.pem.rsa *
+default.pem.ecdsa *
+cert2.pem [alpn h2,http/1.1]
+certW.pem *.domain.tld !secure.domain.tld
+certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.domain.tld
+foo.crt [key bar.pem ocsp foo.ocsp ocsp-update on] foo.bar.com
+</code></pre>
+</div><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
 certificate will be used as a default one. It is possible to add multiple
 default certificates to have an ECDSA and an RSA one, having more is not
 really useful.
@@ -32222,7 +32257,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev9-33 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev9-37 &ndash; Configuration Manual<br>
 							<small>, 2025/04/02</small>
 						</div>
 					</div>
