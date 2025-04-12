@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev9-46 - Management Guide</title>
+		<title>HAProxy version 3.2-dev10-29 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -654,7 +654,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -665,7 +665,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev9-46</strong></p>
+							<p><strong>version 3.2-dev10-29</strong></p>
 							<p>
 								<br>
 								
@@ -4898,6 +4898,11 @@ the -S option. This option also takes bind options separated by commas.
   point and a PID. (e.g. @1 or @!1271). A @ alone could be use to specify the
   master. Leaving processes are only accessible with the PID as relative process
   number are only usable with the current processes.
+
+  This prefix may be used as a wrapper before a command, indicating that this
+  command and only this one will be sent to the designated process. In this
+  case the full command ends at the end of line or semi-colon like any regular
+  command.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -4916,8 +4921,10 @@ master&gt;
 $ echo '@!1271 show info; @!1272 show info' | socat /var/run/haproxy-master.sock -
 [...]
 </code></pre>
-</div><pre class="text">A prefix could be use as a command, which will send every next commands to
-the specified process.
+</div><pre class="text">The prefix may also be use as a standalone command to switch the default execution
+context to the designated process, indicating that all subsequent commands will all
+be executed in that process, until a new '@' command changes the execution context
+again.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -4933,6 +4940,52 @@ master&gt;
 
 $ echo '@1; show info; show stat; @2; show info; show stat' | socat /var/run/haproxy-master.sock -
 [...]
+</code></pre>
+</div><pre class="text">  Note about limitations: a few rare commands alter a CLI session's state
+  (e.g. &quot;<a href="#set%20anon">set anon</a>&quot;, &quot;<a href="#set%20timeout">set timeout</a>&quot;) and may not behave exactly similarly once
+  run from the master CLI due to commands being sent one at a time on their own
+  CLI session. Similarly, a few rare commands (&quot;<a href="#show%20events">show events</a>&quot;, &quot;<a href="#wait">wait</a>&quot;) actively
+  monitor the CLI for input or closure and are immediately interrupted when the
+  CLI is closed. These commands will not work as expected through the master
+  CLI because the command's input is closed after each command. For such rare
+  casesn the &quot;@@&quot; variant below might be more suited.
+
+@@&lt;[!]pid&gt; [command...]
+  This prefix or command is very similar to the &quot;@&quot; prefix documented above
+  except that it enters the worker process, delivers the whole command line
+  into it as-is and stays there until the command finishes. Semi-colons are
+  delivered as well, allowing to execute a full pipelined command in a worker
+  process. The connection with the work remains open until the list of commands
+  completes. Any data sent after the commands will be forwarded to the worker
+  process' CLI and may be consumed by the commands being executed and will be
+  lost for the master process' CLI, offering a truly bidirectional connection
+  with the worker process. As such, users of such commands must be very careful
+  to wait for the command's completion before sending new commands to the
+  master CLI.
+
+  Instead of executing a single command, it is also possible to open a fully
+  interactive session on the worker process by not specifying any command
+  (i.e. &quot;@@1&quot; on its own line). This session can be terminated either by
+  closing the connection or by quitting the worker process (using the &quot;<a href="#quit">quit</a>&quot;
+  command).
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># gracefully close connections and delete a server once idle (wait max 10s)</span>
+$ socat -t 11 /var/run/haproxy-master.sock - &lt;&lt;&lt; \
+   &quot;@@1 disable server app2/srv36; \
+   wait 10000 srv-removable app2/srv36; \
+   del server app2/srv36&quot;
+
+<span class="comment"># forcefully close connections and quickly delete a server</span>
+$ socat /var/run/haproxy-master.sock - &lt;&lt;&lt; \
+   &quot;@@1 disable server app2/srv36; \
+   shutdown sessions server app2/srv36; \
+   wait 100 srv-removable app2/srv36; \
+   del server app2/srv36&quot;
+
+<span class="comment"># show messages arriving to this ring in real time (&quot;tail -f&quot; equivalent)</span>
+$ (echo &quot;show events buf0 -w&quot;; read) | socat /var/run/haproxy-master.sock -
 </code></pre>
 </div><a class="anchor" name="expert-mode"></a><a class="anchor" name="9-expert-mode"></a><a class="anchor" name="9.4.1-expert-mode"></a><a class="anchor" name="expert-mode (Statistics and monitoring)"></a><a class="anchor" name="expert-mode (Master CLI commands)"></a><div class="keyword"><b><a class="anchor" name="expert-mode"></a><a href="#9.4.1-expert-mode">expert-mode</a></b> <span style="color: #008">[on|off]</span></div><pre class="text">This command activates the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">expert-mode<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#expert-mode%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#expert-mode%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; for every worker accessed from the
 master CLI. Combined with &quot;<a href="#mcli-debug-mode">mcli-debug-mode</a>&quot; it also activates the command on
@@ -5473,7 +5526,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev9-46 &ndash; Management Guide<br>
+							HAProxy 3.2-dev10-29 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
