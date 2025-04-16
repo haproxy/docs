@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.9-3 - Configuration Manual</title>
+		<title>HAProxy version 3.0.9-23 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4325,7 +4325,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/03/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4336,7 +4336,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0.9-3</strong></p>
+							<p><strong>version 3.0.9-23</strong></p>
 							<p>
 								2025/03/20<br>
 								
@@ -6796,6 +6796,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#nopoll">nopoll</a>
    - <a href="#noreuseport">noreuseport</a>
    - <a href="#nosplice">nosplice</a>
+   - <a href="#profiling.memory">profiling.memory</a>
    - <a href="#profiling.tasks">profiling.tasks</a>
    - <a href="#server-state-base">server-state-base</a>
    - <a href="#server-state-file">server-state-file</a>
@@ -17680,8 +17681,8 @@ tcp-request content reject
 <span class="comment"># and reject everything else. (works for HTTP/1 and HTTP/2 connections)</span>
 acl is_host_com hdr(Host) -i example.com
 tcp-request inspect-delay 5s
-tcp-request switch-mode http if HTTP
-tcp-request reject   <span class="comment"># non-HTTP traffic is implicit here</span>
+tcp-request content switch-mode http if HTTP
+tcp-request content reject   <span class="comment"># non-HTTP traffic is implicit here</span>
 ...
 http-request reject unless is_host_com
 </code></pre>
@@ -30724,7 +30725,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.9-3 &ndash; Configuration Manual<br>
+							HAProxy 3.0.9-23 &ndash; Configuration Manual<br>
 							<small>, 2025/03/20</small>
 						</div>
 					</div>
