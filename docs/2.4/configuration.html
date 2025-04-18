@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.4.28-1 - Configuration Manual</title>
+		<title>HAProxy version 2.4.28-65 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3757,7 +3757,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/11/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3768,7 +3768,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.4.28-1</strong></p>
+							<p><strong>version 2.4.28-65</strong></p>
 							<p>
 								2024/11/08<br>
 								
@@ -5434,6 +5434,57 @@ The conditions are currently limited to:
   - a non-nul integer (e.g. '1'), always returns &quot;true&quot;.
   - a predicate optionally followed by argument(s) in parenthesis.
 
+The same line tokenizer and argument parser are used as for the rest of the
+configuration language. Words are split around consecutive series of one or
+more unquoted spaces or tabs, and are reassembled together using a single space
+to delimit them before evaluation, in order to save the user from having to
+quote the entire line. But this also means that spaces surrounding commas or
+parenthesis are definitely part of the value, which is not always expected.
+For example, the expression below:
+
+   .if defined( HAPROXY_MWORKER )
+
+will test for the existence of variable &quot; HAPROXY_MWORKER &quot; (with spaces),
+and this one:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+
+will compare the environment variable &quot;ENABLE_SSL&quot; to the value &quot; 1&quot; (with a
+single leading space). The reason is the line is first split into words like
+this:
+
+   .if streq(&quot;$ENABLE_SSL&quot;,     1)
+  |---|--------------------|   |--|
+    1           2               3
+
+then the weak quoting is applied and environment variable &quot;$ENABLE_SSL&quot; is
+resolved (let's say for example that ENABLE_SSL=0), and finally the words are
+reassembled into a single string by placing a single space between the words:
+
+   .if streq(0, 1)
+  |---|-------|--|
+    1     2     3
+
+and only then it is parsed as a single expression. The space that was inserted
+between the comma and &quot;1&quot; is still part of the argument value, making this
+argument &quot; 1&quot;:
+
+   .if streq(0, 1)
+  |---|-----|-|--|
+    \    \    \  \_ argument2: &quot; 1&quot;
+     \    \    \___ argument1: &quot;0&quot;
+      \    \_______ function: &quot;streq&quot;
+       \___________ directive: &quot;.if&quot;
+
+It's visible here that even if ENABLE_SSL had been equal to &quot;1&quot;, it wouldn't
+have matched &quot; 1&quot; since the string would differ by one space.
+
+Note: as explained in section &quot;2.2. Quoting and escaping&quot;, a good rule of thumb
+      is to never insert unneeded spaces inside expressions.
+
+Note that like in other languages, the AND operator has precedence over the OR
+operator, so that &quot;A &amp;&amp; B || C &amp;&amp; D&quot; evalues as &quot;(A &amp;&amp; B) || (C &amp;&amp; D)&quot;.
+
 The list of currently supported predicates is the following:
 
   - defined(&lt;name&gt;)       : returns true if an environment variable &lt;name&gt;
@@ -5679,6 +5730,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#nopoll">nopoll</a>
    - <a href="#noreuseport">noreuseport</a>
    - <a href="#nosplice">nosplice</a>
+   - <a href="#profiling.memory">profiling.memory</a>
    - <a href="#profiling.tasks">profiling.tasks</a>
    - <a href="#server-state-base">server-state-base</a>
    - <a href="#server-state-file">server-state-file</a>
@@ -7976,7 +8028,7 @@ specified in a previous &quot;defaults&quot; section.
 <tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20tcplog">option tcplog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-option%20tcplog">option tcplog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20transparent"><span class="pull-right"><span>(*)</span></span>option transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-external-check%20command">external-check command</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -13328,7 +13380,8 @@ in a specific instance by prepending the &quot;no&quot; keyword before it.
            third retry. You can disable redispatches with a value of 0.</pre>
 </div>
 <pre class="text">In HTTP mode, if a server designated by a cookie is down, clients may
-definitely stick to it because they cannot flush the cookie, so they will not
+definitely stick to it, for example when using &quot;<a href="#option%20persist">option persist</a>&quot; or
+&quot;<a href="#force-persist">force-persist</a>&quot;, because they cannot flush the cookie, so they will not
 be able to access the service anymore.
 
 Specifying &quot;<a href="#option%20redispatch">option redispatch</a>&quot; will allow the proxy to break cookie or
@@ -13360,7 +13413,7 @@ value.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#retries">retries</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20persist">option persist</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;, &quot;<a href="#retries">retries</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redis-check"></a><a class="anchor" name="4-option redis-check"></a><a class="anchor" name="4.2-option redis-check"></a><a class="anchor" name="option redis-check (Proxies)"></a><a class="anchor" name="option redis-check (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redis-check"></a><a href="#4.2-option%20redis-check">option redis-check</a></b></div><pre class="text">Use redis health checks for server testing
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -16292,8 +16345,8 @@ tcp-request content reject
 <span class="comment"># and reject everything else. (works for HTTP/1 and HTTP/2 connections)</span>
 acl is_host_com hdr(Host) -i example.com
 tcp-request inspect-delay 5s
-tcp-request switch-mode http if HTTP
-tcp-request reject   <span class="comment"># non-HTTP traffic is implicit here</span>
+tcp-request content switch-mode http if HTTP
+tcp-request content reject   <span class="comment"># non-HTTP traffic is implicit here</span>
 ...
 http-request reject unless is_host_com
 </code></pre>
@@ -23564,9 +23617,10 @@ Timings events in TCP mode:
     instance during a POST request, the time already runs, and this can distort
     apparent response time. For this reason, it's generally wise not to trust
     too much this field for POST requests initiated from clients behind an
-    untrusted network. A value of &quot;-1&quot; here means that the last the response
-    header (empty line) was never seen, most likely because the server timeout
-    stroke before the server managed to process the request.
+    untrusted network. A value of &quot;-1&quot; here means that the last response header
+    (empty line) was never seen, most likely because the server timeout stroke
+    before the server managed to process the request or because the server
+    returned an invalid response.
 
   - Td: this is the total transfer time of the response payload till the last
     byte sent to the client. In HTTP it starts after the last response header
@@ -24801,7 +24855,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.4.28-1 &ndash; Configuration Manual<br>
+							HAProxy 2.4.28-65 &ndash; Configuration Manual<br>
 							<small>, 2024/11/08</small>
 						</div>
 					</div>
