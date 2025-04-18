@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev10-67 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev10-107 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2167,6 +2167,8 @@
 							
 							<a class="list-group-item" href="#id (Server and default-server options)">id (Server and default-server options)</a>
 							
+							<a class="list-group-item" href="#idle-ping">idle-ping</a>
+							
 							<a class="list-group-item" href="#ignore-persist">ignore-persist</a>
 							
 							<a class="list-group-item" href="#iif">iif</a>
@@ -2968,13 +2970,29 @@
 							
 							<a class="list-group-item" href="#req.ssl_alpn">req.ssl_alpn</a>
 							
+							<a class="list-group-item" href="#req.ssl_cipherlist">req.ssl_cipherlist</a>
+							
+							<a class="list-group-item" href="#req.ssl_cipherlist binary">req.ssl_cipherlist binary</a>
+							
 							<a class="list-group-item" href="#req.ssl_ec_ext">req.ssl_ec_ext</a>
 							
 							<a class="list-group-item" href="#req.ssl_hello_type">req.ssl_hello_type</a>
 							
+							<a class="list-group-item" href="#req.ssl_keyshare_groups">req.ssl_keyshare_groups</a>
+							
+							<a class="list-group-item" href="#req.ssl_keyshare_groups binary">req.ssl_keyshare_groups binary</a>
+							
+							<a class="list-group-item" href="#req.ssl_sigalgs">req.ssl_sigalgs</a>
+							
+							<a class="list-group-item" href="#req.ssl_sigalgs binary">req.ssl_sigalgs binary</a>
+							
 							<a class="list-group-item" href="#req.ssl_sni">req.ssl_sni</a>
 							
 							<a class="list-group-item" href="#req.ssl_st_ext">req.ssl_st_ext</a>
+							
+							<a class="list-group-item" href="#req.ssl_supported_groups">req.ssl_supported_groups</a>
+							
+							<a class="list-group-item" href="#req.ssl_supported_groups binary">req.ssl_supported_groups binary</a>
 							
 							<a class="list-group-item" href="#req.ssl_ver">req.ssl_ver</a>
 							
@@ -4521,7 +4539,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4532,7 +4550,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev10-67</strong></p>
+							<p><strong>version 3.2-dev10-107</strong></p>
 							<p>
 								2025/04/11<br>
 								
@@ -21806,6 +21824,20 @@ position index on the current bind line, with character '-' as separator. See
 sometimes it is more convenient to fix them to ease monitoring. This value
 must be strictly positive and unique within the listener/frontend. This
 option can only be used when defining only a single socket.
+</pre><a class="anchor" name="idle-ping"></a><a class="anchor" name="5-idle-ping"></a><a class="anchor" name="5.1-idle-ping"></a><a class="anchor" name="idle-ping (Bind and server options)"></a><a class="anchor" name="idle-ping (Bind options)"></a><div class="keyword"><b><a class="anchor" name="idle-ping"></a><a href="#5.1-idle-ping">idle-ping</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+Define an interval for periodic liveliness on idle frontend connections. If
+the peer is unable to respond before the next scheduled test, the connection
+is closed. Else, the client timeout is refreshed and the connection is kept.
+Note that http-request/http-keep-alive timers run in parallel and are not
+refreshed by idle-ping.
+
+This feature relies on specific underlying protocol support. For now, only H2
+mux implements it. Idle-ping is simply ignored by other protocols.
+
+This option is particularly useful when using reverse HTTP. Setting it on the
+bind line is useful for the peer which is responsible to actively initiate
+connections and will then receive incoming traffic through them.
 </pre><a class="anchor" name="interface"></a><a class="anchor" name="5-interface"></a><a class="anchor" name="5.1-interface"></a><a class="anchor" name="interface (Bind and server options)"></a><a class="anchor" name="interface (Bind options)"></a><div class="keyword"><b><a class="anchor" name="interface"></a><a href="#5.1-interface">interface</a></b> <span style="color: #080">&lt;interface&gt;</span></div><pre class="text">Restricts the socket to a specific interface. When specified, only packets
 received from that particular interface are processed by the socket. This is
 currently only supported on Linux. The interface must be a primary system
@@ -22670,6 +22702,21 @@ HAProxy processes to agree on routing decisions.
 Set a persistent ID for the server. This ID must be positive and unique for
 the proxy. An unused ID will automatically be assigned if unset. The first
 assigned value will be 1. This ID is currently only returned in statistics.
+</pre><a class="anchor" name="idle-ping"></a><a class="anchor" name="5-idle-ping"></a><a class="anchor" name="5.2-idle-ping"></a><a class="anchor" name="idle-ping (Bind and server options)"></a><a class="anchor" name="idle-ping (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="idle-ping"></a><a href="#5.2-idle-ping">idle-ping</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+Define an interval for periodic liveliness on idle backend connections. If
+the peer is unable to respond before the next scheduled test, the connection
+is closed. This keyword refers to the backend side, so it is useful to check
+that idle connections are still usable. Note that this won't prevent the
+connection from being destroyed on idle pool purge.
+
+This feature relies on specific underlying protocol support. For now, only H2
+mux implements it. Idle-ping is simply ignored by other protocols.
+
+This option is particularly useful when using reverse HTTP. Setting it on the
+server line is useful for the peer which listen for incoming connections and
+attach them to a corresponding server to be able to reuse later on traffic
+forwarding.
 </pre><a class="anchor" name="init-addr"></a><a class="anchor" name="5-init-addr"></a><a class="anchor" name="5.2-init-addr"></a><a class="anchor" name="init-addr (Bind and server options)"></a><a class="anchor" name="init-addr (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="init-addr"></a><a href="#5.2-init-addr">init-addr</a></b> <span style="color: #800">{last | libc | none | <span style="color: #080">&lt;ip&gt;</span>}</span>,<span style="color: #008">[...]</span>*</div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Indicate in what order the server's address should be resolved upon startup
@@ -28602,6 +28649,10 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-req.ssl_st_ext">req.ssl_st_ext</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-req.ssl_ver">req.ssl_ver</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-req_ssl_ver">req_ssl_ver</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.ssl_cipherlist">req.ssl_cipherlist</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-req.ssl_sigalgs">req.ssl_sigalgs</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-req.ssl_keyshare_groups">req.ssl_keyshare_groups</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-req.ssl_supported_groups">req.ssl_supported_groups</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-res.len">res.len</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.payload">res.payload(&lt;offset&gt;,&lt;length&gt;)</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-res.payload_lv">res.payload_lv(&lt;offset1&gt;,&lt;length&gt;[,&lt;offset2&gt;])</a></td><td >binary</td></tr>
@@ -28778,6 +28829,68 @@ tcp-request inspect-delay 5s
 tcp-request content accept if { req.ssl_hello_type 1 }
 use_backend bk_allow if { req.ssl_sni -f allowed_sites }
 default_backend bk_sorry_page
+</code></pre>
+</div><a class="anchor" name="req.ssl_cipherlist"></a><a class="anchor" name="7-req.ssl_cipherlist"></a><a class="anchor" name="7.3.5-req.ssl_cipherlist"></a><a class="anchor" name="req.ssl_cipherlist (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_cipherlist (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_cipherlist binary"></a><a class="anchor" name="7-req.ssl_cipherlist binary"></a><a class="anchor" name="7.3.5-req.ssl_cipherlist binary"></a><a class="anchor" name="req.ssl_cipherlist binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_cipherlist binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_cipherlist binary"></a><a href="#7.3.5-req.ssl_cipherlist%20binary">req.ssl_cipherlist binary</a></b></div><pre class="text">Returns the binary form of the list of symmetric cipher options supported by
+the client as reported in the contents of a TLS ClientHello. Note that this
+only applies to raw contents found in the request buffer and not to contents
+deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines
+having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_cipherlist_bin">ssl_fc_cipherlist_bin</a>&quot; which is the SSL
+bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Wait for a client hello for at most 5 seconds</span>
+tcp-request inspect-delay 5s
+tcp-request content accept if { req.ssl_hello_type 1 }
+use-server fe3 if { req.ssl_cipherlist,be2hex(:,2),lower -m sub 1302:009f }
+server fe3  ${htst_fe3_addr}:${htst_fe3_port}
+</code></pre>
+</div><a class="anchor" name="req.ssl_sigalgs"></a><a class="anchor" name="7-req.ssl_sigalgs"></a><a class="anchor" name="7.3.5-req.ssl_sigalgs"></a><a class="anchor" name="req.ssl_sigalgs (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_sigalgs (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_sigalgs binary"></a><a class="anchor" name="7-req.ssl_sigalgs binary"></a><a class="anchor" name="7.3.5-req.ssl_sigalgs binary"></a><a class="anchor" name="req.ssl_sigalgs binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_sigalgs binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_sigalgs binary"></a><a href="#7.3.5-req.ssl_sigalgs%20binary">req.ssl_sigalgs binary</a></b></div><pre class="text">Returns the binary form of the list of signature algorithms supported by the
+client as reported in the TLS ClientHello. This is available as a client hello
+extension. Note that this only applies to raw contents found in the request
+buffer and not to contents deciphered via an SSL data layer, so this will not
+work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin</a>&quot;
+which is the SSL bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is
+specified.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Wait for a client hello for at most 5 seconds</span>
+tcp-request inspect-delay 5s
+tcp-request content accept if { req.ssl_hello_type 1 }
+use-server fe4 if { req.ssl_sigalgs,be2hex(:,2),lower -m sub 0403:0805 }
+server fe4  ${htst_fe4_addr}:${htst_fe4_port}
+</code></pre>
+</div><a class="anchor" name="req.ssl_keyshare_groups"></a><a class="anchor" name="7-req.ssl_keyshare_groups"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups"></a><a class="anchor" name="req.ssl_keyshare_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a class="anchor" name="7-req.ssl_keyshare_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups binary"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a href="#7.3.5-req.ssl_keyshare_groups%20binary">req.ssl_keyshare_groups binary</a></b></div><pre class="text">Return the binary format of the list of cryptographic parameters for key exchange
+supported by the client as reported in the TLS ClientHello. In TLS v1.3, keyshare
+is part of the ClientHello message and is the final client hello extension. Note
+that this only applies to raw contents found in the request buffer and not to
+contents deciphered via an  SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Wait for a client hello for at most 5 seconds</span>
+tcp-request inspect-delay 5s
+tcp-request content accept if { req.ssl_hello_type 1 }
+use-server fe3 if { req.ssl_keyshare_groups,be2hex(:,2),lower -m sub 001d  }
+server fe3  ${htst_fe3_addr}:${htst_fe3_port}
+</code></pre>
+</div><a class="anchor" name="req.ssl_supported_groups"></a><a class="anchor" name="7-req.ssl_supported_groups"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups"></a><a class="anchor" name="req.ssl_supported_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_supported_groups binary"></a><a class="anchor" name="7-req.ssl_supported_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups binary"></a><a class="anchor" name="req.ssl_supported_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_supported_groups binary"></a><a href="#7.3.5-req.ssl_supported_groups%20binary">req.ssl_supported_groups binary</a></b></div><pre class="text">Returns the binary form of the list of supported groups supported by the client
+as reported in the TLS ClientHello and used for key exchange which can include
+both elliptic curve and non-EC key exchange. Note that this only applies to raw
+contents found in the request buffer and not to contents deciphered via an SSL
+data layer, so this will not  work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+Refer to &quot;<a href="#ssl_fc_eclist_bin">ssl_fc_eclist_bin</a>&quot; which is the SSL bind equivalent that can be used
+when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code><span class="comment"># Wait for a client hello for at most 5 seconds</span>
+tcp-request inspect-delay 5s
+tcp-request content accept if { req.ssl_hello_type 1 }
+use-server fe3 if { req.ssl_supported_groups, be2hex(:,2),lower -m sub 0017 }
+server fe3  ${htst_fe3_addr}:${htst_fe3_port}
 </code></pre>
 </div><a class="anchor" name="req.ssl_st_ext"></a><a class="anchor" name="7-req.ssl_st_ext"></a><a class="anchor" name="7.3.5-req.ssl_st_ext"></a><a class="anchor" name="req.ssl_st_ext (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_st_ext (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_st_ext"></a><a href="#7.3.5-req.ssl_st_ext">req.ssl_st_ext</a></b> : integer</div><pre class="text">Returns 0 if the client didn't send a SessionTicket TLS Extension (RFC5077)
 Returns 1 if the client sent SessionTicket TLS Extension
@@ -32406,7 +32519,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev10-67 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev10-107 &ndash; Configuration Manual<br>
 							<small>, 2025/04/11</small>
 						</div>
 					</div>
