@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.2.33-40 - Configuration Manual</title>
+		<title>HAProxy version 2.2.33-77 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3497,7 +3497,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2024/07/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -3508,7 +3508,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.2.33-40</strong></p>
+							<p><strong>version 2.2.33-77</strong></p>
 							<p>
 								2024/04/05<br>
 								
@@ -12289,7 +12289,8 @@ in a specific instance by prepending the &quot;no&quot; keyword before it.
            third retry. You can disable redispatches with a value of 0.</pre>
 </div>
 <pre class="text">In HTTP mode, if a server designated by a cookie is down, clients may
-definitely stick to it because they cannot flush the cookie, so they will not
+definitely stick to it, for example when using &quot;<a href="#option%20persist">option persist</a>&quot; or
+&quot;<a href="#force-persist">force-persist</a>&quot;, because they cannot flush the cookie, so they will not
 be able to access the service anymore.
 
 Specifying &quot;<a href="#option%20redispatch">option redispatch</a>&quot; will allow the proxy to break cookie or
@@ -12321,7 +12322,7 @@ value.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
 in a specific instance by prepending the &quot;no&quot; keyword before it.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#retries">retries</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20persist">option persist</a>&quot;, &quot;<a href="#force-persist">force-persist</a>&quot;, &quot;<a href="#retries">retries</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redis-check"></a><a class="anchor" name="4-option redis-check"></a><a class="anchor" name="4.2-option redis-check"></a><a class="anchor" name="option redis-check (Proxies)"></a><a class="anchor" name="option redis-check (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redis-check"></a><a href="#4.2-option%20redis-check">option redis-check</a></b></div><pre class="text">Use redis health checks for server testing
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -15601,14 +15602,47 @@ new request do not refresh the timeout and are not counted as a new request.
 There is also another difference between the two timeouts : when a connection
 expires during timeout http-keep-alive, no error is returned, the connection
 just closes. If the connection expires in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; while waiting for a
-connection to complete, a HTTP 408 error is returned.
+request to complete, an HTTP 408 error is returned to the client before
+closing the connection, unless &quot;<a href="#option%20http-ignore-probes">option http-ignore-probes</a>&quot; is set in the
+frontend.
 
-In general it is optimal to set this value to a few tens to hundreds of
-milliseconds, to allow users to fetch all objects of a page at once but
-without waiting for further clicks. Also, if set to a very small value (e.g.
-1 millisecond) it will probably only accept pipelined requests but not the
-non-pipelined ones. It may be a nice trade-off for very large sites running
-with tens to hundreds of thousands of clients.
+In general &quot;<a href="#timeout%20http-keep-alive">timeout http-keep-alive</a>&quot; is best used to prevent clients from
+holding open an otherwise idle connection too long on sites seeing large
+amounts of short connections. This can be accomplished by setting the value
+to a few tens to hundreds of milliseconds in HTTP/1.1. This will close the
+connection after the client requests a page without having to hold that
+connection open to wait for more activity from the client. In that scenario,
+a new activity from the browser would result in a new handshake at the TCP
+and/or SSL layer. A common use case for this is HTTP sites serving only a
+redirect to the HTTPS page. Such connections are better not kept idle too
+long because they won't be reused, unless maybe to fetch a favicon.
+
+Another use case is the exact opposite: some sites want to permit clients
+to reuse idle connections for a long time (e.g. 30 seconds to one minute) but
+do not want to wait that long for the first request, in order to avoid a very
+inexpensive attack vector. In this case, the http-keep-alive timeout would be
+set to a large value, but http-request would remain low (a few seconds).
+
+When set to a very small value additional requests that are not pipelined
+are likely going to be handled over another connection unless the requests
+are truly pipelined, which is very rare with HTTP/1.1 (requests being sent
+back-to-back without waiting for a response). Most HTTP/1.1 implementations
+send a request, wait for a response and then send another request. A small
+value here for HTTP/1.1 may be advantageous to use less memory and sockets
+for sites with hundreds of thousands of clients, at the expense of an
+increase in handshake computation costs.
+
+Special care should be taken with small values when dealing with HTTP/2. The
+nature of HTTP/2 is to multiplex requests over a connection in order to save
+on the overhead of reconnecting the TCP and/or SSL layers. The protocol also
+uses control frames which cope poorly with early TCP connection closures, on
+very rare occasions this may result in truncated responses when data are
+destroyed in flight after leaving HAProxy (which then cannot even log an
+error). A suggested low starting value for HTTP/2 connections would be around
+4 seconds. This would prevent most modern keep-alive implementations from
+needlessly holding open stale connections, and at the same time would allow
+subsequent requests to reuse the connection. However, this should be adjusted
+as needed and is simply a starting point.
 
 If this parameter is not set, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-request<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-request%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#http-request%20%28Proxy%20section%29">Proxy section</a></li></ul></span>&quot; timeout applies, and if both
 are not set, &quot;<a href="#timeout%20client">timeout client</a>&quot; still applies at the lower level. It should be
@@ -22041,9 +22075,10 @@ Timings events in TCP mode:
     instance during a POST request, the time already runs, and this can distort
     apparent response time. For this reason, it's generally wise not to trust
     too much this field for POST requests initiated from clients behind an
-    untrusted network. A value of &quot;-1&quot; here means that the last the response
-    header (empty line) was never seen, most likely because the server timeout
-    stroke before the server managed to process the request.
+    untrusted network. A value of &quot;-1&quot; here means that the last response header
+    (empty line) was never seen, most likely because the server timeout stroke
+    before the server managed to process the request or because the server
+    returned an invalid response.
 
   - Td: this is the total transfer time of the response payload till the last
     byte sent to the client. In HTTP it starts after the last response header
@@ -23108,7 +23143,7 @@ here.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.2.33-40 &ndash; Configuration Manual<br>
+							HAProxy 2.2.33-77 &ndash; Configuration Manual<br>
 							<small>, 2024/04/05</small>
 						</div>
 					</div>
