@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.9-30 - Configuration Manual</title>
+		<title>HAProxy version 3.0.10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3986,6 +3986,8 @@
 							
 							<a class="list-group-item" href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
 							
+							<a class="list-group-item" href="#tune.epoll.mask-events">tune.epoll.mask-events</a>
+							
 							<a class="list-group-item" href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
 							
 							<a class="list-group-item" href="#tune.fail-alloc">tune.fail-alloc</a>
@@ -4325,7 +4327,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4336,9 +4338,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0.9-30</strong></p>
+							<p><strong>version 3.0.10</strong></p>
 							<p>
-								2025/03/20<br>
+								2025/04/22<br>
 								
 							</p>
 						</div>
@@ -6810,6 +6812,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
+   - <a href="#tune.epoll.mask-events">tune.epoll.mask-events</a>
    - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
@@ -8429,7 +8432,32 @@ optimize the data fast-forwarding by avoiding to use the channel's buffer.
 Thanks to this directive, it is possible to disable this optimization. Note
 it also disable any kernel tcp splicing.
 </pre><div class="page-header"><b>See also:</b> tune.pt.zero-copy-forwarding, tune.applet.zero-copy-forwarding, tune.h1.zero-copy-fwd-recv, tune.h1.zero-copy-fwd-send, tune.h2.zero-copy-fwd-send, tune.quic.zero-copy-fwd-send</div>
-<a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
+<a class="anchor" name="tune.epoll.mask-events"></a><a class="anchor" name="3-tune.epoll.mask-events"></a><a class="anchor" name="3.2-tune.epoll.mask-events"></a><a class="anchor" name="tune.epoll.mask-events (Global parameters)"></a><a class="anchor" name="tune.epoll.mask-events (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.epoll.mask-events"></a><a href="#3.2-tune.epoll.mask-events">tune.epoll.mask-events</a></b> <span style="color: #080">&lt;event<span style="color: #008">[,...]</span>&gt;</span></div><pre class="text">Along HAProxy's history, a few complex issues were met that were caused by
+bugs in the epoll mechanism in the Linux kernel. These ones usually are very
+rare and unreproducible outside the reporter's environment, and may only be
+worked around by disabling epoll and switching to poll instead, which is not
+very satisfying for high performance environments. Each time, issues affect
+only very specific (and rare) event types, and offering the ability to mask
+them can constitute a more acceptable work-around. This options offers this
+possibility by permitting to silently ignore events a few uncommon events
+and replace them with an input (which reports an unspecified incoming event).
+The effect is to avoid the fast error processing paths in certain places and
+only use the common paths. This should never be used unless being invited to
+do so by an expert in order to diagnose or work around a kernel bug.
+
+The option takes a single argument which is a comma-delimited list of words
+each designating an event to be masked. The currently supported list of
+events is:
+  - &quot;err&quot;:   mask the EPOLLERR event
+  - &quot;hup&quot;:   mask the EPOLLHUP events
+  - &quot;rdhup&quot;: mask the EPOLLRDHUP events
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># mask all non-traffic epoll events:</span>
+tune.epoll.mask-events err,hup,rdhup
+</code></pre>
+</div><a class="anchor" name="tune.events.max-events-at-once"></a><a class="anchor" name="3-tune.events.max-events-at-once"></a><a class="anchor" name="3.2-tune.events.max-events-at-once"></a><a class="anchor" name="tune.events.max-events-at-once (Global parameters)"></a><a class="anchor" name="tune.events.max-events-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.events.max-events-at-once"></a><a href="#3.2-tune.events.max-events-at-once">tune.events.max-events-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of events that may be processed at once by an asynchronous
 task handler (from event_hdl API). &lt;number&gt; should be included between 1
 and 10000. Large number could cause thread contention as a result of the
 task doing heavy work without interruption, and on the other hand, small
@@ -30725,8 +30753,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.9-30 &ndash; Configuration Manual<br>
-							<small>, 2025/03/20</small>
+							HAProxy 3.0.10 &ndash; Configuration Manual<br>
+							<small>, 2025/04/22</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
