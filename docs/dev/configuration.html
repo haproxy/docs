@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev11-14 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev11-40 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1345,7 +1345,7 @@
 							
 							<a class="list-group-item" href="#accepted_payload_size">accepted_payload_size</a>
 							
-							<a class="list-group-item" href="#account">account</a>
+							<a class="list-group-item" href="#account-key">account-key</a>
 							
 							<a class="list-group-item" href="#acl (Fcgi-app section)">acl (Fcgi-app section)</a>
 							
@@ -1766,6 +1766,8 @@
 							
 							<a class="list-group-item" href="#digest">digest</a>
 							
+							<a class="list-group-item" href="#directory">directory</a>
+							
 							<a class="list-group-item" href="#disable-l7-retry">disable-l7-retry</a>
 							
 							<a class="list-group-item" href="#disabled (Peers)">disabled (Peers)</a>
@@ -1783,6 +1785,8 @@
 							<a class="list-group-item" href="#div">div</a>
 							
 							<a class="list-group-item" href="#djb2">djb2</a>
+							
+							<a class="list-group-item" href="#dns-accept-family">dns-accept-family</a>
 							
 							<a class="list-group-item" href="#do-log">do-log</a>
 							
@@ -4421,8 +4425,6 @@
 							
 							<a class="list-group-item" href="#uptime">uptime</a>
 							
-							<a class="list-group-item" href="#uri">uri</a>
-							
 							<a class="list-group-item" href="#url">url</a>
 							
 							<a class="list-group-item" href="#url32">url32</a>
@@ -4549,7 +4551,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4560,7 +4562,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev11-14</strong></p>
+							<p><strong>version 3.2-dev11-40</strong></p>
 							<p>
 								2025/04/18<br>
 								
@@ -7186,6 +7188,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#deviceatlas-log-level">deviceatlas-log-level</a>
    - <a href="#deviceatlas-properties-cookie">deviceatlas-properties-cookie</a>
    - <a href="#deviceatlas-separator">deviceatlas-separator</a>
+   - <a href="#dns-accept-family">dns-accept-family</a>
    - <a href="#expose-deprecated-directives">expose-deprecated-directives</a>
    - <a href="#expose-experimental-directives">expose-experimental-directives</a>
    - <a href="#external-check">external-check</a>
@@ -7767,7 +7770,25 @@ Client-side component was used during the request. This directive is optional
 and set to DAPROPS by default if not set.
 </pre><a class="anchor" name="deviceatlas-separator"></a><a class="anchor" name="3-deviceatlas-separator"></a><a class="anchor" name="3.1-deviceatlas-separator"></a><a class="anchor" name="deviceatlas-separator (Global parameters)"></a><a class="anchor" name="deviceatlas-separator (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="deviceatlas-separator"></a><a href="#3.1-deviceatlas-separator">deviceatlas-separator</a></b> <span style="color: #080">&lt;char&gt;</span></div><pre class="text">Sets the character separator for the API properties results. This directive
 is optional and set to | by default if not set.
-</pre><a class="anchor" name="expose-deprecated-directives"></a><a class="anchor" name="3-expose-deprecated-directives"></a><a class="anchor" name="3.1-expose-deprecated-directives"></a><a class="anchor" name="expose-deprecated-directives (Global parameters)"></a><a class="anchor" name="expose-deprecated-directives (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="expose-deprecated-directives"></a><a href="#3.1-expose-deprecated-directives">expose-deprecated-directives</a></b></div><pre class="text">This statement must appear before using some directives tagged as deprecated
+</pre><a class="anchor" name="dns-accept-family"></a><a class="anchor" name="3-dns-accept-family"></a><a class="anchor" name="3.1-dns-accept-family"></a><a class="anchor" name="dns-accept-family (Global parameters)"></a><a class="anchor" name="dns-accept-family (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="dns-accept-family"></a><a href="#3.1-dns-accept-family">dns-accept-family</a></b> <span style="color: #080">&lt;family&gt;</span><span style="color: #008">[,...]</span></div><pre class="text">By default, DNS resolvers accept both IPv4 and IPv6 addresses. This can be
+influenced by the &quot;<a href="#resolve-prefer">resolve-prefer</a>&quot; keywords on server lines as well as the
+family argument to the &quot;<a href="#do-resolve">do-resolve</a>&quot; action, but that is only a preference,
+which does not block the other family from being used when it's alone. In
+some environments where dual-stack is not usable, stumbling on an unreachable
+IPv6-only DNS record can cause significant trouble as it will replace a
+previous IPv4 one which would possibly have continued to work till next
+request. The &quot;<a href="#dns-accept-family">dns-accept-family</a>&quot; global option permits to enforce usage of
+only one (or both) address families. The argument is a comma-delimited list
+of the following words:
+  - &quot;<a href="#ipv4">ipv4</a>&quot;: query and accept IPv4 addresses (&quot;A&quot; records)
+  - &quot;<a href="#ipv6">ipv6</a>&quot;: query and accept IPv6 addresses (&quot;AAAA&quot; records)
+  - &quot;auto&quot;: use IPv4, and IPv6 if the system has a default gateway for it.
+
+When a single family is used, no request will be sent to resolvers for the
+other family, and any response for the othe family will be ignored. The
+default value is &quot;ipv4,ipv6&quot;, which effectively enables both families.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#resolve-prefer">resolve-prefer</a>&quot;, &quot;<a href="#do-resolve">do-resolve</a>&quot;</div>
+<a class="anchor" name="expose-deprecated-directives"></a><a class="anchor" name="3-expose-deprecated-directives"></a><a class="anchor" name="3.1-expose-deprecated-directives"></a><a class="anchor" name="expose-deprecated-directives (Global parameters)"></a><a class="anchor" name="expose-deprecated-directives (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="expose-deprecated-directives"></a><a href="#3.1-expose-deprecated-directives">expose-deprecated-directives</a></b></div><pre class="text">This statement must appear before using some directives tagged as deprecated
 to silent warnings and make sure the config file will not be rejected. Not
 all deprecated directives are concerned, only those without any alternative
 solution.
@@ -10899,7 +10920,7 @@ The generation is not scheduled and must be triggered using the CLI command
 &quot;acme renew&quot;.
 
 The following keywords are usable in the ACME section:
-</pre><a class="anchor" name="account"></a><a class="anchor" name="3-account"></a><a class="anchor" name="3.13-account"></a><a class="anchor" name="account (Global parameters)"></a><a class="anchor" name="account (ACME)"></a><div class="keyword"><b><a class="anchor" name="account"></a><a href="#3.13-account">account</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the account key. The key need to be generated before
+</pre><a class="anchor" name="account-key"></a><a class="anchor" name="3-account-key"></a><a class="anchor" name="3.13-account-key"></a><a class="anchor" name="account-key (Global parameters)"></a><a class="anchor" name="account-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="account-key"></a><a href="#3.13-account-key">account-key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the account key. The key need to be generated before
 launching HAProxy. If no account keyword is used, the acme section will try
 to load a filename using the section name &quot;&lt;name&gt;.account.key&quot;
 
@@ -10918,17 +10939,17 @@ but blocking the traffic too long could trigger the watchdog.)
 used the default is HTTP-01.
 </pre><a class="anchor" name="contact"></a><a class="anchor" name="3-contact"></a><a class="anchor" name="3.13-contact"></a><a class="anchor" name="contact (Global parameters)"></a><a class="anchor" name="contact (ACME)"></a><div class="keyword"><b><a class="anchor" name="contact"></a><a href="#3.13-contact">contact</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">The contact email that will be associated to the account key in the CA.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="3-curves"></a><a class="anchor" name="3.13-curves"></a><a class="anchor" name="curves (Global parameters)"></a><a class="anchor" name="curves (ACME)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#3.13-curves">curves</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">When using the ECDSA keytype, configure the curves. The default is P-384.
-</pre><a class="anchor" name="keytype"></a><a class="anchor" name="3-keytype"></a><a class="anchor" name="3.13-keytype"></a><a class="anchor" name="keytype (Global parameters)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#3.13-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
-or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
-&quot;<a href="#bits">bits</a>&quot; for RSA. By default EC384 keys are generated.
-</pre><a class="anchor" name="uri"></a><a class="anchor" name="3-uri"></a><a class="anchor" name="3.13-uri"></a><a class="anchor" name="uri (Global parameters)"></a><a class="anchor" name="uri (ACME)"></a><div class="keyword"><b><a class="anchor" name="uri"></a><a href="#3.13-uri">uri</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">This keyword configures the directory URL for the CA used by this acme
-section. This keyword is mandatory as there is no default uri.
+</pre><a class="anchor" name="directory"></a><a class="anchor" name="3-directory"></a><a class="anchor" name="3.13-directory"></a><a class="anchor" name="directory (Global parameters)"></a><a class="anchor" name="directory (ACME)"></a><div class="keyword"><b><a class="anchor" name="directory"></a><a href="#3.13-directory">directory</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">This keyword configures the directory URL for the CA used by this acme
+section. This keyword is mandatory as there is no default URL.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>uri https://acme-staging-v02.api.letsencrypt.org/directory
+<code>directory https://acme-staging-v02.api.letsencrypt.org/directory
 </code></pre>
-</div><div class="separator">
+</div><a class="anchor" name="keytype"></a><a class="anchor" name="3-keytype"></a><a class="anchor" name="3.13-keytype"></a><a class="anchor" name="keytype (Global parameters)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#3.13-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
+or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
+&quot;<a href="#bits">bits</a>&quot; for RSA. By default EC384 keys are generated.
+</pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>global
@@ -10943,16 +10964,16 @@ frontend in
     ssl-f-use crt &quot;foo.example.com.pem.ecdsa&quot; acme LE2 domains &quot;foo.example.com.pem,bar.example.com&quot;
 
 acme LE1
-    uri https://acme-staging-v02.api.letsencrypt.org/directory
-    account /etc/haproxy/account.key
+    directory https://acme-staging-v02.api.letsencrypt.org/directory
+    account-key /etc/haproxy/letsencrypt.account.key
     contact john.doe@example.com
     challenge HTTP-01
     keytype RSA
     bits 2048
 
 acme LE2
-    uri https://acme-staging-v02.api.letsencrypt.org/directory
-    account /etc/haproxy/account.key
+    directory https://acme-staging-v02.api.letsencrypt.org/directory
+    account-key /etc/haproxy/letsencrypt.account.key
     contact john.doe@example.com
     challenge HTTP-01
     keytype ECDSA
@@ -11445,7 +11466,7 @@ May be used in the following contexts: tcp, http, log
               configured hash-type. The result of the hash is divided by
               the total weight of the running servers to designate which
               server will receive the request. This can be used in place of
-              &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#uri">uri</a>&quot;, &quot;hdr()&quot;, &quot;url_param()&quot;, &quot;rdp-cookie&quot; to make
+              &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;uri&quot;, &quot;hdr()&quot;, &quot;url_param()&quot;, &quot;rdp-cookie&quot; to make
               use of a converter, refine the evaluation, or be used to
               extract data from local variables for example. When the data
               is not available, round robin will apply. This algorithm is
@@ -11623,7 +11644,7 @@ May be used in the following contexts: tcp, http, log
               sticky server doesn't change until it becomes DOWN.
 
 &lt;arguments&gt; is an optional list of arguments which may be needed by some
-            algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot;, &quot;<a href="#uri">uri</a>&quot; and &quot;log-hash&quot;
+            algorithms. Right now, only &quot;<a href="#url_param">url_param</a>&quot;, &quot;uri&quot; and &quot;log-hash&quot;
             support an optional argument.</pre>
 </div>
 <pre class="text">The load balancing algorithm of a backend is set to roundrobin when no other
@@ -20211,7 +20232,9 @@ frontend myfront
 the result in the variable &lt;var&gt;. It uses the DNS resolvers section
 pointed by &lt;resolvers&gt;.
 It is possible to choose a resolution preference using the optional
-arguments 'ipv4' or 'ipv6'.
+arguments 'ipv4' or 'ipv6'. See also the global &quot;<a href="#dns-accept-family">dns-accept-family</a>&quot; keyword
+to enforce strict usage of a specific family.
+
 When performing the DNS resolution, the client side connection is on
 pause waiting till the end of the resolution.
 If an IP address can be found, it is stored into &lt;var&gt;. If any kind of
@@ -23334,8 +23357,9 @@ Default value: not set
 
 When DNS resolution is enabled for a server and multiple IP addresses from
 different families are returned, HAProxy will prefer using an IP address
-from the family mentioned in the &quot;<a href="#resolve-prefer">resolve-prefer</a>&quot; parameter.
-Available families: &quot;<a href="#ipv4">ipv4</a>&quot; and &quot;<a href="#ipv6">ipv6</a>&quot;
+from the family mentioned in the &quot;<a href="#resolve-prefer">resolve-prefer</a>&quot; parameter. See also the
+global &quot;<a href="#dns-accept-family">dns-accept-family</a>&quot; keyword to enforce strict usage of a specific
+family. Available families: &quot;<a href="#ipv4">ipv4</a>&quot; and &quot;<a href="#ipv6">ipv6</a>&quot;.
 
 Default value: ipv6
 </pre><div class="separator">
@@ -29143,7 +29167,7 @@ well as to improve shared caches efficiency. Using this with a limited size
 stick table also allows one to collect statistics about most commonly
 requested objects by host/path. With ACLs it can allow simple content
 switching rules involving the host and the path at the same time, such as
-&quot;www.example.com/favicon.ico&quot;. See also &quot;<a href="#path">path</a>&quot; and &quot;<a href="#uri">uri</a>&quot;.
+&quot;www.example.com/favicon.ico&quot;. See also &quot;<a href="#path">path</a>&quot; and &quot;uri&quot;.
 
 ACL derivatives :
   base     : exact string match
@@ -32587,7 +32611,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev11-14 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev11-40 &ndash; Configuration Manual<br>
 							<small>, 2025/04/18</small>
 						</div>
 					</div>
