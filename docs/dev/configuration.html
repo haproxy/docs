@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev12-8 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev12-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1333,8 +1333,6 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-A"><h4>A</h4>
 								
-							<a class="list-group-item" href="#a">a</a>
-							
 							<a class="list-group-item" href="#accept">accept</a>
 							
 							<a class="list-group-item" href="#accept-netscaler-cip">accept-netscaler-cip</a>
@@ -4551,7 +4549,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4562,7 +4560,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev12-8</strong></p>
+							<p><strong>version 3.2-dev12-29</strong></p>
 							<p>
 								2025/04/25<br>
 								
@@ -10633,31 +10631,31 @@ restructure them, useful for forwarding messages that may not conform to
 traditional formats. This option should be used with the format raw setting on
 destination log targets to ensure the original message content is preserved.
 </pre><a class="anchor" name="option"></a><a class="anchor" name="3-option"></a><a class="anchor" name="3.10-option"></a><a class="anchor" name="option (Global parameters)"></a><a class="anchor" name="option (Log forwarding)"></a><a class="anchor" name="option host"></a><a class="anchor" name="3-option host"></a><a class="anchor" name="3.10-option host"></a><a class="anchor" name="option host (Global parameters)"></a><a class="anchor" name="option host (Log forwarding)"></a><div class="keyword"><b><a class="anchor" name="option host"></a><a href="#3.10-option%20host">option host</a></b> <span style="color: #800">{ replace | fill | keep | append }</span></div><pre class="text">Set the host strategy that should be used on the log-forward section
-regarding syslog host field for outbound rfc3164 or rfc5424 messages.
+regarding syslog hostname field for outbound rfc3164 or rfc5424 messages.
 
-    replace If input message already contains a value for the host field,
+    replace If input message already contains a value for the hostname field,
             we replace it by the source IP address from the sender.
-            If input message doesn't contain a value for the host field (ie:
-            '-' as input rfc5424 message or non compliant rfc3164 or rfc5424
-            message), we use the source IP address from the sender as host
-            field.
-
-    fill    If input message already contains a value for the host field,
-            we keep it.
-            If input message doesn't contain a value for the host field
+            If input message doesn't contain a value for the hostname field
             (ie: '-' as input rfc5424 message or non compliant rfc3164 or
             rfc5424 message), we use the source IP address from the sender as
-            host field.
+            hostname field.
+
+    fill    If input message already contains a value for the hostname field,
+            we keep it.
+            If input message doesn't contain a value for the hostname field
+            (ie: '-' as input rfc5424 message or non compliant rfc3164 or
+            rfc5424 message), we use the source IP address from the sender as
+            hostname field.
             (This is the default)
 
-    keep    If input message already contains a value for the host field,
+    keep    If input message already contains a value for the hostname field,
             we keep it.
-            If input message doesn't contain a value for the host field,
+            If input message doesn't contain a value for the hostname field,
             we set it to 'localhost' (rfc3164) or '-' (rfc5424).
 
-    append  If input message already contains a value for the host field,
+    append  If input message already contains a value for the hostname field,
             we append a comma followed by the IP address from the sender.
-            If input message doesn't contain a value for the host field,
+            If input message doesn't contain a value for the hostname field,
             we use the source IP address from the sender.
 
 For all options above, if the source IP address from the sender is not
@@ -10906,7 +10904,9 @@ failure&quot; or &quot;Error during insertion&quot; errors.
 <a class="anchor" id="3.13" name="3.13"></a>
 <h2 id="chapter-3.13" data-target="3.13"><small><a class="small" href="#3.13">3.13.</a></small> ACME</h2>
 <div><pre class="text">The ACME protocol can be configured using the &quot;<a href="#acme">acme</a>&quot; section. The section takes
-</pre><a class="anchor" name="a"></a><a class="anchor" name="3-a"></a><a class="anchor" name="3.13-a"></a><a class="anchor" name="a (Global parameters)"></a><a class="anchor" name="a (ACME)"></a><div class="keyword"><b><a class="anchor" name="a"></a><a href="#3.13-a">a</a></b> <span style="color: #080">&lt;name&gt;</span> argument, which is used to link a certificate to the section.</div><pre class="text">The ACME section allows to configure HAProxy as an ACMEv2 client. This feature
+a &quot;&lt;name&gt;&quot; argument, which is used to link a certificate to the section.
+
+The ACME section allows to configure HAProxy as an ACMEv2 client. This feature
 is experimental meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must be in the
 global section so this can be used.
 
@@ -32611,7 +32611,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev12-8 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev12-29 &ndash; Configuration Manual<br>
 							<small>, 2025/04/25</small>
 						</div>
 					</div>

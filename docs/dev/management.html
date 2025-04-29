@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev12-8 - Management Guide</title>
+		<title>HAProxy version 3.2-dev12-29 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -658,7 +658,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -669,7 +669,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev12-8</strong></p>
+							<p><strong>version 3.2-dev12-29</strong></p>
 							<p>
 								<br>
 								
@@ -2338,9 +2338,10 @@ that the terminal is handled by the readline library which supports line
 editing and history, which is very convenient when issuing repeated commands
 (eg: watch a counter).
 
-The socket supports two operation modes :
-  - interactive
-  - non-interactive
+The socket supports three operation modes :
+  - non-interactive, silent
+  - interactive, silent
+  - interactive with prompt
 
 The non-interactive mode is the default when socat connects to the socket. In
 this mode, a single line may be sent. It is processed as a whole, responses are
@@ -2354,12 +2355,25 @@ example :
 If a command needs to use a semi-colon or a backslash (eg: in a value), it
 must be preceded by a backslash ('\').
 
-The interactive mode displays a prompt ('&gt;') and waits for commands to be
-entered on the line, then processes them, and displays the prompt again to wait
-for a new command. This mode is entered via the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; command which must be
-sent on the first line in non-interactive mode. The mode is a flip switch, if
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; is sent in interactive mode, it is disabled and the connection closes
-after processing the last command of the same line.
+The interactive mode allows new commands to be sent after the ones from the
+previous lines finish. It exists in two variants, one silent, which works like
+the non-interactive mode except that the socket waits for a new command instead
+of closing, and one where a prompt is displayed ('&gt;') at the beginning of the
+line. The interactive mode is preferred for advanced tools while the prompt
+mode is preferred for humans.
+
+The mode can be changed using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; command. By default, it toggles the
+interactive+prompt modes. Entering &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; in interactive mode will switch to
+prompt mode. The command optionally takes a specific mode among which:
+
+  - &quot;n&quot; : non-interactive mode (single command and quits)
+  - &quot;i&quot; : interactive mode (multiple commands, no prompt)
+  - &quot;p&quot; : prompt mode (multiple commands with a prompt)
+
+Since the default mode is non-interactive, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; must be used as the first
+command in order to switch it, otherwise the previous command will cause the
+connection to be closed. Switching to non-interactive mode will result in the
+connection to be closed after all the commands of the same line complete.
 
 For this reason, when debugging by hand, it's quite common to start with the
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">prompt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#prompt%20%28Unix%20Socket%20commands%29">Unix Socket commands</a></li><li><a href="#prompt%20%28Master%20CLI%20commands%29">Master CLI commands</a></li></ul></span>&quot; command :
@@ -2369,6 +2383,9 @@ For this reason, when debugging by hand, it's quite common to start with the
    &gt; show info
    ...
    &gt;
+
+Interactive tools might prefer starting with &quot;prompt i&quot; to switch to interactive
+mode without the prompt.
 
 Optionally the process' uptime may be displayed in the prompt. In order to
 enable this, the &quot;prompt timed&quot; command will enable the prompt and toggle the
@@ -3100,14 +3117,26 @@ atomically replace the current ones once committed. It is reported as
 unused versions will automatically be removed once a more recent version is
 committed. Version numbers are unsigned 32-bit values which wrap at the end,
 so care must be taken when comparing them in an external program.
-</pre><a class="anchor" name="prompt"></a><a class="anchor" name="9-prompt"></a><a class="anchor" name="9.3-prompt"></a><a class="anchor" name="prompt (Statistics and monitoring)"></a><a class="anchor" name="prompt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="prompt"></a><a href="#9.3-prompt">prompt</a></b></div><pre class="text">Toggle the prompt at the beginning of the line and enter or leave interactive
-mode. In interactive mode, the connection is not closed after a command
-completes. Instead, the prompt will appear again, indicating the user that
-the interpreter is waiting for a new command. The prompt consists in a right
-angle bracket followed by a space &quot;&gt; &quot;. This mode is particularly convenient
-when one wants to periodically check information such as stats or errors.
-It is also a good idea to enter interactive mode before issuing a &quot;<a href="#help">help</a>&quot;
-command.
+</pre><a class="anchor" name="prompt"></a><a class="anchor" name="9-prompt"></a><a class="anchor" name="9.3-prompt"></a><a class="anchor" name="prompt (Statistics and monitoring)"></a><a class="anchor" name="prompt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="prompt"></a><a href="#9.3-prompt">prompt</a></b> <span style="color: #008">[help | n | i | p | timed]</span>*</div><pre class="text">Changes the behavior of the interactive mode and the prompt displayed at the
+beginning of the line in interactive mode:
+  - &quot;<a href="#help">help</a>&quot;    : displays the command's usage
+  - &quot;n&quot;       : switches to non-interactive mode
+  - &quot;i&quot;       : switches to interactive mode
+  - &quot;p&quot;       : switches to interactive + prompt mode
+  - &quot;timed&quot;   : toggles displaying the time in the prompt
+
+Without any option, this will cycle through prompt mode then non-interactive
+mode. In non-interactive mode, the connection is closed after the last
+command of the current line compltes. In interactive mode, the connection is
+not closed after a command completes, so that a new one can be entered. In
+prompt mode, the interactive mode is still in use, and a prompt will appear
+at the beginning of the line, indicating to the user that the interpreter is
+waiting for a new command. The prompt consists in a right angle bracket
+followed by a space &quot;&gt; &quot;.
+
+The prompt mode is more suited to human users, the interactive mode to
+advanced scripts, and the non-interactive mode (default) to basic scripts.
+Note that the non-interactive mode is not available for the master socket.
 </pre><a class="anchor" name="quit"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="quit"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon"></a><a href="#9.3-set%20anon">set anon</a></b> <span style="color: #008">[on|off]</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>]</span></div><pre class="text">This command enables or disables the &quot;anonymized mode&quot; for the current CLI
 session, which replaces certain fields considered sensitive or confidential
@@ -4416,13 +4445,19 @@ Loaded providers :
     - fips
     - base
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl sni"></a><a class="anchor" name="9-show ssl sni"></a><a class="anchor" name="9.3-show ssl sni"></a><a class="anchor" name="show ssl sni (Statistics and monitoring)"></a><a class="anchor" name="show ssl sni (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl sni"></a><a href="#9.3-show%20ssl%20sni">show ssl sni</a></b> <span style="color: #008">[-f <span style="color: #080">&lt;frontend&gt;</span>]</span> <span style="color: #008">[-A]</span></div><pre class="text">Dump every SNI configured for the designated frontend, or all frontends if no
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl sni"></a><a class="anchor" name="9-show ssl sni"></a><a class="anchor" name="9.3-show ssl sni"></a><a class="anchor" name="show ssl sni (Statistics and monitoring)"></a><a class="anchor" name="show ssl sni (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl sni"></a><a href="#9.3-show%20ssl%20sni">show ssl sni</a></b> <span style="color: #008">[-f <span style="color: #080">&lt;frontend&gt;</span>]</span> <span style="color: #008">[-A]</span> <span style="color: #008">[-t <span style="color: #080">&lt;offset&gt;</span>]</span></div><pre class="text">Dump every SNI configured for the designated frontend, or all frontends if no
 frontend was specified. It allows to see what SNI are offered for a frontend,
 and to identify if a SNI is defined multiple times by multiple certificates for
 the same frontend.
 
 The -A option allows to filter the list and only displays the certificates
 that are past the notAfter date, allowing to show only expired certificates.
+
+The -t option takes an offset in seconds, or with a time unit (s, m, h, d),
+which is added to the current time, allowing to check which certificates
+expired after the offset when combined with -A.
+For example if you want to check which certificates would be expired in 30d,
+just do &quot;show ssl sni -A -t 30d&quot;.
 
 Columns are separated by a single \t, allowing to parse it simply.
 
@@ -4448,7 +4483,7 @@ leaf certificate.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>$ echo &quot;@1 show ssl sni&quot; | socat /var/run/haproxy-master.sock - | column -t -s $'\t'
+<code>$ echo &quot;@1 show ssl sni -A -t 30d&quot; | socat /var/run/haproxy-master.sock - | column -t -s $'\t'
 <span class="comment"># Frontend/Bind        SNI        Negative Filter  Type   Filename             NotAfter                  NotBefore</span>
 li1/haproxy.cfg:10021  *.ex.lan   !m1.ex.lan       rsa    example.lan.pem      Jun 13 13:37:21 2024 GMT  May 14 13:37:21 2024 GMT
 li1/haproxy.cfg:10021  machine10  -                ecdsa  machine10.pem.ecdsa  Jun 13 13:37:21 2024 GMT  May 14 13:37:21 2024 GMT
@@ -4981,7 +5016,8 @@ $ echo '@1; show info; show stat; @2; show info; show stat' | socat /var/run/hap
   interactive session on the worker process by not specifying any command
   (i.e. &quot;@@1&quot; on its own line). This session can be terminated either by
   closing the connection or by quitting the worker process (using the &quot;<a href="#quit">quit</a>&quot;
-  command).
+  command). In this case, the prompt mode of the master socket (interactive,
+  prompt, timed) is propagated into the worker process.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -5540,7 +5576,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev12-8 &ndash; Management Guide<br>
+							HAProxy 3.2-dev12-29 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
