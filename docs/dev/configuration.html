@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev12-29 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev12-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2339,7 +2339,9 @@
 							
 							<a class="list-group-item" href="#mailers">mailers</a>
 							
-							<a class="list-group-item" href="#map">map</a>
+							<a class="list-group-item" href="#map (ACME)">map (ACME)</a>
+							
+							<a class="list-group-item" href="#map (Converters)">map (Converters)</a>
 							
 							<a class="list-group-item" href="#master-worker">master-worker</a>
 							
@@ -4266,6 +4268,10 @@
 							
 							<a class="list-group-item" href="#tune.memory.hot-size">tune.memory.hot-size</a>
 							
+							<a class="list-group-item" href="#tune.notsent-lowat.client">tune.notsent-lowat.client</a>
+							
+							<a class="list-group-item" href="#tune.notsent-lowat.server">tune.notsent-lowat.server</a>
+							
 							<a class="list-group-item" href="#tune.pattern.cache-size">tune.pattern.cache-size</a>
 							
 							<a class="list-group-item" href="#tune.peers.max-updates-at-once">tune.peers.max-updates-at-once</a>
@@ -4295,6 +4301,8 @@
 							<a class="list-group-item" href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+							
+							<a class="list-group-item" href="#tune.quic.frontend.max-tx-mem">tune.quic.frontend.max-tx-mem</a>
 							
 							<a class="list-group-item" href="#tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a>
 							
@@ -4549,7 +4557,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4560,7 +4568,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev12-29</strong></p>
+							<p><strong>version 3.2-dev12-50</strong></p>
 							<p>
 								2025/04/25<br>
 								
@@ -7350,6 +7358,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.frontend.max-data-size">tune.quic.frontend.max-data-size</a>
    - <a href="#tune.quic.frontend.max-idle-timeout">tune.quic.frontend.max-idle-timeout</a>
    - <a href="#tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a>
+   - <a href="#tune.quic.frontend.max-tx-mem">tune.quic.frontend.max-tx-mem</a>
    - <a href="#tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a>
    - <a href="#tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a>
    - <a href="#tune.quic.max-frame-loss">tune.quic.max-frame-loss</a>
@@ -9544,6 +9553,19 @@ the CPUs, and will consume larger amounts of memory. It is recommended not to
 change this value, or to proceed in small increments. In order to completely
 disable the per-thread CPU caches, using a very small value could work, but
 it is better to use &quot;-dMno-cache&quot; on the command-line.
+</pre><a class="anchor" name="tune.notsent-lowat.client"></a><a class="anchor" name="3-tune.notsent-lowat.client"></a><a class="anchor" name="3.2-tune.notsent-lowat.client"></a><a class="anchor" name="tune.notsent-lowat.client (Global parameters)"></a><a class="anchor" name="tune.notsent-lowat.client (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.notsent-lowat.client"></a><a href="#3.2-tune.notsent-lowat.client">tune.notsent-lowat.client</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.notsent-lowat.server"></a><a class="anchor" name="3-tune.notsent-lowat.server"></a><a class="anchor" name="3.2-tune.notsent-lowat.server"></a><a class="anchor" name="tune.notsent-lowat.server (Global parameters)"></a><a class="anchor" name="tune.notsent-lowat.server (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.notsent-lowat.server"></a><a href="#3.2-tune.notsent-lowat.server">tune.notsent-lowat.server</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Adjusts the kernel's per-socket buffering so as to report that the sending
+side of a socket is full once the amount of buffered data equals this value
+plus the measured window size. The principle is to let the strict minimum
+needed amount of bytes in socket buffers, plus a small margin corresponding
+to what would be sent by the time haproxy tries to send again. Setting this
+to a low value (typically around tune.bufsize) allows to significantly reduce
+the memory consumption in system buffers, and reduce the application level
+latency incurred by flushing buffered data. This generally represents a more
+effective and more accurate setting than tune.sndbuf.client and
+tune.sndbuf.client for systems supporting it. This applies per connection
+(connection from a client or connection to a server depending on the setting)
+and is only used by TCP connections. The default is zero, which means
+unlimited. This is only available on Linux.
 </pre><a class="anchor" name="tune.pattern.cache-size"></a><a class="anchor" name="3-tune.pattern.cache-size"></a><a class="anchor" name="3.2-tune.pattern.cache-size"></a><a class="anchor" name="tune.pattern.cache-size (Global parameters)"></a><a class="anchor" name="tune.pattern.cache-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.pattern.cache-size"></a><a href="#3.2-tune.pattern.cache-size">tune.pattern.cache-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the pattern lookup cache to &lt;number&gt; entries. This is an LRU
 cache which reminds previous lookups and their results. It is used by ACLs
 and maps on slow pattern lookups, namely the ones using the &quot;<a href="#sub">sub</a>&quot;, &quot;reg&quot;,
@@ -9661,7 +9683,13 @@ buffering capabilities of streams on receive, which would result in poor
 upload throughput. It can be corrected by increasing
 tune.quic.frontend.max-data-size setting.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.frontend.max-data-size">tune.quic.frontend.max-data-size</a>&quot;, &quot;<a href="#tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a>&quot;</div>
-<a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3.2-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a href="#3.2-tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a></b>  <span style="color: #080">&lt;0..100, in percent&gt;</span></div><pre class="text">This setting allows to configure the hard limit of the number of data bytes
+<a class="anchor" name="tune.quic.frontend.max-tx-mem"></a><a class="anchor" name="3-tune.quic.frontend.max-tx-mem"></a><a class="anchor" name="3.2-tune.quic.frontend.max-tx-mem"></a><a class="anchor" name="tune.quic.frontend.max-tx-mem (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.max-tx-mem (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-tx-mem"></a><a href="#3.2-tune.quic.frontend.max-tx-mem">tune.quic.frontend.max-tx-mem</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the maximum amount of memory usable by QUIC stack at the transport layer
+for emission. This serves both as a limit of in flight bytes and multiplexer
+output buffers. Note that to prevent threads contention this limit is not
+strictly enforced so it can be exceeded on some occasions. Also, each
+connection will always be able to use a window of at least 2 datagrams, so a
+proper maxconn should be used in conjunction.
+</pre><a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3.2-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Global parameters)"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a href="#3.2-tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a></b>  <span style="color: #080">&lt;0..100, in percent&gt;</span></div><pre class="text">This setting allows to configure the hard limit of the number of data bytes
 in flight over each stream. It is expressed as a percentage relative to
 &quot;<a href="#tune.quic.frontend.max-data-size">tune.quic.frontend.max-data-size</a>&quot; setting, with the result rounded up to
 bufsize.
@@ -9822,7 +9850,9 @@ order to save kernel memory by preventing it from buffering too large amounts
 of received data. Lower values will significantly increase CPU usage though.
 Another use case is to prevent write timeouts with extremely slow clients due
 to the kernel waiting for a large part of the buffer to be read before
-notifying HAProxy again.
+notifying HAProxy again. See also tune.notsent-lowat.client and
+tune.notsent-lowat.server for more effective settings to more finely control
+memory usage and responsiveness on Linux without hurting performance.
 </pre><a class="anchor" name="tune.ssl.cachesize"></a><a class="anchor" name="3-tune.ssl.cachesize"></a><a class="anchor" name="3.2-tune.ssl.cachesize"></a><a class="anchor" name="tune.ssl.cachesize (Global parameters)"></a><a class="anchor" name="tune.ssl.cachesize (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.cachesize"></a><a href="#3.2-tune.ssl.cachesize">tune.ssl.cachesize</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the size of the global SSL session cache, in a number of blocks. A block
 is large enough to contain an encoded session without peer certificate.  An
 encoded session with peer certificate is stored in multiple blocks depending
@@ -10556,7 +10586,7 @@ set to BUFSIZE.
 
 ring myring
     description &quot;My local buffer&quot;
-    format rfc3164
+    format rfc5424
     maxlen 1200
     size 32764
     timeout connect 5s
@@ -10922,9 +10952,11 @@ The generation is not scheduled and must be triggered using the CLI command
 The following keywords are usable in the ACME section:
 </pre><a class="anchor" name="account-key"></a><a class="anchor" name="3-account-key"></a><a class="anchor" name="3.13-account-key"></a><a class="anchor" name="account-key (Global parameters)"></a><a class="anchor" name="account-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="account-key"></a><a href="#3.13-account-key">account-key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the account key. The key need to be generated before
 launching HAProxy. If no account keyword is used, the acme section will try
-to load a filename using the section name &quot;&lt;name&gt;.account.key&quot;
+to load a filename using the section name &quot;&lt;name&gt;.account.key&quot;. If the file
+doesn't exist, HAProxy will generate one, using the parameters from the acme
+section.
 
-You can generate an RSA private key with openssl:
+You can also generate manually an RSA private key with openssl:
 
   openssl genrsa -out account.key 2048
 
@@ -10949,6 +10981,10 @@ section. This keyword is mandatory as there is no default URL.
 </div><a class="anchor" name="keytype"></a><a class="anchor" name="3-keytype"></a><a class="anchor" name="3.13-keytype"></a><a class="anchor" name="keytype (Global parameters)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#3.13-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
 or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
 &quot;<a href="#bits">bits</a>&quot; for RSA. By default EC384 keys are generated.
+</pre><a class="anchor" name="map"></a><a class="anchor" name="3-map"></a><a class="anchor" name="3.13-map"></a><a class="anchor" name="map (Global parameters)"></a><a class="anchor" name="map (ACME)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#3.13-map">map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Configure the map which will be used to store token (key) and thumbprint
+(value), which is useful to reply to a challenge when there are multiple
+account used. The acme task will add entries before validating the challenge
+and will remove the entries at the end of the task.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -10959,7 +10995,7 @@ or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a
 frontend in
     bind *:80
     bind *:443 ssl
-    http-request return status 200 content-type text/plain lf-string &quot;%[path,field(-1,/)].${ACCOUNT_THUMBPRINT}\n&quot; if { path_beg '/.well-known/acme-challenge/' }
+    http-request return status 200 content-type text/plain lf-string &quot;%[path,field(-1,/)].%[path,field(-1,/),map(virt@acme)]\n&quot; if { path_beg '/.well-known/acme-challenge/' }
     ssl-f-use crt &quot;foo.example.com.pem.rsa&quot;   acme LE1 domains &quot;foo.example.com.pem,bar.example.com&quot;
     ssl-f-use crt &quot;foo.example.com.pem.ecdsa&quot; acme LE2 domains &quot;foo.example.com.pem,bar.example.com&quot;
 
@@ -10970,6 +11006,7 @@ acme LE1
     challenge HTTP-01
     keytype RSA
     bits 2048
+    map virt@acme
 
 acme LE2
     directory https://acme-staging-v02.api.letsencrypt.org/directory
@@ -10978,6 +11015,7 @@ acme LE2
     challenge HTTP-01
     keytype ECDSA
     curves P-384
+    map virt@acme
 </code></pre>
 </div></div>
 <a class="anchor" id="4" name="4"></a>
@@ -17358,6 +17396,7 @@ one could replace, remove or add certificates and SSL options to it.
 <pre class="prettyprint">
 <code>frontend https
     bind :443 ssl
+    bind quic4@:443 ssl
     ssl-f-use crt foobar.pem.rsa sigalgs &quot;RSA-PSS+SHA256&quot;
     ssl-f-use crt test.foobar.pem
     ssl-f-use crt test2.foobar.crt key test2.foobar.key ocsp test2.foobar.ocsp ocsp-update on
@@ -25308,7 +25347,7 @@ map_&lt;match_type&gt;_&lt;output_type&gt;(&lt;map_name&gt;[,&lt;default_value&g
   the &lt;default_value&gt;. If the &lt;default_value&gt; is not set, the converter fails
   and acts as if no input value could be fetched. If the &lt;match_type&gt; is not
   set, it defaults to &quot;<a href="#str">str</a>&quot;. Likewise, if the &lt;output_type&gt; is not set, it
-  defaults to &quot;<a href="#str">str</a>&quot;. For convenience, the &quot;<a href="#map">map</a>&quot; keyword is an alias for
+  defaults to &quot;<a href="#str">str</a>&quot;. For convenience, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">map<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#map%20%28ACME%29">ACME</a></li><li><a href="#map%20%28Converters%29">Converters</a></li></ul></span>&quot; keyword is an alias for
   &quot;map_str&quot; and maps a string to another string. &lt;map_name&gt; must follow the
   format described in 2.7. about name format for maps and ACLs
 
@@ -32611,7 +32650,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev12-29 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev12-50 &ndash; Configuration Manual<br>
 							<small>, 2025/04/25</small>
 						</div>
 					</div>
