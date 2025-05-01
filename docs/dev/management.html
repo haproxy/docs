@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev12-50 - Management Guide</title>
+		<title>HAProxy version 3.2-dev13 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -264,6 +264,8 @@
 							<a class="list-group-item" href="#abort ssl crl-file">abort ssl crl-file</a>
 							
 							<a class="list-group-item" href="#acme">acme</a>
+							
+							<a class="list-group-item" href="#acme ps">acme ps</a>
 							
 							<a class="list-group-item" href="#acme renew">acme renew</a>
 							
@@ -658,7 +660,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -669,7 +671,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev12-50</strong></p>
+							<p><strong>version 3.2-dev13</strong></p>
 							<p>
 								<br>
 								
@@ -2461,9 +2463,18 @@ See also &quot;<a href="#set%20ssl%20cert">set ssl cert</a>&quot; and &quot;<a h
 </pre><a class="anchor" name="abort"></a><a class="anchor" name="9-abort"></a><a class="anchor" name="9.3-abort"></a><a class="anchor" name="abort (Statistics and monitoring)"></a><a class="anchor" name="abort (Unix Socket commands)"></a><a class="anchor" name="abort ssl"></a><a class="anchor" name="9-abort ssl"></a><a class="anchor" name="9.3-abort ssl"></a><a class="anchor" name="abort ssl (Statistics and monitoring)"></a><a class="anchor" name="abort ssl (Unix Socket commands)"></a><a class="anchor" name="abort ssl crl-file"></a><a class="anchor" name="9-abort ssl crl-file"></a><a class="anchor" name="9.3-abort ssl crl-file"></a><a class="anchor" name="abort ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="abort ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="abort ssl crl-file"></a><a href="#9.3-abort%20ssl%20crl-file">abort ssl crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">Abort and destroy a temporary CRL file update transaction.
 
 See also &quot;<a href="#set%20ssl%20crl-file">set ssl crl-file</a>&quot; and &quot;<a href="#commit%20ssl%20crl-file">commit ssl crl-file</a>&quot;.
-</pre><a class="anchor" name="acme"></a><a class="anchor" name="9-acme"></a><a class="anchor" name="9.3-acme"></a><a class="anchor" name="acme (Statistics and monitoring)"></a><a class="anchor" name="acme (Unix Socket commands)"></a><a class="anchor" name="acme renew"></a><a class="anchor" name="9-acme renew"></a><a class="anchor" name="9.3-acme renew"></a><a class="anchor" name="acme renew (Statistics and monitoring)"></a><a class="anchor" name="acme renew (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="acme renew"></a><a href="#9.3-acme%20renew">acme renew</a></b> <span style="color: #080">&lt;certificate&gt;</span></div><pre class="text">Starts an ACME certificate generation task with the given certificate name.
+</pre><a class="anchor" name="acme"></a><a class="anchor" name="9-acme"></a><a class="anchor" name="9.3-acme"></a><a class="anchor" name="acme (Statistics and monitoring)"></a><a class="anchor" name="acme (Unix Socket commands)"></a><a class="anchor" name="acme ps"></a><a class="anchor" name="9-acme ps"></a><a class="anchor" name="9.3-acme ps"></a><a class="anchor" name="acme ps (Statistics and monitoring)"></a><a class="anchor" name="acme ps (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="acme ps"></a><a href="#9.3-acme%20ps">acme ps</a></b></div><pre class="text">Show the running ACME tasks. See also &quot;<a href="#acme%20renew">acme renew</a>&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;@1 acme ps&quot; | socat /run/haproxy-master.sock - | column -t -s $'\t'
+<span class="comment"># certificate     section   state</span>
+foobar.pem.rsa    LE1       Running
+foobar.pem.ecdsa  LE2       Running
+</code></pre>
+</div><a class="anchor" name="acme"></a><a class="anchor" name="9-acme"></a><a class="anchor" name="9.3-acme"></a><a class="anchor" name="acme (Statistics and monitoring)"></a><a class="anchor" name="acme (Unix Socket commands)"></a><a class="anchor" name="acme renew"></a><a class="anchor" name="9-acme renew"></a><a class="anchor" name="9.3-acme renew"></a><a class="anchor" name="acme renew (Statistics and monitoring)"></a><a class="anchor" name="acme renew (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="acme renew"></a><a href="#9.3-acme%20renew">acme renew</a></b> <span style="color: #080">&lt;certificate&gt;</span></div><pre class="text">Starts an ACME certificate generation task with the given certificate name.
 The certificate must be linked to an acme section, see <a href="#3.13">section 3.13</a>. of the
-configuration manual.
+configuration manual. See also &quot;<a href="#acme%20ps">acme ps</a>&quot;.
 </pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add acl"></a><a class="anchor" name="9-add acl"></a><a class="anchor" name="9.3-add acl"></a><a class="anchor" name="add acl (Statistics and monitoring)"></a><a class="anchor" name="add acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add acl"></a><a href="#9.3-add%20acl">add acl</a></b> <span style="color: #008">[@<span style="color: #080">&lt;ver&gt;</span>]</span> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><pre class="text">Add an entry into the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;name&gt; returned by
 &quot;<a href="#show%20acl">show acl</a>&quot;. This command does not verify if the entry already exists. Entries
 are added to the current version of the ACL, unless a specific version is
@@ -5576,7 +5587,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev12-50 &ndash; Management Guide<br>
+							HAProxy 3.2-dev13 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
