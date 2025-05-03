@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev13 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev14-2 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4557,7 +4557,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/04/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4568,9 +4568,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev13</strong></p>
+							<p><strong>version 3.2-dev14-2</strong></p>
 							<p>
-								2025/04/30<br>
+								2025/05/02<br>
 								
 							</p>
 						</div>
@@ -9387,6 +9387,9 @@ loaded from the configuration, haproxy will emit a warning, and the option
 will implicitly default to &quot;pre-3.1-bug&quot; to match with the historical
 behavior. It is recommended to set this option to &quot;normal&quot; after ensuring
 that in-use Lua scripts are properly handling bool haproxy samples as booleans.
+
+This setting must be set before any &quot;<a href="#lua-load">lua-load</a>&quot; or &quot;<a href="#lua-load-per-thread">lua-load-per-thread</a>&quot;
+directive for it to be considered, else it is ignored.
 </pre><a class="anchor" name="tune.lua.burst-timeout"></a><a class="anchor" name="3-tune.lua.burst-timeout"></a><a class="anchor" name="3.2-tune.lua.burst-timeout"></a><a class="anchor" name="tune.lua.burst-timeout (Global parameters)"></a><a class="anchor" name="tune.lua.burst-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.burst-timeout"></a><a href="#3.2-tune.lua.burst-timeout">tune.lua.burst-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">The &quot;burst&quot; execution timeout applies to any Lua handler. If the handler
 fails to finish or yield before timeout is reached, it will be aborted to
 prevent thread contention, to prevent traffic from not being served for too
@@ -10946,8 +10949,14 @@ the disk is not supposed to be done after the configuration is loaded, because
 it could block the event loop, blocking the traffic on the same thread. Meaning
 that the certificates and keys generated from HAProxy will need to be dumped
 from outside HAProxy using &quot;dump ssl cert&quot; on the stats socket.
-The generation is not scheduled and must be triggered using the CLI command
-&quot;acme renew&quot;. See also &quot;acme ps&quot; in the management guide.
+External Account Binding (EAB) is not supported.
+
+The ACME scheduler starts at HAProxy startup, it will loop over the
+certificates and start an ACME renewal task when the notAfter task is past
+curtime + (notAfter - notBefore) / 12, or 7 days if notBefore is not defined.
+The scheduler will then sleep and wakeup after 12 hours.
+It is possible to start manually a renewal task with &quot;acme renew'.
+See also &quot;acme ps&quot; in the management guide.
 
 The following keywords are usable in the ACME section:
 </pre><a class="anchor" name="account-key"></a><a class="anchor" name="3-account-key"></a><a class="anchor" name="3.13-account-key"></a><a class="anchor" name="account-key (Global parameters)"></a><a class="anchor" name="account-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="account-key"></a><a href="#3.13-account-key">account-key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the account key. The key need to be generated before
@@ -32652,8 +32661,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev13 &ndash; Configuration Manual<br>
-							<small>, 2025/04/30</small>
+							HAProxy 3.2-dev14-2 &ndash; Configuration Manual<br>
+							<small>, 2025/05/02</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
