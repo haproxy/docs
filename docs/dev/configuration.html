@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev14-10 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev14-20 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1351,7 +1351,9 @@
 							
 							<a class="list-group-item" href="#acl (Fetching samples from internal states)">acl (Fetching samples from internal states)</a>
 							
-							<a class="list-group-item" href="#acme">acme</a>
+							<a class="list-group-item" href="#acme (Load options)">acme (Load options)</a>
+							
+							<a class="list-group-item" href="#acme (ACME)">acme (ACME)</a>
 							
 							<a class="list-group-item" href="#act_conn">act_conn</a>
 							
@@ -1688,6 +1690,8 @@
 							<a class="list-group-item" href="#crt-ignore-err">crt-ignore-err</a>
 							
 							<a class="list-group-item" href="#crt-list">crt-list</a>
+							
+							<a class="list-group-item" href="#crt-store">crt-store</a>
 							
 							<a class="list-group-item" href="#cur_client_timeout">cur_client_timeout</a>
 							
@@ -4557,7 +4561,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4568,7 +4572,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev14-10</strong></p>
+							<p><strong>version 3.2-dev14-20</strong></p>
 							<p>
 								2025/05/02<br>
 								
@@ -10752,12 +10756,11 @@ httpclient.
 <a class="anchor" id="3.12" name="3.12"></a>
 <h2 id="chapter-3.12" data-target="3.12"><small><a class="small" href="#3.12">3.12.</a></small> Certificate Storage</h2>
 <div><pre class="text">HAProxy uses an internal storage mechanism to load and store certificates used
-in the configuration. This storage can be configured by using a &quot;crt-store&quot;
+in the configuration. This storage can be configured by using a &quot;<a href="#crt-store">crt-store</a>&quot;
 section. It allows to configure certificate definitions and which files should
 be loaded in it. A certificate definition must be written before it is used
 elsewhere in the configuration.
-
-The &quot;crt-store&quot; takes an optional name in argument. If a name is specified,
+</pre><a class="anchor" name="crt-store"></a><a class="anchor" name="3-crt-store"></a><a class="anchor" name="3.12-crt-store"></a><a class="anchor" name="crt-store (Global parameters)"></a><a class="anchor" name="crt-store (Certificate Storage)"></a><div class="keyword"><b><a class="anchor" name="crt-store"></a><a href="#3.12-crt-store">crt-store</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">The &quot;<a href="#crt-store">crt-store</a>&quot; takes an optional name in argument. If a name is specified,
 every certificate of this store must be referenced using &quot;@&lt;name&gt;/&lt;crt&gt;&quot; or
 &quot;@&lt;name&gt;/&lt;alias&gt;&quot;.
 
@@ -10765,7 +10768,7 @@ Files in the certificate storage can also be updated dynamically with the CLI.
 See &quot;set ssl cert&quot; in the <a href="#9.3">section 9.3</a> of the management guide.
 
 
-The following keywords are supported in the &quot;crt-store&quot; section :
+The following keywords are supported in the &quot;<a href="#crt-store">crt-store</a>&quot; section :
   - <a href="#crt-base">crt-base</a>
   - <a href="#key-base">key-base</a>
   - <a href="#load">load</a>
@@ -10819,7 +10822,7 @@ when called elsewhere in the configuration.
 </pre><a class="anchor" name="domains"></a><a class="anchor" name="3-domains"></a><a class="anchor" name="3.12.1-domains"></a><a class="anchor" name="domains (Global parameters)"></a><a class="anchor" name="domains (Load options)"></a><div class="keyword"><b><a class="anchor" name="domains"></a><a href="#3.12.1-domains">domains</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the list of domains that will be used for ACME certificates. The
 first domain of the list is used as the CN. Domains are separated by commas in the list.
 
-See also Section 3.13 (&quot;ACME&quot;) and &quot;<a href="#acme">acme</a>&quot; in this section.
+See also Section 3.13 (&quot;ACME&quot;) and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; in this section.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -10936,7 +10939,7 @@ failure&quot; or &quot;Error during insertion&quot; errors.
 </pre></div>
 <a class="anchor" id="3.13" name="3.13"></a>
 <h2 id="chapter-3.13" data-target="3.13"><small><a class="small" href="#3.13">3.13.</a></small> ACME</h2>
-<div><pre class="text">The ACME protocol can be configured using the &quot;<a href="#acme">acme</a>&quot; section. The section takes
+<div><a class="anchor" name="acme"></a><a class="anchor" name="3-acme"></a><a class="anchor" name="3.13-acme"></a><a class="anchor" name="acme (Global parameters)"></a><a class="anchor" name="acme (ACME)"></a><div class="keyword"><b><a class="anchor" name="acme"></a><a href="#3.13-acme">acme</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">The ACME protocol can be configured using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; section. The section takes
 a &quot;&lt;name&gt;&quot; argument, which is used to link a certificate to the section.
 
 The ACME section allows to configure HAProxy as an ACMEv2 client. This feature
@@ -10956,7 +10959,7 @@ certificates and start an ACME renewal task when the notAfter task is past
 curtime + (notAfter - notBefore) / 12, or 7 days if notBefore is not defined.
 The scheduler will then sleep and wakeup after 12 hours.
 It is possible to start manually a renewal task with &quot;acme renew'.
-See also &quot;acme ps&quot; in the management guide.
+See also &quot;acme status&quot; in the management guide.
 
 The following keywords are usable in the ACME section:
 </pre><a class="anchor" name="account-key"></a><a class="anchor" name="3-account-key"></a><a class="anchor" name="3.13-account-key"></a><a class="anchor" name="account-key (Global parameters)"></a><a class="anchor" name="account-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="account-key"></a><a href="#3.13-account-key">account-key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the account key. The key need to be generated before
@@ -21665,7 +21668,7 @@ list for every certificate of your certificate authority chain.
 
 HAProxy uses a cache system, the files are loaded only once in the certificate
 storage, and each next &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword will use this cached version. When the
-certificate was declared in a &quot;crt-store&quot;, the certificate storage is
+certificate was declared in a &quot;<a href="#crt-store">crt-store</a>&quot;, the certificate storage is
 populated from there and don't try to load additional files by detecting file
 extensions.
 
@@ -32661,7 +32664,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev14-10 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev14-20 &ndash; Configuration Manual<br>
 							<small>, 2025/05/02</small>
 						</div>
 					</div>
