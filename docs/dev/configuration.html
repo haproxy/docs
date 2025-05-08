@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev14-20 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev14-34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4561,7 +4561,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4572,7 +4572,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev14-20</strong></p>
+							<p><strong>version 3.2-dev14-34</strong></p>
 							<p>
 								2025/05/02<br>
 								
@@ -18037,7 +18037,7 @@ backend smtp
     server s2 192.168.1.1:25
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, about ACLs and sample fetching.</div>
-<a class="anchor" name="stick-table"></a><a class="anchor" name="4-stick-table"></a><a class="anchor" name="4.2-stick-table"></a><a class="anchor" name="stick-table (Proxies)"></a><a class="anchor" name="stick-table (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="4-stick-table type"></a><a class="anchor" name="4.2-stick-table type"></a><a class="anchor" name="stick-table type (Proxies)"></a><a class="anchor" name="stick-table type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#4.2-stick-table%20type">stick-table type</a></b> <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
+<a class="anchor" name="stick-table"></a><a class="anchor" name="4-stick-table"></a><a class="anchor" name="4.2-stick-table"></a><a class="anchor" name="stick-table (Proxies)"></a><a class="anchor" name="stick-table (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="4-stick-table type"></a><a class="anchor" name="4.2-stick-table type"></a><a class="anchor" name="stick-table type (Proxies)"></a><a class="anchor" name="stick-table type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#4.2-stick-table%20type">stick-table type</a></b> <span style="color: #800">{ip|ipv4|ipv6|integer|string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>|binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
             size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[peers <span style="color: #080">&lt;peersect&gt;</span>]</span> <span style="color: #008">[srvkey <span style="color: #080">&lt;srvkey&gt;</span>]</span>
             <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>* <span style="color: #008">[brates-factor <span style="color: #080">&lt;factor&gt;</span>]</span>
             <span style="color: #008">[recv-only]</span></div><pre class="text">Configure the stickiness table for the current section
@@ -18048,7 +18048,14 @@ May be used in the following contexts: tcp, http
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
 <div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments"> ip         a table declared with &quot;type ip&quot; will only store IPv4 addresses.
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments"> ip         This type should be avoided in favor of a more explicit one such
+            as &quot;<a href="#ipv4">ipv4</a>&quot; or &quot;<a href="#ipv6">ipv6</a>&quot;. Prior to version 3.2 it was the only way to
+            configure IPv4. In 3.2, &quot;ip&quot; is an alias for &quot;<a href="#ipv4">ipv4</a>&quot;, and &quot;<a href="#ipv4">ipv4</a>&quot;
+            is preferred. In a future version, &quot;ip&quot; will instead correspond
+            to &quot;<a href="#ipv6">ipv6</a>&quot;. It is only meant to ease the transition from pre-3.2
+            to post-3.2.
+
+ ipv4       a table declared with this type will only store IPv4 addresses.
             This form is very compact (about 50 bytes per entry) and allows
             very fast entry lookup and stores with almost no overhead. This
             is mainly used to store client source IP addresses.
@@ -32664,7 +32671,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev14-20 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev14-34 &ndash; Configuration Manual<br>
 							<small>, 2025/05/02</small>
 						</div>
 					</div>
