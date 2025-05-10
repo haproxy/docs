@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev14-35 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev15-11 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1354,6 +1354,8 @@
 							<a class="list-group-item" href="#acme (Load options)">acme (Load options)</a>
 							
 							<a class="list-group-item" href="#acme (ACME)">acme (ACME)</a>
+							
+							<a class="list-group-item" href="#acme.scheduler">acme.scheduler</a>
 							
 							<a class="list-group-item" href="#act_conn">act_conn</a>
 							
@@ -4561,7 +4563,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4572,9 +4574,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev14-35</strong></p>
+							<p><strong>version 3.2-dev15-11</strong></p>
 							<p>
-								2025/05/02<br>
+								2025/05/09<br>
 								
 							</p>
 						</div>
@@ -7470,7 +7472,16 @@ detection process. The default value depends on 51Degrees library.
 
 Please note that this option is only available when HAProxy has been
 compiled with USE_51DEGREES and 51DEGREES_VER=4.
-</pre><a class="anchor" name="ca-base"></a><a class="anchor" name="3-ca-base"></a><a class="anchor" name="3.1-ca-base"></a><a class="anchor" name="ca-base (Global parameters)"></a><a class="anchor" name="ca-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ca-base"></a><a href="#3.1-ca-base">ca-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL CA certificates and CRLs from when a
+</pre><a class="anchor" name="acme.scheduler"></a><a class="anchor" name="3-acme.scheduler"></a><a class="anchor" name="3.1-acme.scheduler"></a><a class="anchor" name="acme.scheduler (Global parameters)"></a><a class="anchor" name="acme.scheduler (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="acme.scheduler"></a><a href="#3.1-acme.scheduler">acme.scheduler</a></b> <span style="color: #800">{ auto | off }</span></div><pre class="text">Enable or disable the ACME scheduler.
+
+The ACME scheduler starts at HAProxy startup, it will loop over the
+certificates and start an ACME renewal task when the notAfter value is past
+curtime + (notAfter - notBefore) / 12, or 7 days if notBefore is not defined.
+The scheduler will then sleep and wakeup after 12 hours.
+
+The default value is &quot;auto&quot;.
+</pre><div class="page-header"><b>See also:</b> acme</div>
+<a class="anchor" name="ca-base"></a><a class="anchor" name="3-ca-base"></a><a class="anchor" name="3.1-ca-base"></a><a class="anchor" name="ca-base (Global parameters)"></a><a class="anchor" name="ca-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ca-base"></a><a href="#3.1-ca-base">ca-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL CA certificates and CRLs from when a
 relative path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 directives. Absolute locations specified in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; prevail and ignore &quot;<a href="#ca-base">ca-base</a>&quot;.
@@ -7794,6 +7805,7 @@ of the following words:
   - &quot;<a href="#ipv4">ipv4</a>&quot;: query and accept IPv4 addresses (&quot;A&quot; records)
   - &quot;<a href="#ipv6">ipv6</a>&quot;: query and accept IPv6 addresses (&quot;AAAA&quot; records)
   - &quot;auto&quot;: use IPv4, and IPv6 if the system has a default gateway for it.
+            The result of the last check is cached for 30 seconds.
 
 When a single family is used, no request will be sent to resolvers for the
 other family, and any response for the othe family will be ignored. The
@@ -22887,15 +22899,20 @@ IP address could point to a fake server used to trigger the creation of new
 instances on the fly. This option defaults to &quot;last,libc&quot; indicating that the
 previous address found in the state file (if any) is used first, otherwise
 the libc's resolver is used. This ensures continued compatibility with the
-historic behavior.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code>defaults
-    <span class="comment"># never fail on address resolution</span>
-    default-server init-addr last,libc,none
-</code></pre>
-</div><a class="anchor" name="inter"></a><a class="anchor" name="5-inter"></a><a class="anchor" name="5.2-inter"></a><a class="anchor" name="inter (Bind and server options)"></a><a class="anchor" name="inter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="inter"></a><a href="#5.2-inter">inter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><a class="anchor" name="fastinter"></a><a class="anchor" name="5-fastinter"></a><a class="anchor" name="5.2-fastinter"></a><a class="anchor" name="fastinter (Bind and server options)"></a><a class="anchor" name="fastinter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="fastinter"></a><a href="#5.2-fastinter">fastinter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><a class="anchor" name="downinter"></a><a class="anchor" name="5-downinter"></a><a class="anchor" name="5.2-downinter"></a><a class="anchor" name="downinter (Bind and server options)"></a><a class="anchor" name="downinter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="downinter"></a><a href="#5.2-downinter">downinter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
+historic behavior. When using internal resolvers, it is generally recommended
+to either disable libc-based resolution, or make it explicit (see <a href="#5.3">section 5.3</a>
+for more details).
+
+Example 1:
+    defaults
+        # never fail on address resolution
+        default-server init-addr last,libc,none
+
+Example 2:
+    defaults
+        # disable libc resolution in combination with resolvers
+        default-server init-addr last,none
+</pre><a class="anchor" name="inter"></a><a class="anchor" name="5-inter"></a><a class="anchor" name="5.2-inter"></a><a class="anchor" name="inter (Bind and server options)"></a><a class="anchor" name="inter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="inter"></a><a href="#5.2-inter">inter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><a class="anchor" name="fastinter"></a><a class="anchor" name="5-fastinter"></a><a class="anchor" name="5.2-fastinter"></a><a class="anchor" name="fastinter (Bind and server options)"></a><a class="anchor" name="fastinter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="fastinter"></a><a href="#5.2-fastinter">fastinter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><a class="anchor" name="downinter"></a><a class="anchor" name="5-downinter"></a><a class="anchor" name="5.2-downinter"></a><a class="anchor" name="downinter (Bind and server options)"></a><a class="anchor" name="downinter (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="downinter"></a><a href="#5.2-downinter">downinter</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 The &quot;<a href="#inter">inter</a>&quot; parameter sets the interval between two consecutive health checks
 to &lt;delay&gt; milliseconds. If left unspecified, the delay defaults to 2000 ms.
@@ -23441,13 +23458,16 @@ configured network, another address is selected.
 </div><a class="anchor" name="resolvers"></a><a class="anchor" name="5-resolvers"></a><a class="anchor" name="5.2-resolvers"></a><a class="anchor" name="resolvers (Bind and server options)"></a><a class="anchor" name="resolvers (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="resolvers"></a><a href="#5.2-resolvers">resolvers</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Points to an existing &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">resolvers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#resolvers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#resolvers%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot; section to resolve current server's
-hostname.
+hostname. It is often recommended to disable libc-based resolution when using
+resolvers, though exceptions exist (see <a href="#5.3.1">section 5.3.1</a>). In any case it is a
+good practice to explicitly specify &quot;<a href="#init-addr">init-addr</a>&quot; when using resolvers in order
+not to overlook this element.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>server s1 app1.domain.com:80 check resolvers mydns
+<code>server s1 app1.domain.com:80 init-addr last,none check resolvers mydns
 </code></pre>
-</div><pre class="text">See also <a href="#5.3">section 5.3</a>
+</div><pre class="text">See also <a href="#5.3">section 5.3</a> for implementation details and traps to be aware of.
 </pre><a class="anchor" name="send-proxy"></a><a class="anchor" name="5-send-proxy"></a><a class="anchor" name="5.2-send-proxy"></a><a class="anchor" name="send-proxy (Bind and server options)"></a><a class="anchor" name="send-proxy (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="send-proxy"></a><a href="#5.2-send-proxy">send-proxy</a></b></div><pre class="text">May be used in the following contexts: tcp, http
 
 The &quot;<a href="#send-proxy">send-proxy</a>&quot; parameter enforces use of the PROXY protocol over any
@@ -23782,10 +23802,13 @@ configuration file, at startup and cache the result for the process's life.
 This is not sufficient in some cases, such as in Amazon where a server's IP
 can change after a reboot or an ELB Virtual IP can change based on current
 workload.
+
 This chapter describes how HAProxy can be configured to process server's name
 resolution at run time.
-Whether run time server name resolution has been enable or not, HAProxy will
-carry on doing the first resolution when parsing the configuration.
+
+Whether run time server name resolution has been enable or not, by default
+HAProxy will do the first resolution at startup during configuration parsing
+via libc unless disabled by the &quot;<a href="#init-addr">init-addr</a>&quot; parameter.
 </pre></div>
 <a class="anchor" id="5.3.1" name="5.3.1"></a>
 <h3 id="chapter-5.3.1" data-target="5.3.1"><small><a class="small" href="#5.3.1">5.3.1.</a></small> Global overview</h3>
@@ -23817,6 +23840,17 @@ A few things important to notice:
 
   - a resolution is considered as invalid (NX, timeout, refused), when all the
     servers return an error.
+
+  - The DNS client implemented in HAProxy is very basic and will not understand
+    the vast number of options and advanced setups that an operating system's
+    resolver can deal with. As such, except for really trivial setups where a
+    server known by its FQDN only has exactly one IP address at a time and
+    might occasionally renew it (e.g. a reboot), it is highly recommended to
+    avoid mixing libc-based init-time resolution with DNS-based runtime
+    resolution, as such setups are known to cause failures upon address
+    renewal. As a conclusion, unless you know exactly what you are doing, you
+    should always exclude &quot;libc&quot; from &quot;<a href="#init-addr">init-addr</a>&quot; when using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">resolvers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#resolvers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#resolvers%20%28The%20resolvers%20section%29">The resolvers section</a></li></ul></span>&quot; on a
+    server line.
 </pre></div>
 <a class="anchor" id="5.3.2" name="5.3.2"></a>
 <h3 id="chapter-5.3.2" data-target="5.3.2"><small><a class="small" href="#5.3.2">5.3.2.</a></small> The resolvers section</h3>
@@ -32671,8 +32705,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev14-35 &ndash; Configuration Manual<br>
-							<small>, 2025/05/02</small>
+							HAProxy 3.2-dev15-11 &ndash; Configuration Manual<br>
+							<small>, 2025/05/09</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->

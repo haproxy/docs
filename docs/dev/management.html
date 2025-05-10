@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev14-35 - Management Guide</title>
+		<title>HAProxy version 3.2-dev15-11 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -660,7 +660,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -671,7 +671,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev14-35</strong></p>
+							<p><strong>version 3.2-dev15-11</strong></p>
 							<p>
 								<br>
 								
@@ -1168,6 +1168,16 @@ list of options is :
         the allocated area to verify that it hasn't been modified since it was
         last released. This works best with &quot;no-merge&quot;, &quot;cold-first&quot; and &quot;tag&quot;.
         Enabling this option will slightly increase the CPU usage.
+
+      - backup / no-backup:
+        This option performs a copy of each released object at release time,
+        allowing developers to inspect them. It also performs a comparison at
+        allocation time to detect if anything changed in between, indicating a
+        use-after-free condition. This doubles the memory usage and slightly
+        increases the CPU usage (similar to &quot;integrity&quot;). If combined with
+        &quot;integrity&quot;, it still duplicates the contents but doesn't perform the
+        comparison (which is performed by &quot;integrity&quot;). Just like &quot;integrity&quot;,
+        it works best with &quot;no-merge&quot;, &quot;cold-first&quot; and &quot;tag&quot;.
 
       - no-global / global:
         Depending on the operating system, a process-wide global memory cache
@@ -5596,7 +5606,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev14-35 &ndash; Management Guide<br>
+							HAProxy 3.2-dev15-11 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
