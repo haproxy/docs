@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev15-18 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev15-30 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4563,7 +4563,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4574,7 +4574,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev15-18</strong></p>
+							<p><strong>version 3.2-dev15-30</strong></p>
 							<p>
 								2025/05/09<br>
 								
@@ -7625,17 +7625,18 @@ policies are currently supported:
                       systems, per thread-group. The number of thread-groups,
                       if not set, will be set to 1.
 
- - efficiency         exactly like group-by-cluster below, except that CPU
-                      clusters whose performance is more than twice that of
-                      the next less performant one are evicted. These are
-                      typically &quot;big&quot; or &quot;performance&quot; cores. This means that
-                      if more than one type of CPU cores are detected, only
-                      the efficient one will be used. This can make sense for
-                      use with moderate loads when the most powerful cores
-                      need to be available to the application or a security
-                      component. Some modern CPUs have a large number of such
-                      efficient CPU cores which can collectively deliver a
-                      decent level of performance while using less power.
+ - efficiency         exactly like &quot;group-by-ccx&quot; below, except that CPU
+                      clusters composed of cores whose performance is more
+                      than 25% above that of the next less performant one are
+                      evicted. These are typically &quot;big&quot; or &quot;performance&quot;
+                      cores. This means that if more than one type of CPU
+                      cores are detected, only the efficient one will be
+                      used. This can make sense for use with moderate loads
+                      when the most powerful cores need to be available to
+                      the application or a security component. Some modern
+                      CPUs have a large number of such efficient CPU cores
+                      which can collectively deliver a decent level of
+                      performance while using less power.
 
  - first-usable-node  if the CPUs were not previously restricted at boot (for
                       example using the &quot;taskset&quot; utility), and if the
@@ -7646,6 +7647,14 @@ policies are currently supported:
                       the limit of 32 or 64 depending on the system. This is
                       the default policy.
 
+ - group-by-2-ccx     same as &quot;group-by-ccx&quot; below but create a group every
+                      two CCX. This can make sense on CPUs having many CCX of
+                      few cores each, to avoid creating many groups, or to
+                      smooth the distribution a little bit when not all cores
+                      are in use. Please note that it can have very bad
+                      performance effects when the communication between CCX
+                      is slow. This is generally recommended against.
+
  - group-by-2-clusters same as &quot;group-by-cluster&quot; but create a group every
                       two clusters. This can make sense on CPUs having many
                       clusters of few cores each, to avoid creating many
@@ -7654,6 +7663,14 @@ policies are currently supported:
                       very bad performance effects when the communication
                       between clusters is slow. This is generally recommended
                       against.
+
+ - group-by-3-ccx     same as &quot;group-by-ccx&quot; below but create a group every
+                      three CCX. This can make sense on CPUs having many CCX
+                      of few cores each, to avoid creating many groups, or to
+                      smooth the distribution a little bit when not all cores
+                      are in use. Please note that it can have very bad
+                      performance effects when the communication between CCX
+                      is slow. This is generally recommended against.
 
  - group-by-3-clusters same as &quot;group-by-cluster&quot; but create a group every
                       three clusters. This can make sense on CPUs having many
@@ -7664,6 +7681,14 @@ policies are currently supported:
                       between clusters is slow. This is generally recommended
                       against.
 
+ - group-by-4-ccx     same as &quot;group-by-ccx&quot; below but create a group every
+                      four CCX. This can make sense on CPUs having many CCX
+                      of few cores each, to avoid creating many groups, or to
+                      smooth the distribution a little bit when not all cores
+                      are in use. Please note that it can have very bad
+                      performance effects when the communication between CCX
+                      is slow. This is generally recommended against.
+
  - group-by-4-clusters same as &quot;group-by-cluster&quot; but create a group every
                       four clusters. This can make sense on CPUs having many
                       clusters of few cores each, to avoid creating many
@@ -7672,6 +7697,21 @@ policies are currently supported:
                       very bad performance effects when the communication
                       between clusters is slow. This is generally recommended
                       against.
+
+ - group-by-ccx       if neither &quot;<a href="#nbthread">nbthread</a>&quot; not &quot;nbtgroups&quot; were set, then
+                      one thread group is created for each CPU core complex
+                      (&quot;CCX&quot;) with available CPUs, each with as many threads
+                      as CPUs. A CCX groups CPUs having a similarly fast
+                      access to the last level cache (&quot;LLC&quot;), typically the
+                      L3 cache. On most modern machines, it is critical for
+                      performance not to mix CPUs from distant CCX in the
+                      same thread group. All threads of a group are then
+                      bound to all CPUs of the CCX so that intra-group
+                      communications remain local to the CCX without
+                      enforcing too strong a binding. The per-group thread
+                      limits and thread-group limits are respected. This is
+                      recommended on multi-socket and NUMA systems, as well
+                      as CPUs with bad inter-CCX latencies.
 
  - group-by-cluster   if neither &quot;<a href="#nbthread">nbthread</a>&quot; not &quot;nbtgroups&quot; were set, then
                       one thread group is created for each CPU cluster with
@@ -7682,19 +7722,28 @@ policies are currently supported:
                       per-group thread limits and thread-group limits are
                       respected. This is recommended on multi-socket and NUMA
                       systems, as well as CPUs with bad inter-CCX latencies.
+                      On most server machines, clusters and CCX are the same,
+                      but on heterogenous machines (&quot;performance&quot; vs
+                      &quot;efficiency&quot; or &quot;big&quot; vs &quot;little&quot;), a cluster will
+                      generally be made of only a part of a CCX composed only
+                      of very similar CPUs (same type, +/-5% frequency
+                      difference max). The difference is visible on modern
+                      laptops and desktop machines used by developers and
+                      admins to validate setups.
 
- - performance        exactly like group-by-cluster above, except that CPU
-                      clusters whose performance is less than half of the
-                      next more performant one are evicted. These are
-                      typically &quot;little&quot; or &quot;efficient&quot; cores, whose addition
-                      generally doesn't bring significant gains and can
-                      easily be counter-productive (e.g. TLS handshakes).
-                      Often, keeping such cores for other tasks such as
-                      network handling is much more effective. On development
-                      systems, these can also be used to run auxiliary tools
-                      such as load generators and monitoring tools.
+ - performance        exactly like &quot;group-by-ccx&quot; above, except that CPU
+                      clusters composed of cores whose performance is less
+                      than 80% of those of the next more performant one are
+                      evicted. These are typically &quot;little&quot; or &quot;efficient&quot;
+                      cores, whose addition generally doesn't bring significant
+                      gains and can easily be counter-productive (e.g. TLS
+                      handshakes). Often, keeping such cores for other tasks
+                      such as network handling is much more effective. On
+                      development systems, these can also be used to run
+                      auxiliary tools such as load generators and monitoring
+                      tools.
 
- - resource           this is like group-by-cluster above, except that only
+ - resource           this is like &quot;group-by-cluster&quot; above, except that only
                       the smallest and most efficient CPU cluster will be
                       used, while all other ones will be ignored. This can be
                       used to limit the resource usage to the strict minimum
@@ -32705,7 +32754,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev15-18 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev15-30 &ndash; Configuration Manual<br>
 							<small>, 2025/05/09</small>
 						</div>
 					</div>
