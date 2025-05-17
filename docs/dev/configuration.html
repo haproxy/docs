@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev16-3 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev16-15 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3992,7 +3992,9 @@
 							
 							<a class="list-group-item" href="#stick store-response">stick store-response</a>
 							
-							<a class="list-group-item" href="#stick-table">stick-table</a>
+							<a class="list-group-item" href="#stick-table (Stick-tables declaration)">stick-table (Stick-tables declaration)</a>
+							
+							<a class="list-group-item" href="#stick-table (Alphabetically sorted keywords reference)">stick-table (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#stick-table type">stick-table type</a>
 							
@@ -4021,7 +4023,9 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-T"><h4>T</h4>
 								
-							<a class="list-group-item" href="#table">table</a>
+							<a class="list-group-item" href="#table (Stick-tables declaration)">table (Stick-tables declaration)</a>
+							
+							<a class="list-group-item" href="#table (Peers declaration)">table (Peers declaration)</a>
 							
 							<a class="list-group-item" href="#table_avl">table_avl</a>
 							
@@ -4600,7 +4604,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4611,7 +4615,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev16-3</strong></p>
+							<p><strong>version 3.2-dev16-15</strong></p>
 							<p>
 								2025/05/14<br>
 								
@@ -17285,7 +17289,7 @@ May be used in the following contexts: tcp, http
 
 &lt;table&gt;    is an optional stickiness table name. If unspecified, the same
            backend's table is used. A stickiness table is declared using
-           the &quot;<a href="#stick-table">stick-table</a>&quot; statement.
+           the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement.
 
 &lt;cond&gt;     is an optional matching condition. It makes it possible to match
            on a certain criterion only when other conditions are met (or
@@ -17299,10 +17303,10 @@ describes a rule to extract the stickiness criterion from an incoming request
 or connection. See <a href="#7">section 7</a> for a complete list of possible patterns and
 transformation rules.
 
-The table has to be declared using the &quot;<a href="#stick-table">stick-table</a>&quot; statement. It must be of
+The table has to be declared using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement. It must be of
 a type compatible with the pattern. By default it is the one which is present
 in the same backend. It is possible to share a table with other backends by
-referencing it using the &quot;<a href="#table">table</a>&quot; keyword. If another table is referenced,
+referencing it using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; keyword. If another table is referenced,
 the server's ID inside the backends are used. By default, all server IDs
 start at 1 in each backend, so the server ordering is enough. But in case of
 doubt, it is highly recommended to force server IDs using their &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting.
@@ -17340,7 +17344,7 @@ backend smtp
     server s1 192.168.1.1:25
     server s2 192.168.1.1:25
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and samples fetching.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and samples fetching.</div>
 <a class="anchor" name="stick"></a><a class="anchor" name="4-stick"></a><a class="anchor" name="4.2-stick"></a><a class="anchor" name="stick (Proxies)"></a><a class="anchor" name="stick (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick on"></a><a class="anchor" name="4-stick on"></a><a class="anchor" name="4.2-stick on"></a><a class="anchor" name="stick on (Proxies)"></a><a class="anchor" name="stick on (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick on"></a><a href="#4.2-stick%20on">stick on</a></b> <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{if | unless}</span> <span style="color: #080">&lt;condition&gt;</span>]</span></div><pre class="text">Define a request pattern to associate a user to a server
 
 May be used in the following contexts: tcp, http
@@ -17397,7 +17401,7 @@ May be used in the following contexts: tcp, http
 
 &lt;table&gt;    is an optional stickiness table name. If unspecified, the same
            backend's table is used. A stickiness table is declared using
-           the &quot;<a href="#stick-table">stick-table</a>&quot; statement.
+           the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement.
 
 &lt;cond&gt;     is an optional storage condition. It makes it possible to store
            certain criteria only when some conditions are met (or not met).
@@ -17417,10 +17421,10 @@ URL parameter also makes sense. Storing a source port will almost never make
 any sense because it will be randomly matched. See <a href="#7">section 7</a> for a complete
 list of possible patterns and transformation rules.
 
-The table has to be declared using the &quot;<a href="#stick-table">stick-table</a>&quot; statement. It must be of
+The table has to be declared using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement. It must be of
 a type compatible with the pattern. By default it is the one which is present
 in the same backend. It is possible to share a table with other backends by
-referencing it using the &quot;<a href="#table">table</a>&quot; keyword. If another table is referenced,
+referencing it using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; keyword. If another table is referenced,
 the server's ID inside the backends are used. By default, all server IDs
 start at 1 in each backend, so the server ordering is enough. But in case of
 doubt, it is highly recommended to force server IDs using their &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting.
@@ -17466,7 +17470,7 @@ backend smtp
     server s1 192.168.1.1:25
     server s2 192.168.1.1:25
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and sample fetching.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and sample fetching.</div>
 <a class="anchor" name="stick"></a><a class="anchor" name="4-stick"></a><a class="anchor" name="4.2-stick"></a><a class="anchor" name="stick (Proxies)"></a><a class="anchor" name="stick (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick store-response"></a><a class="anchor" name="4-stick store-response"></a><a class="anchor" name="4.2-stick store-response"></a><a class="anchor" name="stick store-response (Proxies)"></a><a class="anchor" name="stick store-response (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick store-response"></a><a href="#4.2-stick%20store-response">stick store-response</a></b> <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{if | unless}</span> <span style="color: #080">&lt;condition&gt;</span>]</span></div><pre class="text">Define a response pattern used to create an entry in a stickiness table
 
 May be used in the following contexts: tcp, http
@@ -17482,7 +17486,7 @@ May be used in the following contexts: tcp, http
 
 &lt;table&gt;    is an optional stickiness table name. If unspecified, the same
            backend's table is used. A stickiness table is declared using
-           the &quot;<a href="#stick-table">stick-table</a>&quot; statement.
+           the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement.
 
 &lt;cond&gt;     is an optional storage condition. It makes it possible to store
            certain criteria only when some conditions are met (or not met).
@@ -17499,10 +17503,10 @@ request. Storing an ID found in a header of a response makes sense.
 See <a href="#7">section 7</a> for a complete list of possible patterns and transformation
 rules.
 
-The table has to be declared using the &quot;<a href="#stick-table">stick-table</a>&quot; statement. It must be of
+The table has to be declared using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement. It must be of
 a type compatible with the pattern. By default it is the one which is present
 in the same backend. It is possible to share a table with other backends by
-referencing it using the &quot;<a href="#table">table</a>&quot; keyword. If another table is referenced,
+referencing it using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; keyword. If another table is referenced,
 the server's ID inside the backends are used. By default, all server IDs
 start at 1 in each backend, so the server ordering is enough. But in case of
 doubt, it is highly recommended to force server IDs using their &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting.
@@ -17562,7 +17566,7 @@ backend https
     server s1 192.168.1.1:443
     server s2 192.168.1.1:443
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stick-table">stick-table</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and pattern extraction.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, <a href="#11">section 11</a> about stick-tables, and <a href="#7">section 7</a> about ACLs and pattern extraction.</div>
 <a class="anchor" name="stick-table"></a><a class="anchor" name="4-stick-table"></a><a class="anchor" name="4.2-stick-table"></a><a class="anchor" name="stick-table (Proxies)"></a><a class="anchor" name="stick-table (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="4-stick-table type"></a><a class="anchor" name="4.2-stick-table type"></a><a class="anchor" name="stick-table type (Proxies)"></a><a class="anchor" name="stick-table type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#4.2-stick-table%20type">stick-table type</a></b> <span style="color: #080">&lt;type&gt;</span> size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[args...]</span></div><pre class="text">Configure the stickiness table for the current section
 
 May be used in the following contexts: tcp, http
@@ -18010,7 +18014,7 @@ tcp-request connection reject if { sc0_conn_rate gt 10 }
 <div class="example-desc">Enable the PROXY protocol for traffic coming from all known proxies.</div><code>tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
 </code></pre>
 </div><pre class="text">See <a href="#7">section 7</a> about ACL usage.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;, &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;, &quot;<a href="#stick-table">stick-table</a>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20session">tcp-request session</a>&quot;, &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content"></a><a href="#4.2-tcp-request%20content">tcp-request content</a></b> <span style="color: #080">&lt;action&gt;</span> <span style="color: #008">[<span style="color: #800">{if | unless}</span> <span style="color: #080">&lt;condition&gt;</span>]</span></div><pre class="text">Perform an action on a new session depending on a layer 4-7 condition
 
 May be used in the following contexts: tcp, http
@@ -18305,7 +18309,7 @@ tcp-request session track-sc0 src
 tcp-request session reject if { sc0_sess_rate gt 10 }
 </code></pre>
 </div><pre class="text">See <a href="#7">section 7</a> about ACL usage.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;, &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;, &quot;<a href="#stick-table">stick-table</a>&quot;</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;, &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="tcp-response"></a><a class="anchor" name="4-tcp-response"></a><a class="anchor" name="4.2-tcp-response"></a><a class="anchor" name="tcp-response (Proxies)"></a><a class="anchor" name="tcp-response (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-response content"></a><a class="anchor" name="4-tcp-response content"></a><a class="anchor" name="4.2-tcp-response content"></a><a class="anchor" name="tcp-response content (Proxies)"></a><a class="anchor" name="tcp-response content (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-response content"></a><a href="#4.2-tcp-response%20content">tcp-response content</a></b> <span style="color: #080">&lt;action&gt;</span> <span style="color: #008">[<span style="color: #800">{if | unless}</span> <span style="color: #080">&lt;condition&gt;</span>]</span></div><pre class="text">Perform an action on a session response depending on a layer 4-7 condition
 
 May be used in the following contexts: tcp, http
@@ -31611,13 +31615,13 @@ tables only receive information from peers, or that updates from peers should
 instead be forwarded to a different table.
 
 Finally, stick-tables may be declared either in proxy sections (frontends,
-backends) using the &quot;<a href="#stick-table">stick-table</a>&quot; keyword, where there may only be one per
+backends) using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword, where there may only be one per
 section and where they will get the name of that section, or in peers sections
-with the &quot;<a href="#table">table</a>&quot; keyword followed by the table's name, and which permits to
+with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; keyword followed by the table's name, and which permits to
 declare multiple stick-tables in the same &quot;<a href="#peers">peers</a>&quot; section. If multiple
 stick-tables are needed, usually the recommended solution is either to declare
 them in a peers section (in case they intend to be shared), or to create extra
-backend sections, each with only the &quot;<a href="#stick-table">stick-table</a>&quot; definition in them.
+backend sections, each with only the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; definition in them.
 </pre></div>
 <a class="anchor" id="11.1" name="11.1"></a>
 <h2 id="chapter-11.1" data-target="11.1"><small><a class="small" href="#11.1">11.1.</a></small> stick-table declaration</h2>
@@ -31627,433 +31631,428 @@ that the one in the peers section requires a mandatory name and doesn't take a
 &quot;<a href="#peers">peers</a>&quot; option.
 
 In a &quot;frontend&quot;, &quot;backend&quot; or &quot;listen&quot; section:
+</pre><a class="anchor" name="stick-table"></a><a class="anchor" name="11-stick-table"></a><a class="anchor" name="11.1-stick-table"></a><a class="anchor" name="stick-table (Stick-tables and Peers)"></a><a class="anchor" name="stick-table (Stick-tables declaration)"></a><a class="anchor" name="stick-table type"></a><a class="anchor" name="11-stick-table type"></a><a class="anchor" name="11.1-stick-table type"></a><a class="anchor" name="stick-table type (Stick-tables and Peers)"></a><a class="anchor" name="stick-table type (Stick-tables declaration)"></a><div class="keyword"><b><a class="anchor" name="stick-table type"></a><a href="#11.1-stick-table%20type">stick-table type</a></b> <span style="color: #080">&lt;type&gt;</span> size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[recv-only]</span>
+            <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[srvkey <span style="color: #080">&lt;srvkey&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*
+            <span style="color: #008">[brates-factor <span style="color: #080">&lt;factor&gt;</span>]</span> <span style="color: #008">[peers <span style="color: #080">&lt;peersect&gt;</span>]</span></div><pre class="text">In a &quot;<a href="#peers">peers</a>&quot; section:
+</pre><a class="anchor" name="table"></a><a class="anchor" name="11-table"></a><a class="anchor" name="11.1-table"></a><a class="anchor" name="table (Stick-tables and Peers)"></a><a class="anchor" name="table (Stick-tables declaration)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#11.1-table">table</a></b> <span style="color: #080">&lt;name&gt;</span> type <span style="color: #080">&lt;type&gt;</span> size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[recv-only]</span>
+             <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[srvkey <span style="color: #080">&lt;srvkey&gt;</span>]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*
+             <span style="color: #008">[brates-factor <span style="color: #080">&lt;factor&gt;</span>]</span></div><div class="separator">
+<span class="label label-info">Arguments:</span> (mandatory ones first, then alphabetically sorted):
+<pre class="prettyprint arguments">- type &lt;type&gt;
+           This mandatory argument sets the key type to &lt;type&gt;, which
+           usually is a single word but may also have its own arguments:
 
-  stick-table type &lt;type&gt; size &lt;size&gt; [expire &lt;expire&gt;] [nopurge] [recv-only]
-              [write-to &lt;wtable&gt;] [srvkey &lt;srvkey&gt;] [store &lt;data_type&gt;]*
-              [brates-factor &lt;factor&gt;] [peers &lt;peersect&gt;]
+   * ip        This type should be avoided in favor of a more explicit one such
+               as &quot;<a href="#ipv4">ipv4</a>&quot; or &quot;<a href="#ipv6">ipv6</a>&quot;. Prior to version 3.2 it was the only way to
+               configure IPv4. In 3.2, &quot;ip&quot; is an alias for &quot;<a href="#ipv4">ipv4</a>&quot;, and &quot;<a href="#ipv4">ipv4</a>&quot;
+               is preferred. In a future version, &quot;ip&quot; will instead correspond
+               to &quot;<a href="#ipv6">ipv6</a>&quot;. It is only meant to ease the transition from pre-3.2
+               to post-3.2.
 
-In a &quot;<a href="#peers">peers</a>&quot; section:
+   * ipv4      A table declared with this type will only store IPv4 addresses.
+               This form is very compact (about 50 bytes per entry) and allows
+               very fast entry lookup and stores with almost no overhead. This
+               is mainly used to store client source IP addresses.
 
-  table &lt;name&gt; type &lt;type&gt; size &lt;size&gt; [expire &lt;expire&gt;] [nopurge] [recv-only]
-               [write-to &lt;wtable&gt;] [srvkey &lt;srvkey&gt;] [store &lt;data_type&gt;]*
-               [brates-factor &lt;factor&gt;]
+   * ipv6      A table declared with &quot;type ipv6&quot; will only store IPv6 addresses.
+               This form is very compact (about 60 bytes per entry) and allows
+               very fast entry lookup and stores with almost no overhead. This
+               is mainly used to store client source IP addresses.
 
-Arguments (mandatory ones first, then alphabetically sorted):
+   * integer   A table declared with &quot;type integer&quot; will store 32bit integers
+               which can represent a client identifier found in a request for
+               instance.
 
-  - type &lt;type&gt;
-             This mandatory argument sets the key type to &lt;type&gt;, which
-             usually is a single word but may also have its own arguments:
+   * string [length &lt;len&gt;]
+               A table declared with &quot;type string&quot; will store substrings of
+               up to &lt;len&gt; characters. If the string provided by the pattern
+               extractor is larger than &lt;len&gt;, it will be truncated before
+               being stored. During matching, at most &lt;len&gt; characters will
+               be compared between the string in the table and the extracted
+               pattern. When not specified, the string is automatically
+               limited to 32 characters. Increasing the length can have a
+               non-negligible memory usage impact.
 
-     * ip        This type should be avoided in favor of a more explicit one such
-                 as &quot;<a href="#ipv4">ipv4</a>&quot; or &quot;<a href="#ipv6">ipv6</a>&quot;. Prior to version 3.2 it was the only way to
-                 configure IPv4. In 3.2, &quot;ip&quot; is an alias for &quot;<a href="#ipv4">ipv4</a>&quot;, and &quot;<a href="#ipv4">ipv4</a>&quot;
-                 is preferred. In a future version, &quot;ip&quot; will instead correspond
-                 to &quot;<a href="#ipv6">ipv6</a>&quot;. It is only meant to ease the transition from pre-3.2
-                 to post-3.2.
+   * binary [length &lt;len&gt;]
+               A table declared with &quot;type binary&quot; will store binary blocks
+               of &lt;len&gt; bytes. If the block provided by the pattern
+               extractor is larger than &lt;len&gt;, it will be truncated before
+               being stored. If the block provided by the sample expression
+               is shorter than &lt;len&gt;, it will be padded by 0. When not
+               specified, the block is automatically limited to 32
+               bytes. Increasing the length can have a non-negligible memory
+               usage impact.
 
-     * ipv4      A table declared with this type will only store IPv4 addresses.
-                 This form is very compact (about 50 bytes per entry) and allows
-                 very fast entry lookup and stores with almost no overhead. This
-                 is mainly used to store client source IP addresses.
+- size &lt;size&gt;
+           This mandatory argument sets maximum number of entries that can
+           fit in the table to &lt;size&gt;. This value directly impacts memory
+           usage. Count approximately 50 bytes per entry in addition to the
+           key size above, and optionally stored metrics, plus the size of a
+           string if any. The size supports suffixes &quot;k&quot;, &quot;m&quot;, &quot;g&quot; for 2^10,
+           2^20 and 2^30 factors.
 
-     * ipv6      A table declared with &quot;type ipv6&quot; will only store IPv6 addresses.
-                 This form is very compact (about 60 bytes per entry) and allows
-                 very fast entry lookup and stores with almost no overhead. This
-                 is mainly used to store client source IP addresses.
+- expire &lt;delay&gt;
+           Defines the maximum duration of an entry in the table since it was
+           last created, refreshed using 'track-sc' or matched using 'stick
+           match' or 'stick on' rule. The expiration delay &lt;delay&gt; is defined
+           using the standard time format, similarly as the various timeouts,
+           defaulting to milliseconds. The maximum duration is slightly above
+           24 days. See <a href="#2.5">section 2.5</a> for more information. If this delay is
+           not specified, sessions won't automatically expire, but oldest
+           entries will be removed upon creation once full. Be sure not to
+           use the &quot;nopurge&quot; parameter if not expiration delay is specified.
+           Note: 'table_*' converters performs lookups but won't update touch
+           expire since they don't require 'track-sc'.
 
-     * integer   A table declared with &quot;type integer&quot; will store 32bit integers
-                 which can represent a client identifier found in a request for
-                 instance.
+- brates-factor &lt;factor&gt;
+           Specifies a factor to be applied to in/out bytes rate. Instead of
+           counting each bytes, blocks of bytes are counted. Internally,
+           rates are defined on 32-bits counters, limiting them to about 4
+           billion per period. By using this parameter, it is possible to
+           have rates exceeding this 4G limit over the defined period. The
+           factor must be greater than 0 and lower than or equal to 1024.
 
-     * string [length &lt;len&gt;]
-                 A table declared with &quot;type string&quot; will store substrings of
-                 up to &lt;len&gt; characters. If the string provided by the pattern
-                 extractor is larger than &lt;len&gt;, it will be truncated before
-                 being stored. During matching, at most &lt;len&gt; characters will
-                 be compared between the string in the table and the extracted
-                 pattern. When not specified, the string is automatically
-                 limited to 32 characters. Increasing the length can have a
-                 non-negligible memory usage impact.
+- nopurge  indicates that we refuse to purge older entries when the table is
+           full. When not specified and the table is full when HAProxy wants
+           to store an entry in it, it will flush a few of the oldest entries
+           in order to release some space for the new ones. This is most
+           often the desired behavior. In some specific cases, it will be
+           desirable to refuse new entries instead of purging the older ones.
+           That may be the case when the amount of data to store is far above
+           the hardware limits and we prefer not to offer access to new
+           clients than to reject the ones already connected. When using this
+           parameter, be sure to properly set the &quot;expire&quot; parameter (see
+           above).
 
-     * binary [length &lt;len&gt;]
-                 A table declared with &quot;type binary&quot; will store binary blocks
-                 of &lt;len&gt; bytes. If the block provided by the pattern
-                 extractor is larger than &lt;len&gt;, it will be truncated before
-                 being stored. If the block provided by the sample expression
-                 is shorter than &lt;len&gt;, it will be padded by 0. When not
-                 specified, the block is automatically limited to 32
-                 bytes. Increasing the length can have a non-negligible memory
-                 usage impact.
+- recv-only
+           indicates that we don't intend to use the table to perform updates
+           on it, but that we only plan on using the table to retrieve data
+           from a remote peer which we are interested in. Indeed, the use of
+           this keyword enables the retrieval of local-only values such as
+           &quot;conn_cur&quot; that are not learned by default as they would conflict
+           with local updates performed on the table by the local peer. Use
+           of this option is only relevant for tables that are not involved
+           in tracking rules or methods that perform update operations on the
+           table, or put simpler: remote tables that are only used to
+           retrieve information.
 
-  - size &lt;size&gt;
-             This mandatory argument sets maximum number of entries that can
-             fit in the table to &lt;size&gt;. This value directly impacts memory
-             usage. Count approximately 50 bytes per entry in addition to the
-             key size above, and optionally stored metrics, plus the size of a
-             string if any. The size supports suffixes &quot;k&quot;, &quot;m&quot;, &quot;g&quot; for 2^10,
-             2^20 and 2^30 factors.
+- peers &lt;peersect&gt;
+           Entries that are created, updated or refreshed will be sent to the
+           peers in section &lt;peersect&gt; for synchronization, and keys learned
+           from peers in this section will also be inserted or updated in the
+           table. Additionally, on startup, an attempt may be done to learn
+           entries from an older instance of the process, designated as the
+           &quot;local peer&quot; via this section.
 
-  - expire &lt;delay&gt;
-             Defines the maximum duration of an entry in the table since it was
-             last created, refreshed using 'track-sc' or matched using 'stick
-             match' or 'stick on' rule. The expiration delay &lt;delay&gt; is defined
-             using the standard time format, similarly as the various timeouts,
-             defaulting to milliseconds. The maximum duration is slightly above
-             24 days. See <a href="#2.5">section 2.5</a> for more information. If this delay is
-             not specified, sessions won't automatically expire, but oldest
-             entries will be removed upon creation once full. Be sure not to
-             use the &quot;nopurge&quot; parameter if not expiration delay is specified.
-             Note: 'table_*' converters performs lookups but won't update touch
-             expire since they don't require 'track-sc'.
+- srvkey &lt;srvkey&gt;
+           Specifies how each server is identified for the purposes of the
+           stick table. The valid values are &quot;<a href="#name">name</a>&quot; and &quot;<a href="#addr">addr</a>&quot;. If &quot;<a href="#name">name</a>&quot; is
+           given, then &lt;name&gt; argument for the server (may be generated by a
+           template). If &quot;<a href="#addr">addr</a>&quot; is given, then the server is identified by
+           its current network address, including the port. &quot;<a href="#addr">addr</a>&quot; is
+           especially useful if you are using service discovery to generate
+           the addresses for servers with peered stick-tables and want to
+           consistently use the same host across peers for a stickiness
+           token.
 
-  - brates-factor &lt;factor&gt;
-             Specifies a factor to be applied to in/out bytes rate. Instead of
-             counting each bytes, blocks of bytes are counted. Internally,
-             rates are defined on 32-bits counters, limiting them to about 4
-             billion per period. By using this parameter, it is possible to
-             have rates exceeding this 4G limit over the defined period. The
-             factor must be greater than 0 and lower than or equal to 1024.
+- store &lt;data_type&gt;
+           This is used to store additional information in the stick-table.
+           This may be used by ACLs in order to control various criteria
+           related to the activity of the client matching the stick-table.
+           For each item specified here, the size of each entry will be
+           inflated so that the additional data can fit. Several data types
+           may be stored with an entry. Multiple data types may be specified
+           after the &quot;store&quot; keyword, as a comma-separated list.
+           Alternatively, it is possible to repeat the &quot;store&quot; keyword
+           followed by one or several data types. Except for the &quot;server_id&quot;
+           type which is automatically detected and enabled, all data types
+           must be explicitly declared to be stored. If an ACL references a
+           data type which is not stored, the ACL will simply not match. Some
+           data types require an argument which must be passed just after the
+           type between parenthesis. See below for the supported data types
+           and their arguments.
 
-  - nopurge  indicates that we refuse to purge older entries when the table is
-             full. When not specified and the table is full when HAProxy wants
-             to store an entry in it, it will flush a few of the oldest entries
-             in order to release some space for the new ones. This is most
-             often the desired behavior. In some specific cases, it will be
-             desirable to refuse new entries instead of purging the older ones.
-             That may be the case when the amount of data to store is far above
-             the hardware limits and we prefer not to offer access to new
-             clients than to reject the ones already connected. When using this
-             parameter, be sure to properly set the &quot;expire&quot; parameter (see
-             above).
-
-  - recv-only
-             indicates that we don't intend to use the table to perform updates
-             on it, but that we only plan on using the table to retrieve data
-             from a remote peer which we are interested in. Indeed, the use of
-             this keyword enables the retrieval of local-only values such as
-             &quot;conn_cur&quot; that are not learned by default as they would conflict
-             with local updates performed on the table by the local peer. Use
-             of this option is only relevant for tables that are not involved
-             in tracking rules or methods that perform update operations on the
-             table, or put simpler: remote tables that are only used to
-             retrieve information.
-
-  - peers &lt;peersect&gt;
-             Entries that are created, updated or refreshed will be sent to the
-             peers in section &lt;peersect&gt; for synchronization, and keys learned
-             from peers in this section will also be inserted or updated in the
-             table. Additionally, on startup, an attempt may be done to learn
-             entries from an older instance of the process, designated as the
-             &quot;local peer&quot; via this section.
-
-  - srvkey &lt;srvkey&gt;
-             Specifies how each server is identified for the purposes of the
-             stick table. The valid values are &quot;<a href="#name">name</a>&quot; and &quot;<a href="#addr">addr</a>&quot;. If &quot;<a href="#name">name</a>&quot; is
-             given, then &lt;name&gt; argument for the server (may be generated by a
-             template). If &quot;<a href="#addr">addr</a>&quot; is given, then the server is identified by
-             its current network address, including the port. &quot;<a href="#addr">addr</a>&quot; is
-             especially useful if you are using service discovery to generate
-             the addresses for servers with peered stick-tables and want to
-             consistently use the same host across peers for a stickiness
-             token.
-
-  - store &lt;data_type&gt;
-             This is used to store additional information in the stick-table.
-             This may be used by ACLs in order to control various criteria
-             related to the activity of the client matching the stick-table.
-             For each item specified here, the size of each entry will be
-             inflated so that the additional data can fit. Several data types
-             may be stored with an entry. Multiple data types may be specified
-             after the &quot;store&quot; keyword, as a comma-separated list.
-             Alternatively, it is possible to repeat the &quot;store&quot; keyword
-             followed by one or several data types. Except for the &quot;server_id&quot;
-             type which is automatically detected and enabled, all data types
-             must be explicitly declared to be stored. If an ACL references a
-             data type which is not stored, the ACL will simply not match. Some
-             data types require an argument which must be passed just after the
-             type between parenthesis. See below for the supported data types
-             and their arguments.
-
-  - write-to &lt;wtable&gt;
-             Specifies the name of another stick table where peers updates will
-             be written to in addition to the source table. &lt;wtable&gt; must be of
-             the same type as the table being defined and must have the same
-             key length, and source table cannot be used as a target table
-             itself. Every time an entry update will be received on the source
-             table through a peer, HAProxy will try to refresh related &lt;wtable&gt;
-             entry. If the entry doesn't exist yet, it will be created, else
-             its values will be updated as well as its timer. Note that only
-             types that are not involved in arithmetic ops such as server_id,
-             server_key and gpt will be written to &lt;wtable&gt; to prevent
-             processed values from a remote table from interfering with
-             arithmetic operations performed on the local target table. (ie:
-             prevent shared cumulative counter from growing indefinitely) One
-             common use of this option is to be able to use sticking rules (for
-             server persistence) in a peers cluster setup, because matching
-             keys will be learned from remote tables.
-
-The data types that can be associated with an entry via the &quot;store&quot; directive
+- write-to &lt;wtable&gt;
+           Specifies the name of another stick table where peers updates will
+           be written to in addition to the source table. &lt;wtable&gt; must be of
+           the same type as the table being defined and must have the same
+           key length, and source table cannot be used as a target table
+           itself. Every time an entry update will be received on the source
+           table through a peer, HAProxy will try to refresh related &lt;wtable&gt;
+           entry. If the entry doesn't exist yet, it will be created, else
+           its values will be updated as well as its timer. Note that only
+           types that are not involved in arithmetic ops such as server_id,
+           server_key and gpt will be written to &lt;wtable&gt; to prevent
+           processed values from a remote table from interfering with
+           arithmetic operations performed on the local target table. (ie:
+           prevent shared cumulative counter from growing indefinitely) One
+           common use of this option is to be able to use sticking rules (for
+           server persistence) in a peers cluster setup, because matching
+           keys will be learned from remote tables.</pre>
+</div>
+<pre class="text">The data types that can be associated with an entry via the &quot;store&quot; directive
 are listed below. It is important to keep in mind that memory requirements may
 be important when storing many data types. Indeed, storing all indicators below
 at once in each entry can requires hundreds of bytes per entry, or hundreds of
 MB for a 1-million entries table. For this reason, the approximate storage size
-is mentioned for each type between brackets:
-
-  - bytes_in_cnt [4 bytes]
-             This is the client to server byte count. It is a positive 64-bit
-             integer which counts the cumulative number of bytes received from
-             clients which matched this entry. Headers are included in the
-             count. This may be used to limit abuse of upload features on photo
-             or video servers.
-
-  - bytes_in_rate(&lt;period&gt;) [12 bytes]
-             This is a rate counter on bytes from the client to the server.
-             It takes an integer parameter &lt;period&gt; which indicates in
-             milliseconds the length of the period over which the average is
-             measured. It reports the average incoming bytes rate over that
-             period, in bytes per period. It may be used to detect users which
-             upload too much and too fast. Warning: with large uploads, it is
-             possible that the amount of uploaded data will be counted once
-             upon termination, thus causing spikes in the average transfer
-             speed instead of having a smooth one. This may partially be
-             smoothed with &quot;<a href="#option%20contstats">option contstats</a>&quot; though this is not perfect.  Use
-             of byte_in_cnt is recommended for better fairness.
-
-  - bytes_out_cnt [4 bytes]
-             This is the server to client byte count. It is a positive 64-bit
-             integer which counts the cumulative number of bytes sent to
-             clients which matched this entry. Headers are included in the
-             count. This may be used to limit abuse of bots sucking the whole
-             site.
-
-  - bytes_out_rate(&lt;period&gt;) [12 bytes]
-             This is a rate counter on bytes from the server to the client.
-             It takes an integer parameter &lt;period&gt; which indicates in
-             milliseconds the length of the period over which the average is
-             measured. It reports the average outgoing bytes rate over that
-             period, in bytes per period. It may be used to detect users which
-             download too much and too fast. Warning: with large transfers, it
-             is possible that the amount of transferred data will be counted
-             once upon termination, thus causing spikes in the average transfer
-             speed instead of having a smooth one. This may partially be
-             smoothed with &quot;<a href="#option%20contstats">option contstats</a>&quot; though this is not perfect
-             yet. Use of byte_out_cnt is recommended for better fairness.
-
-  - conn_cnt [4 bytes]
-             This is the Connection Count. It is a positive 32-bit integer
-             which counts the absolute number of connections received from
-             clients which matched this entry. It does not mean the connections
-             were accepted, just that they were received.
-
-  - conn_cur [4 bytes]
-             This is the Current Connections count. It is a positive 32-bit
-             integer which stores the concurrent connection count for the
-             entry. It is incremented once an incoming connection matches the
-             entry, and decremented once the connection leaves. That way it is
-             possible to know at any time the exact number of concurrent
-             connections for an entry. This type is not learned from other
-             peers by default as it wouldn't represent anything given that it
-             would ignore the local count. However, in combination with
-             recv-only it can be used to learn the number of concurrent
-             connections seen by peers.
-
-  - conn_rate(&lt;period&gt;) [12 bytes]
-             This is a connection frequency counter. It takes an integer
-             parameter &lt;period&gt; which indicates in milliseconds the length of
-             the period over which the average is measured. It reports the
-             average incoming connection rate over that period, in connections
-             per period. The result is an integer which can be matched using
-             ACLs. Whether connections are accepted or rejected has no effect
-             on their measurement.
-
-  - glitch_cnt [4 bytes]
-             This is the front glitches count. It is a positive 32-bit integer
-             which counts the cumulative number of glitches reported on a front
-             connection. Glitches correspond to either unusual or unexpected
-             actions (protocol- wise) from the client that could indicate a
-             badly defective client or possibly an attacker. As such, this
-             counter can help in order to decide how to act with them in such
-             case.
-
-  - glitch_rate(&lt;period&gt;) [12 bytes]
-             This is a frequency counter on glitches. It takes an integer
-             parameter &lt;period&gt; which indicates in milliseconds the length of
-             the period over which the average is measured. It reports the
-             average front glitches rate over that period. It may be used to
-             detect defective clients or potential attackers that perform
-             uncommon or unexpected actions from a protocol point of view,
-             provided that HAProxy flagged them them as such.
-
-  - gpc(&lt;nb&gt;) [4 * &lt;nb&gt; bytes]
-             This is an array of &lt;nb&gt; General Purpose Counter elements. This is
-             an array of positive 32-bit integers which may be used to count
-             anything. Most of the time they will be used as a incremental
-             counters on some entries, for instance to note that a limit is
-             reached and trigger some actions. This array is limited to a
-             maximum of 100 elements: gpc0 to gpc99, to ensure that the build
-             of a peer update message can fit into the buffer. Users should
-             take in consideration that a large amount of counters will
-             increase the data size and the traffic load using peers protocol
-             since all data/counters are pushed each time any of them is
-             updated. This data_type will exclude the usage of the legacy
-             data_types 'gpc0' and 'gpc1' on the same table. Using the 'gpc'
-             array data_type, all 'gpc0' and 'gpc1' related sample fetch
-             functions and actions will apply to the two first elements of this
-             array.
-
-  - gpc_rate(&lt;nb&gt;,&lt;period&gt;) [12 * &lt;nb&gt; bytes]
-             This is an array of increment rates of General Purpose Counters
-             over a period. Those elements are positive 32-bit integers which
-             may be used for anything. Just like &lt;gpc&gt;, the count events, but
-             instead of keeping a cumulative number, they maintain the rate at
-             which the counter is incremented. Most of the time it will be
-             used to measure the frequency of occurrence of certain events
-             (e.g. requests to a specific URL). This array is limited to a
-             maximum of 100 elements: gpt(100) allowing the storage of gpc0 to
-             gpc99, to ensure that the build of a peer update message can fit
-             into the buffer.  The array cannot contain less than 1 element:
-             use gpc(1) if you want to store only the counter gpc0.  Users
-             should take in consideration that a large amount of counters will
-             increase the data size and the traffic load using peers protocol
-             since all data/counters are pushed each time any of them is
-             updated.  This data_type will exclude the usage of the legacy
-             data_types 'gpc0_rate' and 'gpc1_rate' on the same table. Using
-             the 'gpc_rate' array data_type, all 'gpc0' and 'gpc1' related
-             fetches and actions will apply to the two first elements of this
-             array.
-
-  - gpc0 [4 bytes]
-             This is the first General Purpose Counter. It is a positive 32-bit
-             integer integer which may be used for anything. Most of the time
-             it will be used to put a special tag on some entries, for instance
-             to note that a specific behavior was detected and must be known
-             for future matches.
-
-  - gpc0_rate(&lt;period&gt;) [12 bytes]
-             This is the increment rate of the first General Purpose Counter
-             over a period. It is a positive 32-bit integer integer which may
-             be used for anything. Just like &lt;gpc0&gt;, it counts events, but
-             instead of keeping a cumulative number, it maintains the rate at
-             which the counter is incremented. Most of the time it will be used
-             to measure the frequency of occurrence of certain events
-             (e.g. requests to a specific URL).
-
-  - gpc1 [4 bytes]
-             This is the second General Purpose Counter. It is a positive
-             32-bit integer integer which may be used for anything. Most of the
-             time it will be used to put a special tag on some entries, for
-             instance to note that a specific behavior was detected and must be
-             known for future matches.
-
-  - gpc1_rate(&lt;period&gt;) [12 bytes]
-             This is the increment rate of the second General Purpose Counter
-             over a period. It is a positive 32-bit integer integer which may
-             be used for anything. Just like &lt;gpc1&gt;, it counts events, but
-             instead of keeping a cumulative number, it maintains the rate at
-             which the counter is incremented. Most of the time it will be used
-             to measure the frequency of occurrence of certain events
-             (e.g. requests to a specific URL).
-
-  - gpt(&lt;nb&gt;) [4 * &lt;nb&gt; bytes]
-             This is an array of &lt;nb&gt; General Purpose Tags elements. This is an
-             array of positive 32-bit integers which may be used for anything.
-             Most of the time they will be used to put a special tags on some
-             entries, for instance to note that a specific behavior was
-             detected and must be known for future matches. This array is
-             limited to a maximum of 100 elements: gpt(100) allowing the
-             storage of gpt0 to gpt99, to ensure that the build of a peer
-             update message can fit into the buffer. The array cannot contain
-             less than 1 element: use gpt(1) if you want to to store only the
-             tag gpt0. Users should take in consideration that a large amount
-             of counters will increase the data size and the traffic load using
-             peers protocol since all data/counters are pushed each time any of
-             them is updated.  This data_type will exclude the usage of the
-             legacy data_type 'gpt0' on the same table. Using the 'gpt' array
-             data_type, all 'gpt0' related fetches and actions will apply to
-             the first element of this array.
-
-  - gpt0 [4 bytes]
-             This is the first General Purpose Tag. It is a positive 32-bit
-             integer which may be used for anything. Most of the time it will
-             be used to put a special tag on some entries, for instance to note
-             that a specific behavior was detected and must be known for future
-             matches.
-
-  - http_req_cnt [4 bytes]
-             This is the HTTP request Count. It is a positive 32-bit integer
-             which counts the absolute number of HTTP requests received from
-             clients which matched this entry. It does not matter whether they
-             are valid requests or not. Note that this is different from
-             sessions when keep-alive is used on the client side.
-
-  - http_req_rate(&lt;period&gt;) [12 bytes]
-             This is a request frequency counter. It takes an integer parameter
-             &lt;period&gt; which indicates in milliseconds the length of the period
-             over which the average is measured. It reports the average HTTP
-             request rate over that period, in requests per period. The result
-             is an integer which can be matched using ACLs. It does not matter
-             whether they are valid requests or not. Note that this is
-             different from sessions when keep-alive is used on the client
-             side.
-
-  - http_err_cnt [4 bytes]
-             This is the HTTP request Error Count. It is a positive 32-bit
-             integer which counts the absolute number of HTTP requests errors
-             induced by clients which matched this entry. Errors are counted on
-             invalid and truncated requests, as well as on denied or tarpitted
-             requests, and on failed authentications. If the server responds
-             with 4xx, then the request is also counted as an error since it's
-             an error triggered by the client (e.g. vulnerability scan).
-
-  - http_err_rate(&lt;period&gt;) [12 bytes]
-             This is an HTTP request frequency counter. It takes an integer
-             parameter &lt;period&gt; which indicates in milliseconds the length of
-             the period over which the average is measured. It reports the
-             average HTTP request error rate over that period, in requests per
-             period (see http_err_cnt above for what is accounted as an
-             error). The result is an integer which can be matched using ACLs.
-
-  - http_fail_cnt [4 bytes]
-             This is the HTTP response Failure Count. It is a positive 32-bit
-             integer which counts the absolute number of HTTP response failures
-             induced by servers which matched this entry. Errors are counted on
-             invalid and truncated responses, as well as any 5xx response other
-             than 501 or 505. It aims at being used combined with path or URI
-             to detect service failures.
-
-  - http_fail_rate(&lt;period&gt;) [12 bytes]
-             This is an HTTP response failure frequency counter. It takes an
-             integer parameter &lt;period&gt; which indicates in milliseconds the
-             length of the period over which the average is measured. It
-             reports the average HTTP response failure rate over that period,
-             in requests per period (see http_fail_cnt above for what is
-             accounted as a failure). The result is an integer which can be
-             matched using ACLs.
-
-  - server_id [4 bytes]
-             This is an integer which holds the numeric ID of the server a
-             request was assigned to. It is used by the &quot;<a href="#stick%20match">stick match</a>&quot;, &quot;stick
-             store&quot;, and &quot;<a href="#stick%20on">stick on</a>&quot; rules. It is automatically enabled when
-             referenced. It is important to understand that stickiness based on
-             learning information has some limitations, including the fact that
-             all learned associations are lost upon restart unless peers are
-             properly configured to transfer such information upon restart
-             (recommended). In general it can be good as a complement to other
-             stickiness mechanisms but not always as the sole mechanism.
-
-  - sess_cnt  [4 bytes]
-             This is the Session Count. It is a positive 32-bit integer which
-             counts the absolute number of sessions received from clients which
-             matched this entry. A session is a connection that was accepted by
-             the layer 4 rules (&quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;).
-
-  - sess_rate(&lt;period&gt;) [12 bytes]
-             This is a session frequency counter. It takes an integer parameter
-             &lt;period&gt; which indicates in milliseconds the length of the period
-             over which the average is measured. It reports the average
-             incoming session rate over that period, in sessions per
-             period. The result is an integer which can be matched using ACLs.
+is mentioned below for each type between brackets after the argument.
 </pre><div class="separator">
+<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">- bytes_in_cnt [4 bytes]
+           This is the client to server byte count. It is a positive 64-bit
+           integer which counts the cumulative number of bytes received from
+           clients which matched this entry. Headers are included in the
+           count. This may be used to limit abuse of upload features on photo
+           or video servers.
+
+- bytes_in_rate(&lt;period&gt;) [12 bytes]
+           This is a rate counter on bytes from the client to the server.
+           It takes an integer parameter &lt;period&gt; which indicates in
+           milliseconds the length of the period over which the average is
+           measured. It reports the average incoming bytes rate over that
+           period, in bytes per period. It may be used to detect users which
+           upload too much and too fast. Warning: with large uploads, it is
+           possible that the amount of uploaded data will be counted once
+           upon termination, thus causing spikes in the average transfer
+           speed instead of having a smooth one. This may partially be
+           smoothed with &quot;<a href="#option%20contstats">option contstats</a>&quot; though this is not perfect.  Use
+           of byte_in_cnt is recommended for better fairness.
+
+- bytes_out_cnt [4 bytes]
+           This is the server to client byte count. It is a positive 64-bit
+           integer which counts the cumulative number of bytes sent to
+           clients which matched this entry. Headers are included in the
+           count. This may be used to limit abuse of bots sucking the whole
+           site.
+
+- bytes_out_rate(&lt;period&gt;) [12 bytes]
+           This is a rate counter on bytes from the server to the client.
+           It takes an integer parameter &lt;period&gt; which indicates in
+           milliseconds the length of the period over which the average is
+           measured. It reports the average outgoing bytes rate over that
+           period, in bytes per period. It may be used to detect users which
+           download too much and too fast. Warning: with large transfers, it
+           is possible that the amount of transferred data will be counted
+           once upon termination, thus causing spikes in the average transfer
+           speed instead of having a smooth one. This may partially be
+           smoothed with &quot;<a href="#option%20contstats">option contstats</a>&quot; though this is not perfect
+           yet. Use of byte_out_cnt is recommended for better fairness.
+
+- conn_cnt [4 bytes]
+           This is the Connection Count. It is a positive 32-bit integer
+           which counts the absolute number of connections received from
+           clients which matched this entry. It does not mean the connections
+           were accepted, just that they were received.
+
+- conn_cur [4 bytes]
+           This is the Current Connections count. It is a positive 32-bit
+           integer which stores the concurrent connection count for the
+           entry. It is incremented once an incoming connection matches the
+           entry, and decremented once the connection leaves. That way it is
+           possible to know at any time the exact number of concurrent
+           connections for an entry. This type is not learned from other
+           peers by default as it wouldn't represent anything given that it
+           would ignore the local count. However, in combination with
+           recv-only it can be used to learn the number of concurrent
+           connections seen by peers.
+
+- conn_rate(&lt;period&gt;) [12 bytes]
+           This is a connection frequency counter. It takes an integer
+           parameter &lt;period&gt; which indicates in milliseconds the length of
+           the period over which the average is measured. It reports the
+           average incoming connection rate over that period, in connections
+           per period. The result is an integer which can be matched using
+           ACLs. Whether connections are accepted or rejected has no effect
+           on their measurement.
+
+- glitch_cnt [4 bytes]
+           This is the front glitches count. It is a positive 32-bit integer
+           which counts the cumulative number of glitches reported on a front
+           connection. Glitches correspond to either unusual or unexpected
+           actions (protocol- wise) from the client that could indicate a
+           badly defective client or possibly an attacker. As such, this
+           counter can help in order to decide how to act with them in such
+           case.
+
+- glitch_rate(&lt;period&gt;) [12 bytes]
+           This is a frequency counter on glitches. It takes an integer
+           parameter &lt;period&gt; which indicates in milliseconds the length of
+           the period over which the average is measured. It reports the
+           average front glitches rate over that period. It may be used to
+           detect defective clients or potential attackers that perform
+           uncommon or unexpected actions from a protocol point of view,
+           provided that HAProxy flagged them them as such.
+
+- gpc(&lt;nb&gt;) [4 * &lt;nb&gt; bytes]
+           This is an array of &lt;nb&gt; General Purpose Counter elements. This is
+           an array of positive 32-bit integers which may be used to count
+           anything. Most of the time they will be used as a incremental
+           counters on some entries, for instance to note that a limit is
+           reached and trigger some actions. This array is limited to a
+           maximum of 100 elements: gpc0 to gpc99, to ensure that the build
+           of a peer update message can fit into the buffer. Users should
+           take in consideration that a large amount of counters will
+           increase the data size and the traffic load using peers protocol
+           since all data/counters are pushed each time any of them is
+           updated. This data_type will exclude the usage of the legacy
+           data_types 'gpc0' and 'gpc1' on the same table. Using the 'gpc'
+           array data_type, all 'gpc0' and 'gpc1' related sample fetch
+           functions and actions will apply to the two first elements of this
+           array.
+
+- gpc_rate(&lt;nb&gt;,&lt;period&gt;) [12 * &lt;nb&gt; bytes]
+           This is an array of increment rates of General Purpose Counters
+           over a period. Those elements are positive 32-bit integers which
+           may be used for anything. Just like &lt;gpc&gt;, the count events, but
+           instead of keeping a cumulative number, they maintain the rate at
+           which the counter is incremented. Most of the time it will be
+           used to measure the frequency of occurrence of certain events
+           (e.g. requests to a specific URL). This array is limited to a
+           maximum of 100 elements: gpt(100) allowing the storage of gpc0 to
+           gpc99, to ensure that the build of a peer update message can fit
+           into the buffer.  The array cannot contain less than 1 element:
+           use gpc(1) if you want to store only the counter gpc0.  Users
+           should take in consideration that a large amount of counters will
+           increase the data size and the traffic load using peers protocol
+           since all data/counters are pushed each time any of them is
+           updated.  This data_type will exclude the usage of the legacy
+           data_types 'gpc0_rate' and 'gpc1_rate' on the same table. Using
+           the 'gpc_rate' array data_type, all 'gpc0' and 'gpc1' related
+           fetches and actions will apply to the two first elements of this
+           array.
+
+- gpc0 [4 bytes]
+           This is the first General Purpose Counter. It is a positive 32-bit
+           integer integer which may be used for anything. Most of the time
+           it will be used to put a special tag on some entries, for instance
+           to note that a specific behavior was detected and must be known
+           for future matches.
+
+- gpc0_rate(&lt;period&gt;) [12 bytes]
+           This is the increment rate of the first General Purpose Counter
+           over a period. It is a positive 32-bit integer integer which may
+           be used for anything. Just like &lt;gpc0&gt;, it counts events, but
+           instead of keeping a cumulative number, it maintains the rate at
+           which the counter is incremented. Most of the time it will be used
+           to measure the frequency of occurrence of certain events
+           (e.g. requests to a specific URL).
+
+- gpc1 [4 bytes]
+           This is the second General Purpose Counter. It is a positive
+           32-bit integer integer which may be used for anything. Most of the
+           time it will be used to put a special tag on some entries, for
+           instance to note that a specific behavior was detected and must be
+           known for future matches.
+
+- gpc1_rate(&lt;period&gt;) [12 bytes]
+           This is the increment rate of the second General Purpose Counter
+           over a period. It is a positive 32-bit integer integer which may
+           be used for anything. Just like &lt;gpc1&gt;, it counts events, but
+           instead of keeping a cumulative number, it maintains the rate at
+           which the counter is incremented. Most of the time it will be used
+           to measure the frequency of occurrence of certain events
+           (e.g. requests to a specific URL).
+
+- gpt(&lt;nb&gt;) [4 * &lt;nb&gt; bytes]
+           This is an array of &lt;nb&gt; General Purpose Tags elements. This is an
+           array of positive 32-bit integers which may be used for anything.
+           Most of the time they will be used to put a special tags on some
+           entries, for instance to note that a specific behavior was
+           detected and must be known for future matches. This array is
+           limited to a maximum of 100 elements: gpt(100) allowing the
+           storage of gpt0 to gpt99, to ensure that the build of a peer
+           update message can fit into the buffer. The array cannot contain
+           less than 1 element: use gpt(1) if you want to to store only the
+           tag gpt0. Users should take in consideration that a large amount
+           of counters will increase the data size and the traffic load using
+           peers protocol since all data/counters are pushed each time any of
+           them is updated.  This data_type will exclude the usage of the
+           legacy data_type 'gpt0' on the same table. Using the 'gpt' array
+           data_type, all 'gpt0' related fetches and actions will apply to
+           the first element of this array.
+
+- gpt0 [4 bytes]
+           This is the first General Purpose Tag. It is a positive 32-bit
+           integer which may be used for anything. Most of the time it will
+           be used to put a special tag on some entries, for instance to note
+           that a specific behavior was detected and must be known for future
+           matches.
+
+- http_req_cnt [4 bytes]
+           This is the HTTP request Count. It is a positive 32-bit integer
+           which counts the absolute number of HTTP requests received from
+           clients which matched this entry. It does not matter whether they
+           are valid requests or not. Note that this is different from
+           sessions when keep-alive is used on the client side.
+
+- http_req_rate(&lt;period&gt;) [12 bytes]
+           This is a request frequency counter. It takes an integer parameter
+           &lt;period&gt; which indicates in milliseconds the length of the period
+           over which the average is measured. It reports the average HTTP
+           request rate over that period, in requests per period. The result
+           is an integer which can be matched using ACLs. It does not matter
+           whether they are valid requests or not. Note that this is
+           different from sessions when keep-alive is used on the client
+           side.
+
+- http_err_cnt [4 bytes]
+           This is the HTTP request Error Count. It is a positive 32-bit
+           integer which counts the absolute number of HTTP requests errors
+           induced by clients which matched this entry. Errors are counted on
+           invalid and truncated requests, as well as on denied or tarpitted
+           requests, and on failed authentications. If the server responds
+           with 4xx, then the request is also counted as an error since it's
+           an error triggered by the client (e.g. vulnerability scan).
+
+- http_err_rate(&lt;period&gt;) [12 bytes]
+           This is an HTTP request frequency counter. It takes an integer
+           parameter &lt;period&gt; which indicates in milliseconds the length of
+           the period over which the average is measured. It reports the
+           average HTTP request error rate over that period, in requests per
+           period (see http_err_cnt above for what is accounted as an
+           error). The result is an integer which can be matched using ACLs.
+
+- http_fail_cnt [4 bytes]
+           This is the HTTP response Failure Count. It is a positive 32-bit
+           integer which counts the absolute number of HTTP response failures
+           induced by servers which matched this entry. Errors are counted on
+           invalid and truncated responses, as well as any 5xx response other
+           than 501 or 505. It aims at being used combined with path or URI
+           to detect service failures.
+
+- http_fail_rate(&lt;period&gt;) [12 bytes]
+           This is an HTTP response failure frequency counter. It takes an
+           integer parameter &lt;period&gt; which indicates in milliseconds the
+           length of the period over which the average is measured. It
+           reports the average HTTP response failure rate over that period,
+           in requests per period (see http_fail_cnt above for what is
+           accounted as a failure). The result is an integer which can be
+           matched using ACLs.
+
+- server_id [4 bytes]
+           This is an integer which holds the numeric ID of the server a
+           request was assigned to. It is used by the &quot;<a href="#stick%20match">stick match</a>&quot;, &quot;stick
+           store&quot;, and &quot;<a href="#stick%20on">stick on</a>&quot; rules. It is automatically enabled when
+           referenced. It is important to understand that stickiness based on
+           learning information has some limitations, including the fact that
+           all learned associations are lost upon restart unless peers are
+           properly configured to transfer such information upon restart
+           (recommended). In general it can be good as a complement to other
+           stickiness mechanisms but not always as the sole mechanism.
+
+- sess_cnt  [4 bytes]
+           This is the Session Count. It is a positive 32-bit integer which
+           counts the absolute number of sessions received from clients which
+           matched this entry. A session is a connection that was accepted by
+           the layer 4 rules (&quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;).
+
+- sess_rate(&lt;period&gt;) [12 bytes]
+           This is a session frequency counter. It takes an integer parameter
+           &lt;period&gt; which indicates in milliseconds the length of the period
+           over which the average is measured. It reports the average
+           incoming session rate over that period, in sessions per
+           period. The result is an integer which can be matched using ACLs.</pre>
+</div>
+<div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># Keep track of counters of up to 1 million IP addresses over 5 minutes</span>
@@ -32182,11 +32181,11 @@ See also &quot;<a href="#shard">shard</a>&quot; server parameter.
 </pre><a class="anchor" name="table"></a><a class="anchor" name="11-table"></a><a class="anchor" name="11.2-table"></a><a class="anchor" name="table (Stick-tables and Peers)"></a><a class="anchor" name="table (Peers declaration)"></a><div class="keyword"><b><a class="anchor" name="table"></a><a href="#11.2-table">table</a></b> <span style="color: #080">&lt;tablename&gt;</span> type <span style="color: #800">{ip | integer | string <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span> | binary <span style="color: #008">[len <span style="color: #080">&lt;length&gt;</span>]</span>}</span>
       size <span style="color: #080">&lt;size&gt;</span> <span style="color: #008">[expire <span style="color: #080">&lt;expire&gt;</span>]</span> <span style="color: #008">[write-to <span style="color: #080">&lt;wtable&gt;</span>]</span> <span style="color: #008">[nopurge]</span> <span style="color: #008">[store <span style="color: #080">&lt;data_type&gt;</span>]</span>*
       <span style="color: #008">[recv-only]</span></div><pre class="text">Configure a stickiness table for the current section. This line is parsed
-exactly the same way as the &quot;<a href="#stick-table">stick-table</a>&quot; keyword in others section, except
+exactly the same way as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword in others section, except
 for the &quot;<a href="#peers">peers</a>&quot; argument which is not required here and with an additional
 mandatory first parameter to designate the stick-table. Contrary to others
-sections, there may be several &quot;<a href="#table">table</a>&quot; lines in &quot;<a href="#peers">peers</a>&quot; sections (see also
-the complete definition of the &quot;<a href="#table">table</a>&quot; and &quot;<a href="#stick-table">stick-table</a>&quot; keywords in
+sections, there may be several &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; lines in &quot;<a href="#peers">peers</a>&quot; sections (see also
+the complete definition of the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#table%20%28Peers%20declaration%29">Peers declaration</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">stick-table<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#stick-table%20%28Stick-tables%20declaration%29">Stick-tables declaration</a></li><li><a href="#stick-table%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keywords in
 <a href="#11.1">section 11.1</a> above).
 
 Also be aware of the fact that &quot;<a href="#peers">peers</a>&quot; sections have their own stick-table
@@ -32963,7 +32962,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev16-3 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev16-15 &ndash; Configuration Manual<br>
 							<small>, 2025/05/14</small>
 						</div>
 					</div>
