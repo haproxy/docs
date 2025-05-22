@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev16-30 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev17 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4239,6 +4239,8 @@
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
 							
+							<a class="list-group-item" href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>
+							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
 							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
@@ -4604,7 +4606,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4615,9 +4617,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev16-30</strong></p>
+							<p><strong>version 3.2-dev17</strong></p>
 							<p>
-								2025/05/14<br>
+								2025/05/21<br>
 								
 							</p>
 						</div>
@@ -9441,6 +9443,23 @@ that support it. This is currently only support with epoll. It may noticeably
 reduce the number of epoll_ctl() calls and slightly improve performance in
 certain scenarios. This is still experimental, it may result in frozen
 connections if bugs are still present, and is disabled by default.
+</pre><a class="anchor" name="tune.glitches.kill.cpu-usage"></a><a class="anchor" name="3-tune.glitches.kill.cpu-usage"></a><a class="anchor" name="3.2-tune.glitches.kill.cpu-usage"></a><a class="anchor" name="tune.glitches.kill.cpu-usage (Global section)"></a><a class="anchor" name="tune.glitches.kill.cpu-usage (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.glitches.kill.cpu-usage"></a><a href="#3.2-tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the minimum CPU usage between 0 and 100, at which connections showing
+too many glitches will be killed. This applies to connections that have
+reached their glitches-threshold limit. In environments where very long
+connections often behave badly without causing any performance impact, it
+might be desirable to keep them regardless of their misbehavior as long as
+they do not hurt, and to only start to kill such connections when the CPU is
+getting busy. This parameters allows to specify that a connection reaching
+its glitches threshold will be actively killed when the CPU usage is at this
+level or above, but never when it's below. Note that the CPU usage is
+measured per thread, so a single misbehaving connection might be killed. The
+default is zero, meaning that a connection reaching its glitches-threshold
+will automatically get killed. A rule of thumb would be to set this value to
+twice the usually observed CPU usage, or the commonly observed CPU usage plus
+half the idle one (i.e. if CPU commonly reaches 60%, setting 80 here can make
+sense). This parameter has no effect without tune.h2.fe.glitches-threshold or
+tune.quic.frontend.glitches-threshold. See also the global parameters
+&quot;<a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>&quot; and &quot;<a href="#tune.quic.frontend.glitches-threshold">tune.quic.frontend.glitches-threshold</a>&quot;.
 </pre><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Global section)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a href="#3.2-tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy receives of data for the H1
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-send</div>
@@ -9454,8 +9473,10 @@ The default value is zero, indicating that no threshold is set so that no
 event will cause a connection to be closed. Beware that some H2 servers may
 occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
-effective without affecting slightly bogus servers.
-</pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches</div>
+effective without affecting slightly bogus servers. It is also possible to
+only kill connections when the CPU usage crosses a certain level, by using
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+</pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents, not headers. When
@@ -9497,8 +9518,10 @@ The default value is zero, indicating that no threshold is set so that no
 event will cause a connection to be closed. Beware that some H2 clientss may
 occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
-effective without affecting slightly bogus clients.
-</pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches</div>
+effective without affecting slightly bogus clients. It is also possible to
+only kill connections when the CPU usage crosses a certain level, by using
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+</pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
 from HAProxy. This setting only affects payload contents (i.e. the body of
@@ -9977,8 +10000,10 @@ The default value is zero, indicating that no threshold is set so that no
 event will cause a connection to be closed. Beware that some QUIC clients may
 occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
-effective without affecting slightly bogus clients.
-</pre><div class="page-header"><b>See also:</b> fc_glitches</div>
+effective without affecting slightly bogus clients. It is also possible to
+only kill connections when the CPU usage crosses a certain level, by using
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+</pre><div class="page-header"><b>See also:</b> fc_glitches, tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.quic.frontend.max-data-size"></a><a class="anchor" name="3-tune.quic.frontend.max-data-size"></a><a class="anchor" name="3.2-tune.quic.frontend.max-data-size"></a><a class="anchor" name="tune.quic.frontend.max-data-size (Global section)"></a><a class="anchor" name="tune.quic.frontend.max-data-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-data-size"></a><a href="#3.2-tune.quic.frontend.max-data-size">tune.quic.frontend.max-data-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">This setting is the hard limit for the number of data bytes in flight over a
 QUIC frontend connection. It is reused as the value for the initial_max_data
 transport parameter. It directly impacts the upload bandwidth for the peer
@@ -32962,8 +32987,8 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev16-30 &ndash; Configuration Manual<br>
-							<small>, 2025/05/14</small>
+							HAProxy 3.2-dev17 &ndash; Configuration Manual<br>
+							<small>, 2025/05/21</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
