@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev17 - Configuration Manual</title>
+		<title>HAProxy version 3.2-dev17-8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2611,6 +2611,8 @@
 							
 							<a class="list-group-item" href="#no-sslv3">no-sslv3</a>
 							
+							<a class="list-group-item" href="#no-strict-sni">no-strict-sni</a>
+							
 							<a class="list-group-item" href="#no-tfo">no-tfo</a>
 							
 							<a class="list-group-item" href="#no-tls-tickets (Bind options)">no-tls-tickets (Bind options)</a>
@@ -4197,7 +4199,9 @@
 							
 							<a class="list-group-item" href="#tls-ticket-keys">tls-ticket-keys</a>
 							
-							<a class="list-group-item" href="#tls-tickets">tls-tickets</a>
+							<a class="list-group-item" href="#tls-tickets (Bind options)">tls-tickets (Bind options)</a>
+							
+							<a class="list-group-item" href="#tls-tickets (Server and default-server options)">tls-tickets (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#total-max-size">total-max-size</a>
 							
@@ -4606,7 +4610,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4617,7 +4621,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2-dev17</strong></p>
+							<p><strong>version 3.2-dev17-8</strong></p>
 							<p>
 								2025/05/21<br>
 								
@@ -21168,6 +21172,11 @@ SSL is supported. Note that SSLv2 is forced disabled in the code and cannot
 be enabled using any configuration option. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;. Use &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-min-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-min-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-min-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl-max-ver<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl-max-ver%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl-max-ver%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; instead.
+</pre><a class="anchor" name="no-strict-sni"></a><a class="anchor" name="5-no-strict-sni"></a><a class="anchor" name="5.1-no-strict-sni"></a><a class="anchor" name="no-strict-sni (Bind and server options)"></a><a class="anchor" name="no-strict-sni (Bind options)"></a><div class="keyword"><b><a class="anchor" name="no-strict-sni"></a><a href="#5.1-no-strict-sni">no-strict-sni</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
+disables strict-sni enforcement from a previous &quot;<a href="#strict-sni">strict-sni</a>&quot; directive. It
+may be needed in order to selectively disable strict-sni usage on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+line when it was already globally enforced via &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
+See also the &quot;<a href="#strict-sni">strict-sni</a>&quot; bind option.
 </pre><a class="anchor" name="no-tls-tickets"></a><a class="anchor" name="5-no-tls-tickets"></a><a class="anchor" name="5.1-no-tls-tickets"></a><a class="anchor" name="no-tls-tickets (Bind and server options)"></a><a class="anchor" name="no-tls-tickets (Bind options)"></a><div class="keyword"><b><a class="anchor" name="no-tls-tickets"></a><a href="#5.1-no-tls-tickets">no-tls-tickets</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 disables the stateless session resumption (RFC 5077 TLS Ticket
 extension) and force to use stateful session resumption. Stateless
@@ -21347,9 +21356,10 @@ See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dr
 SSL/TLS negotiation is allowed only if the client provided an SNI that matches
 a certificate. The default certificate is not used. This option also allows
 starting without any certificate on a bind line, so an empty directory could
-be used and filled later from the stats socket.
-See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for more information. See &quot;add ssl crt-list&quot; command in
-the management guide.
+be used and filled later from the stats socket. This option is also available
+on global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;, and may be selectively
+disabled on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line using &quot;<a href="#no-strict-sni">no-strict-sni</a>&quot;. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for
+more information. See &quot;add ssl crt-list&quot; command in the management guide.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -21431,6 +21441,11 @@ lines and their assignment to multiple groups of threads.
 This keyword is compatible with reverse HTTP binds. However, it is forbidden
 to specify a thread set which spans across several thread groups for such a
 listener as this may caused &quot;<a href="#nbconn">nbconn</a>&quot; to not work as intended.
+</pre><a class="anchor" name="tls-tickets"></a><a class="anchor" name="5-tls-tickets"></a><a class="anchor" name="5.1-tls-tickets"></a><a class="anchor" name="tls-tickets (Bind and server options)"></a><a class="anchor" name="tls-tickets (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-tickets"></a><a href="#5.1-tls-tickets">tls-tickets</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
+enables the stateless session resumption (RFC 5077 TLS Ticket extension). It
+is the default, but it may be needed to selectively re-enable the feature on
+a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line if it had been globaly disabled via &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; mentioned
+in &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;. See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind keyword.
 </pre><a class="anchor" name="tls-ticket-keys"></a><a class="anchor" name="5-tls-ticket-keys"></a><a class="anchor" name="5.1-tls-ticket-keys"></a><a class="anchor" name="tls-ticket-keys (Bind and server options)"></a><a class="anchor" name="tls-ticket-keys (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-ticket-keys"></a><a href="#5.1-tls-ticket-keys">tls-ticket-keys</a></b> <span style="color: #080">&lt;keyfile&gt;</span></div><pre class="text">Sets the TLS ticket keys file to load the keys from. The keys need to be 48
 or 80 bytes long, depending if aes128 or aes256 is used, encoded with base64
 with one line per key (ex. openssl rand 80 | openssl base64 -A | xargs echo).
@@ -22252,7 +22267,7 @@ is also available on global statement &quot;<a href="#ssl-default-server-options
 The TLS ticket mechanism is only used up to TLS 1.2.
 Forward Secrecy is compromised with TLS tickets, unless ticket keys
 are periodically rotated (via reload or by using &quot;<a href="#tls-ticket-keys">tls-ticket-keys</a>&quot;).
-See also &quot;<a href="#tls-tickets">tls-tickets</a>&quot;.
+See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="no-tlsv10"></a><a class="anchor" name="5-no-tlsv10"></a><a class="anchor" name="5.2-no-tlsv10"></a><a class="anchor" name="no-tlsv10 (Bind and server options)"></a><a class="anchor" name="no-tlsv10 (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-tlsv10"></a><a href="#5.2-no-tlsv10">no-tlsv10</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This option disables support for TLSv1.0 when SSL is used to communicate with
@@ -32987,7 +33002,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev17 &ndash; Configuration Manual<br>
+							HAProxy 3.2-dev17-8 &ndash; Configuration Manual<br>
 							<small>, 2025/05/21</small>
 						</div>
 					</div>

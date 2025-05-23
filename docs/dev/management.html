@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2-dev17 - Management Guide</title>
+		<title>HAProxy version 3.2-dev17-8 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -276,6 +276,8 @@
 							<a class="list-group-item" href="#add map">add map</a>
 							
 							<a class="list-group-item" href="#add server">add server</a>
+							
+							<a class="list-group-item" href="#add server help">add server help</a>
 							
 							<a class="list-group-item" href="#add ssl">add ssl</a>
 							
@@ -660,7 +662,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/05/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -671,7 +673,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2-dev17</strong></p>
+							<p><strong>version 3.2-dev17-8</strong></p>
 							<p>
 								<br>
 								
@@ -2539,8 +2541,9 @@ prompt
 The &lt;server&gt; name must not be already used in the backend. A special
 restriction is put on the backend which must used a dynamic load-balancing
 algorithm. A subset of keywords from the server config file statement can be
-used to configure the server behavior. Also note that no settings will be
-reused from an hypothetical 'default-server' statement in the same backend.
+used to configure the server behavior (see &quot;<a href="#add%20server%20help">add server help</a>&quot; to list them).
+Also note that no settings will be reused from an hypothetical
+'default-server' statement in the same backend.
 
 Currently a dynamic server is statically initialized with the &quot;none&quot;
 init-addr method. This means that no resolution will be undertaken if a FQDN
@@ -2569,79 +2572,9 @@ required maintenance mode before removal.
 It may be possible to reach the fd limit when using a large number of dynamic
 servers. Please refer to the &quot;u-limit&quot; global keyword documentation in this
 case.
-
-Here is the list of the currently supported keywords :
-
-- agent-addr
-- agent-check
-- agent-inter
-- agent-port
-- agent-send
-- allow-0rtt
-- alpn
-- addr
-- backup
-- ca-file
-- check
-- check-alpn
-- check-proto
-- check-send-proxy
-- check-sni
-- check-ssl
-- check-via-socks4
-- ciphers
-- ciphersuites
-- cookie
-- crl-file
-- crt
-- disabled
-- downinter
-- error-limit
-- fall
-- fastinter
-- force-sslv3/tlsv10/tlsv11/tlsv12/tlsv13
-- id
-- init-state
-- inter
-- maxconn
-- maxqueue
-- minconn
-- no-ssl-reuse
-- no-sslv3/tlsv10/tlsv11/tlsv12/tlsv13
-- no-tls-tickets
-- npn
-- observe
-- on-error
-- on-marked-down
-- on-marked-up
-- pool-low-conn
-- pool-max-conn
-- pool-purge-delay
-- port
-- proto
-- proxy-v2-options
-- rise
-- send-proxy
-- send-proxy-v2
-- send-proxy-v2-ssl
-- send-proxy-v2-ssl-cn
-- slowstart
-- sni
-- source
-- ssl
-- ssl-max-ver
-- ssl-min-ver
-- tfo
-- tls-tickets
-- track
-- usesrc
-- verify
-- verifyhost
-- weight
-- ws
-
-Their syntax is similar to the server line from the configuration file,
-please refer to their individual documentation for details.
+</pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add server"></a><a class="anchor" name="9-add server"></a><a class="anchor" name="9.3-add server"></a><a class="anchor" name="add server (Statistics and monitoring)"></a><a class="anchor" name="add server (Unix Socket commands)"></a><a class="anchor" name="add server help"></a><a class="anchor" name="9-add server help"></a><a class="anchor" name="9.3-add server help"></a><a class="anchor" name="add server help (Statistics and monitoring)"></a><a class="anchor" name="add server help (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add server help"></a><a href="#9.3-add%20server%20help">add server help</a></b></div><pre class="text">List the keywords supported for dynamic servers by the current haproxy
+version. Keyword syntax is similar to the server line from the configuration
+file, please refer to their individual documentation for details.
 </pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add ssl"></a><a class="anchor" name="9-add ssl"></a><a class="anchor" name="9.3-add ssl"></a><a class="anchor" name="add ssl (Statistics and monitoring)"></a><a class="anchor" name="add ssl (Unix Socket commands)"></a><a class="anchor" name="add ssl ca-file"></a><a class="anchor" name="9-add ssl ca-file"></a><a class="anchor" name="9.3-add ssl ca-file"></a><a class="anchor" name="add ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="add ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add ssl ca-file"></a><a href="#9.3-add%20ssl%20ca-file">add ssl ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span> <span style="color: #080">&lt;payload&gt;</span>
    Add a new certificate to a ca-file. This command is useful when you reached
    the buffer size limit on the CLI and want to add multiple certificates.
@@ -5628,7 +5561,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2-dev17 &ndash; Management Guide<br>
+							HAProxy 3.2-dev17-8 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
