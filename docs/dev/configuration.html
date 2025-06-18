@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev1-75 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev1-78 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4612,7 +4612,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4623,7 +4623,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev1-75</strong></p>
+							<p><strong>version 3.3-dev1-78</strong></p>
 							<p>
 								2025/06/11<br>
 								
@@ -15456,8 +15456,23 @@ troubleshooting some faulty applications. Option prefer-last-server might be
 desirable in these environments as well, to avoid redistributing the traffic
 after every other response.
 
-If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
-in a specific instance by prepending the &quot;no&quot; keyword before it.
+It may be useful to precise here, which load balancing algorithms are
+considered deterministic. Deterministic algorithms will always select the same
+server for a given client data, assuming the set of available servers has not
+changed. In general, deterministic algorithms involve hasing or lookups on the
+incoming requests to choose the target server. However, this is not always the
+case; &quot;static-rr&quot;, for example, can be also considered as deterministic because
+the server choice is based on the server's static weight, making the selection
+predictable. &quot;sticky&quot; algorithm provides deterministic routing for the
+returning clients.
+
+As for non-deterministic algorithms, these algorithms select a server based on
+dynamic server state or simple rotation, so two consecutive requests are not
+guaranteed to land on the same server. option prefer-last-server is designed
+specifically for these. roundrobin, leastconn are examples of such algorithms.
+
+If this option has been enabled in a &quot;defaults&quot; section, it can be
+disabled in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redispatch"></a><a class="anchor" name="4-option redispatch"></a><a class="anchor" name="4.2-option redispatch"></a><a class="anchor" name="option redispatch (Proxies)"></a><a class="anchor" name="option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redispatch"></a><a href="#4.2-option%20redispatch">option redispatch</a></b></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redispatch"></a><a class="anchor" name="4-option redispatch"></a><a class="anchor" name="4.2-option redispatch"></a><a class="anchor" name="option redispatch (Proxies)"></a><a class="anchor" name="option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redispatch"></a><a href="#4.2-option%20redispatch">option redispatch</a></b> <span style="color: #080">&lt;interval&gt;</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option redispatch"></a><a class="anchor" name="4-no option redispatch"></a><a class="anchor" name="4.2-no option redispatch"></a><a class="anchor" name="no option redispatch (Proxies)"></a><a class="anchor" name="no option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option redispatch"></a><a href="#4.2-no%20option%20redispatch">no option redispatch</a></b></div><pre class="text">Enable or disable session redistribution in case of connection failure
 
@@ -33050,7 +33065,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev1-75 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev1-78 &ndash; Configuration Manual<br>
 							<small>, 2025/06/11</small>
 						</div>
 					</div>
