@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev1-86 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev1-89 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4612,7 +4612,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4623,7 +4623,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev1-86</strong></p>
+							<p><strong>version 3.3-dev1-89</strong></p>
 							<p>
 								2025/06/11<br>
 								
@@ -10543,11 +10543,11 @@ All proxy names must be formed from upper and lower case letters, digits,
 '-' (dash), '_' (underscore) , '.' (dot) and ':' (colon). ACL names are
 case-sensitive, which means that &quot;www&quot; and &quot;WWW&quot; are two different proxies.
 
-Historically, all proxy names could overlap, it just caused troubles in the
-logs. Since the introduction of content switching, it is mandatory that two
-proxies with overlapping capabilities (frontend/backend) have different names.
-However, it is still permitted that a frontend and a backend share the same
-name, as this configuration seems to be commonly encountered.
+Historically, all proxy names could overlap when certain conditions were met
+(e.g. when not having the same frontend/backend capabilities), but it used to
+cause too many problems in the logs as well as confusion on CLI operations,
+stick-tables naming and stats retrieval. It is now mandatory that two proxies
+have different names, regardless of their respective capabilities.
 
 Right now, two major proxy modes are supported : &quot;tcp&quot;, also known as layer 4,
 and &quot;http&quot;, also known as layer 7. In layer 4 mode, HAProxy simply forwards
@@ -16460,6 +16460,7 @@ May be used in the following contexts: tcp, http, log
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;    is the internal name assigned to this server. This name will
           appear in logs and alerts. If &quot;<a href="#http-send-name-header">http-send-name-header</a>&quot; is
           set, it will be added to the request header sent to the server.
+          This name must be unique within the backend section.
 
 &lt;address&gt; is the IPv4 or IPv6 address of the server. Alternatively, a
           resolvable hostname is supported, but this name will be resolved
@@ -33065,7 +33066,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev1-86 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev1-89 &ndash; Configuration Manual<br>
 							<small>, 2025/06/11</small>
 						</div>
 					</div>
