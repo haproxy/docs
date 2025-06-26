@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev1-93 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev1-98 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1321,17 +1321,6 @@
 					<td>
 				</tr>
 				
-			
-				
-				<tr>
-					<td><small>12.9.</small></td>
-					<td>
-							<div class="tab">
-							<a href="#12.9">Programs (deprecated)</a>
-							</div>
-					<td>
-				</tr>
-				
 	</tbody>
 </table>
 
@@ -1653,8 +1642,6 @@
 							<a class="list-group-item" href="#close-spread-time">close-spread-time</a>
 							
 							<a class="list-group-item" href="#cluster-secret">cluster-secret</a>
-							
-							<a class="list-group-item" href="#command">command</a>
 							
 							<a class="list-group-item" href="#compression">compression</a>
 							
@@ -2069,8 +2056,6 @@
 							<a class="list-group-item" href="#grace">grace</a>
 							
 							<a class="list-group-item" href="#group (Userlists)">group (Userlists)</a>
-							
-							<a class="list-group-item" href="#group (Programs (deprecated))">group (Programs (deprecated))</a>
 							
 							<a class="list-group-item" href="#group (Process management and security)">group (Process management and security)</a>
 							
@@ -2573,8 +2558,6 @@
 							
 							<a class="list-group-item" href="#no option srvtcpka">no option srvtcpka</a>
 							
-							<a class="list-group-item" href="#no option start-on-reload">no option start-on-reload</a>
-							
 							<a class="list-group-item" href="#no option tcp-smart-accept">no option tcp-smart-accept</a>
 							
 							<a class="list-group-item" href="#no option tcp-smart-connect">no option tcp-smart-connect</a>
@@ -2598,6 +2581,8 @@
 							<a class="list-group-item" href="#no-memory-trimming">no-memory-trimming</a>
 							
 							<a class="list-group-item" href="#no-quic">no-quic</a>
+							
+							<a class="list-group-item" href="#no-renegotiate">no-renegotiate</a>
 							
 							<a class="list-group-item" href="#no-send-proxy">no-send-proxy</a>
 							
@@ -2828,8 +2813,6 @@
 							
 							<a class="list-group-item" href="#option ssl-hello-chk">option ssl-hello-chk</a>
 							
-							<a class="list-group-item" href="#option start-on-reload">option start-on-reload</a>
-							
 							<a class="list-group-item" href="#option tcp-check">option tcp-check</a>
 							
 							<a class="list-group-item" href="#option tcp-smart-accept">option tcp-smart-accept</a>
@@ -2909,8 +2892,6 @@
 							
 							<a class="list-group-item" href="#profiling.tasks">profiling.tasks</a>
 							
-							<a class="list-group-item" href="#program">program</a>
-							
 							<a class="list-group-item" href="#proto (Bind options)">proto (Bind options)</a>
 							
 							<a class="list-group-item" href="#proto (Server and default-server options)">proto (Server and default-server options)</a>
@@ -2968,6 +2949,8 @@
 							<a class="list-group-item" href="#regsub">regsub</a>
 							
 							<a class="list-group-item" href="#reject">reject</a>
+							
+							<a class="list-group-item" href="#renegotiate">renegotiate</a>
 							
 							<a class="list-group-item" href="#rep_ssl_hello_type">rep_ssl_hello_type</a>
 							
@@ -4522,8 +4505,6 @@
 							
 							<a class="list-group-item" href="#user (Userlists)">user (Userlists)</a>
 							
-							<a class="list-group-item" href="#user (Programs (deprecated))">user (Programs (deprecated))</a>
-							
 							<a class="list-group-item" href="#user (Process management and security)">user (Process management and security)</a>
 							
 							<a class="list-group-item" href="#user (Bind options)">user (Bind options)</a>
@@ -4612,7 +4593,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4623,7 +4604,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev1-93</strong></p>
+							<p><strong>version 3.3-dev1-98</strong></p>
 							<p>
 								2025/06/11<br>
 								
@@ -5929,17 +5910,6 @@ Note to documentation contributors :
 					<td>
 				</tr>
 				
-			
-				
-				<tr>
-					<td><small>12.9.</small></td>
-					<td>
-							<div class="tab">
-							<a href="#12.9">Programs (deprecated)</a>
-							</div>
-					<td>
-				</tr>
-				
 	</tbody>
 </table>
 
@@ -6700,8 +6670,8 @@ log &quot;${LOCAL_SYSLOG-127.0.0.1}:514&quot; local0 notice  <span class="commen
 user &quot;$HAPROXY_USER&quot;
 </code></pre>
 </div><pre class="text">Some variables are defined by HAProxy, they can be used in the configuration
-file, or could be inherited by a program (See 12.9. Programs). These variables
-are listed in the matrix below, and they are classified among four categories:
+file. These variables are listed in the matrix below, and they are classified
+among four categories:
 
   * usable: the variable is accessible from the configuration, either to be
     resolved as-is, or used within conditional blocks or predicates to enable
@@ -6713,10 +6683,6 @@ are listed in the matrix below, and they are classified among four categories:
 
   * listed: the variable is listed in CLI's &quot;show env&quot; command output,
     described in <a href="#9.3">section 9.3</a> &quot;Unix Sockets commands&quot; of the management guide.
-
-  * exported: variable is exported to launch programs in a modified environment
-    (See <a href="#12.9">section 12.9</a> &quot;Programs&quot;). Note that this does not apply to external
-    checks which have their own rules regarding exported variables.
 
 There also two subcategories &quot;master&quot; and &quot;worker&quot;, respectively marked 'M' and
 'W' in the table below, showing the differences between the two processes when
@@ -6752,23 +6718,23 @@ within conditional blocks and not to reference them in the global section's
 The table below summaries the status of each variable for the different working
 modes:
 
-  +--------------------------+----------+---------+------------+-----------+
-  |        variable          | exported | usable  | modifiable |  listed   |
-  |                          |          +---------+------------+-----------+
-  |                          |          |  M | W  |   M  |  W  |  M  |  W  |
-  +--------------------------+----------+----+----+------+-----+-----+-----+
-  | HAPROXY_STARTUP_VERSION  |    X     |  X | X  |      |     |  X  |  X  |
-  | HAPROXY_BRANCH           |    X     |  X | X  |      |     |  X  |  X  |
-  | HAPROXY_CFGFILES         |    X     |    |    |      |     |  X  |  X  |
-  | HAPROXY_MWORKER          |    X     |    |    |      |     |  X  |  X  |
-  | HAPROXY_CLI              |          |    |    |      |     |     |  X  |
-  | HAPROXY_MASTER_CLI       |          |    |    |      |     |  X  |     |
-  | HAPROXY_LOCALPEER        |          |    | X  |      |     |     |  X  |
-  | HAPROXY_HTTP_LOG_FMT     |          |    | X  |      |  X  |     |     |
-  | HAPROXY_HTTP_CLF_LOG_FMT |          |    | X  |      |  X  |     |     |
-  | HAPROXY_HTTPS_LOG_FMT    |          |    | X  |      |  X  |     |     |
-  | HAPROXY_TCP_LOG_FMT      |          |    | X  |      |  X  |     |     |
-  +--------------------------+----------+----+----+------+-----+-----+-----+
+  +--------------------------+---------+------------+-----------+
+  |        variable          | usable  | modifiable |  listed   |
+  |                          +---------+------------+-----------+
+  |                          |  M | W  |   M  |  W  |  M  |  W  |
+  +--------------------------+----+----+------+-----+-----+-----+
+  | HAPROXY_STARTUP_VERSION  |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_BRANCH           |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_CFGFILES         |    |    |      |     |  X  |  X  |
+  | HAPROXY_MWORKER          |    |    |      |     |  X  |  X  |
+  | HAPROXY_CLI              |    |    |      |     |     |  X  |
+  | HAPROXY_MASTER_CLI       |    |    |      |     |  X  |     |
+  | HAPROXY_LOCALPEER        |    | X  |      |     |     |  X  |
+  | HAPROXY_HTTP_LOG_FMT     |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTP_CLF_LOG_FMT |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTPS_LOG_FMT    |    | X  |      |  X  |     |     |
+  | HAPROXY_TCP_LOG_FMT      |    | X  |      |  X  |     |     |
+  +--------------------------+----+----+------+-----+-----+-----+
 
 The variables in question are the following:
 
@@ -8173,7 +8139,7 @@ ID is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with a user belonging to this group, or with superuser privileges.
 Note that if HAProxy is started from a user having supplementary groups, it
 will only be able to drop these groups if started with superuser privileges.
-See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
+See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="grace"></a><a class="anchor" name="3-grace"></a><a class="anchor" name="3.1-grace"></a><a class="anchor" name="grace (Global section)"></a><a class="anchor" name="grace (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="grace"></a><a href="#3.1-grace">grace</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Defines a delay between SIGUSR1 and real soft-stop.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;  is an extra delay (by default in milliseconds) after receipt of the
@@ -8218,7 +8184,7 @@ frontend ext-check
 </code></pre>
 </div><div class="page-header"><b>See also:</b> hard-stop-after, monitor</div>
 <a class="anchor" name="group"></a><a class="anchor" name="3-group"></a><a class="anchor" name="3.1-group"></a><a class="anchor" name="group (Global section)"></a><a class="anchor" name="group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#3.1-group">group</a></b> <span style="color: #080">&lt;group name&gt;</span></div><pre class="text">Similar to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; but uses the GID of group name &lt;group name&gt; from /etc/group.
-See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
+See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global section)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload.
 
 While It is explicitly allowed in HTTP/1.1, HTTP/1.0 is not clear on this
@@ -9037,7 +9003,7 @@ fixed. By default there is no limit. See also &quot;<a href="#nbthread">nbthread
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="3-uid"></a><a class="anchor" name="3.1-uid"></a><a class="anchor" name="uid (Global section)"></a><a class="anchor" name="uid (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#3.1-uid">uid</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Changes the process's user ID to &lt;number&gt;. It is recommended that the user ID
 is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with superuser privileges in order to be able to switch to another
-one. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
+one. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="ulimit-n"></a><a class="anchor" name="3-ulimit-n"></a><a class="anchor" name="3.1-ulimit-n"></a><a class="anchor" name="ulimit-n (Global section)"></a><a class="anchor" name="ulimit-n (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ulimit-n"></a><a href="#3.1-ulimit-n">ulimit-n</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of per-process file-descriptors to &lt;number&gt;. By
 default, it is automatically computed, so it is recommended not to use this
 option. If the intent is only to limit the number of file descriptors, better
@@ -9066,7 +9032,7 @@ these variables remain. The changes immediately take effect so that the next
 line in the configuration file will not see these variables. See also
 &quot;<a href="#setenv">setenv</a>&quot;, &quot;<a href="#presetenv">presetenv</a>&quot;, and &quot;<a href="#resetenv">resetenv</a>&quot;.
 </pre><a class="anchor" name="user"></a><a class="anchor" name="3-user"></a><a class="anchor" name="3.1-user"></a><a class="anchor" name="user (Global section)"></a><a class="anchor" name="user (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="user"></a><a href="#3.1-user">user</a></b> <span style="color: #080">&lt;user name&gt;</span></div><pre class="text">Similar to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; but uses the UID of user name &lt;user name&gt; from /etc/passwd.
-See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
+See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">uid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#uid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#uid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="node"></a><a class="anchor" name="3-node"></a><a class="anchor" name="3.1-node"></a><a class="anchor" name="node (Global section)"></a><a class="anchor" name="node (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="node"></a><a href="#3.1-node">node</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Only letters, digits, hyphen and underscore are allowed, like in DNS names.
 
 This statement is useful in HA configurations where two or more processes or
@@ -21077,7 +21043,7 @@ increases the HAProxy's memory footprint to reduce latency when the same
 certificate is used many times.
 </pre><a class="anchor" name="gid"></a><a class="anchor" name="5-gid"></a><a class="anchor" name="5.1-gid"></a><a class="anchor" name="gid (Bind and server options)"></a><a class="anchor" name="gid (Bind options)"></a><div class="keyword"><b><a class="anchor" name="gid"></a><a href="#5.1-gid">gid</a></b> <span style="color: #080">&lt;gid&gt;</span></div><pre class="text">Sets the group of the UNIX sockets to the designated system gid. It can also
 be set by default in the global section's &quot;<a href="#unix-bind">unix-bind</a>&quot; statement. Note that
-some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
+some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
 setting except that the group ID is used instead of its name. This setting is
 ignored by non UNIX sockets.
 </pre><a class="anchor" name="group"></a><a class="anchor" name="5-group"></a><a class="anchor" name="5.1-group"></a><a class="anchor" name="group (Bind and server options)"></a><a class="anchor" name="group (Bind options)"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#5.1-group">group</a></b> <span style="color: #080">&lt;group&gt;</span></div><pre class="text">Sets the group of the UNIX sockets to the designated system group. It can
@@ -21124,7 +21090,7 @@ label, independently of where the bind lines were declared.
 </pre><a class="anchor" name="level"></a><a class="anchor" name="5-level"></a><a class="anchor" name="5.1-level"></a><a class="anchor" name="level (Bind and server options)"></a><a class="anchor" name="level (Bind options)"></a><div class="keyword"><b><a class="anchor" name="level"></a><a href="#5.1-level">level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">This setting is used with the stats sockets only to restrict the nature of
 the commands that can be issued on the socket. It is ignored by other
 sockets. &lt;level&gt; can be one of :
-- &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; is the least privileged level; only non-sensitive stats can be
+- &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; is the least privileged level; only non-sensitive stats can be
   read, and no change is allowed. It would make sense on systems where it
   is not easy to restrict access to the socket.
 - &quot;operator&quot; is the default level and fits most common uses. All data can
@@ -21246,9 +21212,16 @@ though it probably doesn't make any sense out of testing.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
+
 Note that with OpenSSL &gt;= 1.1.1 ChaCha20-Poly1305 is reprioritized anyway
 (without setting this option), if a ChaCha20-Poly1305 cipher is at the top of
 the client cipher list.
+
+When using a dual algorithms setup (RSA + ECDSA), the selection algorithm
+will chose between RSA and ECDSA and will always prioritize ECDSA. Once the
+right certificate is chosen, it will let the SSL library prioritize ciphers,
+curves etc. Meaning this option can't be used to prioritize an RSA
+certificate over an ECDSA one.
 </pre><a class="anchor" name="proto"></a><a class="anchor" name="5-proto"></a><a class="anchor" name="5.1-proto"></a><a class="anchor" name="proto (Bind and server options)"></a><a class="anchor" name="proto (Bind options)"></a><div class="keyword"><b><a class="anchor" name="proto"></a><a href="#5.1-proto">proto</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Forces the multiplexer's protocol to use for the incoming connections. It
 must be compatible with the mode of the frontend (TCP or HTTP). It must also
 be usable on the frontend side. The list of available protocols is reported
@@ -21495,7 +21468,7 @@ kernel version. Some distribution kernels include backports of the feature,
 so check for support with your vendor.
 </pre><a class="anchor" name="uid"></a><a class="anchor" name="5-uid"></a><a class="anchor" name="5.1-uid"></a><a class="anchor" name="uid (Bind and server options)"></a><a class="anchor" name="uid (Bind options)"></a><div class="keyword"><b><a class="anchor" name="uid"></a><a href="#5.1-uid">uid</a></b> <span style="color: #080">&lt;uid&gt;</span></div><pre class="text">Sets the owner of the UNIX sockets to the designated system uid. It can also
 be set by default in the global section's &quot;<a href="#unix-bind">unix-bind</a>&quot; statement. Note that
-some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
+some platforms simply ignore this. This setting is equivalent to the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;
 setting except that the user numeric ID is used instead of its name. This
 setting is ignored by non UNIX sockets.
 </pre><a class="anchor" name="user"></a><a class="anchor" name="5-user"></a><a class="anchor" name="5.1-user"></a><a class="anchor" name="user (Bind and server options)"></a><a class="anchor" name="user (Bind options)"></a><div class="keyword"><b><a class="anchor" name="user"></a><a href="#5.1-user">user</a></b> <span style="color: #080">&lt;user&gt;</span></div><pre class="text">Sets the owner of the UNIX sockets to the designated system user. It can also
@@ -22229,6 +22202,19 @@ setting which would have been inherited from &quot;<span class="dropdown"><a cla
 default value.
 It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#check-ssl">check-ssl</a>&quot; setting.
+</pre><a class="anchor" name="no-renegotiate"></a><a class="anchor" name="5-no-renegotiate"></a><a class="anchor" name="5.2-no-renegotiate"></a><a class="anchor" name="no-renegotiate (Bind and server options)"></a><a class="anchor" name="no-renegotiate (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-renegotiate"></a><a href="#5.2-no-renegotiate">no-renegotiate</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+This setting is only available when support for OpenSSL was built in. It
+disables the renegotiation mechanisms, be it the legacy unsafe one or the
+more recent &quot;secure renegotation&quot; one (RFC 5746 TLS Renegotiation Indication
+Extension) for the given SSL backend. This option is also available on global
+statement &quot;<a href="#ssl-default-server-options">ssl-default-server-options</a>&quot;.
+Renegotiation is not posible anymore in TLS 1.3.
+If neither &quot;<a href="#renegotiate">renegotiate</a>&quot; nor &quot;<a href="#no-renegotiate">no-renegotiate</a>&quot; is specified, the SSL library's
+default behavior is kept.
+Note that for instance OpenSSL library enables secure renegotiation by
+default while AWS-LC disable it.
+See also &quot;<a href="#renegotiate">renegotiate</a>&quot;.
 </pre><a class="anchor" name="no-send-proxy"></a><a class="anchor" name="5-no-send-proxy"></a><a class="anchor" name="5.2-no-send-proxy"></a><a class="anchor" name="no-send-proxy (Bind and server options)"></a><a class="anchor" name="no-send-proxy (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-send-proxy"></a><a href="#5.2-no-send-proxy">no-send-proxy</a></b></div><pre class="text">May be used in the following contexts: tcp, http
 
 This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#send-proxy">send-proxy</a>&quot;
@@ -22504,7 +22490,20 @@ loop between the client and HAProxy!
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
 <div class="example-desc">server srv1 192.168.1.1:80 redir http://image1.mydomain.com check</div><code></code></pre>
-</div><a class="anchor" name="rise"></a><a class="anchor" name="5-rise"></a><a class="anchor" name="5.2-rise"></a><a class="anchor" name="rise (Bind and server options)"></a><a class="anchor" name="rise (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="rise"></a><a href="#5.2-rise">rise</a></b> <span style="color: #080">&lt;count&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
+</div><a class="anchor" name="renegotiate"></a><a class="anchor" name="5-renegotiate"></a><a class="anchor" name="5.2-renegotiate"></a><a class="anchor" name="renegotiate (Bind and server options)"></a><a class="anchor" name="renegotiate (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="renegotiate"></a><a href="#5.2-renegotiate">renegotiate</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+This option enables the secure renegotiation mechanism (RFC 5746 TLS
+Renegotiation Indication Extension) for a given SSL backend. It does not mean
+that renegotiation requests will be sent by the SSL client, it only allows
+backends to renegotiate when servers request it. It still requires that the
+underlying SSL library actually supports renegotiation.
+This option is also available on global statement &quot;<a href="#ssl-default-server-options">ssl-default-server-options</a>&quot;.
+Renegotiation is not posible anymore in TLS 1.3.
+If neither &quot;<a href="#renegotiate">renegotiate</a>&quot; nor &quot;<a href="#no-renegotiate">no-renegotiate</a>&quot; is specified, the SSL library's
+default behavior is kept.
+Note that for instance OpenSSL library enables secure renegotiation by
+default while AWS-LC disable it.
+</pre><a class="anchor" name="rise"></a><a class="anchor" name="5-rise"></a><a class="anchor" name="5.2-rise"></a><a class="anchor" name="rise (Bind and server options)"></a><a class="anchor" name="rise (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="rise"></a><a href="#5.2-rise">rise</a></b> <span style="color: #080">&lt;count&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 The &quot;<a href="#rise">rise</a>&quot; parameter states that a server will be considered as operational
 after &lt;count&gt; consecutive successful health checks. This value defaults to 2
@@ -33019,54 +33018,13 @@ acme LE2
     curves P-384
     map virt@acme
 </code></pre>
-</div></div>
-<a class="anchor" id="12.9" name="12.9"></a>
-<h2 id="chapter-12.9" data-target="12.9"><small><a class="small" href="#12.9">12.9.</a></small> Programs (deprecated)</h2>
-<div><pre class="text">This section is deprecated and should disappear with HAProxy 3.3. The section
-could be replaced easily by separated process managers. Systemd unit files or
-sysvinit scripts could replace this section as they are more reliable. In docker
-environments, some alternatives can also be found such as s6 or supervisord.
-
-In master-worker mode, it is possible to launch external binaries with the
-master, these processes are called programs. These programs are launched and
-managed the same way as the workers.
-
-Since version 3.1, the program section has a slightly different behavior, the
-section is parsed and the program is started from the master, but the rest of
-the configuration is loaded in the worker. This mean the program configuration
-is completely separated from the worker configuration, and a program could be
-reexecuted even if the worker configuration is wrong upon a reload.
-
-During a reload of HAProxy, those processes are dealing with the same
-sequence as a worker:
-
-  - the master is re-executed
-  - the master sends a SIGUSR1 signal to the program
-  - if &quot;<a href="#option%20start-on-reload">option start-on-reload</a>&quot; is not disabled, the master launches a new
-    instance of the program
-
-During a stop, or restart, a SIGTERM is sent to the programs.
-</pre><a class="anchor" name="program"></a><a class="anchor" name="12-program"></a><a class="anchor" name="12.9-program"></a><a class="anchor" name="program (Other sections)"></a><a class="anchor" name="program (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="program"></a><a href="#12.9-program">program</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">This is a new program section, this section will create an instance &lt;name&gt;
-which is visible in &quot;show proc&quot; on the master CLI. (See &quot;9.4. Master CLI&quot; in
-the management guide).
-</pre><a class="anchor" name="command"></a><a class="anchor" name="12-command"></a><a class="anchor" name="12.9-command"></a><a class="anchor" name="command (Other sections)"></a><a class="anchor" name="command (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="command"></a><a href="#12.9-command">command</a></b> <span style="color: #080">&lt;command&gt;</span> <span style="color: #008">[arguments*]</span></div><pre class="text">Define the command to start with optional arguments. The command is looked
-up in the current PATH if it does not include an absolute path. This is a
-mandatory option of the program section. Arguments containing spaces must
-be enclosed in quotes or double quotes or be prefixed by a backslash.
-</pre><a class="anchor" name="user"></a><a class="anchor" name="12-user"></a><a class="anchor" name="12.9-user"></a><a class="anchor" name="user (Other sections)"></a><a class="anchor" name="user (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="user"></a><a href="#12.9-user">user</a></b> <span style="color: #080">&lt;user name&gt;</span></div><pre class="text">Changes the executed command user ID to the &lt;user name&gt; from /etc/passwd.
-See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">group<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#group%20%28Userlists%29">Userlists</a></li><li><a href="#group%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#group%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#group%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
-</pre><a class="anchor" name="group"></a><a class="anchor" name="12-group"></a><a class="anchor" name="12.9-group"></a><a class="anchor" name="group (Other sections)"></a><a class="anchor" name="group (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#12.9-group">group</a></b> <span style="color: #080">&lt;group name&gt;</span></div><pre class="text">Changes the executed command group ID to the &lt;group name&gt; from /etc/group.
-See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
-</pre><a class="anchor" name="option"></a><a class="anchor" name="12-option"></a><a class="anchor" name="12.9-option"></a><a class="anchor" name="option (Other sections)"></a><a class="anchor" name="option (Programs (deprecated))"></a><a class="anchor" name="option start-on-reload"></a><a class="anchor" name="12-option start-on-reload"></a><a class="anchor" name="12.9-option start-on-reload"></a><a class="anchor" name="option start-on-reload (Other sections)"></a><a class="anchor" name="option start-on-reload (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="option start-on-reload"></a><a href="#12.9-option%20start-on-reload">option start-on-reload</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="12-no"></a><a class="anchor" name="12.9-no"></a><a class="anchor" name="no (Other sections)"></a><a class="anchor" name="no (Programs (deprecated))"></a><a class="anchor" name="no option"></a><a class="anchor" name="12-no option"></a><a class="anchor" name="12.9-no option"></a><a class="anchor" name="no option (Other sections)"></a><a class="anchor" name="no option (Programs (deprecated))"></a><a class="anchor" name="no option start-on-reload"></a><a class="anchor" name="12-no option start-on-reload"></a><a class="anchor" name="12.9-no option start-on-reload"></a><a class="anchor" name="no option start-on-reload (Other sections)"></a><a class="anchor" name="no option start-on-reload (Programs (deprecated))"></a><div class="keyword"><b><a class="anchor" name="no option start-on-reload"></a><a href="#12.9-no%20option%20start-on-reload">no option start-on-reload</a></b></div><pre class="text">Start (or not) a new instance of the program upon a reload of the master.
-The default is to start a new instance. This option may only be used in a
-program section.
-</pre>
+</div>
 </div>
 
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev1-93 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev1-98 &ndash; Configuration Manual<br>
 							<small>, 2025/06/11</small>
 						</div>
 					</div>
