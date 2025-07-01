@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev2-5 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev2-22 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4593,7 +4593,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4604,7 +4604,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev2-5</strong></p>
+							<p><strong>version 3.3-dev2-22</strong></p>
 							<p>
 								2025/06/26<br>
 								
@@ -24462,11 +24462,19 @@ Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
 </pre><a class="anchor" name="jwt_verify"></a><a class="anchor" name="7-jwt_verify"></a><a class="anchor" name="7.3.1-jwt_verify"></a><a class="anchor" name="jwt_verify (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify"></a><a href="#7.3.1-jwt_verify">jwt_verify</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
 by using the &lt;alg&gt; algorithm and the &lt;key&gt; parameter, which should either
-hold a secret or a path to a public certificate. Returns 1 in case of
-verification success, 0 in case of verification error and a strictly negative
-value for any other error. Because of all those non-null error return values,
-the result of this converter should never be converted to a boolean. See
-below for a full list of the possible return values.
+hold a secret, a path to a public key or a path to a public certificate. When
+using a public key, it should either be in the PKCS#1 format (for RSA keys,
+starting with BEGIN RSA PUBLIC KEY) or SPKI format (Subject Public Key Info,
+starting with BEGIN PUBLIC KEY). Certificates should be a regular PEM
+certificate (starting with BEGIN CERTIFICATE). If a full-on certificate is
+used, it can either be used directly in the converter or passed via a
+variable if it was already known by haproxy (previously loaded in a crt-store
+for instance).
+Returns 1 in case of verification success, 0 in case of verification failure
+and a strictly negative value for any other error. Because of all those
+non-null error return values, the result of this converter should never be
+converted to a boolean. See below for a full list of the possible return
+values.
 
 For now, only JWS tokens using the Compact Serialization format can be
 processed (three dot-separated base64-url encoded strings). All the
@@ -24475,16 +24483,19 @@ with the 256, 384 or 512 key sizes, as well as the special &quot;none&quot; case
 
 If the used algorithm is of the HMAC family, &lt;key&gt; should be the secret used
 in the HMAC signature calculation. Otherwise, &lt;key&gt; should be the path to the
-public certificate that can be used to validate the token's signature. All
-the certificates that might be used to verify JWTs must be known during init
-in order to be added into a dedicated certificate cache so that no disk
-access is required during runtime. For this reason, any used certificate must
-be mentioned explicitly at least once in a jwt_verify call. Passing an
-intermediate variable as second parameter is then not advised.
+public key or certificate that can be used to validate the token's signature.
+All the public keys and certificates that might be used to verify JWTs must
+be known during init in order to be added into a dedicated cache so that no
+disk access is required during runtime. For this reason, any used public key
+must be mentioned explicitly at least once in a jwt_verify call and every
+certificate used must be loaded by haproxy (in a crt-store or mentioned
+explicitly in a 'jwt_verify' call). Passing a variable as second parameter is
+then not advised unless you only use certificates that fill one of those
+prerequisites.
 
 This converter only verifies the signature of the token and does not perform
 a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519. We do not
-ensure that the header and payload contents are fully valid JSON's once
+ensure that the header and payload contents are fully valid JSONs once
 decoded for instance, and no checks are performed regarding their respective
 contents.
 
@@ -24500,6 +24511,7 @@ The possible return values are the following :
 | -3 | &quot;Invalid token&quot;                                                      |
 | -4 | &quot;Out of memory&quot;                                                      |
 | -5 | &quot;Unknown certificate&quot;                                                |
+| -6 | &quot;Internal error&quot;                                                     |
 +----+----------------------------------------------------------------------+
 
 Please note that this converter is only available when HAProxy has been
@@ -24512,7 +24524,7 @@ compiled with USE_OPENSSL.
 http-request set-var(txn.bearer) http_auth_bearer
 http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
 http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
-http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/crt.pem&quot;) 1 }
+http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/cert.pem&quot;) 1 }
 </code></pre>
 </div><a class="anchor" name="language"></a><a class="anchor" name="7-language"></a><a class="anchor" name="7.3.1-language"></a><a class="anchor" name="language (Using ACLs and fetching samples)"></a><a class="anchor" name="language (Converters)"></a><div class="keyword"><b><a class="anchor" name="language"></a><a href="#7.3.1-language">language</a></b>(<span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>)</div><pre class="text">Returns the value with the highest q-factor from a list as extracted from the
 &quot;accept-language&quot; header using &quot;<a href="#req.fhdr">req.fhdr</a>&quot;. Values with no q-factor have a
@@ -33062,7 +33074,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev2-5 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev2-22 &ndash; Configuration Manual<br>
 							<small>, 2025/06/26</small>
 						</div>
 					</div>
