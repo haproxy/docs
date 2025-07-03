@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.1-6 - Configuration Manual</title>
+		<title>HAProxy version 3.2.2 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4612,7 +4612,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/06/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/07/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4623,9 +4623,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.1-6</strong></p>
+							<p><strong>version 3.2.2</strong></p>
 							<p>
-								2025/06/11<br>
+								2025/07/02<br>
 								
 							</p>
 						</div>
@@ -15456,8 +15456,23 @@ troubleshooting some faulty applications. Option prefer-last-server might be
 desirable in these environments as well, to avoid redistributing the traffic
 after every other response.
 
-If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
-in a specific instance by prepending the &quot;no&quot; keyword before it.
+It may be useful to precise here, which load balancing algorithms are
+considered deterministic. Deterministic algorithms will always select the same
+server for a given client data, assuming the set of available servers has not
+changed. In general, deterministic algorithms involve hasing or lookups on the
+incoming requests to choose the target server. However, this is not always the
+case; &quot;static-rr&quot;, for example, can be also considered as deterministic because
+the server choice is based on the server's static weight, making the selection
+predictable. &quot;sticky&quot; algorithm provides deterministic routing for the
+returning clients.
+
+As for non-deterministic algorithms, these algorithms select a server based on
+dynamic server state or simple rotation, so two consecutive requests are not
+guaranteed to land on the same server. option prefer-last-server is designed
+specifically for these. roundrobin, leastconn are examples of such algorithms.
+
+If this option has been enabled in a &quot;defaults&quot; section, it can be
+disabled in a specific instance by prepending the &quot;no&quot; keyword before it.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#option%20http-keep-alive">option http-keep-alive</a>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redispatch"></a><a class="anchor" name="4-option redispatch"></a><a class="anchor" name="4.2-option redispatch"></a><a class="anchor" name="option redispatch (Proxies)"></a><a class="anchor" name="option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redispatch"></a><a href="#4.2-option%20redispatch">option redispatch</a></b></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option redispatch"></a><a class="anchor" name="4-option redispatch"></a><a class="anchor" name="4.2-option redispatch"></a><a class="anchor" name="option redispatch (Proxies)"></a><a class="anchor" name="option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option redispatch"></a><a href="#4.2-option%20redispatch">option redispatch</a></b> <span style="color: #080">&lt;interval&gt;</span></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option redispatch"></a><a class="anchor" name="4-no option redispatch"></a><a class="anchor" name="4.2-no option redispatch"></a><a class="anchor" name="no option redispatch (Proxies)"></a><a class="anchor" name="no option redispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option redispatch"></a><a href="#4.2-no%20option%20redispatch">no option redispatch</a></b></div><pre class="text">Enable or disable session redistribution in case of connection failure
 
@@ -20970,6 +20985,10 @@ snifilter:
   configuration, the default certificates could be explicited (with a '*'
   filter) at the beginning of the list, so an implicit default is not added
   before.
+  Due to multi-cert bundles being duplicated for each algorithm in the
+  crt-list, only one algorithm will occupy the first line in the crt-list and
+  be considered as default. Either specify the entire bundle as default by
+  declaring '*' as the filter or setting it on the bind line.
 
   The &quot;show ssl sni&quot; command on the stats socket could be used to debug your
   configuration. (See &quot;show ssl sni&quot; in the management guide)
@@ -21230,9 +21249,16 @@ though it probably doesn't make any sense out of testing.
 </pre><a class="anchor" name="prefer-client-ciphers"></a><a class="anchor" name="5-prefer-client-ciphers"></a><a class="anchor" name="5.1-prefer-client-ciphers"></a><a class="anchor" name="prefer-client-ciphers (Bind and server options)"></a><a class="anchor" name="prefer-client-ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="prefer-client-ciphers"></a><a href="#5.1-prefer-client-ciphers">prefer-client-ciphers</a></b></div><pre class="text">Use the client's preference when selecting the cipher suite, by default
 the server's preference is enforced. This option is also available on
 global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;.
+
 Note that with OpenSSL &gt;= 1.1.1 ChaCha20-Poly1305 is reprioritized anyway
 (without setting this option), if a ChaCha20-Poly1305 cipher is at the top of
 the client cipher list.
+
+When using a dual algorithms setup (RSA + ECDSA), the selection algorithm
+will chose between RSA and ECDSA and will always prioritize ECDSA. Once the
+right certificate is chosen, it will let the SSL library prioritize ciphers,
+curves etc. Meaning this option can't be used to prioritize an RSA
+certificate over an ECDSA one.
 </pre><a class="anchor" name="proto"></a><a class="anchor" name="5-proto"></a><a class="anchor" name="5.1-proto"></a><a class="anchor" name="proto (Bind and server options)"></a><a class="anchor" name="proto (Bind options)"></a><div class="keyword"><b><a class="anchor" name="proto"></a><a href="#5.1-proto">proto</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Forces the multiplexer's protocol to use for the incoming connections. It
 must be compatible with the mode of the frontend (TCP or HTTP). It must also
 be usable on the frontend side. The list of available protocols is reported
@@ -24409,11 +24435,14 @@ Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
 </pre><a class="anchor" name="jwt_verify"></a><a class="anchor" name="7-jwt_verify"></a><a class="anchor" name="7.3.1-jwt_verify"></a><a class="anchor" name="jwt_verify (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify"></a><a href="#7.3.1-jwt_verify">jwt_verify</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
 by using the &lt;alg&gt; algorithm and the &lt;key&gt; parameter, which should either
-hold a secret or a path to a public certificate. Returns 1 in case of
-verification success, 0 in case of verification error and a strictly negative
-value for any other error. Because of all those non-null error return values,
-the result of this converter should never be converted to a boolean. See
-below for a full list of the possible return values.
+hold a secret or a path to a public key. The public key should either be in
+the PKCS#1 format (for RSA keys, starting with BEGIN RSA PUBLIC KEY) or SPKI
+format (Subject Public Key Info, starting with BEGIN PUBLIC KEY).
+Returns 1 in case of verification success, 0 in case of verification failure
+and a strictly negative value for any other error. Because of all those
+non-null error return values, the result of this converter should never be
+converted to a boolean. See below for a full list of the possible return
+values.
 
 For now, only JWS tokens using the Compact Serialization format can be
 processed (three dot-separated base64-url encoded strings). All the
@@ -24422,16 +24451,16 @@ with the 256, 384 or 512 key sizes, as well as the special &quot;none&quot; case
 
 If the used algorithm is of the HMAC family, &lt;key&gt; should be the secret used
 in the HMAC signature calculation. Otherwise, &lt;key&gt; should be the path to the
-public certificate that can be used to validate the token's signature. All
-the certificates that might be used to verify JWTs must be known during init
-in order to be added into a dedicated certificate cache so that no disk
-access is required during runtime. For this reason, any used certificate must
-be mentioned explicitly at least once in a jwt_verify call. Passing an
-intermediate variable as second parameter is then not advised.
+public key that can be used to validate the token's signature. All the public
+keys that might be used to verify JWTs must be known during init in order to
+be added into a dedicated cache so that no disk access is required during
+runtime. For this reason, any used public key must be mentioned explicitly at
+least once in a jwt_verify call. Passing an intermediate variable as second
+parameter is then not advised.
 
 This converter only verifies the signature of the token and does not perform
 a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519. We do not
-ensure that the header and payload contents are fully valid JSON's once
+ensure that the header and payload contents are fully valid JSONs once
 decoded for instance, and no checks are performed regarding their respective
 contents.
 
@@ -24459,7 +24488,7 @@ compiled with USE_OPENSSL.
 http-request set-var(txn.bearer) http_auth_bearer
 http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
 http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
-http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/crt.pem&quot;) 1 }
+http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/pubkey.pem&quot;) 1 }
 </code></pre>
 </div><a class="anchor" name="language"></a><a class="anchor" name="7-language"></a><a class="anchor" name="7.3.1-language"></a><a class="anchor" name="language (Using ACLs and fetching samples)"></a><a class="anchor" name="language (Converters)"></a><div class="keyword"><b><a class="anchor" name="language"></a><a href="#7.3.1-language">language</a></b>(<span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>)</div><pre class="text">Returns the value with the highest q-factor from a list as extracted from the
 &quot;accept-language&quot; header using &quot;<a href="#req.fhdr">req.fhdr</a>&quot;. Values with no q-factor have a
@@ -33050,8 +33079,8 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.1-6 &ndash; Configuration Manual<br>
-							<small>, 2025/06/11</small>
+							HAProxy 3.2.2 &ndash; Configuration Manual<br>
+							<small>, 2025/07/02</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
