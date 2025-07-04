@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev2-32 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev2-37 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4112,6 +4112,8 @@
 							
 							<a class="list-group-item" href="#tcp-check unset-var">tcp-check unset-var</a>
 							
+							<a class="list-group-item" href="#tcp-md5sig">tcp-md5sig</a>
+							
 							<a class="list-group-item" href="#tcp-request">tcp-request</a>
 							
 							<a class="list-group-item" href="#tcp-request connection">tcp-request connection</a>
@@ -4593,7 +4595,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/07/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/07/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4604,7 +4606,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev2-32</strong></p>
+							<p><strong>version 3.3-dev2-37</strong></p>
 							<p>
 								2025/06/26<br>
 								
@@ -21395,6 +21397,14 @@ be used and filled later from the stats socket. This option is also available
 on global statement &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;, and may be selectively
 disabled on a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line using &quot;<a href="#no-strict-sni">no-strict-sni</a>&quot;. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option for
 more information. See &quot;add ssl crt-list&quot; command in the management guide.
+</pre><a class="anchor" name="tcp-md5sig"></a><a class="anchor" name="5-tcp-md5sig"></a><a class="anchor" name="5.1-tcp-md5sig"></a><a class="anchor" name="tcp-md5sig (Bind and server options)"></a><a class="anchor" name="tcp-md5sig (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-md5sig"></a><a href="#5.1-tcp-md5sig">tcp-md5sig</a></b> <span style="color: #080">&lt;password&gt;</span></div><pre class="text">Enables the TCP MD5 signature (RFC 2385 Protection of BGP Sessions via the
+TCP MD5 Signature Option) for all incoming connections instantiated from this
+listening socket. This option is only available on Linux. When enabled,
+&lt;password&gt; string is used to sign every TCP segments with a 16-byte MD5
+digest. This will protect the TCP connection against spoofing. The primary
+use case for this option is to allow BGP to protect itself against the
+introduction of spoofed TCP segments into the connection stream. But it can
+be useful for any very long-lived TCP connections.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -22844,6 +22854,16 @@ happened.
 This option enables upstream socks4 tunnel for outgoing connections to the
 server. Using this option won't force the health check to go via socks4 by
 default. You will have to use the keyword &quot;<a href="#check-via-socks4">check-via-socks4</a>&quot; to enable it.
+</pre><a class="anchor" name="tcp-md5sig"></a><a class="anchor" name="5-tcp-md5sig"></a><a class="anchor" name="5.2-tcp-md5sig"></a><a class="anchor" name="tcp-md5sig (Bind and server options)"></a><a class="anchor" name="tcp-md5sig (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="tcp-md5sig"></a><a href="#5.2-tcp-md5sig">tcp-md5sig</a></b> <span style="color: #080">&lt;password&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+Enables the TCP MD5 signature (RFC 2385 Protection of BGP Sessions via the
+TCP MD5 Signature Option) for all outgoing connections to this server. This
+option is only available on Linux. When enabled, &lt;password&gt; string is used to
+sign every TCP segments with a 16-byte MD5 digest. This will protect the TCP
+connection against spoofing. The primary use case for this option is to allow
+BGP to protect itself against the introduction of spoofed TCP segments into
+the connection stream. But it can be useful for any very long-lived TCP
+connections.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.2-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.2-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 Sets the TCP User Timeout for all outgoing connections to this server. This
@@ -33074,7 +33094,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev2-32 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev2-37 &ndash; Configuration Manual<br>
 							<small>, 2025/06/26</small>
 						</div>
 					</div>
