@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev2-74 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev2-78 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4595,7 +4595,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/07/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/07/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4606,7 +4606,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev2-74</strong></p>
+							<p><strong>version 3.3-dev2-78</strong></p>
 							<p>
 								2025/06/26<br>
 								
@@ -7957,7 +7957,7 @@ policies are currently supported, with &quot;performance&quot; being the default
                       respected. This is recommended on multi-socket and NUMA
                       systems, as well as CPUs with bad inter-CCX latencies.
                       On most server machines, clusters and CCX are the same,
-                      but on heterogenous machines (&quot;performance&quot; vs
+                      but on heterogeneous machines (&quot;performance&quot; vs
                       &quot;efficiency&quot; or &quot;big&quot; vs &quot;little&quot;), a cluster will
                       generally be made of only a part of a CCX composed only
                       of very similar CPUs (same type, +/-5% frequency
@@ -8091,7 +8091,7 @@ of the following words:
             The result of the last check is cached for 30 seconds.
 
 When a single family is used, no request will be sent to resolvers for the
-other family, and any response for the othe family will be ignored. The
+other family, and any response for the other family will be ignored. The
 default value since 3.3 is &quot;auto&quot;, which effectively enables both families
 only once IPv6 has been proven to be routable, otherwise sticks to IPv4.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#resolve-prefer">resolve-prefer</a>&quot;, &quot;<a href="#do-resolve">do-resolve</a>&quot;</div>
@@ -14624,7 +14624,7 @@ dropped before sending it to the server.
 
 RFC9110#section-6.5.1 stated that trailer fields could be merged into the
 header fields. It should be done on purpose, but it may be a problem for some
-applications, espcially if malicious clients hide sensitive header fields in
+applications, especially if malicious clients hide sensitive header fields in
 the trailers part and some intermediaries merge them with headers with no
 specific checks. In that case, this option can be enabled on the backend to
 drop any trailer fields found in requests before sending them to the server.
@@ -15447,7 +15447,7 @@ after every other response.
 It may be useful to precise here, which load balancing algorithms are
 considered deterministic. Deterministic algorithms will always select the same
 server for a given client data, assuming the set of available servers has not
-changed. In general, deterministic algorithms involve hasing or lookups on the
+changed. In general, deterministic algorithms involve hashing or lookups on the
 incoming requests to choose the target server. However, this is not always the
 case; &quot;static-rr&quot;, for example, can be also considered as deterministic because
 the server choice is based on the server's static weight, making the selection
@@ -19653,7 +19653,7 @@ in a HTTP 400 Bad Request being returned.
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
-<pre class="text">This suspends the message analysis for the sepcified number of milliseconds.
+<pre class="text">This suspends the message analysis for the specified number of milliseconds.
 The timeout can be specified in milliseconds or with any other unit if the
 number is suffixed by the unit as explained at the top of this document. It
 is also possible to write an expression which must return a number
@@ -20971,7 +20971,7 @@ snifilter:
   Server Name Indication field matching one of the SNI filters, or the CN and
   SAN of a &lt;crtfile&gt;. The matching algorithm first looks for a positive domain
   entry in the list, if not found it will try to look for a wildcard in the
-  list. If a wilcard match, haproxy checks for a negative filter from the
+  list. If a wildcard match, haproxy checks for a negative filter from the
   same line and unmatch if necessary. In case of multiple key algorithms
   (RSA,ECDSA,DSA), HAProxy will try to match one certificate per type and
   chose the right one depending on what is supported by the client.
@@ -20986,7 +20986,7 @@ snifilter:
   certificate, either from crt or crt-list option.
   It is also possible to declare a '*' filter, which will add this
   certificate to the list of default certificates. To clarify the
-  configuration, the default certificates could be explicited (with a '*'
+  configuration, the default certificates could be explicit (with a '*'
   filter) at the beginning of the list, so an implicit default is not added
   before.
   Due to multi-cert bundles being duplicated for each algorithm in the
@@ -21490,7 +21490,7 @@ listener as this may caused &quot;<a href="#nbconn">nbconn</a>&quot; to not work
 </pre><a class="anchor" name="tls-tickets"></a><a class="anchor" name="5-tls-tickets"></a><a class="anchor" name="5.1-tls-tickets"></a><a class="anchor" name="tls-tickets (Bind and server options)"></a><a class="anchor" name="tls-tickets (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-tickets"></a><a href="#5.1-tls-tickets">tls-tickets</a></b></div><pre class="text">This setting is only available when support for OpenSSL was built in. It
 enables the stateless session resumption (RFC 5077 TLS Ticket extension). It
 is the default, but it may be needed to selectively re-enable the feature on
-a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line if it had been globaly disabled via &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; mentioned
+a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line if it had been globally disabled via &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; mentioned
 in &quot;<a href="#ssl-default-bind-options">ssl-default-bind-options</a>&quot;. See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">no-tls-tickets<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#no-tls-tickets%20%28Bind%20options%29">Bind options</a></li><li><a href="#no-tls-tickets%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind keyword.
 </pre><a class="anchor" name="tls-ticket-keys"></a><a class="anchor" name="5-tls-ticket-keys"></a><a class="anchor" name="5.1-tls-ticket-keys"></a><a class="anchor" name="tls-ticket-keys (Bind and server options)"></a><a class="anchor" name="tls-ticket-keys (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tls-ticket-keys"></a><a href="#5.1-tls-ticket-keys">tls-ticket-keys</a></b> <span style="color: #080">&lt;keyfile&gt;</span></div><pre class="text">Sets the TLS ticket keys file to load the keys from. The keys need to be 48
 or 80 bytes long, depending if aes128 or aes256 is used, encoded with base64
@@ -22255,10 +22255,10 @@ It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" d
 
 This setting is only available when support for OpenSSL was built in. It
 disables the renegotiation mechanisms, be it the legacy unsafe one or the
-more recent &quot;secure renegotation&quot; one (RFC 5746 TLS Renegotiation Indication
+more recent &quot;secure renegotiation&quot; one (RFC 5746 TLS Renegotiation Indication
 Extension) for the given SSL backend. This option is also available on global
 statement &quot;<a href="#ssl-default-server-options">ssl-default-server-options</a>&quot;.
-Renegotiation is not posible anymore in TLS 1.3.
+Renegotiation is not possible anymore in TLS 1.3.
 If neither &quot;<a href="#renegotiate">renegotiate</a>&quot; nor &quot;<a href="#no-renegotiate">no-renegotiate</a>&quot; is specified, the SSL library's
 default behavior is kept.
 Note that for instance OpenSSL library enables secure renegotiation by
@@ -22547,7 +22547,7 @@ that renegotiation requests will be sent by the SSL client, it only allows
 backends to renegotiate when servers request it. It still requires that the
 underlying SSL library actually supports renegotiation.
 This option is also available on global statement &quot;<a href="#ssl-default-server-options">ssl-default-server-options</a>&quot;.
-Renegotiation is not posible anymore in TLS 1.3.
+Renegotiation is not possible anymore in TLS 1.3.
 If neither &quot;<a href="#renegotiate">renegotiate</a>&quot; nor &quot;<a href="#no-renegotiate">no-renegotiate</a>&quot; is specified, the SSL library's
 default behavior is kept.
 Note that for instance OpenSSL library enables secure renegotiation by
@@ -32406,7 +32406,7 @@ level the former table is named &quot;/t1&quot;, the latter is again named &quot
 </div><div><pre class="text">The sections described below are less commonly used and usually support only a
 few parameters. There is no implicit relation between any of them. They're all
 started using a single keyword. None of them is permitted before a &quot;global&quot;
-section. The support for some of them might be conditionned by build options
+section. The support for some of them might be conditioned by build options
 (e.g. anything SSL-related).
 </pre></div>
 <a class="anchor" id="12.1" name="12.1"></a>
@@ -33095,7 +33095,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev2-74 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev2-78 &ndash; Configuration Manual<br>
 							<small>, 2025/06/26</small>
 						</div>
 					</div>
