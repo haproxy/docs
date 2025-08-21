@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev6-45 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev7 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2281,6 +2281,10 @@
 							
 							<a class="list-group-item" href="#keytype">keytype</a>
 							
+							<a class="list-group-item" href="#ktls (Bind options)">ktls (Bind options)</a>
+							
+							<a class="list-group-item" href="#ktls (Server and default-server options)">ktls (Server and default-server options)</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-L"><h4>L</h4>
 								
@@ -2627,6 +2631,8 @@
 							<a class="list-group-item" href="#nogetaddrinfo">nogetaddrinfo</a>
 							
 							<a class="list-group-item" href="#nokqueue">nokqueue</a>
+							
+							<a class="list-group-item" href="#noktls">noktls</a>
 							
 							<a class="list-group-item" href="#non-stick">non-stick</a>
 							
@@ -4597,7 +4603,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4608,9 +4614,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev6-45</strong></p>
+							<p><strong>version 3.3-dev7</strong></p>
 							<p>
-								2025/08/06<br>
+								2025/08/20<br>
 								
 							</p>
 						</div>
@@ -7532,6 +7538,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#noevports">noevports</a>
    - <a href="#nogetaddrinfo">nogetaddrinfo</a>
    - <a href="#nokqueue">nokqueue</a>
+   - <a href="#noktls">noktls</a>
    - <a href="#nopoll">nopoll</a>
    - <a href="#noreuseport">noreuseport</a>
    - <a href="#nosplice">nosplice</a>
@@ -9241,6 +9248,8 @@ the command line argument &quot;-dG&quot;. Deprecated gethostbyname(3) will be u
 </pre><a class="anchor" name="nokqueue"></a><a class="anchor" name="3-nokqueue"></a><a class="anchor" name="3.2-nokqueue"></a><a class="anchor" name="nokqueue (Global section)"></a><a class="anchor" name="nokqueue (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nokqueue"></a><a href="#3.2-nokqueue">nokqueue</a></b></div><pre class="text">Disables the use of the &quot;kqueue&quot; event polling system on BSD. It is
 equivalent to the command-line argument &quot;-dk&quot;. The next polling system
 used will generally be &quot;poll&quot;. See also &quot;<a href="#nopoll">nopoll</a>&quot;.
+</pre><a class="anchor" name="noktls"></a><a class="anchor" name="3-noktls"></a><a class="anchor" name="3.2-noktls"></a><a class="anchor" name="noktls (Global section)"></a><a class="anchor" name="noktls (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="noktls"></a><a href="#3.2-noktls">noktls</a></b></div><pre class="text">Disables the use of ktls. It is equivalent to the command line argument
+&quot;-dT&quot;.
 </pre><a class="anchor" name="nopoll"></a><a class="anchor" name="3-nopoll"></a><a class="anchor" name="3.2-nopoll"></a><a class="anchor" name="nopoll (Global section)"></a><a class="anchor" name="nopoll (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="nopoll"></a><a href="#3.2-nopoll">nopoll</a></b></div><pre class="text">Disables the use of the &quot;poll&quot; event polling system. It is equivalent to the
 command-line argument &quot;-dp&quot;. The next polling system used will be &quot;select&quot;.
 It should never be needed to disable &quot;poll&quot; since it's available on all
@@ -16873,6 +16882,7 @@ May be used in the following contexts: tcp, http
 - <a href="#crl-file">crl-file</a>
 - <a href="#curves">curves</a>
 - <a href="#ecdhe">ecdhe</a>
+- <a href="#ktls">ktls</a>
 - <a href="#no-alpn">no-alpn</a>
 - <a href="#no-ca-names">no-ca-names</a>
 - <a href="#npn">npn</a>
@@ -21133,6 +21143,9 @@ even if there are explicit routes through different interfaces configured.
 This can prove useful to address asymmetric routing issues when the same
 client IP addresses need to be able to reach frontends hosted on different
 interfaces.
+</pre><a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.1-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.1-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enables or disables ktls for those sockets. If enabled, kTLS will be used
+if the kernel supports it and the cipher is compatible.
+This is only available on linux.
 </pre><a class="anchor" name="label"></a><a class="anchor" name="5-label"></a><a class="anchor" name="5.1-label"></a><a class="anchor" name="label (Bind and server options)"></a><a class="anchor" name="label (Bind options)"></a><div class="keyword"><b><a class="anchor" name="label"></a><a href="#5.1-label">label</a></b> <span style="color: #080">&lt;label&gt;</span></div><pre class="text">Sets an optional label for these sockets. It could be used group sockets by
 label, independently of where the bind lines were declared.
 </pre><a class="anchor" name="level"></a><a class="anchor" name="5-level"></a><a class="anchor" name="5.1-level"></a><a class="anchor" name="level (Bind and server options)"></a><a class="anchor" name="level (Bind options)"></a><div class="keyword"><b><a class="anchor" name="level"></a><a href="#5.1-level">level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">This setting is used with the stats sockets only to restrict the nature of
@@ -22129,7 +22142,12 @@ backend google-backend
   server srv2 google.com:80 check init-state fully-down rise 3
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#option%20httpchk">option httpchk</a>&quot;</div>
-<a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">May be used in the following contexts: log
+<a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.2-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.2-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+Enables or disables ktls for those sockets. If enabled, kTLS will be used
+if the kernel supports it and the cipher is compatible.
+This is only available on Linux.
+</pre><a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">May be used in the following contexts: log
 
 The &quot;<a href="#log-bufsize">log-bufsize</a>&quot; specifies the ring bufsize to use for the implicit ring
 that will be associated to the log server in a log backend. When not
@@ -33120,8 +33138,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev6-45 &ndash; Configuration Manual<br>
-							<small>, 2025/08/06</small>
+							HAProxy 3.3-dev7 &ndash; Configuration Manual<br>
+							<small>, 2025/08/20</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
