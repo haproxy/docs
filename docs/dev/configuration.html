@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-21 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev7-30 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4603,7 +4603,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4614,7 +4614,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev7-21</strong></p>
+							<p><strong>version 3.3-dev7-30</strong></p>
 							<p>
 								2025/08/20<br>
 								
@@ -21026,9 +21026,13 @@ certS.pem [curves X25519:P-256 ciphers ECDHE-ECDSA-AES256-GCM-SHA384] secure.dom
 foo.crt [key bar.pem ocsp foo.ocsp ocsp-update on] foo.bar.com
 </code></pre>
 </div><a class="anchor" name="default-crt"></a><a class="anchor" name="5-default-crt"></a><a class="anchor" name="5.1-default-crt"></a><a class="anchor" name="default-crt (Bind and server options)"></a><a class="anchor" name="default-crt (Bind options)"></a><div class="keyword"><b><a class="anchor" name="default-crt"></a><a href="#5.1-default-crt">default-crt</a></b> <span style="color: #080">&lt;cert&gt;</span></div><pre class="text">This option does the same as the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option, with the difference that this
-certificate will be used as a default one. It is possible to add multiple
-default certificates to have an ECDSA and an RSA one, having more is not
-really useful.
+certificate will be used as a default one as well. It is possible to add
+multiple default certificates to have an ECDSA and an RSA one, having more is
+not really useful.
+
+This option does not disable implicit default certificates, if a 'crt'
+certificate is declared first before any 'default-crt' or other 'crt' it will
+still be used as a default certificate.
 
 A default certificate is used when no &quot;<a href="#strict-sni">strict-sni</a>&quot; option is used on the bind
 line. A default certificate is provided when the servername extension was not
@@ -21037,7 +21041,11 @@ certificate.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>bind *:443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa crt website.pem.rsa
+<code><span class="comment"># this bind line has 2 default certificates</span>
+bind *:443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa crt website.pem.rsa
+
+<span class="comment"># this bind line has 3 default certificates</span>
+bind *:443 crt website.pem.rsa default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa
 </code></pre>
 </div><pre class="text">See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="5-curves"></a><a class="anchor" name="5.1-curves"></a><a class="anchor" name="curves (Bind and server options)"></a><a class="anchor" name="curves (Bind options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#5.1-curves">curves</a></b> <span style="color: #080">&lt;curves&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
@@ -21091,8 +21099,12 @@ a transparent forward proxy, SSL requests generate errors because of a common
 name mismatch on the certificate presented to the client. With this option
 enabled, HAProxy will try to forge a certificate using the SNI hostname
 indicated by the client. This is done only if no certificate matches the SNI
-hostname (see 'crt-list'). If an error occurs, the default certificate is
-used, else the 'strict-sni' option is set.
+hostname (see 'crt-list').
+
+In the event of a certificate generation error, the connection will fall back
+on the default certificate. When using 'strict-sni', the default certificate
+will not be used and the connection will result in a handshake failure.
+
 It can also be used when HAProxy is configured as a reverse proxy to ease the
 deployment of an architecture with many backends.
 
@@ -33139,7 +33151,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-21 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev7-30 &ndash; Configuration Manual<br>
 							<small>, 2025/08/20</small>
 						</div>
 					</div>
