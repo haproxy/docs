@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-30 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev7-63 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4603,7 +4603,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4614,7 +4614,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev7-30</strong></p>
+							<p><strong>version 3.3-dev7-63</strong></p>
 							<p>
 								2025/08/20<br>
 								
@@ -7011,8 +7011,8 @@ global
   - .warning &quot;message&quot; : emit this message at level WARNING
   - .alert &quot;message&quot;   : emit this message at level ALERT
 
-Messages emitted at level WARNING may cause the process to fail to start if the
-&quot;<a href="#strict-mode">strict-mode</a>&quot; is enabled. Messages emitted at level ALERT will always cause a
+Messages emitted at level WARNING may cause the process to fail to start if
+&quot;<a href="#zero-warning">zero-warning</a>&quot; is enabled. Messages emitted at level ALERT will always cause a
 fatal error. These can be used to detect some inappropriate conditions and
 provide advice to the user.
 </pre><div class="separator">
@@ -7241,6 +7241,11 @@ socket type and the transport method.
                over the FD to the other end. The listener waits to receive
                the FD from the unix socket and uses it as if it were the FD
                of an accept(). Should be used carefully.
+
+               Bugs: This protocol is known to be unreliable on macOS because
+               of an issue in the macOS sendmsg(2) implementation. The
+               connection might not be accepted correctly.
+
 
 'unix@&lt;path&gt;'  following string is considered as a UNIX socket &lt;path&gt;. this
                prefix is useful to declare an UNIX socket path which don't
@@ -33151,7 +33156,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-30 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev7-63 &ndash; Configuration Manual<br>
 							<small>, 2025/08/20</small>
 						</div>
 					</div>

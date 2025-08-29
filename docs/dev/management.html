@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-30 - Management Guide</title>
+		<title>HAProxy version 3.3-dev7-63 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -662,7 +662,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -673,7 +673,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.3-dev7-30</strong></p>
+							<p><strong>version 3.3-dev7-63</strong></p>
 							<p>
 								<br>
 								
@@ -2171,6 +2171,26 @@ Here is the list of static fields using the proxy statistics domain:
  97. used_conn_cur [...S]: current number of connections in use
  98. need_conn_est [...S]: estimated needed number of connections
  99. uweight [..BS]: total user weight (backend), server user weight (server)
+ 100. agg_server_status [..B.]: backend aggregated gauge of server's status
+ 101. agg_server_status_check [..B.]: (deprecated)
+ 102. agg_check_status [..B.]: backend aggregated gauge of server's state check
+      status
+ 103. srid [...S]: server id revision
+ 104. sess_other [.F..]: total number of sessions other than HTTP since process
+      started
+ 105. h1_sess [.F..]: total number of HTTP/1 sessions since process started
+ 106. h2_sess [.F..]: total number of HTTP/2 sessions since process started
+ 107. h3_sess [.F..]: total number of HTTP/3 sessions since process started
+ 108. req_other [.F..]: total number of sessions other than HTTP processed by
+      this object since the worker process started
+ 109. h1req [.F..]: total number of HTTP/1 sessions processed by this object
+      since the worker process started
+ 110. h2req [.F..]: total number of hTTP/2 sessions processed by this object
+      since the worker process started
+ 111. h3req [.F..]: total number of HTTP/3 sessions processed by this object
+      since the worker process started
+ 112. proto [L...]: protocol
+ 113. priv_idle_cur [...S]: current number of private idle connections
 
 For all other statistics domains, the presence or the order of the fields are
 not guaranteed. In this case, the header line should always be used to parse
@@ -2866,11 +2886,19 @@ the &quot;crl-file&quot; directive in the configuration.
 entry in the frontends. If a certificate is used several time in a crt-list,
 you will need to provide which line you want to delete. To display the line
 numbers, use &quot;show ssl crt-list -n &lt;crtlist&gt;&quot;.
-</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del server"></a><a class="anchor" name="9-del server"></a><a class="anchor" name="9.3-del server"></a><a class="anchor" name="del server (Statistics and monitoring)"></a><a class="anchor" name="del server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del server"></a><a href="#9.3-del%20server">del server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Remove a server attached to the backend &lt;backend&gt;. All servers are eligible,
-except servers which are referenced by other configuration elements. The
-server must be put in maintenance mode prior to its deletion.  The operation
-is cancelled if the server still has active or idle connection or its
-connection queue is not empty.
+</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del server"></a><a class="anchor" name="9-del server"></a><a class="anchor" name="9.3-del server"></a><a class="anchor" name="del server (Statistics and monitoring)"></a><a class="anchor" name="del server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del server"></a><a href="#9.3-del%20server">del server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Delete a removable server attached to the backend &lt;backend&gt;. A removable
+server is the server which satisfies all of these conditions :
+- not referenced by other configuration elements
+- must already be in maintenance (see &quot;<a href="#disable%20server">disable server</a>&quot;)
+- must not have any active or idle connections
+
+If any of these conditions is not met, the command will fail.
+
+Active connections are those with at least one ongoing request. It is
+possible to speed up their termination using &quot;<a href="#shutdown%20sessions%20server">shutdown sessions server</a>&quot;. It
+is highly recommended to use &quot;wait srv-removable&quot; before &quot;<a href="#del%20server">del server</a>&quot; to
+ensure that all active or idle connections are closed and that the command
+succeeds.
 </pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable agent"></a><a class="anchor" name="9-disable agent"></a><a class="anchor" name="9.3-disable agent"></a><a class="anchor" name="disable agent (Statistics and monitoring)"></a><a class="anchor" name="disable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable agent"></a><a href="#9.3-disable%20agent">disable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the auxiliary agent check as temporarily stopped.
 
 In the case where an agent check is being run as a auxiliary check, due
@@ -3886,9 +3914,12 @@ and to the number of threads as the last columns are per-thread:
    port                  Server's port (or zero if none)
    -                     Unused field, serves as a visual delimiter
    purge_delay           Interval between connection purges, in milliseconds
+   served                Number of connections currently in use
    used_cur              Number of connections currently in use
+                         note that this excludes conns attached to a session
    used_max              Highest value of used_cur since the process started
    need_est              Floating estimate of total needed connections
+   idle_sess             Number of idle connections flagged as private
    unsafe_nb             Number of idle connections considered as &quot;unsafe&quot;
    safe_nb               Number of idle connections considered as &quot;safe&quot;
    idle_lim              Configured maximum number of idle connections
@@ -4696,6 +4727,10 @@ flag in the logs.
 can be used to terminate long-running streams after a server is put into
 maintenance mode, for instance. Such terminated streams are reported with a
 'K' flag in the logs.
+
+Backend connections are left in idle state, unless the server is already in
+maintenance mode, in which case they will be immediately scheduled for
+deletion.
 </pre><a class="anchor" name="trace"></a><a class="anchor" name="9-trace"></a><a class="anchor" name="9.3-trace"></a><a class="anchor" name="trace (Statistics and monitoring)"></a><a class="anchor" name="trace (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="trace"></a><a href="#9.3-trace">trace</a></b></div><pre class="text">The &quot;<a href="#trace">trace</a>&quot; command alone lists the trace sources, their current status, and
 their brief descriptions. It is only meant as a menu to enter next levels,
 see other &quot;<a href="#trace">trace</a>&quot; commands below.
@@ -4902,12 +4937,13 @@ specified condition to be satisfied, to unrecoverably fail, or to remain
 unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
 
 - srv-removable &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to
-  be removable, i.e. be in maintenance and no longer have any connection on
-  it.  Some conditions will never be accepted (e.g. not in maintenance) and
-  will cause the report of a specific error message indicating what condition
-  is not met. The server might even have been removed in parallel and no
-  longer exit. If everything is OK before the delay, a success is returned
-  and the operation is terminated.
+  be removable by the &quot;<a href="#del%20server">del server</a>&quot; command, i.e. be in maintenance and no
+  longer have any connection on it (neither active or idle). Some conditions
+  will never be accepted (e.g. not in maintenance) and will cause the report
+  of a specific error message indicating what condition is not met. The
+  server might even have been removed in parallel and no longer exit. If
+  everything is OK before the delay, a success is returned and the operation
+  is terminated.
 
 The default unit for the delay is milliseconds, though other units are
 accepted if suffixed with the usual timer units (us, ms, s, m, h, d). When
@@ -4957,6 +4993,11 @@ the -S option. This option also takes bind options separated by commas.
   command and only this one will be sent to the designated process. In this
   case the full command ends at the end of line or semi-colon like any regular
   command.
+
+  Bugs: the sockpair@ protocol used to implement communication between the
+  master and the worker is known to not be reliable on macOS because of an
+  issue in the macOS sendmsg(2) implementation. A command might end up without
+  response because of that.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -5023,6 +5064,11 @@ $ echo '@1; show info; show stat; @2; show info; show stat' | socat /var/run/hap
   closing the connection or by quitting the worker process (using the &quot;<a href="#quit">quit</a>&quot;
   command). In this case, the prompt mode of the master socket (interactive,
   prompt, timed) is propagated into the worker process.
+
+  Bugs: the sockpair@ protocol used to implement communication between the
+  master and the worker is known to not be reliable on macOS because of an
+  issue in the macOS sendmsg(2) implementation. A command might end up without
+  response because of that.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -5578,7 +5624,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-30 &ndash; Management Guide<br>
+							HAProxy 3.3-dev7-63 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
