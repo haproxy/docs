@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-76 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev7-91 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4603,7 +4603,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4614,7 +4614,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev7-76</strong></p>
+							<p><strong>version 3.3-dev7-91</strong></p>
 							<p>
 								2025/08/20<br>
 								
@@ -24536,51 +24536,76 @@ json_path and output_type parameters.
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
 </pre><a class="anchor" name="jwt_verify"></a><a class="anchor" name="7-jwt_verify"></a><a class="anchor" name="7.3.1-jwt_verify"></a><a class="anchor" name="jwt_verify (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify"></a><a href="#7.3.1-jwt_verify">jwt_verify</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
-by using the &lt;alg&gt; algorithm and the &lt;key&gt; parameter, which should either
-hold a secret, a path to a public key or a path to a public certificate. When
-using a public key, it should either be in the PKCS#1 format (for RSA keys,
-starting with BEGIN RSA PUBLIC KEY) or SPKI format (Subject Public Key Info,
-starting with BEGIN PUBLIC KEY). Certificates should be a regular PEM
-certificate (starting with BEGIN CERTIFICATE). If a full-on certificate is
-used, it can either be used directly in the converter or passed via a
-variable if it was already known by haproxy (previously loaded in a crt-store
-for instance).
-Returns 1 in case of verification success, 0 in case of verification failure
-and a strictly negative value for any other error. Because of all those
-non-null error return values, the result of this converter should never be
-converted to a boolean. See below for a full list of the possible return
-values.
-
+by using the &lt;alg&gt; algorithm and the &lt;key&gt; parameter.
 For now, only JWS tokens using the Compact Serialization format can be
-processed (three dot-separated base64-url encoded strings). All the
-algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed (HS, ES, RS and PS
-with the 256, 384 or 512 key sizes, as well as the special &quot;none&quot; case).
-
-If the used algorithm is of the HMAC family, &lt;key&gt; should be the secret used
-in the HMAC signature calculation. Otherwise, &lt;key&gt; should be the path to the
-public key or certificate that can be used to validate the token's signature.
-All the public keys and certificates that might be used to verify JWTs must
-be known during init in order to be added into a dedicated cache so that no
-disk access is required during runtime. For this reason, any used public key
-must be mentioned explicitly at least once in a jwt_verify call and every
-certificate used must be loaded by haproxy (in a crt-store or mentioned
-explicitly in a 'jwt_verify' call). Passing a variable as second parameter is
-then not advised unless you only use certificates that fill one of those
-prerequisites.
-
+processed (three dot-separated base64-url encoded strings).
 This converter only verifies the signature of the token and does not perform
 a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519. We do not
 ensure that the header and payload contents are fully valid JSONs once
 decoded for instance, and no checks are performed regarding their respective
 contents.
 
+- &lt;alg&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
+  holds the name of the algorithm used to verify.
+
+  Algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed:
+
+ +--------------+---------------------------------------------------------+
+ | &quot;alg&quot; Param  | Digital Signature or MAC Algorithm                      |
+ | Value        |                                                         |
+ +--------------+---------------------------------------------------------+
+ | HS256        | HMAC using SHA-256                                      |
+ | HS384        | HMAC using SHA-384                                      |
+ | HS512        | HMAC using SHA-512                                      |
+ | RS256        | RSASSA-PKCS1-v1_5 using SHA-256                         |
+ | RS384        | RSASSA-PKCS1-v1_5 using SHA-384                         |
+ | RS512        | RSASSA-PKCS1-v1_5 using SHA-512                         |
+ | ES256        | ECDSA using P-256 and SHA-256                           |
+ | ES384        | ECDSA using P-384 and SHA-384                           |
+ | ES512        | ECDSA using P-521 and SHA-512                           |
+ | PS256        | RSASSA-PSS using SHA-256 and MGF1 with SHA-256          |
+ | PS384        | RSASSA-PSS using SHA-384 and MGF1 with SHA-384          |
+ | PS512        | RSASSA-PSS using SHA-512 and MGF1 with SHA-512          |
+ | none         | No digital signature or MAC performed                   |
+ +--------------+---------------------------------------------------------+
+
+- &lt;key&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
+  holds a secret, a public key path or a certificate path.
+
+  Secrets are only applicable when using HMAC algorithms.
+
+  Public keys must be in either the PKCS#1 format (for RSA keys, starting
+  with BEGIN RSA PUBLIC KEY) or SPKI format (Subject Public Key Info,
+  starting with BEGIN PUBLIC KEY). Public keys must be available during the
+  configuration parsing and cannot be updated or loaded at runtime unlike
+  certificates.
+
+  Certificates must be standard PEM certificates (starting with BEGIN
+  CERTIFICATE). When using a certificate its path can be passed directly to
+  the converter or referenced via a variable. Certificates can be either
+  declared in a crt-store, or dynamically loaded via the stats socket.
+
+  All the public keys and certificates that might be used to verify JWTs must
+  be known during init in order to be added into a dedicated cache so that no
+  disk access is required during runtime.
+
+  It is possible to update certificates dynamically and add new certificates
+  using the stats socket. See also &quot;set ssl cert&quot; and &quot;new ssl cert&quot; in the
+  management guide.
+
+Returns 1 in case of verification success, 0 in case of verification failure
+and a strictly negative value for any other error. Because of all those
+non-null error return values, the result of this converter should never be
+converted to a boolean. See below for a full list of the possible return
+values.
+
 The possible return values are the following :
 
 +----+----------------------------------------------------------------------+
 | ID | message                                                              |
 +----+----------------------------------------------------------------------+
-|  0 | &quot;Verification failure&quot;                                               |
 |  1 | &quot;Verification success&quot;                                               |
+|  0 | &quot;Verification failure&quot;                                               |
 | -1 | &quot;Unknown algorithm (not mentioned in RFC7518)&quot;                       |
 | -2 | &quot;Unmanaged algorithm&quot;                                                |
 | -3 | &quot;Invalid token&quot;                                                      |
@@ -33174,7 +33199,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-76 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev7-91 &ndash; Configuration Manual<br>
 							<small>, 2025/08/20</small>
 						</div>
 					</div>
