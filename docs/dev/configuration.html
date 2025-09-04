@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-91 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev7-112 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3553,6 +3553,10 @@
 							
 							<a class="list-group-item" href="#shdr_val">shdr_val</a>
 							
+							<a class="list-group-item" href="#shm-stats-file">shm-stats-file</a>
+							
+							<a class="list-group-item" href="#shm-stats-file-max-objects">shm-stats-file-max-objects</a>
+							
 							<a class="list-group-item" href="#sigalgs (Bind options)">sigalgs (Bind options)</a>
 							
 							<a class="list-group-item" href="#sigalgs (Server and default-server options)">sigalgs (Server and default-server options)</a>
@@ -4603,7 +4607,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4614,7 +4618,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev7-91</strong></p>
+							<p><strong>version 3.3-dev7-112</strong></p>
 							<p>
 								2025/08/20<br>
 								
@@ -8667,6 +8671,30 @@ details about setting capabilities on haproxy binary, please see chapter
 is overwritten. The changes immediately take effect so that the next line in
 the configuration file sees the new value. See also &quot;<a href="#presetenv">presetenv</a>&quot;, &quot;<a href="#resetenv">resetenv</a>&quot;,
 and &quot;<a href="#unsetenv">unsetenv</a>&quot;.
+</pre><a class="anchor" name="shm-stats-file"></a><a class="anchor" name="3-shm-stats-file"></a><a class="anchor" name="3.1-shm-stats-file"></a><a class="anchor" name="shm-stats-file (Global section)"></a><a class="anchor" name="shm-stats-file (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="shm-stats-file"></a><a href="#3.1-shm-stats-file">shm-stats-file</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">When this directive is set, it enables the use of shared memory for storing
+stats counters. &lt;name&gt; is used as argument to shm_open() to open the shared
+memory at a unique location. It also means that the directive is only
+available on systems which support shm_open(). When SHM is used for stats, all
+shareable counters for frontends, backends, listeners and servers will be
+stored in the SHM, provided that they have a GUID set. When reloading haproxy,
+new process will try to scan the SHM for objects that could be associated to
+objects defined in the configuration based on GUID and type, the goal is to be
+able to preserve some counters' values upon reload. On the other hand, when
+haproxy is properly stopped, the SHM objects are released, which means counters
+are effectively reset. It is also possible to manually remove the file before
+starting a fresh process to force a reset.
+
+See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#guid-prefix">guid-prefix</a>&quot; and &quot;<a href="#shm-stats-file-max-objects">shm-stats-file-max-objects</a>&quot;
+</pre><a class="anchor" name="shm-stats-file-max-objects"></a><a class="anchor" name="3-shm-stats-file-max-objects"></a><a class="anchor" name="3.1-shm-stats-file-max-objects"></a><a class="anchor" name="shm-stats-file-max-objects (Global section)"></a><a class="anchor" name="shm-stats-file-max-objects (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="shm-stats-file-max-objects"></a><a href="#3.1-shm-stats-file-max-objects">shm-stats-file-max-objects</a></b> <span style="color: #080">&lt;number&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">This setting defines the maximum number of objects the shared memory used
+for shared counters will be able to store per thread group. It is directly
+related to the maximum memory size of the shm and is used to &quot;premap&quot; the
+shm to a given size in order to avoid runtime re-mapping. It defaults to 2k,
+which should suit for most setups without risking unsuitable memory usage,
+but can be easily changed if needed. haproxy will complain during startup if
+this value is to low to register objects that are expected to be stored in
+the shared memory. It is only relevant when &quot;<a href="#shm-stats-file">shm-stats-file</a>&quot; was defined.
+
+See also &quot;<a href="#thread-groups">thread-groups</a>&quot;
 </pre><a class="anchor" name="ssl-default-bind-ciphers"></a><a class="anchor" name="3-ssl-default-bind-ciphers"></a><a class="anchor" name="3.1-ssl-default-bind-ciphers"></a><a class="anchor" name="ssl-default-bind-ciphers (Global section)"></a><a class="anchor" name="ssl-default-bind-ciphers (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-bind-ciphers"></a><a href="#3.1-ssl-default-bind-ciphers">ssl-default-bind-ciphers</a></b> <span style="color: #080">&lt;ciphers&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of cipher algorithms (&quot;cipher suite&quot;)
 that are negotiated during the SSL/TLS handshake up to TLSv1.2 for all
@@ -12362,7 +12390,7 @@ May be used in the following contexts: tcp, http, log
 types. Format is left unspecified to allow the user to select its naming
 policy. The only restriction is its length which cannot be greater than
 127 characters. All alphanumerical values and '.', ':', '-' and '_'
-characters are valid.
+characters are valid. See also &quot;<a href="#shm-stats-file">shm-stats-file</a>&quot;.
 </pre><a class="anchor" name="hash-balance-factor"></a><a class="anchor" name="4-hash-balance-factor"></a><a class="anchor" name="4.2-hash-balance-factor"></a><a class="anchor" name="hash-balance-factor (Proxies)"></a><a class="anchor" name="hash-balance-factor (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="hash-balance-factor"></a><a href="#4.2-hash-balance-factor">hash-balance-factor</a></b> <span style="color: #080">&lt;factor&gt;</span></div><pre class="text">Specify the balancing factor for bounded-load consistent hashing
 
 May be used in the following contexts: tcp, http
@@ -21125,6 +21153,7 @@ setting is ignored by non UNIX sockets.
 allocated on this bind line. Prefix will be concatenated to listeners
 position index on the current bind line, with character '-' as separator. See
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; proxy keyword description for more information on its format.
+See also &quot;<a href="#shm-stats-file">shm-stats-file</a>&quot;.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.1-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Bind options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.1-id">id</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Fixes the socket ID. By default, socket IDs are automatically assigned, but
 sometimes it is more convenient to fix them to ease monitoring. This value
 must be strictly positive and unique within the listener/frontend. This
@@ -22011,7 +22040,8 @@ the server. This option is also available on global statement
 
 Specify a case-sensitive global unique ID for this server. This must be
 unique across all haproxy configuration on every object types. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
-proxy keyword description for more information on its format.
+proxy keyword description for more information on its format. See also
+&quot;<a href="#shm-stats-file">shm-stats-file</a>&quot;.
 </pre><a class="anchor" name="hash-key"></a><a class="anchor" name="5-hash-key"></a><a class="anchor" name="5.2-hash-key"></a><a class="anchor" name="hash-key (Bind and server options)"></a><a class="anchor" name="hash-key (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="hash-key"></a><a href="#5.2-hash-key">hash-key</a></b> <span style="color: #080">&lt;key&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Specify how &quot;hash-type consistent&quot; node keys are computed
@@ -33199,7 +33229,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-91 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev7-112 &ndash; Configuration Manual<br>
 							<small>, 2025/08/20</small>
 						</div>
 					</div>
