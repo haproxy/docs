@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev7-118 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev8-14 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1454,6 +1454,8 @@
 							
 							<a class="list-group-item" href="#base">base</a>
 							
+							<a class="list-group-item" href="#base2">base2</a>
+							
 							<a class="list-group-item" href="#base32">base32</a>
 							
 							<a class="list-group-item" href="#base32+src">base32+src</a>
@@ -1612,6 +1614,8 @@
 							<a class="list-group-item" href="#check-send-proxy">check-send-proxy</a>
 							
 							<a class="list-group-item" href="#check-sni">check-sni</a>
+							
+							<a class="list-group-item" href="#check-sni-auto">check-sni-auto</a>
 							
 							<a class="list-group-item" href="#check-ssl">check-ssl</a>
 							
@@ -2582,6 +2586,8 @@
 							
 							<a class="list-group-item" href="#no-check-reuse-pool">no-check-reuse-pool</a>
 							
+							<a class="list-group-item" href="#no-check-sni-auto">no-check-sni-auto</a>
+							
 							<a class="list-group-item" href="#no-check-ssl">no-check-ssl</a>
 							
 							<a class="list-group-item" href="#no-memory-trimming">no-memory-trimming</a>
@@ -2597,6 +2603,8 @@
 							<a class="list-group-item" href="#no-send-proxy-v2-ssl">no-send-proxy-v2-ssl</a>
 							
 							<a class="list-group-item" href="#no-send-proxy-v2-ssl-cn">no-send-proxy-v2-ssl-cn</a>
+							
+							<a class="list-group-item" href="#no-sni-auto">no-sni-auto</a>
 							
 							<a class="list-group-item" href="#no-ssl">no-ssl</a>
 							
@@ -3568,6 +3576,8 @@
 							<a class="list-group-item" href="#slowstart">slowstart</a>
 							
 							<a class="list-group-item" href="#sni">sni</a>
+							
+							<a class="list-group-item" href="#sni-auto">sni-auto</a>
 							
 							<a class="list-group-item" href="#so_id">so_id</a>
 							
@@ -4607,7 +4617,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4618,9 +4628,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev7-118</strong></p>
+							<p><strong>version 3.3-dev8-14</strong></p>
 							<p>
-								2025/08/20<br>
+								2025/09/05<br>
 								
 							</p>
 						</div>
@@ -21185,8 +21195,8 @@ This can prove useful to address asymmetric routing issues when the same
 client IP addresses need to be able to reach frontends hosted on different
 interfaces.
 </pre><a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.1-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.1-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enables or disables ktls for those sockets. If enabled, kTLS will be used
-if the kernel supports it and the cipher is compatible.
-This is only available on linux.
+if the kernel supports it and the cipher is compatible. This is only
+available on Linux kernel 4.17 and above.
 </pre><a class="anchor" name="label"></a><a class="anchor" name="5-label"></a><a class="anchor" name="5.1-label"></a><a class="anchor" name="label (Bind and server options)"></a><a class="anchor" name="label (Bind options)"></a><div class="keyword"><b><a class="anchor" name="label"></a><a href="#5.1-label">label</a></b> <span style="color: #080">&lt;label&gt;</span></div><pre class="text">Sets an optional label for these sockets. It could be used group sockets by
 label, independently of where the bind lines were declared.
 </pre><a class="anchor" name="level"></a><a class="anchor" name="5-level"></a><a class="anchor" name="5.1-level"></a><a class="anchor" name="level (Bind and server options)"></a><a class="anchor" name="level (Bind options)"></a><div class="keyword"><b><a class="anchor" name="level"></a><a href="#5.1-level">level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">This setting is used with the stats sockets only to restrict the nature of
@@ -21900,6 +21910,26 @@ directive on a server line:
 Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for health-check connections established to this server.
 If not defined, the server one will be used, if set.
+</pre><a class="anchor" name="check-sni-auto"></a><a class="anchor" name="5-check-sni-auto"></a><a class="anchor" name="5.2-check-sni-auto"></a><a class="anchor" name="check-sni-auto (Bind and server options)"></a><a class="anchor" name="check-sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-sni-auto"></a><a href="#5.2-check-sni-auto">check-sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+This option enables the automatic SNI selection when doing health checks over
+SSL, if no value was already set. It is enabled by default but this parameter
+may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#no-check-sni-auto">no-check-sni-auto</a>&quot; setting
+which would have been inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive as default
+value. It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#no-check-sni-auto">no-check-sni-auto</a>&quot; setting.
+
+For HTTPS connections, the SNI is automatically selected but only if there is
+no &quot;<a href="#http-check%20connect">http-check connect</a>&quot; rule. In that case, the selected SNI is based on the
+host header value, specified via the &quot;<a href="#option%20httpchk">option httpchk</a>&quot; directive or a
+&quot;<a href="#http-check%20send">http-check send</a>&quot; rule. There is no automatic selection for &quot;http-check
+connect&quot; rules. For other protocols, the option is ignored.
+
+If the automatic selection of the SNI is used for health-checks, the value is
+assigned to the connection name if &quot;<a href="#check-reuse-pool">check-reuse-pool</a>&quot; setting is set, unless
+overridden by the &quot;<a href="#check-pool-conn-name">check-pool-conn-name</a>&quot; server keyword.
+
+See &quot;<a href="#sni-auto">sni-auto</a>&quot; option to enable automatic SNI selection for proxied traffic.
 </pre><a class="anchor" name="check-sni"></a><a class="anchor" name="5-check-sni"></a><a class="anchor" name="5.2-check-sni"></a><a class="anchor" name="check-sni (Bind and server options)"></a><a class="anchor" name="check-sni (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-sni"></a><a href="#5.2-check-sni">check-sni</a></b> <span style="color: #080">&lt;sni&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 This option allows you to specify the SNI to be used when doing health checks
@@ -22311,6 +22341,13 @@ It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" d
 
 This option reverts any previous &quot;<a href="#check-reuse-pool">check-reuse-pool</a>&quot; possibly inherited from a
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;. Any checks will be conducted on its dedicated connection.
+</pre><a class="anchor" name="no-check-sni-auto"></a><a class="anchor" name="5-no-check-sni-auto"></a><a class="anchor" name="5.2-no-check-sni-auto"></a><a class="anchor" name="no-check-sni-auto (Bind and server options)"></a><a class="anchor" name="no-check-sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-check-sni-auto"></a><a href="#5.2-no-check-sni-auto">no-check-sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
+
+This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to disable the automatic SNI
+selection for SSL health checks which is enabled by default.
+
+See &quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; option to disable automatic SNI selection for proxied
+traffic.
 </pre><a class="anchor" name="no-check-ssl"></a><a class="anchor" name="5-no-check-ssl"></a><a class="anchor" name="5.2-no-check-ssl"></a><a class="anchor" name="no-check-ssl (Bind and server options)"></a><a class="anchor" name="no-check-ssl (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-check-ssl"></a><a href="#5.2-no-check-ssl">no-check-ssl</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#check-ssl">check-ssl</a>&quot;
@@ -22359,6 +22396,13 @@ setting which would have been inherited from &quot;<span class="dropdown"><a cla
 default value.
 It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#send-proxy-v2-ssl-cn">send-proxy-v2-ssl-cn</a>&quot; setting.
+</pre><a class="anchor" name="no-sni-auto"></a><a class="anchor" name="5-no-sni-auto"></a><a class="anchor" name="5.2-no-sni-auto"></a><a class="anchor" name="no-sni-auto (Bind and server options)"></a><a class="anchor" name="no-sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-sni-auto"></a><a href="#5.2-no-sni-auto">no-sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to disable the automatic SNI
+selection which is enabled by default.
+
+See &quot;<a href="#no-check-sni-auto">no-check-sni-auto</a>&quot; option to disable automatic SNI selection for SSL
+health checks.
 </pre><a class="anchor" name="no-ssl"></a><a class="anchor" name="5-no-ssl"></a><a class="anchor" name="5.2-no-ssl"></a><a class="anchor" name="no-ssl (Bind and server options)"></a><a class="anchor" name="no-ssl (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-ssl"></a><a href="#5.2-no-ssl">no-ssl</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
@@ -22854,6 +22898,25 @@ checks, see the &quot;<a href="#check-sni">check-sni</a>&quot; directive for mor
 
 By default, the SNI is assigned to the connection name for &quot;<a href="#http-reuse">http-reuse</a>&quot;,
 unless overridden by the &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; server keyword.
+</pre><a class="anchor" name="sni-auto"></a><a class="anchor" name="5-sni-auto"></a><a class="anchor" name="5.2-sni-auto"></a><a class="anchor" name="sni-auto (Bind and server options)"></a><a class="anchor" name="sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="sni-auto"></a><a href="#5.2-sni-auto">sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+The &quot;<a href="#sni-auto">sni-auto</a>&quot; parameter enables the automatic SNI selection, if no value was
+already set. It is enabled by default but this parameter may be used as
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting which would have been
+inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive as default value.  It may also be
+used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+&quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting.
+
+For HTTPS connections, the selected SNI is based on the request host header
+value, if found. Otherwise it remains unset. For other protocols, the option
+is ignored.
+
+If the automatic selection of the SNI is used, the value is assigned to the
+connection name for &quot;<a href="#http-reuse">http-reuse</a>&quot;, unless overridden by the &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot;
+server keyword.
+
+See &quot;<a href="#check-sni-auto">check-sni-auto</a>&quot; option to enable automatic SNI selection for SSL health
+checks.
 </pre><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;pl&gt;</span><span style="color: #008">[-<span style="color: #080">&lt;ph&gt;</span>]</span>]</span> <span style="color: #008">[usesrc <span style="color: #800">{ <span style="color: #080">&lt;addr2&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port2&gt;</span>]</span> | client | clientip }</span> ]</span></div><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[usesrc <span style="color: #800">{ <span style="color: #080">&lt;addr2&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port2&gt;</span>]</span> | hdr_ip(<span style="color: #080">&lt;hdr&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span>]</span>) }</span> ]</span></div><a class="anchor" name="source"></a><a class="anchor" name="5-source"></a><a class="anchor" name="5.2-source"></a><a class="anchor" name="source (Bind and server options)"></a><a class="anchor" name="source (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="source"></a><a href="#5.2-source">source</a></b> <span style="color: #080">&lt;addr&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;pl&gt;</span><span style="color: #008">[-<span style="color: #080">&lt;ph&gt;</span>]</span>]</span> <span style="color: #008">[interface <span style="color: #080">&lt;name&gt;</span>]</span> ...</div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">source<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#source%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#source%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter sets the source address which will be used when
@@ -23968,6 +24031,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-and">and(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-b64dec">b64dec</a></td><td >string</td><td >binary</td></tr>
+<tr><td ><a href="#7-base2">base2</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-base64">base64</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-be2dec">be2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-le2dec">le2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
@@ -23980,8 +24044,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32">crc32([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-da-csv-conv">da-csv-conv(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-date">date</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-debug">debug([prefix][,destination])</a></td><td >any</td><td >same</td></tr>
@@ -24001,8 +24065,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-iif">iif(true,false)</a></td><td >boolean</td><td >string</td></tr>
 <tr><td ><a href="#7-in_table">in_table([table])</a></td><td >any</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
-<tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
@@ -24022,8 +24086,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
-<tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -24043,8 +24107,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
-<tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24064,8 +24128,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_rate">table_http_err_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24085,8 +24149,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
@@ -24183,6 +24247,10 @@ numeric value or a variable name. See <a href="#2.8">section 2.8</a> about varia
 representation. It performs the inverse operation of base64().
 For base64url(&quot;URL and Filename Safe Alphabet&quot; (RFC 4648)) variant
 see &quot;<a href="#ub64dec">ub64dec</a>&quot;.
+</pre><a class="anchor" name="base2"></a><a class="anchor" name="7-base2"></a><a class="anchor" name="7.3.1-base2"></a><a class="anchor" name="base2 (Using ACLs and fetching samples)"></a><a class="anchor" name="base2 (Converters)"></a><div class="keyword"><b><a class="anchor" name="base2"></a><a href="#7.3.1-base2">base2</a></b></div><pre class="text">Converts a binary input sample to a binary string containing eight binary
+digits per input byte. It is used to be able to perform longest prefix match
+on types where the native representation does not allow prefix matching, for
+example IP prefixes.
 </pre><a class="anchor" name="base64"></a><a class="anchor" name="7-base64"></a><a class="anchor" name="7.3.1-base64"></a><a class="anchor" name="base64 (Using ACLs and fetching samples)"></a><a class="anchor" name="base64 (Converters)"></a><div class="keyword"><b><a class="anchor" name="base64"></a><a href="#7.3.1-base64">base64</a></b></div><pre class="text">Converts a binary input sample to a base64 string. It is used to log or
 transfer binary content in a way that can be reliably transferred (e.g.
 an SSL ID can be copied in a header). For base64url(&quot;URL and Filename
@@ -33229,8 +33297,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev7-118 &ndash; Configuration Manual<br>
-							<small>, 2025/08/20</small>
+							HAProxy 3.3-dev8-14 &ndash; Configuration Manual<br>
+							<small>, 2025/09/05</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
