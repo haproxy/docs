@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.4-21 - Configuration Manual</title>
+		<title>HAProxy version 3.2.4-23 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1465,6 +1465,8 @@
 							
 							<a class="list-group-item" href="#base">base</a>
 							
+							<a class="list-group-item" href="#base2">base2</a>
+							
 							<a class="list-group-item" href="#base32">base32</a>
 							
 							<a class="list-group-item" href="#base32+src">base32+src</a>
@@ -2312,6 +2314,8 @@
 							<a class="list-group-item" href="#lat_ns_avg">lat_ns_avg</a>
 							
 							<a class="list-group-item" href="#lat_ns_tot">lat_ns_tot</a>
+							
+							<a class="list-group-item" href="#le2dec">le2dec</a>
 							
 							<a class="list-group-item" href="#length">length</a>
 							
@@ -4612,7 +4616,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/08/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4623,7 +4627,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.4-21</strong></p>
+							<p><strong>version 3.2.4-23</strong></p>
 							<p>
 								2025/08/13<br>
 								
@@ -23854,8 +23858,10 @@ The following keywords are supported:
 <tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-and">and(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-b64dec">b64dec</a></td><td >string</td><td >binary</td></tr>
+<tr><td ><a href="#7-base2">base2</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-base64">base64</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-be2dec">be2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-le2dec">le2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-be2hex">be2hex([separator[,chunk_size[,truncate]]])</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-bool">bool</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-bytes">bytes(offset[,length])</a></td><td >binary</td><td >binary</td></tr>
@@ -23865,9 +23871,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32">crc32([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-da-csv-conv">da-csv-conv(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-date">date</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-debug">debug([prefix][,destination])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-digest">digest(algorithm)</a></td><td >binary</td><td >binary</td></tr>
@@ -23886,9 +23892,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-iif">iif(true,false)</a></td><td >boolean</td><td >string</td></tr>
 <tr><td ><a href="#7-in_table">in_table([table])</a></td><td >any</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
@@ -23907,9 +23913,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-param">param(name[,delim])</a></td><td >string</td><td >string</td></tr>
@@ -23928,9 +23934,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_out_rate">table_bytes_out_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -23949,9 +23955,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_rate">table_http_err_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_fail_cnt">table_http_fail_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -23970,9 +23976,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
@@ -24068,6 +24074,10 @@ numeric value or a variable name. See <a href="#2.8">section 2.8</a> about varia
 representation. It performs the inverse operation of base64().
 For base64url(&quot;URL and Filename Safe Alphabet&quot; (RFC 4648)) variant
 see &quot;<a href="#ub64dec">ub64dec</a>&quot;.
+</pre><a class="anchor" name="base2"></a><a class="anchor" name="7-base2"></a><a class="anchor" name="7.3.1-base2"></a><a class="anchor" name="base2 (Using ACLs and fetching samples)"></a><a class="anchor" name="base2 (Converters)"></a><div class="keyword"><b><a class="anchor" name="base2"></a><a href="#7.3.1-base2">base2</a></b></div><pre class="text">Converts a binary input sample to a binary string containing eight binary
+digits per input byte. It is used to be able to perform longest prefix match
+on types where the native representation does not allow prefix matching, for
+example IP prefixes.
 </pre><a class="anchor" name="base64"></a><a class="anchor" name="7-base64"></a><a class="anchor" name="7.3.1-base64"></a><a class="anchor" name="base64 (Using ACLs and fetching samples)"></a><a class="anchor" name="base64 (Converters)"></a><div class="keyword"><b><a class="anchor" name="base64"></a><a href="#7.3.1-base64">base64</a></b></div><pre class="text">Converts a binary input sample to a base64 string. It is used to log or
 transfer binary content in a way that can be reliably transferred (e.g.
 an SSL ID can be copied in a header). For base64url(&quot;URL and Filename
@@ -24084,6 +24094,19 @@ maximum value is limited by the size of long long int (8 bytes).
 bin(01020304050607),be2dec(-,2,1) <span class="comment"># 258-772-1286</span>
 bin(01020304050607),be2dec(,2,1)  <span class="comment"># 2587721286</span>
 bin(7f000001),be2dec(.,1)         <span class="comment"># 127.0.0.1</span>
+</code></pre>
+</div><a class="anchor" name="le2dec"></a><a class="anchor" name="7-le2dec"></a><a class="anchor" name="7.3.1-le2dec"></a><a class="anchor" name="le2dec (Using ACLs and fetching samples)"></a><a class="anchor" name="le2dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="le2dec"></a><a href="#7.3.1-le2dec">le2dec</a></b>(<span style="color: #080">&lt;separator&gt;</span>,<span style="color: #080">&lt;chunk_size&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;truncate&gt;</span>]</span>)</div><pre class="text">Converts little-endian binary input sample to a string containing an unsigned
+integer number per &lt;chunk_size&gt; input bytes. &lt;separator&gt; is inserted every
+&lt;chunk_size&gt; binary input bytes if specified. The &lt;truncate&gt; flag indicates
+whether the binary input is truncated at &lt;chunk_size&gt; boundaries. The maximum
+value for &lt;chunk_size&gt; is limited by the size of long long int (8 bytes).
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>bin(01020304050607),le2dec(:,2)   <span class="comment"># 513:1284:2055:7</span>
+bin(01020304050607),le2dec(-,2,1) <span class="comment"># 513-1284-2055</span>
+bin(01020304050607),le2dec(,2,1)  <span class="comment"># 51312842055</span>
+bin(7f000001),le2dec(.,1)         <span class="comment"># 127.0.0.1</span>
 </code></pre>
 </div><a class="anchor" name="be2hex"></a><a class="anchor" name="7-be2hex"></a><a class="anchor" name="7.3.1-be2hex"></a><a class="anchor" name="be2hex (Using ACLs and fetching samples)"></a><a class="anchor" name="be2hex (Converters)"></a><div class="keyword"><b><a class="anchor" name="be2hex"></a><a href="#7.3.1-be2hex">be2hex</a></b>(<span style="color: #008">[<span style="color: #080">&lt;separator&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;chunk_size&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;truncate&gt;</span>]</span>]</span>]</span>)</div><pre class="text">Converts big-endian binary input sample to a hex string containing two hex
 digits per input byte. It is used to log or transfer hex dumps of some
@@ -33087,7 +33110,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.4-21 &ndash; Configuration Manual<br>
+							HAProxy 3.2.4-23 &ndash; Configuration Manual<br>
 							<small>, 2025/08/13</small>
 						</div>
 					</div>
