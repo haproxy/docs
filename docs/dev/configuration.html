@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev8-141 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev8-158 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1598,6 +1598,10 @@
 							<a class="list-group-item" href="#capture.res.hdr">capture.res.hdr</a>
 							
 							<a class="list-group-item" href="#capture.res.ver">capture.res.ver</a>
+							
+							<a class="list-group-item" href="#cc (Bind options)">cc (Bind options)</a>
+							
+							<a class="list-group-item" href="#cc (Server and default-server options)">cc (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#challenge">challenge</a>
 							
@@ -4617,7 +4621,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4628,7 +4632,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev8-141</strong></p>
+							<p><strong>version 3.3-dev8-158</strong></p>
 							<p>
 								2025/09/05<br>
 								
@@ -20818,6 +20822,22 @@ verify client's certificate. It designates CA certificates which must not be
 included in CA names sent in server hello message. Typically, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; must
 be defined with intermediate certificates, and &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; with
 certificates to ending the chain, like root CA.
+</pre><a class="anchor" name="cc"></a><a class="anchor" name="5-cc"></a><a class="anchor" name="5.1-cc"></a><a class="anchor" name="cc (Bind and server options)"></a><a class="anchor" name="cc (Bind options)"></a><div class="keyword"><b><a class="anchor" name="cc"></a><a href="#5.1-cc">cc</a></b> <span style="color: #080">&lt;algo&gt;</span></div><pre class="text">This setting is only available on systems which define TCP_CONGESTION, and
+was validated on Linux and FreeBSD. It takes the name of a TCP congestion
+control algorithm and configures the listener to use this algorithm on all
+connections that are accepted from this listener. Typical names include
+&quot;reno&quot;, &quot;cubic&quot; and will depend on the operating system. On some systems,
+special permissions may be required to configure certain algorithms. On
+Linux, the list of available algorithms may be found in the sysctl
+&quot;net.ipv4.tcp_available_congestion_control&quot;, and the list of those permitted
+without privileges is in &quot;net.ipv4.tcp_allowed_congestion_control&quot;. In order
+to access algorithms requiring extra permissions, the &quot;cap_net_admin&quot;
+capability might be required (see &quot;<a href="#setcap">setcap</a>&quot; in the global section). In case of
+failure to configure a specific congestion control algorithm, the default one
+will remain unchanged and a warning will be emitted to report the problem.
+</pre><div class="page-header"><b>See also:</b> the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cc<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cc%20%28Bind%20options%29">Bind options</a></li><li><a href="#cc%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; server keyword (<a href="#5.2">section 5.2</a>). Example:</div>
+<pre class="text">frontend public
+    bind :443 cc bbr   # use the BBR algorithm for high bandwidths
 </pre><a class="anchor" name="ciphers"></a><a class="anchor" name="5-ciphers"></a><a class="anchor" name="5.1-ciphers"></a><a class="anchor" name="ciphers (Bind and server options)"></a><a class="anchor" name="ciphers (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ciphers"></a><a href="#5.1-ciphers">ciphers</a></b> <span style="color: #080">&lt;ciphers&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of cipher algorithms (&quot;cipher suite&quot;) that are
 negotiated during the SSL/TLS handshake up to TLSv1.2. The format of the
@@ -21803,7 +21823,21 @@ CAs, in this case HAProxy will try to load every &quot;.pem&quot;, &quot;.crt&qu
 In order to use the trusted CAs of your system, the &quot;@system-ca&quot; parameter
 could be used in place of the cafile. The location of this directory could be
 overwritten by setting the SSL_CERT_DIR environment variable.
-</pre><a class="anchor" name="check"></a><a class="anchor" name="5-check"></a><a class="anchor" name="5.2-check"></a><a class="anchor" name="check (Bind and server options)"></a><a class="anchor" name="check (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check"></a><a href="#5.2-check">check</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
+</pre><a class="anchor" name="cc"></a><a class="anchor" name="5-cc"></a><a class="anchor" name="5.2-cc"></a><a class="anchor" name="cc (Bind and server options)"></a><a class="anchor" name="cc (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="cc"></a><a href="#5.2-cc">cc</a></b> <span style="color: #080">&lt;algo&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+This setting is only available on systems which define TCP_CONGESTION, and
+was validated on Linux and FreeBSD. It takes the name of a TCP congestion
+control algorithm and configures outgoing connections to use this algorithm.
+Typical names include &quot;reno&quot; or &quot;cubic&quot; and will depend on the operating
+system. On some systems, special permissions may be required to configure
+certain algorithms. On Linux, available algorithms are listed in sysctl
+&quot;net.ipv4.tcp_available_congestion_control&quot;, and those permitted without
+privileges are in &quot;net.ipv4.tcp_allowed_congestion_control&quot;. In order to
+access algorithms requiring extra permissions, the &quot;cap_net_admin&quot; capability
+might be required (see &quot;<a href="#setcap">setcap</a>&quot; in the global section). In case of failure to
+configure a specific congestion control algorithm, the default one remains
+</pre><div class="page-header"><b>See also:</b> the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cc<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cc%20%28Bind%20options%29">Bind options</a></li><li><a href="#cc%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind keyword (<a href="#5.1">section 5.1</a>).</div>
+<a class="anchor" name="check"></a><a class="anchor" name="5-check"></a><a class="anchor" name="5.2-check"></a><a class="anchor" name="check (Bind and server options)"></a><a class="anchor" name="check (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check"></a><a href="#5.2-check">check</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 This option enables health checks on a server:
   - when not set, no health checking is performed, and the server is always
@@ -33307,7 +33341,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev8-141 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev8-158 &ndash; Configuration Manual<br>
 							<small>, 2025/09/05</small>
 						</div>
 					</div>
