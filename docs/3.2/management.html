@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.4-23 - Management Guide</title>
+		<title>HAProxy version 3.2.4-93 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -662,7 +662,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -673,7 +673,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.2.4-23</strong></p>
+							<p><strong>version 3.2.4-93</strong></p>
 							<p>
 								<br>
 								
@@ -2167,6 +2167,25 @@ Here is the list of static fields using the proxy statistics domain:
  97. used_conn_cur [...S]: current number of connections in use
  98. need_conn_est [...S]: estimated needed number of connections
  99. uweight [..BS]: total user weight (backend), server user weight (server)
+ 100. agg_server_status [..B.]: backend aggregated gauge of server's status
+ 101. agg_server_status_check [..B.]: (deprecated)
+ 102. agg_check_status [..B.]: backend aggregated gauge of server's state check
+      status
+ 103. srid [...S]: server id revision
+ 104. sess_other [.F..]: total number of sessions other than HTTP since process
+      started
+ 105. h1_sess [.F..]: total number of HTTP/1 sessions since process started
+ 106. h2_sess [.F..]: total number of HTTP/2 sessions since process started
+ 107. h3_sess [.F..]: total number of HTTP/3 sessions since process started
+ 108. req_other [.F..]: total number of sessions other than HTTP processed by
+      this object since the worker process started
+ 109. h1req [.F..]: total number of HTTP/1 sessions processed by this object
+      since the worker process started
+ 110. h2req [.F..]: total number of hTTP/2 sessions processed by this object
+      since the worker process started
+ 111. h3req [.F..]: total number of HTTP/3 sessions processed by this object
+      since the worker process started
+ 112. proto [L...]: protocol
 
 For all other statistics domains, the presence or the order of the fields are
 not guaranteed. In this case, the header line should always be used to parse
@@ -4943,6 +4962,11 @@ the -S option. This option also takes bind options separated by commas.
   command and only this one will be sent to the designated process. In this
   case the full command ends at the end of line or semi-colon like any regular
   command.
+
+  Bugs: the sockpair@ protocol used to implement communication between the
+  master and the worker is known to not be reliable on macOS because of an
+  issue in the macOS sendmsg(2) implementation. A command might end up without
+  response because of that.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -5009,6 +5033,11 @@ $ echo '@1; show info; show stat; @2; show info; show stat' | socat /var/run/hap
   closing the connection or by quitting the worker process (using the &quot;<a href="#quit">quit</a>&quot;
   command). In this case, the prompt mode of the master socket (interactive,
   prompt, timed) is propagated into the worker process.
+
+  Bugs: the sockpair@ protocol used to implement communication between the
+  master and the worker is known to not be reliable on macOS because of an
+  issue in the macOS sendmsg(2) implementation. A command might end up without
+  response because of that.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -5567,7 +5596,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.4-23 &ndash; Management Guide<br>
+							HAProxy 3.2.4-93 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
