@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev8-183 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev8-190 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4621,7 +4621,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4632,7 +4632,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev8-183</strong></p>
+							<p><strong>version 3.3-dev8-190</strong></p>
 							<p>
 								2025/09/05<br>
 								
@@ -24152,6 +24152,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -24171,8 +24172,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24192,8 +24193,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
@@ -25290,11 +25291,22 @@ SHA-&lt;bits&gt;. The default value is 256.
 
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
+</pre><a class="anchor" name="srv_is_up"></a><a class="anchor" name="7-srv_is_up"></a><a class="anchor" name="7.3.1-srv_is_up"></a><a class="anchor" name="srv_is_up (Using ACLs and fetching samples)"></a><a class="anchor" name="srv_is_up (Converters)"></a><div class="keyword"><b><a class="anchor" name="srv_is_up"></a><a href="#7.3.1-srv_is_up">srv_is_up</a></b></div><pre class="text">Takes an input value of type string, either a server name or &lt;backend&gt;/&lt;server&gt;
+format and returns true when the designated server is currently UP. Can be used
+in places where we want to look up a server status from a dynamic name, like a
+cookie value (e.g. req.cook(SRVID),srv_is_up) and then make a decision to
+direct a request elsewhere. Before using this, please keep in mind that using
+this converter on uncontrolled data might allow an external observer to query
+the state of any server in the whole configuration, which might possibly not
+be acceptable in some environments.
 </pre><a class="anchor" name="srv_queue"></a><a class="anchor" name="7-srv_queue"></a><a class="anchor" name="7.3.1-srv_queue"></a><a class="anchor" name="srv_queue (Using ACLs and fetching samples)"></a><a class="anchor" name="srv_queue (Converters)"></a><div class="keyword"><b><a class="anchor" name="srv_queue"></a><a href="#7.3.1-srv_queue">srv_queue</a></b></div><pre class="text">Takes an input value of type string, either a server name or &lt;backend&gt;/&lt;server&gt;
 format and returns the number of queued streams on that server. Can be used
 in places where we want to look up queued streams from a dynamic name, like a
 cookie value (e.g. req.cook(SRVID),srv_queue) and then make a decision to break
-persistence or direct a request elsewhere.
+persistence or direct a request elsewhere. Before using this, please keep in
+mind that using this converter on uncontrolled data might allow an external
+observer to query the state of any server in the whole configuration, which
+might possibly not be acceptable in some environments.
 </pre><a class="anchor" name="strcmp"></a><a class="anchor" name="7-strcmp"></a><a class="anchor" name="7.3.1-strcmp"></a><a class="anchor" name="strcmp (Using ACLs and fetching samples)"></a><a class="anchor" name="strcmp (Converters)"></a><div class="keyword"><b><a class="anchor" name="strcmp"></a><a href="#7.3.1-strcmp">strcmp</a></b>(<span style="color: #080">&lt;var&gt;</span>)</div><pre class="text">Compares the contents of &lt;var&gt; with the input value of type string. Returns
 the result as a signed integer compatible with strcmp(3): 0 if both strings
 are identical. A value less than 0 if the left string is lexicographically
@@ -33341,7 +33353,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev8-183 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev8-190 &ndash; Configuration Manual<br>
 							<small>, 2025/09/05</small>
 						</div>
 					</div>
