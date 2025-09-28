@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev8-190 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev8-193 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3158,6 +3158,8 @@
 							
 							<a class="list-group-item" href="#return">return</a>
 							
+							<a class="list-group-item" href="#reuse-key">reuse-key</a>
+							
 							<a class="list-group-item" href="#rfc7239_field">rfc7239_field</a>
 							
 							<a class="list-group-item" href="#rfc7239_is_valid">rfc7239_is_valid</a>
@@ -4621,7 +4623,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4632,7 +4634,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev8-190</strong></p>
+							<p><strong>version 3.3-dev8-193</strong></p>
 							<p>
 								2025/09/05<br>
 								
@@ -33315,6 +33317,17 @@ or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a
 (value), which is useful to reply to a challenge when there are multiple
 account used. The acme task will add entries before validating the challenge
 and will remove the entries at the end of the task.
+</pre><a class="anchor" name="reuse-key"></a><a class="anchor" name="12-reuse-key"></a><a class="anchor" name="12.8-reuse-key"></a><a class="anchor" name="reuse-key (Other sections)"></a><a class="anchor" name="reuse-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="reuse-key"></a><a href="#12.8-reuse-key">reuse-key</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">If set to &quot;<a href="#on">on</a>&quot;, HAProxy won't generate a new private key and will keep the
+previous one. Rotating private keys is recommended, when enabling this option
+it is recommended to regenerate manually the keys regularly.
+
+This option might be useful when using RSA keys bigger than 2048 that can
+take time to generate and might slow down one thread doing so.
+
+Using the same key can be useful when using the cache of your ACME server, it
+can help to retrieve a valid certificate corresponding to the current key.
+
+The default setting is &quot;off&quot;.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -33353,7 +33366,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev8-190 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev8-193 &ndash; Configuration Manual<br>
 							<small>, 2025/09/05</small>
 						</div>
 					</div>
