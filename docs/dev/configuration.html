@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev8-204 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev8-213 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3799,6 +3799,8 @@
 							
 							<a class="list-group-item" href="#ssl_bc_session_key">ssl_bc_session_key</a>
 							
+							<a class="list-group-item" href="#ssl_bc_sni">ssl_bc_sni</a>
+							
 							<a class="list-group-item" href="#ssl_bc_unique_id">ssl_bc_unique_id</a>
 							
 							<a class="list-group-item" href="#ssl_bc_use_keysize">ssl_bc_use_keysize</a>
@@ -4623,7 +4625,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/09/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4634,7 +4636,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev8-204</strong></p>
+							<p><strong>version 3.3-dev8-213</strong></p>
 							<p>
 								2025/09/05<br>
 								
@@ -27441,6 +27443,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_server_traffic_secret_0">ssl_bc_server_traffic_secret_0</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_id">ssl_bc_session_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_session_key">ssl_bc_session_key</a></td><td >binary</td></tr>
+<tr><td ><a href="#7-ssl_bc_sni">ssl_bc_sni</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_unique_id">ssl_bc_unique_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_bc_use_keysize">ssl_bc_use_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_ca_err">ssl_c_ca_err</a></td><td >integer</td></tr>
@@ -27450,8 +27453,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_err">ssl_c_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_i_dn">ssl_c_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_key_alg">ssl_c_key_alg</a></td><td >string</td></tr>
-<tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_notbefore">ssl_c_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_r_dn">ssl_c_r_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_s_dn">ssl_c_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -27471,8 +27474,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_f_serial">ssl_f_serial</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
-<tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc">ssl_fc</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_alg_keysize">ssl_fc_alg_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_alpn">ssl_fc_alpn</a></td><td >string</td></tr>
@@ -27492,8 +27495,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_exporter_secret">ssl_fc_exporter_secret</a></td><td >string</td></tr>
-<tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_crt">ssl_fc_has_crt</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_early">ssl_fc_has_early</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_sni">ssl_fc_has_sni</a></td><td >boolean</td></tr>
@@ -27513,8 +27516,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
-<tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_key_alg">ssl_s_key_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_notafter">ssl_s_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_notbefore">ssl_s_notbefore</a></td><td >string</td></tr>
@@ -27715,6 +27718,11 @@ ruleset.
 connection was made over an SSL/TLS transport layer. It is useful to decrypt
 traffic sent using ephemeral ciphers. This requires OpenSSL &gt;= 1.1.0, or
 BoringSSL. It can be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="ssl_bc_sni"></a><a class="anchor" name="7-ssl_bc_sni"></a><a class="anchor" name="7.3.4-ssl_bc_sni"></a><a class="anchor" name="ssl_bc_sni (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_sni (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_sni"></a><a href="#7.3.4-ssl_bc_sni">ssl_bc_sni</a></b> : string</div><pre class="text">This retrieves the Server Name Indication TLS extension (SNI) field that was
+used on the connection to the server. The result (when present) typically is
+a string matching the HTTPS host name (253 chars or less). The main use case
+is for logging and debugging purposes (e.g. figure what SNI was used when the
+connection was established to match it against what the server has seen).
 </pre><a class="anchor" name="ssl_bc_unique_id"></a><a class="anchor" name="7-ssl_bc_unique_id"></a><a class="anchor" name="7.3.4-ssl_bc_unique_id"></a><a class="anchor" name="ssl_bc_unique_id (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_bc_unique_id (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_bc_unique_id"></a><a href="#7.3.4-ssl_bc_unique_id">ssl_bc_unique_id</a></b> : binary</div><pre class="text">When the outgoing connection was made over an SSL/TLS transport layer,
 returns the TLS unique ID as defined in RFC5929 <a href="#3">section 3</a>. The unique id
 can be encoded to base64 using the converter: &quot;ssl_bc_unique_id,base64&quot;. It
@@ -33366,7 +33374,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev8-204 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev8-213 &ndash; Configuration Manual<br>
 							<small>, 2025/09/05</small>
 						</div>
 					</div>
