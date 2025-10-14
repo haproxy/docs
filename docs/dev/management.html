@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev9-47 - Management Guide</title>
+		<title>HAProxy version 3.3-dev9-60 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -285,6 +285,8 @@
 							
 							<a class="list-group-item" href="#add ssl crt-list">add ssl crt-list</a>
 							
+							<a class="list-group-item" href="#add ssl jwt">add ssl jwt</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-C"><h4>C</h4>
 								
@@ -336,6 +338,8 @@
 							<a class="list-group-item" href="#del ssl crl-file">del ssl crl-file</a>
 							
 							<a class="list-group-item" href="#del ssl crt-list">del ssl crt-list</a>
+							
+							<a class="list-group-item" href="#del ssl jwt">del ssl jwt</a>
 							
 							<a class="list-group-item" href="#disable">disable</a>
 							
@@ -593,6 +597,8 @@
 							
 							<a class="list-group-item" href="#show ssl crt-list">show ssl crt-list</a>
 							
+							<a class="list-group-item" href="#show ssl jwt">show ssl jwt</a>
+							
 							<a class="list-group-item" href="#show ssl ocsp-response">show ssl ocsp-response</a>
 							
 							<a class="list-group-item" href="#show ssl ocsp-updates">show ssl ocsp-updates</a>
@@ -662,7 +668,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -673,7 +679,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.3-dev9-47</strong></p>
+							<p><strong>version 3.3-dev9-60</strong></p>
 							<p>
 								<br>
 								
@@ -2647,7 +2653,12 @@ $ echo &quot;add ssl crt-list certlist1 foobar.pem&quot; | socat /tmp/sock1 -
 $ echo -e 'add ssl crt-list certlist1 &lt;&lt;\nfoobar.pem [allow-0rtt] foo.bar.com
 !test1.com\n' | socat /tmp/sock1 -
 </code></pre>
-</div><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters"></a><a href="#9.3-clear%20counters">clear counters</a></b></div><pre class="text">Clear the max values of the statistics counters in each proxy (frontend &amp;
+</div><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add ssl"></a><a class="anchor" name="9-add ssl"></a><a class="anchor" name="9.3-add ssl"></a><a class="anchor" name="add ssl (Statistics and monitoring)"></a><a class="anchor" name="add ssl (Unix Socket commands)"></a><a class="anchor" name="add ssl jwt"></a><a class="anchor" name="9-add ssl jwt"></a><a class="anchor" name="9.3-add ssl jwt"></a><a class="anchor" name="add ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="add ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add ssl jwt"></a><a href="#9.3-add%20ssl%20jwt">add ssl jwt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Add an already loaded certificate to the list of certificates that can be
+used for JWT validation (see &quot;jwt_verify_cert&quot; converter). This command does
+not work on ongoing transactions.
+See also &quot;<a href="#del%20ssl%20jwt">del ssl jwt</a>&quot; and &quot;<a href="#show%20ssl%20jwt">show ssl jwt</a>&quot; commands.
+See &quot;jwt&quot; certificate option for more information.
+</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters"></a><a href="#9.3-clear%20counters">clear counters</a></b></div><pre class="text">Clear the max values of the statistics counters in each proxy (frontend &amp;
 backend) and in each server. The accumulated counters are not affected. The
 internal activity counters reported by &quot;<a href="#show%20activity">show activity</a>&quot; are also reset. This
 can be used to get clean counters after an incident, without having to
@@ -2872,10 +2883,11 @@ is shared with a acl, the entry will be also deleted in the map.
 removed from any crt-list. &quot;<a href="#show%20ssl%20ca-file">show ssl ca-file</a>&quot; displays the status of the CA
 files. The deletion doesn't work with a certificate referenced directly with
 the &quot;ca-file&quot; or &quot;ca-verify-file&quot; directives in the configuration.
-</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl cert"></a><a class="anchor" name="9-del ssl cert"></a><a class="anchor" name="9.3-del ssl cert"></a><a class="anchor" name="del ssl cert (Statistics and monitoring)"></a><a class="anchor" name="del ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl cert"></a><a href="#9.3-del%20ssl%20cert">del ssl cert</a></b> <span style="color: #080">&lt;certfile&gt;</span></div><pre class="text">Delete a certificate store from HAProxy. The certificate must be unused and
-removed from any crt-list or directory. &quot;<a href="#show%20ssl%20cert">show ssl cert</a>&quot; displays the status
-of the certificate. The deletion doesn't work with a certificate referenced
-directly with the &quot;crt&quot; directive in the configuration.
+</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl cert"></a><a class="anchor" name="9-del ssl cert"></a><a class="anchor" name="9.3-del ssl cert"></a><a class="anchor" name="del ssl cert (Statistics and monitoring)"></a><a class="anchor" name="del ssl cert (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl cert"></a><a href="#9.3-del%20ssl%20cert">del ssl cert</a></b> <span style="color: #080">&lt;certfile&gt;</span></div><pre class="text">Delete a certificate store from HAProxy. The certificate must be unused
+(included for JWT validation) and removed from any crt-list or directory.
+&quot;<a href="#show%20ssl%20cert">show ssl cert</a>&quot; displays the status of the certificate. The deletion doesn't
+work with a certificate referenced directly with the &quot;crt&quot; directive in the
+configuration.
 </pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl crl-file"></a><a class="anchor" name="9-del ssl crl-file"></a><a class="anchor" name="9.3-del ssl crl-file"></a><a class="anchor" name="del ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="del ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl crl-file"></a><a href="#9.3-del%20ssl%20crl-file">del ssl crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">Delete a CRL file tree entry from HAProxy. The CRL file must be unused and
 removed from any crt-list. &quot;<a href="#show%20ssl%20crl-file">show ssl crl-file</a>&quot; displays the status of the CRL
 files. The deletion doesn't work with a certificate referenced directly with
@@ -2884,6 +2896,11 @@ the &quot;crl-file&quot; directive in the configuration.
 entry in the frontends. If a certificate is used several time in a crt-list,
 you will need to provide which line you want to delete. To display the line
 numbers, use &quot;show ssl crt-list -n &lt;crtlist&gt;&quot;.
+</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl jwt"></a><a class="anchor" name="9-del ssl jwt"></a><a class="anchor" name="9.3-del ssl jwt"></a><a class="anchor" name="del ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="del ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl jwt"></a><a href="#9.3-del%20ssl%20jwt">del ssl jwt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Remove an already loaded certificate to the list of certificates that can be
+used for JWT validation (see &quot;jwt_verify_cert&quot; converter). This command does
+not work on ongoing transactions.
+See also &quot;<a href="#add%20ssl%20jwt">add ssl jwt</a>&quot; and &quot;<a href="#show%20ssl%20jwt">show ssl jwt</a>&quot; commands.
+See &quot;jwt&quot; certificate option for more information.
 </pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del server"></a><a class="anchor" name="9-del server"></a><a class="anchor" name="9.3-del server"></a><a class="anchor" name="del server (Statistics and monitoring)"></a><a class="anchor" name="del server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del server"></a><a href="#9.3-del%20server">del server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Delete a removable server attached to the backend &lt;backend&gt;. A removable
 server is the server which satisfies all of these conditions :
 - not referenced by other configuration elements
@@ -4392,6 +4409,16 @@ common.pem:2
 ecdsa.pem:3 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3] localhost !www.test1.com
 ecdsa.pem:4 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3]
 </code></pre>
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl jwt"></a><a class="anchor" name="9-show ssl jwt"></a><a class="anchor" name="9.3-show ssl jwt"></a><a class="anchor" name="show ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="show ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl jwt"></a><a href="#9.3-show%20ssl%20jwt">show ssl jwt</a></b></div><pre class="text">Display the list of certificates that can be used for JWT validation.
+See also &quot;<a href="#add%20ssl%20jwt">add ssl jwt</a>&quot; and &quot;<a href="#del%20ssl%20jwt">del ssl jwt</a>&quot; commands.
+See &quot;jwt&quot; certificate option for more information.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>echo &quot;<a href="#show%20ssl%20jwt">show ssl jwt</a>&quot;  | socat /tmp/sock1 -
+<span class="comment">#filename</span>
+jwt.pem
+</code></pre>
 </div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ocsp-response"></a><a class="anchor" name="9-show ssl ocsp-response"></a><a class="anchor" name="9.3-show ssl ocsp-response"></a><a class="anchor" name="show ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="show ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ocsp-response"></a><a href="#9.3-show%20ssl%20ocsp-response">show ssl ocsp-response</a></b> <span style="color: #008">[<span style="color: #008">[text|base64]</span> <span style="color: #080">&lt;id|path&gt;</span>]</span></div><pre class="text">Display the IDs of the OCSP tree entries corresponding to all the OCSP
 responses used in HAProxy, as well as the corresponding frontend
 certificate's path, the issuer's name and key hash and the serial number of
@@ -5622,7 +5649,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev9-47 &ndash; Management Guide<br>
+							HAProxy 3.3-dev9-60 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

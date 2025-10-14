@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev9-47 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev9-60 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2272,11 +2272,15 @@
 							
 							<a class="list-group-item" href="#json_query">json_query</a>
 							
+							<a class="list-group-item" href="#jwt">jwt</a>
+							
 							<a class="list-group-item" href="#jwt_header_query">jwt_header_query</a>
 							
 							<a class="list-group-item" href="#jwt_payload_query">jwt_payload_query</a>
 							
 							<a class="list-group-item" href="#jwt_verify">jwt_verify</a>
+							
+							<a class="list-group-item" href="#jwt_verify_cert">jwt_verify_cert</a>
 							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-K"><h4>K</h4>
@@ -4625,7 +4629,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4636,7 +4640,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev9-47</strong></p>
+							<p><strong>version 3.3-dev9-60</strong></p>
 							<p>
 								2025/10/03<br>
 								
@@ -24136,6 +24140,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-jwt_verify_cert">jwt_verify_cert(alg,cert)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-language">language(value[,default])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-length">length</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-lower">lower</a></td><td >string</td><td >string</td></tr>
@@ -24150,8 +24155,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
-<tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
@@ -24171,8 +24176,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
-<tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
@@ -24192,8 +24197,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24213,8 +24218,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
@@ -24740,24 +24745,103 @@ contents.
  +--------------+---------------------------------------------------------+
 
 - &lt;key&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
-  holds a secret, a public key path or a certificate path.
+  holds a secret or a public key path.
 
   Secrets are only applicable when using HMAC algorithms.
 
   Public keys must be in either the PKCS#1 format (for RSA keys, starting
   with BEGIN RSA PUBLIC KEY) or SPKI format (Subject Public Key Info,
   starting with BEGIN PUBLIC KEY). Public keys must be available during the
-  configuration parsing and cannot be updated or loaded at runtime unlike
+  configuration parsing and cannot be updated or loaded at runtime. See
+  &quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot; converter for JWT token validation based on full-on PEM
   certificates.
 
-  Certificates must be standard PEM certificates (starting with BEGIN
-  CERTIFICATE). When using a certificate its path can be passed directly to
-  the converter or referenced via a variable. Certificates can be either
-  declared in a crt-store, or dynamically loaded via the stats socket.
+  All the public keys that might be used to verify JWTs must be known during
+  init in order to be added into a dedicated cache so that no disk access is
+  required during runtime.
 
-  All the public keys and certificates that might be used to verify JWTs must
-  be known during init in order to be added into a dedicated cache so that no
-  disk access is required during runtime.
+Returns 1 in case of verification success, 0 in case of verification failure
+and a strictly negative value for any other error. Because of all those
+non-null error return values, the result of this converter should never be
+converted to a boolean. See below for a full list of the possible return
+values.
+
+The possible return values are the following :
+
++----+----------------------------------------------------------------------+
+| ID | message                                                              |
++----+----------------------------------------------------------------------+
+|  1 | &quot;Verification success&quot;                                               |
+|  0 | &quot;Verification failure&quot;                                               |
+| -1 | &quot;Unknown algorithm (not mentioned in RFC7518)&quot;                       |
+| -2 | &quot;Unmanaged algorithm&quot;                                                |
+| -3 | &quot;Invalid token&quot;                                                      |
+| -4 | &quot;Out of memory&quot;                                                      |
+| -5 | &quot;Unknown pubkey/certificate&quot;                                         |
+| -6 | &quot;Internal error&quot;                                                     |
++----+----------------------------------------------------------------------+
+
+Please note that this converter is only available when HAProxy has been
+compiled with USE_OPENSSL.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Get a JWT from the authorization header, extract the &quot;alg&quot; field of its</span>
+<span class="comment"># JOSE header and use a public key to verify a signature</span>
+http-request set-var(txn.bearer) http_auth_bearer
+http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
+http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
+http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/pubkey.pem&quot;) 1 }
+</code></pre>
+</div><a class="anchor" name="jwt_verify_cert"></a><a class="anchor" name="7-jwt_verify_cert"></a><a class="anchor" name="7.3.1-jwt_verify_cert"></a><a class="anchor" name="jwt_verify_cert (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify_cert (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify_cert"></a><a href="#7.3.1-jwt_verify_cert">jwt_verify_cert</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;cert&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
+by using the &lt;alg&gt; algorithm and the &lt;cert&gt; parameter.
+For now, only JWS tokens using the Compact Serialization format can be
+processed (three dot-separated base64-url encoded strings).
+This converter only verifies the signature of the token and does not perform
+a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519. We do not
+ensure that the header and payload contents are fully valid JSONs once
+decoded for instance, and no checks are performed regarding their respective
+contents.
+
+- &lt;alg&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
+  holds the name of the algorithm used to verify. Unlike the &quot;<a href="#jwt_verify">jwt_verify</a>&quot;
+  converter, this converter only expects a certificate as second parameter so
+  it should not be used for tokens using HMAC algorithms.
+
+  Algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed (apart from HMAC
+  ones):
+
+ +--------------+---------------------------------------------------------+
+ | &quot;alg&quot; Param  | Digital Signature or MAC Algorithm                      |
+ | Value        |                                                         |
+ +--------------+---------------------------------------------------------+
+ | RS256        | RSASSA-PKCS1-v1_5 using SHA-256                         |
+ | RS384        | RSASSA-PKCS1-v1_5 using SHA-384                         |
+ | RS512        | RSASSA-PKCS1-v1_5 using SHA-512                         |
+ | ES256        | ECDSA using P-256 and SHA-256                           |
+ | ES384        | ECDSA using P-384 and SHA-384                           |
+ | ES512        | ECDSA using P-521 and SHA-512                           |
+ | PS256        | RSASSA-PSS using SHA-256 and MGF1 with SHA-256          |
+ | PS384        | RSASSA-PSS using SHA-384 and MGF1 with SHA-384          |
+ | PS512        | RSASSA-PSS using SHA-512 and MGF1 with SHA-512          |
+ | none         | No digital signature or MAC performed                   |
+ +--------------+---------------------------------------------------------+
+
+- &lt;key&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
+  holds a certificate path.
+
+  Certificates must be standard PEM certificates (starting with BEGIN
+  CERTIFICATE). Their path can be passed directly to the converter or
+  referenced via a variable. If a variable is used, the corresponding
+  certificates can either be declared in a crt-store or dynamically loaded
+  via the stats socket.
+  When a path is given directly, if the corresponding certificate was not
+  loaded yet in the internal certificate store, it will be loaded during
+  configuration parsing and it thus must already exist otherwise an error
+  will be raised.
+
+  Only certificates that are explicitly defined as usable for JWT validation
+  can be used. See &quot;<a href="#jwt">jwt</a>&quot; crt-store option.
 
   It is possible to update certificates dynamically and add new certificates
   using the stats socket. See also &quot;set ssl cert&quot; and &quot;new ssl cert&quot; in the
@@ -24780,8 +24864,9 @@ The possible return values are the following :
 | -2 | &quot;Unmanaged algorithm&quot;                                                |
 | -3 | &quot;Invalid token&quot;                                                      |
 | -4 | &quot;Out of memory&quot;                                                      |
-| -5 | &quot;Unknown certificate&quot;                                                |
+| -5 | &quot;Unknown pubkey/certificate&quot;                                         |
 | -6 | &quot;Internal error&quot;                                                     |
+| -7 | &quot;Unavailable certificate&quot; (see &quot;<a href="#jwt">jwt</a>&quot;)                                |
 +----+----------------------------------------------------------------------+
 
 Please note that this converter is only available when HAProxy has been
@@ -24794,7 +24879,7 @@ compiled with USE_OPENSSL.
 http-request set-var(txn.bearer) http_auth_bearer
 http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
 http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
-http-request deny unless { var(txn.bearer),jwt_verify(txn.jwt_alg,&quot;/path/to/cert.pem&quot;) 1 }
+http-request deny unless { var(txn.bearer),jwt_verify_cert(txn.jwt_alg,&quot;/path/to/cert.pem&quot;) 1 }
 </code></pre>
 </div><a class="anchor" name="language"></a><a class="anchor" name="7-language"></a><a class="anchor" name="7.3.1-language"></a><a class="anchor" name="language (Using ACLs and fetching samples)"></a><a class="anchor" name="language (Converters)"></a><div class="keyword"><b><a class="anchor" name="language"></a><a href="#7.3.1-language">language</a></b>(<span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>)</div><pre class="text">Returns the value with the highest q-factor from a list as extracted from the
 &quot;accept-language&quot; header using &quot;<a href="#req.fhdr">req.fhdr</a>&quot;. Values with no q-factor have a
@@ -33287,6 +33372,15 @@ the issuer certificate that you provided is valid.
 A more precise error message might also be displayed between parenthesis
 after the &quot;generic&quot; error message. It can happen for &quot;OCSP response check
 failure&quot; or &quot;Error during insertion&quot; errors.
+</pre><a class="anchor" name="jwt"></a><a class="anchor" name="12-jwt"></a><a class="anchor" name="12.7.1-jwt"></a><a class="anchor" name="jwt (Other sections)"></a><a class="anchor" name="jwt (Load options)"></a><div class="keyword"><b><a class="anchor" name="jwt"></a><a href="#12.7.1-jwt">jwt</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Allow for this certificate to be used for JWT validation via the
+&quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot; converter when set to 'on'. Its value default to 'off'.
+
+When set to 'on' for a given certificate, the CLI command &quot;del ssl cert&quot; will
+not work. In order to be deleted, a certificate must not be used, either for
+SSL handshakes or JWT validation.
+
+This option can be changed during runtime via the &quot;add ssl jwt&quot; and &quot;del ssl
+jwt&quot; CLI commands. See also &quot;show ssl jwt&quot; CLI command.
 </pre></div>
 <a class="anchor" id="12.8" name="12.8"></a>
 <h2 id="chapter-12.8" data-target="12.8"><small><a class="small" href="#12.8">12.8.</a></small> ACME</h2>
@@ -33397,7 +33491,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev9-47 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev9-60 &ndash; Configuration Manual<br>
 							<small>, 2025/10/03</small>
 						</div>
 					</div>
