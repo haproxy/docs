@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev10-69 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev10-82 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1848,6 +1848,8 @@
 							<a class="list-group-item" href="#early-hint">early-hint</a>
 							
 							<a class="list-group-item" href="#ecdhe">ecdhe</a>
+							
+							<a class="list-group-item" href="#ech">ech</a>
 							
 							<a class="list-group-item" href="#email-alert">email-alert</a>
 							
@@ -4687,7 +4689,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4698,7 +4700,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev10-69</strong></p>
+							<p><strong>version 3.3-dev10-82</strong></p>
 							<p>
 								2025/10/18<br>
 								
@@ -21320,7 +21322,32 @@ option is only supported on TCPv4/TCPv6 sockets and ignored by other ones.
 </pre><a class="anchor" name="ecdhe"></a><a class="anchor" name="5-ecdhe"></a><a class="anchor" name="5.1-ecdhe"></a><a class="anchor" name="ecdhe (Bind and server options)"></a><a class="anchor" name="ecdhe (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ecdhe"></a><a href="#5.1-ecdhe">ecdhe</a></b> <span style="color: #080">&lt;named curve&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the named curve (RFC 4492) used to generate ECDH ephemeral keys. By default,
 used named curve is prime256v1.
-</pre><a class="anchor" name="expose-fd"></a><a class="anchor" name="5-expose-fd"></a><a class="anchor" name="5.1-expose-fd"></a><a class="anchor" name="expose-fd (Bind and server options)"></a><a class="anchor" name="expose-fd (Bind options)"></a><a class="anchor" name="expose-fd listeners"></a><a class="anchor" name="5-expose-fd listeners"></a><a class="anchor" name="5.1-expose-fd listeners"></a><a class="anchor" name="expose-fd listeners (Bind and server options)"></a><a class="anchor" name="expose-fd listeners (Bind options)"></a><div class="keyword"><b><a class="anchor" name="expose-fd listeners"></a><a href="#5.1-expose-fd%20listeners">expose-fd listeners</a></b></div><pre class="text">This option is only usable with the stats socket. It gives your stats socket
+</pre><a class="anchor" name="ech"></a><a class="anchor" name="5-ech"></a><a class="anchor" name="5.1-ech"></a><a class="anchor" name="ech (Bind and server options)"></a><a class="anchor" name="ech (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ech"></a><a href="#5.1-ech">ech</a></b> <span style="color: #080">&lt;dir&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Apply all ECH keys from &lt;dir&gt; to the bind line.
+The files must have the .ech extension and must use the PEM file format for
+ECH. ( https://datatracker.ietf.org/doc/draft-farrell-tls-pemesni/ )
+
+This keyword enables ECH in shared-mode. with HAProxy acting as both the TLS
+endpoint and the ECH endpoint.
+See https://datatracker.ietf.org/doc/draft-ietf-tls-esni/
+
+This is an experimental feature, which requires the
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; option in the global section. It also
+necessitates an OpenSSL version that supports ECH, and HAProxy must be
+compiled with USE_ECH=1.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ openssl ech -public_name foobar.com -out /etc/haproxy/echkeydir/foobar.com.ech
+
+$ cat haproxy.cfg
+[...]
+bind :443 ech /etc/haproxy/echkeydir/ ssl crt example.com.pem
+
+// Use the ECHCONFIG section of your .ech file
+$ openssl s_client -tls1_3 -connect example.com:443 -servername example.com \
+-ech_config_list AD3+DQA5cwAgACB6ybtgtFYoM5r8nJSotus4c7K0EG..9vYmFyLmNvbQAA
+</code></pre>
+</div><a class="anchor" name="expose-fd"></a><a class="anchor" name="5-expose-fd"></a><a class="anchor" name="5.1-expose-fd"></a><a class="anchor" name="expose-fd (Bind and server options)"></a><a class="anchor" name="expose-fd (Bind options)"></a><a class="anchor" name="expose-fd listeners"></a><a class="anchor" name="5-expose-fd listeners"></a><a class="anchor" name="5.1-expose-fd listeners"></a><a class="anchor" name="expose-fd listeners (Bind and server options)"></a><a class="anchor" name="expose-fd listeners (Bind options)"></a><div class="keyword"><b><a class="anchor" name="expose-fd listeners"></a><a href="#5.1-expose-fd%20listeners">expose-fd listeners</a></b></div><pre class="text">This option is only usable with the stats socket. It gives your stats socket
 the capability to pass listeners FD to another HAProxy process.
 In master-worker mode, this is not required anymore, the listeners will be
 passed using the internal socketpairs between the master and the workers.
@@ -33663,7 +33690,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev10-69 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev10-82 &ndash; Configuration Manual<br>
 							<small>, 2025/10/18</small>
 						</div>
 					</div>

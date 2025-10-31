@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev10-69 - Management Guide</title>
+		<title>HAProxy version 3.3-dev10-82 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -285,6 +285,8 @@
 							
 							<a class="list-group-item" href="#add ssl crt-list">add ssl crt-list</a>
 							
+							<a class="list-group-item" href="#add ssl ech">add ssl ech</a>
+							
 							<a class="list-group-item" href="#add ssl jwt">add ssl jwt</a>
 							
                                                                 </div> <!-- /letter -->
@@ -340,6 +342,12 @@
 							<a class="list-group-item" href="#del ssl crt-list">del ssl crt-list</a>
 							
 							<a class="list-group-item" href="#del ssl jwt">del ssl jwt</a>
+							
+							<a class="list-group-item" href="#det">det</a>
+							
+							<a class="list-group-item" href="#det ssl">det ssl</a>
+							
+							<a class="list-group-item" href="#det ssl ech">det ssl ech</a>
 							
 							<a class="list-group-item" href="#disable">disable</a>
 							
@@ -513,6 +521,8 @@
 							
 							<a class="list-group-item" href="#set ssl crl-file">set ssl crl-file</a>
 							
+							<a class="list-group-item" href="#set ssl ech">set ssl ech</a>
+							
 							<a class="list-group-item" href="#set ssl ocsp-response">set ssl ocsp-response</a>
 							
 							<a class="list-group-item" href="#set ssl tls-key">set ssl tls-key</a>
@@ -597,6 +607,8 @@
 							
 							<a class="list-group-item" href="#show ssl crt-list">show ssl crt-list</a>
 							
+							<a class="list-group-item" href="#show ssl ech">show ssl ech</a>
+							
 							<a class="list-group-item" href="#show ssl jwt">show ssl jwt</a>
 							
 							<a class="list-group-item" href="#show ssl ocsp-response">show ssl ocsp-response</a>
@@ -668,7 +680,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -679,7 +691,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.3-dev10-69</strong></p>
+							<p><strong>version 3.3-dev10-82</strong></p>
 							<p>
 								<br>
 								
@@ -2653,6 +2665,27 @@ $ echo &quot;add ssl crt-list certlist1 foobar.pem&quot; | socat /tmp/sock1 -
 $ echo -e 'add ssl crt-list certlist1 &lt;&lt;\nfoobar.pem [allow-0rtt] foo.bar.com
 !test1.com\n' | socat /tmp/sock1 -
 </code></pre>
+</div><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add ssl"></a><a class="anchor" name="9-add ssl"></a><a class="anchor" name="9.3-add ssl"></a><a class="anchor" name="add ssl (Statistics and monitoring)"></a><a class="anchor" name="add ssl (Unix Socket commands)"></a><a class="anchor" name="add ssl ech"></a><a class="anchor" name="9-add ssl ech"></a><a class="anchor" name="9.3-add ssl ech"></a><a class="anchor" name="add ssl ech (Statistics and monitoring)"></a><a class="anchor" name="add ssl ech (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add ssl ech"></a><a href="#9.3-add%20ssl%20ech">add ssl ech</a></b> <span style="color: #080">&lt;bind&gt;</span> <span style="color: #080">&lt;payload&gt;</span></div><pre class="text">Add an ECH key to a &lt;bind&gt; line. The payload must be in the PEM for ECH format.
+(https://datatracker.ietf.org/doc/html/draft-farrell-tls-pemesni)
+
+The bind line format is &lt;frontend&gt;/@&lt;filename&gt;:&lt;linenum&gt; (Example:
+frontend1/@haproxy.conf:19) or &lt;frontend&gt;/&lt;name&gt; if the bind line was named
+with the &quot;name&quot; keyword.
+
+Necessitates an OpenSSL version that supports ECH, and HAProxy must be
+compiled with USE_ECH=1. This command is only supported on a CLI connection
+running in experimental mode (see &quot;experimental-mode on&quot;).
+
+See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the configuration
+manual.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ openssl ech -public_name foobar.com -out foobar3.com.ech
+$ echo -e &quot;experimental-mode on; add ssl ech frontend1/@haproxy.conf:19 &lt;&lt;%EOF%\n$(cat foobar3.com.ech)\n%EOF%\n&quot; | \
+  socat /tmp/haproxy.sock -
+added a new ECH config to frontend1
+</code></pre>
 </div><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add ssl"></a><a class="anchor" name="9-add ssl"></a><a class="anchor" name="9.3-add ssl"></a><a class="anchor" name="add ssl (Statistics and monitoring)"></a><a class="anchor" name="add ssl (Unix Socket commands)"></a><a class="anchor" name="add ssl jwt"></a><a class="anchor" name="9-add ssl jwt"></a><a class="anchor" name="9.3-add ssl jwt"></a><a class="anchor" name="add ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="add ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add ssl jwt"></a><a href="#9.3-add%20ssl%20jwt">add ssl jwt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Add an already loaded certificate to the list of certificates that can be
 used for JWT validation (see &quot;jwt_verify_cert&quot; converter). This command does
 not work on ongoing transactions.
@@ -2896,7 +2929,25 @@ the &quot;crl-file&quot; directive in the configuration.
 entry in the frontends. If a certificate is used several time in a crt-list,
 you will need to provide which line you want to delete. To display the line
 numbers, use &quot;show ssl crt-list -n &lt;crtlist&gt;&quot;.
-</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl jwt"></a><a class="anchor" name="9-del ssl jwt"></a><a class="anchor" name="9.3-del ssl jwt"></a><a class="anchor" name="del ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="del ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl jwt"></a><a href="#9.3-del%20ssl%20jwt">del ssl jwt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Remove an already loaded certificate to the list of certificates that can be
+</pre><a class="anchor" name="det"></a><a class="anchor" name="9-det"></a><a class="anchor" name="9.3-det"></a><a class="anchor" name="det (Statistics and monitoring)"></a><a class="anchor" name="det (Unix Socket commands)"></a><a class="anchor" name="det ssl"></a><a class="anchor" name="9-det ssl"></a><a class="anchor" name="9.3-det ssl"></a><a class="anchor" name="det ssl (Statistics and monitoring)"></a><a class="anchor" name="det ssl (Unix Socket commands)"></a><a class="anchor" name="det ssl ech"></a><a class="anchor" name="9-det ssl ech"></a><a class="anchor" name="9.3-det ssl ech"></a><a class="anchor" name="det ssl ech (Statistics and monitoring)"></a><a class="anchor" name="det ssl ech (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="det ssl ech"></a><a href="#9.3-det%20ssl%20ech">det ssl ech</a></b> <span style="color: #080">&lt;bind&gt;</span></div><pre class="text">Delete the ECH keys of a bind line.
+
+The bind line format is &lt;frontend&gt;/@&lt;filename&gt;:&lt;linenum&gt; (Example:
+frontend1/@haproxy.conf:19) or &lt;frontend&gt;/&lt;name&gt; if the bind line was named
+with the &quot;name&quot; keyword.
+
+Necessitates an OpenSSL version that supports ECH, and HAProxy must be
+compiled with USE_ECH=1. This command is only supported on a CLI connection
+running in experimental mode (see &quot;experimental-mode on&quot;).
+
+See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot;, &quot;<a href="#add%20ssl%20ech">add ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the
+configuration manual.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;experimental-mode on; del ssl ech frontend1/@haproxy.conf:19&quot; | socat /tmp/haproxy.sock -
+deleted all ECH configs from frontend1/@haproxy.conf:19
+</code></pre>
+</div><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del ssl"></a><a class="anchor" name="9-del ssl"></a><a class="anchor" name="9.3-del ssl"></a><a class="anchor" name="del ssl (Statistics and monitoring)"></a><a class="anchor" name="del ssl (Unix Socket commands)"></a><a class="anchor" name="del ssl jwt"></a><a class="anchor" name="9-del ssl jwt"></a><a class="anchor" name="9.3-del ssl jwt"></a><a class="anchor" name="del ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="del ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del ssl jwt"></a><a href="#9.3-del%20ssl%20jwt">del ssl jwt</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Remove an already loaded certificate to the list of certificates that can be
 used for JWT validation (see &quot;jwt_verify_cert&quot; converter). This command does
 not work on ongoing transactions.
 See also &quot;<a href="#add%20ssl%20jwt">add ssl jwt</a>&quot; and &quot;<a href="#show%20ssl%20jwt">show ssl jwt</a>&quot; commands.
@@ -3338,7 +3389,27 @@ a &quot;<a href="#commit%20ssl%20crl-file">commit ssl crl-file</a>&quot; call.
 socat /var/run/haproxy.stat -
 echo &quot;commit ssl crl-file crlfile.pem&quot; | socat /var/run/haproxy.stat -
 </code></pre>
-</div><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl ocsp-response"></a><a class="anchor" name="9-set ssl ocsp-response"></a><a class="anchor" name="9.3-set ssl ocsp-response"></a><a class="anchor" name="set ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="set ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl ocsp-response"></a><a href="#9.3-set%20ssl%20ocsp-response">set ssl ocsp-response</a></b> <span style="color: #080">&lt;response | payload&gt;</span></div><pre class="text">This command is used to update an OCSP Response for a certificate (see &quot;crt&quot;
+</div><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl ech"></a><a class="anchor" name="9-set ssl ech"></a><a class="anchor" name="9.3-set ssl ech"></a><a class="anchor" name="set ssl ech (Statistics and monitoring)"></a><a class="anchor" name="set ssl ech (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl ech"></a><a href="#9.3-set%20ssl%20ech">set ssl ech</a></b> <span style="color: #080">&lt;bind&gt;</span> <span style="color: #080">&lt;payload&gt;</span></div><pre class="text">Replace the ECH keys of a bind line with this one. The payload must be in the
+PEM for ECH format.
+(https://datatracker.ietf.org/doc/html/draft-farrell-tls-pemesni)
+
+The bind line format is &lt;frontend&gt;/@&lt;filename&gt;:&lt;linenum&gt; (Example:
+frontend1/@haproxy.conf:19) or &lt;frontend&gt;/&lt;name&gt; if the bind line was named
+with the &quot;name&quot; keyword.
+
+Necessitates an OpenSSL version that supports ECH, and HAProxy must be
+compiled with USE_ECH=1. This command is only supported on a CLI connection
+running in experimental mode (see &quot;experimental-mode on&quot;).
+
+See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot;, &quot;<a href="#add%20ssl%20ech">add ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the
+configuration manual.
+
+  $ openssl ech -public_name foobar.com -out foobar3.com.ech
+  $ echo -e &quot;experimental-mode on;
+             set ssl ech frontend1/@haproxy.conf:19 &lt;&lt;%EOF%\n$(cat foobar3.com.ech)\n%EOF%\n&quot; | \
+    socat /tmp/haproxy.sock -
+  set new ECH configs for frontend1/@haproxy.conf:19
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl ocsp-response"></a><a class="anchor" name="9-set ssl ocsp-response"></a><a class="anchor" name="9.3-set ssl ocsp-response"></a><a class="anchor" name="set ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="set ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl ocsp-response"></a><a href="#9.3-set%20ssl%20ocsp-response">set ssl ocsp-response</a></b> <span style="color: #080">&lt;response | payload&gt;</span></div><pre class="text">This command is used to update an OCSP Response for a certificate (see &quot;crt&quot;
 on &quot;bind&quot; lines). Same controls are performed as during the initial loading of
 the response. The &lt;response&gt; must be passed as a base64 encoded string of the
 DER encoded response from the OCSP server. This command is not supported with
@@ -4409,7 +4480,55 @@ common.pem:2
 ecdsa.pem:3 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3] localhost !www.test1.com
 ecdsa.pem:4 [verify none allow-0rtt ssl-min-ver TLSv1.0 ssl-max-ver TLSv1.3]
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl jwt"></a><a class="anchor" name="9-show ssl jwt"></a><a class="anchor" name="9.3-show ssl jwt"></a><a class="anchor" name="show ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="show ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl jwt"></a><a href="#9.3-show%20ssl%20jwt">show ssl jwt</a></b></div><pre class="text">Display the list of certificates that can be used for JWT validation.
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl ech"></a><a class="anchor" name="9-show ssl ech"></a><a class="anchor" name="9.3-show ssl ech"></a><a class="anchor" name="show ssl ech (Statistics and monitoring)"></a><a class="anchor" name="show ssl ech (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl ech"></a><a href="#9.3-show%20ssl%20ech">show ssl ech</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">Display the list of ECH keys loaded in the HAProxy process.
+
+When &lt;name&gt; is specified, displays the keys for a specific bind line. The
+bind line format is &lt;frontend&gt;/@&lt;filename&gt;:&lt;linenum&gt; (Example:
+frontend1/@haproxy.conf:19) or &lt;frontend&gt;/&lt;name&gt; if the bind line was named
+with the &quot;name&quot; keyword.
+
+The 'age' entry represents the time, in seconds, since the key was loaded in
+the bind line. This value is reset when HAProxy is started, reloaded, or
+restarted.
+
+Necessitates an OpenSSL version that supports ECH, and HAProxy must be
+compiled with USE_ECH=1.
+This command is only supported on a CLI connection running in experimental
+mode (see &quot;experimental-mode on&quot;).
+
+See also &quot;ech&quot; in the Section 5.1 of the configuration manual.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>$ echo &quot;experimental-mode on; show ssl ech&quot; | socat /tmp/haproxy.sock -
+ ***
+ frontend: frontend1
+</code></pre>
+</div><pre class="text"> bind: frontend1/@haproxy.conf:19
+
+ ECH entry: 0 public_name: example.com age: 557 (has private key)
+      [fe0d,94,example.com,[0020,0001,0001],c39285b774bf61c071864181c5292a012b30adaf767e39369a566af05573ef2b,00,00]
+
+ ECH entry: 1 public_name: example.com age: 557 (has private key)
+      [fe0d,ee,example.com,[0020,0001,0001],6572191131b5cabba819f8cacf2d2e06fa0b87b30d9b793644daba7b8866d511,00,00]
+
+ bind: frontend1/@haproxy.conf:20
+
+ ECH entry: 0 public_name: example.com age: 557 (has private key)
+      [fe0d,94,example.com,[0020,0001,0001],c39285b774bf61c071864181c5292a012b30adaf767e39369a566af05573ef2b,00,00]
+
+ ECH entry: 1 public_name: example.com age: 557 (has private key)
+      [fe0d,ee,example.com,[0020,0001,0001],6572191131b5cabba819f8cacf2d2e06fa0b87b30d9b793644daba7b8866d511,00,00]
+
+$ echo &quot;experimental-mode on; show ssl ech frontend1/@haproxy.conf:19&quot; | socat /tmp/haproxy.sock -
+***
+ECH for frontend1/@haproxy.conf:19
+ECH entry: 0 public_name: example.com age: 786 (has private key)
+      [fe0d,94,example.com,[0020,0001,0001],c39285b774bf61c071864181c5292a012b30adaf767e39369a566af05573ef2b,00,00]
+
+ECH entry: 1 public_name: example.com age: 786 (has private key)
+      [fe0d,ee,example.com,[0020,0001,0001],6572191131b5cabba819f8cacf2d2e06fa0b87b30d9b793644daba7b8866d511,00,00]
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show ssl"></a><a class="anchor" name="9-show ssl"></a><a class="anchor" name="9.3-show ssl"></a><a class="anchor" name="show ssl (Statistics and monitoring)"></a><a class="anchor" name="show ssl (Unix Socket commands)"></a><a class="anchor" name="show ssl jwt"></a><a class="anchor" name="9-show ssl jwt"></a><a class="anchor" name="9.3-show ssl jwt"></a><a class="anchor" name="show ssl jwt (Statistics and monitoring)"></a><a class="anchor" name="show ssl jwt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show ssl jwt"></a><a href="#9.3-show%20ssl%20jwt">show ssl jwt</a></b></div><pre class="text">Display the list of certificates that can be used for JWT validation.
 See also &quot;<a href="#add%20ssl%20jwt">add ssl jwt</a>&quot; and &quot;<a href="#del%20ssl%20jwt">del ssl jwt</a>&quot; commands.
 See &quot;jwt&quot; certificate option for more information.
 </pre><div class="separator">
@@ -5649,7 +5768,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev10-69 &ndash; Management Guide<br>
+							HAProxy 3.3-dev10-82 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
