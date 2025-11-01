@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev10-82 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev11-5 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4689,7 +4689,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4700,9 +4700,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev10-82</strong></p>
+							<p><strong>version 3.3-dev11-5</strong></p>
 							<p>
-								2025/10/18<br>
+								2025/10/31<br>
 								
 							</p>
 						</div>
@@ -22011,7 +22011,9 @@ list as supported on top of ALPN. The protocol list consists in a comma-
 delimited list of protocol names, for instance: &quot;http/1.1,http/1.0&quot; (without
 quotes). This requires that the SSL library is built with support for TLS
 extensions enabled (check with haproxy -vv). The ALPN extension replaces the
-initial NPN extension. ALPN is required to connect to HTTP/2 servers.
+initial NPN extension. ALPN is required to connect to HTTP/2 servers. It is
+also required to be able to use HTTP/3 via a QUIC server, &quot;h3&quot; serves as a
+default value for QUIC servers without &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; setting.
 Versions of OpenSSL prior to 1.0.2 didn't support ALPN and only supposed the
 now obsolete NPN extension.
 If both HTTP/2 and HTTP/1.1 are expected to be supported, both versions can
@@ -24287,8 +24289,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-51d.single">51d.single(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-add">add(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-add_item">add_item(delim[,var[,suff]])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-aes_gcm_dec">aes_gcm_dec(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
-<tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag)</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-aes_gcm_dec">aes_gcm_dec(bits,nonce,key,aead_tag[,aad])</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag[,aad])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-and">and(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-b64dec">b64dec</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-base2">base2</a></td><td >binary</td><td >string</td></tr>
@@ -24478,24 +24480,26 @@ http-request set-header x-tagged %[var(req.tagged)]
 http-request set-var(req.tagged) 'var(req.tagged),add_item(&quot;,&quot;,req.score1),add_item(&quot;,&quot;,req.score2)'
 http-request set-var(req.tagged) 'var(req.tagged),add_item(&quot;,&quot;,,(site1))' if src,in_table(site1)
 </code></pre>
-</div><a class="anchor" name="aes_gcm_dec"></a><a class="anchor" name="7-aes_gcm_dec"></a><a class="anchor" name="7.3.1-aes_gcm_dec"></a><a class="anchor" name="aes_gcm_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_dec"></a><a href="#7.3.1-aes_gcm_dec">aes_gcm_dec</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-GCM, AES192-GCM or
-AES256-GCM algorithm, depending on the &lt;bits&gt; parameter. All other parameters
-need to be base64 encoded and the returned result is in raw byte format.
-If the &lt;aead_tag&gt; validation fails, the converter doesn't return any data.
-The &lt;nonce&gt;, &lt;key&gt; and &lt;aead_tag&gt; can either be strings or variables. This
-converter requires at least OpenSSL 1.0.1.
+</div><a class="anchor" name="aes_gcm_dec"></a><a class="anchor" name="7-aes_gcm_dec"></a><a class="anchor" name="7.3.1-aes_gcm_dec"></a><a class="anchor" name="aes_gcm_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_dec"></a><a href="#7.3.1-aes_gcm_dec">aes_gcm_dec</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;aad&gt;</span>]</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-GCM, AES192-GCM or AES256-GCM
+algorithm, depending on the &lt;bits&gt; parameter. All other parameters need to be
+base64 encoded and the returned result is in raw byte format. If the
+&lt;aead_tag&gt; or &lt;aad&gt; validation fails, the converter doesn't return any data.
+The &lt;aad&gt; parameter is optional. The &lt;nonce&gt;, &lt;key&gt;, &lt;aead_tag&gt; and &lt;aad&gt; can
+either be strings or variables. This converter requires at least OpenSSL
+1.0.1.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>http-response set-header X-Decrypted-Text %[var(txn.enc),\
   aes_gcm_dec(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==,txn.aead_tag)]
 </code></pre>
-</div><a class="anchor" name="aes_gcm_enc"></a><a class="anchor" name="7-aes_gcm_enc"></a><a class="anchor" name="7.3.1-aes_gcm_enc"></a><a class="anchor" name="aes_gcm_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_enc"></a><a href="#7.3.1-aes_gcm_enc">aes_gcm_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span>)</div><pre class="text">Encrypts the raw byte input using the AES128-GCM, AES192-GCM or
-AES256-GCM algorithm, depending on the &lt;bits&gt; parameter. &lt;nonce&gt; and &lt;key&gt;
-parameters must be base64 encoded. Last parameter, &lt;aead_tag&gt;, must be a
-variable. The AEAD tag will be stored base64 encoded into that variable.
-The returned result is in raw byte format. The &lt;nonce&gt; and &lt;key&gt; can either
-be strings or variables. This converter requires at least OpenSSL 1.0.1.
+</div><a class="anchor" name="aes_gcm_enc"></a><a class="anchor" name="7-aes_gcm_enc"></a><a class="anchor" name="7.3.1-aes_gcm_enc"></a><a class="anchor" name="aes_gcm_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_enc"></a><a href="#7.3.1-aes_gcm_enc">aes_gcm_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;aad&gt;</span>]</span>)</div><pre class="text">Encrypts the raw byte input using the AES128-GCM, AES192-GCM or
+AES256-GCM algorithm, depending on the &lt;bits&gt; parameter. &lt;nonce&gt;, &lt;key&gt; and
+&lt;aad&gt; parameters must be base64 encoded. Parameter &lt;aead_tag&gt; must be a
+variable. The AEAD tag will be stored base64 encoded into that variable. The
+&lt;aad&gt; parameter is optional. The returned result is in raw byte format. The
+&lt;nonce&gt;, &lt;key&gt; and &lt;aad&gt; can either be strings or variables. This converter
+requires at least OpenSSL 1.0.1.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -33690,8 +33694,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev10-82 &ndash; Configuration Manual<br>
-							<small>, 2025/10/18</small>
+							HAProxy 3.3-dev11-5 &ndash; Configuration Manual<br>
+							<small>, 2025/10/31</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
