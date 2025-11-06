@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev11-17 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev11-26 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2393,6 +2393,8 @@
 							
 							<a class="list-group-item" href="#master-worker">master-worker</a>
 							
+							<a class="list-group-item" href="#master-worker no-exit-on-failure">master-worker no-exit-on-failure</a>
+							
 							<a class="list-group-item" href="#max-age">max-age</a>
 							
 							<a class="list-group-item" href="#max-keep-alive-queue">max-keep-alive-queue</a>
@@ -4689,7 +4691,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/10/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4700,7 +4702,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev11-17</strong></p>
+							<p><strong>version 3.3-dev11-26</strong></p>
 							<p>
 								2025/10/31<br>
 								
@@ -8605,7 +8607,10 @@ paths if that does not exist either.
 
 See https://www.lua.org/pil/8.1.html for the details within the Lua
 documentation.
-</pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global section)"></a><a class="anchor" name="master-worker (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker"></a><a href="#3.1-master-worker">master-worker</a></b> <span style="color: #008">[no-exit-on-failure]</span></div><pre class="text">Master-worker mode. It is equivalent to the command line &quot;-W&quot; argument.
+</pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global section)"></a><a class="anchor" name="master-worker (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker"></a><a href="#3.1-master-worker">master-worker</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Master-worker mode. It is equivalent to the command line &quot;-W&quot; argument.
+
+This keyword is deprecated, please start in master-worker mode using &quot;-W&quot; or
+&quot;-Ws&quot;.
 
 This mode will launch a &quot;master&quot; which will fork a &quot;worker&quot; after reading the
 configuration to process the traffic. The master is used as a process manager
@@ -8626,6 +8631,16 @@ systemd unit file in order to relaunch the whole process. If you don't want
 this behavior, you must use the keyword &quot;no-exit-on-failure&quot;.
 
 See also &quot;-W&quot; in the management guide.
+</pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global section)"></a><a class="anchor" name="master-worker (Process management and security)"></a><a class="anchor" name="master-worker no-exit-on-failure"></a><a class="anchor" name="3-master-worker no-exit-on-failure"></a><a class="anchor" name="3.1-master-worker no-exit-on-failure"></a><a class="anchor" name="master-worker no-exit-on-failure (Global section)"></a><a class="anchor" name="master-worker no-exit-on-failure (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker no-exit-on-failure"></a><a href="#3.1-master-worker%20no-exit-on-failure">master-worker no-exit-on-failure</a></b></div><pre class="text">In master-worker mode, by default, if a worker exits with a bad return code,
+in the case of a segfault for example, all workers will be killed, and the
+master will leave. It is convenient to combine this behavior with
+Restart=on-failure in a systemd unit file in order to relaunch the whole
+process.
+
+This keyword allows to keep the remaining processes alive when a worker
+crashed instead of killing everything. This need to be used with caution as
+it is only meant for debugging and could put the master process in an
+abnormal state.
 </pre><a class="anchor" name="mworker-max-reloads"></a><a class="anchor" name="3-mworker-max-reloads"></a><a class="anchor" name="3.1-mworker-max-reloads"></a><a class="anchor" name="mworker-max-reloads (Global section)"></a><a class="anchor" name="mworker-max-reloads (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="mworker-max-reloads"></a><a href="#3.1-mworker-max-reloads">mworker-max-reloads</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">In master-worker mode, this option limits the number of time a worker can
 survive to a reload. If the worker did not leave after a reload, once its
 number of reloads is greater than this number, the worker will receive a
@@ -33694,7 +33709,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev11-17 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev11-26 &ndash; Configuration Manual<br>
 							<small>, 2025/10/31</small>
 						</div>
 					</div>
