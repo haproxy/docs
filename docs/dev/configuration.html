@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev11-26 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev11-55 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3024,7 +3024,11 @@
 							
 							<a class="list-group-item" href="#req.hdrs_bin">req.hdrs_bin</a>
 							
+							<a class="list-group-item" href="#req.in">req.in</a>
+							
 							<a class="list-group-item" href="#req.len">req.len</a>
+							
+							<a class="list-group-item" href="#req.out">req.out</a>
 							
 							<a class="list-group-item" href="#req.payload">req.payload</a>
 							
@@ -3128,7 +3132,11 @@
 							
 							<a class="list-group-item" href="#res.hdrs_bin">res.hdrs_bin</a>
 							
+							<a class="list-group-item" href="#res.in">res.in</a>
+							
 							<a class="list-group-item" href="#res.len">res.len</a>
+							
+							<a class="list-group-item" href="#res.out">res.out</a>
 							
 							<a class="list-group-item" href="#res.payload">res.payload</a>
 							
@@ -4691,7 +4699,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4702,7 +4710,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev11-26</strong></p>
+							<p><strong>version 3.3-dev11-55</strong></p>
 							<p>
 								2025/10/31<br>
 								
@@ -10024,7 +10032,8 @@ limitation. It should normally not be needed to tweak this value.
 the polling system. The default value is adapted to the operating system. It
 has been noticed that reducing it below 200 tends to slightly decrease
 latency at the expense of network bandwidth, and increasing it above 200
-tends to trade latency for slightly increased bandwidth.
+tends to trade latency for slightly increased bandwidth. The configured value
+must be lower than or equal to 1000000.
 </pre><a class="anchor" name="tune.maxrewrite"></a><a class="anchor" name="3-tune.maxrewrite"></a><a class="anchor" name="3.2-tune.maxrewrite"></a><a class="anchor" name="tune.maxrewrite (Global section)"></a><a class="anchor" name="tune.maxrewrite (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.maxrewrite"></a><a href="#3.2-tune.maxrewrite">tune.maxrewrite</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the reserved buffer space to this size in bytes. The reserved space is
 used for header rewriting or appending. The first reads on sockets will never
 fill more than bufsize-maxrewrite. Historically it has defaulted to half of
@@ -10544,15 +10553,16 @@ dynamically is expensive, they are cached. The default cache size is set to
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
 &quot;<a href="#http-request">http-request</a>&quot; rules. The default value is set at build time by the macro
 MAX_SESS_STK_CTR, and defaults to 3. With this setting it is possible to
-change the value and ignore the one passed at build time. Increasing this
-value may be needed when porting complex configurations to haproxy, but users
-are warned against the costs: each entry takes 16 bytes per connection and
-16 bytes per request, all of which need to be allocated and zeroed for all
-requests even when not used. As such a value of 10 will inflate the memory
-consumption per request by 320 bytes and will cause this memory to be erased
-for each request, which does have measurable CPU impacts. Conversely, when
-no &quot;track-sc&quot; rules are used, the value may be lowered (0 being valid to
-entirely disable stick-counters).
+change the value and ignore the one passed at build time, but it cannot be
+set to a value greater than 100. Increasing this value may be needed when
+porting complex configurations to haproxy, but users are warned against the
+costs: each entry takes 16 bytes per connection and 16 bytes per request, all
+of which need to be allocated and zeroed for all requests even when not
+used. As such a value of 10 will inflate the memory consumption per request
+by 320 bytes and will cause this memory to be erased for each request, which
+does have measurable CPU impacts. Conversely, when no &quot;track-sc&quot; rules are
+used, the value may be lowered (0 being valid to entirely disable
+stick-counters).
 </pre><a class="anchor" name="tune.takeover-other-tg-connections"></a><a class="anchor" name="3-tune.takeover-other-tg-connections"></a><a class="anchor" name="3.2-tune.takeover-other-tg-connections"></a><a class="anchor" name="tune.takeover-other-tg-connections (Global section)"></a><a class="anchor" name="tune.takeover-other-tg-connections (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.takeover-other-tg-connections"></a><a href="#3.2-tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">By default, we won't attempt to use idle connections from other thread groups.
 This can however be changed. Valid values for &lt;value&gt; are : &quot;none&quot;, the
 default, if used, no attempt will be made to use idle connections from
@@ -26816,6 +26826,10 @@ Summary of sample fetch methods in this section and their respective types:
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
+<tr><td ><a href="#7-req.in">req.in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.out">req.out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.in">res.in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.out">res.out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.timer.data">res.timer.data</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26830,11 +26844,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_glitch_cnt">sc0_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_glitch_rate">sc0_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_rate">sc0_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_fail_cnt">sc0_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_http_fail_rate">sc0_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_cnt">sc0_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_req_rate">sc0_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26851,11 +26865,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_clr_gpc0">sc1_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_conn_cnt">sc1_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_rate">sc1_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_get_gpc0">sc1_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_get_gpc1">sc1_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_get_gpt0">sc1_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_glitch_cnt">sc1_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26872,11 +26886,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_inc_gpc1">sc1_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_key">sc1_key</a></td><td >any</td></tr>
 <tr><td ><a href="#7-sc1_sess_cnt">sc1_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_sess_rate">sc1_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_tracked">sc1_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_trackers">sc1_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_bytes_in_rate">sc2_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_bytes_out_rate">sc2_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26893,11 +26907,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc1_rate">sc2_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_http_err_rate">sc2_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_cnt">sc2_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_req_cnt">sc2_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_http_req_rate">sc2_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_inc_gpc0">sc2_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_inc_gpc1">sc2_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26914,11 +26928,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc1">sc_clr_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_conn_cur">sc_conn_cur(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_rate">sc_conn_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc">sc_get_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc0">sc_get_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_get_gpc1">sc_get_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpt">sc_get_gpt(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpt0">sc_get_gpt0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26935,11 +26949,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_http_req_rate">sc_http_req_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc">sc_inc_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_inc_gpc1">sc_inc_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_key">sc_key(&lt;ctr&gt;)</a></td><td >any</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_sess_cnt">sc_sess_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_sess_rate">sc_sess_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_tracked">sc_tracked(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >boolean</td></tr>
@@ -26956,11 +26970,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_conn_cur">src_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_rate">src_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc">src_get_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_get_gpc0">src_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc1">src_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpt">src_get_gpt(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpt0">src_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_glitch_cnt">src_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_glitch_rate">src_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc0_rate">src_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -26977,11 +26991,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_inc_gpc1">src_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_is_local">src_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-src_kbytes_in">src_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_kbytes_out">src_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_port">src_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_sess_cnt">src_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_sess_rate">src_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_updt_conn_cnt">src_updt_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_id">srv_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_name">srv_name</a></td><td >string</td></tr>
@@ -27080,14 +27094,8 @@ also the &quot;<a href="#cur_server_timeout">cur_server_timeout</a>&quot;.
 </pre><a class="anchor" name="be_tunnel_timeout"></a><a class="anchor" name="7-be_tunnel_timeout"></a><a class="anchor" name="7.3.3-be_tunnel_timeout"></a><a class="anchor" name="be_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_tunnel_timeout"></a><a href="#7.3.3-be_tunnel_timeout">be_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the tunnel timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_tunnel_timeout">cur_tunnel_timeout</a>&quot;.
-</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes uploaded from the client to the server. The
-value corresponds to what was received by HAProxy, including some headers and
-some internal encoding overhead. Request compression does not affect the
-value reported here.
-</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">This is the number of bytes transmitted from the server to the client. The
-value corresponds to what was received by HAProxy, including some headers and
-some internal encoding overhead. Response compression does not affect the
-value reported here.
+</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">See &quot;<a href="#req.in">req.in</a>&quot;.
+</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">See &quot;<a href="#res.in">res.in</a>&quot;.
 </pre><a class="anchor" name="cur_client_timeout"></a><a class="anchor" name="7-cur_client_timeout"></a><a class="anchor" name="7.3.3-cur_client_timeout"></a><a class="anchor" name="cur_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_client_timeout"></a><a href="#7.3.3-cur_client_timeout">cur_client_timeout</a></b> : integer</div><pre class="text">Returns the currently applied client timeout in millisecond for the stream.
 In the default case, this will be equal to fe_client_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#fe_client_timeout">fe_client_timeout</a>&quot;.
@@ -27332,6 +27340,20 @@ coming via a same frontend to the same server.
 </pre><a class="anchor" name="fe_name"></a><a class="anchor" name="7-fe_name"></a><a class="anchor" name="7.3.3-fe_name"></a><a class="anchor" name="fe_name (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_name"></a><a href="#7.3.3-fe_name">fe_name</a></b> : string</div><pre class="text">Returns a string containing the current frontend's name. It can be used in
 backends to check from which frontend it was called, or to stick all users
 coming via a same frontend to the same server.
+</pre><a class="anchor" name="req.in"></a><a class="anchor" name="7-req.in"></a><a class="anchor" name="7.3.3-req.in"></a><a class="anchor" name="req.in (Using ACLs and fetching samples)"></a><a class="anchor" name="req.in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.in"></a><a href="#7.3.3-req.in">req.in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the client. The value
+corresponds to what was received by HAProxy, including some headers and some
+internal encoding overhead. Request compression does not affect the value
+reported here.
+</pre><a class="anchor" name="req.out"></a><a class="anchor" name="7-req.out"></a><a class="anchor" name="7.3.3-req.out"></a><a class="anchor" name="req.out (Using ACLs and fetching samples)"></a><a class="anchor" name="req.out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.out"></a><a href="#7.3.3-req.out">req.out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the server. The value corresponds to
+what was sent by HAProxy, including some headers and some internal encoding
+overhead. Request compression affects the value reported here.
+</pre><a class="anchor" name="res.in"></a><a class="anchor" name="7-res.in"></a><a class="anchor" name="7.3.3-res.in"></a><a class="anchor" name="res.in (Using ACLs and fetching samples)"></a><a class="anchor" name="res.in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.in"></a><a href="#7.3.3-res.in">res.in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the server. The value
+corresponds to what was received by HAProxy, including some headers and some
+internal encoding overhead. Response compression does not affect the value
+reported here.
+</pre><a class="anchor" name="res.out"></a><a class="anchor" name="7-res.out"></a><a class="anchor" name="7.3.3-res.out"></a><a class="anchor" name="res.out (Using ACLs and fetching samples)"></a><a class="anchor" name="res.out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.out"></a><a href="#7.3.3-res.out">res.out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the client. The value corresponds to
+what was sent by HAProxy, including some headers and some internal encoding
+overhead. Response compression affects the value reported here.
 </pre><a class="anchor" name="res.timer.data"></a><a class="anchor" name="7-res.timer.data"></a><a class="anchor" name="7.3.3-res.timer.data"></a><a class="anchor" name="res.timer.data (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.data (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.timer.data"></a><a href="#7.3.3-res.timer.data">res.timer.data</a></b> : integer</div><pre class="text">this is the total transfer time of the response payload till the last byte
 sent to the client. In HTTP it starts after the last response header (after
 Tr). This is the equivalent of %Td in the log-format and is reported in
@@ -30702,7 +30724,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |                          Others                                           |
   +---+------+------------------------------------------------------+---------+
   |   | %B   | bytes_read           (from server to client)         | numeric |
-  |   |      | %[bytes_out]                                         |         |
+  |   |      | %[res_in]                                            |         |
   +---+------+------------------------------------------------------+---------+
   | H | %CC  | captured_request_cookie                              | string  |
   +---+------+------------------------------------------------------+---------+
@@ -30733,7 +30755,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |   |      | %[txn.status]                                        |         |
   +---+------+------------------------------------------------------+---------+
   |   | %U   | bytes_uploaded       (from client to server)         | numeric |
-  |   |      | %[bytes_in]                                          |         |
+  |   |      | %[req_in]                                            |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ac  | actconn                                              |         |
   |   |      | %[act_conn]                                          | numeric |
@@ -33469,6 +33491,12 @@ with the &quot;<a href="#key">key</a>&quot; keyword.
 This is an experimental feature which needs the
 &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; keyword in the global section.
 
+When using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; keyword in a crt-store, it is possible to start without
+an existing certificate on the disk. Instead, a temporary key pair will be
+used until the ACME certificate is generated. This behavior is exclusives to
+crt-stores, neither a crt-list line nor an ssl-f-use line can achieve the
+same without declaring a crt-store first.
+
 See also Section 12.8 (&quot;ACME&quot;) and &quot;<a href="#domains">domains</a>&quot; in this section.
 </pre><a class="anchor" name="alias"></a><a class="anchor" name="12-alias"></a><a class="anchor" name="12.7.1-alias"></a><a class="anchor" name="alias (Other sections)"></a><a class="anchor" name="alias (Load options)"></a><div class="keyword"><b><a class="anchor" name="alias"></a><a href="#12.7.1-alias">alias</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Optional argument. Allow to name the certificate with an alias, so it can be
 referenced with it in the configuration. An alias must be prefixed with '@/'
@@ -33709,7 +33737,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev11-26 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev11-55 &ndash; Configuration Manual<br>
 							<small>, 2025/10/31</small>
 						</div>
 					</div>
