@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev11-55 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev11-67 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2998,6 +2998,10 @@
 							
 							<a class="list-group-item" href="#req.body_size">req.body_size</a>
 							
+							<a class="list-group-item" href="#req.bytes_in">req.bytes_in</a>
+							
+							<a class="list-group-item" href="#req.bytes_out">req.bytes_out</a>
+							
 							<a class="list-group-item" href="#req.cook">req.cook</a>
 							
 							<a class="list-group-item" href="#req.cook_cnt">req.cook_cnt</a>
@@ -3024,11 +3028,7 @@
 							
 							<a class="list-group-item" href="#req.hdrs_bin">req.hdrs_bin</a>
 							
-							<a class="list-group-item" href="#req.in">req.in</a>
-							
 							<a class="list-group-item" href="#req.len">req.len</a>
-							
-							<a class="list-group-item" href="#req.out">req.out</a>
 							
 							<a class="list-group-item" href="#req.payload">req.payload</a>
 							
@@ -3098,6 +3098,10 @@
 							
 							<a class="list-group-item" href="#res.body_size">res.body_size</a>
 							
+							<a class="list-group-item" href="#res.bytes_in">res.bytes_in</a>
+							
+							<a class="list-group-item" href="#res.bytes_out">res.bytes_out</a>
+							
 							<a class="list-group-item" href="#res.cache_hit">res.cache_hit</a>
 							
 							<a class="list-group-item" href="#res.cache_name">res.cache_name</a>
@@ -3132,11 +3136,7 @@
 							
 							<a class="list-group-item" href="#res.hdrs_bin">res.hdrs_bin</a>
 							
-							<a class="list-group-item" href="#res.in">res.in</a>
-							
 							<a class="list-group-item" href="#res.len">res.len</a>
-							
-							<a class="list-group-item" href="#res.out">res.out</a>
 							
 							<a class="list-group-item" href="#res.payload">res.payload</a>
 							
@@ -4699,7 +4699,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,7 +4710,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev11-55</strong></p>
+							<p><strong>version 3.3-dev11-67</strong></p>
 							<p>
 								2025/10/31<br>
 								
@@ -26826,10 +26826,10 @@ Summary of sample fetch methods in this section and their respective types:
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
-<tr><td ><a href="#7-req.in">req.in</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-req.out">req.out</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-res.in">res.in</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-res.out">res.out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.bytes_in">req.bytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-req.bytes_out">req.bytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.bytes_in">res.bytes_in</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-res.bytes_out">res.bytes_out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-res.timer.data">res.timer.data</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27094,8 +27094,8 @@ also the &quot;<a href="#cur_server_timeout">cur_server_timeout</a>&quot;.
 </pre><a class="anchor" name="be_tunnel_timeout"></a><a class="anchor" name="7-be_tunnel_timeout"></a><a class="anchor" name="7.3.3-be_tunnel_timeout"></a><a class="anchor" name="be_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_tunnel_timeout"></a><a href="#7.3.3-be_tunnel_timeout">be_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the tunnel timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_tunnel_timeout">cur_tunnel_timeout</a>&quot;.
-</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">See &quot;<a href="#req.in">req.in</a>&quot;.
-</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">See &quot;<a href="#res.in">res.in</a>&quot;.
+</pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">See &quot;<a href="#req.bytes_in">req.bytes_in</a>&quot;.
+</pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">See &quot;<a href="#res.bytes_in">res.bytes_in</a>&quot;.
 </pre><a class="anchor" name="cur_client_timeout"></a><a class="anchor" name="7-cur_client_timeout"></a><a class="anchor" name="7.3.3-cur_client_timeout"></a><a class="anchor" name="cur_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_client_timeout"></a><a href="#7.3.3-cur_client_timeout">cur_client_timeout</a></b> : integer</div><pre class="text">Returns the currently applied client timeout in millisecond for the stream.
 In the default case, this will be equal to fe_client_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#fe_client_timeout">fe_client_timeout</a>&quot;.
@@ -27340,18 +27340,18 @@ coming via a same frontend to the same server.
 </pre><a class="anchor" name="fe_name"></a><a class="anchor" name="7-fe_name"></a><a class="anchor" name="7.3.3-fe_name"></a><a class="anchor" name="fe_name (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_name"></a><a href="#7.3.3-fe_name">fe_name</a></b> : string</div><pre class="text">Returns a string containing the current frontend's name. It can be used in
 backends to check from which frontend it was called, or to stick all users
 coming via a same frontend to the same server.
-</pre><a class="anchor" name="req.in"></a><a class="anchor" name="7-req.in"></a><a class="anchor" name="7.3.3-req.in"></a><a class="anchor" name="req.in (Using ACLs and fetching samples)"></a><a class="anchor" name="req.in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.in"></a><a href="#7.3.3-req.in">req.in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the client. The value
+</pre><a class="anchor" name="req.bytes_in"></a><a class="anchor" name="7-req.bytes_in"></a><a class="anchor" name="7.3.3-req.bytes_in"></a><a class="anchor" name="req.bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="req.bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.bytes_in"></a><a href="#7.3.3-req.bytes_in">req.bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the client. The value
 corresponds to what was received by HAProxy, including some headers and some
 internal encoding overhead. Request compression does not affect the value
 reported here.
-</pre><a class="anchor" name="req.out"></a><a class="anchor" name="7-req.out"></a><a class="anchor" name="7.3.3-req.out"></a><a class="anchor" name="req.out (Using ACLs and fetching samples)"></a><a class="anchor" name="req.out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.out"></a><a href="#7.3.3-req.out">req.out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the server. The value corresponds to
+</pre><a class="anchor" name="req.bytes_out"></a><a class="anchor" name="7-req.bytes_out"></a><a class="anchor" name="7.3.3-req.bytes_out"></a><a class="anchor" name="req.bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="req.bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.bytes_out"></a><a href="#7.3.3-req.bytes_out">req.bytes_out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the server. The value corresponds to
 what was sent by HAProxy, including some headers and some internal encoding
 overhead. Request compression affects the value reported here.
-</pre><a class="anchor" name="res.in"></a><a class="anchor" name="7-res.in"></a><a class="anchor" name="7.3.3-res.in"></a><a class="anchor" name="res.in (Using ACLs and fetching samples)"></a><a class="anchor" name="res.in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.in"></a><a href="#7.3.3-res.in">res.in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the server. The value
+</pre><a class="anchor" name="res.bytes_in"></a><a class="anchor" name="7-res.bytes_in"></a><a class="anchor" name="7.3.3-res.bytes_in"></a><a class="anchor" name="res.bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="res.bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.bytes_in"></a><a href="#7.3.3-res.bytes_in">res.bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the server. The value
 corresponds to what was received by HAProxy, including some headers and some
 internal encoding overhead. Response compression does not affect the value
 reported here.
-</pre><a class="anchor" name="res.out"></a><a class="anchor" name="7-res.out"></a><a class="anchor" name="7.3.3-res.out"></a><a class="anchor" name="res.out (Using ACLs and fetching samples)"></a><a class="anchor" name="res.out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.out"></a><a href="#7.3.3-res.out">res.out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the client. The value corresponds to
+</pre><a class="anchor" name="res.bytes_out"></a><a class="anchor" name="7-res.bytes_out"></a><a class="anchor" name="7.3.3-res.bytes_out"></a><a class="anchor" name="res.bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="res.bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.bytes_out"></a><a href="#7.3.3-res.bytes_out">res.bytes_out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the client. The value corresponds to
 what was sent by HAProxy, including some headers and some internal encoding
 overhead. Response compression affects the value reported here.
 </pre><a class="anchor" name="res.timer.data"></a><a class="anchor" name="7-res.timer.data"></a><a class="anchor" name="7.3.3-res.timer.data"></a><a class="anchor" name="res.timer.data (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.data (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.timer.data"></a><a href="#7.3.3-res.timer.data">res.timer.data</a></b> : integer</div><pre class="text">this is the total transfer time of the response payload till the last byte
@@ -30724,7 +30724,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |                          Others                                           |
   +---+------+------------------------------------------------------+---------+
   |   | %B   | bytes_read           (from server to client)         | numeric |
-  |   |      | %[res_in]                                            |         |
+  |   |      | %[req.bytes_in]                                      |         |
   +---+------+------------------------------------------------------+---------+
   | H | %CC  | captured_request_cookie                              | string  |
   +---+------+------------------------------------------------------+---------+
@@ -30755,7 +30755,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |   |      | %[txn.status]                                        |         |
   +---+------+------------------------------------------------------+---------+
   |   | %U   | bytes_uploaded       (from client to server)         | numeric |
-  |   |      | %[req_in]                                            |         |
+  |   |      | %[req.bytes_in]                                      |         |
   +---+------+------------------------------------------------------+---------+
   |   | %ac  | actconn                                              |         |
   |   |      | %[act_conn]                                          | numeric |
@@ -33737,7 +33737,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev11-55 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev11-67 &ndash; Configuration Manual<br>
 							<small>, 2025/10/31</small>
 						</div>
 					</div>
