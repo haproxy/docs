@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev12-30 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4699,7 +4699,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,9 +4710,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev12-30</strong></p>
+							<p><strong>version 3.3-dev13</strong></p>
 							<p>
-								2025/11/08<br>
+								2025/11/14<br>
 								
 							</p>
 						</div>
@@ -7013,33 +7013,70 @@ operator, so that &quot;A &amp;&amp; B || C &amp;&amp; D&quot; evalues as &quot;
 
 The list of currently supported predicates is the following:
 
-  - defined(&lt;name&gt;)       : returns true if an environment variable &lt;name&gt;
-                            exists, regardless of its contents
+  - awslc_api_atleast(&lt;ver&gt;): returns true if the current awslc API number
+                            is at least as recent as &lt;ver&gt; otherwise false.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">awslc_api_atleast(35)</div><code></code></pre>
+</div><pre class="text">- awslc_api_before(&lt;ver&gt;): returns true if the current awslc API number
+                          is strictly older than &lt;ver&gt; otherwise false.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">awslc_api_before(26)</div><code></code></pre>
+</div><pre class="text">- defined(&lt;name&gt;)       : returns true if an environment variable &lt;name&gt;
+                          exists, regardless of its contents
 
-  - feature(&lt;name&gt;)       : returns true if feature &lt;name&gt; is listed as present
-                            in the features list reported by &quot;haproxy -vv&quot;
-                            (which means a &lt;name&gt; appears after a '+')
+- feature(&lt;name&gt;)       : returns true if feature &lt;name&gt; is listed as present
+                          in the features list reported by &quot;haproxy -vv&quot;
+                          (which means a &lt;name&gt; appears after a '+')
 
-  - streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
-  - strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
-  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
-                            the first one.
+- openssl_version_atleast(&lt;ver&gt;) : returns true if the current openssl
+                          version is at least as recent as &lt;ver&gt; otherwise
+                          false.
+                          Libraries like LibreSSL, AWS-LC and WolfSSL also
+                          provide a pseudo OpenSSL version.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ssllib_name_startswith(OpenSSL) &amp;&amp; openssl_version_atleast(1.1.1)
+</code></pre>
+</div><pre class="text">- openssl_version_before(&lt;ver&gt;) : returns true if the current openssl
+                          version is strictly older than &lt;ver&gt; otherwise
+                          false.
+                          Libraries like LibreSSL, AWS-LC and WolfSSL also
+                          provide a pseudo OpenSSL version.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">openssl_version_before(3.5.0)</div><code></code></pre>
+</div><pre class="text">- ssllib_name_startswith(&lt;name&gt;)  : return true if the SSL library name
+                          HAProxy was linked with, starts with &lt;name&gt;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">ssllib_name_startswith(wolfSSL)</div><code></code></pre>
+</div><pre class="text">- streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
+- strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
+- strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
+                          the first one.
 
-  - version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
-                            at least as recent as &lt;ver&gt; otherwise false. The
-                            version syntax is the same as shown by &quot;haproxy -v&quot;
-                            and missing components are assumed as being zero.
+- version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
+                          at least as recent as &lt;ver&gt; otherwise false. The
+                          version syntax is the same as shown by &quot;haproxy -v&quot;
+                          and missing components are assumed as being zero.
 
-  - version_before(&lt;ver&gt;) : returns true if the current haproxy version is
-                            strictly older than &lt;ver&gt; otherwise false. The
-                            version syntax is the same as shown by &quot;haproxy -v&quot;
-                            and missing components are assumed as being zero.
+- version_before(&lt;ver&gt;) : returns true if the current haproxy version is
+                          strictly older than &lt;ver&gt; otherwise false. The
+                          version syntax is the same as shown by &quot;haproxy -v&quot;
+                          and missing components are assumed as being zero.
 
-  - enabled(&lt;opt&gt;)        : returns true if the option &lt;opt&gt; is enabled at
-                            run-time. Only a subset of options are supported:
-                                POLL, EPOLL, KQUEUE, EVPORTS, SPLICE,
-                                GETADDRINFO, REUSEPORT, FAST-FORWARD,
-                                SERVER-SSL-VERIFY-NONE
+- enabled(&lt;opt&gt;)        : returns true if the option &lt;opt&gt; is enabled at
+                          run-time. Only a subset of options are supported:
+                              POLL, EPOLL, KQUEUE, EVPORTS, SPLICE,
+                              GETADDRINFO, REUSEPORT, FAST-FORWARD,
+                              SERVER-SSL-VERIFY-NONE
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -22144,11 +22181,14 @@ backend foo
 This option permits checks to reuse idle connections if available instead of
 opening a dedicated one. The connection is reinserted in the pool on check
 completion. The main objective is to limit the number of connections opening
-and closure on a specific server.
+and closure on a specific server. This feature is compatible only with
+http-check rulesets. It is silently ignored for other check types.
+Furthermore, reuse policy should be set to aggressive on the backend as each
+check attempt is performed over a dedicated session.
 
-Note that for configuration simplicity, this option is silently ignored if
-any specific check connect option is defined, either on the server line or
-via a custom tcp-check connect rule.
+For configuration simplicity, this option is silently ignored if any specific
+check connect option is defined, either on the server line or via a custom
+tcp-check connect rule.
 
 This option is automatically enabled for servers acting as passive reverse
 HTTP gateway, as for those servers connect is only supported through reuse.
@@ -22193,10 +22233,16 @@ directive on a server line:
   fcgi : mode=HTTP  side=BE     mux=FCGI  flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
   none : mode=TCP   side=FE|BE  mux=PASS  flags=NO_UPG
+  quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
 
 Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for health-check connections established to this server.
 If not defined, the server one will be used, if set.
+
+QUIC check configuration is not fully implemented yet. First, QUIC checks may
+only be performed for QUIC servers. Second, if one or more check specific
+connection parameters is specified on a QUIC server, check protocol will
+fallback to TCP usage.
 </pre><a class="anchor" name="check-sni-auto"></a><a class="anchor" name="5-check-sni-auto"></a><a class="anchor" name="5.2-check-sni-auto"></a><a class="anchor" name="check-sni-auto (Bind and server options)"></a><a class="anchor" name="check-sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="check-sni-auto"></a><a href="#5.2-check-sni-auto">check-sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 This option enables the automatic SNI selection when doing health checks over
@@ -33737,8 +33783,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev12-30 &ndash; Configuration Manual<br>
-							<small>, 2025/11/08</small>
+							HAProxy 3.3-dev13 &ndash; Configuration Manual<br>
+							<small>, 2025/11/14</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
