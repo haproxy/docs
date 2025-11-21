@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev13-23 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev13-44 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4699,7 +4699,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/17</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,7 +4710,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev13-23</strong></p>
+							<p><strong>version 3.3-dev13-44</strong></p>
 							<p>
 								2025/11/14<br>
 								
@@ -6404,6 +6404,8 @@ HAProxy may emit the following status codes by itself :
    408  when the request timeout strikes before the request is complete
    410  when the requested resource is no longer available and will not
         be available again
+   413  when a HTTP/1.0 GET/HEAD/DELETE requests has a payload, also see
+        the &quot;<a href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>&quot; option
    500  when HAProxy encounters an unrecoverable internal error, such as a
         memory allocation failure, which should never happen
    501 when HAProxy is unable to satisfy a client request because of an
@@ -8373,7 +8375,8 @@ frontend ext-check
 </div><div class="page-header"><b>See also:</b> hard-stop-after, monitor</div>
 <a class="anchor" name="group"></a><a class="anchor" name="3-group"></a><a class="anchor" name="3.1-group"></a><a class="anchor" name="group (Global section)"></a><a class="anchor" name="group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#3.1-group">group</a></b> <span style="color: #080">&lt;group name&gt;</span></div><pre class="text">Similar to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; but uses the GID of group name &lt;group name&gt; from /etc/group.
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
-</pre><a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global section)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+</pre><a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global section)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload with a
+413 Payload Too Large HTTP response.
 
 While It is explicitly allowed in HTTP/1.1, HTTP/1.0 is not clear on this
 point and some old servers don't expect any payload and never look for body
@@ -21650,14 +21653,19 @@ The HTX compatibility is also reported (flag=HTX).
 Here are the protocols that may be used as argument to a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directive on
 a bind line :
 
+ quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
   h2   : mode=HTTP  side=FE|BE  mux=H2    flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
   none : mode=TCP   side=FE|BE  mux=PASS  flags=NO_UPG
 
 Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections instantiated from this listening socket. For
-instance, it is possible to force the http/2 on clear TCP by specifying &quot;proto
-h2&quot; on the bind line.
+instance, it is possible to force the http/2 on clear TCP by specifying
+&quot;proto h2&quot; on the bind line.
+
+If the ALPN or the NPN settings are configured, the specified protocols
+should be compatible with the multiplexer's protocol to avoid any issue. For
+instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 </pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are
 similar to those used by TCP.
@@ -22236,10 +22244,15 @@ directive on a server line:
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
   none : mode=TCP   side=FE|BE  mux=PASS  flags=NO_UPG
   quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
+  spop : mode=SPOP  side=BE     mux=SPOP  flags=HOL_RISK|NO_UPG
 
 Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for health-check connections established to this server.
 If not defined, the server one will be used, if set.
+
+If the ALPN or the NPN settings are configured, the specified protocols
+should be compatible with the multiplexer's protocol to avoid any issue. For
+instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 
 QUIC check configuration is not fully implemented yet. First, QUIC checks may
 only be performed for QUIC servers. Second, if one or more check specific
@@ -22960,9 +22973,14 @@ a server line :
   fcgi : mode=HTTP  side=BE     mux=FCGI  flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
   none : mode=TCP   side=FE|BE  mux=PASS  flags=NO_UPG
+  spop : mode=SPOP  side=BE     mux=SPOP  flags=HOL_RISK|NO_UPG
 
 Idea behind this option is to bypass the selection of the best multiplexer's
 protocol for all connections established to this server.
+
+If the ALPN or the NPN settings are configured, the specified protocols
+should be compatible with the multiplexer's protocol to avoid any issue. For
+instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 
 See also &quot;<a href="#ws">ws</a>&quot; to use an alternative protocol for websocket streams.
 </pre><a class="anchor" name="redir"></a><a class="anchor" name="5-redir"></a><a class="anchor" name="5.2-redir"></a><a class="anchor" name="redir (Bind and server options)"></a><a class="anchor" name="redir (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="redir"></a><a href="#5.2-redir">redir</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">May be used in the following contexts: http
@@ -33685,13 +33703,22 @@ The ACME section allows to configure HAProxy as an ACMEv2 client. This feature
 is experimental meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must be in the
 global section so this can be used.
 
-Current limitations as of 3.2: The feature is limited to the HTTP-01 challenge
-for now. The current HAProxy architecture is a non-blocking model, access to
-the disk is not supposed to be done after the configuration is loaded, because
-it could block the event loop, blocking the traffic on the same thread. Meaning
-that the certificates and keys generated from HAProxy will need to be dumped
-from outside HAProxy using &quot;dump ssl cert&quot; on the stats socket.
-External Account Binding (EAB) is not supported.
+Current limitations as of 3.3:
+- The feature is limited to the HTTP-01 or DNS-01 challenges for now. HTTP-01
+  is completely handled by HAProxy, but DNS-01 needs either the dataplaneAPI or
+  another 3rd party tool to talk to a DNS provider API.
+- It is possible to start without an existing certificate on the disk. To do
+  so, the certificate must configured in a crt-store.
+  When using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; keyword in a crt-store, a temporary key pair will be
+  used until the ACME certificate is generated.
+- The current HAProxy architecture is a non-blocking model, access to the disk
+  is not supposed to be done after the configuration is loaded, because it
+  could block the event loop, blocking the traffic on the same thread. Meaning
+  that the certificates and keys generated from HAProxy will need to be dumped
+  from outside HAProxy using &quot;dump ssl cert&quot; on the stats socket. It's possible
+  to automate the dump of the certificates by using the dataplaneAPI or the
+  haproxy-dump-certs script provided in the admin/cli/ directory.
+- External Account Binding (EAB) is not supported.
 
 The ACME scheduler starts at HAProxy startup, it will loop over the
 certificates and start an ACME renewal task when the notAfter task is past
@@ -33785,7 +33812,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev13-23 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev13-44 &ndash; Configuration Manual<br>
 							<small>, 2025/11/14</small>
 						</div>
 					</div>
