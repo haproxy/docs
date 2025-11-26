@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3-dev14-5 - Configuration Manual</title>
+		<title>HAProxy version 3.3-dev14-21 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4699,7 +4699,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,7 +4710,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3-dev14-5</strong></p>
+							<p><strong>version 3.3-dev14-21</strong></p>
 							<p>
 								2025/11/21<br>
 								
@@ -21008,6 +21008,10 @@ due to security considerations. Because it is vulnerable to replay attacks,
 you should only allow if for requests that are safe to replay, i.e. requests
 that are idempotent. You can use the &quot;<a href="#wait-for-handshake">wait-for-handshake</a>&quot; action for any
 request that wouldn't be safe with early data.
+With QUIC, 0rtt is supported with QuicTLS, OpenSSL &gt;= 3.5.2 and AWS-LC.
+With TCP/TLS, 0rtt is only supported with OpenSSL, and requires that the
+client sends an ALPN, otherwise the early data won't be considered before
+the handshake happens.
 </pre><a class="anchor" name="alpn"></a><a class="anchor" name="5-alpn"></a><a class="anchor" name="5.1-alpn"></a><a class="anchor" name="alpn (Bind and server options)"></a><a class="anchor" name="alpn (Bind options)"></a><div class="keyword"><b><a class="anchor" name="alpn"></a><a href="#5.1-alpn">alpn</a></b> <span style="color: #080">&lt;protocols&gt;</span></div><pre class="text">This enables the TLS ALPN extension and advertises the specified protocol
 list as supported on top of ALPN. The protocol list consists in a comma-
 delimited list of protocol names, for instance: &quot;http/1.1,http/1.0&quot; (without
@@ -22076,6 +22080,8 @@ See also the &quot;<a href="#agent-check">agent-check</a>&quot; and &quot;<a hre
 Allow sending early data to the server when using TLS 1.3.
 Note that early data will be sent only if the client used early data, or
 if the backend uses &quot;<a href="#retry-on">retry-on</a>&quot; with the &quot;0rtt-rejected&quot; keyword.
+With QUIC, 0rtt is supported with QuicTLS, OpenSSL &gt;= 3.5.2 and AWS-LC.
+With TCP/TLS, 0rtt is only supported with OpenSSL.
 </pre><a class="anchor" name="alpn"></a><a class="anchor" name="5-alpn"></a><a class="anchor" name="5.2-alpn"></a><a class="anchor" name="alpn (Bind and server options)"></a><a class="anchor" name="alpn (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="alpn"></a><a href="#5.2-alpn">alpn</a></b> <span style="color: #080">&lt;protocols&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http
 
 This enables the TLS ALPN extension and advertises the specified protocol
@@ -33812,7 +33818,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3-dev14-5 &ndash; Configuration Manual<br>
+							HAProxy 3.3-dev14-21 &ndash; Configuration Manual<br>
 							<small>, 2025/11/21</small>
 						</div>
 					</div>
