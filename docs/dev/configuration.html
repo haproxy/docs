@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev0-2 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev0-6 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2933,7 +2933,9 @@
 							
 							<a class="list-group-item" href="#queue">queue</a>
 							
-							<a class="list-group-item" href="#quic-cc-algo">quic-cc-algo</a>
+							<a class="list-group-item" href="#quic-cc-algo (Bind options)">quic-cc-algo (Bind options)</a>
+							
+							<a class="list-group-item" href="#quic-cc-algo (Server and default-server options)">quic-cc-algo (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#quic-force-retry">quic-force-retry</a>
 							
@@ -4699,7 +4701,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,7 +4712,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev0-2</strong></p>
+							<p><strong>version 3.4-dev0-6</strong></p>
 							<p>
 								2025/11/26<br>
 								
@@ -10223,7 +10225,7 @@ congestion window size also serves as a limit on this allocator.
 
 The default value is 480k.
 
-See also the &quot;<a href="#quic-cc-algo">quic-cc-algo</a>&quot; bind option.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">quic-cc-algo<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#quic-cc-algo%20%28Bind%20options%29">Bind options</a></li><li><a href="#quic-cc-algo%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind and server options.
 </pre><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3.2-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Global section)"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a href="#3.2-tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a></b> <span style="color: #080">&lt;size&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
@@ -10359,7 +10361,7 @@ network throughput by avoiding retransmissions. However, it can be useful to
 deactivate it for networks with very high bandwidth/low latency
 characteristics to prevent unwanted delay and reduce CPU consumption.
 
-See also the &quot;<a href="#quic-cc-algo">quic-cc-algo</a>&quot; bind option.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">quic-cc-algo<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#quic-cc-algo%20%28Bind%20options%29">Bind options</a></li><li><a href="#quic-cc-algo%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind and server options.
 </pre><a class="anchor" name="tune.quic.disable-tx-pacing"></a><a class="anchor" name="3-tune.quic.disable-tx-pacing"></a><a class="anchor" name="3.2-tune.quic.disable-tx-pacing"></a><a class="anchor" name="tune.quic.disable-tx-pacing (Global section)"></a><a class="anchor" name="tune.quic.disable-tx-pacing (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.disable-tx-pacing"></a><a href="#3.2-tune.quic.disable-tx-pacing">tune.quic.disable-tx-pacing</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
@@ -22990,7 +22992,14 @@ should be compatible with the multiplexer's protocol to avoid any issue. For
 instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 
 See also &quot;<a href="#ws">ws</a>&quot; to use an alternative protocol for websocket streams.
-</pre><a class="anchor" name="redir"></a><a class="anchor" name="5-redir"></a><a class="anchor" name="5.2-redir"></a><a class="anchor" name="redir (Bind and server options)"></a><a class="anchor" name="redir (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="redir"></a><a href="#5.2-redir">redir</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">May be used in the following contexts: http
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.2-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.2-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+for any connection targetting this server. They are similar to those used by
+TCP. See the bind option with a similar name for a complete description of
+all customization options.
+
+Default value: cubic
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.tx.pacing">tune.quic.be.tx.pacing</a>&quot; and &quot;<a href="#tune.quic.be.cc.max-win-size">tune.quic.be.cc.max-win-size</a>&quot;</div>
+<a class="anchor" name="redir"></a><a class="anchor" name="5-redir"></a><a class="anchor" name="5.2-redir"></a><a class="anchor" name="redir (Bind and server options)"></a><a class="anchor" name="redir (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="redir"></a><a href="#5.2-redir">redir</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">May be used in the following contexts: http
 
 The &quot;<a href="#redir">redir</a>&quot; parameter enables the redirection mode for all GET and HEAD
 requests addressing this server. This means that instead of having HAProxy
@@ -33819,7 +33828,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev0-2 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev0-6 &ndash; Configuration Manual<br>
 							<small>, 2025/11/26</small>
 						</div>
 					</div>
