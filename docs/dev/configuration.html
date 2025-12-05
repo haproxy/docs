@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev0-7 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev0-13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4701,7 +4701,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4712,7 +4712,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev0-7</strong></p>
+							<p><strong>version 3.4-dev0-13</strong></p>
 							<p>
 								2025/11/26<br>
 								
@@ -23747,17 +23747,18 @@ the corresponding http-request and http-response actions.
 <a class="anchor" id="6.2.1" name="6.2.1"></a>
 <h3 id="chapter-6.2.1" data-target="6.2.1"><small><a class="small" href="#6.2.1">6.2.1.</a></small> Cache section</h3>
 <div><a class="anchor" name="cache"></a><a class="anchor" name="6-cache"></a><a class="anchor" name="6.2.1-cache"></a><a class="anchor" name="cache (Cache)"></a><a class="anchor" name="cache (Cache section)"></a><div class="keyword"><b><a class="anchor" name="cache"></a><a href="#6.2.1-cache">cache</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Declare a cache section, allocate a shared cache memory named &lt;name&gt;, the
-size of cache is mandatory.
-</pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
-blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
-</pre><a class="anchor" name="max-object-size"></a><a class="anchor" name="6-max-object-size"></a><a class="anchor" name="6.2.1-max-object-size"></a><a class="anchor" name="max-object-size (Cache)"></a><a class="anchor" name="max-object-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-object-size"></a><a href="#6.2.1-max-object-size">max-object-size</a></b> <span style="color: #080">&lt;bytes&gt;</span></div><pre class="text">Define the maximum size of the objects to be cached. Must not be greater than
-an half of &quot;<a href="#total-max-size">total-max-size</a>&quot;. If not set, it equals to a 256th of the cache size.
-All objects with sizes larger than &quot;<a href="#max-object-size">max-object-size</a>&quot; will not be cached.
+size of cache is mandatory (see keyword &quot;<a href="#total-max-size">total-max-size</a>&quot; below).
 </pre><a class="anchor" name="max-age"></a><a class="anchor" name="6-max-age"></a><a class="anchor" name="6.2.1-max-age"></a><a class="anchor" name="max-age (Cache)"></a><a class="anchor" name="max-age (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-age"></a><a href="#6.2.1-max-age">max-age</a></b> <span style="color: #080">&lt;seconds&gt;</span></div><pre class="text">Define the maximum expiration duration. The expiration is set as the lowest
 value between the s-maxage or max-age (in this order) directive in the
 Cache-Control response header and this value. The default value is 60
 seconds, which means that you can't cache an object more than 60 seconds by
 default.
+</pre><a class="anchor" name="max-object-size"></a><a class="anchor" name="6-max-object-size"></a><a class="anchor" name="6.2.1-max-object-size"></a><a class="anchor" name="max-object-size (Cache)"></a><a class="anchor" name="max-object-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-object-size"></a><a href="#6.2.1-max-object-size">max-object-size</a></b> <span style="color: #080">&lt;bytes&gt;</span></div><pre class="text">Define the maximum size of the objects to be cached. Must not be greater than
+an half of &quot;<a href="#total-max-size">total-max-size</a>&quot;. If not set, it equals to a 256th of the cache size.
+All objects with sizes larger than &quot;<a href="#max-object-size">max-object-size</a>&quot; will not be cached.
+</pre><a class="anchor" name="max-secondary-entries"></a><a class="anchor" name="6-max-secondary-entries"></a><a class="anchor" name="6.2.1-max-secondary-entries"></a><a class="anchor" name="max-secondary-entries (Cache)"></a><a class="anchor" name="max-secondary-entries (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-secondary-entries"></a><a href="#6.2.1-max-secondary-entries">max-secondary-entries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Define the maximum number of simultaneous secondary entries with the same primary
+key in the cache. This needs the vary support to be enabled. Its default value is 10
+and should be passed a strictly positive integer.
 </pre><a class="anchor" name="process-vary"></a><a class="anchor" name="6-process-vary"></a><a class="anchor" name="6.2.1-process-vary"></a><a class="anchor" name="process-vary (Cache)"></a><a class="anchor" name="process-vary (Cache section)"></a><div class="keyword"><b><a class="anchor" name="process-vary"></a><a href="#6.2.1-process-vary">process-vary</a></b> <span style="color: #080">&lt;on/off&gt;</span></div><pre class="text">Enable or disable the processing of the Vary header. When disabled, a response
 containing such a header will never be cached. When enabled, we need to calculate
 a preliminary hash for a subset of request headers on all the incoming requests
@@ -23765,9 +23766,8 @@ a preliminary hash for a subset of request headers on all the incoming requests
 key for a given request (see RFC 7234#4.1). The secondary key is built out of
 the contents of the 'accept-encoding', 'referer' and 'origin' headers for
 now. The default value is off (disabled).
-</pre><a class="anchor" name="max-secondary-entries"></a><a class="anchor" name="6-max-secondary-entries"></a><a class="anchor" name="6.2.1-max-secondary-entries"></a><a class="anchor" name="max-secondary-entries (Cache)"></a><a class="anchor" name="max-secondary-entries (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-secondary-entries"></a><a href="#6.2.1-max-secondary-entries">max-secondary-entries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Define the maximum number of simultaneous secondary entries with the same primary
-key in the cache. This needs the vary support to be enabled. Its default value is 10
-and should be passed a strictly positive integer.
+</pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
+blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
 </pre></div>
 <a class="anchor" id="6.2.2" name="6.2.2"></a>
 <h3 id="chapter-6.2.2" data-target="6.2.2"><small><a class="small" href="#6.2.2">6.2.2.</a></small> Proxy section</h3>
@@ -33828,7 +33828,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev0-7 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev0-13 &ndash; Configuration Manual<br>
 							<small>, 2025/11/26</small>
 						</div>
 					</div>
