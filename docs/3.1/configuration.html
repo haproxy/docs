@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1.10 - Configuration Manual</title>
+		<title>HAProxy version 3.1.10-18 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4432,7 +4432,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4443,7 +4443,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1.10</strong></p>
+							<p><strong>version 3.1.10-18</strong></p>
 							<p>
 								2025/11/07<br>
 								
@@ -6102,6 +6102,8 @@ HAProxy may emit the following status codes by itself :
    408  when the request timeout strikes before the request is complete
    410  when the requested resource is no longer available and will not
         be available again
+   413  when a HTTP/1.0 GET/HEAD/DELETE requests has a payload, also see
+        the &quot;<a href="#h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a>&quot; option
    500  when HAProxy encounters an unrecoverable internal error, such as a
         memory allocation failure, which should never happen
    501 when HAProxy is unable to satisfy a client request because of an
@@ -6721,26 +6723,51 @@ The list of currently supported predicates is the following:
                             in the features list reported by &quot;haproxy -vv&quot;
                             (which means a &lt;name&gt; appears after a '+')
 
-  - streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
-  - strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
-  - strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
-                            the first one.
+  - openssl_version_atleast(&lt;ver&gt;) : returns true if the current openssl
+                            version is at least as recent as &lt;ver&gt; otherwise
+                            false.
+                            Libraries like LibreSSL, AWS-LC and WolfSSL also
+                            provide a pseudo OpenSSL version.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>ssllib_name_startswith(OpenSSL) &amp;&amp; openssl_version_atleast(1.1.1)
+</code></pre>
+</div><pre class="text">- openssl_version_before(&lt;ver&gt;) : returns true if the current openssl
+                          version is strictly older than &lt;ver&gt; otherwise
+                          false.
+                          Libraries like LibreSSL, AWS-LC and WolfSSL also
+                          provide a pseudo OpenSSL version.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">openssl_version_before(3.5.0)</div><code></code></pre>
+</div><pre class="text">- ssllib_name_startswith(&lt;name&gt;)  : return true if the SSL library name
+                          HAProxy was linked with, starts with &lt;name&gt;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">ssllib_name_startswith(wolfSSL)</div><code></code></pre>
+</div><pre class="text">- streq(&lt;str1&gt;,&lt;str2&gt;)  : returns true only if the two strings are equal
+- strneq(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the two strings differ
+- strstr(&lt;str1&gt;,&lt;str2&gt;) : returns true only if the second string is found in
+                          the first one.
 
-  - version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
-                            at least as recent as &lt;ver&gt; otherwise false. The
-                            version syntax is the same as shown by &quot;haproxy -v&quot;
-                            and missing components are assumed as being zero.
+- version_atleast(&lt;ver&gt;): returns true if the current haproxy version is
+                          at least as recent as &lt;ver&gt; otherwise false. The
+                          version syntax is the same as shown by &quot;haproxy -v&quot;
+                          and missing components are assumed as being zero.
 
-  - version_before(&lt;ver&gt;) : returns true if the current haproxy version is
-                            strictly older than &lt;ver&gt; otherwise false. The
-                            version syntax is the same as shown by &quot;haproxy -v&quot;
-                            and missing components are assumed as being zero.
+- version_before(&lt;ver&gt;) : returns true if the current haproxy version is
+                          strictly older than &lt;ver&gt; otherwise false. The
+                          version syntax is the same as shown by &quot;haproxy -v&quot;
+                          and missing components are assumed as being zero.
 
-  - enabled(&lt;opt&gt;)        : returns true if the option &lt;opt&gt; is enabled at
-                            run-time. Only a subset of options are supported:
-                                POLL, EPOLL, KQUEUE, EVPORTS, SPLICE,
-                                GETADDRINFO, REUSEPORT, FAST-FORWARD,
-                                SERVER-SSL-VERIFY-NONE
+- enabled(&lt;opt&gt;)        : returns true if the option &lt;opt&gt; is enabled at
+                          run-time. Only a subset of options are supported:
+                              POLL, EPOLL, KQUEUE, EVPORTS, SPLICE,
+                              GETADDRINFO, REUSEPORT, FAST-FORWARD,
+                              SERVER-SSL-VERIFY-NONE
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -7615,7 +7642,8 @@ frontend ext-check
 </div><div class="page-header"><b>See also:</b> hard-stop-after, monitor</div>
 <a class="anchor" name="group"></a><a class="anchor" name="3-group"></a><a class="anchor" name="3.1-group"></a><a class="anchor" name="group (Global parameters)"></a><a class="anchor" name="group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="group"></a><a href="#3.1-group">group</a></b> <span style="color: #080">&lt;group name&gt;</span></div><pre class="text">Similar to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; but uses the GID of group name &lt;group name&gt; from /etc/group.
 See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">gid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#gid%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#gid%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Programs%20%28deprecated%29%29">Programs (deprecated)</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;.
-</pre><a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global parameters)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload.
+</pre><a class="anchor" name="h1-accept-payload-with-any-method"></a><a class="anchor" name="3-h1-accept-payload-with-any-method"></a><a class="anchor" name="3.1-h1-accept-payload-with-any-method"></a><a class="anchor" name="h1-accept-payload-with-any-method (Global parameters)"></a><a class="anchor" name="h1-accept-payload-with-any-method (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="h1-accept-payload-with-any-method"></a><a href="#3.1-h1-accept-payload-with-any-method">h1-accept-payload-with-any-method</a></b></div><pre class="text">Does not reject HTTP/1.0 GET/HEAD/DELETE requests with a payload with a
+413 Payload Too Large HTTP response.
 
 While It is explicitly allowed in HTTP/1.1, HTTP/1.0 is not clear on this
 point and some old servers don't expect any payload and never look for body
@@ -9229,7 +9257,8 @@ limitation. It should normally not be needed to tweak this value.
 the polling system. The default value is adapted to the operating system. It
 has been noticed that reducing it below 200 tends to slightly decrease
 latency at the expense of network bandwidth, and increasing it above 200
-tends to trade latency for slightly increased bandwidth.
+tends to trade latency for slightly increased bandwidth. The configured value
+must be lower than or equal to 1000000.
 </pre><a class="anchor" name="tune.maxrewrite"></a><a class="anchor" name="3-tune.maxrewrite"></a><a class="anchor" name="3.2-tune.maxrewrite"></a><a class="anchor" name="tune.maxrewrite (Global parameters)"></a><a class="anchor" name="tune.maxrewrite (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.maxrewrite"></a><a href="#3.2-tune.maxrewrite">tune.maxrewrite</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the reserved buffer space to this size in bytes. The reserved space is
 used for header rewriting or appending. The first reads on sockets will never
 fill more than bufsize-maxrewrite. Historically it has defaulted to half of
@@ -31843,7 +31872,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1.10 &ndash; Configuration Manual<br>
+							HAProxy 3.1.10-18 &ndash; Configuration Manual<br>
 							<small>, 2025/11/07</small>
 						</div>
 					</div>
