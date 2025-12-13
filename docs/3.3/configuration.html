@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.0-1 - Configuration Manual</title>
+		<title>HAProxy version 3.3.0-42 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2933,7 +2933,9 @@
 							
 							<a class="list-group-item" href="#queue">queue</a>
 							
-							<a class="list-group-item" href="#quic-cc-algo">quic-cc-algo</a>
+							<a class="list-group-item" href="#quic-cc-algo (Bind options)">quic-cc-algo (Bind options)</a>
+							
+							<a class="list-group-item" href="#quic-cc-algo (Server and default-server options)">quic-cc-algo (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#quic-force-retry">quic-force-retry</a>
 							
@@ -4699,7 +4701,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/11/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4710,7 +4712,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.0-1</strong></p>
+							<p><strong>version 3.3.0-42</strong></p>
 							<p>
 								2025/11/26<br>
 								
@@ -10223,7 +10225,7 @@ congestion window size also serves as a limit on this allocator.
 
 The default value is 480k.
 
-See also the &quot;<a href="#quic-cc-algo">quic-cc-algo</a>&quot; bind option.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">quic-cc-algo<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#quic-cc-algo%20%28Bind%20options%29">Bind options</a></li><li><a href="#quic-cc-algo%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind and server options.
 </pre><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="3.2-tune.quic.frontend.default-max-window-size"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Global section)"></a><a class="anchor" name="tune.quic.frontend.default-max-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.default-max-window-size"></a><a href="#3.2-tune.quic.frontend.default-max-window-size">tune.quic.frontend.default-max-window-size</a></b> <span style="color: #080">&lt;size&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
@@ -10359,7 +10361,7 @@ network throughput by avoiding retransmissions. However, it can be useful to
 deactivate it for networks with very high bandwidth/low latency
 characteristics to prevent unwanted delay and reduce CPU consumption.
 
-See also the &quot;<a href="#quic-cc-algo">quic-cc-algo</a>&quot; bind option.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">quic-cc-algo<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#quic-cc-algo%20%28Bind%20options%29">Bind options</a></li><li><a href="#quic-cc-algo%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind and server options.
 </pre><a class="anchor" name="tune.quic.disable-tx-pacing"></a><a class="anchor" name="3-tune.quic.disable-tx-pacing"></a><a class="anchor" name="3.2-tune.quic.disable-tx-pacing"></a><a class="anchor" name="tune.quic.disable-tx-pacing (Global section)"></a><a class="anchor" name="tune.quic.disable-tx-pacing (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.disable-tx-pacing"></a><a href="#3.2-tune.quic.disable-tx-pacing">tune.quic.disable-tx-pacing</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
@@ -14156,8 +14158,9 @@ log       When used in a backend section, it will turn the backend into a
           server features are supported, but not TCP or HTTP specific ones.
 
 spop      When used in a backend section, it will turn the backend into a
-          log backend. This mode is mandatory and automatically set, if
-          necessary, for backends referenced by SPOE engines.</pre>
+          spop backend. This mode is mandatory if the backend contains
+          SPOA servers, but when mode is tcp, it will automatically be
+          converted to mode spop if such servers are detected.</pre>
 </div>
 <pre class="text">When doing content switching, it is mandatory that the frontend and the
 backend are in the same mode (generally HTTP), otherwise the configuration
@@ -21402,9 +21405,10 @@ endpoint and the ECH endpoint.
 See https://datatracker.ietf.org/doc/draft-ietf-tls-esni/
 
 This is an experimental feature, which requires the
-&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; option in the global section. It also
-necessitates an OpenSSL version that supports ECH, and HAProxy must be
-compiled with USE_ECH=1.
+&quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; option in the global section.
+It also necessitates an OpenSSL version that supports ECH
+( https://github.com/openssl/openssl/tree/feature/ech), and HAProxy must be
+compiled with USE_ECH=1. The ECH API of AWS-LC is not supported.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -22989,7 +22993,14 @@ should be compatible with the multiplexer's protocol to avoid any issue. For
 instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 
 See also &quot;<a href="#ws">ws</a>&quot; to use an alternative protocol for websocket streams.
-</pre><a class="anchor" name="redir"></a><a class="anchor" name="5-redir"></a><a class="anchor" name="5.2-redir"></a><a class="anchor" name="redir (Bind and server options)"></a><a class="anchor" name="redir (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="redir"></a><a href="#5.2-redir">redir</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">May be used in the following contexts: http
+</pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.2-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.2-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
+for any connection targetting this server. They are similar to those used by
+TCP. See the bind option with a similar name for a complete description of
+all customization options.
+
+Default value: cubic
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.tx.pacing">tune.quic.be.tx.pacing</a>&quot; and &quot;<a href="#tune.quic.be.cc.max-win-size">tune.quic.be.cc.max-win-size</a>&quot;</div>
+<a class="anchor" name="redir"></a><a class="anchor" name="5-redir"></a><a class="anchor" name="5.2-redir"></a><a class="anchor" name="redir (Bind and server options)"></a><a class="anchor" name="redir (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="redir"></a><a href="#5.2-redir">redir</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">May be used in the following contexts: http
 
 The &quot;<a href="#redir">redir</a>&quot; parameter enables the redirection mode for all GET and HEAD
 requests addressing this server. This means that instead of having HAProxy
@@ -23737,17 +23748,18 @@ the corresponding http-request and http-response actions.
 <a class="anchor" id="6.2.1" name="6.2.1"></a>
 <h3 id="chapter-6.2.1" data-target="6.2.1"><small><a class="small" href="#6.2.1">6.2.1.</a></small> Cache section</h3>
 <div><a class="anchor" name="cache"></a><a class="anchor" name="6-cache"></a><a class="anchor" name="6.2.1-cache"></a><a class="anchor" name="cache (Cache)"></a><a class="anchor" name="cache (Cache section)"></a><div class="keyword"><b><a class="anchor" name="cache"></a><a href="#6.2.1-cache">cache</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Declare a cache section, allocate a shared cache memory named &lt;name&gt;, the
-size of cache is mandatory.
-</pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
-blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
-</pre><a class="anchor" name="max-object-size"></a><a class="anchor" name="6-max-object-size"></a><a class="anchor" name="6.2.1-max-object-size"></a><a class="anchor" name="max-object-size (Cache)"></a><a class="anchor" name="max-object-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-object-size"></a><a href="#6.2.1-max-object-size">max-object-size</a></b> <span style="color: #080">&lt;bytes&gt;</span></div><pre class="text">Define the maximum size of the objects to be cached. Must not be greater than
-an half of &quot;<a href="#total-max-size">total-max-size</a>&quot;. If not set, it equals to a 256th of the cache size.
-All objects with sizes larger than &quot;<a href="#max-object-size">max-object-size</a>&quot; will not be cached.
+size of cache is mandatory (see keyword &quot;<a href="#total-max-size">total-max-size</a>&quot; below).
 </pre><a class="anchor" name="max-age"></a><a class="anchor" name="6-max-age"></a><a class="anchor" name="6.2.1-max-age"></a><a class="anchor" name="max-age (Cache)"></a><a class="anchor" name="max-age (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-age"></a><a href="#6.2.1-max-age">max-age</a></b> <span style="color: #080">&lt;seconds&gt;</span></div><pre class="text">Define the maximum expiration duration. The expiration is set as the lowest
 value between the s-maxage or max-age (in this order) directive in the
 Cache-Control response header and this value. The default value is 60
 seconds, which means that you can't cache an object more than 60 seconds by
 default.
+</pre><a class="anchor" name="max-object-size"></a><a class="anchor" name="6-max-object-size"></a><a class="anchor" name="6.2.1-max-object-size"></a><a class="anchor" name="max-object-size (Cache)"></a><a class="anchor" name="max-object-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-object-size"></a><a href="#6.2.1-max-object-size">max-object-size</a></b> <span style="color: #080">&lt;bytes&gt;</span></div><pre class="text">Define the maximum size of the objects to be cached. Must not be greater than
+an half of &quot;<a href="#total-max-size">total-max-size</a>&quot;. If not set, it equals to a 256th of the cache size.
+All objects with sizes larger than &quot;<a href="#max-object-size">max-object-size</a>&quot; will not be cached.
+</pre><a class="anchor" name="max-secondary-entries"></a><a class="anchor" name="6-max-secondary-entries"></a><a class="anchor" name="6.2.1-max-secondary-entries"></a><a class="anchor" name="max-secondary-entries (Cache)"></a><a class="anchor" name="max-secondary-entries (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-secondary-entries"></a><a href="#6.2.1-max-secondary-entries">max-secondary-entries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Define the maximum number of simultaneous secondary entries with the same primary
+key in the cache. This needs the vary support to be enabled. Its default value is 10
+and should be passed a strictly positive integer.
 </pre><a class="anchor" name="process-vary"></a><a class="anchor" name="6-process-vary"></a><a class="anchor" name="6.2.1-process-vary"></a><a class="anchor" name="process-vary (Cache)"></a><a class="anchor" name="process-vary (Cache section)"></a><div class="keyword"><b><a class="anchor" name="process-vary"></a><a href="#6.2.1-process-vary">process-vary</a></b> <span style="color: #080">&lt;on/off&gt;</span></div><pre class="text">Enable or disable the processing of the Vary header. When disabled, a response
 containing such a header will never be cached. When enabled, we need to calculate
 a preliminary hash for a subset of request headers on all the incoming requests
@@ -23755,9 +23767,8 @@ a preliminary hash for a subset of request headers on all the incoming requests
 key for a given request (see RFC 7234#4.1). The secondary key is built out of
 the contents of the 'accept-encoding', 'referer' and 'origin' headers for
 now. The default value is off (disabled).
-</pre><a class="anchor" name="max-secondary-entries"></a><a class="anchor" name="6-max-secondary-entries"></a><a class="anchor" name="6.2.1-max-secondary-entries"></a><a class="anchor" name="max-secondary-entries (Cache)"></a><a class="anchor" name="max-secondary-entries (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-secondary-entries"></a><a href="#6.2.1-max-secondary-entries">max-secondary-entries</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Define the maximum number of simultaneous secondary entries with the same primary
-key in the cache. This needs the vary support to be enabled. Its default value is 10
-and should be passed a strictly positive integer.
+</pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
+blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
 </pre></div>
 <a class="anchor" id="6.2.2" name="6.2.2"></a>
 <h3 id="chapter-6.2.2" data-target="6.2.2"><small><a class="small" href="#6.2.2">6.2.2.</a></small> Proxy section</h3>
@@ -33818,7 +33829,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.0-1 &ndash; Configuration Manual<br>
+							HAProxy 3.3.0-42 &ndash; Configuration Manual<br>
 							<small>, 2025/11/26</small>
 						</div>
 					</div>
