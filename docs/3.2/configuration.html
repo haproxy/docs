@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.9-21 - Configuration Manual</title>
+		<title>HAProxy version 3.2.9-33 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4622,7 +4622,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4633,7 +4633,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.9-21</strong></p>
+							<p><strong>version 3.2.9-33</strong></p>
 							<p>
 								2025/11/21<br>
 								
@@ -21838,11 +21838,12 @@ backend foo
 This option permits checks to reuse idle connections if available instead of
 opening a dedicated one. The connection is reinserted in the pool on check
 completion. The main objective is to limit the number of connections opening
-and closure on a specific server.
+and closure on a specific server. This feature is compatible only with
+http-check rulesets. It is silently ignored for other check types.
 
-Note that for configuration simplicity, this option is silently ignored if
-any specific check connect option is defined, either on the server line or
-via a custom tcp-check connect rule.
+For configuration simplicity, this option is silently ignored if any specific
+check connect option is defined, either on the server line or via a custom
+tcp-check connect rule.
 
 This option is automatically enabled for servers acting as passive reverse
 HTTP gateway, as for those servers connect is only supported through reuse.
@@ -33217,7 +33218,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.9-21 &ndash; Configuration Manual<br>
+							HAProxy 3.2.9-33 &ndash; Configuration Manual<br>
 							<small>, 2025/11/21</small>
 						</div>
 					</div>
