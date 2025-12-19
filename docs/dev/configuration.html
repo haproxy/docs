@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-9 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-22 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1689,6 +1689,8 @@
 							
 							<a class="list-group-item" href="#cpl">cpl</a>
 							
+							<a class="list-group-item" href="#cpu-affinity">cpu-affinity</a>
+							
 							<a class="list-group-item" href="#cpu-map">cpu-map</a>
 							
 							<a class="list-group-item" href="#cpu-policy">cpu-policy</a>
@@ -2408,6 +2410,8 @@
 							<a class="list-group-item" href="#max-session-srv-conns">max-session-srv-conns</a>
 							
 							<a class="list-group-item" href="#max-spread-checks">max-spread-checks</a>
+							
+							<a class="list-group-item" href="#max-threads-per-group">max-threads-per-group</a>
 							
 							<a class="list-group-item" href="#maxcompcpuusage">maxcompcpuusage</a>
 							
@@ -4701,7 +4705,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4712,7 +4716,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-9</strong></p>
+							<p><strong>version 3.4-dev1-22</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -7574,6 +7578,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ca-base">ca-base</a>
    - <a href="#chroot">chroot</a>
    - <a href="#cluster-secret">cluster-secret</a>
+   - <a href="#cpu-affinity">cpu-affinity</a>
    - <a href="#cpu-map">cpu-map</a>
    - <a href="#cpu-policy">cpu-policy</a>
    - <a href="#cpu-set">cpu-set</a>
@@ -7613,6 +7618,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#lua-load">lua-load</a>
    - <a href="#lua-load-per-thread">lua-load-per-thread</a>
    - <a href="#lua-prepend-path">lua-prepend-path</a>
+   - max-thread-per-group
    - <a href="#mworker-max-reloads">mworker-max-reloads</a>
    - <a href="#nbthread">nbthread</a>
    - <a href="#node">node</a>
@@ -8017,7 +8023,18 @@ cpu-map 2/1-40   0-39,80-119
 cpu-map 3/1-40   40-79,120-159  <span class="comment"># node1, siblings 0 &amp; 1</span>
 cpu-map 4/1-40   40-79,120-159
 </code></pre>
-</div><a class="anchor" name="cpu-policy"></a><a class="anchor" name="3-cpu-policy"></a><a class="anchor" name="3.1-cpu-policy"></a><a class="anchor" name="cpu-policy (Global section)"></a><a class="anchor" name="cpu-policy (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-policy"></a><a href="#3.1-cpu-policy">cpu-policy</a></b> <span style="color: #080">&lt;policy&gt;</span></div><pre class="text">Selects the CPU allocation policy to be used.
+</div><a class="anchor" name="cpu-affinity"></a><a class="anchor" name="3-cpu-affinity"></a><a class="anchor" name="3.1-cpu-affinity"></a><a class="anchor" name="cpu-affinity (Global section)"></a><a class="anchor" name="cpu-affinity (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-affinity"></a><a href="#3.1-cpu-affinity">cpu-affinity</a></b> <span style="color: #080">&lt;affinity&gt;</span></div><pre class="text">Defines how you want threads to be bound to cpus.
+It currently accepts 2 values :
+- per-core, each thread will be bound to all the hardware threads of one core.
+- per-group, each thread will be bound to all the hardware threads of the
+  group. This is the default unless threads-per-core 1 is used in cpu-policy.
+- auto, per-group will be used, unless threads-per-core 1 is used in
+  cpu-policy, in which case per-core will be used. This is the default.
+- per-thread, that will bind one thread to one hardware thread only.
+  If threads-per-core 1 is used in cpu-policy, then each thread will be bound
+  to one hardware thread of a different core.
+- per-ccx, each thread will be bound to all the hardware threads of a CCX.
+</pre><a class="anchor" name="cpu-policy"></a><a class="anchor" name="3-cpu-policy"></a><a class="anchor" name="3.1-cpu-policy"></a><a class="anchor" name="cpu-policy (Global section)"></a><a class="anchor" name="cpu-policy (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-policy"></a><a href="#3.1-cpu-policy">cpu-policy</a></b> <span style="color: #080">&lt;policy&gt;</span> <span style="color: #008">[threads-per-core 1 | auto]</span></div><pre class="text">Selects the CPU allocation policy to be used.
 
 On multi-CPU systems, there can be plenty of reasons for not using all
 available CPU cores, and/or for grouping them into different thread groups,
@@ -8167,6 +8184,13 @@ policies are currently supported, with &quot;performance&quot; being the default
                       sidecar setup, in order to scale the system down more
                       easily. Note that if a single cluster is present, it
                       will still be fully used.
+
+An optional keyword can be added, &quot;threads-per-core&quot;. It can accept two
+values, &quot;1&quot; and &quot;auto&quot;. If set to 1, then only one thread per core will be
+created, unrespective of how many hardware threads the core has. If set
+to auto, then one thread per hardware thread will be created.
+If no affinity is specified, and threads-per-core 1 is used, then by
+default the affinity will be per-core.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#cpu-map">cpu-map</a>&quot;, &quot;<a href="#cpu-set">cpu-set</a>&quot;, &quot;<a href="#nbthread">nbthread</a>&quot;</div>
 <a class="anchor" name="cpu-set"></a><a class="anchor" name="3-cpu-set"></a><a class="anchor" name="3.1-cpu-set"></a><a class="anchor" name="cpu-set (Global section)"></a><a class="anchor" name="cpu-set (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="cpu-set"></a><a href="#3.1-cpu-set">cpu-set</a></b> <span style="color: #080">&lt;directive&gt;</span>...</div><pre class="text">Allows to symbolically describe what sets of CPUs to run on. The directive
 supports the following keyword:
@@ -8691,6 +8715,12 @@ This keyword allows to keep the remaining processes alive when a worker
 crashed instead of killing everything. This need to be used with caution as
 it is only meant for debugging and could put the master process in an
 abnormal state.
+</pre><a class="anchor" name="max-threads-per-group"></a><a class="anchor" name="3-max-threads-per-group"></a><a class="anchor" name="3.1-max-threads-per-group"></a><a class="anchor" name="max-threads-per-group (Global section)"></a><a class="anchor" name="max-threads-per-group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="max-threads-per-group"></a><a href="#3.1-max-threads-per-group">max-threads-per-group</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Defines the maximum number of threads in a thread group. Unless the number
+of thread groups is fixed with the thread-groups directive, haproxy will
+create more thread groups if needed. The default and maximum value is 64.
+Having a lower value means more groups will potentially be created, which
+can help improve performances, as a number of data structures are per
+thread group, and that will mean less contention
 </pre><a class="anchor" name="mworker-max-reloads"></a><a class="anchor" name="3-mworker-max-reloads"></a><a class="anchor" name="3.1-mworker-max-reloads"></a><a class="anchor" name="mworker-max-reloads (Global section)"></a><a class="anchor" name="mworker-max-reloads (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="mworker-max-reloads"></a><a href="#3.1-mworker-max-reloads">mworker-max-reloads</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">In master-worker mode, this option limits the number of time a worker can
 survive to a reload. If the worker did not leave after a reload, once its
 number of reloads is greater than this number, the worker will receive a
@@ -33829,7 +33859,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-9 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-22 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
