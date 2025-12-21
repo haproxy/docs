@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-25 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4286,6 +4286,10 @@
 							
 							<a class="list-group-item" href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>
 							
+							<a class="list-group-item" href="#tune.h1.be.glitches-threshold">tune.h1.be.glitches-threshold</a>
+							
+							<a class="list-group-item" href="#tune.h1.fe.glitches-threshold">tune.h1.fe.glitches-threshold</a>
+							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
 							
 							<a class="list-group-item" href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
@@ -4705,7 +4709,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4716,7 +4720,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-25</strong></p>
+							<p><strong>version 3.4-dev1-29</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -7708,6 +7712,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
+   - <a href="#tune.h1.be.glitches-threshold">tune.h1.be.glitches-threshold</a>
+   - <a href="#tune.h1.fe.glitches-threshold">tune.h1.fe.glitches-threshold</a>
    - <a href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
    - <a href="#tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a>
    - <a href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
@@ -9706,10 +9712,42 @@ default is zero, meaning that a connection reaching its glitches-threshold
 will automatically get killed. A rule of thumb would be to set this value to
 twice the usually observed CPU usage, or the commonly observed CPU usage plus
 half the idle one (i.e. if CPU commonly reaches 60%, setting 80 here can make
-sense). This parameter has no effect without tune.h2.fe.glitches-threshold or
-tune.quic.fe.sec.glitches-threshold. See also the global parameters
-&quot;<a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>&quot; and &quot;<a href="#tune.quic.fe.sec.glitches-threshold">tune.quic.fe.sec.glitches-threshold</a>&quot;.
-</pre><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Global section)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a href="#3.2-tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy receives of data for the H1
+sense). This parameter has no effect without tune.h2.fe.glitches-threshold,
+tune.quic.fe.sec.glitches-threshold or tune.h1.fe.glitches-threshold. See
+also the global parameters &quot;<a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>&quot;,
+&quot;<a href="#tune.h1.fe.glitches-threshold">tune.h1.fe.glitches-threshold</a>&quot; and &quot;<a href="#tune.quic.fe.sec.glitches-threshold">tune.quic.fe.sec.glitches-threshold</a>&quot;.
+</pre><a class="anchor" name="tune.h1.be.glitches-threshold"></a><a class="anchor" name="3-tune.h1.be.glitches-threshold"></a><a class="anchor" name="3.2-tune.h1.be.glitches-threshold"></a><a class="anchor" name="tune.h1.be.glitches-threshold (Global section)"></a><a class="anchor" name="tune.h1.be.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.be.glitches-threshold"></a><a href="#3.2-tune.h1.be.glitches-threshold">tune.h1.be.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a HTTP/1 backend connection,
+after which that connection will automatically be killed. This allows to
+automatically kill misbehaving connections without having to write explicit
+rules for them. The default value is zero, indicating that no threshold is
+set so that no event will cause a connection to be closed. Typical events
+include improperly formatted headers that had been nevertheless accepted by
+&quot;<a href="#option%20accept-unsafe-violations-in-http-response">accept-unsafe-violations-in-http-response</a>&quot;. Any non-zero value here should
+probably be in the hundreds or thousands to be effective without affecting
+slightly bogus servers. It is also possible to only kill connections when the
+CPU usage crosses a certain level, by using &quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+Note that a graceful close is attempted at 75% of the configured threshold by
+advertising a GOAWAY for a future stream. This ensures that a slightly faulty
+connection will stop being used after some time without risking to interrupt
+ongoing transfers.
+</pre><div class="page-header"><b>See also:</b> tune.h1.fe.glitches-threshold, bc_glitches, and tune.glitches.kill.cpu-usage</div>
+<a class="anchor" name="tune.h1.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h1.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h1.fe.glitches-threshold"></a><a class="anchor" name="tune.h1.fe.glitches-threshold (Global section)"></a><a class="anchor" name="tune.h1.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.fe.glitches-threshold"></a><a href="#3.2-tune.h1.fe.glitches-threshold">tune.h1.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a HTTP/1 frontend connection
+after which that connection will automatically be killed. This allows to
+automatically kill misbehaving connections without having to write explicit
+rules for them. The default value is zero, indicating that no threshold is
+set so that no event will cause a connection to be closed. Typical events
+include improperly formatted headers that had been nevertheless accepted by
+&quot;<a href="#option%20accept-unsafe-violations-in-http-request">accept-unsafe-violations-in-http-request</a>&quot;. Any non-zero value here should
+probably be in the hundreds or thousands to be effective without affecting
+slightly bogus clients. It is also possible to only kill connections when the
+CPU usage crosses a certain level, by using &quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+Note that a graceful close is attempted at 75% of the configured threshold by
+advertising a GOAWAY for a future stream. This ensures that a slightly non-
+compliant client will have the opportunity to create a new connection and
+continue to work unaffected without ever triggering the hard close thus
+risking to interrupt ongoing transfers.
+</pre><div class="page-header"><b>See also:</b> tune.h1.be.glitches-threshold, fc_glitches, and tune.glitches.kill.cpu-usage</div>
+<a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-recv"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Global section)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-recv (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-recv"></a><a href="#3.2-tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy receives of data for the H1
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding, tune.h1.zero-copy-fwd-send</div>
 <a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.h1.zero-copy-fwd-send"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Global section)"></a><a class="anchor" name="tune.h1.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h1.zero-copy-fwd-send"></a><a href="#3.2-tune.h1.zero-copy-fwd-send">tune.h1.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the H1
@@ -9724,7 +9762,10 @@ occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
 effective without affecting slightly bogus servers. It is also possible to
 only kill connections when the CPU usage crosses a certain level, by using
-&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;. Note that a graceful close is attempted at
+75% of the configured threshold by advertising a GOAWAY for a future stream.
+This ensures that a slightly faulty connection will stop being used after
+some time without risking to interrupt ongoing transfers.
 </pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
@@ -9769,7 +9810,11 @@ occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
 effective without affecting slightly bogus clients. It is also possible to
 only kill connections when the CPU usage crosses a certain level, by using
-&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;. Note that a graceful close is attempted at
+75% of the configured threshold by advertising a GOAWAY for a future stream.
+This ensures that a slightly non-compliant client will have the opportunity
+to create a new connection and continue to work unaffected without ever
+triggering the hard close thus risking to interrupt ongoing transfers.
 </pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
@@ -33859,7 +33904,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-25 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-29 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
