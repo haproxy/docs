@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.1 - Configuration Manual</title>
+		<title>HAProxy version 3.3.1-2 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4701,7 +4701,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4712,7 +4712,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.1</strong></p>
+							<p><strong>version 3.3.1-2</strong></p>
 							<p>
 								2025/12/19<br>
 								
@@ -9694,7 +9694,10 @@ occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
 effective without affecting slightly bogus servers. It is also possible to
 only kill connections when the CPU usage crosses a certain level, by using
-&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;. Note that a graceful close is attempted at
+75% of the configured threshold by advertising a GOAWAY for a future stream.
+This ensures that a slightly faulty connection will stop being used after
+some time without risking to interrupt ongoing transfers.
 </pre><div class="page-header"><b>See also:</b> tune.h2.fe.glitches-threshold, bc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.be.initial-window-size"></a><a class="anchor" name="3-tune.h2.be.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.be.initial-window-size"></a><a class="anchor" name="tune.h2.be.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.be.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.initial-window-size"></a><a href="#3.2-tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for outgoing connections, which is the
 number of bytes the server can respond before waiting for an acknowledgment
@@ -9739,7 +9742,11 @@ occasionally cause a few glitches over long lasting connection, so any non-
 zero value here should probably be in the hundreds or thousands to be
 effective without affecting slightly bogus clients. It is also possible to
 only kill connections when the CPU usage crosses a certain level, by using
-&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;.
+&quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;. Note that a graceful close is attempted at
+75% of the configured threshold by advertising a GOAWAY for a future stream.
+This ensures that a slightly non-compliant client will have the opportunity
+to create a new connection and continue to work unaffected without ever
+triggering the hard close thus risking to interrupt ongoing transfers.
 </pre><div class="page-header"><b>See also:</b> tune.h2.be.glitches-threshold, fc_glitches, and tune.glitches.kill.cpu-usage</div>
 <a class="anchor" name="tune.h2.fe.initial-window-size"></a><a class="anchor" name="3-tune.h2.fe.initial-window-size"></a><a class="anchor" name="3.2-tune.h2.fe.initial-window-size"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Global section)"></a><a class="anchor" name="tune.h2.fe.initial-window-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.initial-window-size"></a><a href="#3.2-tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 initial window size for incoming connections, which is the
 number of bytes the client can upload before waiting for an acknowledgment
@@ -33829,7 +33836,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.1 &ndash; Configuration Manual<br>
+							HAProxy 3.3.1-2 &ndash; Configuration Manual<br>
 							<small>, 2025/12/19</small>
 						</div>
 					</div>
