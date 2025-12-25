@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-36 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-40 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1963,6 +1963,8 @@
 							<a class="list-group-item" href="#fc_rttvar">fc_rttvar</a>
 							
 							<a class="list-group-item" href="#fc_sacked">fc_sacked</a>
+							
+							<a class="list-group-item" href="#fc_saved_syn">fc_saved_syn</a>
 							
 							<a class="list-group-item" href="#fc_settings_streams_limit">fc_settings_streams_limit</a>
 							
@@ -4184,6 +4186,8 @@
 							
 							<a class="list-group-item" href="#tcp-response inspect-delay">tcp-response inspect-delay</a>
 							
+							<a class="list-group-item" href="#tcp-ss">tcp-ss</a>
+							
 							<a class="list-group-item" href="#tcp-ut (Bind options)">tcp-ut (Bind options)</a>
 							
 							<a class="list-group-item" href="#tcp-ut (Server and default-server options)">tcp-ut (Server and default-server options)</a>
@@ -4709,7 +4713,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4720,7 +4724,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-36</strong></p>
+							<p><strong>version 3.4-dev1-40</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -21880,6 +21884,17 @@ digest. This will protect the TCP connection against spoofing. The primary
 use case for this option is to allow BGP to protect itself against the
 introduction of spoofed TCP segments into the connection stream. But it can
 be useful for any very long-lived TCP connections.
+</pre><a class="anchor" name="tcp-ss"></a><a class="anchor" name="5-tcp-ss"></a><a class="anchor" name="5.1-tcp-ss"></a><a class="anchor" name="tcp-ss (Bind and server options)"></a><a class="anchor" name="tcp-ss (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ss"></a><a href="#5.1-tcp-ss">tcp-ss</a></b> <span style="color: #080">&lt;mode&gt;</span></div><pre class="text">Sets the TCP Save SYN option for all incoming connections instantiated from
+this listening socket. This option is available on Linux since version 4.3.
+It instructs the kernel to try to keep a copy of the incoming IP packet
+containing the TCP SYN flag, for later inspection via the &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;
+sample fetch function. The option knows 3 modes:
+  - 0    SYN packet saving is disabled, this is the default
+  - 1    SYN packet saving is enabled, and contains IP and TCP headers
+  - 2    SYN packet saving is enabled, and contains ETH, IP and TCP headers
+
+This only works for regular TCP connections, and is ignored for other
+protocols (e.g. UNIX sockets). See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;.
 </pre><a class="anchor" name="tcp-ut"></a><a class="anchor" name="5-tcp-ut"></a><a class="anchor" name="5.1-tcp-ut"></a><a class="anchor" name="tcp-ut (Bind and server options)"></a><a class="anchor" name="tcp-ut (Bind options)"></a><div class="keyword"><b><a class="anchor" name="tcp-ut"></a><a href="#5.1-tcp-ut">tcp-ut</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Sets the TCP User Timeout for all incoming connections instantiated from this
 listening socket. This option is available on Linux since version 2.6.37. It
 allows HAProxy to configure a timeout for sockets which contain data not
@@ -26976,14 +26991,15 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_rtt">fc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_rttvar">fc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fc_saved_syn">fc_saved_syn</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-fc_settings_streams_limit">fc_settings_streams_limit</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_src">fc_src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-fc_src_is_local">fc_src_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_src_port">fc_src_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_unacked">fc_unacked</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_client_timeout">fe_client_timeout</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-fe_defbe">fe_defbe</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-fe_defbe">fe_defbe</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-req.bytes_in">req.bytes_in</a></td><td >integer</td></tr>
@@ -27003,8 +27019,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_get_gpt0">sc0_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_glitch_cnt">sc0_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_glitch_rate">sc0_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_rate">sc0_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27024,8 +27040,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_bytes_in_rate">sc1_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_clr_gpc0">sc1_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cnt">sc1_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_rate">sc1_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27045,8 +27061,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_inc_gpc0">sc1_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_inc_gpc1">sc1_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_key">sc1_key</a></td><td >any</td></tr>
 <tr><td ><a href="#7-sc1_sess_cnt">sc1_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_sess_rate">sc1_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27066,8 +27082,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_glitch_rate">sc2_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc1_rate">sc2_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_err_rate">sc2_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_cnt">sc2_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_rate">sc2_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27087,8 +27103,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_clr_gpc">sc_clr_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc1">sc_clr_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_cur">sc_conn_cur(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_rate">sc_conn_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_get_gpc">sc_get_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27108,8 +27124,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_req_rate">sc_http_req_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc">sc_inc_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc1">sc_inc_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_out">sc_kbytes_out(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27129,8 +27145,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_conn_cnt">src_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_cur">src_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_rate">src_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-src_get_gpc">src_get_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-src_get_gpc">src_get_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc0">src_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc1">src_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpt">src_get_gpt(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27150,8 +27166,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_inc_gpc0">src_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_inc_gpc1">src_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_is_local">src_is_local</a></td><td >boolean</td></tr>
-<tr><td ><a href="#7-src_kbytes_in">src_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-src_kbytes_in">src_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_kbytes_out">src_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_port">src_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_sess_cnt">src_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27474,6 +27490,76 @@ support TCP_INFO, for example Linux kernels before 2.4, the sample fetch fails.
 If the server connection is not established, if the connection is not TCP or
 if the operating system does not support TCP_INFO, for example Linux kernels
 before 2.4, the sample fetch fails.
+</pre><a class="anchor" name="fc_saved_syn"></a><a class="anchor" name="7-fc_saved_syn"></a><a class="anchor" name="7.3.3-fc_saved_syn"></a><a class="anchor" name="fc_saved_syn (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_saved_syn (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_saved_syn"></a><a href="#7.3.3-fc_saved_syn">fc_saved_syn</a></b> : binary</div><pre class="text">Returns a copy of the saved SYN packet that was preserved by the system
+during the incoming connection setup. This requires that the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; option
+was present on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line, and a Linux kernel 4.3 minimum. When &quot;<a href="#tcp-ss">tcp-ss</a>&quot;
+is set to 1, only the IP and TCP headers are present. When &quot;<a href="#tcp-ss">tcp-ss</a>&quot; is set to
+2, then the Ethernet header is also present before the IP header, and may be
+used to control or log source MAC address or VLANs for example. Note that
+there is no guarantee that a SYN will be saved. For example, if SYN cookies
+are used, the SYN packet is not preserved and the connection is established
+on the matching ACK packet. In addition, the system doesn't guarantee to
+preserve the copy beyond the first read. As such it is strongly recommended
+to copy it into a variable in scope &quot;sess&quot; from a &quot;<a href="#tcp-request%20connection">tcp-request connection</a>&quot;
+rule and only use that variable for further manipulations. It is worth noting
+that on the loopback interface a dummy 14-byte ethernet header is constructed
+by the system where both the source and destination addresses are zero, and
+only the protocol is set. It is convenient to convert such samples to
+hexadecimal using the &quot;<a href="#hex">hex</a>&quot; converter during debugging. Example (fields
+manually separated and commented below):
+
+  frontend test
+      mode http
+      bind :::4445 tcp-ss 2
+      tcp-request connection set-var(sess.syn) fc_saved_syn
+      http-request return status 200 content-type text/plain \
+                   lf-string &quot;%[var(sess.syn),hex]\n&quot;
+
+  $ curl '0:4445'
+  000000000000 000000000000 0800 \  # MAC_DST MAC_SRC PROTO=IPv4
+  4500003C0A65400040063255       \  # IPv4 header, proto=6 (TCP)
+  7F000001 7F000001              \  # IP_SRC=127.0.0.1 IP_DST=127.0.0.1
+  E1F2 115D 01AF4E3E 00000000    \  # TCP_SPORT=57842 TCP_DPORT=4445, SEQ
+  A0 02 FFD7 FE300000            \  # OPT_LEN=20 TCP_FLAGS=SYN WIN=65495
+  0204FFD70402080A01C2A71A0000000001030307 # MSS=65495, TS, SACK, WSCALE 7
+
+  $ curl '[::1]:4445'
+  000000000000 000000000000 86DD   \ # MAC_DST MAC_SRC PROTO=IPv6
+  6008018F00280640                 \ # IPv6 header, proto=6 (TCP)
+  00000000000000000000000000000001 \ # SRC=::1
+  00000000000000000000000000000001 \ # DST=::1
+  9758 115D B5511F5D 00000000      \ # TCP_SPORT=38744 TCP_DPORT=4445, SEQ
+  A0 02 FFC4 00300000              \  # OPT_LEN=20 TCP_FLAGS=SYN WIN=65476
+  0204FFC40402080A9C231D680000000001030307 # MSS=65476, TS, SACK, WSCALE 7
+
+The &quot;bytes()&quot; converter helps extract specific fields from the packet. The
+be2dec() also permits to read chunks and emit them in integer form.
+
+Example with IPv4 input:
+
+  frontend test
+      mode http
+      bind :4445 tcp-ss 2
+      tcp-request connection set-var(sess.syn) fc_saved_syn
+      http-request return status 200 content-type text/plain lf-string \
+                   &quot;mac_dst=%[var(sess.syn),bytes(0,6),hex] \
+                    mac_src=%[var(sess.syn),bytes(6,6),hex] \
+                    proto=%[var(sess.syn),bytes(12,2),hex] \
+                    ipv4h=%[var(sess.syn),bytes(14,12),hex] \
+                    ipv4_src=%[var(sess.syn),bytes(26,4),be2dec(.,1)] \
+                    ipv4_dst=%[var(sess.syn),bytes(30,4),be2dec(.,1)] \
+                    tcp_spt=%[var(sess.syn),bytes(34,2),be2dec(,2)] \
+                    tcp_dpt=%[var(sess.syn),bytes(36,2),be2dec(,2)] \
+                    tcp_win=%[var(sess.syn),bytes(48,2),be2dec(,2)] \
+                    tcp_opt=%[var(sess.syn),bytes(54),hex]\n&quot;
+
+  $ curl '0:4445'
+  mac_dst=000000000000 mac_src=000000000000 proto=0800 \
+  ipv4h=4500003CC9B7400040067302 ipv4_src=127.0.0.1 ipv4_dst=127.0.0.1 \
+  tcp_spt=43970 tcp_dpt=4445 tcp_win=65495 \
+  tcp_opt=0204FFD70402080A01DC0D410000000001030307
+
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot; action, the &quot;<a href="#be2dec">be2dec</a>&quot;, &quot;<a href="#bytes">bytes</a>&quot; and &quot;<a href="#hex">hex</a>&quot; converters.
 </pre><a class="anchor" name="fc_settings_streams_limit"></a><a class="anchor" name="7-fc_settings_streams_limit"></a><a class="anchor" name="7.3.3-fc_settings_streams_limit"></a><a class="anchor" name="fc_settings_streams_limit (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_settings_streams_limit (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_settings_streams_limit"></a><a href="#7.3.3-fc_settings_streams_limit">fc_settings_streams_limit</a></b> : integer</div><pre class="text">Returns the maximum number of streams allowed on the frontend connection. For
 TCP and HTTP/1.1 connections, it is always 1. For other protocols, it depends
 on the settings negotiated with the client.
@@ -33906,7 +33992,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-36 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-40 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
