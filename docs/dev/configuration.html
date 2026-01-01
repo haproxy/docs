@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-43 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-49 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1889,6 +1889,18 @@
 							
 							<a class="list-group-item" href="#errorloc303">errorloc303</a>
 							
+							<a class="list-group-item" href="#eth.data">eth.data</a>
+							
+							<a class="list-group-item" href="#eth.dst">eth.dst</a>
+							
+							<a class="list-group-item" href="#eth.hdr">eth.hdr</a>
+							
+							<a class="list-group-item" href="#eth.proto">eth.proto</a>
+							
+							<a class="list-group-item" href="#eth.src">eth.src</a>
+							
+							<a class="list-group-item" href="#eth.vlan">eth.vlan</a>
+							
 							<a class="list-group-item" href="#even">even</a>
 							
 							<a class="list-group-item" href="#expect-netscaler-cip">expect-netscaler-cip</a>
@@ -2260,6 +2272,26 @@
 							<a class="list-group-item" href="#internal.htx_blk.type">internal.htx_blk.type</a>
 							
 							<a class="list-group-item" href="#internal.strm.is_htx">internal.strm.is_htx</a>
+							
+							<a class="list-group-item" href="#ip.data">ip.data</a>
+							
+							<a class="list-group-item" href="#ip.df">ip.df</a>
+							
+							<a class="list-group-item" href="#ip.dst">ip.dst</a>
+							
+							<a class="list-group-item" href="#ip.fp">ip.fp</a>
+							
+							<a class="list-group-item" href="#ip.hdr">ip.hdr</a>
+							
+							<a class="list-group-item" href="#ip.proto">ip.proto</a>
+							
+							<a class="list-group-item" href="#ip.src">ip.src</a>
+							
+							<a class="list-group-item" href="#ip.tos">ip.tos</a>
+							
+							<a class="list-group-item" href="#ip.ttl">ip.ttl</a>
+							
+							<a class="list-group-item" href="#ip.ver">ip.ver</a>
 							
 							<a class="list-group-item" href="#ipmask">ipmask</a>
 							
@@ -4192,6 +4224,30 @@
 							
 							<a class="list-group-item" href="#tcp-ut (Server and default-server options)">tcp-ut (Server and default-server options)</a>
 							
+							<a class="list-group-item" href="#tcp.dst">tcp.dst</a>
+							
+							<a class="list-group-item" href="#tcp.flags">tcp.flags</a>
+							
+							<a class="list-group-item" href="#tcp.options.mss">tcp.options.mss</a>
+							
+							<a class="list-group-item" href="#tcp.options.sack">tcp.options.sack</a>
+							
+							<a class="list-group-item" href="#tcp.options.tsopt">tcp.options.tsopt</a>
+							
+							<a class="list-group-item" href="#tcp.options.tsval">tcp.options.tsval</a>
+							
+							<a class="list-group-item" href="#tcp.options.wscale">tcp.options.wscale</a>
+							
+							<a class="list-group-item" href="#tcp.options.wsopt">tcp.options.wsopt</a>
+							
+							<a class="list-group-item" href="#tcp.options_list">tcp.options_list</a>
+							
+							<a class="list-group-item" href="#tcp.seq">tcp.seq</a>
+							
+							<a class="list-group-item" href="#tcp.src">tcp.src</a>
+							
+							<a class="list-group-item" href="#tcp.win">tcp.win</a>
+							
 							<a class="list-group-item" href="#term_events">term_events</a>
 							
 							<a class="list-group-item" href="#tfo (Bind options)">tfo (Bind options)</a>
@@ -4713,7 +4769,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4724,7 +4780,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-43</strong></p>
+							<p><strong>version 3.4-dev1-49</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -24514,6 +24570,12 @@ The following keywords are supported:
 <tr><td ><a href="#7-digest">digest(algorithm)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-div">div(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-djb2">djb2([avalanche])</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-eth.data">eth.data</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-eth.dst">eth.dst</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-eth.hdr">eth.hdr</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-eth.proto">eth.proto</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-eth.src">eth.src</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-eth.vlan">eth.vlan</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-even">even</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-field">field(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
@@ -24521,17 +24583,28 @@ The following keywords are supported:
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-hmac">hmac(algorithm,key)</a></td><td >binary</td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-host_only">host_only</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-htonl">htonl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-http_date">http_date([offset[,unit]])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-iif">iif(true,false)</a></td><td >boolean</td><td >string</td></tr>
 <tr><td ><a href="#7-in_table">in_table([table])</a></td><td >any</td><td >boolean</td></tr>
+<tr><td ><a href="#7-ip.data">ip.data</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-ip.df">ip.df</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-ip.dst">ip.dst</a></td><td >binary</td><td >address</td></tr>
+<tr><td ><a href="#7-ip.fp">ip.fp</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-ip.hdr">ip.hdr</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-ip.proto">ip.proto</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-ip.src">ip.src</a></td><td >binary</td><td >address</td></tr>
+<tr><td ><a href="#7-ip.tos">ip.tos</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-ip.ttl">ip.ttl</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-jwt_verify_cert">jwt_verify_cert(alg,cert)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-language">language(value[,default])</a></td><td >string</td><td >string</td></tr>
@@ -24548,11 +24621,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-param">param(name[,delim])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-port_only">port_only</a></td><td >string</td><td >integer</td></tr>
@@ -24569,11 +24642,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_out_rate">table_bytes_out_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24590,11 +24663,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_rate">table_http_err_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_fail_cnt">table_http_fail_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24611,7 +24684,19 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.dst">tcp.dst</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.flags">tcp.flags</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options.mss">tcp.options.mss</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options.sack">tcp.options.sack</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-tcp.options.tsopt">tcp.options.tsopt</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options.tsval">tcp.options.tsval</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options.wscale">tcp.options.wscale</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options.wsopt">tcp.options.wsopt</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.options_list">tcp.options_list</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-tcp.seq">tcp.seq</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
@@ -24624,6 +24709,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-utime">utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-when">when(condition)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-word">word(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-wt6">wt6([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-x509_v_err_str">x509_v_err_str</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-xor">xor(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -24894,6 +24980,36 @@ mostly intended for debugging, but can be used as a stick-table entry to
 collect rough statistics. It must not be used for security purposes as a
 32-bit hash is trivial to break. See also &quot;<a href="#crc32">crc32</a>&quot;, &quot;<a href="#sdbm">sdbm</a>&quot;, &quot;<a href="#wt6">wt6</a>&quot;, &quot;<a href="#crc32c">crc32c</a>&quot;,
 and the &quot;<a href="#hash-type">hash-type</a>&quot; directive.
+</pre><a class="anchor" name="eth.data"></a><a class="anchor" name="7-eth.data"></a><a class="anchor" name="7.3.1-eth.data"></a><a class="anchor" name="eth.data (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.data (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.data"></a><a href="#7.3.1-eth.data">eth.data</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It skips all the Ethernet header including possible VLANs and returns a block
+of binary data starting at the layer 3 protocol (usually IPv4 or IPv6). See
+also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; and &quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
+</pre><a class="anchor" name="eth.dst"></a><a class="anchor" name="7-eth.dst"></a><a class="anchor" name="7.3.1-eth.dst"></a><a class="anchor" name="eth.dst (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.dst (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.dst"></a><a href="#7.3.1-eth.dst">eth.dst</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It returns the 6 bytes of the Ethernet header corresponding to the
+destination address of the frame, as a binary block. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;
+and &quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
+</pre><a class="anchor" name="eth.hdr"></a><a class="anchor" name="7-eth.hdr"></a><a class="anchor" name="7.3.1-eth.hdr"></a><a class="anchor" name="eth.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.hdr (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.hdr"></a><a href="#7.3.1-eth.hdr">eth.hdr</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It trims anything past the Ethernet header but keeps possible VLANs, and
+returns this header as a block of binary data. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; and
+&quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
+</pre><a class="anchor" name="eth.proto"></a><a class="anchor" name="7-eth.proto"></a><a class="anchor" name="7.3.1-eth.proto"></a><a class="anchor" name="eth.proto (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.proto (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.proto"></a><a href="#7.3.1-eth.proto">eth.proto</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It returns the protocol number (also known as EtherType) found in a Ethernet
+header after any optional VLAN as an integer value. It should normally be
+either 0x800 for IPv4 or 0x86DD for IPv6. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; and
+&quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
+</pre><a class="anchor" name="eth.src"></a><a class="anchor" name="7-eth.src"></a><a class="anchor" name="7.3.1-eth.src"></a><a class="anchor" name="eth.src (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.src (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.src"></a><a href="#7.3.1-eth.src">eth.src</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It returns the 6 bytes of the Ethernet header corresponding to the source
+address of the frame, as a binary block. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; and
+&quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
+</pre><a class="anchor" name="eth.vlan"></a><a class="anchor" name="7-eth.vlan"></a><a class="anchor" name="7.3.1-eth.vlan"></a><a class="anchor" name="eth.vlan (Using ACLs and fetching samples)"></a><a class="anchor" name="eth.vlan (Converters)"></a><div class="keyword"><b><a class="anchor" name="eth.vlan"></a><a href="#7.3.1-eth.vlan">eth.vlan</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;2&quot;.
+It returns the last VLAN ID found in a Ethernet header as an integer value.
+See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; and &quot;<a href="#tcp-ss">tcp-ss</a>&quot;.
 </pre><a class="anchor" name="even"></a><a class="anchor" name="7-even"></a><a class="anchor" name="7.3.1-even"></a><a class="anchor" name="even (Using ACLs and fetching samples)"></a><a class="anchor" name="even (Converters)"></a><div class="keyword"><b><a class="anchor" name="even"></a><a href="#7.3.1-even">even</a></b></div><pre class="text">Returns a boolean TRUE if the input value of type signed integer is even
 otherwise returns FALSE. It is functionally equivalent to &quot;not,and(1),bool&quot;.
 </pre><a class="anchor" name="field"></a><a class="anchor" name="7-field"></a><a class="anchor" name="7.3.1-field"></a><a class="anchor" name="field (Using ACLs and fetching samples)"></a><a class="anchor" name="field (Converters)"></a><div class="keyword"><b><a class="anchor" name="field"></a><a href="#7.3.1-field">field</a></b>(<span style="color: #080">&lt;index&gt;</span>,<span style="color: #080">&lt;delimiters&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;count&gt;</span>]</span>)</div><pre class="text">Extracts the substring at the given index counting from the beginning
@@ -25005,6 +25121,104 @@ boolean false is returned. Otherwise a boolean true is returned. This can be
 used to verify the presence of a certain key in a table tracking some
 elements (e.g. whether or not a source IP address or an Authorization header
 was already seen).
+</pre><a class="anchor" name="ip.data"></a><a class="anchor" name="7-ip.data"></a><a class="anchor" name="7.3.1-ip.data"></a><a class="anchor" name="ip.data (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.data (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.data"></a><a href="#7.3.1-ip.data">ip.data</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It skips the IP header and any optional
+options or extensions, and returns a block of binary data starting at the
+transport protocol (usually TCP or UDP). See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;,
+and &quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.df"></a><a class="anchor" name="7-ip.df"></a><a class="anchor" name="7.3.1-ip.df"></a><a class="anchor" name="ip.df (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.df (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.df"></a><a href="#7.3.1-ip.df">ip.df</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns integer value 1 if the DF (don't
+fragment) flag is set in the IP header, 0 otherwise. IPv6 does not have a DF
+flag, and doesn't fragment by default so it always returns 1. See also
+&quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.dst"></a><a class="anchor" name="7-ip.dst"></a><a class="anchor" name="7.3.1-ip.dst"></a><a class="anchor" name="ip.dst (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.dst (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.dst"></a><a href="#7.3.1-ip.dst">ip.dst</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns the IPv4 or IPv6 destination
+address from the IPv4/v6 header. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.fp"></a><a class="anchor" name="7-ip.fp"></a><a class="anchor" name="7.3.1-ip.fp"></a><a class="anchor" name="ip.fp (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.fp (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.fp"></a><a href="#7.3.1-ip.fp">ip.fp</a></b>(<span style="color: #008">[<span style="color: #080">&lt;mode&gt;</span>]</span>)</div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It inspects various parts of the IP header
+and the TCP header to construct sort of a fingerprint of invariant parts that
+can be used to distinguish between multiple apparently identical hosts. The
+real-world use case is to refine the identification of misbehaving hosts
+between a shared IP address to avoid blocking legitimate users when only one
+is misbehaving and needs to be blocked. The converter builds a 7-byte binary
+block based on the input. The bytes of the fingerprint are arranged like
+this:
+  - byte 0: IP TOS field (see ip.tos)
+  - byte 1:
+    - bit 7: IPv6 (1) / IPv4 (0)
+    - bit 6: ip.df
+    - bit 5..4: 0:ip.ttl&lt;=32; 1:ip.ttl&lt;=64; 2:ip.ttl&lt;=128; 3:ip.ttl&lt;=255
+    - bit 3: IP options present (1) / absent (0)
+    - bit 2: TCP data present (1) / absent (0)
+    - bit 1: TCP.flags has CWR set (1) / cleared (0)
+    - bit 0: TCP.flags has ECE set (1) / cleared (0)
+  - byte 2:
+    - bits 7..4: TCP header length in 4-byte words
+    - bits 3..0: TCP window scaling + 1 (1..15) / 0 (no WS advertised)
+  - byte 3..4: tcp.win
+  - byte 5..6: tcp.options.mss, or zero if absent
+
+When the &lt;mode&gt; argument is not set or is zero, the fingerprint is solely
+made of the 7 bytes described above. When the &lt;mode&gt; is 1, it starts by the
+7-byte block above, and is followed by the list of TCP option kinds, for 0
+to 40 extra bytes, as returned by &quot;<a href="#tcp.options_list">tcp.options_list</a>&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>frontend test
+    mode http
+    bind :4445 tcp-ss 1
+    tcp-request connection set-var(sess.syn) fc_saved_syn
+    http-request return status 200 content-type text/plain lf-string \
+          &quot;src=%[var(sess.syn),ip.src] fp=%[var(sess.syn),ip.fp,hex]\n&quot;
+</code></pre>
+</div><pre class="text">See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, &quot;<a href="#eth.data">eth.data</a>&quot;, &quot;<a href="#ip.df">ip.df</a>&quot;, &quot;<a href="#ip.ttl">ip.ttl</a>&quot;, &quot;<a href="#tcp.win">tcp.win</a>&quot;,
+         &quot;<a href="#tcp.options.mss">tcp.options.mss</a>&quot;, and &quot;<a href="#tcp.options_list">tcp.options_list</a>&quot;.
+</pre><a class="anchor" name="ip.hdr"></a><a class="anchor" name="7-ip.hdr"></a><a class="anchor" name="7.3.1-ip.hdr"></a><a class="anchor" name="ip.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.hdr (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.hdr"></a><a href="#7.3.1-ip.hdr">ip.hdr</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns a block of binary data starting
+with the IP header and stopping after the last option or extension, and
+before the transport protocol header. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.proto"></a><a class="anchor" name="7-ip.proto"></a><a class="anchor" name="7.3.1-ip.proto"></a><a class="anchor" name="ip.proto (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.proto (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.proto"></a><a href="#7.3.1-ip.proto">ip.proto</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns the transport protocol number,
+usually 6 for TCP or 17 for UDP. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.src"></a><a class="anchor" name="7-ip.src"></a><a class="anchor" name="7.3.1-ip.src"></a><a class="anchor" name="ip.src (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.src (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.src"></a><a href="#7.3.1-ip.src">ip.src</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns the IPv4 or IPv6 source address
+from the IPv4/v6 header. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.tos"></a><a class="anchor" name="7-ip.tos"></a><a class="anchor" name="7.3.1-ip.tos"></a><a class="anchor" name="ip.tos (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.tos (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.tos"></a><a href="#7.3.1-ip.tos">ip.tos</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. It returns an integer corresponding to the
+value of the type-of-service (TOS) field in the IPv4 header or traffic class
+(TC) field in the IPv6 header. Note that in the modern internet, this field
+most often contains a DSCP (Differentiated Services Codepoint) value in the
+6 upper bits and the two lower are either not used, or used by IP ECN. Please
+refer to RFC2474 and RFC8436 for DSCP values, and RFC3168 for IP ECN fields.
+See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.ttl"></a><a class="anchor" name="7-ip.ttl"></a><a class="anchor" name="7.3.1-ip.ttl"></a><a class="anchor" name="ip.ttl (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.ttl (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.ttl"></a><a href="#7.3.1-ip.ttl">ip.ttl</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. This returns an integer corresponding to
+the TTL (Time To Live) or HL (Hop Limit) field in the IPv4/IPv6 header. This
+value is usually preset to a fixed value and decremented by each router that
+the packet crosses. It can help infer how far a client connects from when the
+initial value is known. Note that most modern operating systems start with an
+initial value of 64. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#eth.data">eth.data</a>&quot;.
+</pre><a class="anchor" name="ip.ver"></a><a class="anchor" name="7-ip.ver"></a><a class="anchor" name="7.3.1-ip.ver"></a><a class="anchor" name="ip.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="ip.ver (Converters)"></a><div class="keyword"><b><a class="anchor" name="ip.ver"></a><a href="#7.3.1-ip.ver">ip.ver</a></b></div><pre class="text">This is used with an input sample representing a binary Ethernet frame, as
+returned by &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot; combined with the &quot;<a href="#tcp-ss">tcp-ss</a>&quot; bind option set to &quot;1&quot;,
+or with the output of &quot;<a href="#eth.data">eth.data</a>&quot;. This returns the IP version from the IP
+header, normally either 4 or 6. Note that this doesn't check whether the
+protocol number in the upper layer Ethernet frame matches, but since this is
+expected to be used with valid packets, it is expected that the operating
+system has already verified this. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#eth.data">eth.data</a>&quot;.
 </pre><a class="anchor" name="ipmask"></a><a class="anchor" name="7-ipmask"></a><a class="anchor" name="7.3.1-ipmask"></a><a class="anchor" name="ipmask (Using ACLs and fetching samples)"></a><a class="anchor" name="ipmask (Converters)"></a><div class="keyword"><b><a class="anchor" name="ipmask"></a><a href="#7.3.1-ipmask">ipmask</a></b>(<span style="color: #080">&lt;mask4&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;mask6&gt;</span>]</span>)</div><pre class="text">Apply a mask to an IP address, and use the result for lookups and storage.
 This can be used to make all hosts within a certain mask to share the same
 table entries and as such use the same server. The mask4 can be passed in
@@ -26071,6 +26285,64 @@ value which is returned by &quot;show table&quot; on the CLI). This may sometime
 more suited for layer7 tracking. It can be used to tell a server how many
 concurrent connections there are from a given address for example. See also
 the sc_trackers sample fetch keyword.
+</pre><a class="anchor" name="tcp.dst"></a><a class="anchor" name="7-tcp.dst"></a><a class="anchor" name="7.3.1-tcp.dst"></a><a class="anchor" name="tcp.dst (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.dst (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.dst"></a><a href="#7.3.1-tcp.dst">tcp.dst</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer representing the destination
+port present in the TCP header. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.flags"></a><a class="anchor" name="7-tcp.flags"></a><a class="anchor" name="7.3.1-tcp.flags"></a><a class="anchor" name="tcp.flags (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.flags (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.flags"></a><a href="#7.3.1-tcp.flags">tcp.flags</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer representing the TCP flags
+from this TCP header. All 8 flags from FIN to CWR are retrieved. Each flag
+may be tested using the &quot;and()&quot; converter. Please refer to RFC9293 for the
+value of each flag. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.options.mss"></a><a class="anchor" name="7-tcp.options.mss"></a><a class="anchor" name="7.3.1-tcp.options.mss"></a><a class="anchor" name="tcp.options.mss (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.mss (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.mss"></a><a href="#7.3.1-tcp.options.mss">tcp.options.mss</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;MSS&quot;, and if found,
+it returns an integer value corresponding to the advertised value in that
+option, otherwise zero. The MSS is the Maximum Segment Size and indicates the
+largest segment the peer may receive, in bytes. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;,
+&quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.options.sack"></a><a class="anchor" name="7-tcp.options.sack"></a><a class="anchor" name="7.3.1-tcp.options.sack"></a><a class="anchor" name="tcp.options.sack (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.sack (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.sack"></a><a href="#7.3.1-tcp.options.sack">tcp.options.sack</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;Sack-Permitted&quot;,
+and if found, returns 1, otherwise zero. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;,
+and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.options.tsopt"></a><a class="anchor" name="7-tcp.options.tsopt"></a><a class="anchor" name="7.3.1-tcp.options.tsopt"></a><a class="anchor" name="tcp.options.tsopt (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.tsopt (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.tsopt"></a><a href="#7.3.1-tcp.options.tsopt">tcp.options.tsopt</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;Timestamp&quot;, and if
+found, returns 1, otherwise zero. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and
+&quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.options.tsval"></a><a class="anchor" name="7-tcp.options.tsval"></a><a class="anchor" name="7.3.1-tcp.options.tsval"></a><a class="anchor" name="tcp.options.tsval (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.tsval (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.tsval"></a><a href="#7.3.1-tcp.options.tsval">tcp.options.tsval</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;Timestamp&quot;, and if
+found, returns the timestamp value emitted by the peer, otherwise does not
+return anything. Note that timestamps are 32-bit unsigned values with no
+particular unit that only the peer decides on, and timestamps are expected to
+be independent between different connections. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;,
+&quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.options.wscale"></a><a class="anchor" name="7-tcp.options.wscale"></a><a class="anchor" name="7.3.1-tcp.options.wscale"></a><a class="anchor" name="tcp.options.wscale (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.wscale (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.wscale"></a><a href="#7.3.1-tcp.options.wscale">tcp.options.wscale</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;Window Scale&quot;, and
+if found, returns the window scaling value emitted by the peer, otherwise
+zero. Note that values are not expected to be beyond 14 though no technical
+limitation prevents them from being sent. In order to detect if the window
+scale option was used, please use &quot;<a href="#tcp.options.wsopt">tcp.options.wsopt</a>&quot;. See also &quot;<a href="#tcp-ss">tcp-ss</a>&quot;,
+&quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#ip.data">ip.data</a>&quot;, and &quot;<a href="#tcp.options.wsopt">tcp.options.wsopt</a>&quot;.
+</pre><a class="anchor" name="tcp.options.wsopt"></a><a class="anchor" name="7-tcp.options.wsopt"></a><a class="anchor" name="7.3.1-tcp.options.wsopt"></a><a class="anchor" name="tcp.options.wsopt (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options.wsopt (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options.wsopt"></a><a href="#7.3.1-tcp.options.wsopt">tcp.options.wsopt</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It looks for a TCP option of kind &quot;Window Scale&quot;, and
+if found, returns 1 otherwise 0. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, &quot;<a href="#ip.data">ip.data</a>&quot;
+&quot;<a href="#tcp.options.wscale">tcp.options.wscale</a>&quot;.
+</pre><a class="anchor" name="tcp.options_list"></a><a class="anchor" name="7-tcp.options_list"></a><a class="anchor" name="7.3.1-tcp.options_list"></a><a class="anchor" name="tcp.options_list (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.options_list (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.options_list"></a><a href="#7.3.1-tcp.options_list">tcp.options_list</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It builds a binary sequence of all TCP option kinds in
+the same order as they appear in the TCP header. It can produce from 0 to 60
+bytes (in the worst case). The End-of-options is not emitted. See also
+&quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.seq"></a><a class="anchor" name="7-tcp.seq"></a><a class="anchor" name="7.3.1-tcp.seq"></a><a class="anchor" name="tcp.seq (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.seq (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.seq"></a><a href="#7.3.1-tcp.seq">tcp.seq</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer representing the sequence number
+used by the peer in the TCP header. Sequence numbers are 32-bit unsigned
+values. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.src"></a><a class="anchor" name="7-tcp.src"></a><a class="anchor" name="7.3.1-tcp.src"></a><a class="anchor" name="tcp.src (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.src (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.src"></a><a href="#7.3.1-tcp.src">tcp.src</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer representing the source port
+present in the TCP header. See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
+</pre><a class="anchor" name="tcp.win"></a><a class="anchor" name="7-tcp.win"></a><a class="anchor" name="7.3.1-tcp.win"></a><a class="anchor" name="tcp.win (Using ACLs and fetching samples)"></a><a class="anchor" name="tcp.win (Converters)"></a><div class="keyword"><b><a class="anchor" name="tcp.win"></a><a href="#7.3.1-tcp.win">tcp.win</a></b></div><pre class="text">This is used with an input sample representing a binary TCP header, as
+returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer representing the window size
+advertised by the peer in the TCP header. The value is provided as-is, as a
+16-bit unsigned quantity, without applying the window scaling factor. See
+also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
 </pre><a class="anchor" name="ub64dec"></a><a class="anchor" name="7-ub64dec"></a><a class="anchor" name="7.3.1-ub64dec"></a><a class="anchor" name="ub64dec (Using ACLs and fetching samples)"></a><a class="anchor" name="ub64dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="ub64dec"></a><a href="#7.3.1-ub64dec">ub64dec</a></b></div><pre class="text">This converter is the base64url variant of b64dec converter. base64url
 encoding is the &quot;URL and Filename Safe Alphabet&quot; variant of base64 encoding.
 It is also the encoding used in JWT (JSON Web Token) standard.
@@ -27533,7 +27805,8 @@ manually separated and commented below):
   0204FFC40402080A9C231D680000000001030307 # MSS=65476, TS, SACK, WSCALE 7
 
 The &quot;bytes()&quot; converter helps extract specific fields from the packet. The
-be2dec() also permits to read chunks and emit them in integer form.
+be2dec() also permits to read chunks and emit them in integer form. For more
+accurate extraction, please refer to the &quot;eth.XXX&quot; converters.
 
 Example with IPv4 input:
 
@@ -27542,16 +27815,16 @@ Example with IPv4 input:
       bind :4445 tcp-ss 2
       tcp-request connection set-var(sess.syn) fc_saved_syn
       http-request return status 200 content-type text/plain lf-string \
-                   &quot;mac_dst=%[var(sess.syn),bytes(0,6),hex] \
-                    mac_src=%[var(sess.syn),bytes(6,6),hex] \
-                    proto=%[var(sess.syn),bytes(12,2),hex] \
-                    ipv4h=%[var(sess.syn),bytes(14,12),hex] \
-                    ipv4_src=%[var(sess.syn),bytes(26,4),be2dec(.,1)] \
-                    ipv4_dst=%[var(sess.syn),bytes(30,4),be2dec(.,1)] \
-                    tcp_spt=%[var(sess.syn),bytes(34,2),be2dec(,2)] \
-                    tcp_dpt=%[var(sess.syn),bytes(36,2),be2dec(,2)] \
-                    tcp_win=%[var(sess.syn),bytes(48,2),be2dec(,2)] \
-                    tcp_opt=%[var(sess.syn),bytes(54),hex]\n&quot;
+                   &quot;mac_dst=%[var(sess.syn),eth.dst,hex] \
+                    mac_src=%[var(sess.syn),eth.src,hex] \
+                    proto=%[var(sess.syn),eth.proto,bytes(6),be2hex(,2)] \
+                    ipv4h=%[var(sess.syn),eth.data,bytes(0,12),hex] \
+                    ipv4_src=%[var(sess.syn),eth.data,ip.src] \
+                    ipv4_dst=%[var(sess.syn),eth.data,ip.dst] \
+                    tcp_spt=%[var(sess.syn),eth.data,ip.data,tcp.src] \
+                    tcp_dpt=%[var(sess.syn),eth.data,ip.data,tcp.dst] \
+                    tcp_win=%[var(sess.syn),eth.data,ip.data,tcp.win] \
+                    tcp_opt=%[var(sess.syn),eth.data,ip.data,bytes(20),hex]\n&quot;
 
   $ curl '0:4445'
   mac_dst=000000000000 mac_src=000000000000 proto=0800 \
@@ -27559,7 +27832,8 @@ Example with IPv4 input:
   tcp_spt=43970 tcp_dpt=4445 tcp_win=65495 \
   tcp_opt=0204FFD70402080A01DC0D410000000001030307
 
-See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot; action, the &quot;<a href="#be2dec">be2dec</a>&quot;, &quot;<a href="#bytes">bytes</a>&quot; and &quot;<a href="#hex">hex</a>&quot; converters.
+See also the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot; action, the &quot;<a href="#be2dec">be2dec</a>&quot;, &quot;<a href="#bytes">bytes</a>&quot;, &quot;<a href="#hex">hex</a>&quot;, &quot;eth.XXX&quot;,
+         &quot;ip.XXX&quot;, and &quot;tcp.XXX&quot; converters.
 </pre><a class="anchor" name="fc_settings_streams_limit"></a><a class="anchor" name="7-fc_settings_streams_limit"></a><a class="anchor" name="7.3.3-fc_settings_streams_limit"></a><a class="anchor" name="fc_settings_streams_limit (Using ACLs and fetching samples)"></a><a class="anchor" name="fc_settings_streams_limit (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fc_settings_streams_limit"></a><a href="#7.3.3-fc_settings_streams_limit">fc_settings_streams_limit</a></b> : integer</div><pre class="text">Returns the maximum number of streams allowed on the frontend connection. For
 TCP and HTTP/1.1 connections, it is always 1. For other protocols, it depends
 on the settings negotiated with the client.
@@ -33992,7 +34266,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-43 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-49 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
