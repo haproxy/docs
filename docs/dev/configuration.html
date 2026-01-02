@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-49 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-53 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4769,7 +4769,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4780,7 +4780,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-49</strong></p>
+							<p><strong>version 3.4-dev1-53</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -25163,19 +25163,26 @@ this:
   - byte 3..4: tcp.win
   - byte 5..6: tcp.options.mss, or zero if absent
 
-When the &lt;mode&gt; argument is not set or is zero, the fingerprint is solely
-made of the 7 bytes described above. When the &lt;mode&gt; is 1, it starts by the
-7-byte block above, and is followed by the list of TCP option kinds, for 0
-to 40 extra bytes, as returned by &quot;<a href="#tcp.options_list">tcp.options_list</a>&quot;.
+The &lt;mode&gt; argument permits to append more information to the fingerprint. By
+default, when the &lt;mode&gt; argument is not set or is zero, the fingerprint is
+solely made of the 7 bytes described above. If &lt;mode&gt; is specified as another
+value, it then corresponds to the sum of the following values, and the
+respective components will be concatenated to the fingerprint, in the order
+below:
+  -   1: the received TTL value is appended to the fingerprint (1 byte)
+  -   2: the list of TCP option kinds, as returned by &quot;<a href="#tcp.options_list">tcp.options_list</a>&quot;,
+         made of 0 to 40 extra bytes, is appended to the fingerprint
+  -   4: the source IP address is appended to the fingerprint, which adds
+         4 bytes for IPv4 and 16 for IPv6.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>frontend test
+<div class="example-desc">Make a 12..24 bytes fingerprint using the base FP, the TTL and the source address (1+4=5):</div><code>frontend test
     mode http
     bind :4445 tcp-ss 1
     tcp-request connection set-var(sess.syn) fc_saved_syn
     http-request return status 200 content-type text/plain lf-string \
-          &quot;src=%[var(sess.syn),ip.src] fp=%[var(sess.syn),ip.fp,hex]\n&quot;
+          &quot;src=%[var(sess.syn),ip.src] fp=%[var(sess.syn),ip.fp(5),hex]\n&quot;
 </code></pre>
 </div><pre class="text">See also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, &quot;<a href="#eth.data">eth.data</a>&quot;, &quot;<a href="#ip.df">ip.df</a>&quot;, &quot;<a href="#ip.ttl">ip.ttl</a>&quot;, &quot;<a href="#tcp.win">tcp.win</a>&quot;,
          &quot;<a href="#tcp.options.mss">tcp.options.mss</a>&quot;, and &quot;<a href="#tcp.options_list">tcp.options_list</a>&quot;.
@@ -32967,7 +32974,7 @@ In a &quot;frontend&quot;, &quot;backend&quot; or &quot;listen&quot; section:
                which can represent a client identifier found in a request for
                instance.
 
-   * string [length &lt;len&gt;]
+   * string [len &lt;len&gt;]
                A table declared with &quot;type string&quot; will store substrings of
                up to &lt;len&gt; characters. If the string provided by the pattern
                extractor is larger than &lt;len&gt;, it will be truncated before
@@ -32977,7 +32984,7 @@ In a &quot;frontend&quot;, &quot;backend&quot; or &quot;listen&quot; section:
                limited to 32 characters. Increasing the length can have a
                non-negligible memory usage impact.
 
-   * binary [length &lt;len&gt;]
+   * binary [len &lt;len&gt;]
                A table declared with &quot;type binary&quot; will store binary blocks
                of &lt;len&gt; bytes. If the block provided by the pattern
                extractor is larger than &lt;len&gt;, it will be truncated before
@@ -34266,7 +34273,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-49 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-53 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
