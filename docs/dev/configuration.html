@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev1-60 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev1-66 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4769,7 +4769,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4780,7 +4780,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev1-60</strong></p>
+							<p><strong>version 3.4-dev1-66</strong></p>
 							<p>
 								2025/12/10<br>
 								
@@ -8094,6 +8094,17 @@ It currently accepts the following values :
 - per-core, each thread will be bound to all the hardware threads of one core.
 - per-group, each thread will be bound to all the hardware threads of the
   group. This is the default unless threads-per-core 1 is used in cpu-policy.
+  per-group accepts an optional argument, to specify how CPUs should be
+  allocated. When a list of CPUs is larger than the maximum allozed number
+  of CPUs per group and has to be split between multiple groups, an extra
+  option allows to choose how the groups will be bound to those CPUs:
+  - auto: each thread group will only be assigned a fair share of contiguous
+    CPU cores that are dedicated to it and not shared with other groups.
+    This is the default as it generally is more optimal.
+    be shared across two thread groups. This is the default.
+  - loose: each group will still be allowed to use any CPU in the list. This
+    generally causes more contention, but may sometimes help deal better
+    with parasitic loads running on the same CPUs.
 - auto, per-group will be used, unless threads-per-core 1 is used in
   cpu-policy, in which case per-core will be used. This is the default.
 - per-thread, that will bind one thread to one hardware thread only.
@@ -34273,7 +34284,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev1-60 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev1-66 &ndash; Configuration Manual<br>
 							<small>, 2025/12/10</small>
 						</div>
 					</div>
