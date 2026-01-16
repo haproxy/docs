@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev2-26 - Management Guide</title>
+		<title>HAProxy version 3.4-dev2-47 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -456,6 +456,10 @@
 							
 							<a class="list-group-item" href="#prompt (Master CLI commands)">prompt (Master CLI commands)</a>
 							
+							<a class="list-group-item" href="#publish">publish</a>
+							
+							<a class="list-group-item" href="#publish backend">publish backend</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-Q"><h4>Q</h4>
 								
@@ -655,6 +659,10 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-U"><h4>U</h4>
 								
+							<a class="list-group-item" href="#unpublish">unpublish</a>
+							
+							<a class="list-group-item" href="#unpublish backend">unpublish backend</a>
+							
 							<a class="list-group-item" href="#update">update</a>
 							
 							<a class="list-group-item" href="#update ssl">update ssl</a>
@@ -680,7 +688,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -691,7 +699,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.4-dev2-26</strong></p>
+							<p><strong>version 3.4-dev2-47</strong></p>
 							<p>
 								<br>
 								
@@ -3217,6 +3225,9 @@ followed by a space &quot;&gt; &quot;.
 The prompt mode is more suited to human users, the interactive mode to
 advanced scripts, and the non-interactive mode (default) to basic scripts.
 Note that the non-interactive mode is not available for the master socket.
+</pre><a class="anchor" name="publish"></a><a class="anchor" name="9-publish"></a><a class="anchor" name="9.3-publish"></a><a class="anchor" name="publish (Statistics and monitoring)"></a><a class="anchor" name="publish (Unix Socket commands)"></a><a class="anchor" name="publish backend"></a><a class="anchor" name="9-publish backend"></a><a class="anchor" name="9.3-publish backend"></a><a class="anchor" name="publish backend (Statistics and monitoring)"></a><a class="anchor" name="publish backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="publish backend"></a><a href="#9.3-publish%20backend">publish backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Activates content switching to a backend instance. This is the reverse
+operation of &quot;<a href="#unpublish%20backend">unpublish backend</a>&quot; command. This command is restricted and can
+only be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;.
 </pre><a class="anchor" name="quit"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="quit"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon"></a><a href="#9.3-set%20anon">set anon</a></b> <span style="color: #008">[on|off]</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>]</span></div><pre class="text">This command enables or disables the &quot;anonymized mode&quot; for the current CLI
 session, which replaces certain fields considered sensitive or confidential
@@ -3508,6 +3519,11 @@ Permission denied
 </div><a class="anchor" name="operator"></a><a class="anchor" name="9-operator"></a><a class="anchor" name="9.3-operator"></a><a class="anchor" name="operator (Statistics and monitoring)"></a><a class="anchor" name="operator (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="operator"></a><a href="#9.3-operator">operator</a></b></div><pre class="text">Decrease the CLI level of the current CLI session to operator. It can't be
 increased. It also drops expert and experimental mode. See also &quot;show cli
 level&quot;.
+</pre><a class="anchor" name="unpublish"></a><a class="anchor" name="9-unpublish"></a><a class="anchor" name="9.3-unpublish"></a><a class="anchor" name="unpublish (Statistics and monitoring)"></a><a class="anchor" name="unpublish (Unix Socket commands)"></a><a class="anchor" name="unpublish backend"></a><a class="anchor" name="9-unpublish backend"></a><a class="anchor" name="9.3-unpublish backend"></a><a class="anchor" name="unpublish backend (Statistics and monitoring)"></a><a class="anchor" name="unpublish backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="unpublish backend"></a><a href="#9.3-unpublish%20backend">unpublish backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Marks the backend as unqualified for future traffic selection. In effect,
+use_backend / default_backend rules which reference it are ignored and the
+next content switching rules are evaluated. Contrary to disabled backends,
+servers health checks remain active. This command is restricted and can only
+be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;.
 </pre><a class="anchor" name="user"></a><a class="anchor" name="9-user"></a><a class="anchor" name="9.3-user"></a><a class="anchor" name="user (Statistics and monitoring)"></a><a class="anchor" name="user (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="user"></a><a href="#9.3-user">user</a></b></div><pre class="text">Decrease the CLI level of the current CLI session to user. It can't be
 increased. It also drops expert and experimental mode. See also &quot;show cli
 level&quot;.
@@ -5769,7 +5785,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev2-26 &ndash; Management Guide<br>
+							HAProxy 3.4-dev2-47 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

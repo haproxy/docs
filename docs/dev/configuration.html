@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev2-26 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev2-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1393,6 +1393,10 @@
 							
 							<a class="list-group-item" href="#addr">addr</a>
 							
+							<a class="list-group-item" href="#aes_cbc_dec">aes_cbc_dec</a>
+							
+							<a class="list-group-item" href="#aes_cbc_enc">aes_cbc_enc</a>
+							
 							<a class="list-group-item" href="#aes_gcm_dec">aes_gcm_dec</a>
 							
 							<a class="list-group-item" href="#aes_gcm_enc">aes_gcm_enc</a>
@@ -2044,6 +2048,8 @@
 							
 							<a class="list-group-item" href="#fix_tag_value">fix_tag_value</a>
 							
+							<a class="list-group-item" href="#force-be-switch">force-be-switch</a>
+							
 							<a class="list-group-item" href="#force-cfg-parser-pause">force-cfg-parser-pause</a>
 							
 							<a class="list-group-item" href="#force-persist">force-persist</a>
@@ -2311,6 +2317,10 @@
 							<a class="list-group-item" href="#json_query">json_query</a>
 							
 							<a class="list-group-item" href="#jwt">jwt</a>
+							
+							<a class="list-group-item" href="#jwt_decrypt_cert">jwt_decrypt_cert</a>
+							
+							<a class="list-group-item" href="#jwt_decrypt_secret">jwt_decrypt_secret</a>
 							
 							<a class="list-group-item" href="#jwt_header_query">jwt_header_query</a>
 							
@@ -4769,7 +4779,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4780,7 +4790,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev2-26</strong></p>
+							<p><strong>version 3.4-dev2-47</strong></p>
 							<p>
 								2026/01/07<br>
 								
@@ -11106,6 +11116,7 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-errorloc303">errorloc303</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-error-log-format">error-log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-force-persist">force-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-force-be-switch">force-be-switch</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-filter">filter</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11113,8 +11124,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-http-check%20comment">http-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-http-check%20comment">http-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20connect">http-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20disable-on-404">http-check disable-on-404</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20expect">http-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11134,8 +11145,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-log-steps">log-steps</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-log-steps">log-steps</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-max-keep-alive-queue">max-keep-alive-queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-max-session-srv-conns">max-session-srv-conns</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-maxconn">maxconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11155,8 +11166,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-buffer-request"><span class="pull-right"><span>(*)</span></span>option http-buffer-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20http-drop-request-trailers"><span class="pull-right"><span>(*)</span></span>option http-drop-request-trailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20http-drop-request-trailers"><span class="pull-right"><span>(*)</span></span>option http-drop-request-trailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-drop-response-trailers"><span class="pull-right"><span>(*)</span></span>option http-drop-response-trailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20http-ignore-probes"><span class="pull-right"><span>(*)</span></span>option http-ignore-probes</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20http-keep-alive"><span class="pull-right"><span>(*)</span></span>option http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11176,8 +11187,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20mysql-check">option mysql-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20nolinger"><span class="pull-right"><span>(*)</span></span>option nolinger</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20nolinger"><span class="pull-right"><span>(*)</span></span>option nolinger</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20originalto">option originalto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20persist"><span class="pull-right"><span>(*)</span></span>option persist</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20pgsql-check">option pgsql-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11197,8 +11208,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcplog">option tcplog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-option%20transparent"><span class="pull-right"><span class="label label-warning">(deprecated)</span><span>(*)</span></span>option transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20transparent"><span class="pull-right"><span class="label label-warning">(deprecated)</span><span>(*)</span></span>option transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-external-check%20command">external-check command</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-external-check%20path">external-check path</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11218,8 +11229,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20realm">stats realm</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20refresh">stats refresh</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11239,8 +11250,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20set-var">tcp-check set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20unset-var">tcp-check unset-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-request%20connection">tcp-request connection</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11260,8 +11271,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-transparent"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-unique-id-format">unique-id-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-unique-id-header">unique-id-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -12326,6 +12337,9 @@ May be used in the following contexts: tcp, http
 &quot;<a href="#use_backend">use_backend</a>&quot; keyword, it is often useful to indicate which backend will be
 used when no rule has matched. It generally is the dynamic backend which
 will catch all undetermined requests.
+
+If a backend is disabled or unpublished, default_backend rules targetting it
+will be ignored and stream processing will remain on the original proxy.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -12365,7 +12379,11 @@ created in the &quot;stopped&quot; state and will appear as such in the statisti
 will not receive any traffic nor will it send any health-checks or logs. It
 is possible to disable many instances at once by adding the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 keyword in a &quot;defaults&quot; section.
-</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">enabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#enabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#enabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#enabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
+
+By default, a disabled backend cannot be selected for content-switching.
+However, a portion of the traffic can ignore this when &quot;<a href="#force-be-switch">force-be-switch</a>&quot; is
+used.
+</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">enabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#enabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#enabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#enabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#force-be-switch">force-be-switch</a>&quot;</div>
 <a class="anchor" name="dispatch"></a><a class="anchor" name="4-dispatch"></a><a class="anchor" name="4.2-dispatch"></a><a class="anchor" name="dispatch (Proxies)"></a><a class="anchor" name="dispatch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="dispatch"></a><a href="#4.2-dispatch">dispatch</a></b> <span style="color: #080">&lt;address&gt;</span>:<span style="color: #080">&lt;port&gt;</span>   <span class="label label-warning">(deprecated)</span></div><pre class="text">Set a default server address
 
 May be used in the following contexts: tcp, http
@@ -12712,6 +12730,16 @@ The forced persistence is enabled when an &quot;if&quot; condition is met, or un
 &quot;unless&quot; condition is met. The final redispatch is always disabled when this
 is used.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20redispatch">option redispatch</a>&quot;, &quot;<a href="#ignore-persist">ignore-persist</a>&quot;, &quot;<a href="#option%20persist">persist</a>&quot;, and <a href="#7">section 7</a> about ACL usage.</div>
+<a class="anchor" name="force-be-switch"></a><a class="anchor" name="4-force-be-switch"></a><a class="anchor" name="4.2-force-be-switch"></a><a class="anchor" name="force-be-switch (Proxies)"></a><a class="anchor" name="force-be-switch (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="force-be-switch"></a><a href="#4.2-force-be-switch">force-be-switch</a></b> <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span></div><pre class="text">Allow content switching to select a backend instance even if it is disabled
+or unpublished. This rule can be used by admins to test traffic to services
+prior to expose them to the outside world.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
+</table></div>
+<div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
 <a class="anchor" name="filter"></a><a class="anchor" name="4-filter"></a><a class="anchor" name="4.2-filter"></a><a class="anchor" name="filter (Proxies)"></a><a class="anchor" name="filter (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter"></a><a href="#4.2-filter">filter</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[param*]</span></div><pre class="text">Add the filter &lt;name&gt; in the filter list attached to the proxy.
 
 May be used in the following contexts: tcp, http
@@ -19426,14 +19454,17 @@ some payload.
 
 There may be as many &quot;<a href="#use_backend">use_backend</a>&quot; rules as desired. All of these rules are
 evaluated in their declaration order, and the first one which matches will
-assign the backend.
+assign the backend. This is even the case if the backend is considered as
+down. However, if a matching rule targets a disabled or unpublished backend,
+it is ignored instead and rules evaluation continue.
 
 In the first form, the backend will be used if the condition is met. In the
 second form, the backend will be used if the condition is not met. If no
-condition is valid, the backend defined with &quot;<a href="#default_backend">default_backend</a>&quot; will be used.
-If no default backend is defined, either the servers in the same section are
-used (in case of a &quot;listen&quot; section) or, in case of a frontend, no server is
-used and a 503 service unavailable response is returned.
+condition is valid, the backend defined with &quot;<a href="#default_backend">default_backend</a>&quot; will be used
+unless it is disabled or unpublished. If no default backend is available,
+either the servers in the same section are used (in case of a &quot;listen&quot;
+section) or, in case of a frontend, no server is used and a 503 service
+unavailable response is returned.
 
 Note that it is possible to switch from a TCP frontend to an HTTP backend. In
 this case, either the frontend has already checked that the protocol is HTTP,
@@ -24555,6 +24586,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-51d.single">51d.single(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-add">add(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-add_item">add_item(delim[,var[,suff]])</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-aes_cbc_dec">aes_cbc_dec(bits,nonce,key[,&lt;aad&gt;])</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-aes_cbc_enc">aes_cbc_enc(bits,nonce,key[,&lt;aad&gt;])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-aes_gcm_dec">aes_gcm_dec(bits,nonce,key,aead_tag[,aad])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-aes_gcm_enc">aes_gcm_enc(bits,nonce,key,aead_tag[,aad])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-and">and(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -24570,9 +24603,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-capture-res">capture-res(id)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-concat">concat([start[,var[,end]]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-crc32">crc32([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-da-csv-conv">da-csv-conv(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-date">date</a></td><td >string</td><td >integer</td></tr>
@@ -24591,9 +24624,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-hmac">hmac(algorithm,key)</a></td><td >binary</td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-host_only">host_only</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-htonl">htonl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-http_date">http_date([offset[,unit]])</a></td><td >integer</td><td >string</td></tr>
@@ -24612,9 +24645,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-jwt_decrypt_cert">jwt_decrypt_cert(&lt;cert&gt;)</a></td><td >string</td><td >binary</td></tr>
+<tr><td ><a href="#7-jwt_decrypt_secret">jwt_decrypt_secret(&lt;secret&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-jwt_verify_cert">jwt_verify_cert(alg,cert)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-language">language(value[,default])</a></td><td >string</td><td >string</td></tr>
@@ -24631,11 +24666,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-param">param(name[,delim])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-port_only">port_only</a></td><td >string</td><td >integer</td></tr>
@@ -24652,11 +24687,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-strcmp">strcmp(var)</a></td><td >string</td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sub">sub(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_in_rate">table_bytes_in_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_bytes_out_rate">table_bytes_out_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24673,11 +24708,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt0">table_gpt0([table])</a></td><td >any</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_http_err_cnt">table_http_err_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_err_rate">table_http_err_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_fail_cnt">table_http_fail_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -24694,11 +24729,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-tcp.dst">tcp.dst</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.flags">tcp.flags</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options.mss">tcp.options.mss</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options.sack">tcp.options.sack</a></td><td >binary</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-tcp.options.tsopt">tcp.options.tsopt</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options.tsval">tcp.options.tsval</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options.wscale">tcp.options.wscale</a></td><td >binary</td><td >integer</td></tr>
@@ -24715,11 +24750,11 @@ The following keywords are supported:
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-us_utime">us_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-utime">utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-when">when(condition)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-word">word(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-wt6">wt6([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-x509_v_err_str">x509_v_err_str</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-xor">xor(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -24775,6 +24810,31 @@ http-request set-header x-tagged %[var(req.tagged)]
 
 http-request set-var(req.tagged) 'var(req.tagged),add_item(&quot;,&quot;,req.score1),add_item(&quot;,&quot;,req.score2)'
 http-request set-var(req.tagged) 'var(req.tagged),add_item(&quot;,&quot;,,(site1))' if src,in_table(site1)
+</code></pre>
+</div><a class="anchor" name="aes_cbc_dec"></a><a class="anchor" name="7-aes_cbc_dec"></a><a class="anchor" name="7.3.1-aes_cbc_dec"></a><a class="anchor" name="aes_cbc_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_cbc_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_cbc_dec"></a><a href="#7.3.1-aes_cbc_dec">aes_cbc_dec</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;aad&gt;</span>]</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-CBC, AES192-CBC or AES256-CBC
+algorithm, depending on the &lt;bits&gt; parameter. All other parameters need to be
+base64 encoded and the returned result is in raw byte format. The &lt;aad&gt;
+parameter is optional. If the &lt;aad&gt; validation fails, the converter doesn't
+return any data.
+The &lt;nonce&gt;, &lt;key&gt; and &lt;aad&gt; can either be strings or variables. This
+converter requires at least OpenSSL 1.0.1.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-response set-header X-Decrypted-Text %[var(txn.enc),\
+  aes_cbc_dec(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==)]
+</code></pre>
+</div><a class="anchor" name="aes_cbc_enc"></a><a class="anchor" name="7-aes_cbc_enc"></a><a class="anchor" name="7.3.1-aes_cbc_enc"></a><a class="anchor" name="aes_cbc_enc (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_cbc_enc (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_cbc_enc"></a><a href="#7.3.1-aes_cbc_enc">aes_cbc_enc</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;aad&gt;</span>]</span>)</div><pre class="text">Encrypts the raw byte input using the AES128-CBC, AES192-CBC or AES256-CBC
+algorithm, depending on the &lt;bits&gt; parameter. &lt;nonce&gt;, &lt;key&gt; and &lt;aad&gt;
+parameters must be base64 encoded.
+The &lt;aad&gt; parameter is optional. The returned result is in raw byte format.
+The &lt;nonce&gt;, &lt;key&gt; and &lt;aad&gt; can either be strings or variables. This
+converter requires at least OpenSSL 1.0.1.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-response set-header X-Encrypted-Text %[var(txn.plain),\
+  aes_cbc_enc(128,txn.nonce,Zm9vb2Zvb29mb29wZm9vbw==)]
 </code></pre>
 </div><a class="anchor" name="aes_gcm_dec"></a><a class="anchor" name="7-aes_gcm_dec"></a><a class="anchor" name="7.3.1-aes_gcm_dec"></a><a class="anchor" name="aes_gcm_dec (Using ACLs and fetching samples)"></a><a class="anchor" name="aes_gcm_dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="aes_gcm_dec"></a><a href="#7.3.1-aes_gcm_dec">aes_gcm_dec</a></b>(<span style="color: #080">&lt;bits&gt;</span>,<span style="color: #080">&lt;nonce&gt;</span>,<span style="color: #080">&lt;key&gt;</span>,<span style="color: #080">&lt;aead_tag&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;aad&gt;</span>]</span>)</div><pre class="text">Decrypts the raw byte input using the AES128-GCM, AES192-GCM or AES256-GCM
 algorithm, depending on the &lt;bits&gt; parameter. All other parameters need to be
@@ -25320,19 +25380,69 @@ http-request set-var(txn.pay_boolean_false) req.body,json_query('$.boolean-false
 <span class="comment"># get the value of the key 'iss' from a JWT Bearer token</span>
 http-request set-var(txn.token_payload) req.hdr(Authorization),word(2,.),ub64dec,json_query('$.iss')
 </code></pre>
+</div><a class="anchor" name="jwt_decrypt_cert"></a><a class="anchor" name="7-jwt_decrypt_cert"></a><a class="anchor" name="7.3.1-jwt_decrypt_cert"></a><a class="anchor" name="jwt_decrypt_cert (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_decrypt_cert (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_decrypt_cert"></a><a href="#7.3.1-jwt_decrypt_cert">jwt_decrypt_cert</a></b>(<span style="color: #080">&lt;cert&gt;</span>)</div><pre class="text">Performs a signature validation of a JSON Web Token following the JSON Web
+Encryption format (see RFC 7516) given in input and return its content
+decrypted thanks to the certificate provided.
+The &lt;cert&gt; parameter must be a path to an already loaded certificate (that
+can be dumped via the &quot;dump ssl cert&quot; CLI command). The certificate must have
+its &quot;<a href="#jwt">jwt</a>&quot; option explicitely set to &quot;<a href="#on">on</a>&quot; (see &quot;<a href="#jwt">jwt</a>&quot; crt-list option). It can
+be provided directly or via a variable.
+The only tokens managed yet are the ones using the Compact Serialization
+format (five dot-separated base64-url encoded strings).
+
+This converter can be used for tokens that have an algorithm (&quot;alg&quot; field of
+the JOSE header) among the following: RSA1_5, RSA-OAEP or RSA-OAEP-256.
+
+The JWE token must be provided base64url-encoded and the output will be
+provided &quot;raw&quot;. If an error happens during token parsing, signature
+verification or content decryption, an empty string will be returned.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Get a JWT from the authorization header, put its decrypted content in an</span>
+<span class="comment"># HTTP header</span>
+http-request set-var(txn.bearer) http_auth_bearer
+http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_cert(&quot;/foo/bar.pem&quot;)]
+</code></pre>
+</div><a class="anchor" name="jwt_decrypt_secret"></a><a class="anchor" name="7-jwt_decrypt_secret"></a><a class="anchor" name="7.3.1-jwt_decrypt_secret"></a><a class="anchor" name="jwt_decrypt_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_decrypt_secret (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_decrypt_secret"></a><a href="#7.3.1-jwt_decrypt_secret">jwt_decrypt_secret</a></b>(<span style="color: #080">&lt;secret&gt;</span>)</div><pre class="text">Performs a signature validation of a JSON Web Token following the JSON Web
+Encryption format (see RFC 7516) given in input and return its content
+decrypted thanks to the base64-encoded secret provided. The secret can be
+given as a string or via a variable.
+The only tokens managed yet are the ones using the Compact Serialization
+format (five dot-separated base64-url encoded strings).
+
+This converter can be used for tokens that have an algorithm (&quot;alg&quot; field of
+the JOSE header) among the following: A128KW, A192KW, A256KW, A128GCMKW,
+A192GCMKW, A256GCMKW, dir. Please note that the A128KW and A192KW algorithms
+are not available on AWS-LC and decryption will not work.
+
+The JWE token must be provided base64url-encoded and the output will be
+provided &quot;raw&quot;. If an error happens during token parsing, signature
+verification or content decryption, an empty string will be returned.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Get a JWT from the authorization header, put its decrypted content in an</span>
+<span class="comment"># HTTP header</span>
+http-request set-var(txn.bearer) http_auth_bearer
+http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_secret(&quot;GawgguFyGrWKav7AX4VKUg&quot;)]
+</code></pre>
 </div><a class="anchor" name="jwt_header_query"></a><a class="anchor" name="7-jwt_header_query"></a><a class="anchor" name="7.3.1-jwt_header_query"></a><a class="anchor" name="jwt_header_query (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_header_query (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_header_query"></a><a href="#7.3.1-jwt_header_query">jwt_header_query</a></b>(<span style="color: #008">[<span style="color: #080">&lt;json_path&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;output_type&gt;</span>]</span>]</span>)</div><pre class="text">When given a JSON Web Token (JWT) in input, either returns the decoded header
 part of the token (the first base64-url encoded part of the JWT) if no
 parameter is given, or performs a json_query on the decoded header part of
 the token. See &quot;<a href="#json_query">json_query</a>&quot; converter for details about the accepted
 json_path and output_type parameters.
+This converter can be used with tokens that are either JWS or JWE tokens as
+long as they are in the Compact Serialization format.
 
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
-</pre><a class="anchor" name="jwt_payload_query"></a><a class="anchor" name="7-jwt_payload_query"></a><a class="anchor" name="7.3.1-jwt_payload_query"></a><a class="anchor" name="jwt_payload_query (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_payload_query (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_payload_query"></a><a href="#7.3.1-jwt_payload_query">jwt_payload_query</a></b>(<span style="color: #008">[<span style="color: #080">&lt;json_path&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;output_type&gt;</span>]</span>]</span>)</div><pre class="text">When given a JSON Web Token (JWT) in input, either returns the decoded
-payload part of the token (the second base64-url encoded part of the JWT) if
-no parameter is given, or performs a json_query on the decoded payload part
-of the token. See &quot;<a href="#json_query">json_query</a>&quot; converter for details about the accepted
-json_path and output_type parameters.
+</pre><a class="anchor" name="jwt_payload_query"></a><a class="anchor" name="7-jwt_payload_query"></a><a class="anchor" name="7.3.1-jwt_payload_query"></a><a class="anchor" name="jwt_payload_query (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_payload_query (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_payload_query"></a><a href="#7.3.1-jwt_payload_query">jwt_payload_query</a></b>(<span style="color: #008">[<span style="color: #080">&lt;json_path&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;output_type&gt;</span>]</span>]</span>)</div><pre class="text">When given a JSON Web Token (JWT) of the JSON Web Signed (JWS) format in
+input, either returns the decoded payload part of the token (the second
+base64-url encoded part of the JWT) if no parameter is given, or performs a
+json_query on the decoded payload part of the token. See &quot;<a href="#json_query">json_query</a>&quot;
+converter for details about the accepted json_path and output_type
+parameters.
 
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
@@ -34155,8 +34265,9 @@ the issuer certificate that you provided is valid.
 A more precise error message might also be displayed between parenthesis
 after the &quot;generic&quot; error message. It can happen for &quot;OCSP response check
 failure&quot; or &quot;Error during insertion&quot; errors.
-</pre><a class="anchor" name="jwt"></a><a class="anchor" name="12-jwt"></a><a class="anchor" name="12.7.1-jwt"></a><a class="anchor" name="jwt (Other sections)"></a><a class="anchor" name="jwt (Load options)"></a><div class="keyword"><b><a class="anchor" name="jwt"></a><a href="#12.7.1-jwt">jwt</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Allow for this certificate to be used for JWT validation via the
-&quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot; converter when set to 'on'. Its value default to 'off'.
+</pre><a class="anchor" name="jwt"></a><a class="anchor" name="12-jwt"></a><a class="anchor" name="12.7.1-jwt"></a><a class="anchor" name="jwt (Other sections)"></a><a class="anchor" name="jwt (Load options)"></a><div class="keyword"><b><a class="anchor" name="jwt"></a><a href="#12.7.1-jwt">jwt</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Allow for this certificate to be used for JWT validation or decryption via
+the &quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot; or &quot;<a href="#jwt_decrypt_cert">jwt_decrypt_cert</a>&quot; converters when set to 'on'. Its
+value defaults to 'off'.
 
 When set to 'on' for a given certificate, the CLI command &quot;del ssl cert&quot; will
 not work. In order to be deleted, a certificate must not be used, either for
@@ -34283,7 +34394,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev2-26 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev2-47 &ndash; Configuration Manual<br>
 							<small>, 2026/01/07</small>
 						</div>
 					</div>
