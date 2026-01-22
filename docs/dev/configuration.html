@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev2-64 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev2-72 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1845,6 +1845,8 @@
 							<a class="list-group-item" href="#dst_is_local">dst_is_local</a>
 							
 							<a class="list-group-item" href="#dst_port">dst_port</a>
+							
+							<a class="list-group-item" href="#dump_all_vars">dump_all_vars</a>
 							
 							<a class="list-group-item" href="#dynamic-cookie-key">dynamic-cookie-key</a>
 							
@@ -4779,7 +4781,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4790,7 +4792,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev2-64</strong></p>
+							<p><strong>version 3.4-dev2-72</strong></p>
 							<p>
 								2026/01/07<br>
 								
@@ -27267,7 +27269,89 @@ Versions 4 and 7 are supported.
 sample fetch fails, unless a default value is provided, in which case it will
 return it as a string. Empty strings are permitted. See <a href="#2.8">section 2.8</a> about
 variables for details.
-</pre><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.2-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.2-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
+</pre><a class="anchor" name="dump_all_vars"></a><a class="anchor" name="7-dump_all_vars"></a><a class="anchor" name="7.3.2-dump_all_vars"></a><a class="anchor" name="dump_all_vars (Using ACLs and fetching samples)"></a><a class="anchor" name="dump_all_vars (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="dump_all_vars"></a><a href="#7.3.2-dump_all_vars">dump_all_vars</a></b>(<span style="color: #008">[<span style="color: #080">&lt;scope&gt;</span>]</span><span style="color: #008">[,<span style="color: #080">&lt;prefix&gt;</span>]</span><span style="color: #008">[,<span style="color: #080">&lt;delimiter&gt;</span>]</span>) : string</div><pre class="text">Returns a list of all variables in the specified scope, optionally filtered
+by name prefix and with a customizable delimiter.
+
+Output format: var1=value1&lt;delim&gt;var2=value2&lt;delim&gt;...
+
+Value encoding by type:
+- Strings: quoted and escaped (&quot;, \, \r, \n, \b, \0)
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">txn.name=&quot;John \&quot;Doe\&quot;&quot;</div><code></code></pre>
+</div><pre class="text">- Binary: hex-encoded with 'x' prefix, unquoted
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">txn.data=x48656c6c6f</div><code></code></pre>
+</div><pre class="text">- Integers: unquoted decimal
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">txn.count=42</div><code></code></pre>
+</div><pre class="text">- Booleans: unquoted &quot;true&quot; or &quot;false&quot;
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">txn.active=true</div><code></code></pre>
+</div><pre class="text">- Addresses: unquoted IP address string
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">txn.client=192.168.1.1</div><code></code></pre>
+</div><pre class="text">- HTTP Methods: quoted string
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<div class="example-desc">req.method=&quot;GET&quot;</div><code></code></pre>
+</div><div class="separator">
+<span class="label label-info">Arguments:</span></div>
+<pre class="text">- &lt;scope&gt; (optional): sess, txn, req, res, or proc. If omitted, all these
+  scopes are visited in the same order as presented here.
+
+- &lt;prefix&gt; (optional): filters variables whose names start with the
+  specified prefix (after removing the scope prefix).
+  Performance note: When using prefix filtering, all variables in the scope
+  are still visited. This should not be used with configurations involving
+  thousands of variables.
+
+- &lt;delimiter&gt; (optional): string to separate variables. Defaults to &quot;, &quot;
+  (comma-space). Can be customized to any string. As a reminder, in order
+  to pass commas or spaces in a function argument, they need to be enclosed
+  in simple or double quotes (if the expression itself is already within
+  quotes, use the other ones).
+
+Return value:
+- On success: string containing all matching variables
+- On failure: empty (sample fetch fails) if output buffer is too small.
+  The function will not truncate output; it fails completely to avoid
+  partial data.
+
+This is particularly useful for debugging, logging, or exporting variable
+states.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Dump all transaction variables</span>
+http-request return string %[dump_all_vars(txn)]
+
+<span class="comment"># Dump only variables starting with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot;</span>
+http-request set-header X-User-Vars &quot;%[dump_all_vars(txn,user)]&quot;
+
+<span class="comment"># Dump all process variables</span>
+http-request return string %[dump_all_vars(proc)]
+
+<span class="comment"># Custom delimiter (semicolon)</span>
+http-request set-header X-Vars &quot;%[dump_all_vars(txn,,; )]&quot;
+
+<span class="comment"># Force the default delimiter (comma space)</span>
+http-request set-header X-Vars &quot;%[dump_all_vars(txn,,', ')]&quot;
+
+<span class="comment"># Prefix filter with custom delimiter</span>
+http-request set-header X-Session &quot;%[dump_all_vars(sess,user,|)]&quot;
+</code></pre>
+</div><a class="anchor" name="wait_end"></a><a class="anchor" name="7-wait_end"></a><a class="anchor" name="7.3.2-wait_end"></a><a class="anchor" name="wait_end (Using ACLs and fetching samples)"></a><a class="anchor" name="wait_end (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="wait_end"></a><a href="#7.3.2-wait_end">wait_end</a></b> : boolean</div><pre class="text">This fetch either returns true when the inspection period is over, or does
 not fetch. It is only used in ACLs, in conjunction with content analysis to
 avoid returning a wrong verdict early. It may also be used to delay some
 actions, such as a delayed reject for some special addresses. Since it either
@@ -34394,7 +34478,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev2-64 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev2-72 &ndash; Configuration Manual<br>
 							<small>, 2026/01/07</small>
 						</div>
 					</div>
