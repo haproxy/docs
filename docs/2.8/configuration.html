@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.18-22 - Configuration Manual</title>
+		<title>HAProxy version 2.8.18-24 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4123,6 +4123,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.capture-cipherlist-size">tune.ssl.capture-cipherlist-size</a>
 							
+							<a class="list-group-item" href="#tune.ssl.certificate-compression">tune.ssl.certificate-compression</a>
+							
 							<a class="list-group-item" href="#tune.ssl.default-dh-param">tune.ssl.default-dh-param</a>
 							
 							<a class="list-group-item" href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
@@ -4294,7 +4296,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2025/12/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4305,7 +4307,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.18-22</strong></p>
+							<p><strong>version 2.8.18-24</strong></p>
 							<p>
 								2025/12/25<br>
 								
@@ -6599,6 +6601,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
    - <a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>
    - tune.ssl.capture-cipherlist-size (deprecated)
+   - <a href="#tune.ssl.certificate-compression">tune.ssl.certificate-compression</a>
    - <a href="#tune.ssl.default-dh-param">tune.ssl.default-dh-param</a>
    - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
    - <a href="#tune.ssl.hard-maxrecord">tune.ssl.hard-maxrecord</a>
@@ -8626,6 +8629,20 @@ cache.
 list, extensions list, elliptic curves list and elliptic curve point
 formats. If the value is 0 (default value) the capture is disabled,
 otherwise a buffer is allocated for each SSL/TLS connection.
+</pre><a class="anchor" name="tune.ssl.certificate-compression"></a><a class="anchor" name="3-tune.ssl.certificate-compression"></a><a class="anchor" name="3.2-tune.ssl.certificate-compression"></a><a class="anchor" name="tune.ssl.certificate-compression (Global parameters)"></a><a class="anchor" name="tune.ssl.certificate-compression (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.certificate-compression"></a><a href="#3.2-tune.ssl.certificate-compression">tune.ssl.certificate-compression</a></b> <span style="color: #800">{ auto | off }</span></div><pre class="text">This setting allows to configure the certificate compression support which is
+an extension (RFC 8879) to TLS 1.3.
+
+When set to &quot;auto&quot; it uses the default value of the TLS library.
+
+With &quot;off&quot; it tries to explicitely disable the support of the feature.
+HAProxy won't try to send compressed certificates anymore nor accept
+compressed certificates.
+
+Configures both backend and frontend sides.
+
+This keyword is supported by OpenSSL &gt;= 3.2.0.
+
+The default value is auto.
 </pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global parameters)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
 the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange. The
 final size will try to match the size of the server's RSA (or DSA) key (e.g,
@@ -27988,7 +28005,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.18-22 &ndash; Configuration Manual<br>
+							HAProxy 2.8.18-24 &ndash; Configuration Manual<br>
 							<small>, 2025/12/25</small>
 						</div>
 					</div>
