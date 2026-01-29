@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev3-15 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev3-21 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2062,7 +2062,9 @@
 							
 							<a class="list-group-item" href="#force-tlsv11">force-tlsv11</a>
 							
-							<a class="list-group-item" href="#force-tlsv12">force-tlsv12</a>
+							<a class="list-group-item" href="#force-tlsv12 (Bind options)">force-tlsv12 (Bind options)</a>
+							
+							<a class="list-group-item" href="#force-tlsv12 (Server and default-server options)">force-tlsv12 (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#force-tlsv13">force-tlsv13</a>
 							
@@ -4785,7 +4787,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4796,7 +4798,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev3-15</strong></p>
+							<p><strong>version 3.4-dev3-21</strong></p>
 							<p>
 								2026/01/22<br>
 								
@@ -10059,7 +10061,11 @@ this option to &quot;off&quot;. The default is on. It is strongly recommended ag
 disabling this option without setting a conservative value on &quot;<a href="#pool-low-conn">pool-low-conn</a>&quot;
 for all servers relying on connection reuse to achieve a high performance
 level, otherwise connections might be closed very often as the thread count
-increases.
+increases. Note that in any case, connections are only shared between threads
+of the same thread group. This means that systems with many NUMA nodes may
+show slightly more persistent connections while machines with unified caches
+and many CPU cores per node may experience higher CPU usage. In the latter
+case, the &quot;max-thread-per-group&quot; tunable may be used to improve the behavior.
 </pre><a class="anchor" name="tune.idletimer"></a><a class="anchor" name="3-tune.idletimer"></a><a class="anchor" name="3.2-tune.idletimer"></a><a class="anchor" name="tune.idletimer (Global section)"></a><a class="anchor" name="tune.idletimer (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idletimer"></a><a href="#3.2-tune.idletimer">tune.idletimer</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the duration after which HAProxy will consider that an empty buffer is
 probably associated with an idle stream. This is used to optimally adjust
 some packet sizes while forwarding large and small data alternatively. The
@@ -21721,7 +21727,9 @@ client IP addresses need to be able to reach frontends hosted on different
 interfaces.
 </pre><a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.1-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.1-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enables or disables ktls for those sockets. If enabled, kTLS will be used
 if the kernel supports it and the cipher is compatible. This is only
-available on Linux kernel 4.17 and above.
+available on Linux kernel 4.17 and above. Please note that some network
+drivers and/or TLS stacks might restrict kTLS usage to TLS v1.2 only. See
+also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">force-tlsv12<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#force-tlsv12%20%28Bind%20options%29">Bind options</a></li><li><a href="#force-tlsv12%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="label"></a><a class="anchor" name="5-label"></a><a class="anchor" name="5.1-label"></a><a class="anchor" name="label (Bind and server options)"></a><a class="anchor" name="label (Bind options)"></a><div class="keyword"><b><a class="anchor" name="label"></a><a href="#5.1-label">label</a></b> <span style="color: #080">&lt;label&gt;</span></div><pre class="text">Sets an optional label for these sockets. It could be used group sockets by
 label, independently of where the bind lines were declared.
 </pre><a class="anchor" name="level"></a><a class="anchor" name="5-level"></a><a class="anchor" name="5.1-level"></a><a class="anchor" name="level (Bind and server options)"></a><a class="anchor" name="level (Bind options)"></a><div class="keyword"><b><a class="anchor" name="level"></a><a href="#5.1-level">level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">This setting is used with the stats sockets only to restrict the nature of
@@ -22796,9 +22804,10 @@ backend google-backend
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#option%20httpchk">option httpchk</a>&quot;</div>
 <a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.2-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.2-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
-Enables or disables ktls for those sockets. If enabled, kTLS will be used
-if the kernel supports it and the cipher is compatible.
-This is only available on Linux.
+Enables or disables ktls for those sockets. If enabled, kTLS will be used if
+the kernel supports it and the cipher is compatible. This is only available
+on Linux 4.17 and above. Please note that some network drivers and/or TLS
+stacks might restrict kTLS usage to TLS v1.2 only. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">force-tlsv12<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#force-tlsv12%20%28Bind%20options%29">Bind options</a></li><li><a href="#force-tlsv12%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">May be used in the following contexts: log
 
 The &quot;<a href="#log-bufsize">log-bufsize</a>&quot; specifies the ring bufsize to use for the implicit ring
@@ -34509,7 +34518,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev3-15 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev3-21 &ndash; Configuration Manual<br>
 							<small>, 2026/01/22</small>
 						</div>
 					</div>
