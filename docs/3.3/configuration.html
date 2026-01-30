@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.1-41 - Configuration Manual</title>
+		<title>HAProxy version 3.3.2-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2038,7 +2038,9 @@
 							
 							<a class="list-group-item" href="#force-tlsv11">force-tlsv11</a>
 							
-							<a class="list-group-item" href="#force-tlsv12">force-tlsv12</a>
+							<a class="list-group-item" href="#force-tlsv12 (Bind options)">force-tlsv12 (Bind options)</a>
+							
+							<a class="list-group-item" href="#force-tlsv12 (Server and default-server options)">force-tlsv12 (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#force-tlsv13">force-tlsv13</a>
 							
@@ -4703,7 +4705,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4714,9 +4716,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.1-41</strong></p>
+							<p><strong>version 3.3.2-1</strong></p>
 							<p>
-								2025/12/19<br>
+								2026/01/29<br>
 								
 							</p>
 						</div>
@@ -21534,7 +21536,9 @@ client IP addresses need to be able to reach frontends hosted on different
 interfaces.
 </pre><a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.1-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Bind options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.1-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Enables or disables ktls for those sockets. If enabled, kTLS will be used
 if the kernel supports it and the cipher is compatible. This is only
-available on Linux kernel 4.17 and above.
+available on Linux kernel 4.17 and above. Please note that some network
+drivers and/or TLS stacks might restrict kTLS usage to TLS v1.2 only. See
+also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">force-tlsv12<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#force-tlsv12%20%28Bind%20options%29">Bind options</a></li><li><a href="#force-tlsv12%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="label"></a><a class="anchor" name="5-label"></a><a class="anchor" name="5.1-label"></a><a class="anchor" name="label (Bind and server options)"></a><a class="anchor" name="label (Bind options)"></a><div class="keyword"><b><a class="anchor" name="label"></a><a href="#5.1-label">label</a></b> <span style="color: #080">&lt;label&gt;</span></div><pre class="text">Sets an optional label for these sockets. It could be used group sockets by
 label, independently of where the bind lines were declared.
 </pre><a class="anchor" name="level"></a><a class="anchor" name="5-level"></a><a class="anchor" name="5.1-level"></a><a class="anchor" name="level (Bind and server options)"></a><a class="anchor" name="level (Bind options)"></a><div class="keyword"><b><a class="anchor" name="level"></a><a href="#5.1-level">level</a></b> <span style="color: #080">&lt;level&gt;</span></div><pre class="text">This setting is used with the stats sockets only to restrict the nature of
@@ -22598,9 +22602,10 @@ backend google-backend
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#option%20httpchk">option httpchk</a>&quot;</div>
 <a class="anchor" name="ktls"></a><a class="anchor" name="5-ktls"></a><a class="anchor" name="5.2-ktls"></a><a class="anchor" name="ktls (Bind and server options)"></a><a class="anchor" name="ktls (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="ktls"></a><a href="#5.2-ktls">ktls</a></b> <span style="color: #080">&lt;on|off&gt;</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
-Enables or disables ktls for those sockets. If enabled, kTLS will be used
-if the kernel supports it and the cipher is compatible.
-This is only available on Linux.
+Enables or disables ktls for those sockets. If enabled, kTLS will be used if
+the kernel supports it and the cipher is compatible. This is only available
+on Linux 4.17 and above. Please note that some network drivers and/or TLS
+stacks might restrict kTLS usage to TLS v1.2 only. See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">force-tlsv12<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#force-tlsv12%20%28Bind%20options%29">Bind options</a></li><li><a href="#force-tlsv12%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="log-bufsize"></a><a class="anchor" name="5-log-bufsize"></a><a class="anchor" name="5.2-log-bufsize"></a><a class="anchor" name="log-bufsize (Bind and server options)"></a><a class="anchor" name="log-bufsize (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="log-bufsize"></a><a href="#5.2-log-bufsize">log-bufsize</a></b> <span style="color: #080">&lt;bufsize&gt;</span></div><pre class="text">May be used in the following contexts: log
 
 The &quot;<a href="#log-bufsize">log-bufsize</a>&quot; specifies the ring bufsize to use for the implicit ring
@@ -33853,8 +33858,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.1-41 &ndash; Configuration Manual<br>
-							<small>, 2025/12/19</small>
+							HAProxy 3.3.2-1 &ndash; Configuration Manual<br>
+							<small>, 2026/01/29</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
