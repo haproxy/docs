@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev4-1 - Management Guide</title>
+		<title>HAProxy version 3.4-dev4-19 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -272,6 +272,8 @@
 							<a class="list-group-item" href="#add">add</a>
 							
 							<a class="list-group-item" href="#add acl">add acl</a>
+							
+							<a class="list-group-item" href="#add backend">add backend</a>
 							
 							<a class="list-group-item" href="#add map">add map</a>
 							
@@ -688,7 +690,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -699,7 +701,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.4-dev4-1</strong></p>
+							<p><strong>version 3.4-dev4-19</strong></p>
 							<p>
 								<br>
 								
@@ -2571,6 +2573,28 @@ operation is performed on them. They may however be consulted using the
 &quot;show acl @&lt;ver&gt;&quot; command, and cleared using a &quot;clear acl @&lt;ver&gt;&quot; command.
 This command cannot be used if the reference &lt;acl&gt; is a name also used with
 a map. In this case, the &quot;<a href="#add%20map">add map</a>&quot; command must be used instead.
+</pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add backend"></a><a class="anchor" name="9-add backend"></a><a class="anchor" name="9.3-add backend"></a><a class="anchor" name="add backend (Statistics and monitoring)"></a><a class="anchor" name="add backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add backend"></a><a href="#9.3-add%20backend">add backend</a></b> <span style="color: #080">&lt;name&gt;</span> from <span style="color: #080">&lt;defproxy&gt;</span> <span style="color: #008">[mode <span style="color: #080">&lt;mode&gt;</span>]</span> <span style="color: #008">[guid <span style="color: #080">&lt;guid&gt;</span>]</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Instantiate a new backend proxy with the name &lt;name&gt;.
+
+Only TCP or HTTP proxies can be created. All of the settings are inherited
+from &lt;defproxy&gt; default proxy instance. By default, it is mandatory to
+specify the backend mode via the argument of the same name, unless &lt;defproxy&gt;
+already defines it explicitely. It is also possible to use an optional GUID
+argument if wanted.
+
+Servers can be added via the command &quot;<a href="#add%20server">add server</a>&quot;. The backend is initialized
+in the unpublished state. Once considered ready for traffic, use &quot;publish
+backend&quot; to expose the newly created instance.
+
+All named default proxies can be used, given that they validate the same
+inheritance rules applied during configuration parsing. There is some
+exceptions though, for example when the mode is neither TCP nor HTTP. Another
+exception is that it is not yet possible to use a default proxies which
+reference custom HTTP errors, for example via the errorfiles or http-rules
+keywords.
+
+This command is restricted and can only be issued on sockets configured for
+level &quot;admin&quot;. Moreover, this feature is still considered in development so it
+also requires experimental mode (see &quot;experimental-mode on&quot;).
 </pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add map"></a><a class="anchor" name="9-add map"></a><a class="anchor" name="9.3-add map"></a><a class="anchor" name="add map (Statistics and monitoring)"></a><a class="anchor" name="add map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add map"></a><a href="#9.3-add%20map">add map</a></b> <span style="color: #008">[@<span style="color: #080">&lt;ver&gt;</span>]</span> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;key&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add map"></a><a class="anchor" name="9-add map"></a><a class="anchor" name="9.3-add map"></a><a class="anchor" name="add map (Statistics and monitoring)"></a><a class="anchor" name="add map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add map"></a><a href="#9.3-add%20map">add map</a></b> <span style="color: #008">[@<span style="color: #080">&lt;ver&gt;</span>]</span> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;payload&gt;</span></div><pre class="text">Add an entry into the map &lt;map&gt; to associate the value &lt;value&gt; to the key
 &lt;key&gt;. This command does not verify if the entry already exists. It is
 mainly used to fill a map after a &quot;<a href="#clear">clear</a>&quot; or &quot;<a href="#prepare">prepare</a>&quot; operation. Entries
@@ -5785,7 +5809,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev4-1 &ndash; Management Guide<br>
+							HAProxy 3.4-dev4-19 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
