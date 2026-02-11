@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev4-21 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev4-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4787,7 +4787,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4798,7 +4798,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev4-21</strong></p>
+							<p><strong>version 3.4-dev4-29</strong></p>
 							<p>
 								2026/02/04<br>
 								
@@ -9635,7 +9635,7 @@ other info are required. The performance hit will typically be around 1%,
 maybe a bit more on highly threaded machines, so it is normally suitable for
 use in production. The same may be achieved at run time on the CLI using the
 &quot;set profiling memory&quot; command, please consult the management manual.
-</pre><a class="anchor" name="profiling.tasks"></a><a class="anchor" name="3-profiling.tasks"></a><a class="anchor" name="3.2-profiling.tasks"></a><a class="anchor" name="profiling.tasks (Global section)"></a><a class="anchor" name="profiling.tasks (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="profiling.tasks"></a><a href="#3.2-profiling.tasks">profiling.tasks</a></b> <span style="color: #800">{ auto | on | off }</span></div><pre class="text">Enables ('on') or disables ('off') per-task CPU profiling. When set to 'auto'
+</pre><a class="anchor" name="profiling.tasks"></a><a class="anchor" name="3-profiling.tasks"></a><a class="anchor" name="3.2-profiling.tasks"></a><a class="anchor" name="profiling.tasks (Global section)"></a><a class="anchor" name="profiling.tasks (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="profiling.tasks"></a><a href="#3.2-profiling.tasks">profiling.tasks</a></b> <span style="color: #800">{ auto | on | off | lock | no-lock | memory | no-memory }</span>*</div><pre class="text">Enables ('on') or disables ('off') per-task CPU profiling. When set to 'auto'
 the profiling automatically turns on a thread when it starts to suffer from
 an average latency of 1000 microseconds or higher as reported in the
 &quot;avg_loop_us&quot; activity field, and automatically turns off when the latency
@@ -9644,6 +9644,18 @@ loops so it does not vary quickly and tends to significantly smooth short
 spikes). It may also spontaneously trigger from time to time on overloaded
 systems, containers, or virtual machines, or when the system swaps (which
 must absolutely never happen on a load balancer).
+
+When task profiling is enabled, HAProxy can also collect the time each task
+spends with a lock held or waiting for a lock, as well as the time spent
+waiting for a memory allocation to succeed in case of a pool cache miss. This
+can sometimes help understand certain causes of latency. For this, the extra
+keywords &quot;lock&quot; (to enable lock time collection), &quot;no-lock&quot; (to disable it),
+&quot;memory&quot; (to enable memory allocation time collection) or &quot;no-memory&quot; (to
+disable it) may additionally be passed. By default they are not enabled since
+they can have a non-negligible CPU impact on highly loaded systems (3-10%).
+Note that the overhead is only taken when profiling is effectively running,
+so that when running in &quot;auto&quot; mode, it will only appear when HAProxy decides
+to turn it on.
 
 CPU profiling per task can be very convenient to report where the time is
 spent and which requests have what effect on which other request. Enabling
@@ -34540,7 +34552,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev4-21 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev4-29 &ndash; Configuration Manual<br>
 							<small>, 2026/02/04</small>
 						</div>
 					</div>
