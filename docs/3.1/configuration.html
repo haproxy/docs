@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.1.13-3 - Configuration Manual</title>
+		<title>HAProxy version 3.1.13-10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4434,7 +4434,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/01/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4445,7 +4445,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.1.13-3</strong></p>
+							<p><strong>version 3.1.13-10</strong></p>
 							<p>
 								2026/01/29<br>
 								
@@ -22124,7 +22124,10 @@ Specify how &quot;hash-type consistent&quot; node keys are computed
 
   id         The node keys will be derived from the server's numeric
              identifier as set from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; or which defaults to its position
-             in the server list.
+             in the server list. This is the default. Note that only the 28
+             lowest bits of the ID will be used (i.e. (id % 268435456)), so
+             better only use values comprised between 1 and this value to
+             avoid overlap.
 
   addr       The node keys will be derived from the server's address, when
              available, or else fall back on &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
@@ -22136,7 +22139,9 @@ Specify how &quot;hash-type consistent&quot; node keys are computed
 HAProxy processes are balancing traffic to the same set of servers. If the
 server order of each process is different (because, for example, DNS records
 were resolved in different orders) then this will allow each independent
-HAProxy processes to agree on routing decisions.
+HAProxy processes to agree on routing decisions. Note: &quot;balance random&quot; also
+uses &quot;hash-type consistent&quot;, and the quality of the distribution will depend
+on the quality of the keys.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.2-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.2-id">id</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Set a persistent ID for the server. This ID must be positive and unique for
@@ -31890,7 +31895,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.1.13-3 &ndash; Configuration Manual<br>
+							HAProxy 3.1.13-10 &ndash; Configuration Manual<br>
 							<small>, 2026/01/29</small>
 						</div>
 					</div>
