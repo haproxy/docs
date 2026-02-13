@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev4-31 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev4-44 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2323,6 +2323,8 @@
 							<a class="list-group-item" href="#jwt">jwt</a>
 							
 							<a class="list-group-item" href="#jwt_decrypt_cert">jwt_decrypt_cert</a>
+							
+							<a class="list-group-item" href="#jwt_decrypt_jwk">jwt_decrypt_jwk</a>
 							
 							<a class="list-group-item" href="#jwt_decrypt_secret">jwt_decrypt_secret</a>
 							
@@ -4787,7 +4789,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4798,7 +4800,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev4-31</strong></p>
+							<p><strong>version 3.4-dev4-44</strong></p>
 							<p>
 								2026/02/04<br>
 								
@@ -24719,6 +24721,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-jwt_decrypt_jwk">jwt_decrypt_jwk(&lt;jwk&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_cert">jwt_decrypt_cert(&lt;cert&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_secret">jwt_decrypt_secret(&lt;secret&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
@@ -24738,8 +24741,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
-<tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
@@ -24759,8 +24762,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
-<tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
@@ -24780,8 +24783,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
@@ -24801,8 +24804,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.dst">tcp.dst</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.flags">tcp.flags</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options.mss">tcp.options.mss</a></td><td >binary</td><td >integer</td></tr>
@@ -24822,8 +24825,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-us_utime">us_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-utime">utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-when">when(condition)</a></td><td >any</td><td >same</td></tr>
@@ -25479,6 +25482,44 @@ verification or content decryption, an empty string will be returned.
 <span class="comment"># HTTP header</span>
 http-request set-var(txn.bearer) http_auth_bearer
 http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_cert(&quot;/foo/bar.pem&quot;)]
+</code></pre>
+</div><a class="anchor" name="jwt_decrypt_jwk"></a><a class="anchor" name="7-jwt_decrypt_jwk"></a><a class="anchor" name="7.3.1-jwt_decrypt_jwk"></a><a class="anchor" name="jwt_decrypt_jwk (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_decrypt_jwk (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_decrypt_jwk"></a><a href="#7.3.1-jwt_decrypt_jwk">jwt_decrypt_jwk</a></b>(<span style="color: #080">&lt;jwk&gt;</span>)</div><pre class="text">Performs a signature validation of a JSON Web Token following the JSON Web
+Encryption format (see RFC 7516) given in input and return its content
+decrypted thanks to the provided JSON Web Key (RFC7517).
+The &lt;jwk&gt; parameter must be a valid JWK of type 'oct' or 'RSA' ('kty' field
+of the JSON key) that can be provided either as a string or via a variable.
+
+The only tokens managed yet are the ones using the Compact Serialization
+format (five dot-separated base64-url encoded strings).
+
+This converter can be used to decode token that have a symmetric-type
+algorithm (&quot;alg&quot; field of the JOSE header) among the following: A128KW,
+A192KW, A256KW, A128GCMKW, A192GCMKW, A256GCMKW, dir. In this case, we expect
+the provided JWK to be of the 'oct' type. Please note that the A128KW and
+A192KW algorithms are not available on AWS-LC and decryption will not work.
+This converter also manages tokens  that have an algorithm (&quot;alg&quot; field of
+the JOSE header) among the following: RSA1_5, RSA-OAEP or RSA-OAEP-256. In
+such a case an 'RSA' type JWK representing a private key must be provided.
+
+The JWE token must be provided base64url-encoded and the output will be
+provided &quot;raw&quot;. If an error happens during token parsing, signature
+verification or content decryption, an empty string will be returned.
+
+Because of the way quotes, commas and double quotes are treated in the
+configuration, the contents of the JWK must be properly escaped for this
+converter to work properly (see <a href="#2.2">section 2.2</a> for more information).
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code> <span class="comment"># Get a JWT from the authorization header, put its decrypted content in an</span>
+ <span class="comment"># HTTP header</span>
+ http-request set-var(txn.bearer) http_auth_bearer
+ http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_secret(\'{\&quot;kty\&quot;:\&quot;oct\&quot;,\&quot;k\&quot;:\&quot;wAsgsg\&quot;}\')
+
+<span class="comment"># or via a variable</span>
+ http-request set-var(txn.bearer) http_auth_bearer
+ http-request set-var(txn.jwk) str(\'{\&quot;kty\&quot;:\&quot;oct\&quot;,\&quot;k\&quot;:\&quot;Q-NFLlghQ\&quot;}\')
+ http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_jwk(txn.jwk)
 </code></pre>
 </div><a class="anchor" name="jwt_decrypt_secret"></a><a class="anchor" name="7-jwt_decrypt_secret"></a><a class="anchor" name="7.3.1-jwt_decrypt_secret"></a><a class="anchor" name="jwt_decrypt_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_decrypt_secret (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_decrypt_secret"></a><a href="#7.3.1-jwt_decrypt_secret">jwt_decrypt_secret</a></b>(<span style="color: #080">&lt;secret&gt;</span>)</div><pre class="text">Performs a signature validation of a JSON Web Token following the JSON Web
 Encryption format (see RFC 7516) given in input and return its content
@@ -34424,8 +34465,8 @@ A more precise error message might also be displayed between parenthesis
 after the &quot;generic&quot; error message. It can happen for &quot;OCSP response check
 failure&quot; or &quot;Error during insertion&quot; errors.
 </pre><a class="anchor" name="jwt"></a><a class="anchor" name="12-jwt"></a><a class="anchor" name="12.7.1-jwt"></a><a class="anchor" name="jwt (Other sections)"></a><a class="anchor" name="jwt (Load options)"></a><div class="keyword"><b><a class="anchor" name="jwt"></a><a href="#12.7.1-jwt">jwt</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Allow for this certificate to be used for JWT validation or decryption via
-the &quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot; or &quot;<a href="#jwt_decrypt_cert">jwt_decrypt_cert</a>&quot; converters when set to 'on'. Its
-value defaults to 'off'.
+the &quot;<a href="#jwt_verify_cert">jwt_verify_cert</a>&quot;, &quot;<a href="#jwt_decrypt_cert">jwt_decrypt_cert</a>&quot; or &quot;jwt_decrypt&quot; converters when
+set to 'on'. Its value defaults to 'off'.
 
 When set to 'on' for a given certificate, the CLI command &quot;del ssl cert&quot; will
 not work. In order to be deleted, a certificate must not be used, either for
@@ -34552,7 +34593,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev4-31 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev4-44 &ndash; Configuration Manual<br>
 							<small>, 2026/02/04</small>
 						</div>
 					</div>
