@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev4-73 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev4-114 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4344,6 +4344,8 @@
 							
 							<a class="list-group-item" href="#tune.bufsize">tune.bufsize</a>
 							
+							<a class="list-group-item" href="#tune.bufsize.large">tune.bufsize.large</a>
+							
 							<a class="list-group-item" href="#tune.bufsize.small">tune.bufsize.small</a>
 							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
@@ -4789,7 +4791,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4800,7 +4802,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev4-73</strong></p>
+							<p><strong>version 3.4-dev4-114</strong></p>
 							<p>
 								2026/02/04<br>
 								
@@ -7784,6 +7786,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.buffers.limit">tune.buffers.limit</a>
    - <a href="#tune.buffers.reserve">tune.buffers.reserve</a>
    - <a href="#tune.bufsize">tune.bufsize</a>
+   - <a href="#tune.bufsize.large">tune.bufsize.large</a>
    - <a href="#tune.bufsize.small">tune.bufsize.small</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.defaults.purge">tune.defaults.purge</a>
@@ -9733,6 +9736,15 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
+</pre><a class="anchor" name="tune.bufsize.large"></a><a class="anchor" name="3-tune.bufsize.large"></a><a class="anchor" name="3.2-tune.bufsize.large"></a><a class="anchor" name="tune.bufsize.large (Global section)"></a><a class="anchor" name="tune.bufsize.large (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.large"></a><a href="#3.2-tune.bufsize.large">tune.bufsize.large</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in butes for large buffers. By defaults, support for large
+buffers is not enabled, it must explicitly be enable by setting this value.
+
+These buffers are designed to be used in some specific contexts where more
+data must be bufferized without changing the size of regular buffers. The
+large buffers are not implicitly used.
+
+Note that when large buffers are configured, three special large buffers will
+be allocated for each threads during startup for internal usage.
 </pre><a class="anchor" name="tune.bufsize.small"></a><a class="anchor" name="3-tune.bufsize.small"></a><a class="anchor" name="3.2-tune.bufsize.small"></a><a class="anchor" name="tune.bufsize.small (Global section)"></a><a class="anchor" name="tune.bufsize.small (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.small"></a><a href="#3.2-tune.bufsize.small">tune.bufsize.small</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in bytes for small buffers. The defaults value is 1024.
 
 These buffers are designed to be used in some specific contexts where memory
@@ -21168,7 +21180,7 @@ possible to write custom TCP and HTTP services in Lua.
 <pre class="prettyprint">
 <code>http-request use-service prometheus-exporter if { path /metrics }
 </code></pre>
-</div><a class="anchor" name="wait-for-body"></a><a class="anchor" name="4-wait-for-body"></a><a class="anchor" name="4.4-wait-for-body"></a><a class="anchor" name="wait-for-body (Proxies)"></a><a class="anchor" name="wait-for-body (Alphabetically sorted actions reference)"></a><a class="anchor" name="wait-for-body time"></a><a class="anchor" name="4-wait-for-body time"></a><a class="anchor" name="4.4-wait-for-body time"></a><a class="anchor" name="wait-for-body time (Proxies)"></a><a class="anchor" name="wait-for-body time (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-body time"></a><a href="#4.4-wait-for-body%20time">wait-for-body time</a></b> <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[ at-least <span style="color: #080">&lt;bytes&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="wait-for-body"></a><a class="anchor" name="4-wait-for-body"></a><a class="anchor" name="4.4-wait-for-body"></a><a class="anchor" name="wait-for-body (Proxies)"></a><a class="anchor" name="wait-for-body (Alphabetically sorted actions reference)"></a><a class="anchor" name="wait-for-body time"></a><a class="anchor" name="4-wait-for-body time"></a><a class="anchor" name="4.4-wait-for-body time"></a><a class="anchor" name="wait-for-body time (Proxies)"></a><a class="anchor" name="wait-for-body time (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-body time"></a><a href="#4.4-wait-for-body%20time">wait-for-body time</a></b> <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[ at-least <span style="color: #080">&lt;bytes&gt;</span> ]</span> <span style="color: #008">[use-large-buffer]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -21186,6 +21198,10 @@ following conditions occurs:
   happens first, this timeout will not occur even if the full body has
   not yet been received.
 
+&quot;use-large-buffer&quot; option may be set to allocate a large buffer if regular
+one is to small to store the message body. To be used, &quot;<a href="#tune.bufsize.large">tune.bufsize.large</a>&quot;
+global option must be defined.
+
 This action may be used as a replacement for &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;.
 </pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;time&gt;    is mandatory. It is the maximum time to wait for the body. It
@@ -21200,7 +21216,7 @@ This action may be used as a replacement for &quot;<a href="#option%20http-buffe
 <pre class="prettyprint">
 <code>http-request wait-for-body time 1s at-least 1k if METH_POST
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot; and &quot;<a href="#tune.bufsize.large">tune.bufsize.large</a>&quot;</div>
 <a class="anchor" name="wait-for-handshake"></a><a class="anchor" name="4-wait-for-handshake"></a><a class="anchor" name="4.4-wait-for-handshake"></a><a class="anchor" name="wait-for-handshake (Proxies)"></a><a class="anchor" name="wait-for-handshake (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-handshake"></a><a href="#4.4-wait-for-handshake">wait-for-handshake</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -32660,7 +32676,7 @@ unavailable. The list of available filters is reported in haproxy -vv.
 </div>
 <a class="anchor" id="9.1" name="9.1"></a>
 <h2 id="chapter-9.1" data-target="9.1"><small><a class="small" href="#9.1">9.1.</a></small> Trace</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.1-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Trace)"></a><a class="anchor" name="filter trace"></a><a class="anchor" name="9-filter trace"></a><a class="anchor" name="9.1-filter trace"></a><a class="anchor" name="filter trace (Supported filters)"></a><a class="anchor" name="filter trace (Trace)"></a><div class="keyword"><b><a class="anchor" name="filter trace"></a><a href="#9.1-filter%20trace">filter trace</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[random-forwarding]</span> <span style="color: #008">[hexdump]</span></div><div class="separator">
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.1-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Trace)"></a><a class="anchor" name="filter trace"></a><a class="anchor" name="9-filter trace"></a><a class="anchor" name="9.1-filter trace"></a><a class="anchor" name="filter trace (Supported filters)"></a><a class="anchor" name="filter trace (Trace)"></a><div class="keyword"><b><a class="anchor" name="filter trace"></a><a href="#9.1-filter%20trace">filter trace</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[random-forwarding]</span> <span style="color: #008">[max-fwd <span style="color: #080">&lt;max&gt;</span>]</span> <span style="color: #008">[hexdump]</span></div><div class="separator">
 <span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;name&gt;               is an arbitrary name that will be reported in
                      messages. If no name is provided, &quot;TRACE&quot; is used.
 
@@ -32670,6 +32686,11 @@ unavailable. The list of available filters is reported in haproxy -vv.
                      default, this filter forwards all previously parsed
                      data. With this parameter, it only forwards a random
                      amount of the parsed data.
+
+&lt;max&gt;                is the maximum amount of data that can be forwarded at
+                     a time. &quot;max-fwd&quot; option can be combined with the
+                     random forwarding. &lt;max&gt; must be an positive integer.
+                     0 means there is no limit.
 
 &lt;hexdump&gt;             dumps all forwarded data to the server and the client.</pre>
 </div>
@@ -34593,7 +34614,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev4-73 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev4-114 &ndash; Configuration Manual<br>
 							<small>, 2026/02/04</small>
 						</div>
 					</div>
