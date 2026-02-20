@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev4-114 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev5-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1510,13 +1510,19 @@
 							
 							<a class="list-group-item" href="#be_conn_free">be_conn_free</a>
 							
+							<a class="list-group-item" href="#be_connect_timeout">be_connect_timeout</a>
+							
 							<a class="list-group-item" href="#be_id">be_id</a>
 							
 							<a class="list-group-item" href="#be_name">be_name</a>
 							
+							<a class="list-group-item" href="#be_queue_timeout">be_queue_timeout</a>
+							
 							<a class="list-group-item" href="#be_server_timeout">be_server_timeout</a>
 							
 							<a class="list-group-item" href="#be_sess_rate">be_sess_rate</a>
+							
+							<a class="list-group-item" href="#be_tarpit_timeout">be_tarpit_timeout</a>
 							
 							<a class="list-group-item" href="#be_tunnel_timeout">be_tunnel_timeout</a>
 							
@@ -1528,7 +1534,9 @@
 							
 							<a class="list-group-item" href="#bind (Alphabetically sorted keywords reference)">bind (Alphabetically sorted keywords reference)</a>
 							
-							<a class="list-group-item" href="#bits">bits</a>
+							<a class="list-group-item" href="#bits (Load options)">bits (Load options)</a>
+							
+							<a class="list-group-item" href="#bits (ACME)">bits (ACME)</a>
 							
 							<a class="list-group-item" href="#bool (Converters)">bool (Converters)</a>
 							
@@ -1733,9 +1741,17 @@
 							
 							<a class="list-group-item" href="#cur_client_timeout">cur_client_timeout</a>
 							
+							<a class="list-group-item" href="#cur_connect_timeout">cur_connect_timeout</a>
+							
+							<a class="list-group-item" href="#cur_queue_timeout">cur_queue_timeout</a>
+							
 							<a class="list-group-item" href="#cur_server_timeout">cur_server_timeout</a>
 							
+							<a class="list-group-item" href="#cur_tarpit_timeout">cur_tarpit_timeout</a>
+							
 							<a class="list-group-item" href="#cur_tunnel_timeout">cur_tunnel_timeout</a>
+							
+							<a class="list-group-item" href="#curves (Load options)">curves (Load options)</a>
 							
 							<a class="list-group-item" href="#curves (ACME)">curves (ACME)</a>
 							
@@ -2012,6 +2028,8 @@
 							
 							<a class="list-group-item" href="#fe_sess_rate">fe_sess_rate</a>
 							
+							<a class="list-group-item" href="#fe_tarpit_timeout">fe_tarpit_timeout</a>
+							
 							<a class="list-group-item" href="#field">field</a>
 							
 							<a class="list-group-item" href="#filter (Alphabetically sorted keywords reference)">filter (Alphabetically sorted keywords reference)</a>
@@ -2084,6 +2102,8 @@
 								<div class="letter" id="letter-G"><h4>G</h4>
 								
 							<a class="list-group-item" href="#generate-certificates">generate-certificates</a>
+							
+							<a class="list-group-item" href="#generate-dummy">generate-dummy</a>
 							
 							<a class="list-group-item" href="#gid (Process management and security)">gid (Process management and security)</a>
 							
@@ -2345,7 +2365,9 @@
 							
 							<a class="list-group-item" href="#key-base (Process management and security)">key-base (Process management and security)</a>
 							
-							<a class="list-group-item" href="#keytype">keytype</a>
+							<a class="list-group-item" href="#keytype (Load options)">keytype (Load options)</a>
+							
+							<a class="list-group-item" href="#keytype (ACME)">keytype (ACME)</a>
 							
 							<a class="list-group-item" href="#ktls (Bind options)">ktls (Bind options)</a>
 							
@@ -4791,7 +4813,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4802,9 +4824,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev4-114</strong></p>
+							<p><strong>version 3.4-dev5-1</strong></p>
 							<p>
-								2026/02/04<br>
+								2026/02/19<br>
 								
 							</p>
 						</div>
@@ -14396,6 +14418,9 @@ http      The instance will work in HTTP mode. The client request will be
           processing and switching will be possible. This is the mode which
           brings HAProxy most of its value.
 
+haterm    The frontend will work in haterm HTTP benchmark mode. This is
+          not supported by backends. See doc/haterm.txt for details.
+
 log       When used in a backend section, it will turn the backend into a
           log backend. Such backend can be used as a log destination for
           any &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">log<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#log%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#log%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#log%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#log%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive by using the &quot;backend@&lt;name&gt;&quot; syntax. Log
@@ -20953,20 +20978,24 @@ http-response set-status 431
 <span class="comment"># return &quot;503 Slow Down&quot;, custom reason</span>
 http-response set-status 503 reason &quot;Slow Down&quot;.
 </code></pre>
-</div><a class="anchor" name="set-timeout"></a><a class="anchor" name="4-set-timeout"></a><a class="anchor" name="4.4-set-timeout"></a><a class="anchor" name="set-timeout (Proxies)"></a><a class="anchor" name="set-timeout (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-timeout"></a><a href="#4.4-set-timeout">set-timeout</a></b> <span style="color: #800">{ client | server | tunnel }</span> <span style="color: #800">{ <span style="color: #080">&lt;timeout&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="set-timeout"></a><a class="anchor" name="4-set-timeout"></a><a class="anchor" name="4.4-set-timeout"></a><a class="anchor" name="set-timeout (Proxies)"></a><a class="anchor" name="set-timeout (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-timeout"></a><a href="#4.4-set-timeout">set-timeout</a></b> <span style="color: #800">{ client | connect | queue | server | tarpit | tunnel }</span> <span style="color: #800">{ <span style="color: #080">&lt;timeout&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
-<pre class="text">This action overrides the specified &quot;client&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or &quot;tunnel&quot; timeout
-for the current stream only. The timeout can be specified in milliseconds or
-with any other unit if the number is suffixed by the unit as explained at the
-top of this document. It is also possible to write an expression which must
-return a number interpreted as a timeout in milliseconds.
+<pre class="text">This action overrides the specified &quot;client&quot;, &quot;connect&quot;, &quot;<a href="#queue">queue</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;,
+&quot;<a href="#tarpit">tarpit</a>&quot; or &quot;tunnel&quot; timeout for the current stream only. Changing one timeout
+does not influence any other timeouts, even if they are inherited from each
+other during configuration parsing (see last example). The timeout can be
+specified in milliseconds or with any other unit if the number is suffixed by
+the unit as explained at the top of this document. It is also possible to
+write an expression which must return a number interpreted as a timeout in
+milliseconds.
 
-Note that the server/tunnel timeouts are only relevant on the backend side
-and thus this rule is only available for the proxies with backend
-capabilities. Likewise, client timeout is only relevant for frontend side.
-Also the timeout value must be non-null to obtain the expected results.
+Note that the connect, queue, server and tunnel timeouts are only relevant on
+the backend side and thus this rule is only available for the proxies with
+backend capabilities. Likewise, client timeout is only relevant for frontend
+side. Tarpit timeout is available to both sides. The timeout value must be
+non-null to obtain the expected results.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -20978,6 +21007,21 @@ http-request set-timeout server req.hdr(host),map_int(host.lst)
 <pre class="prettyprint">
 <code>http-response set-timeout tunnel 5s
 http-response set-timeout server res.hdr(X-Refresh-Seconds),mul(1000)
+</code></pre>
+</div><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>defaults
+  <span class="comment"># This will set both tarpit and queue timeout to 5s as they are not</span>
+  <span class="comment"># defined</span>
+  timeout connect 5s
+  timeout client 30s
+  timeout server 30s
+
+listen foo
+  <span class="comment"># This will only change the connect timeout to 10s without affecting</span>
+  <span class="comment"># queue or tarpit timeouts</span>
+  http-request set-timeout connect 10s
 </code></pre>
 </div><a class="anchor" name="set-tos"></a><a class="anchor" name="4-set-tos"></a><a class="anchor" name="4.4-set-tos"></a><a class="anchor" name="set-tos (Proxies)"></a><a class="anchor" name="set-tos (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-tos"></a><a href="#4.4-set-tos">set-tos</a></b> <span style="color: #080">&lt;tos&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This is an alias for &quot;<a href="#set-fc-tos">set-fc-tos</a>&quot; (which should be used instead).
 </pre><a class="anchor" name="set-uri"></a><a class="anchor" name="4-set-uri"></a><a class="anchor" name="4.4-set-uri"></a><a class="anchor" name="set-uri (Proxies)"></a><a class="anchor" name="set-uri (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-uri"></a><a href="#4.4-set-uri">set-uri</a></b> <span style="color: #080">&lt;fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -21641,7 +21685,7 @@ string is a colon-delimited list of curve name.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
+<div class="example-desc">&quot;X25519:P-256&quot; (without quote)</div><code>When &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is set, &quot;<a href="#ecdhe">ecdhe</a>&quot; parameter is ignored.
 </code></pre>
 </div><a class="anchor" name="defer-accept"></a><a class="anchor" name="5-defer-accept"></a><a class="anchor" name="5.1-defer-accept"></a><a class="anchor" name="defer-accept (Bind and server options)"></a><a class="anchor" name="defer-accept (Bind options)"></a><div class="keyword"><b><a class="anchor" name="defer-accept"></a><a href="#5.1-defer-accept">defer-accept</a></b></div><pre class="text">Is an optional keyword which is supported only on certain Linux kernels. It
 states that a connection will only be accepted once some data arrive on it,
@@ -27571,12 +27615,18 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-be_id">be_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_name">be_name</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-be_connect_timeout">be_connect_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_queue_timeout">be_queue_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_server_timeout">be_server_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_tarpit_timeout">be_tarpit_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_tunnel_timeout">be_tunnel_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bytes_in">bytes_in</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_connect_timeout">cur_connect_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_queue_timeout">cur_queue_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_tarpit_timeout">cur_tarpit_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_tunnel_timeout">cur_tunnel_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-dst">dst</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-dst_conn">dst_conn</a></td><td >integer</td></tr>
@@ -27585,13 +27635,13 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc.timer.handshake">fc.timer.handshake</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc.timer.total">fc.timer.total</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_dst">fc_dst</a></td><td >ip</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_dst_is_local">fc_dst_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_dst_port">fc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_err">fc_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_err_name">fc_err_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_err_str">fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fc_fackets">fc_fackets</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_glitches">fc_glitches</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_http_major">fc_http_major</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_lost">fc_lost</a></td><td >integer</td></tr>
@@ -27606,13 +27656,14 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_rttvar">fc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_saved_syn">fc_saved_syn</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_settings_streams_limit">fc_settings_streams_limit</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_src">fc_src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-fc_src_is_local">fc_src_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_src_port">fc_src_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_unacked">fc_unacked</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fe_tarpit_timeout">fe_tarpit_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_client_timeout">fe_client_timeout</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fe_defbe">fe_defbe</a></td><td >string</td></tr>
 <tr><td ><a href="#7-fe_id">fe_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_name">fe_name</a></td><td >string</td></tr>
@@ -27626,6 +27677,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_clr_gpc0">sc0_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_clr_gpc1">sc0_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_cnt">sc0_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_conn_cur">sc0_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_rate">sc0_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_get_gpc0">sc0_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27633,7 +27685,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_get_gpt0">sc0_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_glitch_cnt">sc0_glitch_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_glitch_rate">sc0_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_gpc0_rate">sc0_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_gpc1_rate">sc0_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_http_err_cnt">sc0_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27647,6 +27698,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_kbytes_in">sc0_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_key">sc0_key</a></td><td >any</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_sess_cnt">sc0_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_sess_rate">sc0_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_tracked">sc0_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
@@ -27654,7 +27706,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_bytes_in_rate">sc1_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_bytes_out_rate">sc1_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_clr_gpc0">sc1_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_clr_gpc1">sc1_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cnt">sc1_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_conn_cur">sc1_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27668,6 +27719,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_cnt">sc1_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_rate">sc1_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_http_fail_cnt">sc1_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_fail_rate">sc1_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27675,7 +27727,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_inc_gpc0">sc1_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_inc_gpc1">sc1_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_kbytes_in">sc1_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_kbytes_out">sc1_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_key">sc1_key</a></td><td >any</td></tr>
 <tr><td ><a href="#7-sc1_sess_cnt">sc1_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27689,6 +27740,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_conn_cnt">sc2_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_conn_cur">sc2_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_conn_rate">sc2_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_get_gpc0">sc2_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpc1">sc2_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpt0">sc2_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27696,7 +27748,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_glitch_rate">sc2_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc0_rate">sc2_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_gpc1_rate">sc2_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_http_err_cnt">sc2_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_err_rate">sc2_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_http_fail_cnt">sc2_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27710,6 +27761,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_key">sc2_key</a></td><td >any</td></tr>
 <tr><td ><a href="#7-sc2_sess_cnt">sc2_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_sess_rate">sc2_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_tracked">sc2_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-sc2_trackers">sc2_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_bytes_in_rate">sc_bytes_in_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27717,7 +27769,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_clr_gpc">sc_clr_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc0">sc_clr_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_clr_gpc1">sc_clr_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_conn_cnt">sc_conn_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_cur">sc_conn_cur(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_conn_rate">sc_conn_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27731,6 +27782,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_gpc0_rate">sc_gpc0_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc_rate">sc_gpc_rate(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_err_cnt">sc_http_err_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_err_rate">sc_http_err_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_fail_cnt">sc_http_fail_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27738,7 +27790,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_http_req_cnt">sc_http_req_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_req_rate">sc_http_req_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc">sc_inc_gpc(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_inc_gpc0">sc_inc_gpc0(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_inc_gpc1">sc_inc_gpc1(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_kbytes_in">sc_kbytes_in(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27752,6 +27803,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
 <tr><td ><a href="#7-src">src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-src_bytes_in_rate">src_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_bytes_out_rate">src_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc">src_clr_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc0">src_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27759,7 +27811,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_conn_cnt">src_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_cur">src_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_conn_rate">src_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_get_gpc">src_get_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc0">src_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_get_gpc1">src_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27773,6 +27824,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_err_rate">src_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_fail_rate">src_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_req_cnt">src_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_req_rate">src_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -27780,7 +27832,6 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_inc_gpc0">src_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_inc_gpc1">src_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_is_local">src_is_local</a></td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_kbytes_in">src_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_kbytes_out">src_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_port">src_port</a></td><td >integer</td></tr>
@@ -27873,25 +27924,44 @@ target server. This is the equivalent of %sq in the log-format.
 frontends with responses to check which backend processed the request. If
 used in a frontend and no backend was used, it returns the current
 frontend's id. It can also be used in a tcp-check or an http-check ruleset.
+</pre><a class="anchor" name="be_connect_timeout"></a><a class="anchor" name="7-be_connect_timeout"></a><a class="anchor" name="7.3.3-be_connect_timeout"></a><a class="anchor" name="be_connect_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_connect_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_connect_timeout"></a><a href="#7.3.3-be_connect_timeout">be_connect_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the connect timeout of the
+current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
+also the &quot;<a href="#cur_connect_timeout">cur_connect_timeout</a>&quot;.
 </pre><a class="anchor" name="be_name"></a><a class="anchor" name="7-be_name"></a><a class="anchor" name="7.3.3-be_name"></a><a class="anchor" name="be_name (Using ACLs and fetching samples)"></a><a class="anchor" name="be_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_name"></a><a href="#7.3.3-be_name">be_name</a></b> : string</div><pre class="text">Returns a string containing the current backend's name. It can be used in
 frontends with responses to check which backend processed the request. If
 used in a frontend and no backend was used, it returns the current
 frontend's name. It can also be used in a tcp-check or an http-check
 ruleset.
+</pre><a class="anchor" name="be_queue_timeout"></a><a class="anchor" name="7-be_queue_timeout"></a><a class="anchor" name="7.3.3-be_queue_timeout"></a><a class="anchor" name="be_queue_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_queue_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_queue_timeout"></a><a href="#7.3.3-be_queue_timeout">be_queue_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the queue timeout of the
+current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
+also the &quot;<a href="#cur_queue_timeout">cur_queue_timeout</a>&quot;.
 </pre><a class="anchor" name="be_server_timeout"></a><a class="anchor" name="7-be_server_timeout"></a><a class="anchor" name="7.3.3-be_server_timeout"></a><a class="anchor" name="be_server_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_server_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_server_timeout"></a><a href="#7.3.3-be_server_timeout">be_server_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the server timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_server_timeout">cur_server_timeout</a>&quot;.
+</pre><a class="anchor" name="be_tarpit_timeout"></a><a class="anchor" name="7-be_tarpit_timeout"></a><a class="anchor" name="7.3.3-be_tarpit_timeout"></a><a class="anchor" name="be_tarpit_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_tarpit_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_tarpit_timeout"></a><a href="#7.3.3-be_tarpit_timeout">be_tarpit_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the queue timeout of the
+current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
+also the &quot;<a href="#cur_tarpit_timeout">cur_tarpit_timeout</a>&quot;.
 </pre><a class="anchor" name="be_tunnel_timeout"></a><a class="anchor" name="7-be_tunnel_timeout"></a><a class="anchor" name="7.3.3-be_tunnel_timeout"></a><a class="anchor" name="be_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_tunnel_timeout"></a><a href="#7.3.3-be_tunnel_timeout">be_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the tunnel timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_tunnel_timeout">cur_tunnel_timeout</a>&quot;.
 </pre><a class="anchor" name="bytes_in"></a><a class="anchor" name="7-bytes_in"></a><a class="anchor" name="7.3.3-bytes_in"></a><a class="anchor" name="bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_in"></a><a href="#7.3.3-bytes_in">bytes_in</a></b> : integer</div><pre class="text">See &quot;<a href="#req.bytes_in">req.bytes_in</a>&quot;.
 </pre><a class="anchor" name="bytes_out"></a><a class="anchor" name="7-bytes_out"></a><a class="anchor" name="7.3.3-bytes_out"></a><a class="anchor" name="bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="bytes_out"></a><a href="#7.3.3-bytes_out">bytes_out</a></b> : integer</div><pre class="text">See &quot;<a href="#res.bytes_in">res.bytes_in</a>&quot;.
+</pre><a class="anchor" name="cur_connect_timeout"></a><a class="anchor" name="7-cur_connect_timeout"></a><a class="anchor" name="7.3.3-cur_connect_timeout"></a><a class="anchor" name="cur_connect_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_connect_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_connect_timeout"></a><a href="#7.3.3-cur_connect_timeout">cur_connect_timeout</a></b> : integer</div><pre class="text">Returns the currently applied connect timeout in millisecond for the stream.
+In the default case, this will be equal to be_connect_timeout unless a
+&quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_connect_timeout">be_connect_timeout</a>&quot;.
 </pre><a class="anchor" name="cur_client_timeout"></a><a class="anchor" name="7-cur_client_timeout"></a><a class="anchor" name="7.3.3-cur_client_timeout"></a><a class="anchor" name="cur_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_client_timeout"></a><a href="#7.3.3-cur_client_timeout">cur_client_timeout</a></b> : integer</div><pre class="text">Returns the currently applied client timeout in millisecond for the stream.
 In the default case, this will be equal to fe_client_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#fe_client_timeout">fe_client_timeout</a>&quot;.
+</pre><a class="anchor" name="cur_queue_timeout"></a><a class="anchor" name="7-cur_queue_timeout"></a><a class="anchor" name="7.3.3-cur_queue_timeout"></a><a class="anchor" name="cur_queue_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_queue_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_queue_timeout"></a><a href="#7.3.3-cur_queue_timeout">cur_queue_timeout</a></b> : integer</div><pre class="text">Returns the currently applied queue timeout in millisecond for the stream.
+In the default case, this will be equal to be_queue_timeout unless a
+&quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_queue_timeout">be_queue_timeout</a>&quot;.
 </pre><a class="anchor" name="cur_server_timeout"></a><a class="anchor" name="7-cur_server_timeout"></a><a class="anchor" name="7.3.3-cur_server_timeout"></a><a class="anchor" name="cur_server_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_server_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_server_timeout"></a><a href="#7.3.3-cur_server_timeout">cur_server_timeout</a></b> : integer</div><pre class="text">Returns the currently applied server timeout in millisecond for the stream.
 In the default case, this will be equal to be_server_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_server_timeout">be_server_timeout</a>&quot;.
+</pre><a class="anchor" name="cur_tarpit_timeout"></a><a class="anchor" name="7-cur_tarpit_timeout"></a><a class="anchor" name="7.3.3-cur_tarpit_timeout"></a><a class="anchor" name="cur_tarpit_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_tarpit_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_tarpit_timeout"></a><a href="#7.3.3-cur_tarpit_timeout">cur_tarpit_timeout</a></b> : integer</div><pre class="text">Returns the currently applied tarpit timeout in millisecond for the stream.
+In the default case, this will be equal to fe_tarpit_timeout/be_tarpit_timeout
+unless a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#fe_tarpit_timeout">fe_tarpit_timeout</a>&quot;
+and &quot;<a href="#be_tarpit_timeout">be_tarpit_timeout</a>&quot;.
 </pre><a class="anchor" name="cur_tunnel_timeout"></a><a class="anchor" name="7-cur_tunnel_timeout"></a><a class="anchor" name="7.3.3-cur_tunnel_timeout"></a><a class="anchor" name="cur_tunnel_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_tunnel_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_tunnel_timeout"></a><a href="#7.3.3-cur_tunnel_timeout">cur_tunnel_timeout</a></b> : integer</div><pre class="text">Returns the currently applied tunnel timeout in millisecond for the stream.
 In the default case, this will be equal to be_tunnel_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_tunnel_timeout">be_tunnel_timeout</a>&quot;.
@@ -28202,6 +28272,8 @@ coming via a same frontend to the same server.
 </pre><a class="anchor" name="fe_name"></a><a class="anchor" name="7-fe_name"></a><a class="anchor" name="7.3.3-fe_name"></a><a class="anchor" name="fe_name (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_name"></a><a href="#7.3.3-fe_name">fe_name</a></b> : string</div><pre class="text">Returns a string containing the current frontend's name. It can be used in
 backends to check from which frontend it was called, or to stick all users
 coming via a same frontend to the same server.
+</pre><a class="anchor" name="fe_tarpit_timeout"></a><a class="anchor" name="7-fe_tarpit_timeout"></a><a class="anchor" name="7.3.3-fe_tarpit_timeout"></a><a class="anchor" name="fe_tarpit_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_tarpit_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="fe_tarpit_timeout"></a><a href="#7.3.3-fe_tarpit_timeout">fe_tarpit_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the tarpit timeout of the
+current frontend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule.
 </pre><a class="anchor" name="req.bytes_in"></a><a class="anchor" name="7-req.bytes_in"></a><a class="anchor" name="7.3.3-req.bytes_in"></a><a class="anchor" name="req.bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="req.bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.bytes_in"></a><a href="#7.3.3-req.bytes_in">req.bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the client. The value
 corresponds to what was received by HAProxy, including some headers and some
 internal encoding overhead. Request compression does not affect the value
@@ -34495,6 +34567,22 @@ SSL handshakes or JWT validation.
 
 This option can be changed during runtime via the &quot;add ssl jwt&quot; and &quot;del ssl
 jwt&quot; CLI commands. See also &quot;show ssl jwt&quot; CLI command.
+</pre><a class="anchor" name="generate-dummy"></a><a class="anchor" name="12-generate-dummy"></a><a class="anchor" name="12.7.1-generate-dummy"></a><a class="anchor" name="generate-dummy (Other sections)"></a><a class="anchor" name="generate-dummy (Load options)"></a><div class="keyword"><b><a class="anchor" name="generate-dummy"></a><a href="#12.7.1-generate-dummy">generate-dummy</a></b> <span style="color: #008">[ off | on ]</span></div><pre class="text">Allow the generation of a private key and its self-signed certificate at
+parsing time when set to 'on'. This may be useful if one does not have a
+certificate at disposal during testing phase for instance. In this case,
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">keytype<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#keytype%20%28Load%20options%29">Load options</a></li><li><a href="#keytype%20%28ACME%29">ACME</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bits<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bits%20%28Load%20options%29">Load options</a></li><li><a href="#bits%20%28ACME%29">ACME</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; may be used to customize the private key. When
+not used, the default value is 'off'. (also see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">keytype<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#keytype%20%28Load%20options%29">Load options</a></li><li><a href="#keytype%20%28ACME%29">ACME</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bits<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bits%20%28Load%20options%29">Load options</a></li><li><a href="#bits%20%28ACME%29">ACME</a></li></ul></span>&quot; and
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;).
+</pre><a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.7.1-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (Load options)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.7.1-keytype">keytype</a></b> <span style="color: #008">[ RSA | ECDSA ]</span></div><pre class="text">Allow the selection of the private key type used to generate at parsing time
+a self-signed certificate. This is the case if &quot;<a href="#generate-dummy">generate-dummy</a>&quot; is set to 'on'
+for this certificate. When not used, the default is 'RSA'.
+(also see &quot;<a href="#generate-dummy">generate-dummy</a>&quot;).
+</pre><a class="anchor" name="bits"></a><a class="anchor" name="12-bits"></a><a class="anchor" name="12.7.1-bits"></a><a class="anchor" name="bits (Other sections)"></a><a class="anchor" name="bits (Load options)"></a><div class="keyword"><b><a class="anchor" name="bits"></a><a href="#12.7.1-bits">bits</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Configure the number of bits to generate an RSA self-signed certificate when
+&quot;<a href="#generate-dummy">generate-dummy</a>&quot; is set to 'on' for this self-signed certificate and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">keytype<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#keytype%20%28Load%20options%29">Load options</a></li><li><a href="#keytype%20%28ACME%29">ACME</a></li></ul></span>&quot;
+is set to 'RSA'. When not used, the default is 2048. (also see
+&quot;<a href="#generate-dummy">generate-dummy</a>&quot;).
+</pre><a class="anchor" name="curves"></a><a class="anchor" name="12-curves"></a><a class="anchor" name="12.7.1-curves"></a><a class="anchor" name="curves (Other sections)"></a><a class="anchor" name="curves (Load options)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#12.7.1-curves">curves</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the curves when &quot;<a href="#generate-dummy">generate-dummy</a>&quot; is set to 'on' and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">keytype<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#keytype%20%28Load%20options%29">Load options</a></li><li><a href="#keytype%20%28ACME%29">ACME</a></li></ul></span>&quot; is
+set to 'ECDSA&quot; for this self-signed certificate. The default is 'P-384'.
 </pre></div>
 <a class="anchor" id="12.8" name="12.8"></a>
 <h2 id="chapter-12.8" data-target="12.8"><small><a class="small" href="#12.8">12.8.</a></small> ACME</h2>
@@ -34504,6 +34592,9 @@ a &quot;&lt;name&gt;&quot; argument, which is used to link a certificate to the 
 The ACME section allows to configure HAProxy as an ACMEv2 client. This feature
 is experimental meaning that &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; must be in the
 global section so this can be used.
+
+A guide is available on the HAProxy wiki
+https://github.com/haproxy/wiki/wiki/ACME:--native-haproxy
 
 Current limitations as of 3.3:
 - The feature is limited to the HTTP-01 or DNS-01 challenges for now. HTTP-01
@@ -34559,8 +34650,8 @@ section. This keyword is mandatory as there is no default URL.
 <code>directory https://acme-staging-v02.api.letsencrypt.org/directory
 </code></pre>
 </div><a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
-or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
-&quot;<a href="#bits">bits</a>&quot; for RSA. By default EC384 keys are generated.
+or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bits<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bits%20%28Load%20options%29">Load options</a></li><li><a href="#bits%20%28ACME%29">ACME</a></li></ul></span>&quot; for RSA. By default EC384 keys are generated.
 </pre><a class="anchor" name="map"></a><a class="anchor" name="12-map"></a><a class="anchor" name="12.8-map"></a><a class="anchor" name="map (Other sections)"></a><a class="anchor" name="map (ACME)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#12.8-map">map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Configure the map which will be used to store token (key) and thumbprint
 (value), which is useful to reply to a challenge when there are multiple
 account used. The acme task will add entries before validating the challenge
@@ -34614,8 +34705,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev4-114 &ndash; Configuration Manual<br>
-							<small>, 2026/02/04</small>
+							HAProxy 3.4-dev5-1 &ndash; Configuration Manual<br>
+							<small>, 2026/02/19</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
