@@ -2,48 +2,48 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>HAProxy version 1.7.14 - Management Guide</title>
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
-		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="../css/page.css?0.4.2-27" rel="stylesheet" />
 	</head>
-	<body>
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
+	<body class="d-flex flex-column vh-100">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
 				<a class="navbar-brand" href="../">HAProxy Documentation</a>
-			</div>
-			<!-- /.navbar-header -->
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="menu">
-				<ul class="nav navbar-nav">
-						<li class=""><a href="intro.html">Starter Guide</a></li>
-						<li class=""><a href="configuration.html">Configuration Manual</a></li>
-						<li class="active"><a href="management.html">Management Guide</a></li>
-				</ul>
-				<ul class="nav navbar-nav">
-					<li><a href="http://www.haproxy.org/">HAProxy Home Page</a></li>
-				</ul>
+				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="menu">
+					<ul class="navbar-nav me-auto">
+							<li class="nav-item"><a class="nav-link " href="intro.html">Starter Guide</a></li>
+							<li class="nav-item"><a class="nav-link " href="configuration.html">Configuration Manual</a></li>
+							<li class="nav-item"><a class="nav-link active" href="management.html">Management Guide</a></li>
+					</ul>
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link" href="http://www.haproxy.org/">HAProxy Home Page</a></li>
+					</ul>
+				</div>
 			</div>
 		</nav>
-		<!-- /.navbar-static-side -->
 
-		<div id="wrapper">
+		<div class="d-flex flex-grow-1 overflow-hidden">
 
-			<div id="sidebar">
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tab-summary" aria-controls="tab-summary" role="tab" data-toggle="tab">Summary</a></li>
-					<li role="presentation"><a href="#tab-keywords" aria-controls="tab-keywords" role="tab" data-toggle="tab">Keywords</a></li>
-				</ul>
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="tab-summary">
-						<table class="summary">
+			<aside id="sidebar" class="d-flex flex-column flex-shrink-0 bg-dark">
+				<!-- Nav tabs (fixed at top) -->
+				<div class="flex-shrink-0 p-3 pb-0">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-chapters" type="button" role="tab">Chapters</button></li>
+						<li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-keywords" type="button" role="tab">Keywords</button></li>
+					</ul>
+				</div>
+				
+				<!-- Content wrapper (grows to fill space, contains scrollbar) -->
+				<div class="flex-grow-1 overflow-hidden p-3 pt-0">
+					<div class="h-100 overflow-auto bg-light text-body rounded-bottom p-3">
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="tab-chapters">
+								<table class="summary">
 	<tbody>
 		
 			
@@ -199,207 +199,222 @@
 	</tbody>
 </table>
 
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tab-keywords">
-						<label for="filter">Filter</label>
-						<input class="form-control" type="text" name="filter" id="filter" onkeyup="filterKeywords(this.value)" placeholder="Enter keyword to search...">
-						
-							
-								<div class="letter" id="letter-A"><h4>A</h4>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="tab-keywords">
+								<label for="filter" class="form-label">Filter</label>
+								<input class="form-control mb-2" type="text" name="filter" id="filter" placeholder="Enter keyword to search...">
+								<div id="keywords-list">
 								
-							<a class="list-group-item" href="#add">add</a>
-							
-							<a class="list-group-item" href="#add acl">add acl</a>
-							
-							<a class="list-group-item" href="#add map">add map</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-C"><h4>C</h4>
-								
-							<a class="list-group-item" href="#clear">clear</a>
-							
-							<a class="list-group-item" href="#clear acl">clear acl</a>
-							
-							<a class="list-group-item" href="#clear counters">clear counters</a>
-							
-							<a class="list-group-item" href="#clear counters all">clear counters all</a>
-							
-							<a class="list-group-item" href="#clear map">clear map</a>
-							
-							<a class="list-group-item" href="#clear table">clear table</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-D"><h4>D</h4>
-								
-							<a class="list-group-item" href="#del">del</a>
-							
-							<a class="list-group-item" href="#del acl">del acl</a>
-							
-							<a class="list-group-item" href="#del map">del map</a>
-							
-							<a class="list-group-item" href="#disable">disable</a>
-							
-							<a class="list-group-item" href="#disable agent">disable agent</a>
-							
-							<a class="list-group-item" href="#disable frontend">disable frontend</a>
-							
-							<a class="list-group-item" href="#disable health">disable health</a>
-							
-							<a class="list-group-item" href="#disable server">disable server</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-E"><h4>E</h4>
-								
-							<a class="list-group-item" href="#enable">enable</a>
-							
-							<a class="list-group-item" href="#enable agent">enable agent</a>
-							
-							<a class="list-group-item" href="#enable frontend">enable frontend</a>
-							
-							<a class="list-group-item" href="#enable health">enable health</a>
-							
-							<a class="list-group-item" href="#enable server">enable server</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-G"><h4>G</h4>
-								
-							<a class="list-group-item" href="#get">get</a>
-							
-							<a class="list-group-item" href="#get acl">get acl</a>
-							
-							<a class="list-group-item" href="#get map">get map</a>
-							
-							<a class="list-group-item" href="#get weight">get weight</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-H"><h4>H</h4>
-								
-							<a class="list-group-item" href="#help">help</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-P"><h4>P</h4>
-								
-							<a class="list-group-item" href="#prompt">prompt</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-Q"><h4>Q</h4>
-								
-							<a class="list-group-item" href="#quit">quit</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-S"><h4>S</h4>
-								
-							<a class="list-group-item" href="#set">set</a>
-							
-							<a class="list-group-item" href="#set map">set map</a>
-							
-							<a class="list-group-item" href="#set maxconn">set maxconn</a>
-							
-							<a class="list-group-item" href="#set maxconn frontend">set maxconn frontend</a>
-							
-							<a class="list-group-item" href="#set maxconn global">set maxconn global</a>
-							
-							<a class="list-group-item" href="#set maxconn server">set maxconn server</a>
-							
-							<a class="list-group-item" href="#set rate-limit">set rate-limit</a>
-							
-							<a class="list-group-item" href="#set rate-limit connections">set rate-limit connections</a>
-							
-							<a class="list-group-item" href="#set rate-limit connections global">set rate-limit connections global</a>
-							
-							<a class="list-group-item" href="#set rate-limit http-compression">set rate-limit http-compression</a>
-							
-							<a class="list-group-item" href="#set rate-limit http-compression global">set rate-limit http-compression global</a>
-							
-							<a class="list-group-item" href="#set rate-limit sessions">set rate-limit sessions</a>
-							
-							<a class="list-group-item" href="#set rate-limit sessions global">set rate-limit sessions global</a>
-							
-							<a class="list-group-item" href="#set rate-limit ssl-sessions">set rate-limit ssl-sessions</a>
-							
-							<a class="list-group-item" href="#set rate-limit ssl-sessions global">set rate-limit ssl-sessions global</a>
-							
-							<a class="list-group-item" href="#set server">set server</a>
-							
-							<a class="list-group-item" href="#set ssl">set ssl</a>
-							
-							<a class="list-group-item" href="#set ssl ocsp-response">set ssl ocsp-response</a>
-							
-							<a class="list-group-item" href="#set ssl tls-key">set ssl tls-key</a>
-							
-							<a class="list-group-item" href="#set table">set table</a>
-							
-							<a class="list-group-item" href="#set timeout">set timeout</a>
-							
-							<a class="list-group-item" href="#set timeout cli">set timeout cli</a>
-							
-							<a class="list-group-item" href="#set weight">set weight</a>
-							
-							<a class="list-group-item" href="#show">show</a>
-							
-							<a class="list-group-item" href="#show acl">show acl</a>
-							
-							<a class="list-group-item" href="#show backend">show backend</a>
-							
-							<a class="list-group-item" href="#show env">show env</a>
-							
-							<a class="list-group-item" href="#show errors">show errors</a>
-							
-							<a class="list-group-item" href="#show info">show info</a>
-							
-							<a class="list-group-item" href="#show map">show map</a>
-							
-							<a class="list-group-item" href="#show pools">show pools</a>
-							
-							<a class="list-group-item" href="#show resolvers">show resolvers</a>
-							
-							<a class="list-group-item" href="#show servers">show servers</a>
-							
-							<a class="list-group-item" href="#show servers state">show servers state</a>
-							
-							<a class="list-group-item" href="#show sess">show sess</a>
-							
-							<a class="list-group-item" href="#show stat">show stat</a>
-							
-							<a class="list-group-item" href="#show table">show table</a>
-							
-							<a class="list-group-item" href="#show tls-keys">show tls-keys</a>
-							
-							<a class="list-group-item" href="#shutdown">shutdown</a>
-							
-							<a class="list-group-item" href="#shutdown frontend">shutdown frontend</a>
-							
-							<a class="list-group-item" href="#shutdown session">shutdown session</a>
-							
-							<a class="list-group-item" href="#shutdown sessions">shutdown sessions</a>
-							
-							<a class="list-group-item" href="#shutdown sessions server">shutdown sessions server</a>
-							
-                                                                </div> <!-- /letter -->
-								<div class="letter" id="letter-W"><h4>W</h4>
-								
-							<a class="list-group-item" href="#where">where</a>
-						</div><!-- /letter -->
+									
+								<div class="letter mb-2" id="letter-A"><strong class="d-block mb-1">A</strong>
+									
+								<a class="d-block py-1" href="#add">add</a>
+									
+								<a class="d-block py-1" href="#add acl">add acl</a>
+									
+								<a class="d-block py-1" href="#add map">add map</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-C"><strong class="d-block mb-1">C</strong>
+									
+								<a class="d-block py-1" href="#clear">clear</a>
+									
+								<a class="d-block py-1" href="#clear acl">clear acl</a>
+									
+								<a class="d-block py-1" href="#clear counters">clear counters</a>
+									
+								<a class="d-block py-1" href="#clear counters all">clear counters all</a>
+									
+								<a class="d-block py-1" href="#clear map">clear map</a>
+									
+								<a class="d-block py-1" href="#clear table">clear table</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-D"><strong class="d-block mb-1">D</strong>
+									
+								<a class="d-block py-1" href="#del">del</a>
+									
+								<a class="d-block py-1" href="#del acl">del acl</a>
+									
+								<a class="d-block py-1" href="#del map">del map</a>
+									
+								<a class="d-block py-1" href="#disable">disable</a>
+									
+								<a class="d-block py-1" href="#disable agent">disable agent</a>
+									
+								<a class="d-block py-1" href="#disable frontend">disable frontend</a>
+									
+								<a class="d-block py-1" href="#disable health">disable health</a>
+									
+								<a class="d-block py-1" href="#disable server">disable server</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-E"><strong class="d-block mb-1">E</strong>
+									
+								<a class="d-block py-1" href="#enable">enable</a>
+									
+								<a class="d-block py-1" href="#enable agent">enable agent</a>
+									
+								<a class="d-block py-1" href="#enable frontend">enable frontend</a>
+									
+								<a class="d-block py-1" href="#enable health">enable health</a>
+									
+								<a class="d-block py-1" href="#enable server">enable server</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-G"><strong class="d-block mb-1">G</strong>
+									
+								<a class="d-block py-1" href="#get">get</a>
+									
+								<a class="d-block py-1" href="#get acl">get acl</a>
+									
+								<a class="d-block py-1" href="#get map">get map</a>
+									
+								<a class="d-block py-1" href="#get weight">get weight</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-H"><strong class="d-block mb-1">H</strong>
+									
+								<a class="d-block py-1" href="#help">help</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-P"><strong class="d-block mb-1">P</strong>
+									
+								<a class="d-block py-1" href="#prompt">prompt</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-Q"><strong class="d-block mb-1">Q</strong>
+									
+								<a class="d-block py-1" href="#quit">quit</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-S"><strong class="d-block mb-1">S</strong>
+									
+								<a class="d-block py-1" href="#set">set</a>
+									
+								<a class="d-block py-1" href="#set map">set map</a>
+									
+								<a class="d-block py-1" href="#set maxconn">set maxconn</a>
+									
+								<a class="d-block py-1" href="#set maxconn frontend">set maxconn frontend</a>
+									
+								<a class="d-block py-1" href="#set maxconn global">set maxconn global</a>
+									
+								<a class="d-block py-1" href="#set maxconn server">set maxconn server</a>
+									
+								<a class="d-block py-1" href="#set rate-limit">set rate-limit</a>
+									
+								<a class="d-block py-1" href="#set rate-limit connections">set rate-limit connections</a>
+									
+								<a class="d-block py-1" href="#set rate-limit connections global">set rate-limit connections global</a>
+									
+								<a class="d-block py-1" href="#set rate-limit http-compression">set rate-limit http-compression</a>
+									
+								<a class="d-block py-1" href="#set rate-limit http-compression global">set rate-limit http-compression global</a>
+									
+								<a class="d-block py-1" href="#set rate-limit sessions">set rate-limit sessions</a>
+									
+								<a class="d-block py-1" href="#set rate-limit sessions global">set rate-limit sessions global</a>
+									
+								<a class="d-block py-1" href="#set rate-limit ssl-sessions">set rate-limit ssl-sessions</a>
+									
+								<a class="d-block py-1" href="#set rate-limit ssl-sessions global">set rate-limit ssl-sessions global</a>
+									
+								<a class="d-block py-1" href="#set server">set server</a>
+									
+								<a class="d-block py-1" href="#set ssl">set ssl</a>
+									
+								<a class="d-block py-1" href="#set ssl ocsp-response">set ssl ocsp-response</a>
+									
+								<a class="d-block py-1" href="#set ssl tls-key">set ssl tls-key</a>
+									
+								<a class="d-block py-1" href="#set table">set table</a>
+									
+								<a class="d-block py-1" href="#set timeout">set timeout</a>
+									
+								<a class="d-block py-1" href="#set timeout cli">set timeout cli</a>
+									
+								<a class="d-block py-1" href="#set weight">set weight</a>
+									
+								<a class="d-block py-1" href="#show">show</a>
+									
+								<a class="d-block py-1" href="#show acl">show acl</a>
+									
+								<a class="d-block py-1" href="#show backend">show backend</a>
+									
+								<a class="d-block py-1" href="#show env">show env</a>
+									
+								<a class="d-block py-1" href="#show errors">show errors</a>
+									
+								<a class="d-block py-1" href="#show info">show info</a>
+									
+								<a class="d-block py-1" href="#show map">show map</a>
+									
+								<a class="d-block py-1" href="#show pools">show pools</a>
+									
+								<a class="d-block py-1" href="#show resolvers">show resolvers</a>
+									
+								<a class="d-block py-1" href="#show servers">show servers</a>
+									
+								<a class="d-block py-1" href="#show servers state">show servers state</a>
+									
+								<a class="d-block py-1" href="#show sess">show sess</a>
+									
+								<a class="d-block py-1" href="#show stat">show stat</a>
+									
+								<a class="d-block py-1" href="#show table">show table</a>
+									
+								<a class="d-block py-1" href="#show tls-keys">show tls-keys</a>
+									
+								<a class="d-block py-1" href="#shutdown">shutdown</a>
+									
+								<a class="d-block py-1" href="#shutdown frontend">shutdown frontend</a>
+									
+								<a class="d-block py-1" href="#shutdown session">shutdown session</a>
+									
+								<a class="d-block py-1" href="#shutdown sessions">shutdown sessions</a>
+									
+								<a class="d-block py-1" href="#shutdown sessions server">shutdown sessions server</a>
+									
+								</div>
+								<div class="letter mb-2" id="letter-W"><strong class="d-block mb-1">W</strong>
+									
+								<a class="d-block py-1" href="#where">where</a>
+								</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+				
+				<!-- Footer (fixed at bottom) -->
+				<div class="flex-shrink-0 border-top border-secondary p-3 text-light small">
+					<p class="mb-1">
+						Keyboard navigation: <span id="keyboardNavStatus"></span>
+					</p>
+					<p class="mb-1">
+						Use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.
+					</p>
+					<p class="mb-0 text-end">
+						Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-27</b> on <b>2021/03/31</b>
+					</p>
+				</div>
+			</aside>
 
-				<p>
-					Keyboard navigation&nbsp;: <span id="keyboardNavStatus"></span>
-				</p>
-				<p>
-					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
-				</p>
-				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2021/03/31</b></small>
-				</p>
-			</div>
-			<!-- /.sidebar -->
-
-			<div id="page-wrapper">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="text-center">
-                            <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
+			<main id="content" class="flex-grow-1 d-flex flex-column overflow-hidden">
+				<!-- Breadcrumbs bar -->
+				<nav id="breadcrumbs" class="flex-shrink-0 py-2 px-3 bg-dark">
+					<small><ol class="breadcrumb mb-0 ps-0">
+						<li class="breadcrumb-item"><a href="#top" class="text-light">Management Guide</a></li>
+					</ol></small>
+				</nav>
+				
+				<!-- Content area -->
+				<div class="flex-grow-1 overflow-auto">
+					<a id="top"></a>
+					<div class="container-fluid py-4">
+						<div class="text-center mb-4">
+							<h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-27" /></a></h1>
 							<h2>Management Guide</h2>
 							<p><strong>version 1.7.14</strong></p>
 							<p>
@@ -646,7 +661,7 @@ to show listening sockets. Example :
 passed on the command line. The actual syntax is :
 
   $ haproxy [&lt;options&gt;]*
-</pre><a class="anchor" name="where"></a><a class="anchor" name="3-where"></a><a class="anchor" name="3-where"></a><a class="anchor" name="where (Starting HAProxy)"></a><a class="anchor" name="where (Starting HAProxy)"></a><div class="keyword"><b><a class="anchor" name="where"></a><a href="#3-where">where</a></b> <span style="color: #008">[<span style="color: #080">&lt;options&gt;</span>]</span>* is any number of options. An option always starts with '-'</div><pre class="text">followed by one of more letters, and possibly followed by one or multiple extra
+</pre><a class="anchor" name="<a href="#where">where</a>"></a><a class="anchor" name="3-where"></a><a class="anchor" name="3-where"></a><a class="anchor" name="where (Starting HAProxy)"></a><a class="anchor" name="where (Starting HAProxy)"></a><div class="keyword"><b><a class="anchor" name="<a href="#where">where</a>"></a><a href="#3-where">where</a></b> <span style="color: #008">[<span style="color: #080">&lt;options&gt;</span>]</span>* is any number of options. An option always starts with '-'</div><pre class="text">followed by one of more letters, and possibly followed by one or multiple extra
 arguments. Without any option, HAProxy displays the help page with a reminder
 about supported options. Available options may vary slightly based on the
 operating system. A fair number of these options overlap with an equivalent one
@@ -1124,7 +1139,7 @@ back into the pool it came from, and allocated objects are never freed since
 they are expected to be reused very soon.
 
 On the CLI, it is possible to check how memory is being used in pools thanks to
-the &quot;<a href="#show%20pools">show pools</a>&quot; command :
+the &quot;show pools&quot; command :
 
   &gt; show pools
   Dumping pools usage. Use SIGQUIT to flush them.
@@ -1238,7 +1253,7 @@ have to be processed. Conversely, if HAProxy indicates the idle is close to
 up because it is already waiting for incoming data to process. In the example
 below, haproxy is completely idle :
 
-  $ echo &quot;<a href="#show%20info">show info</a>&quot; | socat - /var/run/haproxy.sock | grep ^Idle
+  $ echo &quot;show info&quot; | socat - /var/run/haproxy.sock | grep ^Idle
   Idle_pct: 100
 
 When the idle ratio starts to become very low, it is important to tune the
@@ -1566,7 +1581,7 @@ S (Servers).
 </pre></div>
 <a class="anchor" id="9.2" name="9.2"></a>
 <h2 id="chapter-9.2" data-target="9.2"><small><a class="small" href="#9.2">9.2.</a></small> Typed output format</h2>
-<div><pre class="text">Both &quot;<a href="#show%20info">show info</a>&quot; and &quot;<a href="#show%20stat">show stat</a>&quot; support a mode where each output value comes
+<div><pre class="text">Both &quot;show info&quot; and &quot;show stat&quot; support a mode where each output value comes
 with its type and sufficient information to know how the value is supposed to
 be aggregated between processes and how it evolves.
 
@@ -1768,13 +1783,13 @@ must be preceeded by a backslash ('\').
 
 The interactive mode displays a prompt ('&gt;') and waits for commands to be
 entered on the line, then processes them, and displays the prompt again to wait
-for a new command. This mode is entered via the &quot;<a href="#prompt">prompt</a>&quot; command which must be
+for a new command. This mode is entered via the &quot;prompt&quot; command which must be
 sent on the first line in non-interactive mode. The mode is a flip switch, if
-&quot;<a href="#prompt">prompt</a>&quot; is sent in interactive mode, it is disabled and the connection closes
+&quot;prompt&quot; is sent in interactive mode, it is disabled and the connection closes
 after processing the last command of the same line.
 
 For this reason, when debugging by hand, it's quite common to start with the
-&quot;<a href="#prompt">prompt</a>&quot; command :
+&quot;prompt&quot; command :
 
    # socat /var/run/haproxy readline
    prompt
@@ -1795,30 +1810,30 @@ The list of commands currently supported on the stats socket is provided below.
 If an unknown command is sent, haproxy displays the usage message which reminds
 all supported commands. Some commands support a more complex syntax, generally
 it will explain what part of the command is invalid when this happens.
-</pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add acl"></a><a class="anchor" name="9-add acl"></a><a class="anchor" name="9.3-add acl"></a><a class="anchor" name="add acl (Statistics and monitoring)"></a><a class="anchor" name="add acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add acl"></a><a href="#9.3-add%20acl">add acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><pre class="text">Add an entry into the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by
-&quot;<a href="#show%20acl">show acl</a>&quot;. This command does not verify if the entry already exists. This
+</pre><a class="anchor" name="<a href="#add">add</a>"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="<a href="#add%20acl">add acl</a>"></a><a class="anchor" name="9-add acl"></a><a class="anchor" name="9.3-add acl"></a><a class="anchor" name="add acl (Statistics and monitoring)"></a><a class="anchor" name="add acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#add%20acl">add acl</a>"></a><a href="#9.3-add%20acl">add acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><pre class="text">Add an entry into the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by
+&quot;show acl&quot;. This command does not verify if the entry already exists. This
 command cannot be used if the reference &lt;acl&gt; is a file also used with a map.
-In this case, you must use the command &quot;<a href="#add%20map">add map</a>&quot; in place of &quot;<a href="#add%20acl">add acl</a>&quot;.
-</pre><a class="anchor" name="add"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="add map"></a><a class="anchor" name="9-add map"></a><a class="anchor" name="9.3-add map"></a><a class="anchor" name="add map (Statistics and monitoring)"></a><a class="anchor" name="add map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="add map"></a><a href="#9.3-add%20map">add map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;key&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Add an entry into the map &lt;map&gt; to associate the value &lt;value&gt; to the key
+In this case, you must use the command &quot;add map&quot; in place of &quot;add acl&quot;.
+</pre><a class="anchor" name="<a href="#add">add</a>"></a><a class="anchor" name="9-add"></a><a class="anchor" name="9.3-add"></a><a class="anchor" name="add (Statistics and monitoring)"></a><a class="anchor" name="add (Unix Socket commands)"></a><a class="anchor" name="<a href="#add%20map">add map</a>"></a><a class="anchor" name="9-add map"></a><a class="anchor" name="9.3-add map"></a><a class="anchor" name="add map (Statistics and monitoring)"></a><a class="anchor" name="add map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#add%20map">add map</a>"></a><a href="#9.3-add%20map">add map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;key&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Add an entry into the map &lt;map&gt; to associate the value &lt;value&gt; to the key
 &lt;key&gt;. This command does not verify if the entry already exists. It is
 mainly used to fill a map after a clear operation. Note that if the reference
 &lt;map&gt; is a file and is shared with a map, this map will contain also a new
 pattern entry.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters"></a><a href="#9.3-clear%20counters">clear counters</a></b></div><pre class="text">Clear the max values of the statistics counters in each proxy (frontend &amp;
+</pre><a class="anchor" name="<a href="#clear">clear</a>"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20counters">clear counters</a>"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#clear%20counters">clear counters</a>"></a><a href="#9.3-clear%20counters">clear counters</a></b></div><pre class="text">Clear the max values of the statistics counters in each proxy (frontend &amp;
 backend) and in each server. The accumulated counters are not affected. This
 can be used to get clean counters after an incident, without having to
 restart nor to clear traffic counters. This command is restricted and can
 only be issued on sockets configured for levels &quot;operator&quot; or &quot;admin&quot;.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><a class="anchor" name="clear counters all"></a><a class="anchor" name="9-clear counters all"></a><a class="anchor" name="9.3-clear counters all"></a><a class="anchor" name="clear counters all (Statistics and monitoring)"></a><a class="anchor" name="clear counters all (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters all"></a><a href="#9.3-clear%20counters%20all">clear counters all</a></b></div><pre class="text">Clear all statistics counters in each proxy (frontend &amp; backend) and in each
+</pre><a class="anchor" name="<a href="#clear">clear</a>"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20counters">clear counters</a>"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20counters%20all">clear counters all</a>"></a><a class="anchor" name="9-clear counters all"></a><a class="anchor" name="9.3-clear counters all"></a><a class="anchor" name="clear counters all (Statistics and monitoring)"></a><a class="anchor" name="clear counters all (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#clear%20counters%20all">clear counters all</a>"></a><a href="#9.3-clear%20counters%20all">clear counters all</a></b></div><pre class="text">Clear all statistics counters in each proxy (frontend &amp; backend) and in each
 server. This has the same effect as restarting. This command is restricted
 and can only be issued on sockets configured for level &quot;admin&quot;.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear acl"></a><a class="anchor" name="9-clear acl"></a><a class="anchor" name="9.3-clear acl"></a><a class="anchor" name="clear acl (Statistics and monitoring)"></a><a class="anchor" name="clear acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear acl"></a><a href="#9.3-clear%20acl">clear acl</a></b> <span style="color: #080">&lt;acl&gt;</span></div><pre class="text">Remove all entries from the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt;
-returned by &quot;<a href="#show%20acl">show acl</a>&quot;. Note that if the reference &lt;acl&gt; is a file and is
+</pre><a class="anchor" name="<a href="#clear">clear</a>"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20acl">clear acl</a>"></a><a class="anchor" name="9-clear acl"></a><a class="anchor" name="9.3-clear acl"></a><a class="anchor" name="clear acl (Statistics and monitoring)"></a><a class="anchor" name="clear acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#clear%20acl">clear acl</a>"></a><a href="#9.3-clear%20acl">clear acl</a></b> <span style="color: #080">&lt;acl&gt;</span></div><pre class="text">Remove all entries from the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt;
+returned by &quot;show acl&quot;. Note that if the reference &lt;acl&gt; is a file and is
 shared with a map, this map will be also cleared.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear map"></a><a class="anchor" name="9-clear map"></a><a class="anchor" name="9.3-clear map"></a><a class="anchor" name="clear map (Statistics and monitoring)"></a><a class="anchor" name="clear map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear map"></a><a href="#9.3-clear%20map">clear map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Remove all entries from the map &lt;map&gt;. &lt;map&gt; is the #&lt;id&gt; or the &lt;file&gt;
-returned by &quot;<a href="#show%20map">show map</a>&quot;. Note that if the reference &lt;map&gt; is a file and is
+</pre><a class="anchor" name="<a href="#clear">clear</a>"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20map">clear map</a>"></a><a class="anchor" name="9-clear map"></a><a class="anchor" name="9.3-clear map"></a><a class="anchor" name="clear map (Statistics and monitoring)"></a><a class="anchor" name="clear map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#clear%20map">clear map</a>"></a><a href="#9.3-clear%20map">clear map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Remove all entries from the map &lt;map&gt;. &lt;map&gt; is the #&lt;id&gt; or the &lt;file&gt;
+returned by &quot;show map&quot;. Note that if the reference &lt;map&gt; is a file and is
 shared with a acl, this acl will be also cleared.
-</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear table"></a><a class="anchor" name="9-clear table"></a><a class="anchor" name="9.3-clear table"></a><a class="anchor" name="clear table (Statistics and monitoring)"></a><a class="anchor" name="clear table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear table"></a><a href="#9.3-clear%20table">clear table</a></b> <span style="color: #080">&lt;table&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Remove entries from the stick-table &lt;table&gt;.
+</pre><a class="anchor" name="<a href="#clear">clear</a>"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="<a href="#clear%20table">clear table</a>"></a><a class="anchor" name="9-clear table"></a><a class="anchor" name="9.3-clear table"></a><a class="anchor" name="clear table (Statistics and monitoring)"></a><a class="anchor" name="clear table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#clear%20table">clear table</a>"></a><a href="#9.3-clear%20table">clear table</a></b> <span style="color: #080">&lt;table&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Remove entries from the stick-table &lt;table&gt;.
 
 This is typically used to unblock some users complaining they have been
 abusively denied access to a service, but this can also be used to clear some
@@ -1847,7 +1862,7 @@ When the key form is used the entry &lt;key&gt; is removed.  The key must be of 
 same type as the table, which currently is limited to IPv4, IPv6, integer and
 string.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>    $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:2</span>
@@ -1866,17 +1881,17 @@ string.
     $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:1</span>
 </code></pre>
-</div><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del acl"></a><a class="anchor" name="9-del acl"></a><a class="anchor" name="9.3-del acl"></a><a class="anchor" name="del acl (Statistics and monitoring)"></a><a class="anchor" name="del acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del acl"></a><a href="#9.3-del%20acl">del acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span></div><pre class="text">Delete all the acl entries from the acl &lt;acl&gt; corresponding to the key &lt;key&gt;.
-&lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by &quot;<a href="#show%20acl">show acl</a>&quot;. If the &lt;ref&gt; is used,
+</div><a class="anchor" name="<a href="#del">del</a>"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="<a href="#del%20acl">del acl</a>"></a><a class="anchor" name="9-del acl"></a><a class="anchor" name="9.3-del acl"></a><a class="anchor" name="del acl (Statistics and monitoring)"></a><a class="anchor" name="del acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#del%20acl">del acl</a>"></a><a href="#9.3-del%20acl">del acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span></div><pre class="text">Delete all the acl entries from the acl &lt;acl&gt; corresponding to the key &lt;key&gt;.
+&lt;acl&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by &quot;show acl&quot;. If the &lt;ref&gt; is used,
 this command delete only the listed reference. The reference can be found with
 listing the content of the acl. Note that if the reference &lt;acl&gt; is a file and
 is shared with a map, the entry will be also deleted in the map.
-</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del map"></a><a class="anchor" name="9-del map"></a><a class="anchor" name="9.3-del map"></a><a class="anchor" name="del map (Statistics and monitoring)"></a><a class="anchor" name="del map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del map"></a><a href="#9.3-del%20map">del map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span></div><pre class="text">Delete all the map entries from the map &lt;map&gt; corresponding to the key &lt;key&gt;.
-&lt;map&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by &quot;<a href="#show%20map">show map</a>&quot;. If the &lt;ref&gt; is used,
+</pre><a class="anchor" name="<a href="#del">del</a>"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="<a href="#del%20map">del map</a>"></a><a class="anchor" name="9-del map"></a><a class="anchor" name="9.3-del map"></a><a class="anchor" name="del map (Statistics and monitoring)"></a><a class="anchor" name="del map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#del%20map">del map</a>"></a><a href="#9.3-del%20map">del map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span></div><pre class="text">Delete all the map entries from the map &lt;map&gt; corresponding to the key &lt;key&gt;.
+&lt;map&gt; is the #&lt;id&gt; or the &lt;file&gt; returned by &quot;show map&quot;. If the &lt;ref&gt; is used,
 this command delete only the listed reference. The reference can be found with
 listing the content of the map. Note that if the reference &lt;map&gt; is a file and
 is shared with a acl, the entry will be also deleted in the map.
-</pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable agent"></a><a class="anchor" name="9-disable agent"></a><a class="anchor" name="9.3-disable agent"></a><a class="anchor" name="disable agent (Statistics and monitoring)"></a><a class="anchor" name="disable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable agent"></a><a href="#9.3-disable%20agent">disable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the auxiliary agent check as temporarily stopped.
+</pre><a class="anchor" name="<a href="#disable">disable</a>"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="<a href="#disable%20agent">disable agent</a>"></a><a class="anchor" name="9-disable agent"></a><a class="anchor" name="9.3-disable agent"></a><a class="anchor" name="disable agent (Statistics and monitoring)"></a><a class="anchor" name="disable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#disable%20agent">disable agent</a>"></a><a href="#9.3-disable%20agent">disable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the auxiliary agent check as temporarily stopped.
 
 In the case where an agent check is being run as a auxiliary check, due
 to the agent-check parameter of a server directive, new checks are only
@@ -1896,7 +1911,7 @@ configured using set weight without being overridden by the agent.
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable frontend"></a><a class="anchor" name="9-disable frontend"></a><a class="anchor" name="9.3-disable frontend"></a><a class="anchor" name="disable frontend (Statistics and monitoring)"></a><a class="anchor" name="disable frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable frontend"></a><a href="#9.3-disable%20frontend">disable frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Mark the frontend as temporarily stopped. This corresponds to the mode which
+</pre><a class="anchor" name="<a href="#disable">disable</a>"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="<a href="#disable%20frontend">disable frontend</a>"></a><a class="anchor" name="9-disable frontend"></a><a class="anchor" name="9.3-disable frontend"></a><a class="anchor" name="disable frontend (Statistics and monitoring)"></a><a class="anchor" name="disable frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#disable%20frontend">disable frontend</a>"></a><a href="#9.3-disable%20frontend">disable frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Mark the frontend as temporarily stopped. This corresponds to the mode which
 is used during a soft restart : the frontend releases the port but can be
 enabled again if needed. This should be used with care as some non-Linux OSes
 are unable to enable it back. This is intended to be used in environments
@@ -1910,14 +1925,14 @@ prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable health"></a><a class="anchor" name="9-disable health"></a><a class="anchor" name="9.3-disable health"></a><a class="anchor" name="disable health (Statistics and monitoring)"></a><a class="anchor" name="disable health (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable health"></a><a href="#9.3-disable%20health">disable health</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the primary health check as temporarily stopped. This will disable
+</pre><a class="anchor" name="<a href="#disable">disable</a>"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="<a href="#disable%20health">disable health</a>"></a><a class="anchor" name="9-disable health"></a><a class="anchor" name="9.3-disable health"></a><a class="anchor" name="disable health (Statistics and monitoring)"></a><a class="anchor" name="disable health (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#disable%20health">disable health</a>"></a><a href="#9.3-disable%20health">disable health</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the primary health check as temporarily stopped. This will disable
 sending of health checks, and the last health check result will be ignored.
 The server will be in unchecked state and considered UP unless an auxiliary
 agent check forces it down.
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="disable"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="disable server"></a><a class="anchor" name="9-disable server"></a><a class="anchor" name="9.3-disable server"></a><a class="anchor" name="disable server (Statistics and monitoring)"></a><a class="anchor" name="disable server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="disable server"></a><a href="#9.3-disable%20server">disable server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the server DOWN for maintenance. In this mode, no more checks will be
+</pre><a class="anchor" name="<a href="#disable">disable</a>"></a><a class="anchor" name="9-disable"></a><a class="anchor" name="9.3-disable"></a><a class="anchor" name="disable (Statistics and monitoring)"></a><a class="anchor" name="disable (Unix Socket commands)"></a><a class="anchor" name="<a href="#disable%20server">disable server</a>"></a><a class="anchor" name="9-disable server"></a><a class="anchor" name="9.3-disable server"></a><a class="anchor" name="disable server (Statistics and monitoring)"></a><a class="anchor" name="disable server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#disable%20server">disable server</a>"></a><a href="#9.3-disable%20server">disable server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Mark the server DOWN for maintenance. In this mode, no more checks will be
 performed on the server until it leaves maintenance.
 If the server is tracked by other servers, those servers will be set to DOWN
 during the maintenance.
@@ -1930,14 +1945,14 @@ their numeric ID, prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="enable"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="enable agent"></a><a class="anchor" name="9-enable agent"></a><a class="anchor" name="9.3-enable agent"></a><a class="anchor" name="enable agent (Statistics and monitoring)"></a><a class="anchor" name="enable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="enable agent"></a><a href="#9.3-enable%20agent">enable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Resume auxiliary agent check that was temporarily stopped.
+</pre><a class="anchor" name="<a href="#enable">enable</a>"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="<a href="#enable%20agent">enable agent</a>"></a><a class="anchor" name="9-enable agent"></a><a class="anchor" name="9.3-enable agent"></a><a class="anchor" name="enable agent (Statistics and monitoring)"></a><a class="anchor" name="enable agent (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#enable%20agent">enable agent</a>"></a><a href="#9.3-enable%20agent">enable agent</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Resume auxiliary agent check that was temporarily stopped.
 
-See &quot;<a href="#disable%20agent">disable agent</a>&quot; for details of the effect of temporarily starting
+See &quot;disable agent&quot; for details of the effect of temporarily starting
 and stopping an auxiliary agent.
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="enable"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="enable frontend"></a><a class="anchor" name="9-enable frontend"></a><a class="anchor" name="9.3-enable frontend"></a><a class="anchor" name="enable frontend (Statistics and monitoring)"></a><a class="anchor" name="enable frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="enable frontend"></a><a href="#9.3-enable%20frontend">enable frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Resume a frontend which was temporarily stopped. It is possible that some of
+</pre><a class="anchor" name="<a href="#enable">enable</a>"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="<a href="#enable%20frontend">enable frontend</a>"></a><a class="anchor" name="9-enable frontend"></a><a class="anchor" name="9.3-enable frontend"></a><a class="anchor" name="enable frontend (Statistics and monitoring)"></a><a class="anchor" name="enable frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#enable%20frontend">enable frontend</a>"></a><a href="#9.3-enable%20frontend">enable frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Resume a frontend which was temporarily stopped. It is possible that some of
 the listening ports won't be able to bind anymore (eg: if another process
 took them since the 'disable frontend' operation). If this happens, an error
 is displayed. Some operating systems might not be able to resume a frontend
@@ -1948,12 +1963,12 @@ prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="enable"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="enable health"></a><a class="anchor" name="9-enable health"></a><a class="anchor" name="9.3-enable health"></a><a class="anchor" name="enable health (Statistics and monitoring)"></a><a class="anchor" name="enable health (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="enable health"></a><a href="#9.3-enable%20health">enable health</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Resume a primary health check that was temporarily stopped. This will enable
-sending of health checks again. Please see &quot;<a href="#disable%20health">disable health</a>&quot; for details.
+</pre><a class="anchor" name="<a href="#enable">enable</a>"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="<a href="#enable%20health">enable health</a>"></a><a class="anchor" name="9-enable health"></a><a class="anchor" name="9.3-enable health"></a><a class="anchor" name="enable health (Statistics and monitoring)"></a><a class="anchor" name="enable health (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#enable%20health">enable health</a>"></a><a href="#9.3-enable%20health">enable health</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Resume a primary health check that was temporarily stopped. This will enable
+sending of health checks again. Please see &quot;disable health&quot; for details.
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="enable"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="enable server"></a><a class="anchor" name="9-enable server"></a><a class="anchor" name="9.3-enable server"></a><a class="anchor" name="enable server (Statistics and monitoring)"></a><a class="anchor" name="enable server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="enable server"></a><a href="#9.3-enable%20server">enable server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">If the server was previously marked as DOWN for maintenance, this marks the
+</pre><a class="anchor" name="<a href="#enable">enable</a>"></a><a class="anchor" name="9-enable"></a><a class="anchor" name="9.3-enable"></a><a class="anchor" name="enable (Statistics and monitoring)"></a><a class="anchor" name="enable (Unix Socket commands)"></a><a class="anchor" name="<a href="#enable%20server">enable server</a>"></a><a class="anchor" name="9-enable server"></a><a class="anchor" name="9.3-enable server"></a><a class="anchor" name="enable server (Statistics and monitoring)"></a><a class="anchor" name="enable server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#enable%20server">enable server</a>"></a><a href="#9.3-enable%20server">enable server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">If the server was previously marked as DOWN for maintenance, this marks the
 server UP and checks are re-enabled.
 
 Both the backend and the server may be specified either by their name or by
@@ -1961,8 +1976,8 @@ their numeric ID, prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="get"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="get map"></a><a class="anchor" name="9-get map"></a><a class="anchor" name="9.3-get map"></a><a class="anchor" name="get map (Statistics and monitoring)"></a><a class="anchor" name="get map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="get map"></a><a href="#9.3-get%20map">get map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><a class="anchor" name="get"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="get acl"></a><a class="anchor" name="9-get acl"></a><a class="anchor" name="9.3-get acl"></a><a class="anchor" name="get acl (Statistics and monitoring)"></a><a class="anchor" name="get acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="get acl"></a><a href="#9.3-get%20acl">get acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Lookup the value &lt;value&gt; in the map &lt;map&gt; or in the ACL &lt;acl&gt;. &lt;map&gt; or &lt;acl&gt;
-are the #&lt;id&gt; or the &lt;file&gt; returned by &quot;<a href="#show%20map">show map</a>&quot; or &quot;<a href="#show%20acl">show acl</a>&quot;. This command
+</pre><a class="anchor" name="<a href="#get">get</a>"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="<a href="#get%20map">get map</a>"></a><a class="anchor" name="9-get map"></a><a class="anchor" name="9.3-get map"></a><a class="anchor" name="get map (Statistics and monitoring)"></a><a class="anchor" name="get map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#get%20map">get map</a>"></a><a href="#9.3-get%20map">get map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><a class="anchor" name="<a href="#get">get</a>"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="<a href="#get%20acl">get acl</a>"></a><a class="anchor" name="9-get acl"></a><a class="anchor" name="9.3-get acl"></a><a class="anchor" name="get acl (Statistics and monitoring)"></a><a class="anchor" name="get acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#get%20acl">get acl</a>"></a><a href="#9.3-get%20acl">get acl</a></b> <span style="color: #080">&lt;acl&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Lookup the value &lt;value&gt; in the map &lt;map&gt; or in the ACL &lt;acl&gt;. &lt;map&gt; or &lt;acl&gt;
+are the #&lt;id&gt; or the &lt;file&gt; returned by &quot;show map&quot; or &quot;show acl&quot;. This command
 returns all the matching patterns associated with this map. This is useful for
 debugging maps and ACLs. The output format is composed by one line par
 matching type. Each line is composed by space-delimited series of words.
@@ -1993,107 +2008,107 @@ The two last word are used to show the returned value and its type. With the
    return=cannot-display: The value cannot be converted as string.
 
    type=&quot;&lt;type&gt;&quot;:         The type of the returned sample.
-</pre><a class="anchor" name="get"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="get weight"></a><a class="anchor" name="9-get weight"></a><a class="anchor" name="9.3-get weight"></a><a class="anchor" name="get weight (Statistics and monitoring)"></a><a class="anchor" name="get weight (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="get weight"></a><a href="#9.3-get%20weight">get weight</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Report the current weight and the initial weight of server &lt;server&gt; in
+</pre><a class="anchor" name="<a href="#get">get</a>"></a><a class="anchor" name="9-get"></a><a class="anchor" name="9.3-get"></a><a class="anchor" name="get (Statistics and monitoring)"></a><a class="anchor" name="get (Unix Socket commands)"></a><a class="anchor" name="<a href="#get%20weight">get weight</a>"></a><a class="anchor" name="9-get weight"></a><a class="anchor" name="9.3-get weight"></a><a class="anchor" name="get weight (Statistics and monitoring)"></a><a class="anchor" name="get weight (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#get%20weight">get weight</a>"></a><a href="#9.3-get%20weight">get weight</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Report the current weight and the initial weight of server &lt;server&gt; in
 backend &lt;backend&gt; or an error if either doesn't exist. The initial weight is
 the one that appears in the configuration file. Both are normally equal
 unless the current weight has been changed. Both the backend and the server
 may be specified either by their name or by their numeric ID, prefixed with a
 sharp ('#').
-</pre><a class="anchor" name="help"></a><a class="anchor" name="9-help"></a><a class="anchor" name="9.3-help"></a><a class="anchor" name="help (Statistics and monitoring)"></a><a class="anchor" name="help (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="help"></a><a href="#9.3-help">help</a></b></div><pre class="text">Print the list of known keywords and their basic usage. The same help screen
+</pre><a class="anchor" name="<a href="#help">help</a>"></a><a class="anchor" name="9-help"></a><a class="anchor" name="9.3-help"></a><a class="anchor" name="help (Statistics and monitoring)"></a><a class="anchor" name="help (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#help">help</a>"></a><a href="#9.3-help">help</a></b></div><pre class="text">Print the list of known keywords and their basic usage. The same help screen
 is also displayed for unknown commands.
-</pre><a class="anchor" name="prompt"></a><a class="anchor" name="9-prompt"></a><a class="anchor" name="9.3-prompt"></a><a class="anchor" name="prompt (Statistics and monitoring)"></a><a class="anchor" name="prompt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="prompt"></a><a href="#9.3-prompt">prompt</a></b></div><pre class="text">Toggle the prompt at the beginning of the line and enter or leave interactive
+</pre><a class="anchor" name="<a href="#prompt">prompt</a>"></a><a class="anchor" name="9-prompt"></a><a class="anchor" name="9.3-prompt"></a><a class="anchor" name="prompt (Statistics and monitoring)"></a><a class="anchor" name="prompt (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#prompt">prompt</a>"></a><a href="#9.3-prompt">prompt</a></b></div><pre class="text">Toggle the prompt at the beginning of the line and enter or leave interactive
 mode. In interactive mode, the connection is not closed after a command
 completes. Instead, the prompt will appear again, indicating the user that
 the interpreter is waiting for a new command. The prompt consists in a right
 angle bracket followed by a space &quot;&gt; &quot;. This mode is particularly convenient
 when one wants to periodically check information such as stats or errors.
-It is also a good idea to enter interactive mode before issuing a &quot;<a href="#help">help</a>&quot;
+It is also a good idea to enter interactive mode before issuing a &quot;help&quot;
 command.
-</pre><a class="anchor" name="quit"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="quit"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set map"></a><a class="anchor" name="9-set map"></a><a class="anchor" name="9.3-set map"></a><a class="anchor" name="set map (Statistics and monitoring)"></a><a class="anchor" name="set map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set map"></a><a href="#9.3-set%20map">set map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the value corresponding to each key &lt;key&gt; in a map &lt;map&gt;. &lt;map&gt; is the
-#&lt;id&gt; or &lt;file&gt; returned by &quot;<a href="#show%20map">show map</a>&quot;. If the &lt;ref&gt; is used in place of
+</pre><a class="anchor" name="<a href="#quit">quit</a>"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#quit">quit</a>"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20map">set map</a>"></a><a class="anchor" name="9-set map"></a><a class="anchor" name="9.3-set map"></a><a class="anchor" name="set map (Statistics and monitoring)"></a><a class="anchor" name="set map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20map">set map</a>"></a><a href="#9.3-set%20map">set map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the value corresponding to each key &lt;key&gt; in a map &lt;map&gt;. &lt;map&gt; is the
+#&lt;id&gt; or &lt;file&gt; returned by &quot;show map&quot;. If the &lt;ref&gt; is used in place of
 &lt;key&gt;, only the entry pointed by &lt;ref&gt; is changed. The new value is &lt;value&gt;.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set maxconn"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="set maxconn frontend"></a><a class="anchor" name="9-set maxconn frontend"></a><a class="anchor" name="9.3-set maxconn frontend"></a><a class="anchor" name="set maxconn frontend (Statistics and monitoring)"></a><a class="anchor" name="set maxconn frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set maxconn frontend"></a><a href="#9.3-set%20maxconn%20frontend">set maxconn frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Dynamically change the specified frontend's maxconn setting. Any positive
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn">set maxconn</a>"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn%20frontend">set maxconn frontend</a>"></a><a class="anchor" name="9-set maxconn frontend"></a><a class="anchor" name="9.3-set maxconn frontend"></a><a class="anchor" name="set maxconn frontend (Statistics and monitoring)"></a><a class="anchor" name="set maxconn frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20maxconn%20frontend">set maxconn frontend</a>"></a><a href="#9.3-set%20maxconn%20frontend">set maxconn frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Dynamically change the specified frontend's maxconn setting. Any positive
 value is allowed including zero, but setting values larger than the global
 maxconn does not make much sense. If the limit is increased and connections
 were pending, they will immediately be accepted. If it is lowered to a value
 below the current number of connections, new connections acceptation will be
 delayed until the threshold is reached. The frontend might be specified by
 either its name or its numeric ID prefixed with a sharp ('#').
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set maxconn"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="set maxconn server"></a><a class="anchor" name="9-set maxconn server"></a><a class="anchor" name="9.3-set maxconn server"></a><a class="anchor" name="set maxconn server (Statistics and monitoring)"></a><a class="anchor" name="set maxconn server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set maxconn server"></a><a href="#9.3-set%20maxconn%20server">set maxconn server</a></b> <span style="color: #080">&lt;backend/server&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Dynamically change the specified server's maxconn setting. Any positive
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn">set maxconn</a>"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn%20server">set maxconn server</a>"></a><a class="anchor" name="9-set maxconn server"></a><a class="anchor" name="9.3-set maxconn server"></a><a class="anchor" name="set maxconn server (Statistics and monitoring)"></a><a class="anchor" name="set maxconn server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20maxconn%20server">set maxconn server</a>"></a><a href="#9.3-set%20maxconn%20server">set maxconn server</a></b> <span style="color: #080">&lt;backend/server&gt;</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Dynamically change the specified server's maxconn setting. Any positive
 value is allowed including zero, but setting values larger than the global
 maxconn does not make much sense.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set maxconn"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="set maxconn global"></a><a class="anchor" name="9-set maxconn global"></a><a class="anchor" name="9.3-set maxconn global"></a><a class="anchor" name="set maxconn global (Statistics and monitoring)"></a><a class="anchor" name="set maxconn global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set maxconn global"></a><a href="#9.3-set%20maxconn%20global">set maxconn global</a></b> <span style="color: #080">&lt;maxconn&gt;</span></div><pre class="text">Dynamically change the global maxconn setting within the range defined by the
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn">set maxconn</a>"></a><a class="anchor" name="9-set maxconn"></a><a class="anchor" name="9.3-set maxconn"></a><a class="anchor" name="set maxconn (Statistics and monitoring)"></a><a class="anchor" name="set maxconn (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20maxconn%20global">set maxconn global</a>"></a><a class="anchor" name="9-set maxconn global"></a><a class="anchor" name="9.3-set maxconn global"></a><a class="anchor" name="set maxconn global (Statistics and monitoring)"></a><a class="anchor" name="set maxconn global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20maxconn%20global">set maxconn global</a>"></a><a href="#9.3-set%20maxconn%20global">set maxconn global</a></b> <span style="color: #080">&lt;maxconn&gt;</span></div><pre class="text">Dynamically change the global maxconn setting within the range defined by the
 initial global maxconn setting. If it is increased and connections were
 pending, they will immediately be accepted. If it is lowered to a value below
 the current number of connections, new connections acceptation will be
 delayed until the threshold is reached. A value of zero restores the initial
 setting.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set rate-limit"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="set rate-limit connections"></a><a class="anchor" name="9-set rate-limit connections"></a><a class="anchor" name="9.3-set rate-limit connections"></a><a class="anchor" name="set rate-limit connections (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit connections (Unix Socket commands)"></a><a class="anchor" name="set rate-limit connections global"></a><a class="anchor" name="9-set rate-limit connections global"></a><a class="anchor" name="9.3-set rate-limit connections global"></a><a class="anchor" name="set rate-limit connections global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit connections global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set rate-limit connections global"></a><a href="#9.3-set%20rate-limit%20connections%20global">set rate-limit connections global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide connection rate limit, which is set by the global
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit">set rate-limit</a>"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20connections">set rate-limit connections</a>"></a><a class="anchor" name="9-set rate-limit connections"></a><a class="anchor" name="9.3-set rate-limit connections"></a><a class="anchor" name="set rate-limit connections (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit connections (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20connections%20global">set rate-limit connections global</a>"></a><a class="anchor" name="9-set rate-limit connections global"></a><a class="anchor" name="9.3-set rate-limit connections global"></a><a class="anchor" name="set rate-limit connections global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit connections global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20rate-limit%20connections%20global">set rate-limit connections global</a>"></a><a href="#9.3-set%20rate-limit%20connections%20global">set rate-limit connections global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide connection rate limit, which is set by the global
 'maxconnrate' setting. A value of zero disables the limitation. This limit
 applies to all frontends and the change has an immediate effect. The value
 is passed in number of connections per second.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set rate-limit"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="set rate-limit http-compression"></a><a class="anchor" name="9-set rate-limit http-compression"></a><a class="anchor" name="9.3-set rate-limit http-compression"></a><a class="anchor" name="set rate-limit http-compression (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit http-compression (Unix Socket commands)"></a><a class="anchor" name="set rate-limit http-compression global"></a><a class="anchor" name="9-set rate-limit http-compression global"></a><a class="anchor" name="9.3-set rate-limit http-compression global"></a><a class="anchor" name="set rate-limit http-compression global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit http-compression global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set rate-limit http-compression global"></a><a href="#9.3-set%20rate-limit%20http-compression%20global">set rate-limit http-compression global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the maximum input compression rate, which is set by the global
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit">set rate-limit</a>"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20http-compression">set rate-limit http-compression</a>"></a><a class="anchor" name="9-set rate-limit http-compression"></a><a class="anchor" name="9.3-set rate-limit http-compression"></a><a class="anchor" name="set rate-limit http-compression (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit http-compression (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20http-compression%20global">set rate-limit http-compression global</a>"></a><a class="anchor" name="9-set rate-limit http-compression global"></a><a class="anchor" name="9.3-set rate-limit http-compression global"></a><a class="anchor" name="set rate-limit http-compression global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit http-compression global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20rate-limit%20http-compression%20global">set rate-limit http-compression global</a>"></a><a href="#9.3-set%20rate-limit%20http-compression%20global">set rate-limit http-compression global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the maximum input compression rate, which is set by the global
 'maxcomprate' setting. A value of zero disables the limitation. The value is
 passed in number of kilobytes per second. The value is available in the &quot;show
 info&quot; on the line &quot;CompressBpsRateLim&quot; in bytes.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set rate-limit"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="set rate-limit sessions"></a><a class="anchor" name="9-set rate-limit sessions"></a><a class="anchor" name="9.3-set rate-limit sessions"></a><a class="anchor" name="set rate-limit sessions (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit sessions (Unix Socket commands)"></a><a class="anchor" name="set rate-limit sessions global"></a><a class="anchor" name="9-set rate-limit sessions global"></a><a class="anchor" name="9.3-set rate-limit sessions global"></a><a class="anchor" name="set rate-limit sessions global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit sessions global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set rate-limit sessions global"></a><a href="#9.3-set%20rate-limit%20sessions%20global">set rate-limit sessions global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide session rate limit, which is set by the global
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit">set rate-limit</a>"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20sessions">set rate-limit sessions</a>"></a><a class="anchor" name="9-set rate-limit sessions"></a><a class="anchor" name="9.3-set rate-limit sessions"></a><a class="anchor" name="set rate-limit sessions (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit sessions (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20sessions%20global">set rate-limit sessions global</a>"></a><a class="anchor" name="9-set rate-limit sessions global"></a><a class="anchor" name="9.3-set rate-limit sessions global"></a><a class="anchor" name="set rate-limit sessions global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit sessions global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20rate-limit%20sessions%20global">set rate-limit sessions global</a>"></a><a href="#9.3-set%20rate-limit%20sessions%20global">set rate-limit sessions global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide session rate limit, which is set by the global
 'maxsessrate' setting. A value of zero disables the limitation. This limit
 applies to all frontends and the change has an immediate effect. The value
 is passed in number of sessions per second.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set rate-limit"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="set rate-limit ssl-sessions"></a><a class="anchor" name="9-set rate-limit ssl-sessions"></a><a class="anchor" name="9.3-set rate-limit ssl-sessions"></a><a class="anchor" name="set rate-limit ssl-sessions (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit ssl-sessions (Unix Socket commands)"></a><a class="anchor" name="set rate-limit ssl-sessions global"></a><a class="anchor" name="9-set rate-limit ssl-sessions global"></a><a class="anchor" name="9.3-set rate-limit ssl-sessions global"></a><a class="anchor" name="set rate-limit ssl-sessions global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit ssl-sessions global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set rate-limit ssl-sessions global"></a><a href="#9.3-set%20rate-limit%20ssl-sessions%20global">set rate-limit ssl-sessions global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide SSL session rate limit, which is set by the global
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit">set rate-limit</a>"></a><a class="anchor" name="9-set rate-limit"></a><a class="anchor" name="9.3-set rate-limit"></a><a class="anchor" name="set rate-limit (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20ssl-sessions">set rate-limit ssl-sessions</a>"></a><a class="anchor" name="9-set rate-limit ssl-sessions"></a><a class="anchor" name="9.3-set rate-limit ssl-sessions"></a><a class="anchor" name="set rate-limit ssl-sessions (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit ssl-sessions (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20rate-limit%20ssl-sessions%20global">set rate-limit ssl-sessions global</a>"></a><a class="anchor" name="9-set rate-limit ssl-sessions global"></a><a class="anchor" name="9.3-set rate-limit ssl-sessions global"></a><a class="anchor" name="set rate-limit ssl-sessions global (Statistics and monitoring)"></a><a class="anchor" name="set rate-limit ssl-sessions global (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20rate-limit%20ssl-sessions%20global">set rate-limit ssl-sessions global</a>"></a><a href="#9.3-set%20rate-limit%20ssl-sessions%20global">set rate-limit ssl-sessions global</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Change the process-wide SSL session rate limit, which is set by the global
 'maxsslrate' setting. A value of zero disables the limitation. This limit
 applies to all frontends and the change has an immediate effect. The value
 is passed in number of sessions per second sent to the SSL stack. It applies
 before the handshake in order to protect the stack against handshake abuses.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> addr <span style="color: #080">&lt;ip4 or ip6 address&gt;</span> <span style="color: #008">[port <span style="color: #080">&lt;port&gt;</span>]</span></div><pre class="text">Replace the current IP address of a server by the one provided.
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> addr <span style="color: #080">&lt;ip4 or ip6 address&gt;</span> <span style="color: #008">[port <span style="color: #080">&lt;port&gt;</span>]</span></div><pre class="text">Replace the current IP address of a server by the one provided.
 Optionnaly, the port can be changed using the 'port' parameter.
 Note that changing the port also support switching from/to port mapping
 (notation with +X or -Y), only if a port is configured for the health check.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> agent <span style="color: #008">[ up | down ]</span></div><pre class="text">Force a server's agent to a new state. This can be useful to immediately
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> agent <span style="color: #008">[ up | down ]</span></div><pre class="text">Force a server's agent to a new state. This can be useful to immediately
 switch a server's state regardless of some slow agent checks for example.
 Note that the change is propagated to tracking servers if any.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> health <span style="color: #008">[ up | stopping | down ]</span></div><pre class="text">Force a server's health to a new state. This can be useful to immediately
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> health <span style="color: #008">[ up | stopping | down ]</span></div><pre class="text">Force a server's health to a new state. This can be useful to immediately
 switch a server's state regardless of some slow health checks for example.
 Note that the change is propagated to tracking servers if any.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> check-port <span style="color: #080">&lt;port&gt;</span></div><pre class="text">Change the port used for health checking to &lt;port&gt;
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> state <span style="color: #008">[ ready | drain | maint ]</span></div><pre class="text">Force a server's administrative state to a new state. This can be useful to
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> check-port <span style="color: #080">&lt;port&gt;</span></div><pre class="text">Change the port used for health checking to &lt;port&gt;
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> state <span style="color: #008">[ ready | drain | maint ]</span></div><pre class="text">Force a server's administrative state to a new state. This can be useful to
 disable load balancing and/or any traffic to a server. Setting the state to
 &quot;ready&quot; puts the server in normal mode, and the command is the equivalent of
-the &quot;<a href="#enable%20server">enable server</a>&quot; command. Setting the state to &quot;maint&quot; disables any traffic
+the &quot;enable server&quot; command. Setting the state to &quot;maint&quot; disables any traffic
 to the server as well as any health checks. This is the equivalent of the
-&quot;<a href="#disable%20server">disable server</a>&quot; command. Setting the mode to &quot;drain&quot; only removes the server
+&quot;disable server&quot; command. Setting the mode to &quot;drain&quot; only removes the server
 from load balancing but still allows it to be checked and to accept new
 persistent connections. Changes are propagated to tracking servers if any.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> weight <span style="color: #080">&lt;weight&gt;</span><span style="color: #008">[%]</span></div><pre class="text">Change a server's weight to the value passed in argument. This is the exact
-equivalent of the &quot;<a href="#set%20weight">set weight</a>&quot; command below.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl ocsp-response"></a><a class="anchor" name="9-set ssl ocsp-response"></a><a class="anchor" name="9.3-set ssl ocsp-response"></a><a class="anchor" name="set ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="set ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl ocsp-response"></a><a href="#9.3-set%20ssl%20ocsp-response">set ssl ocsp-response</a></b> <span style="color: #080">&lt;response&gt;</span></div><pre class="text">This command is used to update an OCSP Response for a certificate (see &quot;crt&quot;
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20server">set server</a>"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> weight <span style="color: #080">&lt;weight&gt;</span><span style="color: #008">[%]</span></div><pre class="text">Change a server's weight to the value passed in argument. This is the exact
+equivalent of the &quot;set weight&quot; command below.
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20ssl">set ssl</a>"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20ssl%20ocsp-response">set ssl ocsp-response</a>"></a><a class="anchor" name="9-set ssl ocsp-response"></a><a class="anchor" name="9.3-set ssl ocsp-response"></a><a class="anchor" name="set ssl ocsp-response (Statistics and monitoring)"></a><a class="anchor" name="set ssl ocsp-response (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20ssl%20ocsp-response">set ssl ocsp-response</a>"></a><a href="#9.3-set%20ssl%20ocsp-response">set ssl ocsp-response</a></b> <span style="color: #080">&lt;response&gt;</span></div><pre class="text">This command is used to update an OCSP Response for a certificate (see &quot;crt&quot;
 on &quot;bind&quot; lines). Same controls are performed as during the initial loading of
 the response. The &lt;response&gt; must be passed as a base64 encoded string of the
 DER encoded response from the OCSP server.
 </pre><div class="separator">
-<span class="label label-success">Example:</span>
+<span class="badge bg-success">Example:</span>
 <pre class="prettyprint">
 <code>openssl ocsp -issuer issuer.pem -cert server.pem \
              -host ocsp.issuer.com:80 -respout resp.der
 echo &quot;set ssl ocsp-response $(base64 -w 10000 resp.der)&quot; | \
              socat stdio /var/run/haproxy.stat
 </code></pre>
-</div><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl tls-key"></a><a class="anchor" name="9-set ssl tls-key"></a><a class="anchor" name="9.3-set ssl tls-key"></a><a class="anchor" name="set ssl tls-key (Statistics and monitoring)"></a><a class="anchor" name="set ssl tls-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl tls-key"></a><a href="#9.3-set%20ssl%20tls-key">set ssl tls-key</a></b> <span style="color: #080">&lt;id&gt;</span> <span style="color: #080">&lt;tlskey&gt;</span></div><pre class="text">Set the next TLS key for the &lt;id&gt; listener to &lt;tlskey&gt;. This key becomes the
+</div><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20ssl">set ssl</a>"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20ssl%20tls-key">set ssl tls-key</a>"></a><a class="anchor" name="9-set ssl tls-key"></a><a class="anchor" name="9.3-set ssl tls-key"></a><a class="anchor" name="set ssl tls-key (Statistics and monitoring)"></a><a class="anchor" name="set ssl tls-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20ssl%20tls-key">set ssl tls-key</a>"></a><a href="#9.3-set%20ssl%20tls-key">set ssl tls-key</a></b> <span style="color: #080">&lt;id&gt;</span> <span style="color: #080">&lt;tlskey&gt;</span></div><pre class="text">Set the next TLS key for the &lt;id&gt; listener to &lt;tlskey&gt;. This key becomes the
 ultimate key, while the penultimate one is used for encryption (others just
 decrypt). The oldest TLS key present is overwritten. &lt;id&gt; is either a numeric
-#&lt;id&gt; or &lt;file&gt; returned by &quot;<a href="#show%20tls-keys">show tls-keys</a>&quot;. &lt;tlskey&gt; is a base64 encoded 48
+#&lt;id&gt; or &lt;file&gt; returned by &quot;show tls-keys&quot;. &lt;tlskey&gt; is a base64 encoded 48
 bit TLS ticket key (ex. openssl rand -base64 48).
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set table"></a><a class="anchor" name="9-set table"></a><a class="anchor" name="9.3-set table"></a><a class="anchor" name="set table (Statistics and monitoring)"></a><a class="anchor" name="set table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set table"></a><a href="#9.3-set%20table">set table</a></b> <span style="color: #080">&lt;table&gt;</span> key <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;data_type&gt;</span> <span style="color: #080">&lt;value&gt;</span>]</span>*</div><pre class="text">Create or update a stick-table entry in the table. If the key is not present,
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20table">set table</a>"></a><a class="anchor" name="9-set table"></a><a class="anchor" name="9.3-set table"></a><a class="anchor" name="set table (Statistics and monitoring)"></a><a class="anchor" name="set table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20table">set table</a>"></a><a href="#9.3-set%20table">set table</a></b> <span style="color: #080">&lt;table&gt;</span> key <span style="color: #080">&lt;key&gt;</span> <span style="color: #008">[data.<span style="color: #080">&lt;data_type&gt;</span> <span style="color: #080">&lt;value&gt;</span>]</span>*</div><pre class="text">Create or update a stick-table entry in the table. If the key is not present,
 an entry is inserted. See stick-table in <a href="#4.2">section 4.2</a> to find all possible
 values for &lt;data_type&gt;. The most likely use consists in dynamically entering
 entries for source IP addresses, with a flag in gpc0 to dynamically block an
 IP address or affect its quality of service. It is possible to pass multiple
 data_types in a single call.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set timeout"></a><a class="anchor" name="9-set timeout"></a><a class="anchor" name="9.3-set timeout"></a><a class="anchor" name="set timeout (Statistics and monitoring)"></a><a class="anchor" name="set timeout (Unix Socket commands)"></a><a class="anchor" name="set timeout cli"></a><a class="anchor" name="9-set timeout cli"></a><a class="anchor" name="9.3-set timeout cli"></a><a class="anchor" name="set timeout cli (Statistics and monitoring)"></a><a class="anchor" name="set timeout cli (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set timeout cli"></a><a href="#9.3-set%20timeout%20cli">set timeout cli</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Change the CLI interface timeout for current connection. This can be useful
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20timeout">set timeout</a>"></a><a class="anchor" name="9-set timeout"></a><a class="anchor" name="9.3-set timeout"></a><a class="anchor" name="set timeout (Statistics and monitoring)"></a><a class="anchor" name="set timeout (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20timeout%20cli">set timeout cli</a>"></a><a class="anchor" name="9-set timeout cli"></a><a class="anchor" name="9.3-set timeout cli"></a><a class="anchor" name="set timeout cli (Statistics and monitoring)"></a><a class="anchor" name="set timeout cli (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20timeout%20cli">set timeout cli</a>"></a><a href="#9.3-set%20timeout%20cli">set timeout cli</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">Change the CLI interface timeout for current connection. This can be useful
 during long debugging sessions where the user needs to constantly inspect
 some indicators without being disconnected. The delay is passed in seconds.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set weight"></a><a class="anchor" name="9-set weight"></a><a class="anchor" name="9.3-set weight"></a><a class="anchor" name="set weight (Statistics and monitoring)"></a><a class="anchor" name="set weight (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set weight"></a><a href="#9.3-set%20weight">set weight</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> <span style="color: #080">&lt;weight&gt;</span><span style="color: #008">[%]</span></div><pre class="text">Change a server's weight to the value passed in argument. If the value ends
+</pre><a class="anchor" name="<a href="#set">set</a>"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="<a href="#set%20weight">set weight</a>"></a><a class="anchor" name="9-set weight"></a><a class="anchor" name="9.3-set weight"></a><a class="anchor" name="set weight (Statistics and monitoring)"></a><a class="anchor" name="set weight (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#set%20weight">set weight</a>"></a><a href="#9.3-set%20weight">set weight</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> <span style="color: #080">&lt;weight&gt;</span><span style="color: #008">[%]</span></div><pre class="text">Change a server's weight to the value passed in argument. If the value ends
 with the '%' sign, then the new weight will be relative to the initially
 configured weight.  Absolute weights are permitted between 0 and 256.
 Relative weights must be positive with the resulting absolute weight is
@@ -2108,7 +2123,7 @@ enable it again after the update by setting it back to 100%. This command
 is restricted and can only be issued on sockets configured for level
 &quot;admin&quot;. Both the backend and the server may be specified either by their
 name or by their numeric ID, prefixed with a sharp ('#').
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show env"></a><a class="anchor" name="9-show env"></a><a class="anchor" name="9.3-show env"></a><a class="anchor" name="show env (Statistics and monitoring)"></a><a class="anchor" name="show env (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show env"></a><a href="#9.3-show%20env">show env</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">Dump one or all environment variables known by the process. Without any
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20env">show env</a>"></a><a class="anchor" name="9-show env"></a><a class="anchor" name="9.3-show env"></a><a class="anchor" name="show env (Statistics and monitoring)"></a><a class="anchor" name="show env (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20env">show env</a>"></a><a href="#9.3-show%20env">show env</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">Dump one or all environment variables known by the process. Without any
 argument, all variables are dumped. With an argument, only the specified
 variable is dumped if it exists. Otherwise &quot;Variable not found&quot; is emitted.
 Variables are dumped in the same format as they are stored or returned by the
@@ -2116,7 +2131,7 @@ Variables are dumped in the same format as they are stored or returned by the
 certain configuration files making heavy use of environment variables to
 ensure that they contain the expected values. This command is restricted and
 can only be issued on sockets configured for levels &quot;operator&quot; or &quot;admin&quot;.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show errors"></a><a class="anchor" name="9-show errors"></a><a class="anchor" name="9.3-show errors"></a><a class="anchor" name="show errors (Statistics and monitoring)"></a><a class="anchor" name="show errors (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show errors"></a><a href="#9.3-show%20errors">show errors</a></b> <span style="color: #008">[<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>]</span> <span style="color: #008">[request|response]</span></div><pre class="text">Dump last known request and response errors collected by frontends and
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20errors">show errors</a>"></a><a class="anchor" name="9-show errors"></a><a class="anchor" name="9.3-show errors"></a><a class="anchor" name="show errors (Statistics and monitoring)"></a><a class="anchor" name="show errors (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20errors">show errors</a>"></a><a href="#9.3-show%20errors">show errors</a></b> <span style="color: #008">[<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>]</span> <span style="color: #008">[request|response]</span></div><pre class="text">Dump last known request and response errors collected by frontends and
 backends. If &lt;iid&gt; is specified, the limit the dump to errors concerning
 either frontend or backend whose ID is &lt;iid&gt;. Proxy ID &quot;-1&quot; will cause
 all instances to be dumped. If a proxy name is specified instead, its ID
@@ -2148,7 +2163,7 @@ line was broken, because it will not end with '\n' and the next line's offset
 will be followed by a '+' sign, indicating it is a continuation of previous
 line.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>    $ echo &quot;show errors -1 response&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; [04/Mar/2009:15:46:56.081] backend http-in (<span class="comment">#2) : invalid response</span>
@@ -2172,8 +2187,8 @@ received by frontend fe-eth0 whose ID is 1. The total response length was
 is the slash ('/') in header name &quot;header/bizarre&quot;, which is not a valid
 HTTP character for a header name.
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show backend"></a><a class="anchor" name="9-show backend"></a><a class="anchor" name="9.3-show backend"></a><a class="anchor" name="show backend (Statistics and monitoring)"></a><a class="anchor" name="show backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show backend"></a><a href="#9.3-show%20backend">show backend</a></b></div><pre class="text">Dump the list of backends available in the running process
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show info"></a><a class="anchor" name="9-show info"></a><a class="anchor" name="9.3-show info"></a><a class="anchor" name="show info (Statistics and monitoring)"></a><a class="anchor" name="show info (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show info"></a><a href="#9.3-show%20info">show info</a></b> <span style="color: #008">[typed]</span></div><pre class="text">Dump info about haproxy status on current process. If &quot;typed&quot; is passed as an
+</div><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20backend">show backend</a>"></a><a class="anchor" name="9-show backend"></a><a class="anchor" name="9.3-show backend"></a><a class="anchor" name="show backend (Statistics and monitoring)"></a><a class="anchor" name="show backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20backend">show backend</a>"></a><a href="#9.3-show%20backend">show backend</a></b></div><pre class="text">Dump the list of backends available in the running process
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20info">show info</a>"></a><a class="anchor" name="9-show info"></a><a class="anchor" name="9.3-show info"></a><a class="anchor" name="show info (Statistics and monitoring)"></a><a class="anchor" name="show info (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20info">show info</a>"></a><a href="#9.3-show%20info">show info</a></b> <span style="color: #008">[typed]</span></div><pre class="text">Dump info about haproxy status on current process. If &quot;typed&quot; is passed as an
 optional argument, field numbers, names and types are emitted as well so that
 external monitoring products can easily retrieve, possibly aggregate, then
 report information found in fields they don't know. Each field is dumped on
@@ -2188,7 +2203,7 @@ by colons (':'). The first column is a dot-delimited series of 3 elements. The
 first element is the numeric position of the field in the list (starting at
 zero). This position shall not change over time, but holes are to be expected,
 depending on build options or if some fields are deleted in the future. The
-second element is the field name as it appears in the default &quot;<a href="#show%20info">show info</a>&quot;
+second element is the field name as it appears in the default &quot;show info&quot;
 output. The third element is the relative process number starting at 1.
 
 The rest of the line starting after the first colon follows the &quot;typed output
@@ -2202,7 +2217,7 @@ Thus the overall line format in typed mode is :
 
     &lt;field_pos&gt;.&lt;field_name&gt;.&lt;process_num&gt;:&lt;tags&gt;:&lt;type&gt;:&lt;value&gt;
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>&gt; show info
 Name: HAProxy
@@ -2238,7 +2253,7 @@ PoolFailed: 0
 first column makes it very easy to visually aggregate outputs from
 multiple processes.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>$ ( echo show info typed | socat /var/run/haproxy.sock1 ;    \
     echo show info typed | socat /var/run/haproxy.sock2 ) |  \
@@ -2259,24 +2274,24 @@ multiple processes.
 6.Uptime.2:MDP:str:0d 0h01m28s
 (...)
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show map"></a><a class="anchor" name="9-show map"></a><a class="anchor" name="9.3-show map"></a><a class="anchor" name="show map (Statistics and monitoring)"></a><a class="anchor" name="show map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show map"></a><a href="#9.3-show%20map">show map</a></b> <span style="color: #008">[<span style="color: #080">&lt;map&gt;</span>]</span></div><pre class="text">Dump info about map converters. Without argument, the list of all available
+</div><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20map">show map</a>"></a><a class="anchor" name="9-show map"></a><a class="anchor" name="9.3-show map"></a><a class="anchor" name="show map (Statistics and monitoring)"></a><a class="anchor" name="show map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20map">show map</a>"></a><a href="#9.3-show%20map">show map</a></b> <span style="color: #008">[<span style="color: #080">&lt;map&gt;</span>]</span></div><pre class="text">Dump info about map converters. Without argument, the list of all available
 maps is returned. If a &lt;map&gt; is specified, its contents are dumped. &lt;map&gt; is
 the #&lt;id&gt; or &lt;file&gt;. The first column is a unique identifier. It can be used
-as reference for the operation &quot;<a href="#del%20map">del map</a>&quot; and &quot;<a href="#set%20map">set map</a>&quot;. The second column is
+as reference for the operation &quot;del map&quot; and &quot;set map&quot;. The second column is
 the pattern and the third column is the sample if available. The data returned
 are not directly a list of available maps, but are the list of all patterns
 composing any map. Many of these patterns can be shared with ACL.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show acl"></a><a class="anchor" name="9-show acl"></a><a class="anchor" name="9.3-show acl"></a><a class="anchor" name="show acl (Statistics and monitoring)"></a><a class="anchor" name="show acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show acl"></a><a href="#9.3-show%20acl">show acl</a></b> <span style="color: #008">[<span style="color: #080">&lt;acl&gt;</span>]</span></div><pre class="text">Dump info about acl converters. Without argument, the list of all available
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20acl">show acl</a>"></a><a class="anchor" name="9-show acl"></a><a class="anchor" name="9.3-show acl"></a><a class="anchor" name="show acl (Statistics and monitoring)"></a><a class="anchor" name="show acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20acl">show acl</a>"></a><a href="#9.3-show%20acl">show acl</a></b> <span style="color: #008">[<span style="color: #080">&lt;acl&gt;</span>]</span></div><pre class="text">Dump info about acl converters. Without argument, the list of all available
 acls is returned. If a &lt;acl&gt; is specified, its contents are dumped. &lt;acl&gt; if
 the #&lt;id&gt; or &lt;file&gt;. The dump format is the same than the map even for the
 sample value. The data returned are not a list of available ACL, but are the
 list of all patterns composing any ACL. Many of these patterns can be shared
 with maps.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show pools"></a><a class="anchor" name="9-show pools"></a><a class="anchor" name="9.3-show pools"></a><a class="anchor" name="show pools (Statistics and monitoring)"></a><a class="anchor" name="show pools (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show pools"></a><a href="#9.3-show%20pools">show pools</a></b></div><pre class="text">Dump the status of internal memory pools. This is useful to track memory
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20pools">show pools</a>"></a><a class="anchor" name="9-show pools"></a><a class="anchor" name="9.3-show pools"></a><a class="anchor" name="show pools (Statistics and monitoring)"></a><a class="anchor" name="show pools (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20pools">show pools</a>"></a><a href="#9.3-show%20pools">show pools</a></b></div><pre class="text">Dump the status of internal memory pools. This is useful to track memory
 usage when suspecting a memory leak for example. It does exactly the same
 as the SIGQUIT when running in foreground except that it does not flush
 the pools.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show servers"></a><a class="anchor" name="9-show servers"></a><a class="anchor" name="9.3-show servers"></a><a class="anchor" name="show servers (Statistics and monitoring)"></a><a class="anchor" name="show servers (Unix Socket commands)"></a><a class="anchor" name="show servers state"></a><a class="anchor" name="9-show servers state"></a><a class="anchor" name="9.3-show servers state"></a><a class="anchor" name="show servers state (Statistics and monitoring)"></a><a class="anchor" name="show servers state (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show servers state"></a><a href="#9.3-show%20servers%20state">show servers state</a></b> <span style="color: #008">[<span style="color: #080">&lt;backend&gt;</span>]</span></div><pre class="text">Dump the state of the servers found in the running configuration. A backend
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20servers">show servers</a>"></a><a class="anchor" name="9-show servers"></a><a class="anchor" name="9.3-show servers"></a><a class="anchor" name="show servers (Statistics and monitoring)"></a><a class="anchor" name="show servers (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20servers%20state">show servers state</a>"></a><a class="anchor" name="9-show servers state"></a><a class="anchor" name="9.3-show servers state"></a><a class="anchor" name="show servers state (Statistics and monitoring)"></a><a class="anchor" name="show servers state (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20servers%20state">show servers state</a>"></a><a href="#9.3-show%20servers%20state">show servers state</a></b> <span style="color: #008">[<span style="color: #080">&lt;backend&gt;</span>]</span></div><pre class="text">Dump the state of the servers found in the running configuration. A backend
 name or identifier may be provided to limit the output to this backend only.
 
 The dump has the following format:
@@ -2365,12 +2380,12 @@ fields and their order per file format version :
                                 configuration.
    srv_f_forced_id:             Flag to know if the server's ID is forced by
                                 configuration.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b></div><pre class="text">Dump all known sessions. Avoid doing this on slow connections as this can
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20sess">show sess</a>"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20sess">show sess</a>"></a><a href="#9.3-show%20sess">show sess</a></b></div><pre class="text">Dump all known sessions. Avoid doing this on slow connections as this can
 be huge. This command is restricted and can only be issued on sockets
 configured for levels &quot;operator&quot; or &quot;admin&quot;.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show sess"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show sess"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Display a lot of internal information about the specified session identifier.
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20sess">show sess</a>"></a><a class="anchor" name="9-show sess"></a><a class="anchor" name="9.3-show sess"></a><a class="anchor" name="show sess (Statistics and monitoring)"></a><a class="anchor" name="show sess (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20sess">show sess</a>"></a><a href="#9.3-show%20sess">show sess</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Display a lot of internal information about the specified session identifier.
 This identifier is the first field at the beginning of the lines in the dumps
-of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the session pointer). Those information are
+of &quot;show sess&quot; (it corresponds to the session pointer). Those information are
 useless to most users but may be used by haproxy developers to troubleshoot a
 complex bug. The output format is intentionally not documented so that it can
 freely evolve depending on demands. You may find a description of all fields
@@ -2378,7 +2393,7 @@ returned in src/dumpstats.c
 
 The special id &quot;all&quot; dumps the states of all sessions, which must be avoided
 as much as possible as it is highly CPU intensive and can take a lot of time.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show stat"></a><a class="anchor" name="9-show stat"></a><a class="anchor" name="9.3-show stat"></a><a class="anchor" name="show stat (Statistics and monitoring)"></a><a class="anchor" name="show stat (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show stat"></a><a href="#9.3-show%20stat">show stat</a></b> <span style="color: #008">[<span style="color: #800">{<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>}</span> <span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;sid&gt;</span>]</span> <span style="color: #008">[typed]</span></div><pre class="text">Dump statistics using the CSV format, or using the extended typed output
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20stat">show stat</a>"></a><a class="anchor" name="9-show stat"></a><a class="anchor" name="9.3-show stat"></a><a class="anchor" name="show stat (Statistics and monitoring)"></a><a class="anchor" name="show stat (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20stat">show stat</a>"></a><a href="#9.3-show%20stat">show stat</a></b> <span style="color: #008">[<span style="color: #800">{<span style="color: #080">&lt;iid&gt;</span>|<span style="color: #080">&lt;proxy&gt;</span>}</span> <span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;sid&gt;</span>]</span> <span style="color: #008">[typed]</span></div><pre class="text">Dump statistics using the CSV format, or using the extended typed output
 format described in the section above if &quot;typed&quot; is passed after the other
 arguments. By passing &lt;id&gt;, &lt;type&gt; and &lt;sid&gt;, it is possible to dump only
 selected items :
@@ -2392,7 +2407,7 @@ selected items :
         1 + 2 + 4 = 7   -&gt; frontend + backend + server.
   - &lt;sid&gt; is a server ID, -1 to dump everything from the selected proxy.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>    $ echo &quot;show info;show stat&quot; | socat stdio unix-connect:/tmp/sock1
 &gt;&gt;&gt; Name: HAProxy
@@ -2514,7 +2529,7 @@ for each process :
       B.3.0.6.slim.1:MGP:u32:1000
       B.3.0.6.slim.2:MGP:u32:1000
       (...)
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show resolvers"></a><a class="anchor" name="9-show resolvers"></a><a class="anchor" name="9.3-show resolvers"></a><a class="anchor" name="show resolvers (Statistics and monitoring)"></a><a class="anchor" name="show resolvers (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show resolvers"></a><a href="#9.3-show%20resolvers">show resolvers</a></b> <span style="color: #008">[<span style="color: #080">&lt;resolvers section id&gt;</span>]</span></div><pre class="text">Dump statistics for the given resolvers section, or all resolvers sections
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20resolvers">show resolvers</a>"></a><a class="anchor" name="9-show resolvers"></a><a class="anchor" name="9.3-show resolvers"></a><a class="anchor" name="show resolvers (Statistics and monitoring)"></a><a class="anchor" name="show resolvers (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20resolvers">show resolvers</a>"></a><a href="#9.3-show%20resolvers">show resolvers</a></b> <span style="color: #008">[<span style="color: #080">&lt;resolvers section id&gt;</span>]</span></div><pre class="text">Dump statistics for the given resolvers section, or all resolvers sections
 if no section is supplied.
 
 For each name server, the following counters are reported:
@@ -2531,19 +2546,19 @@ For each name server, the following counters are reported:
   invalid: invalid DNS response (from a protocol point of view)
   too_big: too big response
   outdated: number of response arrived too late (after an other name server)
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b></div><pre class="text">Dump general information on all known stick-tables. Their name is returned
+</pre><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20table">show table</a>"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20table">show table</a>"></a><a href="#9.3-show%20table">show table</a></b></div><pre class="text">Dump general information on all known stick-tables. Their name is returned
 (the name of the proxy which holds them), their type (currently zero, always
 IP), their size in maximum possible number of entries, and the number of
 entries currently in use.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
-<code>    $ echo &quot;<a href="#show%20table">show table</a>&quot; | socat stdio /tmp/sock1
+<code>    $ echo &quot;show table&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: front_pub, type: ip, size:204800, used:171454</span>
 &gt;&gt;&gt; <span class="comment"># table: back_rdp, type: ip, size:204800, used:0</span>
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show table"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show table"></a><a href="#9.3-show%20table">show table</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Dump contents of stick-table &lt;name&gt;. In this mode, a first line of generic
-information about the table is reported as with &quot;<a href="#show%20table">show table</a>&quot;, then all
+</div><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20table">show table</a>"></a><a class="anchor" name="9-show table"></a><a class="anchor" name="9.3-show table"></a><a class="anchor" name="show table (Statistics and monitoring)"></a><a class="anchor" name="show table (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20table">show table</a>"></a><a href="#9.3-show%20table">show table</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[ data.<span style="color: #080">&lt;type&gt;</span> <span style="color: #080">&lt;operator&gt;</span> <span style="color: #080">&lt;value&gt;</span> ]</span> | <span style="color: #008">[ key <span style="color: #080">&lt;key&gt;</span> ]</span></div><pre class="text">Dump contents of stick-table &lt;name&gt;. In this mode, a first line of generic
+information about the table is reported as with &quot;show table&quot;, then all
 entries are dumped. Since this can be quite heavy, it is possible to specify
 a filter in order to specify what entries to display.
 
@@ -2565,7 +2580,7 @@ When the key form is used the entry &lt;key&gt; is shown.  The key must be of th
 same type as the table, which currently is limited to IPv4, IPv6, integer,
 and string.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>    $ echo &quot;show table http_proxy&quot; | socat stdio /tmp/sock1
 &gt;&gt;&gt; <span class="comment"># table: http_proxy, type: ip, size:204800, used:2</span>
@@ -2600,19 +2615,19 @@ time goes, the average event rate drops.
 It is possible to use this to extract lists of IP addresses abusing the
 service, in order to monitor them or even blacklist them in a firewall.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>$ echo &quot;show table http_proxy data.gpc0 gt 0&quot; \
   | socat stdio /tmp/sock1 \
   | fgrep 'key=' | cut -d' ' -f2 | cut -d= -f2 &gt; abusers-ip.txt
   ( or | awk '/key/{ print a[split($2,a,&quot;=&quot;)]; }' )
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show tls-keys"></a><a class="anchor" name="9-show tls-keys"></a><a class="anchor" name="9.3-show tls-keys"></a><a class="anchor" name="show tls-keys (Statistics and monitoring)"></a><a class="anchor" name="show tls-keys (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show tls-keys"></a><a href="#9.3-show%20tls-keys">show tls-keys</a></b> <span style="color: #008">[id|*]</span></div><pre class="text">Dump all loaded TLS ticket keys references. The TLS ticket key reference ID
+</div><a class="anchor" name="<a href="#show">show</a>"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="<a href="#show%20tls-keys">show tls-keys</a>"></a><a class="anchor" name="9-show tls-keys"></a><a class="anchor" name="9.3-show tls-keys"></a><a class="anchor" name="show tls-keys (Statistics and monitoring)"></a><a class="anchor" name="show tls-keys (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#show%20tls-keys">show tls-keys</a>"></a><a href="#9.3-show%20tls-keys">show tls-keys</a></b> <span style="color: #008">[id|*]</span></div><pre class="text">Dump all loaded TLS ticket keys references. The TLS ticket key reference ID
 and the file from which the keys have been loaded is shown. Both of those
-can be used to update the TLS keys using &quot;<a href="#set%20ssl%20tls-key">set ssl tls-key</a>&quot;. If an ID is
+can be used to update the TLS keys using &quot;set ssl tls-key&quot;. If an ID is
 specified as parameter, it will dump the tickets, using * it will dump every
 keys from every references.
-</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown frontend"></a><a class="anchor" name="9-shutdown frontend"></a><a class="anchor" name="9.3-shutdown frontend"></a><a class="anchor" name="shutdown frontend (Statistics and monitoring)"></a><a class="anchor" name="shutdown frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown frontend"></a><a href="#9.3-shutdown%20frontend">shutdown frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Completely delete the specified frontend. All the ports it was bound to will
+</pre><a class="anchor" name="<a href="#shutdown">shutdown</a>"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="<a href="#shutdown%20frontend">shutdown frontend</a>"></a><a class="anchor" name="9-shutdown frontend"></a><a class="anchor" name="9.3-shutdown frontend"></a><a class="anchor" name="shutdown frontend (Statistics and monitoring)"></a><a class="anchor" name="shutdown frontend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#shutdown%20frontend">shutdown frontend</a>"></a><a href="#9.3-shutdown%20frontend">shutdown frontend</a></b> <span style="color: #080">&lt;frontend&gt;</span></div><pre class="text">Completely delete the specified frontend. All the ports it was bound to will
 be released. It will not be possible to enable the frontend anymore after
 this operation. This is intended to be used in environments where stopping a
 proxy is not even imaginable but a misconfigured proxy must be fixed. That
@@ -2625,13 +2640,13 @@ prefixed with a sharp ('#').
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
-</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown session"></a><a class="anchor" name="9-shutdown session"></a><a class="anchor" name="9.3-shutdown session"></a><a class="anchor" name="shutdown session (Statistics and monitoring)"></a><a class="anchor" name="shutdown session (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown session"></a><a href="#9.3-shutdown%20session">shutdown session</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Immediately terminate the session matching the specified session identifier.
+</pre><a class="anchor" name="<a href="#shutdown">shutdown</a>"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="<a href="#shutdown%20session">shutdown session</a>"></a><a class="anchor" name="9-shutdown session"></a><a class="anchor" name="9.3-shutdown session"></a><a class="anchor" name="shutdown session (Statistics and monitoring)"></a><a class="anchor" name="shutdown session (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#shutdown%20session">shutdown session</a>"></a><a href="#9.3-shutdown%20session">shutdown session</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Immediately terminate the session matching the specified session identifier.
 This identifier is the first field at the beginning of the lines in the dumps
-of &quot;<a href="#show%20sess">show sess</a>&quot; (it corresponds to the session pointer). This can be used to
+of &quot;show sess&quot; (it corresponds to the session pointer). This can be used to
 terminate a long-running session without waiting for a timeout or when an
 endless transfer is ongoing. Such terminated sessions are reported with a 'K'
 flag in the logs.
-</pre><a class="anchor" name="shutdown"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions"></a><a class="anchor" name="9-shutdown sessions"></a><a class="anchor" name="9.3-shutdown sessions"></a><a class="anchor" name="shutdown sessions (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions (Unix Socket commands)"></a><a class="anchor" name="shutdown sessions server"></a><a class="anchor" name="9-shutdown sessions server"></a><a class="anchor" name="9.3-shutdown sessions server"></a><a class="anchor" name="shutdown sessions server (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="shutdown sessions server"></a><a href="#9.3-shutdown%20sessions%20server">shutdown sessions server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Immediately terminate all the sessions attached to the specified server. This
+</pre><a class="anchor" name="<a href="#shutdown">shutdown</a>"></a><a class="anchor" name="9-shutdown"></a><a class="anchor" name="9.3-shutdown"></a><a class="anchor" name="shutdown (Statistics and monitoring)"></a><a class="anchor" name="shutdown (Unix Socket commands)"></a><a class="anchor" name="<a href="#shutdown%20sessions">shutdown sessions</a>"></a><a class="anchor" name="9-shutdown sessions"></a><a class="anchor" name="9.3-shutdown sessions"></a><a class="anchor" name="shutdown sessions (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions (Unix Socket commands)"></a><a class="anchor" name="<a href="#shutdown%20sessions%20server">shutdown sessions server</a>"></a><a class="anchor" name="9-shutdown sessions server"></a><a class="anchor" name="9.3-shutdown sessions server"></a><a class="anchor" name="shutdown sessions server (Statistics and monitoring)"></a><a class="anchor" name="shutdown sessions server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="<a href="#shutdown%20sessions%20server">shutdown sessions server</a>"></a><a href="#9.3-shutdown%20sessions%20server">shutdown sessions server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">Immediately terminate all the sessions attached to the specified server. This
 can be used to terminate long-running sessions after a server is put into
 maintenance mode, for instance. Such terminated sessions are reported with a
 'K' flag in the logs.
@@ -2734,7 +2749,7 @@ source address), it is important to keep in mind that these entries are not
 synchronized to the file and that if someone reloads the configuration, these
 updates will be lost. While this is often the desired effect (for blacklisting)
 it may not necessarily match expectations when the change was made as a fix for
-a problem. See the &quot;<a href="#add%20acl">add acl</a>&quot; action of the CLI interface.
+a problem. See the &quot;add acl&quot; action of the CLI interface.
 </pre></div>
 <a class="anchor" id="12" name="12"></a>
 <div class="page-header"><h1 id="chapter-12" data-target="12"><small><a class="small" href="#12">12.</a></small> Debugging and performance issues</h1>
@@ -2749,7 +2764,7 @@ scripts found in the examples/ directory definitely help here by coloring the
 output.
 
 If a request or response is rejected because HAProxy finds it is malformed, the
-best thing to do is to connect to the CLI and issue &quot;<a href="#show%20errors">show errors</a>&quot;, which will
+best thing to do is to connect to the CLI and issue &quot;show errors&quot;, which will
 report the last captured faulty request and response for each frontend and
 backend, with all the necessary information to indicate precisely the first
 character of the input stream that was rejected. This is sometimes needed to
@@ -2759,7 +2774,7 @@ captures) using &quot;option accept-invalid-http-request&quot; or its equivalent
 responses coming from the server &quot;option accept-invalid-http-response&quot;. Please
 see the configuration manual for more details.
 </pre><div class="separator">
-<span class="label label-success">Example :</span>
+<span class="badge bg-success">Example :</span>
 <pre class="prettyprint">
 <code>&gt; show errors
 Total events captured on [13/Oct/2015:13:43:47.169] : 1
@@ -2774,7 +2789,7 @@ Total events captured on [13/Oct/2015:13:43:47.169] : 1
 
   00000  GET /invalid request HTTP/1.1\r\n
 </code></pre>
-</div><pre class="text">The output of &quot;<a href="#show%20info">show info</a>&quot; on the CLI provides a number of useful information
+</div><pre class="text">The output of &quot;show info&quot; on the CLI provides a number of useful information
 regarding the maximum connection rate ever reached, maximum SSL key rate ever
 reached, and in general all information which can help to explain temporary
 issues regarding CPU or memory usage. Example :
@@ -2960,108 +2975,283 @@ A safe configuration will have :
       stats socket /var/run/haproxy.stat uid hatop gid hatop mode 600
 </pre></div>
 
-						<br>
-						<hr>
-						<div class="text-right">
-							HAProxy 1.7.14 &ndash; Management Guide<br>
-							<small>, </small>
-						</div>
+
+					<hr>
+					<div class="text-end">
+						HAProxy 1.7.14 &ndash; Management Guide<br>
+						<small class="text-muted">, </small>
 					</div>
-					<!-- /.col-lg-12 -->
+					<a id="bottom" name="bottom"></a>
 				</div>
-				<!-- /.row -->
-			</div>
-			<!-- /#page-wrapper -->
+				
+				</div>
+			</main>
 
 		</div>
-		<!-- /#wrapper -->
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script>
-			function filterKeywords(text) {
-				$('.letter').each(function(idx1, letter) {
-					$letter = $(letter)
-					found = false
-					$letter.find('.list-group-item').each(function(idx2, keyword) {
-						$keyword = $(keyword)
-						if ($keyword.text().indexOf(text) != -1) {
-							$keyword.show();
-							found = true
+			// Keyword filter - maximum performance optimization
+			(function() {
+				var keywordsList = document.getElementById('keywords-list');
+				var filterInput = document.getElementById('filter');
+				
+				if (!keywordsList || !filterInput) return;
+				
+				// Pre-compute all link data once at init
+				var linkData = [];
+				var letters = keywordsList.querySelectorAll('.letter');
+				var links = keywordsList.querySelectorAll('a');
+				
+				for (var i = 0; i < links.length; i++) {
+					linkData.push({
+						element: links[i],
+						text: links[i].textContent.toLowerCase(),
+						letter: links[i].closest('.letter')
+					});
+				}
+				
+				var debounceTimer;
+				filterInput.addEventListener('input', function() {
+					clearTimeout(debounceTimer);
+					debounceTimer = setTimeout(function() {
+						var text = filterInput.value.toLowerCase();
+						var visibleLetters = new Set();
+						var updates = [];
+						
+						for (var i = 0; i < linkData.length; i++) {
+							var item = linkData[i];
+							var match = !text || item.text.includes(text);
+							updates.push({ element: item.element, match: match });
+							if (match && item.letter) visibleLetters.add(item.letter);
 						}
-						else {
-							$keyword.hide();
-						}
-					})
-					if (found) {
-						$letter.show()
-					}
-					else {
-						$letter.hide()
-					}
-				})
-			}
+						
+						requestAnimationFrame(function() {
+							for (var i = 0; i < updates.length; i++) {
+								updates[i].element.classList.toggle('d-none', !updates[i].match);
+							}
+							for (var i = 0; i < letters.length; i++) {
+								letters[i].classList.toggle('d-none', !visibleLetters.has(letters[i]));
+							}
+						});
+					}, 30);
+				});
+			})();
 		</script>
 		<script>
-			/* EXPERIMENTAL - Previous/Next navigation */
-			var headings = $(":header")
-			var previousTarget = false
-			var nextTarget = false
-			var $previous = $('#previous')
-			var $next = $('#next')
-			function refreshNavigation() {
-				var previous = false
-				var next = false
-				$.each(headings, function(item, value) {
-					var el = $(value)
-
-					// TODO : avoid target recalculation on each refresh
-					var target = el.attr('data-target')
-					if (! target) return true
-
-					var target_el = $('#' + target.replace(/\./, "\\."))
-					if (! target_el.attr('id')) return true
-
-					if (target_el.offset().top < $(window).scrollTop()) {
-						previous = el
+			// Navigation and breadcrumbs - IntersectionObserver for zero scroll overhead
+			(function() {
+				var content = document.getElementById('content');
+				var breadcrumbs = document.getElementById('breadcrumbs');
+				var breadcrumbList = breadcrumbs.querySelector('.breadcrumb');
+				var sidebarContent = document.querySelector('#sidebar .bg-light');
+				
+				// Pre-compute sections data once at init
+				var sections = [];
+				var sectionMap = {}; // Map target to section data for breadcrumb hierarchy
+				var headingElements = document.querySelectorAll('[data-target]');
+				for (var i = 0; i < headingElements.length; i++) {
+					var el = headingElements[i];
+					var target = el.getAttribute('data-target');
+					var text = el.textContent.trim();
+					var section = {
+						element: el,
+						target: target,
+						text: text
+					};
+					sections.push(section);
+					sectionMap[target] = section;
+				}
+				
+				// Pre-compute sidebar chapter links for highlighting
+				var chapterLinks = {};
+				var allChapterLinks = sidebarContent.querySelectorAll('#tab-chapters a[href^="#"]');
+				for (var i = 0; i < allChapterLinks.length; i++) {
+					var link = allChapterLinks[i];
+					var href = link.getAttribute('href').substring(1);
+					chapterLinks[href] = link;
+				}
+				
+				var currentTarget = null;
+				var currentActiveLink = null;
+				
+				// Initialize from URL hash on page load
+				if (window.location.hash && window.location.hash.length > 1) {
+					currentTarget = window.location.hash.substring(1);
+				}
+				
+				// Helper: parse "5.2.1. Title" into {num: "5.2.1", title: "Title"}
+				function parseChapterText(text) {
+					var dotSpaceIndex = text.indexOf('. ');
+					if (dotSpaceIndex > 0) {
+						return { num: text.substring(0, dotSpaceIndex), title: text.substring(dotSpaceIndex + 2) };
 					}
-					if (target_el.offset().top - 1 > $(window).scrollTop()) {
-						next = el
+					return null;
+				}
+				
+				function updateBreadcrumbs(target, text) {
+					if (target === currentTarget) return;
+					currentTarget = target;
+					
+					// Build breadcrumb HTML with hierarchy
+					var html = '<li class="breadcrumb-item"><a href="#top" class="text-light">' + document.title.split(' - ')[1] + '</a></li>';
+					
+					if (target && text) {
+						// Extract chapter number and title
+						var parsed = parseChapterText(text);
+						if (parsed) {
+							var chapterNum = parsed.num;
+							var chapterTitle = parsed.title;
+							
+							// Build hierarchy of parent chapters (exclude current)
+							var parts = chapterNum.split('.');
+							var parents = [];
+							for (var i = 0; i < parts.length - 1; i++) {
+								var parentTarget = parts.slice(0, i + 1).join('.');
+								if (sectionMap[parentTarget]) {
+									var parentText = sectionMap[parentTarget].text;
+									var parentParsed = parseChapterText(parentText);
+									parents.push({
+										target: parentTarget,
+										num: parentParsed ? parentParsed.num : parentTarget,
+										title: parentParsed ? parentParsed.title : parentText
+									});
+								}
+							}
+							
+							// Add parent crumbs with ellipsis for middle items
+							if (parents.length > 1) {
+								// First parent
+								html += '<li class="breadcrumb-item"><a href="#' + parents[0].target + '" class="text-light">' + parents[0].num + '. ' + parents[0].title + '</a></li>';
+								
+								// Ellipsis for middle items
+								if (parents.length > 2) {
+									html += '<li class="breadcrumb-item text-secondary">…</li>';
+								}
+								
+								// Last parent
+								var lastParent = parents[parents.length - 1];
+								html += '<li class="breadcrumb-item"><a href="#' + lastParent.target + '" class="text-light">' + lastParent.num + '. ' + lastParent.title + '</a></li>';
+							} else if (parents.length === 1) {
+								html += '<li class="breadcrumb-item"><a href="#' + parents[0].target + '" class="text-light">' + parents[0].num + '. ' + parents[0].title + '</a></li>';
+							}
+							
+							// Add current chapter
+							html += '<li class="breadcrumb-item active text-light">' + chapterNum + '. ' + chapterTitle + '</li>';
+						} else {
+							html += '<li class="breadcrumb-item active text-light">' + text + '</li>';
+						}
 					}
-					if (next) return false
-				})
-
-				previousTarget = previous ? previous.attr('data-target') : 'top'
-				nextTarget = next ? next.attr('data-target') : 'bottom'
-			}
-
-			$(window).scroll(function () {
-				refreshNavigation()
-			});
-			$(document).ready(function() {
-				refreshNavigation()
-			});
-
-			/* EXPERIMENTAL - Enable keyboard navigation */
-			$(document).keydown(function(e){
-				if (!(e.altKey || e.ctrlKey || e.shiftKey || e.metaKey)) {
+					
+					breadcrumbList.innerHTML = html;
+				}
+				
+				function updateSidebarHighlight(target) {
+					// Remove previous active
+					if (currentActiveLink) {
+						currentActiveLink.classList.remove('active');
+					}
+					
+					// Find new active link in chapters
+					var newLink = chapterLinks[target];
+					
+					if (newLink) {
+						newLink.classList.add('active');
+						currentActiveLink = newLink;
+					} else {
+						currentActiveLink = null;
+					}
+				}
+				
+				// Use IntersectionObserver - browser notifies us when sections enter/leave viewport
+				// rootMargin: trigger when section is near top of visible area
+				var scrollContainer = content.querySelector('.flex-grow-1.overflow-auto') || content.querySelector('.overflow-auto') || content;
+				
+				var observer = new IntersectionObserver(function(entries) {
+					// Find the most visible section near top
+					var topSection = null;
+					for (var i = 0; i < entries.length; i++) {
+						if (entries[i].isIntersecting) {
+							topSection = entries[i].target._sectionData;
+							break;
+						}
+					}
+					
+					if (topSection) {
+						updateBreadcrumbs(topSection.target, topSection.text);
+						updateSidebarHighlight(topSection.target);
+					}
+				}, {
+					root: scrollContainer,
+					rootMargin: '-10% 0px -80% 0px', // Trigger when section enters top 10-20% of viewport
+					threshold: 0
+				});
+				
+				// Observe all section headings
+				for (var i = 0; i < sections.length; i++) {
+					sections[i].element._sectionData = sections[i];
+					observer.observe(sections[i].element);
+				}
+				
+				// Keyboard navigation: top ↔ sections ↔ bottom
+				document.addEventListener('keydown', function(e) {
+					if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey) return;
+					
+					var currentIndex = -1;
+					for (var i = 0; i < sections.length; i++) {
+						if (sections[i].target === currentTarget) {
+							currentIndex = i;
+							break;
+						}
+					}
+					
+					var newTarget = null;
 					switch(e.which) {
 						case 37: // left
-						window.location.hash = previousTarget ? previousTarget : 'top'
-						break
-
+							if (currentTarget === 'bottom' && sections.length > 0) {
+								// At bottom, go to last section
+								newTarget = sections[sections.length - 1].target;
+							} else if (currentTarget === 'top') {
+								// Already at top, stay there
+							} else if (currentIndex > 0) {
+								newTarget = sections[currentIndex - 1].target;
+							} else if (currentIndex === 0) {
+								newTarget = 'top';
+							} else if (!currentTarget || currentIndex < 0) {
+								// No current section (null or not in sections), go to top
+								newTarget = 'top';
+							}
+							break;
 						case 39: // right
-						window.location.hash = nextTarget ? nextTarget : 'bottom'
-						break
-
-						default: return // exit this handler for other keys
+							if (currentTarget === 'top' && sections.length > 0) {
+								// At top, go to first section
+								newTarget = sections[0].target;
+							} else if (currentTarget === 'bottom') {
+								// Already at bottom, stay there
+							} else if (currentIndex >= 0 && currentIndex < sections.length - 1) {
+								newTarget = sections[currentIndex + 1].target;
+							} else if (currentIndex === sections.length - 1) {
+								// At last section, go to bottom
+								newTarget = 'bottom';
+							} else if (!currentTarget || currentIndex < 0) {
+								// No current section, go to first
+								newTarget = sections[0].target;
+							}
+							break;
 					}
-					e.preventDefault()
-				}
-			})
+					
+					if (newTarget) {
+						// Update currentTarget immediately for next keypress
+						currentTarget = newTarget;
+						window.location.hash = newTarget;
+						e.preventDefault();
+					}
+				});
+				
+				// Enable keyboard nav status
+				var statusEl = document.getElementById('keyboardNavStatus');
+				if (statusEl) statusEl.textContent = 'enabled';
+			})();
 		</script>
-		
-		<a class="anchor" name="bottom"></a>
 	</body>
 </html>
-
