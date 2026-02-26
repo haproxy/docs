@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.13 - Configuration Manual</title>
+		<title>HAProxy version 3.2.13-3 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4283,6 +4283,8 @@
 							
 							<a class="list-group-item" href="#tune.h2.initial-window-size">tune.h2.initial-window-size</a>
 							
+							<a class="list-group-item" href="#tune.h2.log-errors">tune.h2.log-errors</a>
+							
 							<a class="list-group-item" href="#tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a>
 							
 							<a class="list-group-item" href="#tune.h2.max-frame-size">tune.h2.max-frame-size</a>
@@ -4624,7 +4626,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4635,7 +4637,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.13</strong></p>
+							<p><strong>version 3.2.13-3</strong></p>
 							<p>
 								2026/02/19<br>
 								
@@ -9670,6 +9672,14 @@ default value will both increase upload speeds and cause more unfairness
 between clients on downloads, it is recommended to instead use the side-
 specific settings tune.h2.fe.initial-window-size and
 tune.h2.be.initial-window-size.
+</pre><a class="anchor" name="tune.h2.log-errors"></a><a class="anchor" name="3-tune.h2.log-errors"></a><a class="anchor" name="3.2-tune.h2.log-errors"></a><a class="anchor" name="tune.h2.log-errors (Global section)"></a><a class="anchor" name="tune.h2.log-errors (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.log-errors"></a><a href="#3.2-tune.h2.log-errors">tune.h2.log-errors</a></b> <span style="color: #800">{ none | connection | stream }</span></div><pre class="text">Sets the level of errors in the H2 demultiplexer that will generate a log.
+The default is &quot;stream&quot;, which means that any decoding error encountered in
+the demultiplexer will lead to the emission of a log. The &quot;connection&quot; value
+indicates that only logs that result in invalidating the connection will
+produce a log. Finally, &quot;none&quot; indicates that no decoding error will produce
+any log. It is recommended to set at least &quot;connection&quot; in order to detect
+protocol anomalies, even if this means temporarily switching to &quot;none&quot; during
+difficult periods.
 </pre><a class="anchor" name="tune.h2.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.max-concurrent-streams"></a><a class="anchor" name="tune.h2.max-concurrent-streams (Global section)"></a><a class="anchor" name="tune.h2.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.max-concurrent-streams"></a><a href="#3.2-tune.h2.max-concurrent-streams">tune.h2.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the default HTTP/2 maximum number of concurrent streams per connection
 (i.e. the number of outstanding requests on a single connection). This value
 is used for incoming connections when tune.h2.fe.max-concurrent-streams is
@@ -33240,7 +33250,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.13 &ndash; Configuration Manual<br>
+							HAProxy 3.2.13-3 &ndash; Configuration Manual<br>
 							<small>, 2026/02/19</small>
 						</div>
 					</div>
