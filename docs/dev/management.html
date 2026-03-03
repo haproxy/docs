@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev5-46 - Management Guide</title>
+		<title>HAProxy version 3.4-dev5-72 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -328,6 +328,8 @@
 							<a class="list-group-item" href="#del">del</a>
 							
 							<a class="list-group-item" href="#del acl">del acl</a>
+							
+							<a class="list-group-item" href="#del backend">del backend</a>
 							
 							<a class="list-group-item" href="#del map">del map</a>
 							
@@ -694,7 +696,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/02/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -705,7 +707,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.4-dev5-46</strong></p>
+							<p><strong>version 3.4-dev5-72</strong></p>
 							<p>
 								<br>
 								
@@ -2943,6 +2945,28 @@ use by people who are not at ease with the source code.
 this command delete only the listed reference. The reference can be found with
 listing the content of the acl. Note that if the reference &lt;acl&gt; is a name and
 is shared with a map, the entry will be also deleted in the map.
+</pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del backend"></a><a class="anchor" name="9-del backend"></a><a class="anchor" name="9.3-del backend"></a><a class="anchor" name="del backend (Statistics and monitoring)"></a><a class="anchor" name="del backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del backend"></a><a href="#9.3-del%20backend">del backend</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Removes the backend proxy with the name &lt;name&gt;.
+
+This operation is only possible for TCP or HTTP proxies. To succeed, the
+backend instance must have been first unpublished. Also, all of its servers
+must first be removed (via &quot;<a href="#del%20server">del server</a>&quot; CLI). Finally, no stream must still
+be attached to the backend instance.
+
+There is additional restrictions which prevent backend removal. First, a
+backend cannot be removed if it is explicitely referenced by config elements,
+for example via a use_backend rule or in sample expressions. Some proxies
+options are also incompatible with runtime deletion. Currently, this is the
+case when deprecated dispatch or option transparent are used. Also, a backend
+cannot be removed if there is a stick-table declared in it. Finally, it is
+impossible for now to remove a backend if QUIC servers were present in it.
+
+It can be useful to use &quot;wait be-removable&quot; prior to this command to check
+for the aformentioned requisites. This also provides a methode to wait for
+the final closure of the streams attached to the target backend.
+
+This command is restricted and can only be issued on sockets configured for
+level &quot;admin&quot;. Moreover, this feature is still considered in development so it
+also requires experimental mode (see &quot;experimental-mode on&quot;).
 </pre><a class="anchor" name="del"></a><a class="anchor" name="9-del"></a><a class="anchor" name="9.3-del"></a><a class="anchor" name="del (Statistics and monitoring)"></a><a class="anchor" name="del (Unix Socket commands)"></a><a class="anchor" name="del map"></a><a class="anchor" name="9-del map"></a><a class="anchor" name="9.3-del map"></a><a class="anchor" name="del map (Statistics and monitoring)"></a><a class="anchor" name="del map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="del map"></a><a href="#9.3-del%20map">del map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span></div><pre class="text">Delete all the map entries from the map &lt;map&gt; corresponding to the key &lt;key&gt;.
 &lt;map&gt; is the #&lt;id&gt; or the &lt;name&gt; returned by &quot;<a href="#show%20map">show map</a>&quot;. If the &lt;ref&gt; is used,
 this command delete only the listed reference. The reference can be found with
@@ -5132,6 +5156,13 @@ With a condition and optional arguments, the command will wait for the
 specified condition to be satisfied, to unrecoverably fail, or to remain
 unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
 
+- be-removable &lt;proxy&gt; : this will wait for the specified proxy backend to be
+  removable by the &quot;<a href="#del%20backend">del backend</a>&quot; command. Some conditions will never be
+  accepted (e.g. backend not yet unpublished or with servers in it) and will
+  cause the report of a specific error message indicating what condition is
+  not met. If everything is OK before the delay, a success is returned and
+  the operation is terminated.
+
 - srv-removable &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to
   be removable by the &quot;<a href="#del%20server">del server</a>&quot; command, i.e. be in maintenance and no
   longer have any connection on it (neither active or idle). Some conditions
@@ -5820,7 +5851,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev5-46 &ndash; Management Guide<br>
+							HAProxy 3.4-dev5-72 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
