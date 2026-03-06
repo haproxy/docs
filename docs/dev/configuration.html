@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev5-79 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev6-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4061,6 +4061,8 @@
 							
 							<a class="list-group-item" href="#stats auth">stats auth</a>
 							
+							<a class="list-group-item" href="#stats calculate-max-counters">stats calculate-max-counters</a>
+							
 							<a class="list-group-item" href="#stats enable">stats enable</a>
 							
 							<a class="list-group-item" href="#stats hide-version">stats hide-version</a>
@@ -4815,7 +4817,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4826,9 +4828,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev5-79</strong></p>
+							<p><strong>version 3.4-dev6-1</strong></p>
 							<p>
-								2026/02/19<br>
+								2026/03/05<br>
 								
 							</p>
 						</div>
@@ -9347,6 +9349,9 @@ issuer for ocsp without the need for '.issuer' file and be able to share it
 with 'issuers-chain-path'. This concerns all certificates without intermediate
 certificates. It's useless for BoringSSL, .issuer is ignored because ocsp
 bits does not need it. Requires at least OpenSSL 1.0.2.
+</pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global section)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats calculate-max-counters"></a><a class="anchor" name="3-stats calculate-max-counters"></a><a class="anchor" name="3.1-stats calculate-max-counters"></a><a class="anchor" name="stats calculate-max-counters (Global section)"></a><a class="anchor" name="stats calculate-max-counters (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats calculate-max-counters"></a><a href="#3.1-stats%20calculate-max-counters">stats calculate-max-counters</a></b> <span style="color: #008">[on|off]</span></div><pre class="text">Activates or deactivates the calculation of stats max counters. If you
+don't need them, deactivating them may increase performances a bit.
+The default is on.
 </pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global section)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats maxconn"></a><a class="anchor" name="3-stats maxconn"></a><a class="anchor" name="3.1-stats maxconn"></a><a class="anchor" name="stats maxconn (Global section)"></a><a class="anchor" name="stats maxconn (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats maxconn"></a><a href="#3.1-stats%20maxconn">stats maxconn</a></b> <span style="color: #080">&lt;connections&gt;</span></div><pre class="text">By default, the stats socket is limited to 10 concurrent connections. It is
 possible to change this value with &quot;<a href="#stats%20maxconn">stats maxconn</a>&quot;.
 </pre><a class="anchor" name="stats"></a><a class="anchor" name="3-stats"></a><a class="anchor" name="3.1-stats"></a><a class="anchor" name="stats (Global section)"></a><a class="anchor" name="stats (Process management and security)"></a><a class="anchor" name="stats socket"></a><a class="anchor" name="3-stats socket"></a><a class="anchor" name="3.1-stats socket"></a><a class="anchor" name="stats socket (Global section)"></a><a class="anchor" name="stats socket (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="stats socket"></a><a href="#3.1-stats%20socket">stats socket</a></b> <span style="color: #008">[<span style="color: #080">&lt;address:port&gt;</span>|<span style="color: #080">&lt;path&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Binds a UNIX socket to &lt;path&gt; or a TCPv4/v6 address to &lt;address:port&gt;.
@@ -30039,16 +30044,18 @@ because it's allocated.
 before the first space in the request (without the host part). Unlike &quot;<a href="#path">path</a>&quot;
 and &quot;<a href="#url">url</a>&quot;, it can be used in both request and response because it's
 allocated.
-</pre><a class="anchor" name="capture.req.ver"></a><a class="anchor" name="7-capture.req.ver"></a><a class="anchor" name="7.3.6-capture.req.ver"></a><a class="anchor" name="capture.req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.ver"></a><a href="#7.3.6-capture.req.ver">capture.req.ver</a></b> : string</div><pre class="text">This extracts the request's HTTP version and returns either &quot;HTTP/1.0&quot; or
-&quot;HTTP/1.1&quot;. Unlike &quot;<a href="#req.ver">req.ver</a>&quot;, it can be used in both request, response, and
-logs because it relies on a persistent flag.
+</pre><a class="anchor" name="capture.req.ver"></a><a class="anchor" name="7-capture.req.ver"></a><a class="anchor" name="7.3.6-capture.req.ver"></a><a class="anchor" name="capture.req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.req.ver"></a><a href="#7.3.6-capture.req.ver">capture.req.ver</a></b> : string</div><pre class="text">This extracts the request's HTTP version and returns it with the format
+&quot;HTTP/&lt;major&gt;.&lt;minor&gt;&quot;. It can be used in both request, response, and logs
+because it relies on a persistent information. If the request version is not
+valid, this sample fetch fails.
 </pre><a class="anchor" name="capture.res.hdr"></a><a class="anchor" name="7-capture.res.hdr"></a><a class="anchor" name="7.3.6-capture.res.hdr"></a><a class="anchor" name="capture.res.hdr (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.res.hdr (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.res.hdr"></a><a href="#7.3.6-capture.res.hdr">capture.res.hdr</a></b>(<span style="color: #080">&lt;idx&gt;</span>) : string</div><pre class="text">This extracts the content of the header captured by the &quot;capture response
 header&quot;, idx is the position of the capture keyword in the configuration.
 The first entry is an index of 0.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture%20response%20header">capture response header</a>&quot;</div>
-<a class="anchor" name="capture.res.ver"></a><a class="anchor" name="7-capture.res.ver"></a><a class="anchor" name="7.3.6-capture.res.ver"></a><a class="anchor" name="capture.res.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.res.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.res.ver"></a><a href="#7.3.6-capture.res.ver">capture.res.ver</a></b> : string</div><pre class="text">This extracts the response's HTTP version and returns either &quot;HTTP/1.0&quot; or
-&quot;HTTP/1.1&quot;. Unlike &quot;<a href="#res.ver">res.ver</a>&quot;, it can be used in logs because it relies on a
-persistent flag.
+<a class="anchor" name="capture.res.ver"></a><a class="anchor" name="7-capture.res.ver"></a><a class="anchor" name="7.3.6-capture.res.ver"></a><a class="anchor" name="capture.res.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="capture.res.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="capture.res.ver"></a><a href="#7.3.6-capture.res.ver">capture.res.ver</a></b> : string</div><pre class="text">This extracts the response's HTTP version and returns it with the format
+&quot;HTTP/&lt;major&gt;.&lt;minor&gt;&quot;. It can be used in logs because it relies on a
+persistent information. If the response version is not valid, this sample
+fetch fails.
 </pre><a class="anchor" name="cookie"></a><a class="anchor" name="7-cookie"></a><a class="anchor" name="7.3.6-cookie"></a><a class="anchor" name="cookie (Using ACLs and fetching samples)"></a><a class="anchor" name="cookie (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="cookie"></a><a href="#7.3.6-cookie">cookie</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span>) : string <span class="label label-warning">(deprecated)</span></div><pre class="text">This extracts the last occurrence of the cookie name &lt;name&gt; on a &quot;Cookie&quot;
 header line from the request, or a &quot;Set-Cookie&quot; header from the response, and
 returns its value as a string. A typical use is to get multiple clients
@@ -30324,15 +30331,13 @@ log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for mor
 emission of the last byte of the previous response.
 This is reported in milliseconds and is equivalent to %Tq in
 log-format. See <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
-</pre><a class="anchor" name="req.ver"></a><a class="anchor" name="7-req.ver"></a><a class="anchor" name="7.3.6-req.ver"></a><a class="anchor" name="req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.ver"></a><a href="#7.3.6-req.ver">req.ver</a></b> : string</div><a class="anchor" name="req_ver"></a><a class="anchor" name="7-req_ver"></a><a class="anchor" name="7.3.6-req_ver"></a><a class="anchor" name="req_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req_ver"></a><a href="#7.3.6-req_ver">req_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP request, for example &quot;1.1&quot;. This can
-be useful for ACL. For logs use the &quot;%HV&quot; logformat alias. Some predefined
-ACL already check for versions 1.0 and 1.1.
+</pre><a class="anchor" name="req.ver"></a><a class="anchor" name="7-req.ver"></a><a class="anchor" name="7.3.6-req.ver"></a><a class="anchor" name="req.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req.ver"></a><a href="#7.3.6-req.ver">req.ver</a></b> : string</div><a class="anchor" name="req_ver"></a><a class="anchor" name="7-req_ver"></a><a class="anchor" name="7.3.6-req_ver"></a><a class="anchor" name="req_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="req_ver"></a><a href="#7.3.6-req_ver">req_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP request, with the format
+&quot;&lt;major&gt;.&lt;minor&gt;&quot;. This can be useful for ACL. Some predefined ACL already
+check for common versions.  It can be used in both request, response, and
+logs because it relies on a persistent information. If the request version is
+not valid, this sample fetch fails.
 
 Common values are &quot;1.0&quot;, &quot;1.1&quot;, &quot;2.0&quot; or &quot;3.0&quot;.
-
-In the case of http/2 and http/3, the value is not extracted from the HTTP
-version in the request line but is determined by the negotiated protocol
-version.
 
 ACL derivatives :
   req.ver : exact string match
@@ -30483,8 +30488,9 @@ str:  &lt;int:length&gt;&lt;bytes&gt;
 to the server and the moment the server sent its complete response headers.
 This is reported in milliseconds and is equivalent to %Tr in log-format. See
 <a href="#8.4">section 8.4</a> &quot;Timing events&quot; for more details.
-</pre><a class="anchor" name="res.ver"></a><a class="anchor" name="7-res.ver"></a><a class="anchor" name="7.3.6-res.ver"></a><a class="anchor" name="res.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="res.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.ver"></a><a href="#7.3.6-res.ver">res.ver</a></b> : string</div><a class="anchor" name="resp_ver"></a><a class="anchor" name="7-resp_ver"></a><a class="anchor" name="7.3.6-resp_ver"></a><a class="anchor" name="resp_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="resp_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="resp_ver"></a><a href="#7.3.6-resp_ver">resp_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP response, for example &quot;1.1&quot;. This
-can be useful for logs, but is mostly there for ACL.
+</pre><a class="anchor" name="res.ver"></a><a class="anchor" name="7-res.ver"></a><a class="anchor" name="7.3.6-res.ver"></a><a class="anchor" name="res.ver (Using ACLs and fetching samples)"></a><a class="anchor" name="res.ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="res.ver"></a><a href="#7.3.6-res.ver">res.ver</a></b> : string</div><a class="anchor" name="resp_ver"></a><a class="anchor" name="7-resp_ver"></a><a class="anchor" name="7.3.6-resp_ver"></a><a class="anchor" name="resp_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="resp_ver (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="resp_ver"></a><a href="#7.3.6-resp_ver">resp_ver</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns the version string from the HTTP response, with the format
+&quot;&lt;major&gt;.&lt;minor&gt;&quot;. This can be useful for logs, but is mostly there for
+ACL. If the response version is not valid, this sample fetch fails.
 
 It may be used in tcp-check based expect rules.
 
@@ -31668,7 +31674,7 @@ log-format &quot;%{+cbor}o %(request)r %(custom_expr)[str(custom)]&quot;
   |                          Others                                           |
   +---+------+------------------------------------------------------+---------+
   |   | %B   | bytes_read           (from server to client)         | numeric |
-  |   |      | %[req.bytes_in]                                      |         |
+  |   |      | %[res.bytes_in]                                      |         |
   +---+------+------------------------------------------------------+---------+
   | H | %CC  | captured_request_cookie                              | string  |
   +---+------+------------------------------------------------------+---------+
@@ -34715,8 +34721,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev5-79 &ndash; Configuration Manual<br>
-							<small>, 2026/02/19</small>
+							HAProxy 3.4-dev6-1 &ndash; Configuration Manual<br>
+							<small>, 2026/03/05</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
