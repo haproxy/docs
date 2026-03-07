@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev6-1 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev6-7 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2053,6 +2053,10 @@
 							<a class="list-group-item" href="#filter bwlim-out">filter bwlim-out</a>
 							
 							<a class="list-group-item" href="#filter cache">filter cache</a>
+							
+							<a class="list-group-item" href="#filter comp-req">filter comp-req</a>
+							
+							<a class="list-group-item" href="#filter comp-res">filter comp-res</a>
 							
 							<a class="list-group-item" href="#filter compression">filter compression</a>
 							
@@ -4817,7 +4821,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4828,7 +4832,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev6-1</strong></p>
+							<p><strong>version 3.4-dev6-7</strong></p>
 							<p>
 								2026/03/05<br>
 								
@@ -12209,10 +12213,14 @@ then be used for such scenarios.
 If this setting is used in a defaults section, a warning is emitted and the
 option is ignored.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#compression%20type">compression type</a>&quot;, &quot;<a href="#compression%20algo">compression algo</a>&quot;, &quot;<a href="#compression%20direction">compression direction</a>&quot;</div>
-<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression direction"></a><a class="anchor" name="4-compression direction"></a><a class="anchor" name="4.2-compression direction"></a><a class="anchor" name="compression direction (Proxies)"></a><a class="anchor" name="compression direction (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression direction"></a><a href="#4.2-compression%20direction">compression direction</a></b> <span style="color: #080">&lt;direction&gt;</span></div><pre class="text">Makes haproxy able to compress both requests and responses.
+<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression direction"></a><a class="anchor" name="4-compression direction"></a><a class="anchor" name="4.2-compression direction"></a><a class="anchor" name="compression direction (Proxies)"></a><a class="anchor" name="compression direction (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression direction"></a><a href="#4.2-compression%20direction">compression direction</a></b> <span style="color: #080">&lt;direction&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">Makes haproxy able to compress both requests and responses.
 Valid values are &quot;request&quot;, to compress only requests, &quot;response&quot;, to
 compress only responses, or &quot;both&quot;, when you want to compress both.
 The default value is &quot;response&quot;.
+
+This directive is only relevant when legacy &quot;<a href="#filter%20compression">filter compression</a>&quot; was
+enabled, as with explicit comp-req and comp-res filters compression
+direction is redundant.
 
 May be used in the following contexts: http
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#compression%20type">compression type</a>&quot;, &quot;<a href="#compression%20algo">compression algo</a>&quot;, &quot;<a href="#compression%20offload">compression offload</a>&quot;</div>
@@ -32793,7 +32801,15 @@ a server by adding some latencies in the processing.
 </pre></div>
 <a class="anchor" id="9.2" name="9.2"></a>
 <h2 id="chapter-9.2" data-target="9.2"><small><a class="small" href="#9.2">9.2.</a></small> HTTP compression</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter compression"></a><a class="anchor" name="9-filter compression"></a><a class="anchor" name="9.2-filter compression"></a><a class="anchor" name="filter compression (Supported filters)"></a><a class="anchor" name="filter compression (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter compression"></a><a href="#9.2-filter%20compression">filter compression</a></b></div><pre class="text">The HTTP compression has been moved in a filter in HAProxy 1.7. &quot;<a href="#compression">compression</a>&quot;
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter comp-req"></a><a class="anchor" name="9-filter comp-req"></a><a class="anchor" name="9.2-filter comp-req"></a><a class="anchor" name="filter comp-req (Supported filters)"></a><a class="anchor" name="filter comp-req (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter comp-req"></a><a href="#9.2-filter%20comp-req">filter comp-req</a></b></div><pre class="text">Enables filter that explicitly tries to compress HTTP requests according to
+&quot;<a href="#compression">compression</a>&quot; settings. Implicitly sets &quot;compression direction request&quot;.
+</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter comp-res"></a><a class="anchor" name="9-filter comp-res"></a><a class="anchor" name="9.2-filter comp-res"></a><a class="anchor" name="filter comp-res (Supported filters)"></a><a class="anchor" name="filter comp-res (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter comp-res"></a><a href="#9.2-filter%20comp-res">filter comp-res</a></b></div><pre class="text">Enables filter that explicitly tries to compress HTTP responses according to
+&quot;<a href="#compression">compression</a>&quot; settings. Implicitly sets &quot;compression direction response&quot;
+</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter compression"></a><a class="anchor" name="9-filter compression"></a><a class="anchor" name="9.2-filter compression"></a><a class="anchor" name="filter compression (Supported filters)"></a><a class="anchor" name="filter compression (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter compression"></a><a href="#9.2-filter%20compression">filter compression</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Alias for backward compatibility purposes that is functionnally equivalent to
+enabling both &quot;comp-req&quot; and &quot;comp-res&quot; filter. &quot;<a href="#compression">compression</a>&quot; keyword must be
+used to configure appropriate behavior:
+
+The HTTP compression has been moved in a filter in HAProxy 1.7. &quot;<a href="#compression">compression</a>&quot;
 keyword must still be used to enable and configure the HTTP compression. And
 when no other filter is used, it is enough. When used with the cache or the
 fcgi-app enabled, it is also enough. In this case, the compression is always
@@ -34721,7 +34737,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev6-1 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev6-7 &ndash; Configuration Manual<br>
 							<small>, 2026/03/05</small>
 						</div>
 					</div>
