@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev6-15 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev6-45 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4821,7 +4821,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4832,7 +4832,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev6-15</strong></p>
+							<p><strong>version 3.4-dev6-45</strong></p>
 							<p>
 								2026/03/05<br>
 								
@@ -25553,7 +25553,8 @@ The only tokens managed yet are the ones using the Compact Serialization
 format (five dot-separated base64-url encoded strings).
 
 This converter can be used for tokens that have an algorithm (&quot;alg&quot; field of
-the JOSE header) among the following: RSA1_5, RSA-OAEP or RSA-OAEP-256.
+the JOSE header) among the following: RSA1_5, RSA-OAEP, RSA-OAEP-256,
+ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW or ECDH-ES+A256KW.
 
 The JWE token must be provided base64url-encoded and the output will be
 provided &quot;raw&quot;. If an error happens during token parsing, signature
@@ -25569,8 +25570,9 @@ http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_cert(&quot;/fo
 </div><a class="anchor" name="jwt_decrypt_jwk"></a><a class="anchor" name="7-jwt_decrypt_jwk"></a><a class="anchor" name="7.3.1-jwt_decrypt_jwk"></a><a class="anchor" name="jwt_decrypt_jwk (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_decrypt_jwk (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_decrypt_jwk"></a><a href="#7.3.1-jwt_decrypt_jwk">jwt_decrypt_jwk</a></b>(<span style="color: #080">&lt;jwk&gt;</span>)</div><pre class="text">Performs a signature validation of a JSON Web Token following the JSON Web
 Encryption format (see RFC 7516) given in input and return its content
 decrypted thanks to the provided JSON Web Key (RFC7517).
-The &lt;jwk&gt; parameter must be a valid JWK of type 'oct' or 'RSA' ('kty' field
-of the JSON key) that can be provided either as a string or via a variable.
+The &lt;jwk&gt; parameter must be a valid JWK of type 'oct', 'EC' or 'RSA' ('kty'
+field of the JSON key) that can be provided either as a string or via a
+variable.
 
 The only tokens managed yet are the ones using the Compact Serialization
 format (five dot-separated base64-url encoded strings).
@@ -25578,11 +25580,16 @@ format (five dot-separated base64-url encoded strings).
 This converter can be used to decode token that have a symmetric-type
 algorithm (&quot;alg&quot; field of the JOSE header) among the following: A128KW,
 A192KW, A256KW, A128GCMKW, A192GCMKW, A256GCMKW, dir. In this case, we expect
-the provided JWK to be of the 'oct' type. Please note that the A128KW and
-A192KW algorithms are not available on AWS-LC and decryption will not work.
-This converter also manages tokens  that have an algorithm (&quot;alg&quot; field of
-the JOSE header) among the following: RSA1_5, RSA-OAEP or RSA-OAEP-256. In
-such a case an 'RSA' type JWK representing a private key must be provided.
+the provided JWK to be of the 'oct' type.
+
+This converter also manages tokens that have an algorithm (&quot;alg&quot; field of the
+JOSE header) in the RSA family (RSA1_5, RSA-OAEP or RSA-OAEP-256) when
+provided an 'RSA' JWK, or in the ECDH family (ECDH-ES, ECDH-ES+A128KW,
+ECDH-ES+A192KW or ECDH-ES+A256KW) when provided an 'EC' JWK.
+
+Please note that the A128KW and A192KW algorithms are not available on AWS-LC
+so the A128KW, A192KW, ECDH-ES+A128KW and ECDH-ES+A192KW algorithms won't
+work.
 
 The JWE token must be provided base64url-encoded and the output will be
 provided &quot;raw&quot;. If an error happens during token parsing, signature
@@ -25597,7 +25604,7 @@ converter to work properly (see <a href="#2.2">section 2.2</a> for more informat
 <code> <span class="comment"># Get a JWT from the authorization header, put its decrypted content in an</span>
  <span class="comment"># HTTP header</span>
  http-request set-var(txn.bearer) http_auth_bearer
- http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_secret(\'{\&quot;kty\&quot;:\&quot;oct\&quot;,\&quot;k\&quot;:\&quot;wAsgsg\&quot;}\')
+ http-request set-header X-Decrypted %[var(txn.bearer),jwt_decrypt_jwk(\'{\&quot;kty\&quot;:\&quot;oct\&quot;,\&quot;k\&quot;:\&quot;wAsgsg\&quot;}\')
 
 <span class="comment"># or via a variable</span>
  http-request set-var(txn.bearer) http_auth_bearer
@@ -34737,7 +34744,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev6-15 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev6-45 &ndash; Configuration Manual<br>
 							<small>, 2026/03/05</small>
 						</div>
 					</div>
