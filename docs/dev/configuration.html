@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev6-103 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev6-115 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4821,7 +4821,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/12</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/18</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4832,7 +4832,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev6-103</strong></p>
+							<p><strong>version 3.4-dev6-115</strong></p>
 							<p>
 								2026/03/05<br>
 								
@@ -8943,9 +8943,28 @@ starting up, before handling traffic, HAProxy will read, load and apply state
 for each server found in the file and available in its current running
 configuration. See also &quot;<a href="#server-state-base">server-state-base</a>&quot; and &quot;show servers state&quot;,
 &quot;<a href="#load-server-state-from-file">load-server-state-from-file</a>&quot; and &quot;<a href="#server-state-file-name">server-state-file-name</a>&quot;
-</pre><a class="anchor" name="set-dumpable"></a><a class="anchor" name="3-set-dumpable"></a><a class="anchor" name="3.1-set-dumpable"></a><a class="anchor" name="set-dumpable (Global section)"></a><a class="anchor" name="set-dumpable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-dumpable"></a><a href="#3.1-set-dumpable">set-dumpable</a></b></div><pre class="text">This option is better left disabled by default and enabled only upon a
-developer's request. If it has been enabled, it may still be forcibly
-disabled by prefixing it with the &quot;no&quot; keyword. It has no impact on
+</pre><a class="anchor" name="set-dumpable"></a><a class="anchor" name="3-set-dumpable"></a><a class="anchor" name="3.1-set-dumpable"></a><a class="anchor" name="set-dumpable (Global section)"></a><a class="anchor" name="set-dumpable (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-dumpable"></a><a href="#3.1-set-dumpable">set-dumpable</a></b> <span style="color: #008">[ on | off | libs ]</span></div><pre class="text">This option helps choose the core dump behavior in case of process crash.
+Available options are:
+
+- on      this enables core dumping at the process level if it was
+          previously disabled.
+
+- off     this disables a previously enabled core dumping.
+
+- libs    this enables core dumping with an embedded copy of the binaries and
+          libraries that are required for debugging. This may be requested by
+          developers. In this case haproxy will try to load the libraries it
+          depends on into memory and keep them preciously. If the process
+          crashes, they will be dumped into the core so there is no need for
+          retrieving them from the file system anymore and no risk that they
+          do not match the core. This takes a few megabytes to a few tens of
+          megabytes of additional RAM, so it is better not to use it on small
+          systems.
+
+This option is better left disabled by default and enabled only upon a
+developer's request. By default it is disabled. Without argument, it defaults
+to &quot;<a href="#on">on</a>&quot;. If it has been enabled, it may still be forcibly disabled by prefixing
+it with the &quot;no&quot; keyword or by setting it to &quot;off&quot;. It has no impact on
 performance nor stability but will try hard to re-enable core dumps that were
 possibly disabled by file size limitations (ulimit -f), core size limitations
 (ulimit -c), or &quot;dumpability&quot; of a process after changing its UID/GID (such
@@ -34744,7 +34763,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev6-103 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev6-115 &ndash; Configuration Manual<br>
 							<small>, 2026/03/05</small>
 						</div>
 					</div>
