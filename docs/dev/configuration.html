@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev6-115 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev6-130 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4821,7 +4821,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/19</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4832,7 +4832,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev6-115</strong></p>
+							<p><strong>version 3.4-dev6-130</strong></p>
 							<p>
 								2026/03/05<br>
 								
@@ -10007,15 +10007,46 @@ large values may cause clients to experience a lack of responsiveness if
 pages are accessed in parallel to large uploads. It is better to use
 tune.h2.fe.rxbuf instead, which does not cause any unfairness.
 </pre><div class="page-header"><b>See also:</b> tune.h2.initial-window-size.</div>
-<a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Global section)"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a href="#3.2-tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of concurrent streams per incoming connection
+<a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-concurrent-streams"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Global section)"></a><a class="anchor" name="tune.h2.fe.max-concurrent-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-concurrent-streams"></a><a href="#3.2-tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a></b> <span style="color: #080">&lt;number&gt;</span> <span style="color: #008">[args...]</span></div><pre class="text">Sets the HTTP/2 maximum number of concurrent streams per incoming connection
 (i.e. the number of outstanding requests on a single connection from a
 client). When not set, the default set by tune.h2.max-concurrent-streams
 applies. A larger value than the default 100 may sometimes slightly improve
 the page load time for complex sites with lots of small objects over high
 latency networks but can also result in using more memory by allowing a
 client to allocate more resources at once. The default value of 100 is
-generally good and it is recommended not to change this value.
-</pre><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a class="anchor" name="3-tune.h2.fe.max-total-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-total-streams"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Global section)"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a href="#3.2-tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of total streams processed per incoming
+generally good and it is recommended not to change this value. A larger
+concurrency also has an impact on the processing load and latency when
+dealing with large numbers of connections which are themselves using many
+streams, and it may lower the barrier to denial of service attacks. The
+command supports the following optional arguments after the number:
+
+- rq-load { &lt;number&gt; | auto | ignore }:
+  The optional argument &quot;rq-load&quot; permits to dynamically adjust the
+  advertised concurrency based on the executing thread's run-queue load:
+  as long as the thread's load remains below the indicated threshold, the
+  configured streams limit will be advertised. When the thread's load
+  increases beyond the configured limit, the advertised streams limit will be
+  decreased proportionally to the square of the excess ratio. Target load
+  levels between 50 and 100 generally show very good moderation under heavy
+  loads. Alternately, instead of specifying an explicit number, the keyword
+  accepts &quot;ignore&quot;, which is the default and means that the thread's
+  run-queue load will not be considered to moderate the advertised streams
+  limit, and &quot;auto&quot;, which sets the limit to the &quot;<a href="#tune.runqueue-depth">tune.runqueue-depth</a>&quot;
+  value, which generally provides good results without having to tweak
+  the configuration any further.
+
+- min &lt;number&gt;:
+  This sets the minimum advertised concurrency level when rq-load is used,
+  even if this results in a higher load than the configured target. This
+  allows to maintain a good level of interactivity on a site under very
+  heavy load. The minimum and default value is 1, but values between 5
+  and 15 can improve user experience.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>tune.h2.fe.max-concurrent-streams 100 rq-load auto min 15
+</code></pre>
+</div><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a class="anchor" name="3-tune.h2.fe.max-total-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-total-streams"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Global section)"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a href="#3.2-tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of total streams processed per incoming
 connection. Once this limit is reached, HAProxy will send a graceful GOAWAY
 frame informing the client that it will close the connection after all
 pending streams have been closed. In practice, clients tend to close as fast
@@ -34763,7 +34794,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev6-115 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev6-130 &ndash; Configuration Manual<br>
 							<small>, 2026/03/05</small>
 						</div>
 					</div>
