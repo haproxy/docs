@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.15 - Configuration Manual</title>
+		<title>HAProxy version 3.2.15-25 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4267,6 +4267,8 @@
 							
 							<a class="list-group-item" href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
 							
+							<a class="list-group-item" href="#tune.h2.be.max-frames-at-once">tune.h2.be.max-frames-at-once</a>
+							
 							<a class="list-group-item" href="#tune.h2.be.rxbuf">tune.h2.be.rxbuf</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
@@ -4274,6 +4276,10 @@
 							<a class="list-group-item" href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.max-frames-at-once">tune.h2.fe.max-frames-at-once</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.max-rst-at-once">tune.h2.fe.max-rst-at-once</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
 							
@@ -4626,7 +4632,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4637,7 +4643,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.15</strong></p>
+							<p><strong>version 3.2.15-25</strong></p>
 							<p>
 								2026/03/19<br>
 								
@@ -7635,10 +7641,13 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.h2.be.glitches-threshold">tune.h2.be.glitches-threshold</a>
    - <a href="#tune.h2.be.initial-window-size">tune.h2.be.initial-window-size</a>
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
+   - <a href="#tune.h2.be.max-frames-at-once">tune.h2.be.max-frames-at-once</a>
    - <a href="#tune.h2.be.rxbuf">tune.h2.be.rxbuf</a>
    - <a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
+   - <a href="#tune.h2.fe.max-frames-at-once">tune.h2.fe.max-frames-at-once</a>
+   - <a href="#tune.h2.fe.max-rst-at-once">tune.h2.fe.max-rst-at-once</a>
    - <a href="#tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a>
    - <a href="#tune.h2.fe.rxbuf">tune.h2.fe.rxbuf</a>
    - <a href="#tune.h2.header-table-size">tune.h2.header-table-size</a>
@@ -9582,6 +9591,11 @@ line blocking&quot; tends to cause cascade effect on download speed for all
 clients sharing a connection (keep tune.h2.be.initial-window-size low in this
 case). It is highly recommended not to increase this value; some might find
 it optimal to run at low values (1..5 typically).
+</pre><a class="anchor" name="tune.h2.be.max-frames-at-once"></a><a class="anchor" name="3-tune.h2.be.max-frames-at-once"></a><a class="anchor" name="3.2-tune.h2.be.max-frames-at-once"></a><a class="anchor" name="tune.h2.be.max-frames-at-once (Global section)"></a><a class="anchor" name="tune.h2.be.max-frames-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.max-frames-at-once"></a><a href="#3.2-tune.h2.be.max-frames-at-once">tune.h2.be.max-frames-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of HTTP/2 incoming frames that will be processed at
+once on a backend connection. It can be useful to set this to a low value
+(a few tens to a few hundreds) when dealing with very large buffers in order
+to maintain a low latency and a better fairness between multiple connections.
+The default value is zero, which means that no limitation is enforced.
 </pre><a class="anchor" name="tune.h2.be.rxbuf"></a><a class="anchor" name="3-tune.h2.be.rxbuf"></a><a class="anchor" name="3.2-tune.h2.be.rxbuf"></a><a class="anchor" name="tune.h2.be.rxbuf (Global section)"></a><a class="anchor" name="tune.h2.be.rxbuf (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.be.rxbuf"></a><a href="#3.2-tune.h2.be.rxbuf">tune.h2.be.rxbuf</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the HTTP/2 receive buffer size for outgoing connections, in bytes. This
 size will be rounded up to the next multiple of tune.bufsize and will be
 shared between all streams uploading data (both HEADERS and DATA frames). In
@@ -9626,6 +9640,21 @@ the page load time for complex sites with lots of small objects over high
 latency networks but can also result in using more memory by allowing a
 client to allocate more resources at once. The default value of 100 is
 generally good and it is recommended not to change this value.
+</pre><a class="anchor" name="tune.h2.fe.max-frames-at-once"></a><a class="anchor" name="3-tune.h2.fe.max-frames-at-once"></a><a class="anchor" name="3.2-tune.h2.fe.max-frames-at-once"></a><a class="anchor" name="tune.h2.fe.max-frames-at-once (Global section)"></a><a class="anchor" name="tune.h2.fe.max-frames-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-frames-at-once"></a><a href="#3.2-tune.h2.fe.max-frames-at-once">tune.h2.fe.max-frames-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of HTTP/2 incoming frames that will be processed at
+once on a frontend connection. It can be useful to set this to a low value
+(a few tens to a few hundreds) when dealing with very large buffers in order
+to maintain a low latency and a better fairness between multiple connections.
+The default value is zero, which means that no limitation is enforced.
+</pre><a class="anchor" name="tune.h2.fe.max-rst-at-once"></a><a class="anchor" name="3-tune.h2.fe.max-rst-at-once"></a><a class="anchor" name="3.2-tune.h2.fe.max-rst-at-once"></a><a class="anchor" name="tune.h2.fe.max-rst-at-once (Global section)"></a><a class="anchor" name="tune.h2.fe.max-rst-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-rst-at-once"></a><a href="#3.2-tune.h2.fe.max-rst-at-once">tune.h2.fe.max-rst-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of HTTP/2 incoming RST_STREAM that will be processed
+at once on a frontend connection. Once the specified number of RST_STREAM
+frames are received, the connection handler will be placed in a low priority
+queue and be processed after all other tasks. It can be useful to set this to
+a very low value (1 or a few units) to significantly reduce the impacts of
+RST_STREAM floods. RST_STREAM do happen when a user clicks on the Stop button
+in their browser, but the few extra milliseconds caused by this requeuing are
+generally unnoticeable, however they are generally effective at significantly
+lowering the load caused from such floods. The default value is zero, which
+means that no limitation is enforced.
 </pre><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a class="anchor" name="3-tune.h2.fe.max-total-streams"></a><a class="anchor" name="3.2-tune.h2.fe.max-total-streams"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Global section)"></a><a class="anchor" name="tune.h2.fe.max-total-streams (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.max-total-streams"></a><a href="#3.2-tune.h2.fe.max-total-streams">tune.h2.fe.max-total-streams</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the HTTP/2 maximum number of total streams processed per incoming
 connection. Once this limit is reached, HAProxy will send a graceful GOAWAY
 frame informing the client that it will close the connection after all
@@ -12833,6 +12862,11 @@ on-error &lt;fmt&gt;     is optional and can be used to customize the
                    informational message reported in logs if an error
                    occurred during the expect rule evaluation. &lt;fmt&gt; is a
                    Custom log format string (see <a href="#8.2.6">section 8.2.6</a>).
+
+status-code &lt;expr&gt; is optional and can be used to set the check status code
+                   reported in logs, on success or on error. &lt;expr&gt; is a
+                   standard HAProxy expression formed by a sample-fetch
+                   followed by some converters.
 
 &lt;match&gt;   is a keyword indicating how to look for a specific pattern in the
           response. The keyword may be one of &quot;<a href="#status">status</a>&quot;, &quot;rstatus&quot;, &quot;<a href="#hdr">hdr</a>&quot;,
@@ -17852,13 +17886,6 @@ min-recv  is optional and can define the minimum amount of data required to
           does not match, the check will wait for more data. If set to 0,
           the evaluation result is always conclusive.
 
-&lt;match&gt;   is a keyword indicating how to look for a specific pattern in the
-          response. The keyword may be one of &quot;string&quot;, &quot;rstring&quot;, &quot;binary&quot; or
-          &quot;rbinary&quot;.
-          The keyword may be preceded by an exclamation mark (&quot;!&quot;) to negate
-          the match. Spaces are allowed between the exclamation mark and the
-          keyword. See below for more details on the supported keywords.
-
 ok-status &lt;st&gt;     is optional and can be used to set the check status if
                    the expect rule is successfully evaluated and if it is
                    the last rule in the tcp-check ruleset. &quot;L7OK&quot;, &quot;L7OKC&quot;,
@@ -17905,6 +17932,13 @@ status-code &lt;expr&gt; is optional and can be used to set the check status cod
                    reported in logs, on success or on error. &lt;expr&gt; is a
                    standard HAProxy expression formed by a sample-fetch
                    followed by some converters.
+
+&lt;match&gt;   is a keyword indicating how to look for a specific pattern in the
+          response. The keyword may be one of &quot;string&quot;, &quot;rstring&quot;, &quot;binary&quot; or
+          &quot;rbinary&quot;.
+          The keyword may be preceded by an exclamation mark (&quot;!&quot;) to negate
+          the match. Spaces are allowed between the exclamation mark and the
+          keyword. See below for more details on the supported keywords.
 
 &lt;pattern&gt; is the pattern to look for. It may be a string or a regular
           expression. If the pattern contains spaces, they must be escaped
@@ -33269,7 +33303,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.15 &ndash; Configuration Manual<br>
+							HAProxy 3.2.15-25 &ndash; Configuration Manual<br>
 							<small>, 2026/03/19</small>
 						</div>
 					</div>
