@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev7-56 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev7-63 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4829,7 +4829,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4840,7 +4840,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev7-56</strong></p>
+							<p><strong>version 3.4-dev7-63</strong></p>
 							<p>
 								2026/03/20<br>
 								
@@ -10201,21 +10201,21 @@ and HTTP/3 are binary protocols and require an encoding step. A limit is set
 too when headers are encoded to comply to limitation imposed by the
 protocols. This limit is large enough but not documented on purpose. The same
 limit is applied on the first steps of the decoding for the same reason.
-</pre><a class="anchor" name="tune.idle-pool.shared"></a><a class="anchor" name="3-tune.idle-pool.shared"></a><a class="anchor" name="3.2-tune.idle-pool.shared"></a><a class="anchor" name="tune.idle-pool.shared (Global section)"></a><a class="anchor" name="tune.idle-pool.shared (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idle-pool.shared"></a><a href="#3.2-tune.idle-pool.shared">tune.idle-pool.shared</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') sharing of idle connection pools between
-threads for a same server. The default is to share them between threads in
-order to minimize the number of persistent connections to a server, and to
-optimize the connection reuse rate. But to help with debugging or when
+</pre><a class="anchor" name="tune.idle-pool.shared"></a><a class="anchor" name="3-tune.idle-pool.shared"></a><a class="anchor" name="3.2-tune.idle-pool.shared"></a><a class="anchor" name="tune.idle-pool.shared (Global section)"></a><a class="anchor" name="tune.idle-pool.shared (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idle-pool.shared"></a><a href="#3.2-tune.idle-pool.shared">tune.idle-pool.shared</a></b> <span style="color: #800">{ auto | on | off }</span></div><pre class="text">Controls sharing idle connection pools between threads for a same server.
+It can be enabled for all threads in a same thread group ('on'), enabled for
+all threads ('full') or disabled ('off'). The default is to share them
+between threads in the same thread group ('on'), in order to minimize the
+number of persistent connections to a server, and to optimize the connection
+reuse rate. Sharing with threads from other thread groups can have a
+performance impact, and is not enabled by default, but can be useful if
+maximizing connection reuse is a priority. To help with debugging or when
 suspecting a bug in HAProxy around connection reuse, it can be convenient to
-forcefully disable this idle pool sharing between multiple threads, and force
-this option to &quot;off&quot;. The default is on. It is strongly recommended against
-disabling this option without setting a conservative value on &quot;<a href="#pool-low-conn">pool-low-conn</a>&quot;
-for all servers relying on connection reuse to achieve a high performance
-level, otherwise connections might be closed very often as the thread count
-increases. Note that in any case, connections are only shared between threads
-of the same thread group. This means that systems with many NUMA nodes may
-show slightly more persistent connections while machines with unified caches
-and many CPU cores per node may experience higher CPU usage. In the latter
-case, the &quot;max-thread-per-group&quot; tunable may be used to improve the behavior.
+forcefully disable this idle pool sharing between multiple threads,
+and force this option to &quot;off&quot;. It is strongly recommended against disabling
+this option without setting a conservative value on &quot;<a href="#pool-low-conn">pool-low-conn</a>&quot; for all
+servers relying on connection reuse to achieve a high performance level,
+otherwise connections might be closed very often as the thread count
+increases.
 </pre><a class="anchor" name="tune.idletimer"></a><a class="anchor" name="3-tune.idletimer"></a><a class="anchor" name="3.2-tune.idletimer"></a><a class="anchor" name="tune.idletimer (Global section)"></a><a class="anchor" name="tune.idletimer (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.idletimer"></a><a href="#3.2-tune.idletimer">tune.idletimer</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the duration after which HAProxy will consider that an empty buffer is
 probably associated with an idle stream. This is used to optimally adjust
 some packet sizes while forwarding large and small data alternatively. The
@@ -10961,6 +10961,9 @@ and &quot;full&quot; where we will always look in other thread groups for idle
 connections.
 Note that using connections from other thread groups can occur performance
 penalties, so it should not be used unless really needed.
+Note that this behavior is now controlled by tune.idle-pool.shared, and
+this keyword is just there for compatibility with older configurations, and
+will be deprecated.
 </pre><a class="anchor" name="tune.vars.global-max-size"></a><a class="anchor" name="3-tune.vars.global-max-size"></a><a class="anchor" name="3.2-tune.vars.global-max-size"></a><a class="anchor" name="tune.vars.global-max-size (Global section)"></a><a class="anchor" name="tune.vars.global-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.global-max-size"></a><a href="#3.2-tune.vars.global-max-size">tune.vars.global-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.proc-max-size"></a><a class="anchor" name="3-tune.vars.proc-max-size"></a><a class="anchor" name="3.2-tune.vars.proc-max-size"></a><a class="anchor" name="tune.vars.proc-max-size (Global section)"></a><a class="anchor" name="tune.vars.proc-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.proc-max-size"></a><a href="#3.2-tune.vars.proc-max-size">tune.vars.proc-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.reqres-max-size"></a><a class="anchor" name="3-tune.vars.reqres-max-size"></a><a class="anchor" name="3.2-tune.vars.reqres-max-size"></a><a class="anchor" name="tune.vars.reqres-max-size (Global section)"></a><a class="anchor" name="tune.vars.reqres-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.reqres-max-size"></a><a href="#3.2-tune.vars.reqres-max-size">tune.vars.reqres-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.sess-max-size"></a><a class="anchor" name="3-tune.vars.sess-max-size"></a><a class="anchor" name="3.2-tune.vars.sess-max-size"></a><a class="anchor" name="tune.vars.sess-max-size (Global section)"></a><a class="anchor" name="tune.vars.sess-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.sess-max-size"></a><a href="#3.2-tune.vars.sess-max-size">tune.vars.sess-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.vars.txn-max-size"></a><a class="anchor" name="3-tune.vars.txn-max-size"></a><a class="anchor" name="3.2-tune.vars.txn-max-size"></a><a class="anchor" name="tune.vars.txn-max-size (Global section)"></a><a class="anchor" name="tune.vars.txn-max-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.txn-max-size"></a><a href="#3.2-tune.vars.txn-max-size">tune.vars.txn-max-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">These five tunes help to manage the maximum amount of memory used by the
 variables system. &quot;global&quot; limits the overall amount of memory available for
 all scopes. &quot;<a href="#proc">proc</a>&quot; limits the memory for the process scope, &quot;sess&quot; limits the
@@ -34871,7 +34874,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev7-56 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev7-63 &ndash; Configuration Manual<br>
 							<small>, 2026/03/20</small>
 						</div>
 					</div>
