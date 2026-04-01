@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev7-63 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev7-87 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1389,6 +1389,8 @@
 							
 							<a class="list-group-item" href="#add-header">add-header</a>
 							
+							<a class="list-group-item" href="#add-headers-bin">add-headers-bin</a>
+							
 							<a class="list-group-item" href="#add_item">add_item</a>
 							
 							<a class="list-group-item" href="#addr">addr</a>
@@ -1617,6 +1619,8 @@
 							
 							<a class="list-group-item" href="#challenge">challenge</a>
 							
+							<a class="list-group-item" href="#challenge-ready">challenge-ready</a>
+							
 							<a class="list-group-item" href="#check">check</a>
 							
 							<a class="list-group-item" href="#check-alpn">check-alpn</a>
@@ -1798,6 +1802,8 @@
 							
 							<a class="list-group-item" href="#del-header">del-header</a>
 							
+							<a class="list-group-item" href="#del-headers-bin">del-headers-bin</a>
+							
 							<a class="list-group-item" href="#del-map">del-map</a>
 							
 							<a class="list-group-item" href="#deny">deny</a>
@@ -1843,6 +1849,8 @@
 							<a class="list-group-item" href="#djb2">djb2</a>
 							
 							<a class="list-group-item" href="#dns-accept-family">dns-accept-family</a>
+							
+							<a class="list-group-item" href="#dns-delay">dns-delay</a>
 							
 							<a class="list-group-item" href="#do-log">do-log</a>
 							
@@ -3593,6 +3601,8 @@
 							
 							<a class="list-group-item" href="#set-header">set-header</a>
 							
+							<a class="list-group-item" href="#set-headers-bin">set-headers-bin</a>
+							
 							<a class="list-group-item" href="#set-log-level">set-log-level</a>
 							
 							<a class="list-group-item" href="#set-map">set-map</a>
@@ -4829,7 +4839,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/31</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4840,7 +4850,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev7-63</strong></p>
+							<p><strong>version 3.4-dev7-87</strong></p>
 							<p>
 								2026/03/20<br>
 								
@@ -10833,7 +10843,7 @@ an extension (RFC 8879) to TLS 1.3.
 
 When set to &quot;auto&quot; it uses the default value of the TLS library.
 
-With &quot;off&quot; it tries to explicitely disable the support of the feature.
+With &quot;off&quot; it tries to explicitly disable the support of the feature.
 HAProxy won't try to send compressed certificates anymore nor accept
 compressed certificates.
 
@@ -12543,7 +12553,7 @@ May be used in the following contexts: tcp, http
 used when no rule has matched. It generally is the dynamic backend which
 will catch all undetermined requests.
 
-If a backend is disabled or unpublished, default_backend rules targetting it
+If a backend is disabled or unpublished, default_backend rules targeting it
 will be ignored and stream processing will remain on the original proxy.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
@@ -16809,7 +16819,7 @@ May be used in the following contexts: tcp, http
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
-<pre class="text">This option can be used to enable the small buffers support at diffent places
+<pre class="text">This option can be used to enable the small buffers support at different places
 to save memory. By default, with no parameter, small buffers are used as far
 as possible at all possible places. Otherwise, it is possible to limit it to
 following the places:
@@ -16822,7 +16832,7 @@ following the places:
                requests.
 
 When enabled, small buffers are used, but only if it is possible. Otherwise,
-when data are too large, a regular buffer is automtically used. The size of
+when data are too large, a regular buffer is automatically used. The size of
 small buffers is configurable via the &quot;<a href="#tune.bufsize.small">tune.bufsize.small</a>&quot; global setting.
 
 If this option has been enabled in a &quot;defaults&quot; section, it can be disabled
@@ -17234,6 +17244,14 @@ May be used in the following contexts: tcp, http, log
                   one of them over the FD. The bind part will use the
                   received socket as the client FD. Should be used
                   carefully.
+                - 'quic4@' [ EXPERIMENTAL] -&gt; address is resolved as IPv4
+                  and protocol UDP is used. QUIC on the backend side is
+                  considered experimental mainly because this prevents the
+                  server removal at runtime. This requires the global
+                  keyword &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; to use it.
+                - 'quic6@' [ EXPERIMENTAL] -&gt; address is resolved as IPv6
+                  and protocol UDP is used. It is considered similarly
+                  flagged as experimental.
                 - 'rhttp@' [ EXPERIMENTAL ] -&gt; custom address family for a
                   passive server in HTTP reverse context. This is an
                   experimental features which requires
@@ -19838,6 +19856,7 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-accept">accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-add-acl">add-acl</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-add-header">add-header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-add-headers-bin">add-headers-bin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-allow">allow</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-attach-srv">attach-srv</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-auth">auth</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -19847,15 +19866,16 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-close">close</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-del-acl">del-acl</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-del-header">del-header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-del-headers-bin">del-headers-bin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-del-map">del-map</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-deny">deny</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-dgram-drop">dgram-drop</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-disable-l7-retry">disable-l7-retry</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-do-log">do-log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-do-resolve">do-resolve</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-early-hint">early-hint</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-expect-netscaler-cip">expect-netscaler-cip</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-expect-proxy%20layer4">expect-proxy layer4</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-normalize-uri">normalize-uri</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-pause">pause</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -19874,9 +19894,9 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-sc-set-gpt">sc-set-gpt</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-sc-set-gpt0">sc-set-gpt0</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-send-retry">send-retry</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-send-spoe-group">send-spoe-group</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-bandwidth-limit">set-bandwidth-limit</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-set-bc-mark">set-bc-mark</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-bc-tos">set-bc-tos</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-dst">set-dst</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -19884,6 +19904,7 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-set-fc-mark">set-fc-mark</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-fc-tos">set-fc-tos</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-header">set-header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-set-headers-bin">set-headers-bin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-log-level">set-log-level</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-map">set-map</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-mark"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>set-mark</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -19894,10 +19915,10 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-set-priority-class">set-priority-class</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-priority-offset">set-priority-offset</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-query">set-query</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-set-retries">set-retries</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-src">set-src</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-src-port">set-src-port</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
-<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-set-status">set-status</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-timeout">set-timeout</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-tos"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>set-tos</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -19953,7 +19974,31 @@ certificate), or to combine several headers into one. This rule is not final,
 so it is possible to add other similar rules. Note that header addition is
 performed immediately, so one rule might reuse the resulting header from a
 previous rule.
-</pre><a class="anchor" name="allow"></a><a class="anchor" name="4-allow"></a><a class="anchor" name="4.4-allow"></a><a class="anchor" name="allow (Proxies)"></a><a class="anchor" name="allow (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="allow"></a><a href="#4.4-allow">allow</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="add-headers-bin"></a><a class="anchor" name="4-add-headers-bin"></a><a class="anchor" name="4.4-add-headers-bin"></a><a class="anchor" name="add-headers-bin (Proxies)"></a><a class="anchor" name="add-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="add-headers-bin"></a><a href="#4.4-add-headers-bin">add-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+</table></div>
+<pre class="text">This is a variant of the &quot;<a href="#add-header">add-header</a>&quot; action where the header names and
+values are passed as a base64 encoded string of varint encoded header names
+and values. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot; sample fetch about the varint format. This
+is useful when you want to set multiple headers at once, without having to
+know the header names in advance. Note that these headers have not been
+validated by the HTTP parser and could lead to emitting invalid messages and
+in worst cases lead to request smuggling attacks. The number of headers
+inserted are also of importance, as that is limited by tune.http.maxhdr.
+Optional prefix will only set the headers from the encoded string that
+start with &lt;str&gt;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># This would reset the Accept/UA/Host headers to their initial values</span>
+http-request set-var(txn.oldheaders) req.hdrs_bin,base64
+http-request del-header Accept
+http-request del-header User-Agent
+http-request del-header Host
+http-request add-headers-bin %[var(txn.oldheaders)]
+</code></pre>
+</div><a class="anchor" name="allow"></a><a class="anchor" name="4-allow"></a><a class="anchor" name="4.4-allow"></a><a class="anchor" name="allow (Proxies)"></a><a class="anchor" name="allow (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="allow"></a><a href="#4.4-allow">allow</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
@@ -20080,6 +20125,18 @@ is the matching method, applied on the header name. Supported matching methods
 are &quot;<a href="#str">str</a>&quot; (exact match), &quot;beg&quot; (prefix match), &quot;end&quot; (suffix match), &quot;<a href="#sub">sub</a>&quot;
 (substring match) and &quot;reg&quot; (regex match). If not specified, exact matching
 method is used.
+</pre><a class="anchor" name="del-headers-bin"></a><a class="anchor" name="4-del-headers-bin"></a><a class="anchor" name="4.4-del-headers-bin"></a><a class="anchor" name="del-headers-bin (Proxies)"></a><a class="anchor" name="del-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-headers-bin"></a><a href="#4.4-del-headers-bin">del-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ -m <span style="color: #080">&lt;meth&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+</table></div>
+<pre class="text">This removes all HTTP header fields whose names are specified in &lt;fmt&gt;. &lt;fmt&gt;
+is a base64 encoded varint encoded string of all header names that should be
+deleted. See &quot;<a href="#add-headers-bin">add-headers-bin</a>&quot; and &quot;<a href="#set-headers-bin">set-headers-bin</a>&quot; for the description of
+encoding and examples. &lt;meth&gt; is the matching method, applied on all the
+header names. Supported matching methods are &quot;<a href="#str">str</a>&quot; (exact match), &quot;beg&quot;
+(prefix match), &quot;end&quot; (suffix match) and &quot;<a href="#sub">sub</a>&quot; (substring match). The &quot;reg&quot;
+(regex match) is not supported due to unpredictable performance during
+runtime. If not specified, exact matching method is used.
 </pre><a class="anchor" name="del-map"></a><a class="anchor" name="4-del-map"></a><a class="anchor" name="4.4-del-map"></a><a class="anchor" name="del-map (Proxies)"></a><a class="anchor" name="del-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-map"></a><a href="#4.4-del-map">del-map</a></b>(<span style="color: #080">&lt;map-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -20943,6 +21000,30 @@ http-request set-header X-SSL-Client-CN        %{+Q}[ssl_c_s_dn(cn)]
 http-request set-header X-SSL-Issuer           %{+Q}[ssl_c_i_dn]
 http-request set-header X-SSL-Client-NotBefore %{+Q}[ssl_c_notbefore]
 http-request set-header X-SSL-Client-NotAfter  %{+Q}[ssl_c_notafter]
+</code></pre>
+</div><a class="anchor" name="set-headers-bin"></a><a class="anchor" name="4-set-headers-bin"></a><a class="anchor" name="4.4-set-headers-bin"></a><a class="anchor" name="set-headers-bin (Proxies)"></a><a class="anchor" name="set-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-headers-bin"></a><a href="#4.4-set-headers-bin">set-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+</table></div>
+<pre class="text">This is a variant of the &quot;<a href="#set-header">set-header</a>&quot; action where the header names and
+values are passed as a base64 encoded string of varint encoded header names
+and values. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot; sample fetch about the varint format. This
+is useful when you want to set multiple headers at once, without having to
+know the header names in advance. Note that these headers have not been
+validated by the HTTP parser and could lead to emitting invalid messages and
+in worst cases lead to request smuggling attacks. The number of headers
+inserted are also of importance, as that is limited by tune.http.maxhdr.
+Optional prefix will only set the headers from the encoded string that
+start with &lt;str&gt;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># This would reset the Accept/UA/Host headers to their initial values</span>
+http-request set-var(txn.oldheaders) req.hdrs_bin,base64
+http-request del-header Accept
+http-request del-header User-Agent
+http-request del-header Host
+http-request set-headers-bin %[var(txn.oldheaders)]
 </code></pre>
 </div><a class="anchor" name="set-log-level"></a><a class="anchor" name="4-set-log-level"></a><a class="anchor" name="4.4-set-log-level"></a><a class="anchor" name="set-log-level (Proxies)"></a><a class="anchor" name="set-log-level (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-log-level"></a><a href="#4.4-set-log-level">set-log-level</a></b> <span style="color: #080">&lt;level&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -23456,6 +23537,7 @@ The HTX compatibility is also reported (flag=HTX).
 Here are the protocols that may be used as argument to a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directive on
 a server line :
 
+  quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
   h2   : mode=HTTP  side=FE|BE  mux=H2    flags=HTX|HOL_RISK|NO_UPG
   fcgi : mode=HTTP  side=BE     mux=FCGI  flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
@@ -25677,7 +25759,7 @@ Encryption format (see RFC 7516) given in input and return its content
 decrypted thanks to the certificate provided.
 The &lt;cert&gt; parameter must be a path to an already loaded certificate (that
 can be dumped via the &quot;dump ssl cert&quot; CLI command). The certificate must have
-its &quot;<a href="#jwt">jwt</a>&quot; option explicitely set to &quot;<a href="#on">on</a>&quot; (see &quot;<a href="#jwt">jwt</a>&quot; crt-list option). It can
+its &quot;<a href="#jwt">jwt</a>&quot; option explicitly set to &quot;<a href="#on">on</a>&quot; (see &quot;<a href="#jwt">jwt</a>&quot; crt-list option). It can
 be provided directly or via a variable.
 The only tokens managed yet are the ones using the Compact Serialization
 format (five dot-separated base64-url encoded strings).
@@ -32942,7 +33024,7 @@ a server by adding some latencies in the processing.
 &quot;<a href="#compression">compression</a>&quot; settings. Implicitly sets &quot;compression direction request&quot;.
 </pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter comp-res"></a><a class="anchor" name="9-filter comp-res"></a><a class="anchor" name="9.2-filter comp-res"></a><a class="anchor" name="filter comp-res (Supported filters)"></a><a class="anchor" name="filter comp-res (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter comp-res"></a><a href="#9.2-filter%20comp-res">filter comp-res</a></b></div><pre class="text">Enables filter that explicitly tries to compress HTTP responses according to
 &quot;<a href="#compression">compression</a>&quot; settings. Implicitly sets &quot;compression direction response&quot;
-</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter compression"></a><a class="anchor" name="9-filter compression"></a><a class="anchor" name="9.2-filter compression"></a><a class="anchor" name="filter compression (Supported filters)"></a><a class="anchor" name="filter compression (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter compression"></a><a href="#9.2-filter%20compression">filter compression</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Alias for backward compatibility purposes that is functionnally equivalent to
+</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter compression"></a><a class="anchor" name="9-filter compression"></a><a class="anchor" name="9.2-filter compression"></a><a class="anchor" name="filter compression (Supported filters)"></a><a class="anchor" name="filter compression (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter compression"></a><a href="#9.2-filter%20compression">filter compression</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Alias for backward compatibility purposes that is functionally equivalent to
 enabling both &quot;comp-req&quot; and &quot;comp-res&quot; filter. &quot;<a href="#compression">compression</a>&quot; keyword must be
 used to configure appropriate behavior:
 
@@ -34206,9 +34288,9 @@ As a side note, musl (e.g. Alpine Linux) implementations are known to be
 slower than their glibc counterparts when calculating hashes, so you might
 want to consider this aspect too.
 
-All passwords are considered normal arguments and are therefor subject to
+All passwords are considered normal arguments and are therefore subject to
 regular <a href="#2.2">section 2.2</a> Quoting and escaping. Single quoting passwords is
-therefor recommended.
+therefore recommended.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -34809,7 +34891,43 @@ powerful enough. (This can be configured with &quot;<a href="#warn-blocked-traff
 but blocking the traffic too long could trigger the watchdog.)
 </pre><a class="anchor" name="challenge"></a><a class="anchor" name="12-challenge"></a><a class="anchor" name="12.8-challenge"></a><a class="anchor" name="challenge (Other sections)"></a><a class="anchor" name="challenge (ACME)"></a><div class="keyword"><b><a class="anchor" name="challenge"></a><a href="#12.8-challenge">challenge</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Takes a challenge type as parameter, this must be http-01 or dns-01. When not
 used the default is http-01.
-</pre><a class="anchor" name="contact"></a><a class="anchor" name="12-contact"></a><a class="anchor" name="12.8-contact"></a><a class="anchor" name="contact (Other sections)"></a><a class="anchor" name="contact (ACME)"></a><div class="keyword"><b><a class="anchor" name="contact"></a><a href="#12.8-contact">contact</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">The contact email that will be associated to the account key in the CA.
+</pre><a class="anchor" name="challenge-ready"></a><a class="anchor" name="12-challenge-ready"></a><a class="anchor" name="12.8-challenge-ready"></a><a class="anchor" name="challenge-ready (Other sections)"></a><a class="anchor" name="challenge-ready (ACME)"></a><div class="keyword"><b><a class="anchor" name="challenge-ready"></a><a href="#12.8-challenge-ready">challenge-ready</a></b> <span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;value&gt;</span>]</span>*</div><pre class="text">Configure the conditions that must be met before notifying the ACME server
+that a dns-01 challenge is ready to be validated. Accepted values are:
+
+  cli  - wait for an operator to signal readiness via the CLI command
+         &quot;acme challenge_ready &lt;crt&gt; domain &lt;domain&gt;&quot; on the master CLI or
+         the stats socket. This allows an external DNS provisioning tool to
+         confirm that the TXT record has been set before HAProxy proceeds.
+
+  dns  - perform a DNS pre-check by resolving the TXT record for
+         &quot;_acme-challenge.&lt;domain&gt;&quot; using the configured &quot;default&quot; resolvers
+         section, not the authoritative name servers. The challenge is not
+         submitted until the TXT record matches the expected token. Results
+         may therefore be affected by DNS caching at the resolver level. The
+         delay between resolution attempts is controlled by &quot;<a href="#dns-delay">dns-delay</a>&quot;. This
+         option is independent of the CLI command, so no human intervention
+         is required.
+
+  none - no readiness condition; the challenge is submitted to the ACME
+         server immediately without waiting for any external confirmation.
+         This option cannot be combined with others.
+
+Multiple values can be combined with a comma so that both conditions must be
+met. The order of the values is not significant. When &quot;cli&quot; and &quot;dns&quot; are
+combined, HAProxy first waits for the CLI confirmation before triggering the
+DNS propagation check.
+
+This option is only compatible with the dns-01 challenge type.
+
+When &quot;<a href="#challenge">challenge</a>&quot; is set to &quot;dns-01&quot; and this option is not configured, the
+default is &quot;cli&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Wait for CLI confirmation, then verify DNS propagation</span>
+challenge-ready cli,dns
+</code></pre>
+</div><a class="anchor" name="contact"></a><a class="anchor" name="12-contact"></a><a class="anchor" name="12.8-contact"></a><a class="anchor" name="contact (Other sections)"></a><a class="anchor" name="contact (ACME)"></a><div class="keyword"><b><a class="anchor" name="contact"></a><a href="#12.8-contact">contact</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">The contact email that will be associated to the account key in the CA.
 </pre><a class="anchor" name="curves"></a><a class="anchor" name="12-curves"></a><a class="anchor" name="12.8-curves"></a><a class="anchor" name="curves (Other sections)"></a><a class="anchor" name="curves (ACME)"></a><div class="keyword"><b><a class="anchor" name="curves"></a><a href="#12.8-curves">curves</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">When using the ECDSA keytype, configure the curves. The default is P-384.
 </pre><a class="anchor" name="directory"></a><a class="anchor" name="12-directory"></a><a class="anchor" name="12.8-directory"></a><a class="anchor" name="directory (Other sections)"></a><a class="anchor" name="directory (ACME)"></a><div class="keyword"><b><a class="anchor" name="directory"></a><a href="#12.8-directory">directory</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">This keyword configures the directory URL for the CA used by this acme
 section. This keyword is mandatory as there is no default URL.
@@ -34818,7 +34936,14 @@ section. This keyword is mandatory as there is no default URL.
 <pre class="prettyprint">
 <code>directory https://acme-staging-v02.api.letsencrypt.org/directory
 </code></pre>
-</div><a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
+</div><a class="anchor" name="dns-delay"></a><a class="anchor" name="12-dns-delay"></a><a class="anchor" name="12.8-dns-delay"></a><a class="anchor" name="dns-delay (Other sections)"></a><a class="anchor" name="dns-delay (ACME)"></a><div class="keyword"><b><a class="anchor" name="dns-delay"></a><a href="#12.8-dns-delay">dns-delay</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">When &quot;<a href="#challenge-ready">challenge-ready</a>&quot; includes &quot;dns&quot;, configure the delay before the first
+DNS resolution attempt and between retries. The value is a time expressed in
+HAProxy time format (e.g. &quot;5m&quot;, &quot;300s&quot;). Default is 300 seconds.
+
+Note that the resolution goes through the configured &quot;default&quot; resolvers
+section, not the authoritative name servers. Results may therefore still be
+affected by DNS caching at the resolver level.
+</pre><a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
 or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bits<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bits%20%28Load%20options%29">Load options</a></li><li><a href="#bits%20%28ACME%29">ACME</a></li></ul></span>&quot; for RSA. By default EC384 keys are generated.
 </pre><a class="anchor" name="map"></a><a class="anchor" name="12-map"></a><a class="anchor" name="12.8-map"></a><a class="anchor" name="map (Other sections)"></a><a class="anchor" name="map (ACME)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#12.8-map">map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Configure the map which will be used to store token (key) and thumbprint
@@ -34874,7 +34999,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev7-63 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev7-87 &ndash; Configuration Manual<br>
 							<small>, 2026/03/20</small>
 						</div>
 					</div>
