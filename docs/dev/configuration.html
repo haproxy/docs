@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev7-87 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev7-110 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1321,6 +1321,17 @@
 					<td>
 				</tr>
 				
+			
+				
+				<tr>
+					<td><small>12.9.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#12.9">Healthchecks</a>
+							</div>
+					<td>
+				</tr>
+				
 	</tbody>
 </table>
 
@@ -1852,6 +1863,8 @@
 							
 							<a class="list-group-item" href="#dns-delay">dns-delay</a>
 							
+							<a class="list-group-item" href="#dns-timeout">dns-timeout</a>
+							
 							<a class="list-group-item" href="#do-log">do-log</a>
 							
 							<a class="list-group-item" href="#do-resolve">do-resolve</a>
@@ -2170,6 +2183,10 @@
 							
 							<a class="list-group-item" href="#hdr_val">hdr_val</a>
 							
+							<a class="list-group-item" href="#healthchec">healthchec</a>
+							
+							<a class="list-group-item" href="#healthcheck">healthcheck</a>
+							
 							<a class="list-group-item" href="#hex">hex</a>
 							
 							<a class="list-group-item" href="#hex2i">hex2i</a>
@@ -2186,19 +2203,31 @@
 							
 							<a class="list-group-item" href="#http-after-response">http-after-response</a>
 							
-							<a class="list-group-item" href="#http-check">http-check</a>
+							<a class="list-group-item" href="#http-check (Healthchecks)">http-check (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#http-check (Alphabetically sorted keywords reference)">http-check (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#http-check comment">http-check comment</a>
 							
-							<a class="list-group-item" href="#http-check connect">http-check connect</a>
+							<a class="list-group-item" href="#http-check connect (Healthchecks)">http-check connect (Healthchecks)</a>
 							
-							<a class="list-group-item" href="#http-check disable-on-404">http-check disable-on-404</a>
+							<a class="list-group-item" href="#http-check connect (Alphabetically sorted keywords reference)">http-check connect (Alphabetically sorted keywords reference)</a>
 							
-							<a class="list-group-item" href="#http-check expect">http-check expect</a>
+							<a class="list-group-item" href="#http-check disable-on-404 (Healthchecks)">http-check disable-on-404 (Healthchecks)</a>
 							
-							<a class="list-group-item" href="#http-check send">http-check send</a>
+							<a class="list-group-item" href="#http-check disable-on-404 (Alphabetically sorted keywords reference)">http-check disable-on-404 (Alphabetically sorted keywords reference)</a>
 							
-							<a class="list-group-item" href="#http-check send-state">http-check send-state</a>
+							<a class="list-group-item" href="#http-check expect (Healthchecks)">http-check expect (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#http-check expect (Alphabetically sorted keywords reference)">http-check expect (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#http-check send (Healthchecks)">http-check send (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#http-check send (Alphabetically sorted keywords reference)">http-check send (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#http-check send-state (Healthchecks)">http-check send-state (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#http-check send-state (Alphabetically sorted keywords reference)">http-check send-state (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#http-check set-var">http-check set-var</a>
 							
@@ -4101,6 +4130,8 @@
 							
 							<a class="list-group-item" href="#stats show-node">stats show-node</a>
 							
+							<a class="list-group-item" href="#stats show-version">stats show-version</a>
+							
 							<a class="list-group-item" href="#stats socket">stats socket</a>
 							
 							<a class="list-group-item" href="#stats timeout">stats timeout</a>
@@ -4238,23 +4269,35 @@
 							
 							<a class="list-group-item" href="#tcp-check comment">tcp-check comment</a>
 							
-							<a class="list-group-item" href="#tcp-check connect">tcp-check connect</a>
+							<a class="list-group-item" href="#tcp-check connect (Healthchecks)">tcp-check connect (Healthchecks)</a>
 							
-							<a class="list-group-item" href="#tcp-check expect">tcp-check expect</a>
+							<a class="list-group-item" href="#tcp-check connect (Alphabetically sorted keywords reference)">tcp-check connect (Alphabetically sorted keywords reference)</a>
 							
-							<a class="list-group-item" href="#tcp-check send">tcp-check send</a>
+							<a class="list-group-item" href="#tcp-check expect (Healthchecks)">tcp-check expect (Healthchecks)</a>
 							
-							<a class="list-group-item" href="#tcp-check send-binary">tcp-check send-binary</a>
+							<a class="list-group-item" href="#tcp-check expect (Alphabetically sorted keywords reference)">tcp-check expect (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#tcp-check send (Healthchecks)">tcp-check send (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#tcp-check send (Alphabetically sorted keywords reference)">tcp-check send (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#tcp-check send-binary (Healthchecks)">tcp-check send-binary (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#tcp-check send-binary (Alphabetically sorted keywords reference)">tcp-check send-binary (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#tcp-check send-binary-lf">tcp-check send-binary-lf</a>
 							
 							<a class="list-group-item" href="#tcp-check send-lf">tcp-check send-lf</a>
 							
-							<a class="list-group-item" href="#tcp-check set-var">tcp-check set-var</a>
+							<a class="list-group-item" href="#tcp-check set-var (Healthchecks)">tcp-check set-var (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#tcp-check set-var (Alphabetically sorted keywords reference)">tcp-check set-var (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#tcp-check set-var-fmt">tcp-check set-var-fmt</a>
 							
-							<a class="list-group-item" href="#tcp-check unset-var">tcp-check unset-var</a>
+							<a class="list-group-item" href="#tcp-check unset-var (Healthchecks)">tcp-check unset-var (Healthchecks)</a>
+							
+							<a class="list-group-item" href="#tcp-check unset-var (Alphabetically sorted keywords reference)">tcp-check unset-var (Alphabetically sorted keywords reference)</a>
 							
 							<a class="list-group-item" href="#tcp-md5sig">tcp-md5sig</a>
 							
@@ -4684,6 +4727,8 @@
 							
 							<a class="list-group-item" href="#txn.timer.user">txn.timer.user</a>
 							
+							<a class="list-group-item" href="#type">type</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-U"><h4>U</h4>
 								
@@ -4839,7 +4884,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/31</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4850,7 +4895,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev7-87</strong></p>
+							<p><strong>version 3.4-dev7-110</strong></p>
 							<p>
 								2026/03/20<br>
 								
@@ -6156,6 +6201,17 @@ Note to documentation contributors :
 					<td>
 				</tr>
 				
+			
+				
+				<tr>
+					<td><small>12.9.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#12.9">Healthchecks</a>
+							</div>
+					<td>
+				</tr>
+				
 	</tbody>
 </table>
 
@@ -6966,23 +7022,26 @@ within conditional blocks and not to reference them in the global section's
 The table below summaries the status of each variable for the different working
 modes:
 
-  +--------------------------+---------+------------+-----------+
-  |        variable          | usable  | modifiable |  listed   |
-  |                          +---------+------------+-----------+
-  |                          |  M | W  |   M  |  W  |  M  |  W  |
-  +--------------------------+----+----+------+-----+-----+-----+
-  | HAPROXY_STARTUP_VERSION  |  X | X  |      |     |  X  |  X  |
-  | HAPROXY_BRANCH           |  X | X  |      |     |  X  |  X  |
-  | HAPROXY_CFGFILES         |    |    |      |     |  X  |  X  |
-  | HAPROXY_MWORKER          |    |    |      |     |  X  |  X  |
-  | HAPROXY_CLI              |    |    |      |     |     |  X  |
-  | HAPROXY_MASTER_CLI       |    |    |      |     |  X  |     |
-  | HAPROXY_LOCALPEER        |    | X  |      |     |     |  X  |
-  | HAPROXY_HTTP_LOG_FMT     |    | X  |      |  X  |     |     |
-  | HAPROXY_HTTP_CLF_LOG_FMT |    | X  |      |  X  |     |     |
-  | HAPROXY_HTTPS_LOG_FMT    |    | X  |      |  X  |     |     |
-  | HAPROXY_TCP_LOG_FMT      |    | X  |      |  X  |     |     |
-  +--------------------------+----+----+------+-----+-----+-----+
+  +---------------------------+---------+------------+-----------+
+  |          variable         | usable  | modifiable |  listed   |
+  |                           +---------+------------+-----------+
+  |                           |  M | W  |   M  |  W  |  M  |  W  |
+  +---------------------------+----+----+------+-----+-----+-----+
+  | HAPROXY_STARTUP_VERSION   |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_BRANCH            |  X | X  |      |     |  X  |  X  |
+  | HAPROXY_CFGFILES          |    |    |      |     |  X  |  X  |
+  | HAPROXY_MWORKER           |    |    |      |     |  X  |  X  |
+  | HAPROXY_CLI               |    |    |      |     |     |  X  |
+  | HAPROXY_MASTER_CLI        |    |    |      |     |  X  |     |
+  | HAPROXY_LOCALPEER         |    | X  |      |     |     |  X  |
+  | HAPROXY_HTTP_LOG_FMT      |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTP_CLF_LOG_FMT  |    | X  |      |  X  |     |     |
+  | HAPROXY_HTTPS_LOG_FMT     |    | X  |      |  X  |     |     |
+  | HAPROXY_TCP_LOG_FMT       |    | X  |      |  X  |     |     |
+  | HAPROXY_TCP_CLF_LOG_FMT   |    | X  |      |  X  |     |     |
+  | HAPROXY_KEYLOG_FC_LOG_FMT |    | X  |      |  X  |     |     |
+  | HAPROXY_KEYLOG_BC_LOG_FMT |    | X  |      |  X  |     |     |
+  +---------------------------+----+----+------+-----+-----+-----+
 
 The variables in question are the following:
 
@@ -7015,6 +7074,16 @@ log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=last_rule_file:last_rule_line&quot;
 
   * HAPROXY_TCP_CLF_LOG_FMT: similar to HAPROXY_HTTP_CLF_LOG_FMT but for TCP
     CLF log format as defined in <a href="#8.2.2">section 8.2.2</a> &quot;TCP log format&quot;.
+
+  * HAPROXY_KEYLOG_FC_LOG_FMT: contains the keylog format for the frontend
+    (client-facing) TLS connection, with key entries separated by newlines so
+    it might not be compatible with your syslog server. &quot;tune.ssl.keylog on&quot; is
+    required.
+
+  * HAPROXY_KEYLOG_BC_LOG_FMT: similar to HAPROXY_KEYLOG_FC_LOG_FMT but for the
+    backend (server-facing) TLS connection. Key entries are separated by
+    newlines so it might not be compatible with your syslog server.
+    &quot;tune.ssl.keylog on&quot; is required.
 
   * HAPROXY_MWORKER: In master-worker mode, this variable is set to 1.
 
@@ -7421,7 +7490,7 @@ different variables. Supported scopes are:
   * check : for variables known during a health-check execution. &quot;<a href="#check">check</a>&quot;
             variables are private to a health-check, not visible from outside
             it and are not shared with other health-checks. They can be set
-            using dedicated &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; or &quot;<a href="#http-check">http-check</a>&quot; directives.
+            using dedicated &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directives.
 
 Depending on the context, extra scopes referencing the parent of a current
 stream can be used:
@@ -10881,7 +10950,7 @@ performances. This is disabled by default.
 These sample fetches should be used to generate the SSLKEYLOGFILE that is
 required to decipher traffic with wireshark.
 
-https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
+https://tlswg.org/sslkeylogfile/draft-ietf-tls-keylogfile.html
 
 The SSLKEYLOG is a series of lines which are formatted this way:
 
@@ -10924,6 +10993,12 @@ this is not ideal for syslog:
               SERVER_TRAFFIC_SECRET_0 %[ssl_bc_client_random,hex] %[ssl_bc_server_traffic_secret_0]\n
               EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_exporter_secret]\n
               EARLY_EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_early_exporter_secret]&quot;
+
+HAProxy also provides the above formats as predefined environment variables
+that can be used directly in a &quot;<a href="#log-format">log-format</a>&quot; directive:
+
+  $HAPROXY_KEYLOG_FC_LOG_FMT   frontend (client-facing) connection keys
+  $HAPROXY_KEYLOG_BC_LOG_FMT   backend (server-facing) connection keys
 </pre><a class="anchor" name="tune.ssl.lifetime"></a><a class="anchor" name="3-tune.ssl.lifetime"></a><a class="anchor" name="3.2-tune.ssl.lifetime"></a><a class="anchor" name="tune.ssl.lifetime (Global section)"></a><a class="anchor" name="tune.ssl.lifetime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.lifetime"></a><a href="#3.2-tune.ssl.lifetime">tune.ssl.lifetime</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets how long a cached SSL session may remain valid. This time is expressed
 in seconds and defaults to 300 (5 min). It is important to understand that it
 does not guarantee that sessions will last that long, because if the cache is
@@ -11441,6 +11516,7 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-stats%20show-desc">stats show-desc</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-legends">stats show-legends</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20show-node">stats show-node</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-stats%20show-version">stats show-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20uri">stats uri</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20match">stick match</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20on">stick on</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11451,8 +11527,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20set-var">tcp-check set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11472,8 +11548,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-transparent"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>transparent</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11604,7 +11680,7 @@ May be used in the following contexts: tcp, http, log
               that a cloud controller regularly checks server usage to turn
               them off when unused, and regularly checks backend queue to
               turn new servers on when the queue inflates. Alternatively,
-              using &quot;<a href="#http-check%20send-state">http-check send-state</a>&quot; may inform servers on the load.
+              using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send-state<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send-state%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send-state%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; may inform servers on the load.
               This algorithm is not usable in LOG mode.
 
   hash        Takes a regular sample expression in argument. The expression
@@ -13336,7 +13412,7 @@ May be used in the following contexts: tcp, http
 </div>
 <pre class="text">It only works for connect, send and expect rules. It is useful to make
 user-friendly error reporting.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#http-check%20connect">http-check connect</a>&quot;, &quot;<a href="#http-check%20send">http-check send</a>&quot; and &quot;<a href="#http-check%20expect">http-check expect</a>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check connect"></a><a class="anchor" name="4-http-check connect"></a><a class="anchor" name="4.2-http-check connect"></a><a class="anchor" name="http-check connect (Proxies)"></a><a class="anchor" name="http-check connect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check connect"></a><a href="#4.2-http-check%20connect">http-check connect</a></b> <span style="color: #008">[default]</span> <span style="color: #008">[port <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[addr <span style="color: #080">&lt;ip&gt;</span>]</span> <span style="color: #008">[send-proxy]</span>
                    <span style="color: #008">[via-socks4]</span> <span style="color: #008">[ssl]</span> <span style="color: #008">[sni <span style="color: #080">&lt;sni&gt;</span>]</span> <span style="color: #008">[alpn <span style="color: #080">&lt;alpn&gt;</span>]</span> <span style="color: #008">[linger]</span>
                    <span style="color: #008">[proto <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Opens a new connection to perform an HTTP health check
@@ -13386,7 +13462,7 @@ different ports or with different servers.
 
 When there are no TCP port configured on the server line neither server port
 directive, then the first step of the http-check sequence must be to specify
-the port with a &quot;<a href="#http-check%20connect">http-check connect</a>&quot;.
+the port with a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.
 
 In an http-check ruleset a 'connect' is required, it is also mandatory to start
 the ruleset with a 'connect' rule. Purpose is to ensure admin know what they
@@ -13411,7 +13487,7 @@ http-check expect status 200-399
 
 server www 10.0.0.1 check port 80
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#http-check%20send">http-check send</a>&quot;, &quot;<a href="#http-check%20expect">http-check expect</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check disable-on-404"></a><a class="anchor" name="4-http-check disable-on-404"></a><a class="anchor" name="4.2-http-check disable-on-404"></a><a class="anchor" name="http-check disable-on-404 (Proxies)"></a><a class="anchor" name="http-check disable-on-404 (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check disable-on-404"></a><a href="#4.2-http-check%20disable-on-404">http-check disable-on-404</a></b></div><pre class="text">Enable a maintenance mode upon HTTP/404 response to health-checks
 
 May be used in the following contexts: tcp, http
@@ -13431,11 +13507,11 @@ generate an alert, just a notice. If the server responds 2xx or 3xx again, it
 will immediately be reinserted into the farm. The status on the stats page
 reports &quot;NOLB&quot; for a server in this mode. It is important to note that this
 option only works in conjunction with the &quot;<a href="#option%20httpchk">httpchk</a>&quot; option. If this option
-is used with &quot;<a href="#http-check%20expect">http-check expect</a>&quot;, then it has precedence over it so that 404
+is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, then it has precedence over it so that 404
 responses will still be considered as soft-stop. Note also that a stopped
 server will stay stopped even if it replies 404s. This option is only
 evaluated for running servers.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot; and &quot;<a href="#http-check%20expect">http-check expect</a>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check expect"></a><a class="anchor" name="4-http-check expect"></a><a class="anchor" name="4.2-http-check expect"></a><a class="anchor" name="http-check expect (Proxies)"></a><a class="anchor" name="http-check expect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check expect"></a><a href="#4.2-http-check%20expect">http-check expect</a></b> <span style="color: #008">[min-recv <span style="color: #080">&lt;int&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span>
                   <span style="color: #008">[ok-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[error-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[tout-status <span style="color: #080">&lt;st&gt;</span>]</span>
                   <span style="color: #008">[on-success <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[on-error <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[status-code <span style="color: #080">&lt;expr&gt;</span>]</span>
@@ -13520,8 +13596,8 @@ status-code &lt;expr&gt; is optional and can be used to set the check status cod
           usual backslash ('\').</pre>
 </div>
 <pre class="text">By default, &quot;<a href="#option%20httpchk">option httpchk</a>&quot; considers that response statuses 2xx and 3xx
-are valid, and that others are invalid. When &quot;<a href="#http-check%20expect">http-check expect</a>&quot; is used,
-it defines what is considered valid or invalid. Only one &quot;<a href="#http-check">http-check</a>&quot;
+are valid, and that others are invalid. When &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; is used,
+it defines what is considered valid or invalid. Only one &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
 statement is supported in a backend. If a server fails to respond or times
 out, the check obviously fails. The available matches are :
 
@@ -13603,12 +13679,12 @@ waste some CPU cycles, especially when regular expressions are used, and that
 it is always better to focus the checks on smaller resources.
 
 In an http-check ruleset, the last expect rule may be implicit. If no expect
-rule is specified after the last &quot;<a href="#http-check%20send">http-check send</a>&quot;, an implicit expect rule
+rule is specified after the last &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, an implicit expect rule
 is defined to match on 2xx or 3xx status codes. It means this rule is also
-defined if there is no &quot;<a href="#http-check">http-check</a>&quot; rule at all, when only &quot;<a href="#option%20httpchk">option httpchk</a>&quot;
+defined if there is no &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; rule at all, when only &quot;<a href="#option%20httpchk">option httpchk</a>&quot;
 is set.
 
-Last, if &quot;<a href="#http-check%20expect">http-check expect</a>&quot; is combined with &quot;<a href="#http-check%20disable-on-404">http-check disable-on-404</a>&quot;,
+Last, if &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; is combined with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check disable-on-404<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20disable-on-404%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20disable-on-404%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;,
 then this last one has precedence when the server responds with 404.
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
@@ -13628,7 +13704,7 @@ http-check expect ! rstatus ^5
 <span class="comment"># check that we have a correct hexadecimal tag before /html</span>
 http-check expect rstring &lt;!--tag:[0-9a-f]*--&gt;&lt;/html&gt;
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#http-check%20connect">http-check connect</a>&quot;, &quot;<a href="#http-check%20disable-on-404">http-check disable-on-404</a>&quot; and &quot;<a href="#http-check%20send">http-check send</a>&quot;.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check disable-on-404<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20disable-on-404%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20disable-on-404%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check send"></a><a class="anchor" name="4-http-check send"></a><a class="anchor" name="4.2-http-check send"></a><a class="anchor" name="http-check send (Proxies)"></a><a class="anchor" name="http-check send (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check send"></a><a href="#4.2-http-check%20send">http-check send</a></b> <span style="color: #008">[meth <span style="color: #080">&lt;method&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{ uri <span style="color: #080">&lt;uri&gt;</span> | uri-lf <span style="color: #080">&lt;fmt&gt;</span> }</span></span>&gt;] <span style="color: #008">[ver <span style="color: #080">&lt;version&gt;</span>]</span>
                 <span style="color: #008">[hdr <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span>]</span>* <span style="color: #008">[<span style="color: #800">{ body <span style="color: #080">&lt;string&gt;</span> | body-lf <span style="color: #080">&lt;fmt&gt;</span> }</span>]</span>
                 <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Add a possible list of headers and/or a body to the request sent during HTTP
@@ -13683,11 +13759,11 @@ this one is the valid way to add some headers and optionally a body to the
 request sent during HTTP health checks. If a body is defined, the associate
 &quot;Content-Length&quot; header is automatically added. Thus, this header or
 &quot;Transfer-encoding&quot; header should not be present in the request provided by
-&quot;<a href="#http-check%20send">http-check send</a>&quot;. If so, it will be ignored. The old trick consisting to add
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;. If so, it will be ignored. The old trick consisting to add
 headers after the version string on the &quot;<a href="#option%20httpchk">option httpchk</a>&quot; line is now
 deprecated.
 
-Also &quot;<a href="#http-check%20send">http-check send</a>&quot; doesn't support HTTP keep-alive. Keep in mind that it
+Also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; doesn't support HTTP keep-alive. Keep in mind that it
 will automatically append a &quot;Connection: close&quot; header, unless a Connection
 header has already already been configured via a hdr entry.
 
@@ -13699,7 +13775,7 @@ configured request authority.
 
 Note also for now, no Host header is automatically added in HTTP/1.1 or above
 requests. You should add it explicitly.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#http-check%20send-state">http-check send-state</a>&quot; and &quot;<a href="#http-check%20expect">http-check expect</a>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send-state<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send-state%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send-state%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check send-state"></a><a class="anchor" name="4-http-check send-state"></a><a class="anchor" name="4.2-http-check send-state"></a><a class="anchor" name="http-check send-state (Proxies)"></a><a class="anchor" name="http-check send-state (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check send-state"></a><a href="#4.2-http-check%20send-state">http-check send-state</a></b></div><pre class="text">Enable emission of a state header with HTTP health checks
 
 May be used in the following contexts: tcp, http
@@ -13751,7 +13827,7 @@ no specific order some values available in the stats interface :
 Example of a header received by the application server :
   &gt;&gt;&gt;  X-Haproxy-Server-State: UP 2/3; name=bck/srv2; node=lb1; weight=1/2; \
          scur=13/22; qcur=0
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#http-check%20disable-on-404">http-check disable-on-404</a>&quot; and &quot;<a href="#http-check%20send">http-check send</a>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check disable-on-404<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20disable-on-404%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20disable-on-404%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check set-var"></a><a class="anchor" name="4-http-check set-var"></a><a class="anchor" name="4.2-http-check set-var"></a><a class="anchor" name="http-check set-var (Proxies)"></a><a class="anchor" name="http-check set-var (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check set-var"></a><a href="#4.2-http-check%20set-var">http-check set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;expr&gt;</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="4-http-check"></a><a class="anchor" name="4.2-http-check"></a><a class="anchor" name="http-check (Proxies)"></a><a class="anchor" name="http-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="http-check set-var-fmt"></a><a class="anchor" name="4-http-check set-var-fmt"></a><a class="anchor" name="4.2-http-check set-var-fmt"></a><a class="anchor" name="http-check set-var-fmt (Proxies)"></a><a class="anchor" name="http-check set-var-fmt (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="http-check set-var-fmt"></a><a href="#4.2-http-check%20set-var-fmt">http-check set-var-fmt</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">This operation sets the content of a variable. The variable is declared inline.
 
 May be used in the following contexts: tcp, http
@@ -15753,14 +15829,14 @@ sent once the TCP connection is established, and responses 2xx and 3xx are
 considered valid, while all other ones indicate a server failure, including
 the lack of any response.
 
-Combined with &quot;<a href="#http-check">http-check</a>&quot; directives, it is possible to customize the
+Combined with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directives, it is possible to customize the
 request sent during the HTTP health checks or the matching rules on the
 response. It is also possible to configure a send/expect sequence, just like
 with the directive &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; for TCP health checks.
 
 The server configuration is used by default to open connections to perform
 HTTP health checks. By it is also possible to overwrite server parameters
-using &quot;<a href="#http-check%20connect">http-check connect</a>&quot; rules.
+using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; rules.
 
 &quot;<a href="#option%20httpchk">httpchk</a>&quot; option does not necessarily require an HTTP backend, it also works
 with plain TCP backends. This is particularly useful to check simple scripts
@@ -15778,7 +15854,7 @@ backend https_relay
     http-check send hdr Host www
     server apache1 192.168.1.1:443 check port 80
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20ssl-hello-chk">option ssl-hello-chk</a>&quot;, &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;, &quot;<a href="#http-check">http-check</a>&quot; and the &quot;<a href="#check">check</a>&quot;, &quot;<a href="#port">port</a>&quot; and &quot;<a href="#inter">inter</a>&quot; server options.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20ssl-hello-chk">option ssl-hello-chk</a>&quot;, &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and the &quot;<a href="#check">check</a>&quot;, &quot;<a href="#port">port</a>&quot; and &quot;<a href="#inter">inter</a>&quot; server options.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option httpclose"></a><a class="anchor" name="4-option httpclose"></a><a class="anchor" name="4.2-option httpclose"></a><a class="anchor" name="option httpclose (Proxies)"></a><a class="anchor" name="option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option httpclose"></a><a href="#4.2-option%20httpclose">option httpclose</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option httpclose"></a><a class="anchor" name="4-no option httpclose"></a><a class="anchor" name="4.2-no option httpclose"></a><a class="anchor" name="no option httpclose (Proxies)"></a><a class="anchor" name="no option httpclose (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option httpclose"></a><a href="#4.2-no%20option%20httpclose">no option httpclose</a></b></div><pre class="text">Enable or disable HTTP/1.x connection closing
 
 May be used in the following contexts: http
@@ -16344,7 +16420,7 @@ find the &quot;+PONG&quot; response message.
 <pre class="prettyprint">
 <code>option redis-check
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option smtpchk"></a><a class="anchor" name="4-option smtpchk"></a><a class="anchor" name="4.2-option smtpchk"></a><a class="anchor" name="option smtpchk (Proxies)"></a><a class="anchor" name="option smtpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option smtpchk"></a><a href="#4.2-option%20smtpchk">option smtpchk</a></b></div><a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option smtpchk"></a><a class="anchor" name="4-option smtpchk"></a><a class="anchor" name="4.2-option smtpchk"></a><a class="anchor" name="option smtpchk (Proxies)"></a><a class="anchor" name="option smtpchk (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option smtpchk"></a><a href="#4.2-option%20smtpchk">option smtpchk</a></b> <span style="color: #080">&lt;hello&gt;</span> <span style="color: #080">&lt;domain&gt;</span></div><pre class="text">Use SMTP health checks for server testing
 
 May be used in the following contexts: tcp
@@ -16579,20 +16655,20 @@ TCP checks currently support 4 modes of operations :
   - no &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; directive : the health check only consists in a connection
     attempt, which remains the default mode.
 
-  - &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot; or &quot;<a href="#tcp-check%20send-binary">tcp-check send-binary</a>&quot; only is mentioned : this is
+  - &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send-binary<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send-binary%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send-binary%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; only is mentioned : this is
     used to send a string along with a connection opening. With some
     protocols, it helps sending a &quot;QUIT&quot; message for example that prevents
     the server from logging a connection error for each health check. The
     check result will still be based on the ability to open the connection
     only.
 
-  - &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot; only is mentioned : this is used to test a banner.
+  - &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; only is mentioned : this is used to test a banner.
     The connection is opened and HAProxy waits for the server to present some
     contents which must validate some rules. The check result will be based
     on the matching between the contents and the rules. This is suited for
     POP, IMAP, SMTP, FTP, SSH, TELNET.
 
-  - both &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot; and &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot; are mentioned : this is
+  - both &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; are mentioned : this is
     used to test a hello-type protocol. HAProxy sends a message, the server
     responds and its response is analyzed. the check result will be based on
     the matching between the response contents and the rules. This is often
@@ -16611,8 +16687,8 @@ debug mode. It is useful to make user-friendly error reporting.  The
 &quot;comment&quot; is of course optional.
 
 During the execution of a health check, a variable scope is made available to
-store data samples, using the &quot;<a href="#tcp-check%20set-var">tcp-check set-var</a>&quot; operation. Freeing those
-variable is possible using &quot;<a href="#tcp-check%20unset-var">tcp-check unset-var</a>&quot;.
+store data samples, using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20set-var%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20set-var%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; operation. Freeing those
+variable is possible using &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check unset-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20unset-var%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20unset-var%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -16648,7 +16724,7 @@ tcp-check send User-Agent:\ HAProxy\ tcpcheck\r\n
 tcp-check send \r\n
 tcp-check expect rstring HTTP/1\..\ (2..|3..) comment check\ HTTP\ response
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot; and &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot;.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="option"></a><a class="anchor" name="4-option"></a><a class="anchor" name="4.2-option"></a><a class="anchor" name="option (Proxies)"></a><a class="anchor" name="option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="option tcp-smart-accept"></a><a class="anchor" name="4-option tcp-smart-accept"></a><a class="anchor" name="4.2-option tcp-smart-accept"></a><a class="anchor" name="option tcp-smart-accept (Proxies)"></a><a class="anchor" name="option tcp-smart-accept (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="option tcp-smart-accept"></a><a href="#4.2-option%20tcp-smart-accept">option tcp-smart-accept</a></b></div><a class="anchor" name="no"></a><a class="anchor" name="4-no"></a><a class="anchor" name="4.2-no"></a><a class="anchor" name="no (Proxies)"></a><a class="anchor" name="no (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option"></a><a class="anchor" name="4-no option"></a><a class="anchor" name="4.2-no option"></a><a class="anchor" name="no option (Proxies)"></a><a class="anchor" name="no option (Alphabetically sorted keywords reference)"></a><a class="anchor" name="no option tcp-smart-accept"></a><a class="anchor" name="4-no option tcp-smart-accept"></a><a class="anchor" name="4.2-no option tcp-smart-accept"></a><a class="anchor" name="no option tcp-smart-accept (Proxies)"></a><a class="anchor" name="no option tcp-smart-accept (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="no option tcp-smart-accept"></a><a href="#4.2-no%20option%20tcp-smart-accept">no option tcp-smart-accept</a></b></div><pre class="text">Enable or disable the saving of one ACK packet during the accept sequence
 
 May be used in the following contexts: tcp, http
@@ -17765,12 +17841,12 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span> none
 </div>
-<pre class="text">By default, the stats page reports some useful status information along with
+<pre class="text">The stats page can report some useful status information along with
 the statistics. Among them is HAProxy's version. However, it is generally
 considered dangerous to report precise version to anyone, as it can help them
 target known weaknesses with specific attacks. The &quot;<a href="#stats%20hide-version">stats hide-version</a>&quot;
 statement removes the version from the statistics report. This is recommended
-for public sites or any site with a weak login/password.
+for public sites or any site with a weak login/password, and is the default.
 
 Though this statement alone is enough to enable statistics reporting, it is
 recommended to set all other settings in order to avoid relying on default
@@ -17795,7 +17871,7 @@ backend private_monitoring
     stats uri     /admin?stats
     stats refresh 5s
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;, &quot;<a href="#stats%20show-version">stats show-version</a>&quot;</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats http-request"></a><a class="anchor" name="4-stats http-request"></a><a class="anchor" name="4.2-stats http-request"></a><a class="anchor" name="stats http-request (Proxies)"></a><a class="anchor" name="stats http-request (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats http-request"></a><a href="#4.2-stats%20http-request">stats http-request</a></b> <span style="color: #800">{ allow | deny | auth <span style="color: #008">[realm <span style="color: #080">&lt;realm&gt;</span>]</span> }</span>
              <span style="color: #008">[ <span style="color: #800">{ if | unless }</span> <span style="color: #080">&lt;condition&gt;</span> ]</span></div><pre class="text">Access control for statistics
 
@@ -18037,6 +18113,23 @@ backend private_monitoring
     stats refresh   5s
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;show-desc&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;, and &quot;<a href="#node">node</a>&quot; in global section.</div>
+<a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats show-version"></a><a class="anchor" name="4-stats show-version"></a><a class="anchor" name="4.2-stats show-version"></a><a class="anchor" name="stats show-version (Proxies)"></a><a class="anchor" name="stats show-version (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats show-version"></a><a href="#4.2-stats%20show-version">stats show-version</a></b></div><pre class="text">Enable statistics and show HAProxy version reporting
+
+May be used in the following contexts: http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span> none
+</div>
+<pre class="text">The stats page can report some useful status information along with
+the statistics. Among them is HAProxy's version. However, it is generally
+considered dangerous to report precise version to anyone, as it can help them
+target known weaknesses with specific attacks, and so is disabled by default.
+The &quot;<a href="#stats%20show-version">stats show-version</a>&quot; enables displaying those informations. This is not
+recommanded for public sites or any site with a weak login/password.
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;, &quot;<a href="#stats%20hide-version">stats hide-version</a>&quot;</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats uri"></a><a class="anchor" name="4-stats uri"></a><a class="anchor" name="4.2-stats uri"></a><a class="anchor" name="stats uri (Proxies)"></a><a class="anchor" name="stats uri (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats uri"></a><a href="#4.2-stats%20uri">stats uri</a></b> <span style="color: #080">&lt;prefix&gt;</span></div><pre class="text">Enable statistics and define the URI prefix to access them
 
 May be used in the following contexts: http
@@ -18406,7 +18499,7 @@ May be used in the following contexts: tcp, http, log
 </div>
 <pre class="text">It only works for connect, send and expect rules. It is useful to make
 user-friendly error reporting.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot; and &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;.</div>
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.</div>
 <a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check connect"></a><a class="anchor" name="4-tcp-check connect"></a><a class="anchor" name="4.2-tcp-check connect"></a><a class="anchor" name="tcp-check connect (Proxies)"></a><a class="anchor" name="tcp-check connect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check connect"></a><a href="#4.2-tcp-check%20connect">tcp-check connect</a></b> <span style="color: #008">[default]</span> <span style="color: #008">[port <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[addr <span style="color: #080">&lt;ip&gt;</span>]</span> <span style="color: #008">[send-proxy]</span> <span style="color: #008">[via-socks4]</span>
                   <span style="color: #008">[ssl]</span> <span style="color: #008">[sni <span style="color: #080">&lt;sni&gt;</span>]</span> <span style="color: #008">[alpn <span style="color: #080">&lt;alpn&gt;</span>]</span> <span style="color: #008">[linger]</span>
                   <span style="color: #008">[proto <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Opens a new connection
@@ -18490,7 +18583,7 @@ tcp-check connect port 143
 tcp-check expect string *\ OK\ IMAP4\ ready
 server mail 10.0.0.1 check
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;</div>
 <a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check expect"></a><a class="anchor" name="4-tcp-check expect"></a><a class="anchor" name="4.2-tcp-check expect"></a><a class="anchor" name="tcp-check expect (Proxies)"></a><a class="anchor" name="tcp-check expect (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check expect"></a><a href="#4.2-tcp-check%20expect">tcp-check expect</a></b> <span style="color: #008">[min-recv <span style="color: #080">&lt;int&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span>
                  <span style="color: #008">[ok-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[error-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[tout-status <span style="color: #080">&lt;st&gt;</span>]</span>
                  <span style="color: #008">[on-success <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[on-error <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[status-code <span style="color: #080">&lt;expr&gt;</span>]</span>
@@ -18660,7 +18753,7 @@ tcp-check expect string role:master
 tcp-check send QUIT\r\n
 tcp-check expect string +OK
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot;, &quot;<a href="#tcp-check%20send-binary">tcp-check send-binary</a>&quot;, &quot;<a href="#http-check%20expect">http-check expect</a>&quot;, tune.bufsize</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send-binary<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send-binary%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send-binary%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, tune.bufsize</div>
 <a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send"></a><a class="anchor" name="4-tcp-check send"></a><a class="anchor" name="4.2-tcp-check send"></a><a class="anchor" name="tcp-check send (Proxies)"></a><a class="anchor" name="tcp-check send (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send"></a><a href="#4.2-tcp-check%20send">tcp-check send</a></b> <span style="color: #080">&lt;data&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-lf"></a><a class="anchor" name="4-tcp-check send-lf"></a><a class="anchor" name="4.2-tcp-check send-lf"></a><a class="anchor" name="tcp-check send-lf (Proxies)"></a><a class="anchor" name="tcp-check send-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-lf"></a><a href="#4.2-tcp-check%20send-lf">tcp-check send-lf</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify a string or a Custom log format to be sent as a question during a
 generic health check
 
@@ -18686,7 +18779,7 @@ option tcp-check
 tcp-check send info\ replication\r\n
 tcp-check expect string role:master
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;, &quot;<a href="#tcp-check%20send-binary">tcp-check send-binary</a>&quot;, tune.bufsize</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send-binary<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send-binary%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send-binary%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, tune.bufsize</div>
 <a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary"></a><a class="anchor" name="4-tcp-check send-binary"></a><a class="anchor" name="4.2-tcp-check send-binary"></a><a class="anchor" name="tcp-check send-binary (Proxies)"></a><a class="anchor" name="tcp-check send-binary (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary"></a><a href="#4.2-tcp-check%20send-binary">tcp-check send-binary</a></b> <span style="color: #080">&lt;hexstring&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check send-binary-lf"></a><a class="anchor" name="4-tcp-check send-binary-lf"></a><a class="anchor" name="4.2-tcp-check send-binary-lf"></a><a class="anchor" name="tcp-check send-binary-lf (Proxies)"></a><a class="anchor" name="tcp-check send-binary-lf (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary-lf"></a><a href="#4.2-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></b> <span style="color: #080">&lt;hexfmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><pre class="text">Specify an hex digits string or an hex digits Custom log format to be sent as
 a binary question during a raw tcp health check
 
@@ -18713,7 +18806,7 @@ option tcp-check
 tcp-check send-binary 50494e470d0a <span class="comment"># PING\r\n</span>
 tcp-check expect binary 2b504F4e47 <span class="comment"># +PONG</span>
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#tcp-check%20connect">tcp-check connect</a>&quot;, &quot;<a href="#tcp-check%20expect">tcp-check expect</a>&quot;, &quot;<a href="#tcp-check%20send">tcp-check send</a>&quot;, tune.bufsize</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check expect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20expect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20expect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">tcp-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#tcp-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#tcp-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, tune.bufsize</div>
 <a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check set-var"></a><a class="anchor" name="4-tcp-check set-var"></a><a class="anchor" name="4.2-tcp-check set-var"></a><a class="anchor" name="tcp-check set-var (Proxies)"></a><a class="anchor" name="tcp-check set-var (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var"></a><a href="#4.2-tcp-check%20set-var">tcp-check set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;expr&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="4-tcp-check"></a><a class="anchor" name="4.2-tcp-check"></a><a class="anchor" name="tcp-check (Proxies)"></a><a class="anchor" name="tcp-check (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-check set-var-fmt"></a><a class="anchor" name="4-tcp-check set-var-fmt"></a><a class="anchor" name="4.2-tcp-check set-var-fmt"></a><a class="anchor" name="tcp-check set-var-fmt (Proxies)"></a><a class="anchor" name="tcp-check set-var-fmt (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var-fmt"></a><a href="#4.2-tcp-check%20set-var-fmt">tcp-check set-var-fmt</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;fmt&gt;</span></div><pre class="text">This operation sets the content of a variable. The variable is declared inline.
 
 May be used in the following contexts: tcp, http, log
@@ -19974,29 +20067,28 @@ certificate), or to combine several headers into one. This rule is not final,
 so it is possible to add other similar rules. Note that header addition is
 performed immediately, so one rule might reuse the resulting header from a
 previous rule.
-</pre><a class="anchor" name="add-headers-bin"></a><a class="anchor" name="4-add-headers-bin"></a><a class="anchor" name="4.4-add-headers-bin"></a><a class="anchor" name="add-headers-bin (Proxies)"></a><a class="anchor" name="add-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="add-headers-bin"></a><a href="#4.4-add-headers-bin">add-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="add-headers-bin"></a><a class="anchor" name="4-add-headers-bin"></a><a class="anchor" name="4.4-add-headers-bin"></a><a class="anchor" name="add-headers-bin (Proxies)"></a><a class="anchor" name="add-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="add-headers-bin"></a><a href="#4.4-add-headers-bin">add-headers-bin</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
 <pre class="text">This is a variant of the &quot;<a href="#add-header">add-header</a>&quot; action where the header names and
-values are passed as a base64 encoded string of varint encoded header names
-and values. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot; sample fetch about the varint format. This
-is useful when you want to set multiple headers at once, without having to
-know the header names in advance. Note that these headers have not been
-validated by the HTTP parser and could lead to emitting invalid messages and
-in worst cases lead to request smuggling attacks. The number of headers
-inserted are also of importance, as that is limited by tune.http.maxhdr.
-Optional prefix will only set the headers from the encoded string that
-start with &lt;str&gt;.
+values are passed as a varint encoded binary string. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot;
+sample fetch about the varint format. This is useful when you want to set
+multiple headers at once, without having to know the header names in
+advance. Note that these headers have not been validated by the HTTP parser
+and could lead to emitting invalid messages and in worst cases lead to
+request smuggling attacks. The number of headers inserted are also of
+importance, as that is limited by tune.http.maxhdr.  Optional prefix will
+only set the headers from the encoded string that start with &lt;str&gt;.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># This would reset the Accept/UA/Host headers to their initial values</span>
-http-request set-var(txn.oldheaders) req.hdrs_bin,base64
+http-request set-var(txn.oldheaders) req.hdrs_bin
 http-request del-header Accept
 http-request del-header User-Agent
 http-request del-header Host
-http-request add-headers-bin %[var(txn.oldheaders)]
+http-request add-headers-bin var(txn.oldheaders)
 </code></pre>
 </div><a class="anchor" name="allow"></a><a class="anchor" name="4-allow"></a><a class="anchor" name="4.4-allow"></a><a class="anchor" name="allow (Proxies)"></a><a class="anchor" name="allow (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="allow"></a><a href="#4.4-allow">allow</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -20125,17 +20217,17 @@ is the matching method, applied on the header name. Supported matching methods
 are &quot;<a href="#str">str</a>&quot; (exact match), &quot;beg&quot; (prefix match), &quot;end&quot; (suffix match), &quot;<a href="#sub">sub</a>&quot;
 (substring match) and &quot;reg&quot; (regex match). If not specified, exact matching
 method is used.
-</pre><a class="anchor" name="del-headers-bin"></a><a class="anchor" name="4-del-headers-bin"></a><a class="anchor" name="4.4-del-headers-bin"></a><a class="anchor" name="del-headers-bin (Proxies)"></a><a class="anchor" name="del-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-headers-bin"></a><a href="#4.4-del-headers-bin">del-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ -m <span style="color: #080">&lt;meth&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="del-headers-bin"></a><a class="anchor" name="4-del-headers-bin"></a><a class="anchor" name="4.4-del-headers-bin"></a><a class="anchor" name="del-headers-bin (Proxies)"></a><a class="anchor" name="del-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-headers-bin"></a><a href="#4.4-del-headers-bin">del-headers-bin</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ -m <span style="color: #080">&lt;meth&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
-<pre class="text">This removes all HTTP header fields whose names are specified in &lt;fmt&gt;. &lt;fmt&gt;
-is a base64 encoded varint encoded string of all header names that should be
-deleted. See &quot;<a href="#add-headers-bin">add-headers-bin</a>&quot; and &quot;<a href="#set-headers-bin">set-headers-bin</a>&quot; for the description of
-encoding and examples. &lt;meth&gt; is the matching method, applied on all the
-header names. Supported matching methods are &quot;<a href="#str">str</a>&quot; (exact match), &quot;beg&quot;
-(prefix match), &quot;end&quot; (suffix match) and &quot;<a href="#sub">sub</a>&quot; (substring match). The &quot;reg&quot;
-(regex match) is not supported due to unpredictable performance during
+<pre class="text">This removes all HTTP header fields whose names are specified in &lt;expr&gt;.
+&lt;expr&gt; must return a varint encoded binary string of all header names that
+should be deleted. See &quot;<a href="#add-headers-bin">add-headers-bin</a>&quot; and &quot;<a href="#set-headers-bin">set-headers-bin</a>&quot; for the
+description of encoding and examples. &lt;meth&gt; is the matching method, applied
+on all the header names. Supported matching methods are &quot;<a href="#str">str</a>&quot; (exact match),
+&quot;beg&quot; (prefix match), &quot;end&quot; (suffix match) and &quot;<a href="#sub">sub</a>&quot; (substring match). The
+&quot;reg&quot; (regex match) is not supported due to unpredictable performance during
 runtime. If not specified, exact matching method is used.
 </pre><a class="anchor" name="del-map"></a><a class="anchor" name="4-del-map"></a><a class="anchor" name="4.4-del-map"></a><a class="anchor" name="del-map (Proxies)"></a><a class="anchor" name="del-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="del-map"></a><a href="#4.4-del-map">del-map</a></b>(<span style="color: #080">&lt;map-name&gt;</span>) <span style="color: #080">&lt;key fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -21001,29 +21093,28 @@ http-request set-header X-SSL-Issuer           %{+Q}[ssl_c_i_dn]
 http-request set-header X-SSL-Client-NotBefore %{+Q}[ssl_c_notbefore]
 http-request set-header X-SSL-Client-NotAfter  %{+Q}[ssl_c_notafter]
 </code></pre>
-</div><a class="anchor" name="set-headers-bin"></a><a class="anchor" name="4-set-headers-bin"></a><a class="anchor" name="4.4-set-headers-bin"></a><a class="anchor" name="set-headers-bin (Proxies)"></a><a class="anchor" name="set-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-headers-bin"></a><a href="#4.4-set-headers-bin">set-headers-bin</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="set-headers-bin"></a><a class="anchor" name="4-set-headers-bin"></a><a class="anchor" name="4.4-set-headers-bin"></a><a class="anchor" name="set-headers-bin (Proxies)"></a><a class="anchor" name="set-headers-bin (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-headers-bin"></a><a href="#4.4-set-headers-bin">set-headers-bin</a></b> <span style="color: #080">&lt;expr&gt;</span> <span style="color: #008">[ prefix <span style="color: #080">&lt;str&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 </table></div>
 <pre class="text">This is a variant of the &quot;<a href="#set-header">set-header</a>&quot; action where the header names and
-values are passed as a base64 encoded string of varint encoded header names
-and values. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot; sample fetch about the varint format. This
-is useful when you want to set multiple headers at once, without having to
-know the header names in advance. Note that these headers have not been
-validated by the HTTP parser and could lead to emitting invalid messages and
-in worst cases lead to request smuggling attacks. The number of headers
-inserted are also of importance, as that is limited by tune.http.maxhdr.
-Optional prefix will only set the headers from the encoded string that
-start with &lt;str&gt;.
+values are passed as a varint encoded binary string. See the &quot;<a href="#req.hdrs_bin">req.hdrs_bin</a>&quot;
+sample fetch about the varint format. This is useful when you want to set
+multiple headers at once, without having to know the header names in
+advance. Note that these headers have not been validated by the HTTP parser
+and could lead to emitting invalid messages and in worst cases lead to
+request smuggling attacks. The number of headers inserted are also of
+importance, as that is limited by tune.http.maxhdr.  Optional prefix will
+only set the headers from the encoded string that start with &lt;str&gt;.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># This would reset the Accept/UA/Host headers to their initial values</span>
-http-request set-var(txn.oldheaders) req.hdrs_bin,base64
+http-request set-var(txn.oldheaders) req.hdrs_bin
 http-request del-header Accept
 http-request del-header User-Agent
 http-request del-header Host
-http-request set-headers-bin %[var(txn.oldheaders)]
+http-request set-headers-bin var(txn.oldheaders)
 </code></pre>
 </div><a class="anchor" name="set-log-level"></a><a class="anchor" name="4-set-log-level"></a><a class="anchor" name="4.4-set-log-level"></a><a class="anchor" name="set-log-level (Proxies)"></a><a class="anchor" name="set-log-level (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-log-level"></a><a href="#4.4-set-log-level">set-log-level</a></b> <span style="color: #080">&lt;level&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -22830,9 +22921,9 @@ value. It may also be used as &quot;<span class="dropdown"><a class="dropdown-to
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#no-check-sni-auto">no-check-sni-auto</a>&quot; setting.
 
 For HTTPS connections, the SNI is automatically selected but only if there is
-no &quot;<a href="#http-check%20connect">http-check connect</a>&quot; rule. In that case, the selected SNI is based on the
+no &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check connect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20connect%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20connect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; rule. In that case, the selected SNI is based on the
 host header value, specified via the &quot;<a href="#option%20httpchk">option httpchk</a>&quot; directive or a
-&quot;<a href="#http-check%20send">http-check send</a>&quot; rule. There is no automatic selection for &quot;http-check
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-check send<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-check%20send%20%28Healthchecks%29">Healthchecks</a></li><li><a href="#http-check%20send%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; rule. There is no automatic selection for &quot;http-check
 connect&quot; rules. For other protocols, the option is ignored.
 
 If the automatic selection of the SNI is used for health-checks, the value is
@@ -23008,6 +23099,15 @@ were resolved in different orders) then this will allow each independent
 HAProxy processes to agree on routing decisions. Note: &quot;balance random&quot; also
 uses &quot;hash-type consistent&quot;, and the quality of the distribution will depend
 on the quality of the keys.
+</pre><a class="anchor" name="healthchec"></a><a class="anchor" name="5-healthchec"></a><a class="anchor" name="5.2-healthchec"></a><a class="anchor" name="healthchec (Bind and server options)"></a><a class="anchor" name="healthchec (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="healthchec"></a><a href="#5.2-healthchec">healthchec</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http
+
+Specify the health-check sectino to use to perform check on the server.
+</pre><div class="separator">
+<span class="label label-info">Argument :</span><pre class="prettyprint arguments">&lt;name&gt;    is the health-check section name.</pre>
+</div>
+<pre class="text">Thanks to this option, it is possible to use a pre-server health-check
+configuration instead of using the proxy configuration. See also &quot;healthcheck
+section&quot;.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.2-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.2-id">id</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Set a persistent ID for the server. This ID must be positive and unique for
@@ -34943,7 +35043,16 @@ HAProxy time format (e.g. &quot;5m&quot;, &quot;300s&quot;). Default is 300 seco
 Note that the resolution goes through the configured &quot;default&quot; resolvers
 section, not the authoritative name servers. Results may therefore still be
 affected by DNS caching at the resolver level.
-</pre><a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
+</pre><a class="anchor" name="dns-timeout"></a><a class="anchor" name="12-dns-timeout"></a><a class="anchor" name="12.8-dns-timeout"></a><a class="anchor" name="dns-timeout (Other sections)"></a><a class="anchor" name="dns-timeout (ACME)"></a><div class="keyword"><b><a class="anchor" name="dns-timeout"></a><a href="#12.8-dns-timeout">dns-timeout</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">When &quot;<a href="#challenge-ready">challenge-ready</a>&quot; includes &quot;dns&quot;, configure the maximum time allowed to
+successfully resolve the TXT record before aborting the challenge. The value
+is a time expressed in HAProxy time format (e.g. &quot;10m&quot;, &quot;600s&quot;). Default is
+600 seconds.
+
+If the next DNS resolution attempt would be triggered after the timeout has
+elapsed (taking into account &quot;<a href="#dns-delay">dns-delay</a>&quot;), the challenge is aborted with an
+error. This prevents an infinite retry loop when DNS propagation fails.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#dns-delay">dns-delay</a>&quot;</div>
+<a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
 or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bits<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bits%20%28Load%20options%29">Load options</a></li><li><a href="#bits%20%28ACME%29">ACME</a></li></ul></span>&quot; for RSA. By default EC384 keys are generated.
 </pre><a class="anchor" name="map"></a><a class="anchor" name="12-map"></a><a class="anchor" name="12.8-map"></a><a class="anchor" name="map (Other sections)"></a><a class="anchor" name="map (ACME)"></a><div class="keyword"><b><a class="anchor" name="map"></a><a href="#12.8-map">map</a></b> <span style="color: #080">&lt;map&gt;</span></div><pre class="text">Configure the map which will be used to store token (key) and thumbprint
@@ -34993,13 +35102,61 @@ acme LE2
     curves P-384
     map virt@acme
 </code></pre>
-</div>
+</div></div>
+<a class="anchor" id="12.9" name="12.9"></a>
+<h2 id="chapter-12.9" data-target="12.9"><small><a class="small" href="#12.9">12.9.</a></small> Healthchecks</h2>
+<div><pre class="text">It is possible to globally declare several health-checks that could be used by
+servers across all the configuration, overriding the local proxy configuration.
+</pre><a class="anchor" name="healthcheck"></a><a class="anchor" name="12-healthcheck"></a><a class="anchor" name="12.9-healthcheck"></a><a class="anchor" name="healthcheck (Other sections)"></a><a class="anchor" name="healthcheck (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="healthcheck"></a><a href="#12.9-healthcheck">healthcheck</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Created a new healthcheck with name &lt;name&gt;. This name must be unique. It
+should be used on server line to reference a specific health-check section.
+</pre><a class="anchor" name="type"></a><a class="anchor" name="12-type"></a><a class="anchor" name="12.9-type"></a><a class="anchor" name="type (Other sections)"></a><a class="anchor" name="type (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="type"></a><a href="#12.9-type">type</a></b> <span style="color: #080">&lt;type&gt;</span></div><pre class="text">Defines the health-check type. This parameter is mandatory. Following types
+of health-check are supported:
+
+  * tcp-check
+  * httpchk
+  * ssl-hello-chk
+  * smtpchk
+  * pgsql-check
+  * redis-check
+  * mysql-check
+  * ldap-check
+  * spop-check
+
+Each type uses the same parameters, if any, than the corresponding proxy's
+option. For instance, the method, the uri... may be speficied for the
+&quot;<a href="#option%20httpchk">httpchk</a>&quot; type:
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code>healthcheck my-http-check
+    type httpchk GET /health HTTP/1.1 %[srv_name]
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20tcp-check">option tcp-check</a>&quot;, &quot;<a href="#option%20httpchk">option httpchk</a>&quot;, &quot;<a href="#option%20ssl-hello-chk">option ssl-hello-chk</a>&quot;, &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;, &quot;<a href="#option%20redis-check">option redis-check</a>&quot;, &quot;option ldap-check and &quot;<a href="#option%20spop-check">option spop-check</a>&quot;</div>
+<a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check comment"></a><a class="anchor" name="12-http-check comment"></a><a class="anchor" name="12.9-http-check comment"></a><a class="anchor" name="http-check comment (Other sections)"></a><a class="anchor" name="http-check comment (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check comment"></a><a href="#12.9-http-check%20comment">http-check comment</a></b> <span style="color: #080">&lt;string&gt;</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check connect"></a><a class="anchor" name="12-http-check connect"></a><a class="anchor" name="12.9-http-check connect"></a><a class="anchor" name="http-check connect (Other sections)"></a><a class="anchor" name="http-check connect (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check connect"></a><a href="#12.9-http-check%20connect">http-check connect</a></b> <span style="color: #008">[default]</span> <span style="color: #008">[port <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[addr <span style="color: #080">&lt;ip&gt;</span>]</span> <span style="color: #008">[send-proxy]</span>
+                   <span style="color: #008">[via-socks4]</span> <span style="color: #008">[ssl]</span> <span style="color: #008">[sni <span style="color: #080">&lt;sni&gt;</span>]</span> <span style="color: #008">[alpn <span style="color: #080">&lt;alpn&gt;</span>]</span> <span style="color: #008">[linger]</span>
+                   <span style="color: #008">[proto <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check disable-on-404"></a><a class="anchor" name="12-http-check disable-on-404"></a><a class="anchor" name="12.9-http-check disable-on-404"></a><a class="anchor" name="http-check disable-on-404 (Other sections)"></a><a class="anchor" name="http-check disable-on-404 (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check disable-on-404"></a><a href="#12.9-http-check%20disable-on-404">http-check disable-on-404</a></b></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check expect"></a><a class="anchor" name="12-http-check expect"></a><a class="anchor" name="12.9-http-check expect"></a><a class="anchor" name="http-check expect (Other sections)"></a><a class="anchor" name="http-check expect (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check expect"></a><a href="#12.9-http-check%20expect">http-check expect</a></b> <span style="color: #008">[min-recv <span style="color: #080">&lt;int&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span>
+                  <span style="color: #008">[ok-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[error-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[tout-status <span style="color: #080">&lt;st&gt;</span>]</span>
+                  <span style="color: #008">[on-success <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[on-error <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[status-code <span style="color: #080">&lt;expr&gt;</span>]</span>
+                  <span style="color: #008">[!]</span> <span style="color: #080">&lt;match&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check send"></a><a class="anchor" name="12-http-check send"></a><a class="anchor" name="12.9-http-check send"></a><a class="anchor" name="http-check send (Other sections)"></a><a class="anchor" name="http-check send (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check send"></a><a href="#12.9-http-check%20send">http-check send</a></b> <span style="color: #008">[meth <span style="color: #080">&lt;method&gt;</span>]</span> <span style="color: #008">[<span style="color: #800">{ uri <span style="color: #080">&lt;uri&gt;</span> | uri-lf <span style="color: #080">&lt;fmt&gt;</span> }</span></span>&gt;] <span style="color: #008">[ver <span style="color: #080">&lt;version&gt;</span>]</span>
+                <span style="color: #008">[hdr <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span>]</span>* <span style="color: #008">[<span style="color: #800">{ body <span style="color: #080">&lt;string&gt;</span> | body-lf <span style="color: #080">&lt;fmt&gt;</span> }</span>]</span>
+                <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check send-state"></a><a class="anchor" name="12-http-check send-state"></a><a class="anchor" name="12.9-http-check send-state"></a><a class="anchor" name="http-check send-state (Other sections)"></a><a class="anchor" name="http-check send-state (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check send-state"></a><a href="#12.9-http-check%20send-state">http-check send-state</a></b></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check set-var"></a><a class="anchor" name="12-http-check set-var"></a><a class="anchor" name="12.9-http-check set-var"></a><a class="anchor" name="http-check set-var (Other sections)"></a><a class="anchor" name="http-check set-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check set-var"></a><a href="#12.9-http-check%20set-var">http-check set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;expr&gt;</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check set-var-fmt"></a><a class="anchor" name="12-http-check set-var-fmt"></a><a class="anchor" name="12.9-http-check set-var-fmt"></a><a class="anchor" name="http-check set-var-fmt (Other sections)"></a><a class="anchor" name="http-check set-var-fmt (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check set-var-fmt"></a><a href="#12.9-http-check%20set-var-fmt">http-check set-var-fmt</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;fmt&gt;</span></div><a class="anchor" name="http-check"></a><a class="anchor" name="12-http-check"></a><a class="anchor" name="12.9-http-check"></a><a class="anchor" name="http-check (Other sections)"></a><a class="anchor" name="http-check (Healthchecks)"></a><a class="anchor" name="http-check unset-var"></a><a class="anchor" name="12-http-check unset-var"></a><a class="anchor" name="12.9-http-check unset-var"></a><a class="anchor" name="http-check unset-var (Other sections)"></a><a class="anchor" name="http-check unset-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="http-check unset-var"></a><a href="#12.9-http-check%20unset-var">http-check unset-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>)</div><pre class="text">Add a specific http-check rule for a &quot;<a href="#option%20httpchk">httpchk</a>&quot; healthcheck. The same syntax
+than the corresponding proxy's directives is used. See the corresponding proxy
+documentation for details.
+</pre><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check comment"></a><a class="anchor" name="12-tcp-check comment"></a><a class="anchor" name="12.9-tcp-check comment"></a><a class="anchor" name="tcp-check comment (Other sections)"></a><a class="anchor" name="tcp-check comment (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check comment"></a><a href="#12.9-tcp-check%20comment">tcp-check comment</a></b> <span style="color: #080">&lt;string&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check connect"></a><a class="anchor" name="12-tcp-check connect"></a><a class="anchor" name="12.9-tcp-check connect"></a><a class="anchor" name="tcp-check connect (Other sections)"></a><a class="anchor" name="tcp-check connect (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check connect"></a><a href="#12.9-tcp-check%20connect">tcp-check connect</a></b> <span style="color: #008">[default]</span> <span style="color: #008">[port <span style="color: #080">&lt;expr&gt;</span>]</span> <span style="color: #008">[addr <span style="color: #080">&lt;ip&gt;</span>]</span> <span style="color: #008">[send-proxy]</span> <span style="color: #008">[via-socks4]</span>
+                  <span style="color: #008">[ssl]</span> <span style="color: #008">[sni <span style="color: #080">&lt;sni&gt;</span>]</span> <span style="color: #008">[alpn <span style="color: #080">&lt;alpn&gt;</span>]</span> <span style="color: #008">[linger]</span>
+                  <span style="color: #008">[proto <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check expect"></a><a class="anchor" name="12-tcp-check expect"></a><a class="anchor" name="12.9-tcp-check expect"></a><a class="anchor" name="tcp-check expect (Other sections)"></a><a class="anchor" name="tcp-check expect (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check expect"></a><a href="#12.9-tcp-check%20expect">tcp-check expect</a></b> <span style="color: #008">[min-recv <span style="color: #080">&lt;int&gt;</span>]</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span>
+                 <span style="color: #008">[ok-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[error-status <span style="color: #080">&lt;st&gt;</span>]</span> <span style="color: #008">[tout-status <span style="color: #080">&lt;st&gt;</span>]</span>
+                 <span style="color: #008">[on-success <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[on-error <span style="color: #080">&lt;fmt&gt;</span>]</span> <span style="color: #008">[status-code <span style="color: #080">&lt;expr&gt;</span>]</span>
+                 <span style="color: #008">[!]</span> <span style="color: #080">&lt;match&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send"></a><a class="anchor" name="12-tcp-check send"></a><a class="anchor" name="12.9-tcp-check send"></a><a class="anchor" name="tcp-check send (Other sections)"></a><a class="anchor" name="tcp-check send (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send"></a><a href="#12.9-tcp-check%20send">tcp-check send</a></b> <span style="color: #080">&lt;data&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-lf"></a><a class="anchor" name="12-tcp-check send-lf"></a><a class="anchor" name="12.9-tcp-check send-lf"></a><a class="anchor" name="tcp-check send-lf (Other sections)"></a><a class="anchor" name="tcp-check send-lf (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-lf"></a><a href="#12.9-tcp-check%20send-lf">tcp-check send-lf</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-binary"></a><a class="anchor" name="12-tcp-check send-binary"></a><a class="anchor" name="12.9-tcp-check send-binary"></a><a class="anchor" name="tcp-check send-binary (Other sections)"></a><a class="anchor" name="tcp-check send-binary (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary"></a><a href="#12.9-tcp-check%20send-binary">tcp-check send-binary</a></b> <span style="color: #080">&lt;hexstring&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-binary-lf"></a><a class="anchor" name="12-tcp-check send-binary-lf"></a><a class="anchor" name="12.9-tcp-check send-binary-lf"></a><a class="anchor" name="tcp-check send-binary-lf (Other sections)"></a><a class="anchor" name="tcp-check send-binary-lf (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary-lf"></a><a href="#12.9-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></b> <span style="color: #080">&lt;hexfmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check set-var"></a><a class="anchor" name="12-tcp-check set-var"></a><a class="anchor" name="12.9-tcp-check set-var"></a><a class="anchor" name="tcp-check set-var (Other sections)"></a><a class="anchor" name="tcp-check set-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var"></a><a href="#12.9-tcp-check%20set-var">tcp-check set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;expr&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check set-var-fmt"></a><a class="anchor" name="12-tcp-check set-var-fmt"></a><a class="anchor" name="12.9-tcp-check set-var-fmt"></a><a class="anchor" name="tcp-check set-var-fmt (Other sections)"></a><a class="anchor" name="tcp-check set-var-fmt (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var-fmt"></a><a href="#12.9-tcp-check%20set-var-fmt">tcp-check set-var-fmt</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;fmt&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check unset-var"></a><a class="anchor" name="12-tcp-check unset-var"></a><a class="anchor" name="12.9-tcp-check unset-var"></a><a class="anchor" name="tcp-check unset-var (Other sections)"></a><a class="anchor" name="tcp-check unset-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check unset-var"></a><a href="#12.9-tcp-check%20unset-var">tcp-check unset-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>)</div><pre class="text">Add a specific tcp-check rule for a &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; healthcheck. The same syntax
+than the corresponding proxy's directives is used. See the corresponding proxy
+documentation for details.
+</pre>
 </div>
 
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev7-87 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev7-110 &ndash; Configuration Manual<br>
 							<small>, 2026/03/20</small>
 						</div>
 					</div>
