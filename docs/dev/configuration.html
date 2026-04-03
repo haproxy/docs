@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev7-110 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev7-147 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4884,7 +4884,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4895,7 +4895,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev7-110</strong></p>
+							<p><strong>version 3.4-dev7-147</strong></p>
 							<p>
 								2026/03/20<br>
 								
@@ -22294,6 +22294,7 @@ Here are the protocols that may be used as argument to a &quot;<span class="drop
 a bind line :
 
  quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
+  qmux : mode=HTTP  side=FE|BE  mux=QMUX  flags=HTX|NO_UPG
   h2   : mode=HTTP  side=FE|BE  mux=H2    flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
   none : mode=TCP   side=FE|BE  mux=PASS  flags=NO_UPG
@@ -22306,6 +22307,10 @@ instance, it is possible to force the http/2 on clear TCP by specifying
 If the ALPN or the NPN settings are configured, the specified protocols
 should be compatible with the multiplexer's protocol to avoid any issue. For
 instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
+
+QMux is a subset of QUIC which runs over TCP. It corresponds to the following
+draft protocol https://www.ietf.org/archive/id/draft-opik-quic-qmux-01.html.
+It is considered experimental in haproxy for now.
 </pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.1-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Bind options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.1-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection attempts to the configured QUIC listeners. They are
 similar to those used by TCP.
@@ -23638,6 +23643,7 @@ Here are the protocols that may be used as argument to a &quot;<span class="drop
 a server line :
 
   quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
+  qmux : mode=HTTP  side=FE|BE  mux=QMUX  flags=HTX|NO_UPG
   h2   : mode=HTTP  side=FE|BE  mux=H2    flags=HTX|HOL_RISK|NO_UPG
   fcgi : mode=HTTP  side=BE     mux=FCGI  flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
@@ -23652,6 +23658,10 @@ should be compatible with the multiplexer's protocol to avoid any issue. For
 instance, if &quot;proto h1&quot; is set, the ALPN should not be set to &quot;h2&quot;.
 
 See also &quot;<a href="#ws">ws</a>&quot; to use an alternative protocol for websocket streams.
+
+QMux is a subset of QUIC which runs over TCP. It corresponds to the following
+draft protocol https://www.ietf.org/archive/id/draft-opik-quic-qmux-01.html.
+It is considered experimental in haproxy for now.
 </pre><a class="anchor" name="quic-cc-algo"></a><a class="anchor" name="5-quic-cc-algo"></a><a class="anchor" name="5.2-quic-cc-algo"></a><a class="anchor" name="quic-cc-algo (Bind and server options)"></a><a class="anchor" name="quic-cc-algo (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="quic-cc-algo"></a><a href="#5.2-quic-cc-algo">quic-cc-algo</a></b> <span style="color: #800">{ cubic | newreno | bbr | nocc }</span><span style="color: #008">[(<span style="color: #080">&lt;args,...&gt;</span>)]</span></div><pre class="text">This is a QUIC specific setting to select the congestion control algorithm
 for any connection targeting this server. They are similar to those used by
 TCP. See the bind option with a similar name for a complete description of
@@ -35008,14 +35018,19 @@ that a dns-01 challenge is ready to be validated. Accepted values are:
          option is independent of the CLI command, so no human intervention
          is required.
 
+  delay - apply an initial wait of &quot;<a href="#dns-delay">dns-delay</a>&quot; before proceeding. Without
+          &quot;dns&quot;, the challenge is submitted after the delay expires. When
+          combined with &quot;dns&quot;, the initial wait is applied before starting
+          the DNS pre-checks.
+
   none - no readiness condition; the challenge is submitted to the ACME
          server immediately without waiting for any external confirmation.
          This option cannot be combined with others.
 
-Multiple values can be combined with a comma so that both conditions must be
-met. The order of the values is not significant. When &quot;cli&quot; and &quot;dns&quot; are
-combined, HAProxy first waits for the CLI confirmation before triggering the
-DNS propagation check.
+Multiple values can be combined with a comma. When several conditions are
+specified, HAProxy processes them in the following order: first it waits for
+the CLI confirmation (&quot;cli&quot;), then applies the initial delay (&quot;delay&quot;), then
+performs the DNS pre-checks (&quot;dns&quot;).
 
 This option is only compatible with the dns-01 challenge type.
 
@@ -35036,9 +35051,20 @@ section. This keyword is mandatory as there is no default URL.
 <pre class="prettyprint">
 <code>directory https://acme-staging-v02.api.letsencrypt.org/directory
 </code></pre>
-</div><a class="anchor" name="dns-delay"></a><a class="anchor" name="12-dns-delay"></a><a class="anchor" name="12.8-dns-delay"></a><a class="anchor" name="dns-delay (Other sections)"></a><a class="anchor" name="dns-delay (ACME)"></a><div class="keyword"><b><a class="anchor" name="dns-delay"></a><a href="#12.8-dns-delay">dns-delay</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">When &quot;<a href="#challenge-ready">challenge-ready</a>&quot; includes &quot;dns&quot;, configure the delay before the first
-DNS resolution attempt and between retries. The value is a time expressed in
-HAProxy time format (e.g. &quot;5m&quot;, &quot;300s&quot;). Default is 300 seconds.
+</div><a class="anchor" name="dns-delay"></a><a class="anchor" name="12-dns-delay"></a><a class="anchor" name="12.8-dns-delay"></a><a class="anchor" name="dns-delay (Other sections)"></a><a class="anchor" name="dns-delay (ACME)"></a><div class="keyword"><b><a class="anchor" name="dns-delay"></a><a href="#12.8-dns-delay">dns-delay</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Configure the delay used by &quot;<a href="#challenge-ready">challenge-ready</a>&quot; conditions &quot;delay&quot; and &quot;dns&quot;.
+The value is a time expressed in HAProxy time format (e.g. &quot;5m&quot;, &quot;300s&quot;).
+Default is 30 seconds.
+
+Its role depends on the &quot;<a href="#challenge-ready">challenge-ready</a>&quot; conditions in use:
+
+  delay     - the challenge is submitted after this delay expires, without
+              any DNS pre-check.
+
+  dns       - the delay between two consecutive DNS resolution attempts.
+              The first probe fires immediately without any initial wait.
+
+  dns+delay - the initial wait before the first DNS resolution attempt, and
+              the delay between subsequent retries.
 
 Note that the resolution goes through the configured &quot;default&quot; resolvers
 section, not the authoritative name servers. Results may therefore still be
@@ -35048,9 +35074,11 @@ successfully resolve the TXT record before aborting the challenge. The value
 is a time expressed in HAProxy time format (e.g. &quot;10m&quot;, &quot;600s&quot;). Default is
 600 seconds.
 
-If the next DNS resolution attempt would be triggered after the timeout has
-elapsed (taking into account &quot;<a href="#dns-delay">dns-delay</a>&quot;), the challenge is aborted with an
-error. This prevents an infinite retry loop when DNS propagation fails.
+The timer starts from the moment the first DNS resolution attempt is
+triggered (after the initial &quot;<a href="#dns-delay">dns-delay</a>&quot;). If the next resolution attempt
+would be triggered after the timeout has elapsed, the challenge is aborted
+with an error. This prevents an infinite retry loop when DNS propagation
+fails.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#dns-delay">dns-delay</a>&quot;</div>
 <a class="anchor" name="keytype"></a><a class="anchor" name="12-keytype"></a><a class="anchor" name="12.8-keytype"></a><a class="anchor" name="keytype (Other sections)"></a><a class="anchor" name="keytype (ACME)"></a><div class="keyword"><b><a class="anchor" name="keytype"></a><a href="#12.8-keytype">keytype</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the type of key that will be generated. Value can be either &quot;RSA&quot;
 or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">curves<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#curves%20%28Load%20options%29">Load options</a></li><li><a href="#curves%20%28ACME%29">ACME</a></li><li><a href="#curves%20%28Bind%20options%29">Bind options</a></li><li><a href="#curves%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; for ECDSA and the number of
@@ -35156,7 +35184,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev7-110 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev7-147 &ndash; Configuration Manual<br>
 							<small>, 2026/03/20</small>
 						</div>
 					</div>
