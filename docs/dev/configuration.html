@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev8-35 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev8-42 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4521,6 +4521,8 @@
 							
 							<a class="list-group-item" href="#tune.lua.maxmem">tune.lua.maxmem</a>
 							
+							<a class="list-group-item" href="#tune.lua.openlibs">tune.lua.openlibs</a>
+							
 							<a class="list-group-item" href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
 							
 							<a class="list-group-item" href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
@@ -4886,7 +4888,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4897,7 +4899,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev8-35</strong></p>
+							<p><strong>version 3.4-dev8-42</strong></p>
 							<p>
 								2026/04/03<br>
 								
@@ -7947,6 +7949,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.lua.log.loggers">tune.lua.log.loggers</a>
    - <a href="#tune.lua.log.stderr">tune.lua.log.stderr</a>
    - <a href="#tune.lua.maxmem">tune.lua.maxmem</a>
+   - <a href="#tune.lua.openlibs">tune.lua.openlibs</a>
    - <a href="#tune.lua.service-timeout">tune.lua.service-timeout</a>
    - <a href="#tune.lua.session-timeout">tune.lua.session-timeout</a>
    - <a href="#tune.lua.task-timeout">tune.lua.task-timeout</a>
@@ -10448,6 +10451,36 @@ Defaults to 'auto'.
 default it is zero which means unlimited. It is important to set a limit to
 ensure that a bug in a script will not result in the system running out of
 memory.
+</pre><a class="anchor" name="tune.lua.openlibs"></a><a class="anchor" name="3-tune.lua.openlibs"></a><a class="anchor" name="3.2-tune.lua.openlibs"></a><a class="anchor" name="tune.lua.openlibs (Global section)"></a><a class="anchor" name="tune.lua.openlibs (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.openlibs"></a><a href="#3.2-tune.lua.openlibs">tune.lua.openlibs</a></b> <span style="color: #008">[all | none | <span style="color: #080">&lt;lib&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;lib&gt;</span>...]</span>]</span></div><pre class="text">Selects which Lua standard libraries are loaded when initialising the Lua
+state. The argument is a comma-separated list of library names taken from
+the following set: table, io, os, string, math, utf8, package, debug. The
+special values &quot;all&quot; and &quot;none&quot; may be used instead of a list. &quot;none&quot;
+cannot be combined with library names. The default value is &quot;all&quot;.
+
+The base and coroutine libraries are always loaded regardless of this
+setting: base provides core Lua functions that HAProxy relies on, and
+coroutine is required because HAProxy overrides coroutine.create() with
+its own safe implementation.
+
+Note that fork() and new thread creation are already blocked by default in
+HAProxy regardless of this setting, and can only be re-enabled via the
+&quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot; global directive. Restricting the set of loaded
+libraries further reduces the attack surface exposed to Lua scripts. In
+particular:
+  - omitting &quot;os&quot; prevents os.execute() and os.exit()
+  - omitting &quot;io&quot; prevents io.open() and io.popen()
+  - omitting &quot;package&quot; prevents loading native C modules via require()
+  - omitting &quot;<a href="#debug">debug</a>&quot; prevents introspection of HAProxy internals via
+    debug.getupvalue(), debug.getmetatable(), or debug.sethook()
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code>tune.lua.openlibs none                    <span class="comment"># only base + coroutine</span>
+tune.lua.openlibs string,math,table,utf8  <span class="comment"># safe subset, no I/O or OS</span>
+tune.lua.openlibs all                     <span class="comment"># default, load everything</span>
+</code></pre>
+</div><pre class="text">This setting must be set before any &quot;<a href="#lua-load">lua-load</a>&quot; or &quot;<a href="#lua-load-per-thread">lua-load-per-thread</a>&quot;
+directive, otherwise a parse error is returned.
 </pre><a class="anchor" name="tune.lua.service-timeout"></a><a class="anchor" name="3-tune.lua.service-timeout"></a><a class="anchor" name="3.2-tune.lua.service-timeout"></a><a class="anchor" name="tune.lua.service-timeout (Global section)"></a><a class="anchor" name="tune.lua.service-timeout (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.lua.service-timeout"></a><a href="#3.2-tune.lua.service-timeout">tune.lua.service-timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">This is the execution timeout for the Lua services. This is useful for
 preventing infinite loops or spending too much time in Lua. This timeout
 counts only the pure Lua runtime. If the Lua does a sleep, the sleep is
@@ -35235,7 +35268,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev8-35 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev8-42 &ndash; Configuration Manual<br>
 							<small>, 2026/04/03</small>
 						</div>
 					</div>
