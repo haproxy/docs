@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.6-48 - Configuration Manual</title>
+		<title>HAProxy version 3.3.6-81 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4713,7 +4713,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/03/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4724,7 +4724,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.6-48</strong></p>
+							<p><strong>version 3.3.6-81</strong></p>
 							<p>
 								2026/03/19<br>
 								
@@ -14228,7 +14228,7 @@ logs will be emitted, and even permits to emit multiple logs for a
 same transaction. Special value 'all' may be used to enable all available
 log origins, making it possible to track a transaction from accept to close.
 Indidivual log origins may also be specified using their names separated by
-spaces to selectively enable when logs should be produced.
+commas to selectively enable when logs should be produced.
 
 Common log origins are: accept, connect, request, response, close.
 </pre><div class="separator">
@@ -16923,6 +16923,14 @@ May be used in the following contexts: tcp, http, log
                   one of them over the FD. The bind part will use the
                   received socket as the client FD. Should be used
                   carefully.
+                - 'quic4@' [ EXPERIMENTAL] -&gt; address is resolved as IPv4
+                  and protocol UDP is used. QUIC on the backend side is
+                  considered experimental mainly because this prevents the
+                  server removal at runtime. This requires the global
+                  keyword &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; to use it.
+                - 'quic6@' [ EXPERIMENTAL] -&gt; address is resolved as IPv6
+                  and protocol UDP is used. It is considered similarly
+                  flagged as experimental.
                 - 'rhttp@' [ EXPERIMENTAL ] -&gt; custom address family for a
                   passive server in HTTP reverse context. This is an
                   experimental features which requires
@@ -23096,6 +23104,7 @@ The HTX compatibility is also reported (flag=HTX).
 Here are the protocols that may be used as argument to a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; directive on
 a server line :
 
+  quic : mode=HTTP  side=FE|BE  mux=QUIC  flags=HTX|NO_UPG|FRAMED
   h2   : mode=HTTP  side=FE|BE  mux=H2    flags=HTX|HOL_RISK|NO_UPG
   fcgi : mode=HTTP  side=BE     mux=FCGI  flags=HTX|HOL_RISK|NO_UPG
   h1   : mode=HTTP  side=FE|BE  mux=H1    flags=HTX|NO_UPG
@@ -33946,7 +33955,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.6-48 &ndash; Configuration Manual<br>
+							HAProxy 3.3.6-81 &ndash; Configuration Manual<br>
 							<small>, 2026/03/19</small>
 						</div>
 					</div>
