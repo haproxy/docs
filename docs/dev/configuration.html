@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev8-128 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev8-149 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1729,6 +1729,12 @@
 							<a class="list-group-item" href="#cpu_ns_avg">cpu_ns_avg</a>
 							
 							<a class="list-group-item" href="#cpu_ns_tot">cpu_ns_tot</a>
+							
+							<a class="list-group-item" href="#cpu_usage_grp">cpu_usage_grp</a>
+							
+							<a class="list-group-item" href="#cpu_usage_proc">cpu_usage_proc</a>
+							
+							<a class="list-group-item" href="#cpu_usage_thr">cpu_usage_thr</a>
 							
 							<a class="list-group-item" href="#crc32">crc32</a>
 							
@@ -4355,6 +4361,8 @@
 							
 							<a class="list-group-item" href="#tfo (Server and default-server options)">tfo (Server and default-server options)</a>
 							
+							<a class="list-group-item" href="#tgroup">tgroup</a>
+							
 							<a class="list-group-item" href="#thread (Bind options)">thread (Bind options)</a>
 							
 							<a class="list-group-item" href="#thread (Fetching samples from internal states)">thread (Fetching samples from internal states)</a>
@@ -4888,7 +4896,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4899,7 +4907,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev8-128</strong></p>
+							<p><strong>version 3.4-dev8-149</strong></p>
 							<p>
 								2026/04/03<br>
 								
@@ -27559,6 +27567,24 @@ logs will make it easier to spot the faulty processing that needs to be fixed
 to recover decent performance. The value may be artificially high due to a
 high cpu_calls count, for example when processing many HTTP chunks, and for
 this reason it is often preferred to log cpu_ns_avg instead.
+</pre><a class="anchor" name="cpu_usage_grp"></a><a class="anchor" name="7-cpu_usage_grp"></a><a class="anchor" name="7.3.2-cpu_usage_grp"></a><a class="anchor" name="cpu_usage_grp (Using ACLs and fetching samples)"></a><a class="anchor" name="cpu_usage_grp (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="cpu_usage_grp"></a><a href="#7.3.2-cpu_usage_grp">cpu_usage_grp</a></b> : integer</div><pre class="text">Returns the measured CPU usage over the last polling loop, between 0 and 100,
+averaged over all threads of the current thread group. This can be used for
+troubleshooting and for logging. The measure is extremely volatile but will
+remain accurate for sustained loads as each thread measures it over a few
+tens to hundreds of requests.
+</pre><a class="anchor" name="cpu_usage_proc"></a><a class="anchor" name="7-cpu_usage_proc"></a><a class="anchor" name="7.3.2-cpu_usage_proc"></a><a class="anchor" name="cpu_usage_proc (Using ACLs and fetching samples)"></a><a class="anchor" name="cpu_usage_proc (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="cpu_usage_proc"></a><a href="#7.3.2-cpu_usage_proc">cpu_usage_proc</a></b> : integer</div><pre class="text">Returns the measured CPU usage over the last polling loop, between 0 and 100,
+averaged over all running threads. This can be used for troubleshooting and
+for logging. The measure is extremely volatile but will remain accurate for
+sustained loads as each thread measures it over a few tens to hundreds of
+requests. This is 100 minus the value reported in the idle ratio in the stats
+page and in &quot;show info&quot;.
+</pre><a class="anchor" name="cpu_usage_thr"></a><a class="anchor" name="7-cpu_usage_thr"></a><a class="anchor" name="7.3.2-cpu_usage_thr"></a><a class="anchor" name="cpu_usage_thr (Using ACLs and fetching samples)"></a><a class="anchor" name="cpu_usage_thr (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="cpu_usage_thr"></a><a href="#7.3.2-cpu_usage_thr">cpu_usage_thr</a></b> : integer</div><pre class="text">Returns the measured CPU usage over the last polling loop, between 0 and 100,
+for the calling thread. This can be used for troubleshooting and for logging.
+The measure is extremely volatile but will remain accurate for sustained
+loads as it is measured over a few tens to hundreds of requests. This is the
+same value as used to decide to enable connection killing on too high
+glitches, or to disable compression. See also &quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;
+and &quot;maxcomcpuusage&quot;.
 </pre><a class="anchor" name="date"></a><a class="anchor" name="7-date"></a><a class="anchor" name="7.3.2-date"></a><a class="anchor" name="date (Using ACLs and fetching samples)"></a><a class="anchor" name="date (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="date"></a><a href="#7.3.2-date">date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;unit&gt;</span>]</span>]</span>) : integer</div><pre class="text">Returns the current date as the epoch (number of seconds since 01/01/1970).
 
 If an offset value is specified, then it is added to the current date before
@@ -27841,6 +27867,9 @@ events are not supported, a &quot;-&quot; is returned.
 
 It must only be used for debugging purpose. The exact format is not
 documented because it may evolve depending on developers requirements.
+</pre><a class="anchor" name="tgroup"></a><a class="anchor" name="7-tgroup"></a><a class="anchor" name="7.3.2-tgroup"></a><a class="anchor" name="tgroup (Using ACLs and fetching samples)"></a><a class="anchor" name="tgroup (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="tgroup"></a><a href="#7.3.2-tgroup">tgroup</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread group
+calling the function, between 0 and (global.thread-groups - 1). This is
+useful for logging and debugging purposes.
 </pre><a class="anchor" name="thread"></a><a class="anchor" name="7-thread"></a><a class="anchor" name="7.3.2-thread"></a><a class="anchor" name="thread (Using ACLs and fetching samples)"></a><a class="anchor" name="thread (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="thread"></a><a href="#7.3.2-thread">thread</a></b> : integer</div><pre class="text">Returns an integer value corresponding to the position of the thread calling
 the function, between 0 and (global.nbthread-1). This is useful for logging
 and debugging purposes.
@@ -35290,7 +35319,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev8-128 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev8-149 &ndash; Configuration Manual<br>
 							<small>, 2026/04/03</small>
 						</div>
 					</div>
