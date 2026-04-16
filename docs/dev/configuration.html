@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev8-149 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4619,6 +4619,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a>
 							
+							<a class="list-group-item" href="#tune.quic.fe.stream.max-total">tune.quic.fe.stream.max-total</a>
+							
 							<a class="list-group-item" href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>
 							
 							<a class="list-group-item" href="#tune.quic.fe.tx.pacing">tune.quic.fe.tx.pacing</a>
@@ -4896,7 +4898,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/14</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/15</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4907,9 +4909,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev8-149</strong></p>
+							<p><strong>version 3.4-dev9</strong></p>
 							<p>
-								2026/04/03<br>
+								2026/04/15<br>
 								
 							</p>
 						</div>
@@ -8000,6 +8002,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.fe.sock-per-conn">tune.quic.fe.sock-per-conn</a>
    - <a href="#tune.quic.fe.stream.data-ratio">tune.quic.fe.stream.data-ratio</a>
    - <a href="#tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a>
+   - <a href="#tune.quic.fe.stream.max-total">tune.quic.fe.stream.max-total</a>
    - <a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>
    - <a href="#tune.quic.fe.tx.pacing">tune.quic.fe.tx.pacing</a>
    - <a href="#tune.quic.fe.tx.udp-gso">tune.quic.fe.tx.udp-gso</a>
@@ -10789,7 +10792,23 @@ buffering capabilities of streams on receive, which would result in poor
 upload throughput. It can be corrected by increasing the QUIC stream rxbuf
 connection setting.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.stream.rxbuf">tune.quic.be.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.be.stream.data-ratio">tune.quic.be.stream.data-ratio</a>&quot;, &quot;<a href="#tune.quic.fe.stream.data-ratio">tune.quic.fe.stream.data-ratio</a>&quot;</div>
-<a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global section)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
+<a class="anchor" name="tune.quic.fe.stream.max-total"></a><a class="anchor" name="3-tune.quic.fe.stream.max-total"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-total"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-total"></a><a href="#3.2-tune.quic.fe.stream.max-total">tune.quic.fe.stream.max-total</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of requests that can be handled by a single QUIC
+connection. Once this total is reached, the connection will be gracefully
+shutdown. In HTTP/3, this translates in a GOAWAY frame. The connection is
+finally closed when all remaining transfers are completed.
+
+This setting is applied as a hard limit on the connection via the QUIC flow
+control mechanism. If a peer violates it, the connection will be immediately
+closed.
+
+This setting can be used to force clients to open new connections once in a
+while to continue the emission of requests and avoid maintaining connections
+for too many times. However, low values will increase latency on the client
+side, as well as CPU consumption on both sides due to TLS handshakes.
+
+The default value is 0 which implies no specific limit outside of the QUIC
+protocol encoding limitation (2^60, more that a billion billion).
+</pre><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global section)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
 </pre><a class="anchor" name="tune.quic.be.stream.rxbuf"></a><a class="anchor" name="3-tune.quic.be.stream.rxbuf"></a><a class="anchor" name="3.2-tune.quic.be.stream.rxbuf"></a><a class="anchor" name="tune.quic.be.stream.rxbuf (Global section)"></a><a class="anchor" name="tune.quic.be.stream.rxbuf (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.be.stream.rxbuf"></a><a href="#3.2-tune.quic.be.stream.rxbuf">tune.quic.be.stream.rxbuf</a></b> <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.quic.fe.stream.rxbuf"></a><a class="anchor" name="3-tune.quic.fe.stream.rxbuf"></a><a class="anchor" name="3.2-tune.quic.fe.stream.rxbuf"></a><a class="anchor" name="tune.quic.fe.stream.rxbuf (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.rxbuf (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.rxbuf"></a><a href="#3.2-tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">This setting is the hard limit for the number of data bytes in flight over a
@@ -35171,6 +35190,15 @@ default is &quot;cli&quot;.
 
 When &quot;<a href="#challenge">challenge</a>&quot; is set to &quot;dns-persist-01&quot; and this option is not
 configured, the default is &quot;dns,delay&quot;.
+
+When &quot;<a href="#challenge">challenge</a>&quot; is set to &quot;dns-persist-01&quot;, an initial opportunistic DNS
+check is always performed before the challenge-ready conditions are evaluated.
+Since the &quot;_validation-persist.&lt;domain&gt;&quot; TXT record is set once and never
+changes between renewals, HAProxy checks at renewal time whether the record
+is already present. If the check succeeds for all domains, the challenge is
+submitted immediately without going through the challenge-ready steps (cli,
+delay, dns). If the check fails, HAProxy falls back to the normal
+challenge-ready flow.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -35319,8 +35347,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev8-149 &ndash; Configuration Manual<br>
-							<small>, 2026/04/03</small>
+							HAProxy 3.4-dev9 &ndash; Configuration Manual<br>
+							<small>, 2026/04/15</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
