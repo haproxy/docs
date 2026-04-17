@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev9 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9-3 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4898,7 +4898,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/15</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4909,7 +4909,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev9</strong></p>
+							<p><strong>version 3.4-dev9-3</strong></p>
 							<p>
 								2026/04/15<br>
 								
@@ -7835,7 +7835,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#lua-load">lua-load</a>
    - <a href="#lua-load-per-thread">lua-load-per-thread</a>
    - <a href="#lua-prepend-path">lua-prepend-path</a>
-   - max-thread-per-group
+   - <a href="#max-threads-per-group">max-threads-per-group</a>
    - <a href="#mworker-max-reloads">mworker-max-reloads</a>
    - <a href="#nbthread">nbthread</a>
    - <a href="#node">node</a>
@@ -8953,11 +8953,17 @@ crashed instead of killing everything. This need to be used with caution as
 it is only meant for debugging and could put the master process in an
 abnormal state.
 </pre><a class="anchor" name="max-threads-per-group"></a><a class="anchor" name="3-max-threads-per-group"></a><a class="anchor" name="3.1-max-threads-per-group"></a><a class="anchor" name="max-threads-per-group (Global section)"></a><a class="anchor" name="max-threads-per-group (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="max-threads-per-group"></a><a href="#3.1-max-threads-per-group">max-threads-per-group</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Defines the maximum number of threads in a thread group. Unless the number
-of thread groups is fixed with the thread-groups directive, haproxy will
-create more thread groups if needed. The default and maximum value is 64.
-Having a lower value means more groups will potentially be created, which
-can help improve performances, as a number of data structures are per
-thread group, and that will mean less contention
+of thread groups is fixed with the &quot;<a href="#thread-groups">thread-groups</a>&quot; directive, haproxy will
+create as many thread groups as needed to satisfy the requested number of
+threads. Tha minimum value is 1, and the maximum value is 64 (on 64-bit
+systems, or 32 on 32-bit systems). Lower values reduce contention caused by
+atomic operations on shared states, but can increase the number of sockets
+needed to create all listeners and to hold idle backend connections. Higher
+values will reduce these costs, at the expense of higher CPU usage under
+contented situations, and lower connection rates. The default value is 16,
+which provides the best tradeoff that was experimentally found on various
+tested systems, including x86_64 processors from multiple vendors, and large
+Arm64 systems, both on bare metal and hypervisors.
 </pre><a class="anchor" name="mworker-max-reloads"></a><a class="anchor" name="3-mworker-max-reloads"></a><a class="anchor" name="3.1-mworker-max-reloads"></a><a class="anchor" name="mworker-max-reloads (Global section)"></a><a class="anchor" name="mworker-max-reloads (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="mworker-max-reloads"></a><a href="#3.1-mworker-max-reloads">mworker-max-reloads</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">In master-worker mode, this option limits the number of time a worker can
 survive to a reload. If the worker did not leave after a reload, once its
 number of reloads is greater than this number, the worker will receive a
@@ -35347,7 +35353,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev9 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev9-3 &ndash; Configuration Manual<br>
 							<small>, 2026/04/15</small>
 						</div>
 					</div>
