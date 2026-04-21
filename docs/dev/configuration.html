@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev9-17 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9-32 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2372,6 +2372,8 @@
 							
 							<a class="list-group-item" href="#ipmask">ipmask</a>
 							
+							<a class="list-group-item" href="#ips">ips</a>
+							
 							<a class="list-group-item" href="#ipv4">ipv4</a>
 							
 							<a class="list-group-item" href="#ipv6">ipv6</a>
@@ -3038,6 +3040,8 @@
 							<a class="list-group-item" href="#proc">proc</a>
 							
 							<a class="list-group-item" href="#process-vary">process-vary</a>
+							
+							<a class="list-group-item" href="#profile">profile</a>
 							
 							<a class="list-group-item" href="#profiling.memory">profiling.memory</a>
 							
@@ -4898,7 +4902,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4909,7 +4913,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev9-17</strong></p>
+							<p><strong>version 3.4-dev9-32</strong></p>
 							<p>
 								2026/04/15<br>
 								
@@ -20394,7 +20398,7 @@ That is, 'on' keyword followed by of the following values: 'quic-init',
 
 Also, they will be properly reported when using &quot;%OG&quot; logformat alias.
 
-Optional &quot;profile&quot; argument may be used to specify the name of a log-profile
+Optional &quot;<a href="#profile">profile</a>&quot; argument may be used to specify the name of a log-profile
 section that should be used for this do-log action specifically instead of
 the one associated to the current logger that applies by default.
 </pre><div class="separator">
@@ -34953,6 +34957,18 @@ See also Section 12.8 (&quot;ACME&quot;) and &quot;<span class="dropdown"><a cla
 <pre class="prettyprint">
 <code>load crt &quot;example.com.pem&quot; acme LE domains &quot;bar.example.com,foo.example.com&quot;
 </code></pre>
+</div><a class="anchor" name="ips"></a><a class="anchor" name="12-ips"></a><a class="anchor" name="12.7.1-ips"></a><a class="anchor" name="ips (Other sections)"></a><a class="anchor" name="ips (Load options)"></a><div class="keyword"><b><a class="anchor" name="ips"></a><a href="#12.7.1-ips">ips</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Configure the list of IP addresses that will be included as IP SANs in the
+ACME certificate. IP addresses are separated by commas in the list.
+
+Generating a certificate with IPs might require the use of the &quot;shortlived&quot;
+profile.
+
+See also Section 12.8 (&quot;ACME&quot;), &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; and &quot;<a href="#domains">domains</a>&quot; in this section.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>load crt &quot;server.pem&quot; acme LE ips &quot;192.0.2.1,2001:db8::1&quot;
+</code></pre>
 </div><a class="anchor" name="key"></a><a class="anchor" name="12-key"></a><a class="anchor" name="12.7.1-key"></a><a class="anchor" name="key (Other sections)"></a><a class="anchor" name="key (Load options)"></a><div class="keyword"><b><a class="anchor" name="key"></a><a href="#12.7.1-key">key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional. Load a private key in PEM format. If a private key
 was already defined in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, it will overwrite it.
 </pre><a class="anchor" name="ocsp"></a><a class="anchor" name="12-ocsp"></a><a class="anchor" name="12.7.1-ocsp"></a><a class="anchor" name="ocsp (Other sections)"></a><a class="anchor" name="ocsp (Load options)"></a><div class="keyword"><b><a class="anchor" name="ocsp"></a><a href="#12.7.1-ocsp">ocsp</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">This argument is optional, it loads an OCSP response in DER format. It can
@@ -35256,7 +35272,23 @@ or &quot;ECDSA&quot;. You can also configure the &quot;<span class="dropdown"><a
 (value), which is useful to reply to a challenge when there are multiple
 account used. The acme task will add entries before validating the challenge
 and will remove the entries at the end of the task.
-</pre><a class="anchor" name="reuse-key"></a><a class="anchor" name="12-reuse-key"></a><a class="anchor" name="12.8-reuse-key"></a><a class="anchor" name="reuse-key (Other sections)"></a><a class="anchor" name="reuse-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="reuse-key"></a><a href="#12.8-reuse-key">reuse-key</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">If set to &quot;<a href="#on">on</a>&quot;, HAProxy won't generate a new private key and will keep the
+</pre><a class="anchor" name="profile"></a><a class="anchor" name="12-profile"></a><a class="anchor" name="12.8-profile"></a><a class="anchor" name="profile (Other sections)"></a><a class="anchor" name="profile (ACME)"></a><div class="keyword"><b><a class="anchor" name="profile"></a><a href="#12.8-profile">profile</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Request a specific certificate profile from the CA by including a &quot;<a href="#profile">profile</a>&quot;
+field in the newOrder request. This implements draft-ietf-acme-profiles.
+
+Profile names are CA-specific short identifiers (e.g. &quot;classic&quot;,
+&quot;shortlived&quot;). When set, the profile name is sent as-is in the newOrder
+JSON payload. The CA is free to ignore the request or return an error if
+the profile is not supported. When not set, no profile field is included
+and the CA uses its default issuance policy.
+
+See https://letsencrypt.org/docs/profiles/ for letsencrypt profiles.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Request short-lived certificates</span>
+profile shortlived
+</code></pre>
+</div><a class="anchor" name="reuse-key"></a><a class="anchor" name="12-reuse-key"></a><a class="anchor" name="12.8-reuse-key"></a><a class="anchor" name="reuse-key (Other sections)"></a><a class="anchor" name="reuse-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="reuse-key"></a><a href="#12.8-reuse-key">reuse-key</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">If set to &quot;<a href="#on">on</a>&quot;, HAProxy won't generate a new private key and will keep the
 previous one. Rotating private keys is recommended, when enabling this option
 it is recommended to regenerate manually the keys regularly.
 
@@ -35353,7 +35385,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev9-17 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev9-32 &ndash; Configuration Manual<br>
 							<small>, 2026/04/15</small>
 						</div>
 					</div>
