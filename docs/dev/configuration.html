@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev9-41 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9-58 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4445,6 +4445,8 @@
 							
 							<a class="list-group-item" href="#tune.bufsize.small">tune.bufsize.small</a>
 							
+							<a class="list-group-item" href="#tune.cli.max-payload-size">tune.cli.max-payload-size</a>
+							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
 							<a class="list-group-item" href="#tune.defaults.purge">tune.defaults.purge</a>
@@ -4902,7 +4904,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4913,7 +4915,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev9-41</strong></p>
+							<p><strong>version 3.4-dev9-58</strong></p>
 							<p>
 								2026/04/15<br>
 								
@@ -7923,6 +7925,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize">tune.bufsize</a>
    - <a href="#tune.bufsize.large">tune.bufsize.large</a>
    - <a href="#tune.bufsize.small">tune.bufsize.small</a>
+   - <a href="#tune.cli.max-payload-size">tune.cli.max-payload-size</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
    - <a href="#tune.defaults.purge">tune.defaults.purge</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
@@ -9924,7 +9927,21 @@ For the moment, it is automatically used only by HTTP/3 protocol to emit the
 response headers. Otherwise, small buffers support can be enabled for
 specific proxies via the &quot;<a href="#option%20use-small-buffers">use-small-buffers</a>&quot; option.
 </pre><div class="page-header"><b>See also:</b> option use-small-buffers</div>
-<a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global section)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
+<a class="anchor" name="tune.cli.max-payload-size"></a><a class="anchor" name="3-tune.cli.max-payload-size"></a><a class="anchor" name="3.2-tune.cli.max-payload-size"></a><a class="anchor" name="tune.cli.max-payload-size (Global section)"></a><a class="anchor" name="tune.cli.max-payload-size (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.cli.max-payload-size"></a><a href="#3.2-tune.cli.max-payload-size">tune.cli.max-payload-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the maximum size allowed for the payload passed to a command on the CLI.
+
+On the CLI, a command line is limited by the buffer size. It means all
+commands and their arguments must fit in a buffer to be processed, excluding
+the payload that can be passed to the last command of the command line. This
+payload can be allocated into a dedicated area if necessary. Its size is
+limited by this parameter. The default value is 128KB.
+
+While it should be high enough for most usage, if this value is changed, it
+must be carefully chosen. A huge value can have impact on the HAProxy
+performance. Depending on the command, a huge payload can be quite long to
+process and can possibly trigger the watchdog.
+
+Please consult the management manual for details about the CLI.
+</pre><a class="anchor" name="tune.comp.maxlevel"></a><a class="anchor" name="3-tune.comp.maxlevel"></a><a class="anchor" name="3.2-tune.comp.maxlevel"></a><a class="anchor" name="tune.comp.maxlevel (Global section)"></a><a class="anchor" name="tune.comp.maxlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.maxlevel"></a><a href="#3.2-tune.comp.maxlevel">tune.comp.maxlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum compression level. The compression level affects CPU
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
@@ -35385,7 +35402,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev9-41 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev9-58 &ndash; Configuration Manual<br>
 							<small>, 2026/04/15</small>
 						</div>
 					</div>
