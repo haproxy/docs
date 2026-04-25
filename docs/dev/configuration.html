@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev9-90 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9-107 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2046,6 +2046,8 @@
 							<a class="list-group-item" href="#fe_conn">fe_conn</a>
 							
 							<a class="list-group-item" href="#fe_defbe">fe_defbe</a>
+							
+							<a class="list-group-item" href="#fe_exists">fe_exists</a>
 							
 							<a class="list-group-item" href="#fe_id">fe_id</a>
 							
@@ -4904,7 +4906,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4915,7 +4917,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev9-90</strong></p>
+							<p><strong>version 3.4-dev9-107</strong></p>
 							<p>
 								2026/04/15<br>
 								
@@ -25227,11 +25229,12 @@ The following keywords are supported:
 <tr><td ><a href="#7-eth.src">eth.src</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-eth.vlan">eth.vlan</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-even">even</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-fe_exists">fe_exists</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-field">field(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
-<tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-hmac">hmac(algorithm,key)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-host_only">host_only</a></td><td >string</td><td >string</td></tr>
@@ -25251,8 +25254,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_jwk">jwt_decrypt_jwk(&lt;jwk&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_cert">jwt_decrypt_cert(&lt;cert&gt;)</a></td><td >string</td><td >binary</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_secret">jwt_decrypt_secret(&lt;secret&gt;)</a></td><td >string</td><td >binary</td></tr>
@@ -25272,8 +25275,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
-<tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
@@ -25293,8 +25296,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-rtrim">rtrim(chars)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
-<tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
@@ -25314,8 +25317,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_glitch_rate">table_glitch_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
@@ -25335,8 +25338,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_kbytes_out">table_kbytes_out([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.dst">tcp.dst</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.flags">tcp.flags</a></td><td >binary</td><td >integer</td></tr>
@@ -25356,8 +25359,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-us_utime">us_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-utime">utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
@@ -25705,6 +25708,15 @@ str(f1_f2_f3__f5),field(2,_,0)  <span class="comment"># f2_f3__f5</span>
 str(f1_f2_f3__f5),field(2,_,2)  <span class="comment"># f2_f3</span>
 str(f1_f2_f3__f5),field(-2,_,3) <span class="comment"># f2_f3_</span>
 str(f1_f2_f3__f5),field(-3,_,0) <span class="comment"># f1_f2_f3</span>
+</code></pre>
+</div><a class="anchor" name="fe_exists"></a><a class="anchor" name="7-fe_exists"></a><a class="anchor" name="7.3.1-fe_exists"></a><a class="anchor" name="fe_exists (Using ACLs and fetching samples)"></a><a class="anchor" name="fe_exists (Converters)"></a><div class="keyword"><b><a class="anchor" name="fe_exists"></a><a href="#7.3.1-fe_exists">fe_exists</a></b></div><pre class="text">Takes a frontend name as input value and returns a boolean TRUE if the said
+frontend with that name exists in the current configuration, otherwise returns
+FALSE. Can be used in places where checking the existence of a frontend from a
+dynamic name is valuable, like map lookups or answering to an external check.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>http-request deny unless { var(txn.fe_name),fe_exists }
 </code></pre>
 </div><a class="anchor" name="fix_is_valid"></a><a class="anchor" name="7-fix_is_valid"></a><a class="anchor" name="7.3.1-fix_is_valid"></a><a class="anchor" name="fix_is_valid (Using ACLs and fetching samples)"></a><a class="anchor" name="fix_is_valid (Converters)"></a><div class="keyword"><b><a class="anchor" name="fix_is_valid"></a><a href="#7.3.1-fix_is_valid">fix_is_valid</a></b></div><pre class="text">Parses a binary payload and performs sanity checks regarding FIX (Financial
 Information eXchange):
@@ -35402,7 +35414,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev9-90 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev9-107 &ndash; Configuration Manual<br>
 							<small>, 2026/04/15</small>
 						</div>
 					</div>
