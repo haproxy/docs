@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev9-110 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev9-135 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4906,7 +4906,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4917,7 +4917,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev9-110</strong></p>
+							<p><strong>version 3.4-dev9-135</strong></p>
 							<p>
 								2026/04/15<br>
 								
@@ -7086,7 +7086,7 @@ The variables in question are the following:
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># Add the rule that gave the final verdict to the log</span>
-log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=last_rule_file:last_rule_line&quot;
+log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=%[last_rule_file]:%[last_rule_line]&quot;
 </code></pre>
 </div><pre class="text">  * HAPROXY_HTTPS_LOG_FMT: similar to HAPROXY_HTTP_LOG_FMT but for HTTPS log
     format as defined in <a href="#8.2.4">section 8.2.4</a> &quot;HTTPS log format&quot;.
@@ -9909,7 +9909,7 @@ return HTTP 400 (Bad Request) error. Similarly if an HTTP response is larger
 than this size, HAProxy will return HTTP 502 (Bad Gateway). Note that the
 value set using this parameter will automatically be rounded up to the next
 multiple of 8 on 32-bit machines and 16 on 64-bit machines.
-</pre><a class="anchor" name="tune.bufsize.large"></a><a class="anchor" name="3-tune.bufsize.large"></a><a class="anchor" name="3.2-tune.bufsize.large"></a><a class="anchor" name="tune.bufsize.large (Global section)"></a><a class="anchor" name="tune.bufsize.large (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.large"></a><a href="#3.2-tune.bufsize.large">tune.bufsize.large</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in butes for large buffers. By defaults, support for large
+</pre><a class="anchor" name="tune.bufsize.large"></a><a class="anchor" name="3-tune.bufsize.large"></a><a class="anchor" name="3.2-tune.bufsize.large"></a><a class="anchor" name="tune.bufsize.large (Global section)"></a><a class="anchor" name="tune.bufsize.large (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.large"></a><a href="#3.2-tune.bufsize.large">tune.bufsize.large</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in bytes for large buffers. By defaults, support for large
 buffers is not enabled, it must explicitly be enable by setting this value.
 
 These buffers are designed to be used in some specific contexts where more
@@ -10823,7 +10823,7 @@ connection setting.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.stream.rxbuf">tune.quic.be.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.be.stream.data-ratio">tune.quic.be.stream.data-ratio</a>&quot;, &quot;<a href="#tune.quic.fe.stream.data-ratio">tune.quic.fe.stream.data-ratio</a>&quot;</div>
 <a class="anchor" name="tune.quic.fe.stream.max-total"></a><a class="anchor" name="3-tune.quic.fe.stream.max-total"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-total"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-total"></a><a href="#3.2-tune.quic.fe.stream.max-total">tune.quic.fe.stream.max-total</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of requests that can be handled by a single QUIC
 connection. Once this total is reached, the connection will be gracefully
-shutdown. In HTTP/3, this translates in a GOAWAY frame. The connection is
+shutdown. In HTTP/3, this translates to a GOAWAY frame. The connection is
 finally closed when all remaining transfers are completed.
 
 This setting is applied as a hard limit on the connection via the QUIC flow
@@ -10836,7 +10836,7 @@ for too many times. However, low values will increase latency on the client
 side, as well as CPU consumption on both sides due to TLS handshakes.
 
 The default value is 0 which implies no specific limit outside of the QUIC
-protocol encoding limitation (2^60, more that a billion billion).
+protocol encoding limitation (2^60, more than a billion billion).
 </pre><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global section)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
@@ -14713,7 +14713,7 @@ The &quot;<a href="#log-steps">log-steps</a>&quot; directive allows to refine th
 logs will be emitted, and even permits to emit multiple logs for a
 same transaction. Special value 'all' may be used to enable all available
 log origins, making it possible to track a transaction from accept to close.
-Indidivual log origins may also be specified using their names separated by
+Individual log origins may also be specified using their names separated by
 commas to selectively enable when logs should be produced.
 
 Common log origins are: accept, connect, request, response, close.
@@ -27642,7 +27642,7 @@ The measure is extremely volatile but will remain accurate for sustained
 loads as it is measured over a few tens to hundreds of requests. This is the
 same value as used to decide to enable connection killing on too high
 glitches, or to disable compression. See also &quot;<a href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>&quot;
-and &quot;maxcomcpuusage&quot;.
+and &quot;<a href="#maxcompcpuusage">maxcompcpuusage</a>&quot;.
 </pre><a class="anchor" name="date"></a><a class="anchor" name="7-date"></a><a class="anchor" name="7.3.2-date"></a><a class="anchor" name="date (Using ACLs and fetching samples)"></a><a class="anchor" name="date (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="date"></a><a href="#7.3.2-date">date</a></b>(<span style="color: #008">[<span style="color: #080">&lt;offset&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;unit&gt;</span>]</span>]</span>) : integer</div><pre class="text">Returns the current date as the epoch (number of seconds since 01/01/1970).
 
 If an offset value is specified, then it is added to the current date before
@@ -35096,7 +35096,7 @@ line first and then an example of an HTTP error with the two different lines
           &quot;GET http://127.0.0.1:12345/MEMwQT HTTP/1.1&quot;
 
 Troubleshooting:
-A common error that can happen with let's encrypt certificates is if the DNS
+A common error that can happen with Let's Encrypt certificates is if the DNS
 resolution provides an IPv6 address and your system does not have a valid
 outgoing IPv6 route. In such a case, you can either create the appropriate
 route or set the &quot;httpclient.resolvers.prefer ipv4&quot; option in the global
@@ -35310,7 +35310,7 @@ JSON payload. The CA is free to ignore the request or return an error if
 the profile is not supported. When not set, no profile field is included
 and the CA uses its default issuance policy.
 
-See https://letsencrypt.org/docs/profiles/ for letsencrypt profiles.
+See https://letsencrypt.org/docs/profiles/ for Let's Encrypt profiles.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -35414,7 +35414,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev9-110 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev9-135 &ndash; Configuration Manual<br>
 							<small>, 2026/04/15</small>
 						</div>
 					</div>
