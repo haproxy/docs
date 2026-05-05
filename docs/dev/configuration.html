@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev10-22 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev10-46 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1389,6 +1389,8 @@
 							<a class="list-group-item" href="#acme (Load options)">acme (Load options)</a>
 							
 							<a class="list-group-item" href="#acme (ACME)">acme (ACME)</a>
+							
+							<a class="list-group-item" href="#acme-vars">acme-vars</a>
 							
 							<a class="list-group-item" href="#acme.scheduler">acme.scheduler</a>
 							
@@ -3054,6 +3056,8 @@
 							<a class="list-group-item" href="#proto (Server and default-server options)">proto (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#protobuf">protobuf</a>
+							
+							<a class="list-group-item" href="#provider-name">provider-name</a>
 							
 							<a class="list-group-item" href="#proxy-v2-options">proxy-v2-options</a>
 							
@@ -4906,7 +4910,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/04/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4917,7 +4921,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev10-22</strong></p>
+							<p><strong>version 3.4-dev10-46</strong></p>
 							<p>
 								2026/04/29<br>
 								
@@ -33415,10 +33419,12 @@ participates in the work of HAProxy.
 of the filter can be found in the addons/ot directory.
 
 Note: The OpenTracing filter shouldn't be used for new designs as OpenTracing
-      itself is no longer maintained nor supported by its authors. A
-      replacement filter base on OpenTelemetry is currently under development
-      and is expected to be ready around HAProxy 3.2. As such OpenTracing will
-      be deprecated in 3.3 and removed in 3.5.
+      itself is no longer maintained nor supported by its authors. As such
+      OpenTracing will be deprecated in 3.3 and removed in 3.5. A replacement
+      filter based on OpenTelemetry is available since 3.4 with complete build
+      instructions currently at:
+
+          https://github.com/haproxytech/haproxy-opentelemetry/
 </pre></div>
 <a class="anchor" id="9.7" name="9.7"></a>
 <h2 id="chapter-9.7" data-target="9.7"><small><a class="small" href="#9.7">9.7.</a></small> Bandwidth limitation</h2>
@@ -35185,7 +35191,14 @@ You can also generate manually an RSA private key with openssl:
 Or an ecdsa one:
 
   openssl ecparam -name secp384r1 -genkey -noout -out account.key
-</pre><a class="anchor" name="bits"></a><a class="anchor" name="12-bits"></a><a class="anchor" name="12.8-bits"></a><a class="anchor" name="bits (Other sections)"></a><a class="anchor" name="bits (ACME)"></a><div class="keyword"><b><a class="anchor" name="bits"></a><a href="#12.8-bits">bits</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Configure the number of bits to generate an RSA certificate. Default to 2048.
+</pre><a class="anchor" name="acme-vars"></a><a class="anchor" name="12-acme-vars"></a><a class="anchor" name="12.8-acme-vars"></a><a class="anchor" name="acme-vars (Other sections)"></a><a class="anchor" name="acme-vars (ACME)"></a><div class="keyword"><b><a class="anchor" name="acme-vars"></a><a href="#12.8-acme-vars">acme-vars</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Pass arbitrary variables to the external DNS provisioning tool (e.g. the
+dataplaneAPI) via the &quot;dpapi&quot; sink. The semantics are tool-specific; refer
+to your DNS provisioning tool's documentation.
+
+This keyword is only meaningful when the challenge type is &quot;dns-01&quot; or
+&quot;dns-persist-01&quot;.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#challenge">challenge</a>&quot;, &quot;<a href="#provider-name">provider-name</a>&quot;</div>
+<a class="anchor" name="bits"></a><a class="anchor" name="12-bits"></a><a class="anchor" name="12.8-bits"></a><a class="anchor" name="bits (Other sections)"></a><a class="anchor" name="bits (ACME)"></a><div class="keyword"><b><a class="anchor" name="bits"></a><a href="#12.8-bits">bits</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Configure the number of bits to generate an RSA certificate. Default to 2048.
 Setting a too high value can trigger a warning if your machine is not
 powerful enough. (This can be configured with &quot;<a href="#warn-blocked-traffic-after">warn-blocked-traffic-after</a>&quot;
 but blocking the traffic too long could trigger the watchdog.)
@@ -35317,7 +35330,14 @@ See https://letsencrypt.org/docs/profiles/ for Let's Encrypt profiles.
 <code><span class="comment"># Request short-lived certificates</span>
 profile shortlived
 </code></pre>
-</div><a class="anchor" name="reuse-key"></a><a class="anchor" name="12-reuse-key"></a><a class="anchor" name="12.8-reuse-key"></a><a class="anchor" name="reuse-key (Other sections)"></a><a class="anchor" name="reuse-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="reuse-key"></a><a href="#12.8-reuse-key">reuse-key</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">If set to &quot;<a href="#on">on</a>&quot;, HAProxy won't generate a new private key and will keep the
+</div><a class="anchor" name="provider-name"></a><a class="anchor" name="12-provider-name"></a><a class="anchor" name="12.8-provider-name"></a><a class="anchor" name="provider-name (Other sections)"></a><a class="anchor" name="provider-name (ACME)"></a><div class="keyword"><b><a class="anchor" name="provider-name"></a><a href="#12.8-provider-name">provider-name</a></b> <span style="color: #080">&lt;string&gt;</span></div><pre class="text">Set the DNS provider name passed to the external DNS provisioning tool (e.g.
+the dataplaneAPI) via the &quot;dpapi&quot; sink. The accepted values are
+tool-specific; refer to your DNS provisioning tool's documentation.
+
+This keyword is only meaningful when the challenge type is &quot;dns-01&quot; or
+&quot;dns-persist-01&quot;.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#challenge">challenge</a>&quot;, &quot;<a href="#acme-vars">acme-vars</a>&quot;</div>
+<a class="anchor" name="reuse-key"></a><a class="anchor" name="12-reuse-key"></a><a class="anchor" name="12.8-reuse-key"></a><a class="anchor" name="reuse-key (Other sections)"></a><a class="anchor" name="reuse-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="reuse-key"></a><a href="#12.8-reuse-key">reuse-key</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">If set to &quot;<a href="#on">on</a>&quot;, HAProxy won't generate a new private key and will keep the
 previous one. Rotating private keys is recommended, when enabling this option
 it is recommended to regenerate manually the keys regularly.
 
@@ -35414,7 +35434,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev10-22 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev10-46 &ndash; Configuration Manual<br>
 							<small>, 2026/04/29</small>
 						</div>
 					</div>
