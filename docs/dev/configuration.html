@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev10-79 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev10-100 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1898,6 +1898,12 @@
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-E"><h4>E</h4>
 								
+							<a class="list-group-item" href="#eab-key-id">eab-key-id</a>
+							
+							<a class="list-group-item" href="#eab-mac-alg">eab-mac-alg</a>
+							
+							<a class="list-group-item" href="#eab-mac-key">eab-mac-key</a>
+							
 							<a class="list-group-item" href="#early-hint">early-hint</a>
 							
 							<a class="list-group-item" href="#ecdhe">ecdhe</a>
@@ -2394,6 +2400,10 @@
 							<a class="list-group-item" href="#json_query">json_query</a>
 							
 							<a class="list-group-item" href="#jwt">jwt</a>
+							
+							<a class="list-group-item" href="#jwt.decrypt_alg_list">jwt.decrypt_alg_list</a>
+							
+							<a class="list-group-item" href="#jwt.decrypt_enc_list">jwt.decrypt_enc_list</a>
 							
 							<a class="list-group-item" href="#jwt_decrypt_cert">jwt_decrypt_cert</a>
 							
@@ -4910,7 +4920,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/07</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4921,7 +4931,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev10-79</strong></p>
+							<p><strong>version 3.4-dev10-100</strong></p>
 							<p>
 								2026/04/29<br>
 								
@@ -7838,6 +7848,8 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
+   - <a href="#jwt.decrypt_alg_list">jwt.decrypt_alg_list</a>
+   - <a href="#jwt.decrypt_enc_list">jwt.decrypt_enc_list</a>
    - <a href="#key-base">key-base</a>
    - <a href="#limited-quic">limited-quic</a>
    - <a href="#localpeer">localpeer</a>
@@ -8839,7 +8851,41 @@ will share the chain in memory.
 
 The OCSP features are able to use the completed chain when no .issuer was
 used, or no chain was provided in the PEM.
-</pre><a class="anchor" name="key-base"></a><a class="anchor" name="3-key-base"></a><a class="anchor" name="3.1-key-base"></a><a class="anchor" name="key-base (Global section)"></a><a class="anchor" name="key-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="key-base"></a><a href="#3.1-key-base">key-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL private keys from when a relative
+</pre><a class="anchor" name="jwt.decrypt_alg_list"></a><a class="anchor" name="3-jwt.decrypt_alg_list"></a><a class="anchor" name="3.1-jwt.decrypt_alg_list"></a><a class="anchor" name="jwt.decrypt_alg_list (Global section)"></a><a class="anchor" name="jwt.decrypt_alg_list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.decrypt_alg_list"></a><a href="#3.1-jwt.decrypt_alg_list">jwt.decrypt_alg_list</a></b> <span style="color: #080">&lt;list&gt;</span></div><pre class="text">Set the list of algorithms allowed in the jwt_decrypt_XXX converters. JWT
+tokens using an unsupported or disabled algorithms will never be decrypted.
+The specified algorithms must have the same format as in <a href="#4.1">section 4.1</a> of
+RFC7518 and must be colon-separated. The special &quot;ALL&quot; name can be used to
+enable all the supported algorithms (see &quot;<a href="#jwt_decrypt_jwk">jwt_decrypt_jwk</a>&quot; converter for a
+complete list) and a '!' can be appended to an algorithm name to explicitly
+disable it.
+Please note that unless &quot;ALL&quot; is specified, using this option will disable
+any algorithm that is not explicitly mentioned in the provided list.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Enable all algorithms but the &quot;ECDH-ES&quot; one</span>
+jwt.decrypt_alg_list ALL:!ECDH-ES
+
+<span class="comment"># Only enable ECDH-ES algorithms</span>
+jwt.decrypt_alg_list ECDH-ES:ECDH-ES+A128KW:ECDH-ES+A192KW:ECDH-ES+A256KW
+</code></pre>
+</div><a class="anchor" name="jwt.decrypt_enc_list"></a><a class="anchor" name="3-jwt.decrypt_enc_list"></a><a class="anchor" name="3.1-jwt.decrypt_enc_list"></a><a class="anchor" name="jwt.decrypt_enc_list (Global section)"></a><a class="anchor" name="jwt.decrypt_enc_list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.decrypt_enc_list"></a><a href="#3.1-jwt.decrypt_enc_list">jwt.decrypt_enc_list</a></b> <span style="color: #080">&lt;list&gt;</span></div><pre class="text">Set the list of encryption algorithms allowed in the jwt_decrypt_XXX
+converters. JWT tokens using an unsupported or disabled encryption algorithms
+will never be decrypted.
+The specified algorithms must have the same format as in <a href="#5.1">section 5.1</a> of
+RFC7518 and must be colon-separated. The special &quot;ALL&quot; name can be used to
+enable all the supported algorithms (see &quot;<a href="#jwt_decrypt_jwk">jwt_decrypt_jwk</a>&quot; converter for a
+complete list) and a '!' can be appended to an algorithm name to explicitly
+disable it.
+Please note that unless &quot;ALL&quot; is specified, using this option will disable
+any algorithm that is not explicitly mentioned in the provided list.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Enable only AES GCM encrypting algorithms</span>
+jwt.decrypt_enc_list A128GCM:A192GCM:A256GCM
+</code></pre>
+</div><a class="anchor" name="key-base"></a><a class="anchor" name="3-key-base"></a><a class="anchor" name="3.1-key-base"></a><a class="anchor" name="key-base (Global section)"></a><a class="anchor" name="key-base (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="key-base"></a><a href="#3.1-key-base">key-base</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Assigns a default directory to fetch SSL private keys from when a relative
 path is used with &quot;<a href="#key">key</a>&quot; directives. Absolute locations specified prevail and
 ignore &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">key-base<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#key-base%20%28Certificate%20Storage%29">Certificate Storage</a></li><li><a href="#key-base%20%28Process%20management%20and%20security%29">Process management and security</a></li></ul></span>&quot;. This option only works with a crt-store load line.
 </pre><a class="anchor" name="limited-quic"></a><a class="anchor" name="3-limited-quic"></a><a class="anchor" name="3.1-limited-quic"></a><a class="anchor" name="limited-quic (Global section)"></a><a class="anchor" name="limited-quic (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="limited-quic"></a><a href="#3.1-limited-quic">limited-quic</a></b></div><pre class="text">This setting must be used to explicitly enable the QUIC listener bindings
@@ -26018,8 +26064,15 @@ The only tokens managed yet are the ones using the Compact Serialization
 format (five dot-separated base64-url encoded strings).
 
 This converter can be used for tokens that have an algorithm (&quot;alg&quot; field of
-the JOSE header) among the following: RSA1_5, RSA-OAEP, RSA-OAEP-256,
-ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW or ECDH-ES+A256KW.
+the JOSE header) among the following: RSA-OAEP, RSA-OAEP-256, ECDH-ES,
+ECDH-ES+A128KW, ECDH-ES+A192KW or ECDH-ES+A256KW.
+The RSA1_5 algorithm is implemented but disabled by default following what is
+suggested in <a href="#3.2">section 3.2</a> of RFC 8725. It can be reenabled if needed thanks to
+'jwt.decrypt_alg_list' global option.
+
+The supported algorithms and encryption algorithms (&quot;alg&quot; and &quot;enc&quot; fields of
+the JOSE header respectively) can be modified thanks to the
+'jwt.decrypt_alg_list' and 'jwt.decrypt_enc_list' global options.
 
 The JWE token must be provided base64url-encoded and the output will be
 provided &quot;raw&quot;. If an error happens during token parsing, signature
@@ -26048,13 +26101,20 @@ A192KW, A256KW, A128GCMKW, A192GCMKW, A256GCMKW, dir. In this case, we expect
 the provided JWK to be of the 'oct' type.
 
 This converter also manages tokens that have an algorithm (&quot;alg&quot; field of the
-JOSE header) in the RSA family (RSA1_5, RSA-OAEP or RSA-OAEP-256) when
-provided an 'RSA' JWK, or in the ECDH family (ECDH-ES, ECDH-ES+A128KW,
-ECDH-ES+A192KW or ECDH-ES+A256KW) when provided an 'EC' JWK.
+JOSE header) in the RSA family (RSA-OAEP or RSA-OAEP-256) when provided an
+'RSA' JWK, or in the ECDH family (ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW or
+ECDH-ES+A256KW) when provided an 'EC' JWK.
+The RSA1_5 algorithm is implemented but disabled by default following what is
+suggested in <a href="#3.2">section 3.2</a> of RFC 8725. It can be reenabled if needed thanks to
+'jwt.decrypt_alg_list' global option.
 
 Please note that the A128KW and A192KW algorithms are not available on AWS-LC
 so the A128KW, A192KW, ECDH-ES+A128KW and ECDH-ES+A192KW algorithms won't
 work.
+
+The supported algorithms and encryption algorithms (&quot;alg&quot; and &quot;enc&quot; fields of
+the JOSE header respectively) can be modified thanks to the
+'jwt.decrypt_alg_list' and 'jwt.decrypt_enc_list' global options.
 
 The JWE token must be provided base64url-encoded and the output will be
 provided &quot;raw&quot;. If an error happens during token parsing, signature
@@ -35168,7 +35228,6 @@ Current limitations:
   from outside HAProxy using &quot;dump ssl cert&quot; on the stats socket. It's possible
   to automate the dump of the certificates by using the dataplaneAPI or the
   haproxy-dump-certs script provided in the admin/cli/ directory.
-- External Account Binding (EAB) is not supported.
 
 The ACME scheduler starts at HAProxy startup, it will loop over the
 certificates and start an ACME renewal task when the notAfter task is past
@@ -35380,7 +35439,33 @@ acme LE2
     curves P-384
     map virt@acme
 </code></pre>
-</div></div>
+</div><a class="anchor" name="eab-key-id"></a><a class="anchor" name="12-eab-key-id"></a><a class="anchor" name="12.8-eab-key-id"></a><a class="anchor" name="eab-key-id (Other sections)"></a><a class="anchor" name="eab-key-id (ACME)"></a><div class="keyword"><b><a class="anchor" name="eab-key-id"></a><a href="#12.8-eab-key-id">eab-key-id</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the EAB key id file. The credential is provided by
+the CA and must be placed at the specified path before starting HAProxy.
+It is used during account creation only.
+
+The file must contain a plain ASCII string.
+
+EAB credentials are only required during the initial ACME account creation
+and can be removed afterwards, either from the config or by emptying the
+files. An empty file is silently ignored. Whitespace is not ignored, except
+for the trailing newline.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#eab-mac-key">eab-mac-key</a>&quot;, &quot;<a href="#eab-mac-alg">eab-mac-alg</a>&quot;</div>
+<a class="anchor" name="eab-mac-key"></a><a class="anchor" name="12-eab-mac-key"></a><a class="anchor" name="12.8-eab-mac-key"></a><a class="anchor" name="eab-mac-key (Other sections)"></a><a class="anchor" name="eab-mac-key (ACME)"></a><div class="keyword"><b><a class="anchor" name="eab-mac-key"></a><a href="#12.8-eab-mac-key">eab-mac-key</a></b> <span style="color: #080">&lt;filename&gt;</span></div><pre class="text">Configure the path to the EAB MAC key file. The credential is provided by
+the CA and must be placed at the specified path before starting HAProxy.
+It is used during account creation only.
+
+The file must contain a base64url encoded MAC key.
+
+EAB credentials are only required during the initial ACME account creation
+and can be removed afterwards, either from the config or by emptying the
+files. An empty file is silently ignored. Whitespace is not ignored, except
+for the trailing newline.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#eab-key-id">eab-key-id</a>&quot;, &quot;<a href="#eab-mac-alg">eab-mac-alg</a>&quot;</div>
+<a class="anchor" name="eab-mac-alg"></a><a class="anchor" name="12-eab-mac-alg"></a><a class="anchor" name="12.8-eab-mac-alg"></a><a class="anchor" name="eab-mac-alg (Other sections)"></a><a class="anchor" name="eab-mac-alg (ACME)"></a><div class="keyword"><b><a class="anchor" name="eab-mac-alg"></a><a href="#12.8-eab-mac-alg">eab-mac-alg</a></b> <span style="color: #800">{ HS256 | HS384 | HS512 }</span></div><pre class="text">Configure MAC algorithm used for EAB signing. Default is HS256. EAB MAC key
+must be large enough to support specified MAC algorithm. Not all CAs support
+algorithms other than HS256.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#eab-key-id">eab-key-id</a>&quot;, &quot;<a href="#eab-mac-key">eab-mac-key</a>&quot;</div>
+</div>
 <a class="anchor" id="12.9" name="12.9"></a>
 <h2 id="chapter-12.9" data-target="12.9"><small><a class="small" href="#12.9">12.9.</a></small> Healthchecks</h2>
 <div><pre class="text">It is possible to globally declare several health-checks that could be used by
@@ -35434,7 +35519,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev10-79 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev10-100 &ndash; Configuration Manual<br>
 							<small>, 2026/04/29</small>
 						</div>
 					</div>
