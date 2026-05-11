@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev11-2 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev11-5 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4733,6 +4733,8 @@
 							
 							<a class="list-group-item" href="#tune.stick-counters">tune.stick-counters</a>
 							
+							<a class="list-group-item" href="#tune.streams-elasticity">tune.streams-elasticity</a>
+							
 							<a class="list-group-item" href="#tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a>
 							
 							<a class="list-group-item" href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
@@ -4920,7 +4922,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4931,7 +4933,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev11-2</strong></p>
+							<p><strong>version 3.4-dev11-5</strong></p>
 							<p>
 								2026/05/08<br>
 								
@@ -8058,6 +8060,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
    - <a href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>
    - <a href="#tune.sndbuf.server">tune.sndbuf.server</a>
+   - <a href="#tune.streams-elasticity">tune.streams-elasticity</a>
    - <a href="#tune.stick-counters">tune.stick-counters</a>
    - <a href="#tune.ssl.cachesize">tune.ssl.cachesize</a>
    - <a href="#tune.ssl.capture-buffer-size">tune.ssl.capture-buffer-size</a>
@@ -11163,6 +11166,37 @@ tune.idletimer above). See also tune.ssl.hard-maxrecord.
 entries. This is a LRU cache. Because generating a SSL certificate
 dynamically is expensive, they are cached. The default cache size is set to
 1000 entries.
+</pre><a class="anchor" name="tune.streams-elasticity"></a><a class="anchor" name="3-tune.streams-elasticity"></a><a class="anchor" name="3.2-tune.streams-elasticity"></a><a class="anchor" name="tune.streams-elasticity (Global section)"></a><a class="anchor" name="tune.streams-elasticity (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.streams-elasticity"></a><a href="#3.2-tune.streams-elasticity">tune.streams-elasticity</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Defines a target percentage of streams per frontend connection relative to
+the maximum number of concurrent connections (maxconn) when all connections
+are established. This metric applies to multiplexed protocols like HTTP/2 or
+QUIC, where each connection may receive multiple streams. At least one is
+always guaranteed, so the percentage must be at least 100%. During connection
+setup, HAProxy dynamically advertises additional streams up to the configured
+limit, maintaining the target ratio. At connection establishment, every
+frontend connection receives at least one stream; extra streams are assigned
+based on the target percentage and configured stream limits. This ensures
+efficient stream allocation under varying load conditions (more streams at
+low loads, fewer at high loads).
+
+Highly dynamic sites with many objects per page benefit from high ratios,
+enabling many streams per connection. Sites using fewer streams on average
+(WebSocket, application code) may prefer small ratios closer to 120 or 150
+(20 to 50% more streams than connections) preventing excessive stream counts
+under sustained loads.
+
+The default value is 0, meaning no enforcement at this level, so only H2 and
+QUIC configurations apply (with the default setting of 100 streams per
+connection, this corresponds to 10000%). This remains the recommended setting
+for small deployments (maxconn around a thousand). Moderately sized setups
+(few thousands to tens of thousands connections) typically set the ratio
+between 1000 and 5000, allowing 10 to 50 streams per connection at full load.
+Large-scale deployments (hundreds of thousands to millions connections) might
+use lower values (120 to 200) to support 1.2 to 2 streams per connection on
+average at full load.
+
+Monitoring the total number of active streams on backends, including queues,
+provides a practical indicator of a sustainable target load and helps avoid
+over-provisioning.
 </pre><a class="anchor" name="tune.stick-counters"></a><a class="anchor" name="3-tune.stick-counters"></a><a class="anchor" name="3.2-tune.stick-counters"></a><a class="anchor" name="tune.stick-counters (Global section)"></a><a class="anchor" name="tune.stick-counters (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.stick-counters"></a><a href="#3.2-tune.stick-counters">tune.stick-counters</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the number of stick-counters that may be tracked at the same time by a
 connection or a request via &quot;track-sc*&quot; actions in &quot;<a href="#tcp-request">tcp-request</a>&quot; or
 &quot;<a href="#http-request">http-request</a>&quot; rules. The default value is set at build time by the macro
@@ -35519,7 +35553,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev11-2 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev11-5 &ndash; Configuration Manual<br>
 							<small>, 2026/05/08</small>
 						</div>
 					</div>
