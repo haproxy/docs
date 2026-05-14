@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev11-40 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev12 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3321,6 +3321,10 @@
 							
 							<a class="list-group-item" href="#reuse-key">reuse-key</a>
 							
+							<a class="list-group-item" href="#reverse">reverse</a>
+							
+							<a class="list-group-item" href="#reverse_dom">reverse_dom</a>
+							
 							<a class="list-group-item" href="#rfc7239_field">rfc7239_field</a>
 							
 							<a class="list-group-item" href="#rfc7239_is_valid">rfc7239_is_valid</a>
@@ -4922,7 +4926,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4933,9 +4937,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev11-40</strong></p>
+							<p><strong>version 3.4-dev12</strong></p>
 							<p>
-								2026/05/08<br>
+								2026/05/13<br>
 								
 							</p>
 						</div>
@@ -25371,6 +25375,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-port_only">port_only</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-protobuf">protobuf(field_number[,field_type])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-regsub">regsub(regex,subst[,flags])</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-reverse">reverse</a></td><td >string</td><td >string</td></tr>
+<tr><td ><a href="#7-reverse_dom">reverse_dom</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_field">rfc7239_field(field)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
@@ -25378,9 +25384,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rtrim">rtrim(chars)</a></td><td >string</td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
@@ -25399,9 +25405,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_rate">table_glitch_rate([table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25420,9 +25426,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_out">table_kbytes_out([table])</a></td><td >any</td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.dst">tcp.dst</a></td><td >binary</td><td >integer</td></tr>
@@ -25441,9 +25447,9 @@ The following keywords are supported:
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
+<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-url_enc">url_enc([enc_type])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-us_ltime">us_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-us_utime">us_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
@@ -26725,6 +26731,58 @@ http-request set-header x-query &quot;%[query,regsub([?;&amp;]*,'')]&quot;
 <span class="comment"># both lines do the same.</span>
 http-request redirect location %[url,'regsub(&quot;(foo|bar)([0-9]+)?&quot;,&quot;\2\1&quot;,i)']
 http-request redirect location %[url,regsub(\&quot;(foo|bar)([0-9]+)?\&quot;,\&quot;\2\1\&quot;,i)]
+</code></pre>
+</div><a class="anchor" name="reverse"></a><a class="anchor" name="7-reverse"></a><a class="anchor" name="7.3.1-reverse"></a><a class="anchor" name="reverse (Using ACLs and fetching samples)"></a><a class="anchor" name="reverse (Converters)"></a><div class="keyword"><b><a class="anchor" name="reverse"></a><a href="#7.3.1-reverse">reverse</a></b></div><pre class="text">Reverses the input string byte by byte.
+
+This converter is encoding-agnostic and reverses bytes, not characters; it is
+not suitable for reversing human text encoded as UTF-8.
+
+This can turn suffix lookups on the original string into prefix lookups on
+the reversed string, allowing the use of indexed prefix matchers such as
+&quot;map_beg&quot; on large maps.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code>&quot;example.com&quot; -&gt; &quot;moc.elpmaxe&quot;
+&quot;ab cd&quot; -&gt; &quot;dc ba&quot;
+
+<span class="comment"># Given a map file where each key contains a reversed hostname:</span>
+<span class="comment">#   moc.elpmaxe.ppa app1</span>
+<span class="comment">#   moc.elpmaxe.bd  dbcluster</span>
+<span class="comment"># Pick a backend based on the domain suffix of the Host header:</span>
+use_backend %[req.hdr(host),lower,reverse,map_beg(/etc/haproxy/hosts.map,default)]
+</code></pre>
+</div><a class="anchor" name="reverse_dom"></a><a class="anchor" name="7-reverse_dom"></a><a class="anchor" name="7.3.1-reverse_dom"></a><a class="anchor" name="reverse_dom (Using ACLs and fetching samples)"></a><a class="anchor" name="reverse_dom (Converters)"></a><div class="keyword"><b><a class="anchor" name="reverse_dom"></a><a href="#7.3.1-reverse_dom">reverse_dom</a></b></div><pre class="text">Converts a string containing an FQDN-like hostname into its reversed-label
+form. A single trailing dot on the input is ignored. Empty labels cause the
+converter to fail.
+
+This converter does not lowercase its input and does not strip any port.
+It is meant to be combined with existing converters such as &quot;<a href="#lower">lower</a>&quot; or
+&quot;<a href="#host_only">host_only</a>&quot; when needed.
+
+The trailing-dot policy is intentionally left to the caller. This allows
+callers to decide whether they want to match the apex too or only
+subdomains.
+
+The reversed-label form is useful for large domain maps because it turns
+domain suffix lookups into prefix lookups, allowing the use of indexed prefix
+matchers such as &quot;map_beg&quot;.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code>&quot;example.com&quot; -&gt; &quot;com.example&quot;
+&quot;mail.example.com&quot; -&gt; &quot;com.example.mail&quot;
+&quot;example.com.&quot; -&gt; &quot;com.example&quot;
+
+<span class="comment"># match only subdomains of example.net, not the apex</span>
+acl example_net_sub req.hdr(Host),host_only,reverse_dom -m beg net.example.
+
+<span class="comment"># match only the apex</span>
+acl example_net_apex req.hdr(Host),host_only,reverse_dom -i net.example
+
+<span class="comment"># exact-or-subdomain prefix lookup using an explicit dotted form</span>
+http-request set-var(txn.rev_host) req.hdr(Host),host_only,reverse_dom,concat(.)
+use_backend %[var(txn.rev_host),map_beg(/etc/haproxy/domains.map)]
 </code></pre>
 </div><a class="anchor" name="rfc7239_field"></a><a class="anchor" name="7-rfc7239_field"></a><a class="anchor" name="7.3.1-rfc7239_field"></a><a class="anchor" name="rfc7239_field (Using ACLs and fetching samples)"></a><a class="anchor" name="rfc7239_field (Converters)"></a><div class="keyword"><b><a class="anchor" name="rfc7239_field"></a><a href="#7.3.1-rfc7239_field">rfc7239_field</a></b>(<span style="color: #080">&lt;field&gt;</span>)</div><pre class="text">Extracts a single field/parameter from RFC 7239 compliant header value input.
 
@@ -35553,8 +35611,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev11-40 &ndash; Configuration Manual<br>
-							<small>, 2026/05/08</small>
+							HAProxy 3.4-dev12 &ndash; Configuration Manual<br>
+							<small>, 2026/05/13</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
