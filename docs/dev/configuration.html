@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev12-53 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4926,7 +4926,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4937,9 +4937,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev12-53</strong></p>
+							<p><strong>version 3.4-dev13</strong></p>
 							<p>
-								2026/05/13<br>
+								2026/05/20<br>
 								
 							</p>
 						</div>
@@ -8165,12 +8165,27 @@ The default value is &quot;auto&quot;.
 relative path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 directives. Absolute locations specified in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; prevail and ignore &quot;<a href="#ca-base">ca-base</a>&quot;.
-</pre><a class="anchor" name="chroot"></a><a class="anchor" name="3-chroot"></a><a class="anchor" name="3.1-chroot"></a><a class="anchor" name="chroot (Global section)"></a><a class="anchor" name="chroot (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="chroot"></a><a href="#3.1-chroot">chroot</a></b> <span style="color: #080">&lt;jail dir&gt;</span></div><pre class="text">Changes current directory to &lt;jail dir&gt; and performs a chroot() there before
+</pre><a class="anchor" name="chroot"></a><a class="anchor" name="3-chroot"></a><a class="anchor" name="3.1-chroot"></a><a class="anchor" name="chroot (Global section)"></a><a class="anchor" name="chroot (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="chroot"></a><a href="#3.1-chroot">chroot</a></b> <span style="color: #800">{ <span style="color: #080">&lt;jail dir&gt;</span> | auto }</span></div><pre class="text">Changes current directory to &lt;jail dir&gt; and performs a chroot() there before
 dropping privileges. This increases the security level in case an unknown
 vulnerability would be exploited, since it would make it very hard for the
-attacker to exploit the system. This only works when the process is started
-with superuser privileges. It is important to ensure that &lt;jail_dir&gt; is both
-empty and non-writable to anyone.
+attacker to exploit the system. It is important to ensure that &lt;jail dir&gt;
+is both empty and non-writable to anyone. When the process is started with
+superuser privileges, the chroot() is performed directly. On Linux, when
+started unprivileged, haproxy attempts to perform it from inside a new
+user namespace created with unshare(CLONE_NEWUSER); if that mechanism is
+unavailable the chroot() will fail with the usual error.
+
+As a special case, &lt;jail dir&gt; may be set to &quot;auto&quot;, in which case haproxy
+creates an anonymous temporary directory, unlinks it, and chroots into it.
+The resulting jail has no name in the filesystem and is empty and read-only,
+removing the need to prepare a dedicated jail directory.
+
+When starting with superuser privileges, a warning will be displayed if no
+chroot is used, in order to encourage users to always use the mechanism. If
+for any reason there is a compelling reason not to use chroot (e.g. access to
+a server via a UNIX socket with an unconvenient path), it remains possible to
+silence the warning by adding an explicit &quot;chroot /&quot;, which has the benefit
+of being visible in a configuration.
 </pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global section)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
 closing is spread in case of soft-stop. After a SIGUSR1 is received and the
 grace period is over (if any), the idle connections will all be closed at
@@ -10867,16 +10882,25 @@ this ratio, to increase fairness and reduce the per-stream bandwidth.
 <a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3.2-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Global section)"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a href="#3.2-tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a></b>  <span style="color: #080">&lt;0..100, in percent&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
-</pre><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a href="#3.2-tune.quic.be.stream.max-concurrent">tune.quic.be.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a href="#3.2-tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the QUIC initial_max_streams_bidi transport parameter either on frontend
-or backend side. This is the maximum number of bidirectional streams that the
-remote peer will be authorized to open concurrently during the connection
-lifetime. On frontend side, this limits the number of concurrent HTTP/3
-client requests.
+</pre><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a href="#3.2-tune.quic.be.stream.max-concurrent">tune.quic.be.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a href="#3.2-tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">On frontend side, this is used as the value for the advertised
+initial_max_streams_bidi transport parameter. This is enforced as the maximum
+number of bidirectional streams that the remote peer will be authorized to
+open concurrently during the connection lifetime. This effectively limits the
+number of concurrent HTTP/3 client requests.
 
 The default value is 100. Note that if you reduces it, it can restrict the
 buffering capabilities of streams on receive, which would result in poor
 upload throughput. It can be corrected by increasing the QUIC stream rxbuf
 connection setting.
+
+On backend side, this is enforced locally by haproxy to limit the number of
+concurrent requests multiplexed over a single connection. This may be further
+restricted by the peer flow control. It may be necessary to reduce the
+default value of 100 to improve a site's responsiveness at the expense of a
+higher number of opened backend connections. Similarly to the frontend side,
+this setting also directly impacts the Rx buffering capability, this time
+though limiting the HTTP download capacity. QUIC stream rxbuf setting can be
+increased when dealing mostly with HTTP responses larger than &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot;.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.stream.rxbuf">tune.quic.be.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.be.stream.data-ratio">tune.quic.be.stream.data-ratio</a>&quot;, &quot;<a href="#tune.quic.fe.stream.data-ratio">tune.quic.fe.stream.data-ratio</a>&quot;</div>
 <a class="anchor" name="tune.quic.fe.stream.max-total"></a><a class="anchor" name="3-tune.quic.fe.stream.max-total"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-total"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-total (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-total"></a><a href="#3.2-tune.quic.fe.stream.max-total">tune.quic.fe.stream.max-total</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of requests that can be handled by a single QUIC
 connection. Once this total is reached, the connection will be gracefully
@@ -11197,6 +11221,16 @@ between 1000 and 5000, allowing 10 to 50 streams per connection at full load.
 Large-scale deployments (hundreds of thousands to millions connections) might
 use lower values (120 to 200) to support 1.2 to 2 streams per connection on
 average at full load.
+
+Contrary to HTTP/2, QUIC is capable to dynamically adjust the number of
+concurrent streams during the connection lifetime. However, QUIC flow control
+is stricter than HTTP/2, thus it is preferable when using it to specify
+values big enough to prevent extra latency on the connection. There is also a
+limitation for QUIC listeners with enabled 0-RTT. In this case, the initial
+value advertised to the peer will ignore stream elasticity and instead rely
+solely on the &quot;<a href="#tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a>&quot; setting. However, the
+stream elasticity principle will still be effective past this initial
+annoucement during the connection lifetime.
 
 Monitoring the total number of active streams on backends, including queues,
 provides a practical indicator of a sustainable target load and helps avoid
@@ -35642,8 +35676,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev12-53 &ndash; Configuration Manual<br>
-							<small>, 2026/05/13</small>
+							HAProxy 3.4-dev13 &ndash; Configuration Manual<br>
+							<small>, 2026/05/20</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
