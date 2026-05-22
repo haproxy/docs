@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.10 - Configuration Manual</title>
+		<title>HAProxy version 3.3.10-36 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4717,7 +4717,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4728,7 +4728,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.10</strong></p>
+							<p><strong>version 3.3.10-36</strong></p>
 							<p>
 								2026/05/11<br>
 								
@@ -10412,16 +10412,25 @@ this ratio, to increase fairness and reduce the per-stream bandwidth.
 <a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="3.2-tune.quic.frontend.stream-data-ratio"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Global section)"></a><a class="anchor" name="tune.quic.frontend.stream-data-ratio (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.stream-data-ratio"></a><a href="#3.2-tune.quic.frontend.stream-data-ratio">tune.quic.frontend.stream-data-ratio</a></b>  <span style="color: #080">&lt;0..100, in percent&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
 setting will only be applied on frontend connections.
-</pre><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a href="#3.2-tune.quic.be.stream.max-concurrent">tune.quic.be.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a href="#3.2-tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the QUIC initial_max_streams_bidi transport parameter either on frontend
-or backend side. This is the maximum number of bidirectional streams that the
-remote peer will be authorized to open concurrently during the connection
-lifetime. On frontend side, this limits the number of concurrent HTTP/3
-client requests.
+</pre><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.be.stream.max-concurrent"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.be.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.be.stream.max-concurrent"></a><a href="#3.2-tune.quic.be.stream.max-concurrent">tune.quic.be.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="3.2-tune.quic.fe.stream.max-concurrent"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Global section)"></a><a class="anchor" name="tune.quic.fe.stream.max-concurrent (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.fe.stream.max-concurrent"></a><a href="#3.2-tune.quic.fe.stream.max-concurrent">tune.quic.fe.stream.max-concurrent</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">On frontend side, this is used as the value for the advertised
+initial_max_streams_bidi transport parameter. This is enforced as the maximum
+number of bidirectional streams that the remote peer will be authorized to
+open concurrently during the connection lifetime. This effectively limits the
+number of concurrent HTTP/3 client requests.
 
 The default value is 100. Note that if you reduces it, it can restrict the
 buffering capabilities of streams on receive, which would result in poor
 upload throughput. It can be corrected by increasing the QUIC stream rxbuf
 connection setting.
+
+On backend side, this is enforced locally by haproxy to limit the number of
+concurrent requests multiplexed over a single connection. This may be further
+restricted by the peer flow control. It may be necessary to reduce the
+default value of 100 to improve a site's responsiveness at the expense of a
+higher number of opened backend connections. Similarly to the frontend side,
+this setting also directly impacts the Rx buffering capability, this time
+though limiting the HTTP download capacity. QUIC stream rxbuf setting can be
+increased when dealing mostly with HTTP responses larger than &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot;.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#tune.quic.be.stream.rxbuf">tune.quic.be.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>&quot;, &quot;<a href="#tune.quic.be.stream.data-ratio">tune.quic.be.stream.data-ratio</a>&quot;, &quot;<a href="#tune.quic.fe.stream.data-ratio">tune.quic.fe.stream.data-ratio</a>&quot;</div>
 <a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="3.2-tune.quic.frontend.max-streams-bidi"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Global section)"></a><a class="anchor" name="tune.quic.frontend.max-streams-bidi (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.frontend.max-streams-bidi"></a><a href="#3.2-tune.quic.frontend.max-streams-bidi">tune.quic.frontend.max-streams-bidi</a></b> <span style="color: #080">&lt;number&gt;</span> <span class="label label-warning">(deprecated)</span></div><pre class="text">This keyword has been deprecated in 3.3 and will be removed in 3.5. It is
 part of the streamlining process apply on QUIC configuration. If used, this
@@ -12970,7 +12979,10 @@ May be used in the following contexts: tcp, http, log
 
    none   don't hash the key, the key will be used as a hash, this can be
           useful to manually hash the key using a converter for that purpose
-          and let haproxy use the result directly.
+          and let haproxy use the result directly. The operation will
+          convert the key to a string if it is not already, and parse it as
+          an integer whose value will be used as the key. Some input key
+          types might not be relevant here (e.g. IP addresses).
 
 &lt;modifier&gt; indicates an optional method applied after hashing the key :
 
@@ -22581,9 +22593,13 @@ uses &quot;hash-type consistent&quot;, and the quality of the distribution will 
 on the quality of the keys.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.2-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.2-id">id</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
-Set a persistent ID for the server. This ID must be positive and unique for
-the proxy. An unused ID will automatically be assigned if unset. The first
-assigned value will be 1. This ID is currently only returned in statistics.
+Set a persistent ID for the server. This ID must be a 32-bit positive number
+and unique for the proxy. An unused ID will automatically be assigned if
+unset. The first assigned value will be 1. This ID is currently only returned
+in statistics, and is used to place LB nodes when using consistent hash
+algorithms when &quot;<a href="#hash-key">hash-key</a>&quot; is set to &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; (the default). In this case, only
+the 28 lowest bits of the value are used (i.e. (id % 268435356)), so better
+only use values comprised between 1 and this value to avoid overlap.
 </pre><a class="anchor" name="idle-ping"></a><a class="anchor" name="5-idle-ping"></a><a class="anchor" name="5.2-idle-ping"></a><a class="anchor" name="idle-ping (Bind and server options)"></a><a class="anchor" name="idle-ping (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="idle-ping"></a><a href="#5.2-idle-ping">idle-ping</a></b> <span style="color: #080">&lt;delay&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Define an interval for periodic liveliness on idle backend connections. If
@@ -22660,27 +22676,32 @@ that has reached this limit, until another check finishes. This will have for
 effect to extend the effective check interval. In such a case, reducing the
 &quot;<a href="#inter">inter</a>&quot; setting will have a very limited effect as it will not be able to
 reduce the time spent in the queue.
-</pre><a class="anchor" name="init-state"></a><a class="anchor" name="5-init-state"></a><a class="anchor" name="5.2-init-state"></a><a class="anchor" name="init-state (Bind and server options)"></a><a class="anchor" name="init-state (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="init-state"></a><a href="#5.2-init-state">init-state</a></b> <span style="color: #800">{ fully-up | up | down | fully-down }</span></div><pre class="text">May be used in the following contexts: tcp, http
+</pre><a class="anchor" name="init-state"></a><a class="anchor" name="5-init-state"></a><a class="anchor" name="5.2-init-state"></a><a class="anchor" name="init-state (Bind and server options)"></a><a class="anchor" name="init-state (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="init-state"></a><a href="#5.2-init-state">init-state</a></b> <span style="color: #800">{ fully-up | up | down | fully-down | none }</span></div><pre class="text">May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
 <pre class="text">The &quot;<a href="#init-state">init-state</a>&quot; option sets the initial state of the server:
   - when set to 'fully-up', the server is considered immediately available
-    and can turn to the DOWN state when ALL health checks fail.
-  - when set to 'up' (the default), the server is considered immediately
-    available and will initiate a health check that can turn it to the DOWN
-    state immediately if it fails.
-  - when set to 'down', the server initially is considered unavailable and
-    will initiate a health check that can turn it to the UP state immediately
-    if it succeeds.
+    and, if health checks are enabled for this server, it will be turned to
+    the DOWN state when ALL health checks fail.
+  - when set to 'up', the server is considered immediately available and, if
+    health checks are enabled for this server, it will be turned to the DOWN
+    state immediately if the next health check fails.
+  - when set to 'down', the server initially is considered unavailable and,
+    if health checks are enabled for this server, it can be turned to the UP
+    state if the next health check succeeds.
   - when set to 'fully-down', the server is initially considered unavailable
-    and can turn to the UP state when ALL health checks succeed.
+    and, if health checks are enabled for this server, it will turned to the
+    UP state when ALL health checks succeed.
+  - when set to 'none' (the default value), init-state management is
+    disabled. It can be used to restore the default behavior when this
+    parameter was inherited from a 'default-server' directive.
 
 The server's init-state is considered when the HAProxy instance is
 (re)started, a new server is detected (for example via service discovery /
 DNS resolution), a dynamic server is inlived, a server exits maintenance,
-etc.
+etc. This directive cannot be used when the server is tracking another one.
 </pre><div class="separator">
 <span class="label label-success">Examples:</span>
 <pre class="prettyprint">
@@ -23712,7 +23733,11 @@ following scenarios are possible:
 As a DNS server may not answer all the IPs in one DNS request, HAProxy keeps
 a cache of previous answers, an answer will be considered obsolete after
 &lt;hold obsolete&gt; seconds without the IP returned.
-</pre><a class="anchor" name="resolvers"></a><a class="anchor" name="5-resolvers"></a><a class="anchor" name="5.3.2-resolvers"></a><a class="anchor" name="resolvers (Bind and server options)"></a><a class="anchor" name="resolvers (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolvers"></a><a href="#5.3.2-resolvers">resolvers</a></b> <span style="color: #080">&lt;resolvers id&gt;</span></div><pre class="text">  Creates a new name server list labeled &lt;resolvers id&gt;
+</pre><a class="anchor" name="resolvers"></a><a class="anchor" name="5-resolvers"></a><a class="anchor" name="5.3.2-resolvers"></a><a class="anchor" name="resolvers (Bind and server options)"></a><a class="anchor" name="resolvers (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolvers"></a><a href="#5.3.2-resolvers">resolvers</a></b> <span style="color: #080">&lt;resolvers id&gt;</span></div><pre class="text">  Creates a new name server list labeled &lt;resolvers id&gt;. As mentioned above,
+  the special name &quot;default&quot; always exists and will be automatically created if
+  not explicitly declared; this will be the one internal services such as
+  httpclient rely on. Declaring a &quot;default&quot; entry will affect how such services
+  perform their name resolution.
 
 A resolvers section accept the following parameters:
 </pre><a class="anchor" name="accepted_payload_size"></a><a class="anchor" name="5-accepted_payload_size"></a><a class="anchor" name="5.3.2-accepted_payload_size"></a><a class="anchor" name="accepted_payload_size (Bind and server options)"></a><a class="anchor" name="accepted_payload_size (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="accepted_payload_size"></a><a href="#5.3.2-accepted_payload_size">accepted_payload_size</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the maximum payload size accepted by HAProxy and announced to all the
@@ -33971,7 +33996,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.10 &ndash; Configuration Manual<br>
+							HAProxy 3.3.10-36 &ndash; Configuration Manual<br>
 							<small>, 2026/05/11</small>
 						</div>
 					</div>
