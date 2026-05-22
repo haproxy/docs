@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.23 - Configuration Manual</title>
+		<title>HAProxy version 3.0.23-23 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4331,7 +4331,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4342,7 +4342,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0.23</strong></p>
+							<p><strong>version 3.0.23-23</strong></p>
 							<p>
 								2026/05/11<br>
 								
@@ -11939,7 +11939,10 @@ May be used in the following contexts: tcp, http, log
 
    none   don't hash the key, the key will be used as a hash, this can be
           useful to manually hash the key using a converter for that purpose
-          and let haproxy use the result directly.
+          and let haproxy use the result directly. The operation will
+          convert the key to a string if it is not already, and parse it as
+          an integer whose value will be used as the key. Some input key
+          types might not be relevant here (e.g. IP addresses).
 
 &lt;modifier&gt; indicates an optional method applied after hashing the key :
 
@@ -22355,7 +22358,11 @@ following scenarios are possible:
 As a DNS server may not answer all the IPs in one DNS request, HAProxy keeps
 a cache of previous answers, an answer will be considered obsolete after
 &lt;hold obsolete&gt; seconds without the IP returned.
-</pre><a class="anchor" name="resolvers"></a><a class="anchor" name="5-resolvers"></a><a class="anchor" name="5.3.2-resolvers"></a><a class="anchor" name="resolvers (Bind and server options)"></a><a class="anchor" name="resolvers (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolvers"></a><a href="#5.3.2-resolvers">resolvers</a></b> <span style="color: #080">&lt;resolvers id&gt;</span></div><pre class="text">  Creates a new name server list labeled &lt;resolvers id&gt;
+</pre><a class="anchor" name="resolvers"></a><a class="anchor" name="5-resolvers"></a><a class="anchor" name="5.3.2-resolvers"></a><a class="anchor" name="resolvers (Bind and server options)"></a><a class="anchor" name="resolvers (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="resolvers"></a><a href="#5.3.2-resolvers">resolvers</a></b> <span style="color: #080">&lt;resolvers id&gt;</span></div><pre class="text">  Creates a new name server list labeled &lt;resolvers id&gt;. As mentioned above,
+  the special name &quot;default&quot; always exists and will be automatically created if
+  not explicitly declared; this will be the one internal services such as
+  httpclient rely on. Declaring a &quot;default&quot; entry will affect how such services
+  perform their name resolution.
 
 A resolvers section accept the following parameters:
 </pre><a class="anchor" name="accepted_payload_size"></a><a class="anchor" name="5-accepted_payload_size"></a><a class="anchor" name="5.3.2-accepted_payload_size"></a><a class="anchor" name="accepted_payload_size (Bind and server options)"></a><a class="anchor" name="accepted_payload_size (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="accepted_payload_size"></a><a href="#5.3.2-accepted_payload_size">accepted_payload_size</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the maximum payload size accepted by HAProxy and announced to all the
@@ -30885,7 +30892,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.23 &ndash; Configuration Manual<br>
+							HAProxy 3.0.23-23 &ndash; Configuration Manual<br>
 							<small>, 2026/05/11</small>
 						</div>
 					</div>
