@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.2.19-29 - Configuration Manual</title>
+		<title>HAProxy version 3.2.19-93 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4636,7 +4636,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/05/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4647,7 +4647,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.2.19-29</strong></p>
+							<p><strong>version 3.2.19-93</strong></p>
 							<p>
 								2026/05/11<br>
 								
@@ -14181,7 +14181,7 @@ stickly these protocols.
 When this option is set, the following rules are observed:
 
   * In H1 only, invalid characters, including NULL character, in header name
-    will be accepted;
+    will not be rejected; however the header will be dropped.
 
   * In H1 only, NULL character in header value will be accepted;
 
@@ -14241,8 +14241,11 @@ to be cleaner and applications follow more stickly these protocols.
 
 When this option is set, the following rules are observed:
 
+  * In H1 only, status codes longer than 3 digits but whose value fits in 16
+    bits are not rejected.
+
   * In H1 only, invalid characters, including NULL character, in header name
-    will be accepted;
+    will not be rejected; however the header will be dropped.
 
   * In H1 only, NULL character in header value will be accepted;
 
@@ -33331,7 +33334,7 @@ program section.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.2.19-29 &ndash; Configuration Manual<br>
+							HAProxy 3.2.19-93 &ndash; Configuration Manual<br>
 							<small>, 2026/05/11</small>
 						</div>
 					</div>
