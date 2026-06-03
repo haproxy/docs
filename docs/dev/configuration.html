@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4-dev14-72 - Configuration Manual</title>
+		<title>HAProxy version 3.4-dev14-81 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4926,7 +4926,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4937,7 +4937,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4-dev14-72</strong></p>
+							<p><strong>version 3.4-dev14-81</strong></p>
 							<p>
 								2026/05/26<br>
 								
@@ -14353,7 +14353,9 @@ connection is eligible for reuse on a given request:
 - proxy protocol
 - TOS and mark socket options
 - connection name, determined either by the result of the evaluation of the
-  &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; expression if present, otherwise by the &quot;<a href="#sni">sni</a>&quot; expression
+  &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot; expression if present, otherwise by the &quot;<a href="#sni">sni</a>&quot; expression,
+  which defaults to &quot;req.hdr(host),field(1,:)&quot;, i.e. uses the incoming
+  request's &quot;Host&quot; header field without the colon nor the port number.
 
 In some occasions, connection lookup or reuse is not performed due to extra
 restrictions. This is determined by the reuse strategy specified via the
@@ -14426,6 +14428,26 @@ due to a lot of HTTP/2 or HTTP/3 traffic on the frontend (few connections)
 but HTTP/1 connections on the backend, may observe a lower reuse rate because
 too few connections are kept open. It may be desirable in this case to adjust
 such thresholds or simply to increase the global &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; value.
+
+In some rare cases, when the host name is used to distinguish outgoing TLS
+connections (e.g. forward proxy), where most request target different hosts,
+the reuse rate will be very low, and the automatic eviction of rarely used
+connections will kick in before connections have a chance to be reused,
+because the mechanism continuously measures the average number of connections
+needed to deliver the service without exhausting resources. In such
+situations, setting &quot;<a href="#pool-low-conn">pool-low-conn</a>&quot; to a value close to the average expected
+number of idle connections may help preserve more connections by encouraging
+threads to setup their own instead of trying to pick other threads' and
+shrinking the pool of available connections.
+
+If a locally hosted server uses a single certificate (with multiple host
+names or wildcards) and operates multiple sites, it may be more effective to
+just use &quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line to avoid reserving a connection
+to a single Host name. This will significantly increase the reuse rate. Some
+servers might perform excessive checks between Host and SNI though, resulting
+in rejecting subsequent requests, so this option requires preliminary
+validation. The default behavior (&quot;<a href="#sni-auto">sni-auto</a>&quot;) is to be safe even with such
+servers.
 
 When thread groups are explicitly enabled, it is important to understand that
 idle connections are only usable between threads from a same group. As such
@@ -24221,11 +24243,13 @@ unless overridden by the &quot;<a href="#pool-conn-name">pool-conn-name</a>&quot
 </pre><a class="anchor" name="sni-auto"></a><a class="anchor" name="5-sni-auto"></a><a class="anchor" name="5.2-sni-auto"></a><a class="anchor" name="sni-auto (Bind and server options)"></a><a class="anchor" name="sni-auto (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="sni-auto"></a><a href="#5.2-sni-auto">sni-auto</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 The &quot;<a href="#sni-auto">sni-auto</a>&quot; parameter enables the automatic SNI selection, if no value was
-already set. It is enabled by default but this parameter may be used as
-&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting which would have been
-inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive as default value.  It may also be
-used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-&quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting.
+already set. It sets the &quot;<a href="#sni">sni</a>&quot; expression to &quot;req.hdr(host),field(1,:)&quot;,
+which means that an SNI will be presented with the Host name of the request
+that is being sent to the server, but dropping the port number. It is enabled
+by default but this parameter may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any
+&quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting which would have been inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+directive as default value. It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting
+to reset any previous &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#no-sni-auto">no-sni-auto</a>&quot; setting.
 
 For HTTPS connections, the selected SNI is based on the request host header
 value, if found. Otherwise it remains unset. For other protocols, the option
@@ -35679,7 +35703,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4-dev14-72 &ndash; Configuration Manual<br>
+							HAProxy 3.4-dev14-81 &ndash; Configuration Manual<br>
 							<small>, 2026/05/26</small>
 						</div>
 					</div>
