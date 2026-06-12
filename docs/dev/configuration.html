@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev0-24 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev0-39 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4926,7 +4926,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4937,7 +4937,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev0-24</strong></p>
+							<p><strong>version 3.5-dev0-39</strong></p>
 							<p>
 								2026/06/03<br>
 								
@@ -35398,9 +35398,9 @@ https://github.com/haproxy/wiki/wiki/ACME:--native-haproxy
 Current limitations:
 - The feature is limited to the http-01, dns-01 or dns-persist-01 challenges
   for now. http-01 is completely handled by HAProxy, but dns-01 and
-  dns-persist-01 needs either the dataplaneAPI or another 3rd party
-  tool to talk to a DNS provider API. dns-persist-01 only needs the TXT entry
-  to be set once, so it could be set manually without a tool.
+  dns-persist-01 needs either the dataplaneAPI, a lua script using event_hdl or
+  another 3rd party tool to talk to a DNS provider API. dns-persist-01 only
+  needs the TXT entry to be set once, so it could be set manually without a tool.
 - It is possible to start without an existing certificate on the disk. To do
   so, the certificate must configured in a crt-store.
   When using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">acme<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#acme%20%28Load%20options%29">Load options</a></li><li><a href="#acme%20%28ACME%29">ACME</a></li></ul></span>&quot; keyword in a crt-store, a temporary key pair will be
@@ -35460,6 +35460,8 @@ that a dns-01 challenge is ready to be validated. Accepted values are:
          &quot;acme challenge_ready &lt;crt&gt; domain &lt;domain&gt;&quot; on the master CLI or
          the stats socket. This allows an external DNS provisioning tool to
          confirm that the TXT record has been set before HAProxy proceeds.
+         It is also possible to signal the &quot;cli&quot; readiness using the
+         ACME.challenge_ready() lua function.
 
   dns  - perform a DNS pre-check by resolving the TXT record for
          &quot;_acme-challenge.&lt;domain&gt;&quot; using the configured &quot;default&quot; resolvers
@@ -35703,7 +35705,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev0-24 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev0-39 &ndash; Configuration Manual<br>
 							<small>, 2026/06/03</small>
 						</div>
 					</div>
