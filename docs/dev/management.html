@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev1-19 - Management Guide</title>
+		<title>HAProxy version 3.5-dev1-36 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -696,7 +696,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/06/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -707,7 +707,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev1-19</strong></p>
+							<p><strong>version 3.5-dev1-36</strong></p>
 							<p>
 								<br>
 								
@@ -3402,7 +3402,47 @@ changed.
 
 This command is deprecated, create a new server dynamically with or without
 SSL instead, using the &quot;<a href="#add%20server">add server</a>&quot; command.
-</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set severity-output"></a><a class="anchor" name="9-set severity-output"></a><a class="anchor" name="9.3-set severity-output"></a><a class="anchor" name="set severity-output (Statistics and monitoring)"></a><a class="anchor" name="set severity-output (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set severity-output"></a><a href="#9.3-set%20severity-output">set severity-output</a></b> <span style="color: #008">[ none | number | string ]</span></div><pre class="text">Change the severity output format of the stats socket connected to for the
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set server"></a><a class="anchor" name="9-set server"></a><a class="anchor" name="9.3-set server"></a><a class="anchor" name="set server (Statistics and monitoring)"></a><a class="anchor" name="set server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set server"></a><a href="#9.3-set%20server">set server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> name <span style="color: #080">&lt;newname&gt;</span></div><pre class="text">Change the name of a server at runtime.
+
+Two preconditions are enforced:
+  - the server must be administratively in maintenance mode (set first
+    via &quot;set server &lt;b&gt;/&lt;s&gt; state maint&quot; or &quot;disable server &lt;b&gt;/&lt;s&gt;&quot;);
+  - the server's name must not be statically referenced by a
+    &quot;use-server&quot; rule, a &quot;track&quot; directive, or a sample-fetch argument
+    of type ARGT_SRV. Such references are recorded at configuration
+    load time and renaming the target would leave the running state
+    inconsistent with the configuration text.
+
+Like &quot;<a href="#add%20server">add server</a>&quot; and &quot;<a href="#del%20server">del server</a>&quot;, this command is not gated by a
+per-backend opt-in directive: availability is determined entirely by
+the server's runtime properties.
+
+The new name must be syntactically valid (non-empty, must pass
+invalid_char(), i.e. only [A-Za-z0-9_:.-]) and must be unique among
+all servers in the backend. The change is effective immediately for
+all runtime operations, stats, and logs, but is not persisted to the
+configuration file and will be lost on reload. Some features that
+rely on static server names (such as stick-tables or external
+monitoring) may not recognize the new name until restart.
+
+A successful rename publishes an EVENT_HDL_SUB_SERVER_NAME event
+carrying the old and new names, which Lua scripts and other event
+consumers can subscribe to.
+
+There is no strict requirement that no sessions are active before
+renaming. However, if there are active sessions, log entries for
+those sessions may use either the old or new name, depending on when
+the rename occurs relative to logging. This may result in split or
+inconsistent logs for in-flight requests. If strict log consistency
+is required, it is the user's responsibility to ensure all sessions
+have finished before renaming (e.g. by draining via maintenance mode
+and waiting for all connections to close).
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>set server myapp/s1 name blue
+</code></pre>
+</div><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set severity-output"></a><a class="anchor" name="9-set severity-output"></a><a class="anchor" name="9.3-set severity-output"></a><a class="anchor" name="set severity-output (Statistics and monitoring)"></a><a class="anchor" name="set severity-output (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set severity-output"></a><a href="#9.3-set%20severity-output">set severity-output</a></b> <span style="color: #008">[ none | number | string ]</span></div><pre class="text">Change the severity output format of the stats socket connected to for the
 duration of the current session.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set ssl"></a><a class="anchor" name="9-set ssl"></a><a class="anchor" name="9.3-set ssl"></a><a class="anchor" name="set ssl (Statistics and monitoring)"></a><a class="anchor" name="set ssl (Unix Socket commands)"></a><a class="anchor" name="set ssl ca-file"></a><a class="anchor" name="9-set ssl ca-file"></a><a class="anchor" name="9.3-set ssl ca-file"></a><a class="anchor" name="set ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="set ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set ssl ca-file"></a><a href="#9.3-set%20ssl%20ca-file">set ssl ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span> <span style="color: #080">&lt;payload&gt;</span></div><pre class="text">this command is part of a transaction system, the &quot;<a href="#commit%20ssl%20ca-file">commit ssl ca-file</a>&quot; and
 &quot;<a href="#abort%20ssl%20ca-file">abort ssl ca-file</a>&quot; commands could be required.
@@ -5866,7 +5906,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev1-19 &ndash; Management Guide<br>
+							HAProxy 3.5-dev1-36 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
