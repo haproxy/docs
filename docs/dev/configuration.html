@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev1-87 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev2-1 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1529,6 +1529,8 @@
 							
 							<a class="list-group-item" href="#be_id">be_id</a>
 							
+							<a class="list-group-item" href="#be_max_retries">be_max_retries</a>
+							
 							<a class="list-group-item" href="#be_name">be_name</a>
 							
 							<a class="list-group-item" href="#be_queue_timeout">be_queue_timeout</a>
@@ -1765,6 +1767,8 @@
 							<a class="list-group-item" href="#cur_client_timeout">cur_client_timeout</a>
 							
 							<a class="list-group-item" href="#cur_connect_timeout">cur_connect_timeout</a>
+							
+							<a class="list-group-item" href="#cur_max_retries">cur_max_retries</a>
 							
 							<a class="list-group-item" href="#cur_queue_timeout">cur_queue_timeout</a>
 							
@@ -4886,7 +4890,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/08</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4897,9 +4901,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev1-87</strong></p>
+							<p><strong>version 3.5-dev2-1</strong></p>
 							<p>
-								2026/06/25<br>
+								2026/07/08<br>
 								
 							</p>
 						</div>
@@ -7004,9 +7008,9 @@ HAProxy is launched in master-worker mode.
     and it may as well condition some worker process parameters (see examples
     from <a href="#2.4">section 2.4</a> &quot;Conditional blocks&quot;).
 
-In standalone mode (without &quot;-W&quot; option nor the &quot;<a href="#master-worker">master-worker</a>&quot; keyword) the
-process behaves like a worker, except for variables &quot;HAPROXY_MASTER_CLI&quot; and
-&quot;HAPROXY_MWORKER&quot; which are not defined.
+In standalone mode (without &quot;-W&quot; option) the process behaves like a worker,
+except for variables &quot;HAPROXY_MASTER_CLI&quot; and &quot;HAPROXY_MWORKER&quot; which are not
+defined.
 
 Some variables are marked as not usable and not modifiable:
 
@@ -7298,8 +7302,6 @@ The list of currently supported predicates is the following:
 <span class="comment"># 2.3. Environment variables). Its presence enables an additional listener.</span>
 
 global
-  master-worker
-
 .if defined(HAPROXY_MWORKER)
     listen mwcli_px
        bind :1111
@@ -7312,8 +7314,6 @@ global
 <span class="comment"># mworker-max-reloads parameter.</span>
 
 global
-  master-worker
-
 .if streq(&quot;$HAPROXY_BRANCH&quot;,3.1)
      mworker-max-reloads 5
 .endif
@@ -8945,30 +8945,6 @@ paths if that does not exist either.
 
 See https://www.lua.org/pil/8.1.html for the details within the Lua
 documentation.
-</pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global section)"></a><a class="anchor" name="master-worker (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker"></a><a href="#3.1-master-worker">master-worker</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Master-worker mode. It is equivalent to the command line &quot;-W&quot; argument.
-
-This keyword is deprecated, please start in master-worker mode using &quot;-W&quot; or
-&quot;-Ws&quot;.
-
-This mode will launch a &quot;master&quot; which will fork a &quot;worker&quot; after reading the
-configuration to process the traffic. The master is used as a process manager
-which will monitor the &quot;workers&quot;.
-
-Using this mode, you can reload HAProxy directly by sending a SIGUSR2 signal
-to the master. Reloading will ask the master to read the configuration again
-and fork a new worker. The previous worker will be kept until the end of its
-jobs.
-
-The master-worker mode is compatible either with the foreground or daemon
-mode.
-
-By default, if a worker exits with a bad return code, in the case of a
-segfault for example, all workers will be killed, and the master will leave.
-It is convenient to combine this behavior with Restart=on-failure in a
-systemd unit file in order to relaunch the whole process. If you don't want
-this behavior, you must use the keyword &quot;no-exit-on-failure&quot;.
-
-See also &quot;-W&quot; in the management guide.
 </pre><a class="anchor" name="master-worker"></a><a class="anchor" name="3-master-worker"></a><a class="anchor" name="3.1-master-worker"></a><a class="anchor" name="master-worker (Global section)"></a><a class="anchor" name="master-worker (Process management and security)"></a><a class="anchor" name="master-worker no-exit-on-failure"></a><a class="anchor" name="3-master-worker no-exit-on-failure"></a><a class="anchor" name="3.1-master-worker no-exit-on-failure"></a><a class="anchor" name="master-worker no-exit-on-failure (Global section)"></a><a class="anchor" name="master-worker no-exit-on-failure (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="master-worker no-exit-on-failure"></a><a href="#3.1-master-worker%20no-exit-on-failure">master-worker no-exit-on-failure</a></b></div><pre class="text">In master-worker mode, by default, if a worker exits with a bad return code,
 in the case of a segfault for example, all workers will be killed, and the
 master will leave. It is convenient to combine this behavior with
@@ -9041,7 +9017,7 @@ mechanism.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global section)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
-the user starting the process. See also &quot;<a href="#daemon">daemon</a>&quot; and &quot;<a href="#master-worker">master-worker</a>&quot;.
+the user starting the process. See also &quot;<a href="#daemon">daemon</a>&quot;.
 </pre><a class="anchor" name="pp2-never-send-local"></a><a class="anchor" name="3-pp2-never-send-local"></a><a class="anchor" name="3.1-pp2-never-send-local"></a><a class="anchor" name="pp2-never-send-local (Global section)"></a><a class="anchor" name="pp2-never-send-local (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pp2-never-send-local"></a><a href="#3.1-pp2-never-send-local">pp2-never-send-local</a></b></div><pre class="text">A bug in the PROXY protocol v2 implementation was present in HAProxy up to
 version 2.1, causing it to emit a PROXY command instead of a LOCAL command
 for health checks. This is particularly minor but confuses some servers'
@@ -21304,7 +21280,11 @@ which must return a integer in the range [0, 100].
 
 Note that this action is only relevant on the backend side and thus this rule
 is only available for the proxies with backend capability. It is also not
-allowed in &quot;defaults&quot; sections.
+allowed in &quot;defaults&quot; sections. When the action is used for a listener, it is
+evaluated in the frontend context. So retries value is conserved only if
+stream is not routed to a different backend, via a use-backend rule for
+instance. Otherwise the default retries value of the selected backend will be
+preset.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21390,7 +21370,11 @@ Note that the connect, queue, server and tunnel timeouts are only relevant on
 the backend side and thus this rule is only available for the proxies with
 backend capabilities. Likewise, client timeout is only relevant for frontend
 side. Tarpit timeout is available to both sides. The timeout value must be
-non-null to obtain the expected results.
+non-null to obtain the expected results. When the action is used for a
+listener, it is evaluated in the frontend context. So custom values for
+backend-side timeouts are conserved only if stream is not routed to a
+different backend, via a use-backend rule for instance. Otherwise the default
+values of the selected backend will be preset.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -28167,6 +28151,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-be_name">be_name</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-be_connect_timeout">be_connect_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-be_max_retries">be_max_retries</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_queue_timeout">be_queue_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_server_timeout">be_server_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-be_tarpit_timeout">be_tarpit_timeout</a></td><td >integer</td></tr>
@@ -28175,6 +28160,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-bytes_out">bytes_out</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_connect_timeout">cur_connect_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_client_timeout">cur_client_timeout</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-cur_max_retries">cur_max_retries</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_queue_timeout">cur_queue_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_server_timeout">cur_server_timeout</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-cur_tarpit_timeout">cur_tarpit_timeout</a></td><td >integer</td></tr>
@@ -28184,9 +28170,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-dst_is_local">dst_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-dst_port">dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc.timer.handshake">fc.timer.handshake</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc.timer.total">fc.timer.total</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_dst">fc_dst</a></td><td >ip</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_dst_is_local">fc_dst_is_local</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fc_dst_port">fc_dst_port</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_err">fc_err</a></td><td >integer</td></tr>
@@ -28205,9 +28191,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fc_retrans">fc_retrans</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_rtt">fc_rtt(&lt;unit&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_rttvar">fc_rttvar(&lt;unit&gt;)</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_sacked">fc_sacked</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_saved_syn">fc_saved_syn</a></td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-fc_settings_streams_limit">fc_settings_streams_limit</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fc_src">fc_src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-fc_src_is_local">fc_src_is_local</a></td><td >boolean</td></tr>
@@ -28226,9 +28212,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_bytes_in_rate">sc0_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_bytes_out_rate">sc0_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_clr_gpc0">sc0_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_clr_gpc1">sc0_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_cnt">sc0_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_conn_cur">sc0_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_conn_rate">sc0_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_get_gpc0">sc0_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28247,9 +28233,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc0_inc_gpc0">sc0_inc_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_inc_gpc1">sc0_inc_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_kbytes_in">sc0_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_kbytes_out">sc0_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_key">sc0_key</a></td><td >any</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc0_sess_cnt">sc0_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_sess_rate">sc0_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc0_tracked">sc0_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
@@ -28268,9 +28254,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc1_glitch_rate">sc1_glitch_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_gpc0_rate">sc1_gpc0_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_gpc1_rate">sc1_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_http_err_cnt">sc1_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_err_rate">sc1_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc1_http_fail_cnt">sc1_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_fail_rate">sc1_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc1_http_req_cnt">sc1_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28289,9 +28275,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_clr_gpc0">sc2_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_clr_gpc1">sc2_clr_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_conn_cnt">sc2_conn_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_conn_cur">sc2_conn_cur([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_conn_rate">sc2_conn_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_get_gpc0">sc2_get_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpc1">sc2_get_gpc1([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_get_gpt0">sc2_get_gpt0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28310,9 +28296,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc2_kbytes_in">sc2_kbytes_in([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_kbytes_out">sc2_kbytes_out([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_key">sc2_key</a></td><td >any</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_sess_cnt">sc2_sess_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc2_sess_rate">sc2_sess_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc2_tracked">sc2_tracked([&lt;table&gt;])</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-sc2_trackers">sc2_trackers([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_bytes_in_rate">sc_bytes_in_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28331,9 +28317,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_glitch_cnt">sc_glitch_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_glitch_rate">sc_glitch_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc0_rate">sc_gpc0_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_gpc1_rate">sc_gpc1_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_gpc_rate">sc_gpc_rate(&lt;idx&gt;,&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-sc_http_err_cnt">sc_http_err_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_err_rate">sc_http_err_rate(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-sc_http_fail_cnt">sc_http_fail_cnt(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28352,9 +28338,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-sc_trackers">sc_trackers(&lt;ctr&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_id">so_id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-so_name">so_name</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src">src</a></td><td >ip</td></tr>
 <tr><td ><a href="#7-src_bytes_in_rate">src_bytes_in_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_bytes_out_rate">src_bytes_out_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc">src_clr_gpc(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_clr_gpc0">src_clr_gpc0([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28373,9 +28359,9 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-src_gpc1_rate">src_gpc1_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_gpc_rate">src_gpc_rate(&lt;idx&gt;[,&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_err_cnt">src_http_err_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_err_rate">src_http_err_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_fail_cnt">src_http_fail_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-src_http_fail_rate">src_http_fail_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_req_cnt">src_http_req_cnt([&lt;table&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-src_http_req_rate">src_http_req_rate([&lt;table&gt;])</a></td><td >integer</td></tr>
@@ -28478,6 +28464,9 @@ frontend's id. It can also be used in a tcp-check or an http-check ruleset.
 </pre><a class="anchor" name="be_connect_timeout"></a><a class="anchor" name="7-be_connect_timeout"></a><a class="anchor" name="7.3.3-be_connect_timeout"></a><a class="anchor" name="be_connect_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="be_connect_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_connect_timeout"></a><a href="#7.3.3-be_connect_timeout">be_connect_timeout</a></b> : integer</div><pre class="text">Returns the configuration value in millisecond for the connect timeout of the
 current backend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule. See
 also the &quot;<a href="#cur_connect_timeout">cur_connect_timeout</a>&quot;.
+</pre><a class="anchor" name="be_max_retries"></a><a class="anchor" name="7-be_max_retries"></a><a class="anchor" name="7.3.3-be_max_retries"></a><a class="anchor" name="be_max_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="be_max_retries (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_max_retries"></a><a href="#7.3.3-be_max_retries">be_max_retries</a></b> : integer</div><pre class="text">Returns the configuration value for the connection retries of the current
+backend. This value can be overwritten by a &quot;<a href="#set-retries">set-retries</a>&quot; rule. See also the
+&quot;<a href="#cur_max_retries">cur_max_retries</a>&quot;.
 </pre><a class="anchor" name="be_name"></a><a class="anchor" name="7-be_name"></a><a class="anchor" name="7.3.3-be_name"></a><a class="anchor" name="be_name (Using ACLs and fetching samples)"></a><a class="anchor" name="be_name (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="be_name"></a><a href="#7.3.3-be_name">be_name</a></b> : string</div><pre class="text">Returns a string containing the current backend's name. It can be used in
 frontends with responses to check which backend processed the request. If
 used in a frontend and no backend was used, it returns the current
@@ -28503,6 +28492,9 @@ In the default case, this will be equal to be_connect_timeout unless a
 </pre><a class="anchor" name="cur_client_timeout"></a><a class="anchor" name="7-cur_client_timeout"></a><a class="anchor" name="7.3.3-cur_client_timeout"></a><a class="anchor" name="cur_client_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_client_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_client_timeout"></a><a href="#7.3.3-cur_client_timeout">cur_client_timeout</a></b> : integer</div><pre class="text">Returns the currently applied client timeout in millisecond for the stream.
 In the default case, this will be equal to fe_client_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#fe_client_timeout">fe_client_timeout</a>&quot;.
+</pre><a class="anchor" name="cur_max_retries"></a><a class="anchor" name="7-cur_max_retries"></a><a class="anchor" name="7.3.3-cur_max_retries"></a><a class="anchor" name="cur_max_retries (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_max_retries (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_max_retries"></a><a href="#7.3.3-cur_max_retries">cur_max_retries</a></b> : integer</div><pre class="text">Returns the currently applied connect retries for the stream.
+In the default case, this will be equal to be_max_retries unless a
+&quot;<a href="#set-retries">set-retries</a>&quot; rule has been applied. See also &quot;<a href="#be_max_retries">be_max_retries</a>&quot;.
 </pre><a class="anchor" name="cur_queue_timeout"></a><a class="anchor" name="7-cur_queue_timeout"></a><a class="anchor" name="7.3.3-cur_queue_timeout"></a><a class="anchor" name="cur_queue_timeout (Using ACLs and fetching samples)"></a><a class="anchor" name="cur_queue_timeout (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="cur_queue_timeout"></a><a href="#7.3.3-cur_queue_timeout">cur_queue_timeout</a></b> : integer</div><pre class="text">Returns the currently applied queue timeout in millisecond for the stream.
 In the default case, this will be equal to be_queue_timeout unless a
 &quot;<a href="#set-timeout">set-timeout</a>&quot; rule has been applied. See also &quot;<a href="#be_queue_timeout">be_queue_timeout</a>&quot;.
@@ -35468,8 +35460,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev1-87 &ndash; Configuration Manual<br>
-							<small>, 2026/06/25</small>
+							HAProxy 3.5-dev2-1 &ndash; Configuration Manual<br>
+							<small>, 2026/07/08</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
