@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev2-2 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev2-34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1907,6 +1907,8 @@
 							<a class="list-group-item" href="#eab-mac-key">eab-mac-key</a>
 							
 							<a class="list-group-item" href="#early-hint">early-hint</a>
+							
+							<a class="list-group-item" href="#early-hints">early-hints</a>
 							
 							<a class="list-group-item" href="#ecdhe">ecdhe</a>
 							
@@ -4890,7 +4892,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4901,7 +4903,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev2-2</strong></p>
+							<p><strong>version 3.5-dev2-34</strong></p>
 							<p>
 								2026/07/08<br>
 								
@@ -17704,7 +17706,9 @@ May be used in the following contexts: http
 matched.
 
 The admin level allows to enable/disable servers from the web interface. By
-default, statistics page is read-only for security reasons.
+default, statistics page is read-only for security reasons. If &quot;<a href="#stats%20scope">stats scope</a>&quot;
+directives are set in the section, then only proxies designated by these
+directives will accept state changes; access to other ones will be denied.
 
 Currently, the POST request is limited to the buffer size minus the reserved
 buffer space, which means that if the list of servers is too long, the
@@ -17744,7 +17748,7 @@ backend stats_auth
     stats http-request auth unless AUTH
     stats admin if AUTH_ADMIN
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20http-request">stats http-request</a>&quot;, <a href="#12.2">section 12.2</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20http-request">stats http-request</a>&quot;, &quot;<a href="#stats%20scope">stats scope</a>&quot;, <a href="#12.2">section 12.2</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
 <a class="anchor" name="ssl-f-use"></a><a class="anchor" name="4-ssl-f-use"></a><a class="anchor" name="4.2-ssl-f-use"></a><a class="anchor" name="ssl-f-use (Proxies)"></a><a class="anchor" name="ssl-f-use (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="ssl-f-use"></a><a href="#4.2-ssl-f-use">ssl-f-use</a></b> <span style="color: #008">[<span style="color: #080">&lt;sslbindconf&gt;</span> ...]</span>*</div><pre class="text">Assignate a certificate to the current frontend.
 
 May be used in the following contexts: tcp, http
@@ -18054,11 +18058,11 @@ May be used in the following contexts: http
           section in which the statement appears.</pre>
 </div>
 <pre class="text">When this statement is specified, only the sections enumerated with this
-statement will appear in the report. All other ones will be hidden. This
-statement may appear as many times as needed if multiple sections need to be
-reported. Please note that the name checking is performed as simple string
-comparisons, and that it is never checked that a give section name really
-exists.
+statement will appear in the report. All other ones will be hidden, and
+attempts to change their state in admin mode will be rejected. This statement
+may appear as many times as needed if multiple sections need to be reported.
+Please note that the name checking is performed as simple string comparisons,
+and that it is never checked that a give section name really exists.
 
 Though this statement alone is enough to enable statistics reporting, it is
 recommended to set all other settings in order to avoid relying on default
@@ -18083,7 +18087,7 @@ backend private_monitoring
     stats uri     /admin?stats
     stats refresh 5s
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot; and &quot;<a href="#stats%20admin">stats admin</a>&quot;</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats show-desc"></a><a class="anchor" name="4-stats show-desc"></a><a class="anchor" name="4.2-stats show-desc"></a><a class="anchor" name="stats show-desc (Proxies)"></a><a class="anchor" name="stats show-desc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats show-desc"></a><a href="#4.2-stats%20show-desc">stats show-desc</a></b> <span style="color: #008">[ <span style="color: #080">&lt;desc&gt;</span> ]</span></div><pre class="text">Enable reporting of a description on the statistics page.
 
 May be used in the following contexts: http
@@ -20200,7 +20204,7 @@ to modify headers before or after the storage of the response. This action
 is responsible for the setup of the cache storage filter.
 
 See <a href="#6.2">section 6.2</a> about cache setup.
-</pre><a class="anchor" name="cache-use"></a><a class="anchor" name="4-cache-use"></a><a class="anchor" name="4.4-cache-use"></a><a class="anchor" name="cache-use (Proxies)"></a><a class="anchor" name="cache-use (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="cache-use"></a><a href="#4.4-cache-use">cache-use</a></b> <span style="color: #080">&lt;name&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="cache-use"></a><a class="anchor" name="4-cache-use"></a><a class="anchor" name="4.4-cache-use"></a><a class="anchor" name="cache-use (Proxies)"></a><a class="anchor" name="cache-use (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="cache-use"></a><a href="#4.4-cache-use">cache-use</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[no-early-hints]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -20208,6 +20212,12 @@ See <a href="#6.2">section 6.2</a> about cache setup.
 mandatory to store the cache as it calculates the cache hash. If you want to
 use a condition for both storage and delivering that's a good idea to put it
 after this one.
+
+When the named cache has &quot;<a href="#early-hints">early-hints</a>&quot; enabled, lookups handled by this
+rule may emit a 103 Early Hints response if the requested URL has known
+&quot;Link&quot; hints in the cache. The optional &quot;no-early-hints&quot; keyword
+suppresses 103 emission for requests handled by this rule, regardless of
+the cache-level setting.
 
 See <a href="#6.2">section 6.2</a> about cache setup.
 </pre><a class="anchor" name="capture"></a><a class="anchor" name="4-capture"></a><a class="anchor" name="4.4-capture"></a><a class="anchor" name="capture (Proxies)"></a><a class="anchor" name="capture (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="capture"></a><a href="#4.4-capture">capture</a></b> <span style="color: #080">&lt;sample&gt;</span> <span style="color: #008">[ len <span style="color: #080">&lt;length&gt;</span> | id <span style="color: #080">&lt;id&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -24502,6 +24512,31 @@ the corresponding http-request and http-response actions.
 <h3 id="chapter-6.2.1" data-target="6.2.1"><small><a class="small" href="#6.2.1">6.2.1.</a></small> Cache section</h3>
 <div><a class="anchor" name="cache"></a><a class="anchor" name="6-cache"></a><a class="anchor" name="6.2.1-cache"></a><a class="anchor" name="cache (Cache)"></a><a class="anchor" name="cache (Cache section)"></a><div class="keyword"><b><a class="anchor" name="cache"></a><a href="#6.2.1-cache">cache</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Declare a cache section, allocate a shared cache memory named &lt;name&gt;, the
 size of cache is mandatory (see keyword &quot;<a href="#total-max-size">total-max-size</a>&quot; below).
+</pre><a class="anchor" name="early-hints"></a><a class="anchor" name="6-early-hints"></a><a class="anchor" name="6.2.1-early-hints"></a><a class="anchor" name="early-hints (Cache)"></a><a class="anchor" name="early-hints (Cache section)"></a><div class="keyword"><b><a class="anchor" name="early-hints"></a><a href="#6.2.1-early-hints">early-hints</a></b> <span style="color: #080">&lt;on/off/only&gt;</span> <span style="color: #008">[ratio <span style="color: #080">&lt;integer&gt;</span>]</span></div><pre class="text">Enable or disable support for HTTP 103 Early Hints responses (see RFC 8297).
+When enabled, the cache remembers relevant &quot;Link&quot; response headers (with a
+&quot;rel&quot; parameter of preload, preconnect, dns-prefetch, modulepreload or
+prefetch) seen on cached responses. When a subsequent &quot;<a href="#cache-use">cache-use</a>&quot; lookup
+cannot serve the full response from the cache but the URL's &quot;Link&quot; hints
+are still known, the cache emits a 103 Early Hints response carrying those
+hints before forwarding the request to the backend, giving the client a
+head start on fetching subresources while the backend produces the body.
+Individual &quot;<a href="#cache-use">cache-use</a>&quot; rules may opt out of this behavior with the
+&quot;no-early-hints&quot; keyword. The default value is off (disabled).
+
+When &quot;<a href="#early-hints">early-hints</a>&quot; is set to &quot;only&quot;, no responses are stored in the cache.
+Instead, if a backend response contains relevant &quot;Link&quot; headers as defined
+above, the cache stores those in order to emit a 103 Early Hints response if
+that same URL is accessed later. Since the response body is never stored in
+this mode, the &quot;<a href="#max-object-size">max-object-size</a>&quot; limit does not apply: hints are extracted
+and stored regardless of the response's size.
+
+The optional &quot;ratio&quot; argument sets the percentage of total cache blocks
+that may be reserved for hints-only entries (1 to 99, default 25). Higher
+values keep hints alive longer at the cost of less space for full responses;
+lower values prioritize full responses. This argument only makes sense when
+&quot;<a href="#early-hints">early-hints</a>&quot; is set to on, and is ignored otherwise. In &quot;only&quot; mode every
+stored entry is a hints entry, so the whole cache is available to them and
+this ratio has no practical effect.
 </pre><a class="anchor" name="max-age"></a><a class="anchor" name="6-max-age"></a><a class="anchor" name="6.2.1-max-age"></a><a class="anchor" name="max-age (Cache)"></a><a class="anchor" name="max-age (Cache section)"></a><div class="keyword"><b><a class="anchor" name="max-age"></a><a href="#6.2.1-max-age">max-age</a></b> <span style="color: #080">&lt;seconds&gt;</span></div><pre class="text">Define the maximum expiration duration. The expiration is set as the lowest
 value between the s-maxage or max-age (in this order) directive in the
 Cache-Control response header and this value. The default value is 60
@@ -35460,7 +35495,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev2-2 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev2-34 &ndash; Configuration Manual<br>
 							<small>, 2026/07/08</small>
 						</div>
 					</div>
