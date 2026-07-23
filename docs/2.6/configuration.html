@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6.31 - Configuration Manual</title>
+		<title>HAProxy version 2.6.31-11 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4145,7 +4145,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/22</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4156,7 +4156,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6.31</strong></p>
+							<p><strong>version 2.6.31-11</strong></p>
 							<p>
 								2026/07/03<br>
 								
@@ -15425,12 +15425,22 @@ known to work on Linux.
 matched.
 
 The admin level allows to enable/disable servers from the web interface. By
-default, statistics page is read-only for security reasons.
+default, statistics page is read-only for security reasons. If &quot;<a href="#stats%20scope">stats scope</a>&quot;
+directives are set in the section, then only proxies designated by these
+directives will accept state changes; access to other ones will be denied.
 
 Currently, the POST request is limited to the buffer size minus the reserved
 buffer space, which means that if the list of servers is too long, the
 request won't be processed. It is recommended to alter few servers at a
 time.
+
+Those admin POST requests are prone to CSRF attacks. This is partially
+mitigated by checking that the Origin (or Referer if no Origin is present)
+matches the Host header, but this is not enough to totally prevent the
+attack.
+There is no way to be completely protected from those. It is recommended
+to avoid exposing it on a public interface, and to restrict who can
+access it.
 </pre><div class="separator">
 <span class="label label-success">Example :</span>
 <pre class="prettyprint">
@@ -15465,7 +15475,7 @@ backend stats_auth
     stats http-request auth unless AUTH
     stats admin if AUTH_ADMIN
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20http-request">stats http-request</a>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20http-request">stats http-request</a>&quot;, &quot;<a href="#stats%20scope">stats scope</a>&quot;, <a href="#3.4">section 3.4</a> about userlists and <a href="#7">section 7</a> about ACL usage.</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats auth"></a><a class="anchor" name="4-stats auth"></a><a class="anchor" name="4.2-stats auth"></a><a class="anchor" name="stats auth (Proxies)"></a><a class="anchor" name="stats auth (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats auth"></a><a href="#4.2-stats%20auth">stats auth</a></b> <span style="color: #080">&lt;user&gt;</span>:<span style="color: #080">&lt;passwd&gt;</span></div><pre class="text">Enable statistics with authentication and grant access to an account
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -15702,11 +15712,11 @@ backend private_monitoring
           section in which the statement appears.</pre>
 </div>
 <pre class="text">When this statement is specified, only the sections enumerated with this
-statement will appear in the report. All other ones will be hidden. This
-statement may appear as many times as needed if multiple sections need to be
-reported. Please note that the name checking is performed as simple string
-comparisons, and that it is never checked that a give section name really
-exists.
+statement will appear in the report. All other ones will be hidden, and
+attempts to change their state in admin mode will be rejected. This statement
+may appear as many times as needed if multiple sections need to be reported.
+Please note that the name checking is performed as simple string comparisons,
+and that it is never checked that a give section name really exists.
 
 Though this statement alone is enough to enable statistics reporting, it is
 recommended to set all other settings in order to avoid relying on default
@@ -15731,7 +15741,7 @@ backend private_monitoring
     stats uri     /admin?stats
     stats refresh 5s
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stats%20auth">stats auth</a>&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20realm">stats realm</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot; and &quot;<a href="#stats%20admin">stats admin</a>&quot;</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats show-desc"></a><a class="anchor" name="4-stats show-desc"></a><a class="anchor" name="4.2-stats show-desc"></a><a class="anchor" name="stats show-desc (Proxies)"></a><a class="anchor" name="stats show-desc (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats show-desc"></a><a href="#4.2-stats%20show-desc">stats show-desc</a></b> <span style="color: #008">[ <span style="color: #080">&lt;desc&gt;</span> ]</span></div><pre class="text">Enable reporting of a description on the statistics page.
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
@@ -26541,7 +26551,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6.31 &ndash; Configuration Manual<br>
+							HAProxy 2.6.31-11 &ndash; Configuration Manual<br>
 							<small>, 2026/07/03</small>
 						</div>
 					</div>
