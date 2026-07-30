@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.12-34 - Configuration Manual</title>
+		<title>HAProxy version 3.3.13 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4520,6 +4520,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.keylog">tune.ssl.keylog</a>
 							
+							<a class="list-group-item" href="#tune.ssl.keyupdate-rate-limit">tune.ssl.keyupdate-rate-limit</a>
+							
 							<a class="list-group-item" href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
 							
 							<a class="list-group-item" href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
@@ -4717,7 +4719,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/22</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4728,9 +4730,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.12-34</strong></p>
+							<p><strong>version 3.3.13</strong></p>
 							<p>
-								2026/07/03<br>
+								2026/07/29<br>
 								
 							</p>
 						</div>
@@ -7829,6 +7831,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ssl.force-private-cache">tune.ssl.force-private-cache</a>
    - <a href="#tune.ssl.hard-maxrecord">tune.ssl.hard-maxrecord</a>
    - <a href="#tune.ssl.keylog">tune.ssl.keylog</a>
+   - <a href="#tune.ssl.keyupdate-rate-limit">tune.ssl.keyupdate-rate-limit</a>
    - <a href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
    - <a href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
    - <a href="#tune.ssl.ssl-ctx-cache-size">tune.ssl.ssl-ctx-cache-size</a>
@@ -10679,6 +10682,11 @@ this is not ideal for syslog:
               SERVER_TRAFFIC_SECRET_0 %[ssl_bc_client_random,hex] %[ssl_bc_server_traffic_secret_0]\n
               EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_exporter_secret]\n
               EARLY_EXPORTER_SECRET %[ssl_bc_client_random,hex] %[ssl_bc_early_exporter_secret]&quot;
+</pre><a class="anchor" name="tune.ssl.keyupdate-rate-limit"></a><a class="anchor" name="3-tune.ssl.keyupdate-rate-limit"></a><a class="anchor" name="3.2-tune.ssl.keyupdate-rate-limit"></a><a class="anchor" name="tune.ssl.keyupdate-rate-limit (Global section)"></a><a class="anchor" name="tune.ssl.keyupdate-rate-limit (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.keyupdate-rate-limit"></a><a href="#3.2-tune.ssl.keyupdate-rate-limit">tune.ssl.keyupdate-rate-limit</a></b> <span style="color: #080">&lt;limit&gt;</span></div><pre class="text">Limit the amount of KeyUpdate per second we're willing to accept to &lt;limit&gt;
+before considering it flood, and killing the connection. Dealing with
+KeyUpdate is cpu-expensive, and there is little reason to receive a lot of
+them. Using a value of &quot;0&quot; disables the rate limiting.
+The default value is 100.
 </pre><a class="anchor" name="tune.ssl.lifetime"></a><a class="anchor" name="3-tune.ssl.lifetime"></a><a class="anchor" name="3.2-tune.ssl.lifetime"></a><a class="anchor" name="tune.ssl.lifetime (Global section)"></a><a class="anchor" name="tune.ssl.lifetime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.lifetime"></a><a href="#3.2-tune.ssl.lifetime">tune.ssl.lifetime</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets how long a cached SSL session may remain valid. This time is expressed
 in seconds and defaults to 300 (5 min). It is important to understand that it
 does not guarantee that sessions will last that long, because if the cache is
@@ -34041,8 +34049,8 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.12-34 &ndash; Configuration Manual<br>
-							<small>, 2026/07/03</small>
+							HAProxy 3.3.13 &ndash; Configuration Manual<br>
+							<small>, 2026/07/29</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
