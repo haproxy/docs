@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-83 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev3-115 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4479,6 +4479,8 @@
 							
 							<a class="list-group-item" href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
 							
+							<a class="list-group-item" href="#tune.fd.tables">tune.fd.tables</a>
+							
 							<a class="list-group-item" href="#tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a>
 							
 							<a class="list-group-item" href="#tune.h1.be.glitches-threshold">tune.h1.be.glitches-threshold</a>
@@ -4894,7 +4896,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4905,7 +4907,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev3-83</strong></p>
+							<p><strong>version 3.5-dev3-115</strong></p>
 							<p>
 								2026/07/22<br>
 								
@@ -7922,6 +7924,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.events.max-events-at-once">tune.events.max-events-at-once</a>
    - <a href="#tune.fail-alloc">tune.fail-alloc</a>
    - <a href="#tune.fd.edge-triggered">tune.fd.edge-triggered</a>
+   - <a href="#tune.fd.tables">tune.fd.tables</a>
    - <a href="#tune.h1.be.glitches-threshold">tune.h1.be.glitches-threshold</a>
    - <a href="#tune.h1.fe.glitches-threshold">tune.h1.fe.glitches-threshold</a>
    - <a href="#tune.h1.zero-copy-fwd-recv">tune.h1.zero-copy-fwd-recv</a>
@@ -10013,6 +10016,12 @@ that support it. This is currently only support with epoll. It may noticeably
 reduce the number of epoll_ctl() calls and slightly improve performance in
 certain scenarios. This is still experimental, it may result in frozen
 connections if bugs are still present, and is disabled by default.
+</pre><a class="anchor" name="tune.fd.tables"></a><a class="anchor" name="3-tune.fd.tables"></a><a class="anchor" name="3.2-tune.fd.tables"></a><a class="anchor" name="tune.fd.tables (Global section)"></a><a class="anchor" name="tune.fd.tables (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.fd.tables"></a><a href="#3.2-tune.fd.tables">tune.fd.tables</a></b> <span style="color: #800">{ shared | per-thread-group }</span>  <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Decide if the file descriptor tables are shared by everybody (shared), or
+if there is one per thread group (per-thread-group). Having one table per
+thread group can give a good performance boost with enough threads and
+thread groups, as there is a lot of contention on the kernel file descriptor
+tables.
+The default is &quot;shared&quot;.
 </pre><a class="anchor" name="tune.glitches.kill.cpu-usage"></a><a class="anchor" name="3-tune.glitches.kill.cpu-usage"></a><a class="anchor" name="3.2-tune.glitches.kill.cpu-usage"></a><a class="anchor" name="tune.glitches.kill.cpu-usage (Global section)"></a><a class="anchor" name="tune.glitches.kill.cpu-usage (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.glitches.kill.cpu-usage"></a><a href="#3.2-tune.glitches.kill.cpu-usage">tune.glitches.kill.cpu-usage</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the minimum CPU usage between 0 and 100, at which connections showing
 too many glitches will be killed. This applies to connections that have
 reached their glitches-threshold limit. In environments where very long
@@ -35510,7 +35519,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-83 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev3-115 &ndash; Configuration Manual<br>
 							<small>, 2026/07/22</small>
 						</div>
 					</div>

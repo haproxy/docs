@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-83 - Management Guide</title>
+		<title>HAProxy version 3.5-dev3-115 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -301,6 +301,8 @@
 							<a class="list-group-item" href="#clear counters">clear counters</a>
 							
 							<a class="list-group-item" href="#clear counters all">clear counters all</a>
+							
+							<a class="list-group-item" href="#clear counters server">clear counters server</a>
 							
 							<a class="list-group-item" href="#clear map">clear map</a>
 							
@@ -692,7 +694,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -703,7 +705,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev3-83</strong></p>
+							<p><strong>version 3.5-dev3-115</strong></p>
 							<p>
 								<br>
 								
@@ -2756,6 +2758,28 @@ only be issued on sockets configured for levels &quot;<a href="#operator">operat
 </pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><a class="anchor" name="clear counters all"></a><a class="anchor" name="9-clear counters all"></a><a class="anchor" name="9.3-clear counters all"></a><a class="anchor" name="clear counters all (Statistics and monitoring)"></a><a class="anchor" name="clear counters all (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters all"></a><a href="#9.3-clear%20counters%20all">clear counters all</a></b></div><pre class="text">Clear all statistics counters in each proxy (frontend &amp; backend) and in each
 server. This has the same effect as restarting. This command is restricted
 and can only be issued on sockets configured for level &quot;admin&quot;.
+</pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear counters"></a><a class="anchor" name="9-clear counters"></a><a class="anchor" name="9.3-clear counters"></a><a class="anchor" name="clear counters (Statistics and monitoring)"></a><a class="anchor" name="clear counters (Unix Socket commands)"></a><a class="anchor" name="clear counters server"></a><a class="anchor" name="9-clear counters server"></a><a class="anchor" name="9.3-clear counters server"></a><a class="anchor" name="clear counters server (Statistics and monitoring)"></a><a class="anchor" name="clear counters server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear counters server"></a><a href="#9.3-clear%20counters%20server">clear counters server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span> <span style="color: #008">[force]</span></div><pre class="text">Reset the statistics counters of a single server. This command is useful when
+a server slot is being reused to represent a different logical entity (e.g.
+a different Kubernetes pod occupying the same slot after a rename via
+&quot;set server &lt;b&gt;/&lt;s&gt; name&quot;) and per-entity counter attribution is required.
+It behaves like &quot;<a href="#clear%20counters%20all">clear counters all</a>&quot; but scoped to one server rather than the
+whole process.
+
+The reset covers both accumulated counters (bytes, sessions, requests,
+errors, response codes) and max values, as well as the extra counters
+registered by modules (e.g. mux stats) for that server. As for the plain
+&quot;<a href="#clear%20counters">clear counters</a>&quot;, only clearable modules are reset. It does not affect the
+server's runtime state (address, weight, admin state) or health checks.
+
+When the server's counters are stored in a shared-memory stats file (see
+&quot;shm-stats-file&quot;), clearing them breaks the monotonicity that monitoring
+tools consuming the shared stats rely on, and the reset is visible to every
+process attached to the same object. For this reason the command refuses to
+clear such a server unless the &quot;force&quot; keyword is appended.
+
+Because it clears accumulated counters, this command is restricted and can
+only be issued on sockets configured for level &quot;admin&quot;, like &quot;clear counters
+all&quot;.
 </pre><a class="anchor" name="clear"></a><a class="anchor" name="9-clear"></a><a class="anchor" name="9.3-clear"></a><a class="anchor" name="clear (Statistics and monitoring)"></a><a class="anchor" name="clear (Unix Socket commands)"></a><a class="anchor" name="clear acl"></a><a class="anchor" name="9-clear acl"></a><a class="anchor" name="9.3-clear acl"></a><a class="anchor" name="clear acl (Statistics and monitoring)"></a><a class="anchor" name="clear acl (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="clear acl"></a><a href="#9.3-clear%20acl">clear acl</a></b> <span style="color: #008">[@<span style="color: #080">&lt;ver&gt;</span>]</span> <span style="color: #080">&lt;acl&gt;</span></div><pre class="text">Remove all entries from the acl &lt;acl&gt;. &lt;acl&gt; is the #&lt;id&gt; or the &lt;name&gt;
 returned by &quot;<a href="#show%20acl">show acl</a>&quot;. Note that if the reference &lt;acl&gt; is a name and is
 shared with a map, this map will be also cleared. By default only the current
@@ -5910,7 +5934,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-83 &ndash; Management Guide<br>
+							HAProxy 3.5-dev3-115 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
