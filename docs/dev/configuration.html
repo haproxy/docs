@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-121 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev3-148 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1517,6 +1517,8 @@
 							
 							<a class="list-group-item" href="#bc_srv_queue">bc_srv_queue</a>
 							
+							<a class="list-group-item" href="#be-unpublished">be-unpublished</a>
+							
 							<a class="list-group-item" href="#be2dec">be2dec</a>
 							
 							<a class="list-group-item" href="#be2hex">be2hex</a>
@@ -2130,6 +2132,8 @@
 							<a class="list-group-item" href="#force-tlsv13">force-tlsv13</a>
 							
 							<a class="list-group-item" href="#format">format</a>
+							
+							<a class="list-group-item" href="#from">from</a>
 							
 							<a class="list-group-item" href="#fs.aborted">fs.aborted</a>
 							
@@ -4896,7 +4900,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4907,7 +4911,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev3-121</strong></p>
+							<p><strong>version 3.5-dev3-148</strong></p>
 							<p>
 								2026/07/22<br>
 								
@@ -9949,18 +9953,38 @@ Please consult the management manual for details about the CLI.
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
-</pre><a class="anchor" name="tune.defaults.purge"></a><a class="anchor" name="3-tune.defaults.purge"></a><a class="anchor" name="3.2-tune.defaults.purge"></a><a class="anchor" name="tune.defaults.purge (Global section)"></a><a class="anchor" name="tune.defaults.purge (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.defaults.purge"></a><a href="#3.2-tune.defaults.purge">tune.defaults.purge</a></b></div><pre class="text">For dynamic backends support, all named defaults sections are now kept in
-memory after parsing. This is necessary as backend added at runtime must be
-based on a named defaults for its configuration.
+</pre><a class="anchor" name="tune.defaults.purge"></a><a class="anchor" name="3-tune.defaults.purge"></a><a class="anchor" name="3.2-tune.defaults.purge"></a><a class="anchor" name="tune.defaults.purge (Global section)"></a><a class="anchor" name="tune.defaults.purge (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.defaults.purge"></a><a href="#3.2-tune.defaults.purge">tune.defaults.purge</a></b> <span style="color: #008">[<span style="color: #080">&lt;element<span style="color: #008">[,...]</span>&gt;</span>]</span></div><pre class="text">Define what default instances to purge after configuration parsing.
 
-This may consume significant memory if the number of defaults instances is
-important. In this case and if dynamic backend feature is unnecessary, it's
-possible to use this option to force deletion of defaults section after
-parsing. It is still mandatory though to keep referenced defaults section
-which contain settings whose cannot be copied by their referencing proxies.
-For example, this is the case if the defaults section defines TCP/HTTP rules
-or a tcpcheck ruleset.
-</pre><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global section)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
+The elements to be purged are defined by a comma-delimited list of tokens.
+The currently supported entries are :
+  - &quot;proxies&quot; to purge &quot;defaults&quot; sections
+  - &quot;servers&quot; to purge &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; instances
+
+If the list is empty, only proxies &quot;defaults&quot; sections will be purged.
+
+Default-server instances are kept in memory after parsing as they may be
+reused for dynamic servers added at runtime. Similarly, named defaults
+proxies sections are preserved as dynamic backends rely on them.
+
+This may consume a noticeable amount of memory if the number of default
+instances is important. It's possible to reclaim this memory after the
+configuration parsing if dynamic features are unneeded.
+
+In any case, referenced &quot;defaults&quot; sections which contain settings which
+cannot be copied by their referencing proxies (e.g. TCP/HTTP rules or
+tcpcheck ruleset) will be preserved, regardless of the global purge setting.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># reclaim the maximum memory possible</span>
+tune.defaults.purge proxies,servers
+
+<span class="comment"># purge proxies defaults sections</span>
+<span class="comment"># both syntax are equivalent</span>
+tune.defaults.purge
+tune.defaults.purge proxies
+</code></pre>
+</div><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global section)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
 forwarding by passing data directly from a side to the other one without
 waking the stream up. Thanks to this directive, it is possible to disable
 this optimization. Note it also disable any kernel tcp splicing but also the
@@ -11330,7 +11354,7 @@ sections always take their initial settings from a defaults section, by default
 the latest one that appears before the newly created section. It is possible to
 explicitly designate a specific &quot;defaults&quot; section to load the initial settings
 from by indicating its name on the section line after the optional keyword
-&quot;from&quot;. While &quot;defaults&quot; section do not impose a name, this use is encouraged
+&quot;<a href="#from">from</a>&quot;. While &quot;defaults&quot; section do not impose a name, this use is encouraged
 for better readability. It is also the only way to designate a specific section
 to use instead of the default previous one. Since &quot;defaults&quot; section names are
 optional, by default a very permissive check is applied on their name and these
@@ -11471,6 +11495,7 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-acl">acl</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-backlog">backlog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-balance">balance</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-be-unpublished">be-unpublished</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-bind">bind</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20cookie">capture cookie</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20request%20header">capture request header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11487,8 +11512,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-description">description</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-disabled">disabled</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-email-alert%20level">email-alert level</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-email-alert%20level">email-alert level</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20mailers">email-alert mailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20myhostname">email-alert myhostname</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20to">email-alert to</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11508,8 +11533,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-check%20comment">http-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11529,8 +11554,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log-steps">log-steps</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11550,8 +11575,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20external-check">option external-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20http-buffer-request"><span class="pull-right"><span>(*)</span></span>option http-buffer-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11571,8 +11596,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20independent-streams"><span class="pull-right"><span>(*)</span></span>option independent-streams</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20mysql-check">option mysql-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11592,8 +11617,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcplog">option tcplog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11613,8 +11638,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-srvtcpka-intvl">srvtcpka-intvl</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20realm">stats realm</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11634,8 +11659,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20set-var">tcp-check set-var</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11655,8 +11680,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-unique-id-format">unique-id-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -12059,6 +12084,22 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
     might be a URL parameter list. This is probably not a concern with SGML
     type message bodies.
 </pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cookie<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cookie%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#cookie%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#cookie%20%28Fetching%20HTTP%20samples%20%28Layer%207%29%29">Fetching HTTP samples (Layer 7)</a></li></ul></span>&quot;, &quot;<a href="#hash-type">hash-type</a>&quot;.</div>
+<a class="anchor" name="be-unpublished"></a><a class="anchor" name="4-be-unpublished"></a><a class="anchor" name="4.2-be-unpublished"></a><a class="anchor" name="be-unpublished (Proxies)"></a><a class="anchor" name="be-unpublished (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="be-unpublished"></a><a href="#4.2-be-unpublished">be-unpublished</a></b></div><pre class="text">Instructs the backend to start in the unpublished state.
+
+May be used in the following contexts: tcp, http, log
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<pre class="text">In effect, any use_backend and default_backend rules from another proxy which
+reference the current proxy are ignored and the next content switching rules
+are evaluated. This can be bypassed though via a &quot;<a href="#force-be-switch">force-be-switch</a>&quot; rule.
+
+This state is similar to the disabled one but with some differences. First,
+an unpublished backend will still be fully initialized, including the server
+health checks which remain active. Finally, a backend can be publicly exposed
+via the command &quot;publish backend&quot; on the CLI. See the management manual.
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#force-be-switch">force-be-switch</a>&quot;</div>
 <a class="anchor" name="bind"></a><a class="anchor" name="4-bind"></a><a class="anchor" name="4.2-bind"></a><a class="anchor" name="bind (Proxies)"></a><a class="anchor" name="bind (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="bind"></a><a href="#4.2-bind">bind</a></b> <span style="color: #008">[<span style="color: #080">&lt;address&gt;</span>]</span>:<span style="color: #080">&lt;port_range&gt;</span> <span style="color: #008">[, ...]</span> <span style="color: #008">[param*]</span></div><a class="anchor" name="bind"></a><a class="anchor" name="4-bind"></a><a class="anchor" name="4.2-bind"></a><a class="anchor" name="bind (Proxies)"></a><a class="anchor" name="bind (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="bind"></a><a href="#4.2-bind">bind</a></b> /<span style="color: #080">&lt;path&gt;</span> <span style="color: #008">[, ...]</span> <span style="color: #008">[param*]</span></div><pre class="text">Define one or several listening addresses and/or ports in a frontend.
 
 May be used in the following contexts: tcp, http
@@ -12701,7 +12742,7 @@ reserved slot can be used in the backends. The &quot;request&quot; keyword alloc
 capture slot for use in the request, and &quot;response&quot; allocates a capture slot
 for use in the response.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture-req">capture-req</a>&quot;, &quot;<a href="#capture-res">capture-res</a>&quot; (sample converters), &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot;, &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches), &quot;http-request capture&quot; and &quot;http-response capture&quot;.</div>
-<a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[param*]</span></div><pre class="text">Change default options for a server in a backend
+<a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Changes a set of options reusable for future server declarations.
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12709,7 +12750,15 @@ May be used in the following contexts: tcp, http
 <tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
 </table></div>
 <div class="separator">
-<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;param*&gt;  is a list of parameters for this server. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+<span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;name&gt;    specifies a named default-instance instead of the default
+          anonymous one.
+
+&lt;origin&gt;  instructs to reinitialize first the set of options to their
+          default values and then reusing the settings from the designated
+          server or default-server instance. See <a href="#5.2">section 5.2</a> about server
+          options for a complete description of the supported arguments.
+
+&lt;param*&gt;  is a list of parameters for this server. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
           keyword accepts an important number of options and has a complete
           section dedicated to it. Please refer to <a href="#5">section 5</a> for more
           details.</pre>
@@ -12719,7 +12768,21 @@ May be used in the following contexts: tcp, http
 <pre class="prettyprint">
 <code>default-server inter 1000 weight 13
 </code></pre>
-</div><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and <a href="#5">section 5</a> about server options</div>
+</div><pre class="text">Several sets of options can be defined per backend instance. A backend always
+contains an unnamed default-server which is selected when &lt;name&gt; argument is
+not present. A named default-server can be created by specifying the &lt;name&gt;
+argument with a value. This name must not collide with servers in the same
+backend.
+
+The same default-server can be defined over multiple lines, with each line
+completing the previous one. This set of options can be reset by using the
+&quot;from none&quot; keyword value.
+
+An unnamed default-server with no parameter set will automatically be purged
+after parsing. As such, a final &quot;default-server from none&quot; statement will be
+sufficient to release this unused memory, regardless of the global setting
+&quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; value.
+</pre><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, <a href="#5">section 5</a> about server options and global &quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; option</div>
 <a class="anchor" name="default_backend"></a><a class="anchor" name="4-default_backend"></a><a class="anchor" name="4.2-default_backend"></a><a class="anchor" name="default_backend (Proxies)"></a><a class="anchor" name="default_backend (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default_backend"></a><a href="#4.2-default_backend">default_backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Specify the backend to use when no &quot;<a href="#use_backend">use_backend</a>&quot; rule has been matched.
 
 May be used in the following contexts: tcp, http
@@ -13176,7 +13239,7 @@ May be used in the following contexts: tcp, http
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
 </table></div>
-<div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
+<div class="page-header"><b>See also :</b> &quot;<a href="#be-unpublished">be-unpublished</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
 <a class="anchor" name="filter"></a><a class="anchor" name="4-filter"></a><a class="anchor" name="4.2-filter"></a><a class="anchor" name="filter (Proxies)"></a><a class="anchor" name="filter (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter"></a><a href="#4.2-filter">filter</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[param*]</span></div><pre class="text">Add the filter &lt;name&gt; in the filter list attached to the proxy.
 
 May be used in the following contexts: tcp, http
@@ -17472,7 +17535,7 @@ backend bk
   load-server-state-from-file
 </code></pre>
 </div><div class="page-header"><b>See also:</b> &quot;<a href="#server-state-base">server-state-base</a>&quot;, &quot;<a href="#load-server-state-from-file">load-server-state-from-file</a>&quot;, and &quot;show servers state&quot;</div>
-<a class="anchor" name="server-template"></a><a class="anchor" name="4-server-template"></a><a class="anchor" name="4.2-server-template"></a><a class="anchor" name="server-template (Proxies)"></a><a class="anchor" name="server-template (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="server-template"></a><a href="#4.2-server-template">server-template</a></b> <span style="color: #080">&lt;prefix&gt;</span> <span style="color: #080">&lt;num | range&gt;</span> <span style="color: #080">&lt;fqdn&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[params*]</span></div><pre class="text">Set a template to initialize servers with shared parameters.
+<a class="anchor" name="server-template"></a><a class="anchor" name="4-server-template"></a><a class="anchor" name="4.2-server-template"></a><a class="anchor" name="server-template (Proxies)"></a><a class="anchor" name="server-template (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="server-template"></a><a href="#4.2-server-template">server-template</a></b> <span style="color: #080">&lt;prefix&gt;</span> <span style="color: #080">&lt;num | range&gt;</span> <span style="color: #080">&lt;fqdn&gt;</span><span style="color: #008">[:<span style="color: #080">&lt;port&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[params*]</span></div><pre class="text">Set a template to initialize servers with shared parameters.
 The names of these servers are built from &lt;prefix&gt; and &lt;num | range&gt; parameters.
 
 May be used in the following contexts: tcp, http, log
@@ -17492,6 +17555,10 @@ May be used in the following contexts: tcp, http, log
 &lt;fqdn&gt;    A FQDN for all the servers this template initializes.
 
 &lt;port&gt;    Same meaning as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &lt;port&gt; argument (see &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword).
+
+&lt;origin&gt;  instructs to reuse the settings from the designated server or
+          default-server instance. See <a href="#5.2">section 5.2</a> about server options for
+          a complete description of the supported arguments.
 
 &lt;params*&gt;
           Remaining server parameters among all those supported by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
@@ -22127,7 +22194,11 @@ This is an experimental feature, which requires the
 &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; option in the global section.
 It also necessitates an OpenSSL version that supports ECH
 ( https://github.com/openssl/openssl/tree/feature/ech), and HAProxy must be
-compiled with USE_ECH=1. The ECH API of AWS-LC is not supported.
+compiled with USE_ECH=1.
+
+AWS-LC is also supported, with a lighter implementation: runtime ECH store
+management (&quot;show/add/set/del ssl ech&quot; on the CLI) and ECH status/outer-SNI
+reporting are not available in that case.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -22686,16 +22757,44 @@ which are all passed as arguments on the server line. The order in which those
 arguments appear does not count, and they are all optional. Some of those
 settings are single words (booleans) while others expect one or several values
 after them. In this case, the values must immediately follow the setting name.
+
 Except default-server, all those settings must be specified after the server's
-address if they are used:
+address if they are used. Before any of those settings, the extra keyword
+&quot;<a href="#from">from</a>&quot; may be used both on &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines to preset
+its settings.
 
-  server &lt;name&gt; &lt;address&gt;[:port] [settings ...]
-  default-server [settings ...]
+  server &lt;name&gt; &lt;address&gt;[:port] [from &lt;origin&gt;] [settings ...]
+  default-server [name &lt;name&gt;] [from &lt;origin&gt;] [settings ...]
+</pre><a class="anchor" name="from"></a><a class="anchor" name="5-from"></a><a class="anchor" name="5.2-from"></a><a class="anchor" name="from (Bind and server options)"></a><a class="anchor" name="from (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="from"></a><a href="#5.2-from">from</a></b> <span style="color: #080">&lt;origin&gt;</span></div><pre class="text">  Preinitialize the server settings by copying values from another server or
+  default-server instance. This keyword is positional : it must be specified
+  before any other server settings.
 
-Note that all these settings are supported both by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-keywords, except &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; which is only supported by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.
+  Here is the list of the supported values for the &quot;<a href="#from">from</a>&quot; keyword :
+  - none
+      resets all settings to the documented defaults. This prevents a server
+      defined in the configuration from automatically reusing a default-server
+      instance. This is already the default behavior for dynamically created
+      servers. This value is also directly useful on a default-server line,
+      to reset its set of options to their documented values, before eventually
+      configuring new settings.
+  - be:[&lt;bename&gt;]
+      instructs to reuse the settings from the final state of the designated
+      backend's default-server resulting from the processing of all its unnamed
+      default-server directives. If no backend is specified, the parent proxy
+      of the currently configured server is selected : this is the default
+      behavior for servers defined in the configuration file. This empty value
+      is mostly useful for dynamic servers created on the CLI which by default
+      ignore any default-server, which is equivalent to the &quot;none&quot; value.
+  - srv:[&lt;bename&gt;/]&lt;srvname&gt;
+      instructs to reuse the settings from the designated backend's server or named
+      default-server resulting from the processing of all its default-server
+      directives using the same name. The backend name is optional. If unset,
+      this designates the proxy where the currently newly defined server will
+      be attached.
 
-The currently supported settings are the following ones.
+The currently supported server settings are the following ones. Note that all
+these settings are supported both by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keywords,
+except &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; which is only supported by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="addr"></a><a class="anchor" name="5-addr"></a><a class="anchor" name="5.2-addr"></a><a class="anchor" name="addr (Bind and server options)"></a><a class="anchor" name="addr (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="addr"></a><a href="#5.2-addr">addr</a></b> <span style="color: #080">&lt;ipv4|ipv6&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Using the &quot;<a href="#addr">addr</a>&quot; parameter, it becomes possible to use a different IP address
@@ -35519,7 +35618,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-121 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev3-148 &ndash; Configuration Manual<br>
 							<small>, 2026/07/22</small>
 						</div>
 					</div>

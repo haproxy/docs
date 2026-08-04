@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-121 - Management Guide</title>
+		<title>HAProxy version 3.5-dev3-148 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -694,7 +694,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -705,7 +705,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev3-121</strong></p>
+							<p><strong>version 3.5-dev3-148</strong></p>
 							<p>
 								<br>
 								
@@ -2656,8 +2656,11 @@ The &lt;server&gt; name must not be already used in the backend. A special
 restriction is put on the backend which must used a dynamic load-balancing
 algorithm. A subset of keywords from the server config file statement can be
 used to configure the server behavior (see &quot;<a href="#add%20server%20help">add server help</a>&quot; to list them).
-Also note that no settings will be reused from an hypothetical
-'default-server' statement in the same backend.
+
+By default, 'default-server' is ignored by a dynamically created server.
+However, it is possible to use the 'from' server positional keyword to
+explicitely preset the settings of the newly created server from another
+server or a default-server instance, either named or unnamed.
 
 Currently a dynamic server is statically initialized with the &quot;none&quot;
 init-addr method. This means that no resolution will be undertaken if a FQDN
@@ -2732,7 +2735,8 @@ with the &quot;name&quot; keyword.
 
 Necessitates an OpenSSL version that supports ECH, and HAProxy must be
 compiled with USE_ECH=1. This command is only supported on a CLI connection
-running in experimental mode (see &quot;experimental-mode on&quot;).
+running in experimental mode (see &quot;experimental-mode on&quot;). Not available
+when HAProxy is built with AWS-LC.
 
 See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the configuration
 manual.
@@ -3037,7 +3041,8 @@ with the &quot;name&quot; keyword.
 
 Necessitates an OpenSSL version that supports ECH, and HAProxy must be
 compiled with USE_ECH=1. This command is only supported on a CLI connection
-running in experimental mode (see &quot;experimental-mode on&quot;).
+running in experimental mode (see &quot;experimental-mode on&quot;). Not available
+when HAProxy is built with AWS-LC.
 
 See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot;, &quot;<a href="#add%20ssl%20ech">add ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the
 configuration manual.
@@ -3550,7 +3555,8 @@ with the &quot;name&quot; keyword.
 
 Necessitates an OpenSSL version that supports ECH, and HAProxy must be
 compiled with USE_ECH=1. This command is only supported on a CLI connection
-running in experimental mode (see &quot;experimental-mode on&quot;).
+running in experimental mode (see &quot;experimental-mode on&quot;). Not available
+when HAProxy is built with AWS-LC.
 
 See also &quot;<a href="#show%20ssl%20ech">show ssl ech</a>&quot;, &quot;<a href="#add%20ssl%20ech">add ssl ech</a>&quot; and &quot;ech&quot; in the Section 5.1 of the
 configuration manual.
@@ -4653,7 +4659,8 @@ restarted.
 Necessitates an OpenSSL version that supports ECH, and HAProxy must be
 compiled with USE_ECH=1.
 This command is only supported on a CLI connection running in experimental
-mode (see &quot;experimental-mode on&quot;).
+mode (see &quot;experimental-mode on&quot;). Not available when HAProxy is built with
+AWS-LC.
 
 See also &quot;ech&quot; in the Section 5.1 of the configuration manual.
 </pre><div class="separator">
@@ -5934,7 +5941,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-121 &ndash; Management Guide<br>
+							HAProxy 3.5-dev3-148 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
