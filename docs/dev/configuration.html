@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-150 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev3-157 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4900,7 +4900,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4911,7 +4911,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev3-150</strong></p>
+							<p><strong>version 3.5-dev3-157</strong></p>
 							<p>
 								2026/07/22<br>
 								
@@ -9964,7 +9964,8 @@ If the list is empty, only proxies &quot;defaults&quot; sections will be purged.
 
 Default-server instances are kept in memory after parsing as they may be
 reused for dynamic servers added at runtime. Similarly, named defaults
-proxies sections are preserved as dynamic backends rely on them.
+proxies sections are preserved as dynamic backends rely on them. The command
+&quot;show default-server&quot; and &quot;show defaults&quot; may be used to list them.
 
 This may consume a noticeable amount of memory if the number of default
 instances is important. It's possible to reclaim this memory after the
@@ -11375,6 +11376,11 @@ of defaults sections. This can be convenient to establish certain configuration
 profiles to carry groups of default settings (e.g. TCP vs HTTP or short vs long
 timeouts) but can quickly become confusing to follow.
 
+By default, named defaults sections are preserved after configuration parsing.
+This allows to reuse them for dynamic backends creation. This behavior can be
+changed globally via &quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; keyword. It is possible to list the
+preserved instances via the command &quot;show defaults&quot;.
+
 All proxy names must be formed from upper and lower case letters, digits,
 '-' (dash), '_' (underscore) , '.' (dot) and ':' (colon). ACL names are
 case-sensitive, which means that &quot;www&quot; and &quot;WWW&quot; are two different proxies.
@@ -12778,10 +12784,14 @@ The same default-server can be defined over multiple lines, with each line
 completing the previous one. This set of options can be reset by using the
 &quot;from none&quot; keyword value.
 
-An unnamed default-server with no parameter set will automatically be purged
-after parsing. As such, a final &quot;default-server from none&quot; statement will be
-sufficient to release this unused memory, regardless of the global setting
-&quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; value.
+By default, all default-server named and unnamed are preserved after
+configuration parsing. This allows to reuse them for dynamic servers
+creation. This behavior can be changed globally via &quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot;
+keyword. An unnamed default-server with no parameter set will automatically
+be purged after parsing. As such, a final &quot;default-server from none&quot;
+statement will be sufficient to release this unused memory, regardless of the
+global setting. It is possible to list the preserved instances via the
+command &quot;show default-server&quot;.
 </pre><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, <a href="#5">section 5</a> about server options and global &quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; option</div>
 <a class="anchor" name="default_backend"></a><a class="anchor" name="4-default_backend"></a><a class="anchor" name="4.2-default_backend"></a><a class="anchor" name="default_backend (Proxies)"></a><a class="anchor" name="default_backend (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default_backend"></a><a href="#4.2-default_backend">default_backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Specify the backend to use when no &quot;<a href="#use_backend">use_backend</a>&quot; rule has been matched.
 
@@ -35623,7 +35633,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-150 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev3-157 &ndash; Configuration Manual<br>
 							<small>, 2026/07/22</small>
 						</div>
 					</div>

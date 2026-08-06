@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-150 - Management Guide</title>
+		<title>HAProxy version 3.5-dev3-157 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -567,6 +567,10 @@
 							
 							<a class="list-group-item" href="#show cli sockets">show cli sockets</a>
 							
+							<a class="list-group-item" href="#show default-server">show default-server</a>
+							
+							<a class="list-group-item" href="#show defaults">show defaults</a>
+							
 							<a class="list-group-item" href="#show dev">show dev</a>
 							
 							<a class="list-group-item" href="#show env">show env</a>
@@ -694,7 +698,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/04</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/05</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -705,7 +709,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev3-150</strong></p>
+							<p><strong>version 3.5-dev3-157</strong></p>
 							<p>
 								<br>
 								
@@ -2617,7 +2621,9 @@ backend&quot; to expose the newly created instance.
 
 All named default proxies can be used, given that they validate the same
 inheritance rules applied during configuration parsing. There is some
-exceptions though, for example when the mode is neither TCP nor HTTP.
+exceptions though, for example when the mode is neither TCP nor HTTP. The
+available default proxy instances can be listed via the &quot;<a href="#show%20defaults">show defaults</a>&quot;
+additional command.
 
 This command is restricted and can only be issued on sockets configured for
 level &quot;admin&quot;.
@@ -2660,7 +2666,8 @@ used to configure the server behavior (see &quot;<a href="#add%20server%20help">
 By default, 'default-server' is ignored by a dynamically created server.
 However, it is possible to use the 'from' server positional keyword to
 explicitely preset the settings of the newly created server from another
-server or a default-server instance, either named or unnamed.
+server or a default-server instance, either named or unnamed. The additional
+command &quot;<a href="#show%20default-server">show default-server</a>&quot; lists the available entries.
 
 Currently a dynamic server is statically initialized with the &quot;none&quot;
 init-addr method. This means that no resolution will be undertaken if a FQDN
@@ -3727,6 +3734,12 @@ $ echo 'show cache' | socat stdio /tmp/sock1
 5. number of blocks used for the object
 6. number of transactions using the entry
 7. expiration time, can be negative if already expired
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show default-server"></a><a class="anchor" name="9-show default-server"></a><a class="anchor" name="9.3-show default-server"></a><a class="anchor" name="show default-server (Statistics and monitoring)"></a><a class="anchor" name="show default-server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show default-server"></a><a href="#9.3-show%20default-server">show default-server</a></b> <span style="color: #008">[<span style="color: #080">&lt;backend&gt;</span>]</span></div><pre class="text">Dump the list of default-server instances still present in a backend after
+configuration parsing. These instances can be referenced via the server
+keyword from during &quot;<a href="#add%20server">add server</a>&quot;.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show defaults"></a><a class="anchor" name="9-show defaults"></a><a class="anchor" name="9.3-show defaults"></a><a class="anchor" name="show defaults (Statistics and monitoring)"></a><a class="anchor" name="show defaults (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show defaults"></a><a href="#9.3-show%20defaults">show defaults</a></b></div><pre class="text">Dump the list of named defaults proxies instances still present after
+configuration parsing. These instances can be reused with &quot;<a href="#add%20backend">add backend</a>&quot;
+command to serve as configuration for the newly created proxy.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show dev"></a><a class="anchor" name="9-show dev"></a><a class="anchor" name="9.3-show dev"></a><a class="anchor" name="show dev (Statistics and monitoring)"></a><a class="anchor" name="show dev (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show dev"></a><a href="#9.3-show%20dev">show dev</a></b></div><pre class="text">This command is meant to centralize some information that HAProxy developers
 might need to better understand the causes of a given problem. It generally
 does not provide useful information for the user, but these information allow
@@ -5941,7 +5954,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-150 &ndash; Management Guide<br>
+							HAProxy 3.5-dev3-157 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
