@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev3-157 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev4-8 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4900,7 +4900,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4911,9 +4911,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev3-157</strong></p>
+							<p><strong>version 3.5-dev4-8</strong></p>
 							<p>
-								2026/07/22<br>
+								2026/08/06<br>
 								
 							</p>
 						</div>
@@ -9953,14 +9953,7 @@ Please consult the management manual for details about the CLI.
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
-</pre><a class="anchor" name="tune.defaults.purge"></a><a class="anchor" name="3-tune.defaults.purge"></a><a class="anchor" name="3.2-tune.defaults.purge"></a><a class="anchor" name="tune.defaults.purge (Global section)"></a><a class="anchor" name="tune.defaults.purge (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.defaults.purge"></a><a href="#3.2-tune.defaults.purge">tune.defaults.purge</a></b> <span style="color: #008">[<span style="color: #080">&lt;element<span style="color: #008">[,...]</span>&gt;</span>]</span></div><pre class="text">Define what default instances to purge after configuration parsing.
-
-The elements to be purged are defined by a comma-delimited list of tokens.
-The currently supported entries are :
-  - &quot;proxies&quot; to purge &quot;defaults&quot; sections
-  - &quot;servers&quot; to purge &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; instances
-
-If the list is empty, only proxies &quot;defaults&quot; sections will be purged.
+</pre><a class="anchor" name="tune.defaults.purge"></a><a class="anchor" name="3-tune.defaults.purge"></a><a class="anchor" name="3.2-tune.defaults.purge"></a><a class="anchor" name="tune.defaults.purge (Global section)"></a><a class="anchor" name="tune.defaults.purge (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.defaults.purge"></a><a href="#3.2-tune.defaults.purge">tune.defaults.purge</a></b> <span style="color: #008">[<span style="color: #800">{ all | none | <span style="color: #080">&lt;element<span style="color: #008">[,...]</span>&gt;</span> }</span>]</span></div><pre class="text">Define what default instances to purge after configuration parsing.
 
 Default-server instances are kept in memory after parsing as they may be
 reused for dynamic servers added at runtime. Similarly, named defaults
@@ -9974,10 +9967,24 @@ configuration parsing if dynamic features are unneeded.
 In any case, referenced &quot;defaults&quot; sections which contain settings which
 cannot be copied by their referencing proxies (e.g. TCP/HTTP rules or
 tcpcheck ruleset) will be preserved, regardless of the global purge setting.
+
+Here are the values supported as argument :
+- &quot;all&quot; to purge &quot;defaults&quot; sections and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; instances
+- &quot;none&quot; to keep these elements, which is also the default behavior when the
+  setting is absent
+
+Alternatively, a comma-delimited list of tokens can be used for fine-grained
+control. The currently supported entries are :
+  - &quot;proxies&quot; to purge &quot;defaults&quot; sections
+  - &quot;servers&quot; to purge &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; instances
+
+If no argument is specified, only proxies &quot;defaults&quot; sections will be purged.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code><span class="comment"># reclaim the maximum memory possible</span>
+<span class="comment"># both syntax are equivalent</span>
+tune.defaults.purge all
 tune.defaults.purge proxies,servers
 
 <span class="comment"># purge proxies defaults sections</span>
@@ -35633,8 +35640,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev3-157 &ndash; Configuration Manual<br>
-							<small>, 2026/07/22</small>
+							HAProxy 3.5-dev4-8 &ndash; Configuration Manual<br>
+							<small>, 2026/08/06</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
