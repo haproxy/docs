@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev4-37 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev4-42 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3992,6 +3992,8 @@
 							
 							<a class="list-group-item" href="#ssl_c_notbefore">ssl_c_notbefore</a>
 							
+							<a class="list-group-item" href="#ssl_c_policies">ssl_c_policies</a>
+							
 							<a class="list-group-item" href="#ssl_c_r_dn">ssl_c_r_dn</a>
 							
 							<a class="list-group-item" href="#ssl_c_s_dn">ssl_c_s_dn</a>
@@ -4900,7 +4902,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4911,7 +4913,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev4-37</strong></p>
+							<p><strong>version 3.5-dev4-42</strong></p>
 							<p>
 								2026/08/06<br>
 								
@@ -29456,6 +29458,7 @@ Summary of sample fetch methods in this section and their respective types:
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_notbefore">ssl_c_notbefore</a></td><td >string</td></tr>
+<tr><td ><a href="#7-ssl_c_policies">ssl_c_policies([&lt;oid&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_r_dn">ssl_c_r_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_s_dn">ssl_c_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_san">ssl_c_san</a></td><td >string</td></tr>
@@ -29473,8 +29476,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_f_s_dn">ssl_f_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_serial">ssl_f_serial</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
-<tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc">ssl_fc</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-ssl_fc_alg_keysize">ssl_fc_alg_keysize</a></td><td >integer</td></tr>
@@ -29494,8 +29497,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_eclist_bin">ssl_fc_eclist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_exporter_secret">ssl_fc_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_has_crt">ssl_fc_has_crt</a></td><td >boolean</td></tr>
@@ -29515,8 +29518,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_supported_versions_bin">ssl_fc_supported_versions_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_unique_id">ssl_fc_unique_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_s_key_alg">ssl_s_key_alg</a></td><td >string</td></tr>
@@ -29775,7 +29778,26 @@ transport layer.
 </pre><a class="anchor" name="ssl_c_notbefore"></a><a class="anchor" name="7-ssl_c_notbefore"></a><a class="anchor" name="7.3.4-ssl_c_notbefore"></a><a class="anchor" name="ssl_c_notbefore (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_notbefore (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_notbefore"></a><a href="#7.3.4-ssl_c_notbefore">ssl_c_notbefore</a></b> : string</div><pre class="text">Returns the start date presented by the client as a formatted string
 YYMMDDhhmmss[Z] when the incoming connection was made over an SSL/TLS
 transport layer.
-</pre><a class="anchor" name="ssl_c_r_dn"></a><a class="anchor" name="7-ssl_c_r_dn"></a><a class="anchor" name="7.3.4-ssl_c_r_dn"></a><a class="anchor" name="ssl_c_r_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_r_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_r_dn"></a><a href="#7.3.4-ssl_c_r_dn">ssl_c_r_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and is
+</pre><a class="anchor" name="ssl_c_policies"></a><a class="anchor" name="7-ssl_c_policies"></a><a class="anchor" name="7.3.4-ssl_c_policies"></a><a class="anchor" name="ssl_c_policies (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_policies (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_policies"></a><a href="#7.3.4-ssl_c_policies">ssl_c_policies</a></b>(<span style="color: #008">[<span style="color: #080">&lt;oid&gt;</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and
+a client certificate was provided, returns a comma separated list of the
+OIDs found in the &quot;Certificate Policies&quot; X509v3 extension of this
+certificate.
+
+If the optional &lt;oid&gt; argument is given, in its numeric dotted form (eg:
+&quot;0.4.0.1862.1.4&quot;), the fetch does not build the list anymore and instead
+only checks whether this specific policy OID is present among the
+certificate's policies. In that case it only returns a sample when the OID
+is found, which makes it convenient to use with the &quot;found&quot; match method to
+take a decision based on the presence of a given certificate policy.
+
+Note: not supported by wolfSSL.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>acl qualified_qscd ssl_c_policies(0.4.0.1862.1.4) -m found
+http-request deny unless qualified_qscd
+</code></pre>
+</div><a class="anchor" name="ssl_c_r_dn"></a><a class="anchor" name="7-ssl_c_r_dn"></a><a class="anchor" name="7.3.4-ssl_c_r_dn"></a><a class="anchor" name="ssl_c_r_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_r_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_r_dn"></a><a href="#7.3.4-ssl_c_r_dn">ssl_c_r_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and is
 successfully validated with the configured ca-file, returns the full
 distinguished name of the root CA of the certificate presented by the client
 when no &lt;entry&gt; is specified, or the value of the first given entry found from
@@ -30438,7 +30460,10 @@ ClientHello message. Note that this only applies to raw contents found in the
 request buffer and not to the contents deciphered via an SSL data layer, so
 this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This is useful
 in ACL to make a routing decision based upon the ALPN preferences of a TLS
-client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;.
+client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;. This fetch only
+analyzes the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30453,7 +30478,11 @@ the client as reported in the contents of a TLS ClientHello. Note that this
 only applies to raw contents found in the request buffer and not to contents
 deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines
 having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_cipherlist_bin">ssl_fc_cipherlist_bin</a>&quot; which is the SSL
-bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified. This
+fetch only analyzes the first ClientHello message found in the request
+buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about
+the implications of this limitation (HelloRetryRequest, Renegotiation,
+Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30469,20 +30498,30 @@ message. This can be used to present ECC compatible clients with EC
 certificate and to use RSA for all others, on the same IP address. Note that
 this only applies to raw contents found in the request buffer and not to
 contents deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This fetch only analyzes the first
+ClientHello message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot;
+keyword documentation for more details about the implications of this
+limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_hello_type"></a><a class="anchor" name="7-req.ssl_hello_type"></a><a class="anchor" name="7.3.5-req.ssl_hello_type"></a><a class="anchor" name="req.ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_hello_type"></a><a href="#7.3.5-req.ssl_hello_type">req.ssl_hello_type</a></b> : integer</div><a class="anchor" name="req_ssl_hello_type"></a><a class="anchor" name="7-req_ssl_hello_type"></a><a class="anchor" name="7.3.5-req_ssl_hello_type"></a><a class="anchor" name="req_ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req_ssl_hello_type"></a><a href="#7.3.5-req_ssl_hello_type">req_ssl_hello_type</a></b> : integer <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns an integer value containing the type of the SSL hello message found
 in the request buffer if the buffer contains data that parse as a complete
 SSL (v3 or superior) client hello message. Note that this only applies to raw
 contents found in the request buffer and not to contents deciphered via an
 SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 option. This is mostly used in ACL to detect presence of an SSL hello message
-that is supposed to contain an SSL session ID usable for stickiness.
+that is supposed to contain an SSL session ID usable for stickiness. This
+fetch only analyzes the first ClientHello message found in the request
+buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about
+the implications of this limitation (HelloRetryRequest, Renegotiation,
+Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_keyshare_groups"></a><a class="anchor" name="7-req.ssl_keyshare_groups"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups"></a><a class="anchor" name="req.ssl_keyshare_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a class="anchor" name="7-req.ssl_keyshare_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups binary"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a href="#7.3.5-req.ssl_keyshare_groups%20binary">req.ssl_keyshare_groups binary</a></b></div><pre class="text">Return the binary format of the list of cryptographic parameters for key exchange
 supported by the client as reported in the TLS ClientHello. In TLS v1.3, keyshare
 is part of the ClientHello message and is the final client hello extension. Note
 that this only applies to raw contents found in the request buffer and not to
 contents deciphered via an  SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This fetch only analyzes the first ClientHello
+message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword
+documentation for more details about the implications of this limitation
+(HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30498,7 +30537,10 @@ extension. Note that this only applies to raw contents found in the request
 buffer and not to contents deciphered via an SSL data layer, so this will not
 work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin</a>&quot;
 which is the SSL bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is
-specified.
+specified. This fetch only analyzes the first ClientHello message found in
+the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more
+details about the implications of this limitation (HelloRetryRequest,
+Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30517,11 +30559,30 @@ work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="d
 implicit TLS based protocols like HTTPS (443), IMAPS (993), SMTPS (465),
 however it will not work for explicit TLS based protocols, like SMTP (25/587)
 or IMAP (143). SNI normally contains the name of the host the client tries to
-connect to (for recent browsers). SNI is useful for allowing or denying access
-to certain hosts when SSL/TLS is used by the client. This test was designed to
-be used with TCP request content inspection. If content switching is needed,
-it is recommended to first wait for a complete client hello (type 1), like in
-the example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;.
+connect to (for recent browsers). This test was designed to be used with TCP
+request content inspection. If content switching is needed, it is
+recommended to first wait for a complete client hello (type 1), like in the
+example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;. Beware that, for the reasons detailed
+below (HelloRetryRequest, Renegotiation, Encrypted Client Hello), the value
+returned by this fetch is not reliable enough to be used alone for allowing
+or denying access to certain hosts.
+
+This fetch only parses the first ClientHello message found in the request
+buffer. If the client sends several ClientHello messages within the same
+TCP stream, for instance because the server requested a HelloRetryRequest
+(HRR) as part of TLS 1.3, or because the client initiates a TLS
+renegotiation (which sends a new ClientHello later in the same TCP stream,
+possibly carrying a different SNI), only the SNI carried by that very first
+ClientHello will be returned, the content of any subsequent ClientHello
+will be ignored.
+
+When Encrypted Client Hello (ECH) is used, the ClientHello seen on the wire
+is only the &quot;Outer&quot; ClientHello, which embeds the real, encrypted &quot;Inner&quot;
+ClientHello. The SNI extracted by this fetch in that case is the one from
+the Outer ClientHello, which is a decoy SNI and not the actual host the
+client intends to reach. This fetch is currently not able to decrypt nor
+analyze the Inner ClientHello, so it must not be relied upon to make
+routing or access control decisions when ECH is in use.
 
 ACL derivatives :
   req.ssl_sni : exact string match
@@ -30542,14 +30603,20 @@ not to contents deciphered via an SSL data layer, so this will not work with
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This can for example be used to detect
 whether the client sent a SessionTicket or not and stick it accordingly, if
 no SessionTicket then stick on SessionID or don't stick as there's no server
-side state is there when SessionTickets are in use.
+side state is there when SessionTickets are in use. This fetch only analyzes
+the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_supported_groups"></a><a class="anchor" name="7-req.ssl_supported_groups"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups"></a><a class="anchor" name="req.ssl_supported_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_supported_groups binary"></a><a class="anchor" name="7-req.ssl_supported_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups binary"></a><a class="anchor" name="req.ssl_supported_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_supported_groups binary"></a><a href="#7.3.5-req.ssl_supported_groups%20binary">req.ssl_supported_groups binary</a></b></div><pre class="text">Returns the binary form of the list of supported groups supported by the client
 as reported in the TLS ClientHello and used for key exchange which can include
 both elliptic curve and non-EC key exchange. Note that this only applies to raw
 contents found in the request buffer and not to contents deciphered via an SSL
 data layer, so this will not  work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
 Refer to &quot;<a href="#ssl_fc_eclist_bin">ssl_fc_eclist_bin</a>&quot; which is the SSL bind equivalent that can be used
-when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified. This fetch only analyzes the first
+ClientHello message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot;
+keyword documentation for more details about the implications of this
+limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30567,7 +30634,10 @@ version. Note that this only applies to raw contents found in the request
 buffer and not to contents deciphered via an SSL data layer, so this will not
 work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. The ACL version of the test
 matches against a decimal notation in the form MAJOR.MINOR (e.g. 3.1). This
-fetch is mostly used in ACL.
+fetch is mostly used in ACL. This fetch only analyzes the first ClientHello
+message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword
+documentation for more details about the implications of this limitation
+(HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 
 ACL derivatives :
   req.ssl_ver : decimal match
@@ -35643,7 +35713,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev4-37 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev4-42 &ndash; Configuration Manual<br>
 							<small>, 2026/08/06</small>
 						</div>
 					</div>
