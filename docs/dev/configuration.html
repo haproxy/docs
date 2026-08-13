@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev4-42 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev4-73 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4902,7 +4902,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/12</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4913,7 +4913,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev4-42</strong></p>
+							<p><strong>version 3.5-dev4-73</strong></p>
 							<p>
 								2026/08/06<br>
 								
@@ -29769,6 +29769,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_c_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_key_alg"></a><a class="anchor" name="7-ssl_c_key_alg"></a><a class="anchor" name="7.3.4-ssl_c_key_alg"></a><a class="anchor" name="ssl_c_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_key_alg"></a><a href="#7.3.4-ssl_c_key_alg">ssl_c_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the client when the incoming connection was made over an SSL/TLS
 transport layer.
@@ -29809,6 +29812,9 @@ second organization unit, and &quot;ssl_c_r_dn(CN)&quot; retrieves the common na
 different protocols. Currently supported is rfc2253 for LDAP v3. If you'd like
 to modify the format only you can specify an empty string and zero for the
 first two parameters. Example: ssl_c_r_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_s_dn"></a><a class="anchor" name="7-ssl_c_s_dn"></a><a class="anchor" name="7.3.4-ssl_c_s_dn"></a><a class="anchor" name="ssl_c_s_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_s_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_s_dn"></a><a href="#7.3.4-ssl_c_s_dn">ssl_c_s_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer,
 returns the full distinguished name of the subject of the certificate
 presented by the client when no &lt;entry&gt; is specified, or the value of the
@@ -29822,6 +29828,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_c_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_san"></a><a class="anchor" name="7-ssl_c_san"></a><a class="anchor" name="7.3.4-ssl_c_san"></a><a class="anchor" name="ssl_c_san (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_san (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_san"></a><a href="#7.3.4-ssl_c_san">ssl_c_san</a></b> : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and was
 provided with a client certificate. Returns a string of comma separated
 Subject Alt Name fields contained into the provided certificate.
@@ -29876,6 +29885,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_f_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_f_key_alg"></a><a class="anchor" name="7-ssl_f_key_alg"></a><a class="anchor" name="7.3.4-ssl_f_key_alg"></a><a class="anchor" name="ssl_f_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_f_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_f_key_alg"></a><a href="#7.3.4-ssl_f_key_alg">ssl_f_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the frontend when the incoming connection was made over an
 SSL/TLS transport layer.
@@ -29898,6 +29910,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_f_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_f_serial"></a><a class="anchor" name="7-ssl_f_serial"></a><a class="anchor" name="7.3.4-ssl_f_serial"></a><a class="anchor" name="ssl_f_serial (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_f_serial (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_f_serial"></a><a href="#7.3.4-ssl_f_serial">ssl_f_serial</a></b> : binary</div><pre class="text">Returns the serial of the certificate presented by the frontend when the
 incoming connection was made over an SSL/TLS transport layer. When used for
 an ACL, the value(s) to match against can be passed in hexadecimal form.
@@ -30245,6 +30260,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_s_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_s_key_alg"></a><a class="anchor" name="7-ssl_s_key_alg"></a><a class="anchor" name="7.3.4-ssl_s_key_alg"></a><a class="anchor" name="ssl_s_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_key_alg"></a><a href="#7.3.4-ssl_s_key_alg">ssl_s_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the server when the outgoing connection was made over an
 SSL/TLS transport layer.
@@ -30267,6 +30285,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_s_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_s_serial"></a><a class="anchor" name="7-ssl_s_serial"></a><a class="anchor" name="7.3.4-ssl_s_serial"></a><a class="anchor" name="ssl_s_serial (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_serial (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_serial"></a><a href="#7.3.4-ssl_s_serial">ssl_s_serial</a></b> : binary</div><pre class="text">Returns the serial of the certificate presented by the server when the
 outgoing connection was made over an SSL/TLS transport layer. When used for
 an ACL, the value(s) to match against can be passed in hexadecimal form.
@@ -35713,7 +35734,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev4-42 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev4-73 &ndash; Configuration Manual<br>
 							<small>, 2026/08/06</small>
 						</div>
 					</div>
