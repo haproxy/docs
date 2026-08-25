@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev5-2 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev5-12 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4655,6 +4655,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.mem.tx-max">tune.quic.mem.tx-max</a>
 							
+							<a class="list-group-item" href="#tune.quic.sec.stateless-reset-rate">tune.quic.sec.stateless-reset-rate</a>
+							
 							<a class="list-group-item" href="#tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a>
 							
 							<a class="list-group-item" href="#tune.rcvbuf.backend">tune.rcvbuf.backend</a>
@@ -4904,7 +4906,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4915,7 +4917,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev5-2</strong></p>
+							<p><strong>version 3.5-dev5-12</strong></p>
 							<p>
 								2026/08/21<br>
 								
@@ -8013,6 +8015,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.fe.tx.udp-gso">tune.quic.fe.tx.udp-gso</a>
    - <a href="#tune.quic.listen">tune.quic.listen</a>
    - <a href="#tune.quic.mem.tx-max">tune.quic.mem.tx-max</a>
+   - <a href="#tune.quic.sec.stateless-reset-rate">tune.quic.sec.stateless-reset-rate</a>
    - <a href="#tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a>
    - <a href="#tune.renice.runtime">tune.renice.runtime</a>
    - <a href="#tune.renice.startup">tune.renice.startup</a>
@@ -10904,6 +10907,16 @@ output buffers. Note that to prevent threads contention this limit is not
 strictly enforced so it can be exceeded on some occasions. Also, each
 connection will always be able to use a window of at least 2 datagrams, so a
 proper maxconn should be used in conjunction.
+</pre><a class="anchor" name="tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="3-tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="3.2-tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="tune.quic.sec.stateless-reset-rate (Global section)"></a><a class="anchor" name="tune.quic.sec.stateless-reset-rate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.sec.stateless-reset-rate"></a><a href="#3.2-tune.quic.sec.stateless-reset-rate">tune.quic.sec.stateless-reset-rate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum total number of QUIC Stateless Reset packets emitted per
+second, across all threads. Each thread gets its own even share of this
+total, so the actual number sent per second may be slightly under or over
+&lt;number&gt; depending on how evenly it divides by the thread count, but the
+total across all threads never drifts from it over time.
+
+The default value is 1000.
+
+See https://www.rfc-editor.org/rfc/rfc9000.html#section-10.3 for more
+information about QUIC Stateless Reset.
 </pre><a class="anchor" name="tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="3-tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="3.2-tune.quic.zero-copy-fwd-send"></a><a class="anchor" name="tune.quic.zero-copy-fwd-send (Global section)"></a><a class="anchor" name="tune.quic.zero-copy-fwd-send (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.zero-copy-fwd-send"></a><a href="#3.2-tune.quic.zero-copy-fwd-send">tune.quic.zero-copy-fwd-send</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') of disabled ('off') the zero-copy sends of data for the QUIC
 multiplexer. It is enabled by default.
 </pre><div class="page-header"><b>See also:</b> tune.disable-zero-copy-forwarding</div>
@@ -35758,7 +35771,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev5-2 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev5-12 &ndash; Configuration Manual<br>
 							<small>, 2026/08/21</small>
 						</div>
 					</div>
