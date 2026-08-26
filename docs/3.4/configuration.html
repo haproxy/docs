@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4.3-1 - Configuration Manual</title>
+		<title>HAProxy version 3.4.3-79 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1516,6 +1516,8 @@
 							<a class="list-group-item" href="#bc_src_port">bc_src_port</a>
 							
 							<a class="list-group-item" href="#bc_srv_queue">bc_srv_queue</a>
+							
+							<a class="list-group-item" href="#be-unpublished">be-unpublished</a>
 							
 							<a class="list-group-item" href="#be2dec">be2dec</a>
 							
@@ -4928,7 +4930,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4939,7 +4941,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4.3-1</strong></p>
+							<p><strong>version 3.4.3-79</strong></p>
 							<p>
 								2026/07/29<br>
 								
@@ -11464,6 +11466,10 @@ of defaults sections. This can be convenient to establish certain configuration
 profiles to carry groups of default settings (e.g. TCP vs HTTP or short vs long
 timeouts) but can quickly become confusing to follow.
 
+By default, named defaults sections are preserved after configuration parsing.
+This allows to reuse them for dynamic backends creation. This behavior can be
+changed globally via &quot;<a href="#tune.defaults.purge">tune.defaults.purge</a>&quot; keyword.
+
 All proxy names must be formed from upper and lower case letters, digits,
 '-' (dash), '_' (underscore) , '.' (dot) and ':' (colon). ACL names are
 case-sensitive, which means that &quot;www&quot; and &quot;WWW&quot; are two different proxies.
@@ -11584,6 +11590,7 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-acl">acl</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-backlog">backlog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-balance">balance</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-be-unpublished">be-unpublished</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-bind">bind</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20cookie">capture cookie</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-capture%20request%20header">capture request header</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11600,8 +11607,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-description">description</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-disabled">disabled</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-dispatch"><span class="pull-right"><span class="label label-warning">(deprecated)</span></span>dispatch</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20level">email-alert level</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20mailers">email-alert mailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20myhostname">email-alert myhostname</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11621,8 +11628,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-filter-sequence">filter-sequence</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11642,8 +11649,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-id">id</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11663,8 +11670,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20dontlog-normal"><span class="pull-right"><span>(*)</span></span>option dontlog-normal</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20external-check">option external-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11684,8 +11691,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20httpslog">option httpslog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20independent-streams"><span class="pull-right"><span>(*)</span></span>option independent-streams</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11705,8 +11712,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11726,8 +11733,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-srvtcpka-cnt">srvtcpka-cnt</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-idle">srvtcpka-idle</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-intvl">srvtcpka-intvl</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11747,8 +11754,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-stick-table">stick-table</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20comment">tcp-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11768,8 +11775,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20connect">timeout connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-keep-alive">timeout http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -12175,6 +12182,22 @@ extension with &quot;<a href="#url_param">url_param</a>&quot; must be considered
     might be a URL parameter list. This is probably not a concern with SGML
     type message bodies.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#dispatch">dispatch</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">cookie<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#cookie%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#cookie%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li><li><a href="#cookie%20%28Fetching%20HTTP%20samples%20%28Layer%207%29%29">Fetching HTTP samples (Layer 7)</a></li></ul></span>&quot;, &quot;<a href="#option%20transparent">transparent</a>&quot;, &quot;<a href="#hash-type">hash-type</a>&quot;.</div>
+<a class="anchor" name="be-unpublished"></a><a class="anchor" name="4-be-unpublished"></a><a class="anchor" name="4.2-be-unpublished"></a><a class="anchor" name="be-unpublished (Proxies)"></a><a class="anchor" name="be-unpublished (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="be-unpublished"></a><a href="#4.2-be-unpublished">be-unpublished</a></b></div><pre class="text">Instructs the backend to start in the unpublished state.
+
+May be used in the following contexts: tcp, http, log
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<pre class="text">In effect, any use_backend and default_backend rules from another proxy which
+reference the current proxy are ignored and the next content switching rules
+are evaluated. This can be bypassed though via a &quot;<a href="#force-be-switch">force-be-switch</a>&quot; rule.
+
+This state is similar to the disabled one but with some differences. First,
+an unpublished backend will still be fully initialized, including the server
+health checks which remain active. Finally, a backend can be publicly exposed
+via the command &quot;publish backend&quot; on the CLI. See the management manual.
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#force-be-switch">force-be-switch</a>&quot;</div>
 <a class="anchor" name="bind"></a><a class="anchor" name="4-bind"></a><a class="anchor" name="4.2-bind"></a><a class="anchor" name="bind (Proxies)"></a><a class="anchor" name="bind (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="bind"></a><a href="#4.2-bind">bind</a></b> <span style="color: #008">[<span style="color: #080">&lt;address&gt;</span>]</span>:<span style="color: #080">&lt;port_range&gt;</span> <span style="color: #008">[, ...]</span> <span style="color: #008">[param*]</span></div><a class="anchor" name="bind"></a><a class="anchor" name="4-bind"></a><a class="anchor" name="4.2-bind"></a><a class="anchor" name="bind (Proxies)"></a><a class="anchor" name="bind (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="bind"></a><a href="#4.2-bind">bind</a></b> /<span style="color: #080">&lt;path&gt;</span> <span style="color: #008">[, ...]</span> <span style="color: #008">[param*]</span></div><pre class="text">Define one or several listening addresses and/or ports in a frontend.
 
 May be used in the following contexts: tcp, http
@@ -13337,7 +13360,7 @@ May be used in the following contexts: tcp, http
 <thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td></tr>
 </table></div>
-<div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
+<div class="page-header"><b>See also :</b> &quot;<a href="#be-unpublished">be-unpublished</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">disabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#disabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#disabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#disabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;</div>
 <a class="anchor" name="filter"></a><a class="anchor" name="4-filter"></a><a class="anchor" name="4.2-filter"></a><a class="anchor" name="filter (Proxies)"></a><a class="anchor" name="filter (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter"></a><a href="#4.2-filter">filter</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[param*]</span></div><pre class="text">Add the filter &lt;name&gt; in the filter list attached to the proxy.
 
 May be used in the following contexts: tcp, http
@@ -29825,6 +29848,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_c_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_key_alg"></a><a class="anchor" name="7-ssl_c_key_alg"></a><a class="anchor" name="7.3.4-ssl_c_key_alg"></a><a class="anchor" name="ssl_c_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_key_alg"></a><a href="#7.3.4-ssl_c_key_alg">ssl_c_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the client when the incoming connection was made over an SSL/TLS
 transport layer.
@@ -29846,6 +29872,9 @@ second organization unit, and &quot;ssl_c_r_dn(CN)&quot; retrieves the common na
 different protocols. Currently supported is rfc2253 for LDAP v3. If you'd like
 to modify the format only you can specify an empty string and zero for the
 first two parameters. Example: ssl_c_r_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_s_dn"></a><a class="anchor" name="7-ssl_c_s_dn"></a><a class="anchor" name="7.3.4-ssl_c_s_dn"></a><a class="anchor" name="ssl_c_s_dn (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_s_dn (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_s_dn"></a><a href="#7.3.4-ssl_c_s_dn">ssl_c_s_dn</a></b>(<span style="color: #008">[<span style="color: #080">&lt;entry&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;occ&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;format&gt;</span>]</span>]</span>]</span>) : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer,
 returns the full distinguished name of the subject of the certificate
 presented by the client when no &lt;entry&gt; is specified, or the value of the
@@ -29859,6 +29888,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_c_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_c_san"></a><a class="anchor" name="7-ssl_c_san"></a><a class="anchor" name="7.3.4-ssl_c_san"></a><a class="anchor" name="ssl_c_san (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_c_san (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_c_san"></a><a href="#7.3.4-ssl_c_san">ssl_c_san</a></b> : string</div><pre class="text">When the incoming connection was made over an SSL/TLS transport layer, and was
 provided with a client certificate. Returns a string of comma separated
 Subject Alt Name fields contained into the provided certificate.
@@ -29913,6 +29945,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_f_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_f_key_alg"></a><a class="anchor" name="7-ssl_f_key_alg"></a><a class="anchor" name="7.3.4-ssl_f_key_alg"></a><a class="anchor" name="ssl_f_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_f_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_f_key_alg"></a><a href="#7.3.4-ssl_f_key_alg">ssl_f_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the frontend when the incoming connection was made over an
 SSL/TLS transport layer.
@@ -29935,6 +29970,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_f_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_f_serial"></a><a class="anchor" name="7-ssl_f_serial"></a><a class="anchor" name="7.3.4-ssl_f_serial"></a><a class="anchor" name="ssl_f_serial (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_f_serial (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_f_serial"></a><a href="#7.3.4-ssl_f_serial">ssl_f_serial</a></b> : binary</div><pre class="text">Returns the serial of the certificate presented by the frontend when the
 incoming connection was made over an SSL/TLS transport layer. When used for
 an ACL, the value(s) to match against can be passed in hexadecimal form.
@@ -30282,6 +30320,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_s_i_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_s_key_alg"></a><a class="anchor" name="7-ssl_s_key_alg"></a><a class="anchor" name="7.3.4-ssl_s_key_alg"></a><a class="anchor" name="ssl_s_key_alg (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_key_alg (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_key_alg"></a><a href="#7.3.4-ssl_s_key_alg">ssl_s_key_alg</a></b> : string</div><pre class="text">Returns the name of the algorithm used to generate the key of the certificate
 presented by the server when the outgoing connection was made over an
 SSL/TLS transport layer.
@@ -30304,6 +30345,9 @@ consumption by different protocols. Currently supported is rfc2253 for
 LDAP v3.
 If you'd like to modify the format only you can specify an empty string
 and zero for the first two parameters. Example: ssl_s_s_dn(,0,rfc2253)
+If the requested entry's ASN.1 value (or, when no &lt;entry&gt; is specified,
+any entry in the DN) contains an embedded NUL byte followed by other
+data, it is considered malformed and no data is returned.
 </pre><a class="anchor" name="ssl_s_serial"></a><a class="anchor" name="7-ssl_s_serial"></a><a class="anchor" name="7.3.4-ssl_s_serial"></a><a class="anchor" name="ssl_s_serial (Using ACLs and fetching samples)"></a><a class="anchor" name="ssl_s_serial (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="ssl_s_serial"></a><a href="#7.3.4-ssl_s_serial">ssl_s_serial</a></b> : binary</div><pre class="text">Returns the serial of the certificate presented by the server when the
 outgoing connection was made over an SSL/TLS transport layer. When used for
 an ACL, the value(s) to match against can be passed in hexadecimal form.
@@ -30497,7 +30541,10 @@ ClientHello message. Note that this only applies to raw contents found in the
 request buffer and not to the contents deciphered via an SSL data layer, so
 this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This is useful
 in ACL to make a routing decision based upon the ALPN preferences of a TLS
-client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;.
+client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;. This fetch only
+analyzes the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30512,7 +30559,11 @@ the client as reported in the contents of a TLS ClientHello. Note that this
 only applies to raw contents found in the request buffer and not to contents
 deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines
 having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_cipherlist_bin">ssl_fc_cipherlist_bin</a>&quot; which is the SSL
-bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified. This
+fetch only analyzes the first ClientHello message found in the request
+buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about
+the implications of this limitation (HelloRetryRequest, Renegotiation,
+Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30528,20 +30579,30 @@ message. This can be used to present ECC compatible clients with EC
 certificate and to use RSA for all others, on the same IP address. Note that
 this only applies to raw contents found in the request buffer and not to
 contents deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This fetch only analyzes the first
+ClientHello message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot;
+keyword documentation for more details about the implications of this
+limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_hello_type"></a><a class="anchor" name="7-req.ssl_hello_type"></a><a class="anchor" name="7.3.5-req.ssl_hello_type"></a><a class="anchor" name="req.ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_hello_type"></a><a href="#7.3.5-req.ssl_hello_type">req.ssl_hello_type</a></b> : integer</div><a class="anchor" name="req_ssl_hello_type"></a><a class="anchor" name="7-req_ssl_hello_type"></a><a class="anchor" name="7.3.5-req_ssl_hello_type"></a><a class="anchor" name="req_ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req_ssl_hello_type"></a><a href="#7.3.5-req_ssl_hello_type">req_ssl_hello_type</a></b> : integer <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns an integer value containing the type of the SSL hello message found
 in the request buffer if the buffer contains data that parse as a complete
 SSL (v3 or superior) client hello message. Note that this only applies to raw
 contents found in the request buffer and not to contents deciphered via an
 SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 option. This is mostly used in ACL to detect presence of an SSL hello message
-that is supposed to contain an SSL session ID usable for stickiness.
+that is supposed to contain an SSL session ID usable for stickiness. This
+fetch only analyzes the first ClientHello message found in the request
+buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about
+the implications of this limitation (HelloRetryRequest, Renegotiation,
+Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_keyshare_groups"></a><a class="anchor" name="7-req.ssl_keyshare_groups"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups"></a><a class="anchor" name="req.ssl_keyshare_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a class="anchor" name="7-req.ssl_keyshare_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_keyshare_groups binary"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_keyshare_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_keyshare_groups binary"></a><a href="#7.3.5-req.ssl_keyshare_groups%20binary">req.ssl_keyshare_groups binary</a></b></div><pre class="text">Return the binary format of the list of cryptographic parameters for key exchange
 supported by the client as reported in the TLS ClientHello. In TLS v1.3, keyshare
 is part of the ClientHello message and is the final client hello extension. Note
 that this only applies to raw contents found in the request buffer and not to
 contents deciphered via an  SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This fetch only analyzes the first ClientHello
+message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword
+documentation for more details about the implications of this limitation
+(HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30557,7 +30618,10 @@ extension. Note that this only applies to raw contents found in the request
 buffer and not to contents deciphered via an SSL data layer, so this will not
 work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. Refer to &quot;<a href="#ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin</a>&quot;
 which is the SSL bind equivalent that can be used when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is
-specified.
+specified. This fetch only analyzes the first ClientHello message found in
+the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more
+details about the implications of this limitation (HelloRetryRequest,
+Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30576,11 +30640,30 @@ work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="d
 implicit TLS based protocols like HTTPS (443), IMAPS (993), SMTPS (465),
 however it will not work for explicit TLS based protocols, like SMTP (25/587)
 or IMAP (143). SNI normally contains the name of the host the client tries to
-connect to (for recent browsers). SNI is useful for allowing or denying access
-to certain hosts when SSL/TLS is used by the client. This test was designed to
-be used with TCP request content inspection. If content switching is needed,
-it is recommended to first wait for a complete client hello (type 1), like in
-the example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;.
+connect to (for recent browsers). This test was designed to be used with TCP
+request content inspection. If content switching is needed, it is
+recommended to first wait for a complete client hello (type 1), like in the
+example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;. Beware that, for the reasons detailed
+below (HelloRetryRequest, Renegotiation, Encrypted Client Hello), the value
+returned by this fetch is not reliable enough to be used alone for allowing
+or denying access to certain hosts.
+
+This fetch only parses the first ClientHello message found in the request
+buffer. If the client sends several ClientHello messages within the same
+TCP stream, for instance because the server requested a HelloRetryRequest
+(HRR) as part of TLS 1.3, or because the client initiates a TLS
+renegotiation (which sends a new ClientHello later in the same TCP stream,
+possibly carrying a different SNI), only the SNI carried by that very first
+ClientHello will be returned, the content of any subsequent ClientHello
+will be ignored.
+
+When Encrypted Client Hello (ECH) is used, the ClientHello seen on the wire
+is only the &quot;Outer&quot; ClientHello, which embeds the real, encrypted &quot;Inner&quot;
+ClientHello. The SNI extracted by this fetch in that case is the one from
+the Outer ClientHello, which is a decoy SNI and not the actual host the
+client intends to reach. This fetch is currently not able to decrypt nor
+analyze the Inner ClientHello, so it must not be relied upon to make
+routing or access control decisions when ECH is in use.
 
 ACL derivatives :
   req.ssl_sni : exact string match
@@ -30601,14 +30684,20 @@ not to contents deciphered via an SSL data layer, so this will not work with
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This can for example be used to detect
 whether the client sent a SessionTicket or not and stick it accordingly, if
 no SessionTicket then stick on SessionID or don't stick as there's no server
-side state is there when SessionTickets are in use.
+side state is there when SessionTickets are in use. This fetch only analyzes
+the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_supported_groups"></a><a class="anchor" name="7-req.ssl_supported_groups"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups"></a><a class="anchor" name="req.ssl_supported_groups (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups (Fetching samples from buffer contents (Layer 6))"></a><a class="anchor" name="req.ssl_supported_groups binary"></a><a class="anchor" name="7-req.ssl_supported_groups binary"></a><a class="anchor" name="7.3.5-req.ssl_supported_groups binary"></a><a class="anchor" name="req.ssl_supported_groups binary (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_supported_groups binary (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_supported_groups binary"></a><a href="#7.3.5-req.ssl_supported_groups%20binary">req.ssl_supported_groups binary</a></b></div><pre class="text">Returns the binary form of the list of supported groups supported by the client
 as reported in the TLS ClientHello and used for key exchange which can include
 both elliptic curve and non-EC key exchange. Note that this only applies to raw
 contents found in the request buffer and not to contents deciphered via an SSL
 data layer, so this will not  work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
 Refer to &quot;<a href="#ssl_fc_eclist_bin">ssl_fc_eclist_bin</a>&quot; which is the SSL bind equivalent that can be used
-when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified.
+when the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option is specified. This fetch only analyzes the first
+ClientHello message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot;
+keyword documentation for more details about the implications of this
+limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -30626,7 +30715,10 @@ version. Note that this only applies to raw contents found in the request
 buffer and not to contents deciphered via an SSL data layer, so this will not
 work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. The ACL version of the test
 matches against a decimal notation in the form MAJOR.MINOR (e.g. 3.1). This
-fetch is mostly used in ACL.
+fetch is mostly used in ACL. This fetch only analyzes the first ClientHello
+message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword
+documentation for more details about the implications of this limitation
+(HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 
 ACL derivatives :
   req.ssl_ver : decimal match
@@ -35728,7 +35820,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4.3-1 &ndash; Configuration Manual<br>
+							HAProxy 3.4.3-79 &ndash; Configuration Manual<br>
 							<small>, 2026/07/29</small>
 						</div>
 					</div>
