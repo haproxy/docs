@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.27 - Configuration Manual</title>
+		<title>HAProxy version 2.8.27-47 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4296,7 +4296,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/07/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4307,7 +4307,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.27</strong></p>
+							<p><strong>version 2.8.27-47</strong></p>
 							<p>
 								2026/07/29<br>
 								
@@ -21185,8 +21185,14 @@ and should be passed a strictly positive integer.
 </pre><a class="anchor" name="process-vary"></a><a class="anchor" name="6-process-vary"></a><a class="anchor" name="6.2.1-process-vary"></a><a class="anchor" name="process-vary (Cache)"></a><a class="anchor" name="process-vary (Cache section)"></a><div class="keyword"><b><a class="anchor" name="process-vary"></a><a href="#6.2.1-process-vary">process-vary</a></b> <span style="color: #080">&lt;on/off&gt;</span></div><pre class="text">Enable or disable the processing of the Vary header. When disabled, a response
 containing such a header will never be cached. When enabled, we need to calculate
 a preliminary hash for a subset of request headers on all the incoming requests
-(which might come with a cpu cost) which will be used to build a secondary key
-for a given request (see RFC 7234#4.1). The default value is off (disabled).
+(which might come with a cpu cost) which will be used to build a secondary
+key for a given request (see RFC 7234#4.1). The secondary key is built out of
+the contents of the 'accept-encoding', 'referer' and 'origin' headers for
+now. Note that the 'origin' and 'referer' headers are single-valued per the
+RFC, so a request carrying more than one occurrence of either should be
+considered malformed. For such requests no secondary key is built and the
+response is never delivered from the cache so that we can let the server
+decide how to handle the situation. The default value is off (disabled).
 </pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
 blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
 </pre></div>
@@ -24903,7 +24909,10 @@ ClientHello message. Note that this only applies to raw contents found in the
 request buffer and not to the contents deciphered via an SSL data layer, so
 this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This is useful
 in ACL to make a routing decision based upon the ALPN preferences of a TLS
-client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;.
+client, like in the example below. See also &quot;<a href="#ssl_fc_alpn">ssl_fc_alpn</a>&quot;. This fetch only
+analyzes the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><div class="separator">
 <span class="label label-success">Examples :</span>
 <pre class="prettyprint">
@@ -24919,14 +24928,21 @@ message. This can be used to present ECC compatible clients with EC
 certificate and to use RSA for all others, on the same IP address. Note that
 this only applies to raw contents found in the request buffer and not to
 contents deciphered via an SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option.
+lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This fetch only analyzes the first
+ClientHello message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot;
+keyword documentation for more details about the implications of this
+limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_hello_type"></a><a class="anchor" name="7-req.ssl_hello_type"></a><a class="anchor" name="7.3.5-req.ssl_hello_type"></a><a class="anchor" name="req.ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_hello_type"></a><a href="#7.3.5-req.ssl_hello_type">req.ssl_hello_type</a></b> : integer</div><a class="anchor" name="req_ssl_hello_type"></a><a class="anchor" name="7-req_ssl_hello_type"></a><a class="anchor" name="7.3.5-req_ssl_hello_type"></a><a class="anchor" name="req_ssl_hello_type (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ssl_hello_type (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req_ssl_hello_type"></a><a href="#7.3.5-req_ssl_hello_type">req_ssl_hello_type</a></b> : integer <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns an integer value containing the type of the SSL hello message found
 in the request buffer if the buffer contains data that parse as a complete
 SSL (v3 or superior) client hello message. Note that this only applies to raw
 contents found in the request buffer and not to contents deciphered via an
 SSL data layer, so this will not work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 option. This is mostly used in ACL to detect presence of an SSL hello message
-that is supposed to contain an SSL session ID usable for stickiness.
+that is supposed to contain an SSL session ID usable for stickiness. This
+fetch only analyzes the first ClientHello message found in the request
+buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about
+the implications of this limitation (HelloRetryRequest, Renegotiation,
+Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_sni"></a><a class="anchor" name="7-req.ssl_sni"></a><a class="anchor" name="7.3.5-req.ssl_sni"></a><a class="anchor" name="req.ssl_sni (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_sni (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_sni"></a><a href="#7.3.5-req.ssl_sni">req.ssl_sni</a></b> : string</div><a class="anchor" name="req_ssl_sni"></a><a class="anchor" name="7-req_ssl_sni"></a><a class="anchor" name="7.3.5-req_ssl_sni"></a><a class="anchor" name="req_ssl_sni (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ssl_sni (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req_ssl_sni"></a><a href="#7.3.5-req_ssl_sni">req_ssl_sni</a></b> : string <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns a string containing the value of the Server Name TLS extension sent
 by a client in a TLS stream passing through the request buffer if the buffer
 contains data that parse as a complete SSL (v3 or superior) client hello
@@ -24936,11 +24952,30 @@ work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="d
 implicit TLS based protocols like HTTPS (443), IMAPS (993), SMTPS (465),
 however it will not work for explicit TLS based protocols, like SMTP (25/587)
 or IMAP (143). SNI normally contains the name of the host the client tries to
-connect to (for recent browsers). SNI is useful for allowing or denying access
-to certain hosts when SSL/TLS is used by the client. This test was designed to
-be used with TCP request content inspection. If content switching is needed,
-it is recommended to first wait for a complete client hello (type 1), like in
-the example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;.
+connect to (for recent browsers). This test was designed to be used with TCP
+request content inspection. If content switching is needed, it is
+recommended to first wait for a complete client hello (type 1), like in the
+example below. See also &quot;<a href="#ssl_fc_sni">ssl_fc_sni</a>&quot;. Beware that, for the reasons detailed
+below (HelloRetryRequest, Renegotiation, Encrypted Client Hello), the value
+returned by this fetch is not reliable enough to be used alone for allowing
+or denying access to certain hosts.
+
+This fetch only parses the first ClientHello message found in the request
+buffer. If the client sends several ClientHello messages within the same
+TCP stream, for instance because the server requested a HelloRetryRequest
+(HRR) as part of TLS 1.3, or because the client initiates a TLS
+renegotiation (which sends a new ClientHello later in the same TCP stream,
+possibly carrying a different SNI), only the SNI carried by that very first
+ClientHello will be returned, the content of any subsequent ClientHello
+will be ignored.
+
+When Encrypted Client Hello (ECH) is used, the ClientHello seen on the wire
+is only the &quot;Outer&quot; ClientHello, which embeds the real, encrypted &quot;Inner&quot;
+ClientHello. The SNI extracted by this fetch in that case is the one from
+the Outer ClientHello, which is a decoy SNI and not the actual host the
+client intends to reach. This fetch is currently not able to decrypt nor
+analyze the Inner ClientHello, so it must not be relied upon to make
+routing or access control decisions when ECH is in use.
 
 ACL derivatives :
   req.ssl_sni : exact string match
@@ -24961,7 +24996,10 @@ not to contents deciphered via an SSL data layer, so this will not work with
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. This can for example be used to detect
 whether the client sent a SessionTicket or not and stick it accordingly, if
 no SessionTicket then stick on SessionID or don't stick as there's no server
-side state is there when SessionTickets are in use.
+side state is there when SessionTickets are in use. This fetch only analyzes
+the first ClientHello message found in the request buffer, see the
+&quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword documentation for more details about the implications
+of this limitation (HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 </pre><a class="anchor" name="req.ssl_ver"></a><a class="anchor" name="7-req.ssl_ver"></a><a class="anchor" name="7.3.5-req.ssl_ver"></a><a class="anchor" name="req.ssl_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req.ssl_ver (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req.ssl_ver"></a><a href="#7.3.5-req.ssl_ver">req.ssl_ver</a></b> : integer</div><a class="anchor" name="req_ssl_ver"></a><a class="anchor" name="7-req_ssl_ver"></a><a class="anchor" name="7.3.5-req_ssl_ver"></a><a class="anchor" name="req_ssl_ver (Using ACLs and fetching samples)"></a><a class="anchor" name="req_ssl_ver (Fetching samples from buffer contents (Layer 6))"></a><div class="keyword"><b><a class="anchor" name="req_ssl_ver"></a><a href="#7.3.5-req_ssl_ver">req_ssl_ver</a></b> : integer <span class="label label-warning">(deprecated)</span></div><pre class="text">Returns an integer value containing the version of the SSL/TLS protocol of a
 stream present in the request buffer. Both SSLv2 hello messages and SSLv3
 messages are supported. TLSv1 is announced as SSL version 3.1. The value is
@@ -24970,7 +25008,10 @@ version. Note that this only applies to raw contents found in the request
 buffer and not to contents deciphered via an SSL data layer, so this will not
 work with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines having the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ssl<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ssl%20%28Bind%20options%29">Bind options</a></li><li><a href="#ssl%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option. The ACL version of the test
 matches against a decimal notation in the form MAJOR.MINOR (e.g. 3.1). This
-fetch is mostly used in ACL.
+fetch is mostly used in ACL. This fetch only analyzes the first ClientHello
+message found in the request buffer, see the &quot;<a href="#req.ssl_sni">req.ssl_sni</a>&quot; keyword
+documentation for more details about the implications of this limitation
+(HelloRetryRequest, Renegotiation, Encrypted Client Hello).
 
 ACL derivatives :
   req.ssl_ver : decimal match
@@ -28028,7 +28069,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.27 &ndash; Configuration Manual<br>
+							HAProxy 2.8.27-47 &ndash; Configuration Manual<br>
 							<small>, 2026/07/29</small>
 						</div>
 					</div>
