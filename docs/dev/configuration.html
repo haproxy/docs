@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev5-19 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev5-33 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4906,7 +4906,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4917,7 +4917,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev5-19</strong></p>
+							<p><strong>version 3.5-dev5-33</strong></p>
 							<p>
 								2026/08/21<br>
 								
@@ -24718,7 +24718,11 @@ a preliminary hash for a subset of request headers on all the incoming requests
 (which might come with a cpu cost) which will be used to build a secondary
 key for a given request (see RFC 7234#4.1). The secondary key is built out of
 the contents of the 'accept-encoding', 'referer' and 'origin' headers for
-now. The default value is off (disabled).
+now. Note that the 'origin' and 'referer' headers are single-valued per the
+RFC, so a request carrying more than one occurrence of either should be
+considered malformed. For such requests no secondary key is built and the
+response is never delivered from the cache so that we can let the server
+decide how to handle the situation. The default value is off (disabled).
 </pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
 blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
 </pre></div>
@@ -35771,7 +35775,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev5-19 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev5-33 &ndash; Configuration Manual<br>
 							<small>, 2026/08/21</small>
 						</div>
 					</div>
