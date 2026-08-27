@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.3.13-89 - Configuration Manual</title>
+		<title>HAProxy version 3.3.13-96 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2099,6 +2099,8 @@
 							<a class="list-group-item" href="#harden.reject-privileged-ports.quic">harden.reject-privileged-ports.quic</a>
 							
 							<a class="list-group-item" href="#harden.reject-privileged-ports.tcp">harden.reject-privileged-ports.tcp</a>
+							
+							<a class="list-group-item" href="#has_ctl">has_ctl</a>
 							
 							<a class="list-group-item" href="#hash-balance-factor">hash-balance-factor</a>
 							
@@ -4719,7 +4721,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4730,7 +4732,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.3.13-89</strong></p>
+							<p><strong>version 3.3.13-96</strong></p>
 							<p>
 								2026/07/29<br>
 								
@@ -23975,7 +23977,11 @@ a preliminary hash for a subset of request headers on all the incoming requests
 (which might come with a cpu cost) which will be used to build a secondary
 key for a given request (see RFC 7234#4.1). The secondary key is built out of
 the contents of the 'accept-encoding', 'referer' and 'origin' headers for
-now. The default value is off (disabled).
+now. Note that the 'origin' and 'referer' headers are single-valued per the
+RFC, so a request carrying more than one occurrence of either should be
+considered malformed. For such requests no secondary key is built and the
+response is never delivered from the cache so that we can let the server
+decide how to handle the situation. The default value is off (disabled).
 </pre><a class="anchor" name="total-max-size"></a><a class="anchor" name="6-total-max-size"></a><a class="anchor" name="6.2.1-total-max-size"></a><a class="anchor" name="total-max-size (Cache)"></a><a class="anchor" name="total-max-size (Cache section)"></a><div class="keyword"><b><a class="anchor" name="total-max-size"></a><a href="#6.2.1-total-max-size">total-max-size</a></b> <span style="color: #080">&lt;megabytes&gt;</span></div><pre class="text">Define the size in RAM of the cache in megabytes. This size is split in
 blocks of 1kB which are used by the cache entries. Its maximum value is 4095.
 </pre></div>
@@ -24635,6 +24641,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-field">field(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
+<tr><td ><a href="#7-has_ctl">has_ctl([mask])</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-hmac">hmac(algorithm,key)</a></td><td >binary</td><td >binary</td></tr>
@@ -24643,8 +24650,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-http_date">http_date([offset[,unit]])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-iif">iif(true,false)</a></td><td >boolean</td><td >string</td></tr>
 <tr><td ><a href="#7-in_table">in_table([table])</a></td><td >any</td><td >boolean</td></tr>
-<tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_header_query">jwt_header_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
@@ -24664,8 +24671,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
-<tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
@@ -24685,8 +24692,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-set-var">set-var(var[,cond...])</a></td><td >any</td><td >same</td></tr>
-<tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-sha1">sha1</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-sha2">sha2([bits])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue</a></td><td >string</td><td >integer</td></tr>
@@ -24706,8 +24713,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0_rate">table_gpc0_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_gpc1">table_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc1_rate">table_gpc1_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc_rate">table_gpc_rate(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpt">table_gpt(idx[,table])</a></td><td >any</td><td >integer</td></tr>
@@ -24727,8 +24734,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_rate">table_sess_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_trackers">table_trackers([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
@@ -25073,6 +25080,24 @@ tcp-request content reject unless { req.payload(0,0),fix_is_valid }
 <span class="comment"># MsgType tag ID is 35, so both lines below will return the same content</span>
 tcp-request content set-var(txn.foo) req.payload(0,0),fix_tag_value(35)
 tcp-request content set-var(txn.bar) req.payload(0,0),fix_tag_value(MsgType)
+</code></pre>
+</div><a class="anchor" name="has_ctl"></a><a class="anchor" name="7-has_ctl"></a><a class="anchor" name="7.3.1-has_ctl"></a><a class="anchor" name="has_ctl (Using ACLs and fetching samples)"></a><a class="anchor" name="has_ctl (Converters)"></a><div class="keyword"><b><a class="anchor" name="has_ctl"></a><a href="#7.3.1-has_ctl">has_ctl</a></b>(<span style="color: #008">[mask]</span>)</div><pre class="text">Checks the input binary sample for control characters as defined by the mask
+argument. The mask is a 33-bit number (either decimal or hexadecimal prefixed
+by &quot;0x&quot;), which has one bit set for each character to be detected in the 0x00
+to 0x1F range, and bit 32 set to match the DEL character (0x7F). When no mask
+is specified, the converter will use value 0x1FFFFFDFF, matching all control
+characters except TAB (0x09), which is commonly used in HTTP headers. The
+special mask &quot;any&quot; corresponds to 0x1FFFFFFFF which will match all control
+characters, TAB included. The special mask &quot;http&quot; corresponds to 0x2401 and
+will only cause the control characterss forbidden in HTTP header values to be
+matched, which are CR (0x0D), LF (0x0A) and NUL (0x00).
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># reject presence of DEL, CR, LF, NUL characters in the referer header</span>
+http-request deny if { req.fhdr(referer),has_ctl(0x100002401) }
+<span class="comment"># reject presence of any control char but tab in any HTTP header value</span>
+http-request deny if { req.hdr(),has_ctl }
 </code></pre>
 </div><a class="anchor" name="hex"></a><a class="anchor" name="7-hex"></a><a class="anchor" name="7.3.1-hex"></a><a class="anchor" name="hex (Using ACLs and fetching samples)"></a><a class="anchor" name="hex (Converters)"></a><div class="keyword"><b><a class="anchor" name="hex"></a><a href="#7.3.1-hex">hex</a></b></div><pre class="text">Converts a binary input sample to a hex string containing two hex digits per
 input byte. It is used to log or transfer hex dumps of some binary input data
@@ -34118,7 +34143,7 @@ acme LE2
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.3.13-89 &ndash; Configuration Manual<br>
+							HAProxy 3.3.13-96 &ndash; Configuration Manual<br>
 							<small>, 2026/07/29</small>
 						</div>
 					</div>
