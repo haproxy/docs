@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev5-33 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev5-50 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1809,6 +1809,16 @@
 							
 							<a class="list-group-item" href="#declare capture">declare capture</a>
 							
+							<a class="list-group-item" href="#decompression">decompression</a>
+							
+							<a class="list-group-item" href="#decompression algo-req">decompression algo-req</a>
+							
+							<a class="list-group-item" href="#decompression algo-res">decompression algo-res</a>
+							
+							<a class="list-group-item" href="#decompression mode-req">decompression mode-req</a>
+							
+							<a class="list-group-item" href="#decompression mode-res">decompression mode-res</a>
+							
 							<a class="list-group-item" href="#default-bind">default-bind</a>
 							
 							<a class="list-group-item" href="#default-crt">default-crt</a>
@@ -2100,6 +2110,10 @@
 							<a class="list-group-item" href="#filter comp-res">filter comp-res</a>
 							
 							<a class="list-group-item" href="#filter compression">filter compression</a>
+							
+							<a class="list-group-item" href="#filter decomp-req">filter decomp-req</a>
+							
+							<a class="list-group-item" href="#filter decomp-res">filter decomp-res</a>
 							
 							<a class="list-group-item" href="#filter fcgi-app">filter fcgi-app</a>
 							
@@ -4906,7 +4920,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/26</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/28</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4917,7 +4931,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev5-33</strong></p>
+							<p><strong>version 3.5-dev5-50</strong></p>
 							<p>
 								2026/08/21<br>
 								
@@ -10908,10 +10922,10 @@ strictly enforced so it can be exceeded on some occasions. Also, each
 connection will always be able to use a window of at least 2 datagrams, so a
 proper maxconn should be used in conjunction.
 </pre><a class="anchor" name="tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="3-tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="3.2-tune.quic.sec.stateless-reset-rate"></a><a class="anchor" name="tune.quic.sec.stateless-reset-rate (Global section)"></a><a class="anchor" name="tune.quic.sec.stateless-reset-rate (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.sec.stateless-reset-rate"></a><a href="#3.2-tune.quic.sec.stateless-reset-rate">tune.quic.sec.stateless-reset-rate</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum total number of QUIC Stateless Reset packets emitted per
-second, across all threads. Each thread gets its own even share of this
-total, so the actual number sent per second may be slightly under or over
-&lt;number&gt; depending on how evenly it divides by the thread count, but the
-total across all threads never drifts from it over time.
+second, across all threads. Each thread is given the same share of this
+total, rounded up so that share always stays strictly positive. As a
+result, when &lt;number&gt; does not divide evenly among the threads, the real
+total emitted per second across all threads can be higher than &lt;number&gt;.
 
 The default value is 1000.
 
@@ -11543,12 +11557,13 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-cookie">cookie</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-crt">crt</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-declare%20capture">declare capture</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-decompression">decompression</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-default-server">default-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-default_backend">default_backend</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-description">description</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-disabled">disabled</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-email-alert%20from">email-alert from</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20level">email-alert level</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20mailers">email-alert mailers</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-email-alert%20myhostname">email-alert myhostname</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11568,8 +11583,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-filter-sequence">filter-sequence</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11589,8 +11604,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-id">id</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11610,8 +11625,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20dontlog-normal"><span class="pull-right"><span>(*)</span></span>option dontlog-normal</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20external-check">option external-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11631,8 +11646,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20httpslog">option httpslog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20independent-streams"><span class="pull-right"><span>(*)</span></span>option independent-streams</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11652,8 +11667,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11673,8 +11688,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-srvtcpka-idle">srvtcpka-idle</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-intvl">srvtcpka-intvl</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11694,8 +11709,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-tcp-check%20comment">tcp-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11715,8 +11730,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20http-keep-alive">timeout http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -12456,7 +12471,7 @@ is not specified, system-wide TCP parameter (tcp_keepalive_intvl) is used.
 The availability of this setting depends on the operating system. It is
 known to work on Linux.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#option%20clitcpka">option clitcpka</a>&quot;, &quot;<a href="#clitcpka-cnt">clitcpka-cnt</a>&quot;, &quot;<a href="#clitcpka-idle">clitcpka-idle</a>&quot;.</div>
-<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo"></a><a class="anchor" name="4-compression algo"></a><a class="anchor" name="4.2-compression algo"></a><a class="anchor" name="compression algo (Proxies)"></a><a class="anchor" name="compression algo (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo"></a><a href="#4.2-compression%20algo">compression algo</a></b> <span style="color: #080">&lt;algorithm&gt;</span> ...</div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo-req"></a><a class="anchor" name="4-compression algo-req"></a><a class="anchor" name="4.2-compression algo-req"></a><a class="anchor" name="compression algo-req (Proxies)"></a><a class="anchor" name="compression algo-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo-req"></a><a href="#4.2-compression%20algo-req">compression algo-req</a></b> <span style="color: #080">&lt;algorithm&gt;</span></div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo-res"></a><a class="anchor" name="4-compression algo-res"></a><a class="anchor" name="4.2-compression algo-res"></a><a class="anchor" name="compression algo-res (Proxies)"></a><a class="anchor" name="compression algo-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo-res"></a><a href="#4.2-compression%20algo-res">compression algo-res</a></b> <span style="color: #080">&lt;algorithm&gt;</span></div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression type"></a><a class="anchor" name="4-compression type"></a><a class="anchor" name="4.2-compression type"></a><a class="anchor" name="compression type (Proxies)"></a><a class="anchor" name="compression type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression type"></a><a href="#4.2-compression%20type">compression type</a></b> <span style="color: #080">&lt;mime type&gt;</span> ...</div><pre class="text">Enable HTTP compression.
+<a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo"></a><a class="anchor" name="4-compression algo"></a><a class="anchor" name="4.2-compression algo"></a><a class="anchor" name="compression algo (Proxies)"></a><a class="anchor" name="compression algo (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo"></a><a href="#4.2-compression%20algo">compression algo</a></b> <span style="color: #080">&lt;algorithm&gt;</span> ...</div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo-req"></a><a class="anchor" name="4-compression algo-req"></a><a class="anchor" name="4.2-compression algo-req"></a><a class="anchor" name="compression algo-req (Proxies)"></a><a class="anchor" name="compression algo-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo-req"></a><a href="#4.2-compression%20algo-req">compression algo-req</a></b> <span style="color: #080">&lt;algorithm&gt;</span></div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression algo-res"></a><a class="anchor" name="4-compression algo-res"></a><a class="anchor" name="4.2-compression algo-res"></a><a class="anchor" name="compression algo-res (Proxies)"></a><a class="anchor" name="compression algo-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression algo-res"></a><a href="#4.2-compression%20algo-res">compression algo-res</a></b> <span style="color: #080">&lt;algorithm&gt;</span> ...</div><a class="anchor" name="compression"></a><a class="anchor" name="4-compression"></a><a class="anchor" name="4.2-compression"></a><a class="anchor" name="compression (Proxies)"></a><a class="anchor" name="compression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="compression type"></a><a class="anchor" name="4-compression type"></a><a class="anchor" name="4.2-compression type"></a><a class="anchor" name="compression type (Proxies)"></a><a class="anchor" name="compression type (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="compression type"></a><a href="#4.2-compression%20type">compression type</a></b> <span style="color: #080">&lt;mime type&gt;</span> ...</div><pre class="text">Enable HTTP compression.
 
 May be used in the following contexts: http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12778,7 +12793,150 @@ reserved slot can be used in the backends. The &quot;request&quot; keyword alloc
 capture slot for use in the request, and &quot;response&quot; allocates a capture slot
 for use in the response.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture-req">capture-req</a>&quot;, &quot;<a href="#capture-res">capture-res</a>&quot; (sample converters), &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot;, &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches), &quot;http-request capture&quot; and &quot;http-response capture&quot;.</div>
-<a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Changes a set of options reusable for future server declarations.
+<a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression algo-req"></a><a class="anchor" name="4-decompression algo-req"></a><a class="anchor" name="4.2-decompression algo-req"></a><a class="anchor" name="decompression algo-req (Proxies)"></a><a class="anchor" name="decompression algo-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression algo-req"></a><a href="#4.2-decompression%20algo-req">decompression algo-req</a></b> <span style="color: #080">&lt;algorithms&gt;</span> ...</div><a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression algo-res"></a><a class="anchor" name="4-decompression algo-res"></a><a class="anchor" name="4.2-decompression algo-res"></a><a class="anchor" name="decompression algo-res (Proxies)"></a><a class="anchor" name="decompression algo-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression algo-res"></a><a href="#4.2-decompression%20algo-res">decompression algo-res</a></b> <span style="color: #080">&lt;algorithms&gt;</span> ...</div><pre class="text">Configures the decompression algorithms supported by the proxy.  It will
+implicitly enable decompression filter (&quot;decomp-req&quot; or &quot;decomp-res&quot; whether
+the decompression option targets request, response) automatically. However to
+prevent misconfiguration, it is recommended to explicitly declare filters
+when multiple filters are involved on the proxy. See also &quot;<a href="#filter-sequence">filter-sequence</a>&quot;.
+
+May be used in the following contexts: http, tcp
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">algo-req     defines a list of decompression algorithms that may be used for
+             requests. Only allowed on proxies with the frontend capability
+             or in defaults section.
+
+algo-res     defines a list of decompression algorithms that may be used for
+             responses. Only allowed on proxies with the backend capability
+             or in defaults section.</pre>
+</div>
+<pre class="text">The currently supported algorithms are :
+  uslz-auto    for raw TCP, the filter will automatically detect compression
+               format if the stream is zlib/gzip compatible, otherwise it
+               will fall back to raw-deflate. While flexible, when algorithms
+               are known, it is recommended to explicitly configure one of
+               those below. This is only supported by libslz.
+
+  gzip         applies gzip decompression. This setting is only available
+               when support for libslz was built in. In HTTP proxies, the
+               &quot;gzip&quot; algorithm will also be advertised in Accept-Encoding.
+
+  deflate      same as &quot;gzip&quot;, but with deflate algorithm and zlib format.
+               This setting is only available when support for libslz was
+               built in. In HTTP proxies, the &quot;deflate&quot; algorithm will also
+               be advertised in Accept-Encoding.
+
+  raw-deflate  same as &quot;deflate&quot; without the zlib wrapper. This setting is
+               only available when support for libslz was built in. In HTTP
+               proxies, the &quot;deflate&quot; algorithm will also be advertised in
+               Accept-Encoding.
+
+When no algorithm is set (empty list), no decompression will happen. This
+is the default.
+
+For both &quot;algo-req&quot; and &quot;algo-res&quot;, only HTTP proxies support multiple
+algorithms to be provided. In TCP, only the first algorithm will be
+considered. This is because HTTP advertises the compression algorithm used in
+the &quot;Content-Encoding&quot; header, compared to TCP where the compressed stream
+arrives without being advertised, requiring the user to know and configure
+which one must be used.
+
+Note that decompression is disabled by default in both directions and
+requires a mode to be configure (see also: &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, and
+&quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;).
+
+In HTTP, enabling decompression on the stream will enforce chunked mode
+(&quot;Transfer-Encoding&quot; will be set to &quot;chunked&quot; and existing &quot;Content-length&quot;
+ header will be removed), because the request / response body size cannot
+be guessed when handling headers.
+
+See also &quot;<a href="#decompression%20mode-req">decompression mode-req</a>&quot; and &quot;<a href="#decompression%20mode-res">decompression mode-res</a>&quot;
+</pre><a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression mode-req"></a><a class="anchor" name="4-decompression mode-req"></a><a class="anchor" name="4.2-decompression mode-req"></a><a class="anchor" name="decompression mode-req (Proxies)"></a><a class="anchor" name="decompression mode-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression mode-req"></a><a href="#4.2-decompression%20mode-req">decompression mode-req</a></b> <span style="color: #800">{ none | auto | always }</span></div><a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression mode-res"></a><a class="anchor" name="4-decompression mode-res"></a><a class="anchor" name="4.2-decompression mode-res"></a><a class="anchor" name="decompression mode-res (Proxies)"></a><a class="anchor" name="decompression mode-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression mode-res"></a><a href="#4.2-decompression%20mode-res">decompression mode-res</a></b> <span style="color: #800">{ none | auto | always }</span></div><pre class="text">Defines how decompression works in each direction on a proxy
+
+May be used in the following contexts: http, tcp
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">mode-req     configures request decompression mode among &quot;none&quot; (default),
+             &quot;auto&quot; or &quot;always&quot; (see below). Only allowed on proxies with
+             the frontend capability or in defaults section.
+
+mode-res     configures response decompression mode among &quot;none&quot; (default),
+             &quot;auto&quot; or &quot;always&quot; (see below).  Only allowed on proxies with
+             the backend capability or in defaults section.</pre>
+</div>
+<pre class="text">For each direction, the following modes are currently supported:
+  none         disables the compression in this direction. This is the
+               default.
+
+  auto         enables opportunistic decompression in this direction: if a
+               stream is compressed with a supported algorithm, then it will
+               be decompressed. In HTTP, the algorithm used is determined by
+               the Content-Encoding header. Also, supported algorithms will
+               be advertised in the other direction via the Accept-Encoding
+               header.
+
+  always       enables systematic decompression in this direction: if a
+               stream is compressed with a supported algorithm, then it will
+               be decompressed, otherwise the stream will be rejected and a
+               failure will be reported. This ensures that the contents can
+               always be decompressed for inspection for example. In HTTP,
+               the algorithm used is determined by the Content-Encoding
+               header. Also, supported algorithms will be advertised in the
+               other direction via the Accept-Encoding header.
+
+Mode &quot;none&quot;, which is the default, means no decompression will be attempted
+at all, the filter will let both uncompressed and compressed data pass
+through. It can be used to disable the decompression inherited from a
+defaults section.
+
+When decompression is set to a mode other than &quot;none&quot; in a direction, the
+associated decompression filter is automatically enabled. For requests, the
+filter is called &quot;decomp-req&quot;, and for responses, the filter is &quot;decomp-res&quot;.
+In order to prevent misconfigurations, particularly when combining multiple
+filters, it is highly recommended to explicitly declare the filters sequence
+via the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive in the proxy.
+
+Mode &quot;auto&quot;, which is only available for HTTP, means haproxy will try to find
+a compatible algorithms in algo-req or algo-res list to be able to decompress
+the body according to the advertised &quot;Content-Encoding&quot; header. If haproxy
+finds a compatible algorithm, it will automatically decompress the stream,
+otherwise it will forward it as-is. This can be considered as a best-effort
+mode but it assumes that the endpoint is able to deal with both compressed
+and uncompressed http bodies. This mode makes no sense with TCP because there
+is no way to advertise the algorithm used.
+
+Mode &quot;always&quot; means HAProxy will try to decompress the stream no matter what,
+and if it fails (ie: no compatible algorithm found or error in the stream),
+it will raise an error and terminate the stream. This mode is useful to
+guarantee that the output data will never remain compressed (ie: if the
+endpoint doesn't support compression at all).
+
+In HTTP, enabling decompression on the stream will enforce chunked mode
+(&quot;Transfer-Encoding&quot; will be set to &quot;chunked&quot; and existing &quot;Content-length&quot;
+ header will be removed), because the request / response body size cannot
+be guessed when handling headers.
+</pre><div class="separator">
+<span class="label label-success">Examples :</span>
+<pre class="prettyprint">
+<code>decompression algo-req gzip
+decompression mode-req auto
+decompression algo-res deflate gzip
+decompression mode-res always
+</code></pre>
+</div><pre class="text">IMPORTANT: decompression should only be enabled on traffic coming from
+           trusted peers. Indeed, it can be used as an attack amplifier, and
+           a hostile agent could trivially amplify its traffic 1000x by
+           sending it compressed.
+
+See also &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, &quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;, and
+         &quot;<a href="#filter-sequence">filter-sequence</a>&quot;.
+</pre><a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Changes a set of options reusable for future server declarations.
 
 May be used in the following contexts: tcp, http
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -29045,18 +29203,18 @@ coming via a same frontend to the same server.
 current frontend. This timeout can be overwritten by a &quot;<a href="#set-timeout">set-timeout</a>&quot; rule.
 </pre><a class="anchor" name="req.bytes_in"></a><a class="anchor" name="7-req.bytes_in"></a><a class="anchor" name="7.3.3-req.bytes_in"></a><a class="anchor" name="req.bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="req.bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.bytes_in"></a><a href="#7.3.3-req.bytes_in">req.bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the client. The value
 corresponds to what was received by HAProxy, including some headers and some
-internal encoding overhead. Request compression does not affect the value
-reported here.
+internal encoding overhead. Request compression/decompression does not affect
+the value reported here.
 </pre><a class="anchor" name="req.bytes_out"></a><a class="anchor" name="7-req.bytes_out"></a><a class="anchor" name="7.3.3-req.bytes_out"></a><a class="anchor" name="req.bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="req.bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="req.bytes_out"></a><a href="#7.3.3-req.bytes_out">req.bytes_out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the server. The value corresponds to
 what was sent by HAProxy, including some headers and some internal encoding
-overhead. Request compression affects the value reported here.
+overhead. Request compression/decompression affects the value reported here.
 </pre><a class="anchor" name="res.bytes_in"></a><a class="anchor" name="7-res.bytes_in"></a><a class="anchor" name="7.3.3-res.bytes_in"></a><a class="anchor" name="res.bytes_in (Using ACLs and fetching samples)"></a><a class="anchor" name="res.bytes_in (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.bytes_in"></a><a href="#7.3.3-res.bytes_in">res.bytes_in</a></b> : integer</div><pre class="text">This returns the number of bytes received from the server. The value
 corresponds to what was received by HAProxy, including some headers and some
-internal encoding overhead. Response compression does not affect the value
-reported here.
+internal encoding overhead. Response compression/decompression does not affect
+the value reported here.
 </pre><a class="anchor" name="res.bytes_out"></a><a class="anchor" name="7-res.bytes_out"></a><a class="anchor" name="7.3.3-res.bytes_out"></a><a class="anchor" name="res.bytes_out (Using ACLs and fetching samples)"></a><a class="anchor" name="res.bytes_out (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.bytes_out"></a><a href="#7.3.3-res.bytes_out">res.bytes_out</a></b> : integer</div><pre class="text">This returns the number of bytes sent to the client. The value corresponds to
 what was sent by HAProxy, including some headers and some internal encoding
-overhead. Response compression affects the value reported here.
+overhead. Response compression/decompression affects the value reported here.
 </pre><a class="anchor" name="res.timer.data"></a><a class="anchor" name="7-res.timer.data"></a><a class="anchor" name="7.3.3-res.timer.data"></a><a class="anchor" name="res.timer.data (Using ACLs and fetching samples)"></a><a class="anchor" name="res.timer.data (Fetching samples at Layer 4)"></a><div class="keyword"><b><a class="anchor" name="res.timer.data"></a><a href="#7.3.3-res.timer.data">res.timer.data</a></b> : integer</div><pre class="text">this is the total transfer time of the response payload till the last byte
 sent to the client. In HTTP it starts after the last response header (after
 Tr). This is the equivalent of %Td in the log-format and is reported in
@@ -33670,7 +33828,19 @@ filter other than the cache or the fcgi-app is used for the same
 listener/frontend/backend. This is important to know the filters evaluation
 order.
 </pre><div class="page-header"><b>See also :</b> &quot;<a href="#compression">compression</a>&quot;, <a href="#9.4">section 9.4</a> about the cache filter and <a href="#9.5">section 9.5</a> about the fcgi-app filter.</div>
-</div>
+<a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter decomp-req"></a><a class="anchor" name="9-filter decomp-req"></a><a class="anchor" name="9.2-filter decomp-req"></a><a class="anchor" name="filter decomp-req (Supported filters)"></a><a class="anchor" name="filter decomp-req (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-req"></a><a href="#9.2-filter%20decomp-req">filter decomp-req</a></b></div><pre class="text">Enables filter that explicitly tries to decompress requests according to
+&quot;<a href="#decompression">decompression</a>&quot; settings (setting algo is mandatory). It is only allowed on
+proxies with frontend capability. It supports both TCP and HTTP compressed
+streams. The filter runs during the stream forwarding phase, thus it will not
+be possible to perform TCP/HTTP rules on the decompressed stream (ie: req.body
+won't work).
+</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter decomp-res"></a><a class="anchor" name="9-filter decomp-res"></a><a class="anchor" name="9.2-filter decomp-res"></a><a class="anchor" name="filter decomp-res (Supported filters)"></a><a class="anchor" name="filter decomp-res (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-res"></a><a href="#9.2-filter%20decomp-res">filter decomp-res</a></b></div><pre class="text">Enables filter that explicitly tries to decompress responses according to
+&quot;<a href="#decompression">decompression</a>&quot; settings (setting algo is mandatory). It is only allowed on
+proxies with backend capability. It supports both TCP and HTTP compressed
+streams. The filter runs during the stream forwarding phase, thus it will not
+be possible to perform TCP/HTTP rules on the decompressed stream (ie: res.body
+won't work).
+</pre></div>
 <a class="anchor" id="9.3" name="9.3"></a>
 <h2 id="chapter-9.3" data-target="9.3"><small><a class="small" href="#9.3">9.3.</a></small> Stream Processing Offload Engine (SPOE)</h2>
 <div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.3-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Stream Processing Offload Engine (SPOE))"></a><a class="anchor" name="filter spoe"></a><a class="anchor" name="9-filter spoe"></a><a class="anchor" name="9.3-filter spoe"></a><a class="anchor" name="filter spoe (Supported filters)"></a><a class="anchor" name="filter spoe (Stream Processing Offload Engine (SPOE))"></a><div class="keyword"><b><a class="anchor" name="filter spoe"></a><a href="#9.3-filter%20spoe">filter spoe</a></b> <span style="color: #008">[engine <span style="color: #080">&lt;name&gt;</span>]</span> config <span style="color: #080">&lt;file&gt;</span></div><div class="separator">
@@ -35775,7 +35945,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev5-33 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev5-50 &ndash; Configuration Manual<br>
 							<small>, 2026/08/21</small>
 						</div>
 					</div>
