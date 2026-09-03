@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev5-63 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev5-77 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4920,7 +4920,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/08/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4931,7 +4931,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev5-63</strong></p>
+							<p><strong>version 3.5-dev5-77</strong></p>
 							<p>
 								2026/08/21<br>
 								
@@ -24670,22 +24670,36 @@ a cache of previous answers, an answer will be considered obsolete after
   perform their name resolution.
 
 A resolvers section accept the following parameters:
-</pre><a class="anchor" name="accepted_payload_size"></a><a class="anchor" name="5-accepted_payload_size"></a><a class="anchor" name="5.3.2-accepted_payload_size"></a><a class="anchor" name="accepted_payload_size (Bind and server options)"></a><a class="anchor" name="accepted_payload_size (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="accepted_payload_size"></a><a href="#5.3.2-accepted_payload_size">accepted_payload_size</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the maximum payload size accepted by HAProxy and announced to all the
-name servers configured in this resolvers section.
+</pre><a class="anchor" name="accepted_payload_size"></a><a class="anchor" name="5-accepted_payload_size"></a><a class="anchor" name="5.3.2-accepted_payload_size"></a><a class="anchor" name="accepted_payload_size (Bind and server options)"></a><a class="anchor" name="accepted_payload_size (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="accepted_payload_size"></a><a href="#5.3.2-accepted_payload_size">accepted_payload_size</a></b> <span style="color: #080">&lt;nb&gt;</span></div><pre class="text">Defines the maximum UDP payload size accepted by HAProxy and announced to all
+the name servers configured in this resolvers section.
 &lt;nb&gt; is in bytes. If not set, HAProxy announces 512. (minimal value defined
      by RFC 6891)
 
 Note: the maximum allowed value is 65535. Recommended value for UDP is
       4096 and it is not recommended to exceed 8192 except if you are sure
       that your system and network can handle this (over 65507 makes no sense
-      since is the maximum UDP payload size). If you are using only TCP
-      nameservers to handle huge DNS responses, you should put this value
-      to the max: 65535.
+      since it is the maximum UDP payload size). DNS responses received over a
+      stream transport are accepted up to the DNS protocol maximum of 65535
+      bytes regardless of this setting.
 </pre><a class="anchor" name="nameserver"></a><a class="anchor" name="5-nameserver"></a><a class="anchor" name="5.3.2-nameserver"></a><a class="anchor" name="nameserver (Bind and server options)"></a><a class="anchor" name="nameserver (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="nameserver"></a><a href="#5.3.2-nameserver">nameserver</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;address&gt;</span><span style="color: #008">[:port]</span> <span style="color: #008">[param*]</span></div><pre class="text">Used to configure a nameserver. &lt;name&gt; of the nameserver should ne unique.
-By default the &lt;address&gt; is considered of type datagram. This means if an
-IPv4 or IPv6 is configured without special address prefixes (paragraph 11.)
-the UDP protocol will be used.  If an stream protocol address prefix is used,
-the nameserver will be considered as a stream server (TCP for instance) and
+By default an IPv4, IPv6 or hostname &lt;address&gt; is queried over UDP. When a
+valid UDP response has its truncated (TC) flag set, the same query is retried
+over TCP against the same address and port. The TCP connection is established
+lazily, only after a truncated response is received, and uses the regular DNS
+stream connection pooling, pipelining, timeouts and idle connection cleanup.
+
+An explicit datagram address prefix such as &quot;udp@&quot;, &quot;udp4@&quot;, &quot;udp6@&quot; or
+&quot;dgram+&quot; forces UDP-only operation and disables TCP fallback. An explicit
+stream address prefix such as &quot;tcp@&quot; forces TCP-only operation.
+
+A failure to connect or send over TCP is handled by the regular resolver
+timeout and retry mechanism. Starting TCP fallback does not consume a retry
+or switch the query between A and AAAA. A truncated response received over
+TCP follows the normal resolver error path and does not start another
+fallback.
+
+If a stream protocol address prefix is used, the nameserver will be
+considered as a stream server (TCP for instance) and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph which are relevant for DNS
 resolving will be considered.  Note: currently, in TCP mode, 4 queries are
 pipelined on the same connections. A batch of idle connections are removed
@@ -24693,7 +24707,8 @@ every 5 seconds. &quot;<span class="dropdown"><a class="dropdown-toggle" data-to
 concurrent connections and TLS should also usable if the server supports.
 </pre><a class="anchor" name="parse-resolv-conf"></a><a class="anchor" name="5-parse-resolv-conf"></a><a class="anchor" name="5.3.2-parse-resolv-conf"></a><a class="anchor" name="parse-resolv-conf (Bind and server options)"></a><a class="anchor" name="parse-resolv-conf (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="parse-resolv-conf"></a><a href="#5.3.2-parse-resolv-conf">parse-resolv-conf</a></b></div><pre class="text">Adds all nameservers found in /etc/resolv.conf to this resolvers nameservers
 list. Ordered as if each nameserver in /etc/resolv.conf was individually
-placed in the resolvers section in place of this directive.
+placed in the resolvers section in place of this directive. These nameservers
+use UDP normally and retry truncated responses over TCP.
 </pre><a class="anchor" name="hold"></a><a class="anchor" name="5-hold"></a><a class="anchor" name="5.3.2-hold"></a><a class="anchor" name="hold (Bind and server options)"></a><a class="anchor" name="hold (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="hold"></a><a href="#5.3.2-hold">hold</a></b> <span style="color: #080">&lt;status&gt;</span> <span style="color: #080">&lt;period&gt;</span></div><pre class="text">Upon receiving the DNS response &lt;status&gt;, determines whether a server's state
 should change from UP to DOWN. To make that determination, it checks whether
 any valid status has been received during the past &lt;period&gt; in order to
@@ -35945,7 +35960,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev5-63 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev5-77 &ndash; Configuration Manual<br>
 							<small>, 2026/08/21</small>
 						</div>
 					</div>
