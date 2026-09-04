@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev5-77 - Management Guide</title>
+		<title>HAProxy version 3.5-dev6-2 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -698,7 +698,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/02</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/03</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -709,7 +709,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev5-77</strong></p>
+							<p><strong>version 3.5-dev6-2</strong></p>
 							<p>
 								<br>
 								
@@ -3843,7 +3843,7 @@ total response length was 213 bytes when the error was detected, and the
 error was at byte 23. This is the slash ('/') in header name
 &quot;header/bizarre&quot;, which is not a valid HTTP character for a header name.
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show events"></a><a class="anchor" name="9-show events"></a><a class="anchor" name="9.3-show events"></a><a class="anchor" name="show events (Statistics and monitoring)"></a><a class="anchor" name="show events (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show events"></a><a href="#9.3-show%20events">show events</a></b> <span style="color: #008">[<span style="color: #080">&lt;sink&gt;</span>]</span> <span style="color: #008">[-w]</span> <span style="color: #008">[-n]</span> <span style="color: #008">[-0]</span></div><pre class="text">With no option, this lists all known event sinks and their types. With an
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show events"></a><a class="anchor" name="9-show events"></a><a class="anchor" name="9.3-show events"></a><a class="anchor" name="show events (Statistics and monitoring)"></a><a class="anchor" name="show events (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show events"></a><a href="#9.3-show%20events">show events</a></b> <span style="color: #008">[<span style="color: #080">&lt;sink&gt;</span>]</span> <span style="color: #008">[-w]</span> <span style="color: #008">[-n]</span> <span style="color: #008">[-0]</span> <span style="color: #008">[-s]</span></div><pre class="text">With no option, this lists all known event sinks and their types. With an
 option, it will dump all available events in the designated sink if it is of
 type buffer. If option &quot;-w&quot; is passed after the sink name, then once the end
 of the buffer is reached, the command will wait for new events and display
@@ -3854,6 +3854,16 @@ combined with &quot;-w&quot; to only report new events. For convenience, &quot;-
 may be used to enable both options at once. By default, all events are
 delimited by a line feed character ('\n' or 10 or 0x0A). It is possible to
 change this to the NUL character ('\0' or 0) by passing the &quot;-0&quot; argument.
+Option &quot;-s&quot; sanitizes the output, so that binary contents resulting from
+captured or decoded data do not alter the terminal's rendering. Whitespace
+characters (space and tab) are replaced with a space so that each record
+stays on a single line, and the other control characters (0x00 to 0x1F and
+0x7F) as well as non-ASCII chars (0x80 and above) are replaced with a '?'.
+The output length is preserved. This way, dumping a ring cannot inject ANSI
+escape sequences nor writing direction codes into the operator's terminal,
+which is useful when dumping to a terminal, or to a program whose input must
+not be interpreted as special (e.g. monitoring scripts whose output is copied
+verbatim into reports).
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show fd"></a><a class="anchor" name="9-show fd"></a><a class="anchor" name="9.3-show fd"></a><a class="anchor" name="show fd (Statistics and monitoring)"></a><a class="anchor" name="show fd (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show fd"></a><a href="#9.3-show%20fd">show fd</a></b> <span style="color: #008">[-!plcfbs]</span>* <span style="color: #008">[<span style="color: #008">[<span style="color: #080">&lt;tgid&gt;</span>]</span>/<span style="color: #008">[<span style="color: #080">&lt;fd&gt;</span>]</span> | <span style="color: #080">&lt;fd&gt;</span>]</span></div><pre class="text">Dump the list of either all open file descriptors or just the one number &lt;fd&gt;
 if specified. The form &quot;&lt;tgid&gt;/&lt;fd&gt;&quot; is also accepted, where either side may
 be empty as a wildcard (&quot;/&lt;fd&gt;&quot; for fd &lt;fd&gt; across thread groups, &quot;&lt;tgid&gt;/&quot;
@@ -5954,7 +5964,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev5-77 &ndash; Management Guide<br>
+							HAProxy 3.5-dev6-2 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
