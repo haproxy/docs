@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev6-36 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev6-67 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2421,6 +2421,8 @@
 							
 							<a class="list-group-item" href="#jwt">jwt</a>
 							
+							<a class="list-group-item" href="#jwt.allow_none_alg">jwt.allow_none_alg</a>
+							
 							<a class="list-group-item" href="#jwt.decrypt_alg_list">jwt.decrypt_alg_list</a>
 							
 							<a class="list-group-item" href="#jwt.decrypt_enc_list">jwt.decrypt_enc_list</a>
@@ -4693,6 +4695,8 @@
 							
 							<a class="list-group-item" href="#tune.sched.low-latency">tune.sched.low-latency</a>
 							
+							<a class="list-group-item" href="#tune.sched.remote-work-budget">tune.sched.remote-work-budget</a>
+							
 							<a class="list-group-item" href="#tune.sndbuf.backend">tune.sndbuf.backend</a>
 							
 							<a class="list-group-item" href="#tune.sndbuf.client">tune.sndbuf.client</a>
@@ -4920,7 +4924,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/07</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/11</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4931,7 +4935,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev6-36</strong></p>
+							<p><strong>version 3.5-dev6-67</strong></p>
 							<p>
 								2026/09/03<br>
 								
@@ -7847,6 +7851,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#insecure-fork-wanted">insecure-fork-wanted</a>
    - <a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>
    - <a href="#issuers-chain-path">issuers-chain-path</a>
+   - <a href="#jwt.allow_none_alg">jwt.allow_none_alg</a>
    - <a href="#jwt.decrypt_alg_list">jwt.decrypt_alg_list</a>
    - <a href="#jwt.decrypt_enc_list">jwt.decrypt_enc_list</a>
    - <a href="#key-base">key-base</a>
@@ -8041,6 +8046,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.ring.queues">tune.ring.queues</a>
    - <a href="#tune.runqueue-depth">tune.runqueue-depth</a>
    - <a href="#tune.sched.low-latency">tune.sched.low-latency</a>
+   - <a href="#tune.sched.remote-work-budget">tune.sched.remote-work-budget</a>
    - <a href="#tune.sndbuf.backend">tune.sndbuf.backend</a>
    - <a href="#tune.sndbuf.client">tune.sndbuf.client</a>
    - <a href="#tune.sndbuf.frontend">tune.sndbuf.frontend</a>
@@ -8162,12 +8168,13 @@ creates an anonymous temporary directory, unlinks it, and chroots into it.
 The resulting jail has no name in the filesystem and is empty and read-only,
 removing the need to prepare a dedicated jail directory.
 
-When starting with superuser privileges, a warning will be displayed if no
-chroot is used, in order to encourage users to always use the mechanism. If
-for any reason there is a compelling reason not to use chroot (e.g. access to
-a server via a UNIX socket with an unconvenient path), it remains possible to
-silence the warning by adding an explicit &quot;chroot /&quot;, which has the benefit
-of being visible in a configuration.
+When starting with sufficient privileges, haproxy will automatically apply
+&quot;chroot auto&quot; if no &quot;<a href="#chroot">chroot</a>&quot; directive is used, i.e. it will isolate itself
+in a chroot jail, and will emit a warning if it fails to do so. If there is
+a compelling reason not to use chroot (e.g. access to a server via a UNIX
+socket outside of the jail), it remains possible to silence the warning by
+adding an explicit &quot;chroot /&quot;, which has the benefit of being visible in a
+configuration.
 </pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global section)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
 closing is spread in case of soft-stop. After a SIGUSR1 is received and the
 grace period is over (if any), the idle connections will all be closed at
@@ -8855,6 +8862,10 @@ will share the chain in memory.
 
 The OCSP features are able to use the completed chain when no .issuer was
 used, or no chain was provided in the PEM.
+</pre><a class="anchor" name="jwt.allow_none_alg"></a><a class="anchor" name="3-jwt.allow_none_alg"></a><a class="anchor" name="3.1-jwt.allow_none_alg"></a><a class="anchor" name="jwt.allow_none_alg (Global section)"></a><a class="anchor" name="jwt.allow_none_alg (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.allow_none_alg"></a><a href="#3.1-jwt.allow_none_alg">jwt.allow_none_alg</a></b></div><pre class="text">Allow JWT signed token with the &quot;none&quot; algorithm in the 'jwt_verify'
+converter. They will always be considered valid when this option is set. By
+default unsigned tokens are rejected since they are considered unsafe (see
+RFC8725 <a href="#3.1">section 3.1</a>).
 </pre><a class="anchor" name="jwt.decrypt_alg_list"></a><a class="anchor" name="3-jwt.decrypt_alg_list"></a><a class="anchor" name="3.1-jwt.decrypt_alg_list"></a><a class="anchor" name="jwt.decrypt_alg_list (Global section)"></a><a class="anchor" name="jwt.decrypt_alg_list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.decrypt_alg_list"></a><a href="#3.1-jwt.decrypt_alg_list">jwt.decrypt_alg_list</a></b> <span style="color: #080">&lt;list&gt;</span></div><pre class="text">Set the list of algorithms allowed in the jwt_decrypt_XXX converters. JWT
 tokens using an unsupported or disabled algorithms will never be decrypted.
 The specified algorithms must have the same format as in <a href="#4.1">section 4.1</a> of
@@ -10998,6 +11009,12 @@ be executed before other ones if they exist. This will permit to lower the
 maximum latency experienced by new requests or connections in the middle of
 massive traffic, at the expense of a higher impact on this large traffic.
 For regular usage it is better to leave this off. The default value is off.
+</pre><a class="anchor" name="tune.sched.remote-work-budget"></a><a class="anchor" name="3-tune.sched.remote-work-budget"></a><a class="anchor" name="3.2-tune.sched.remote-work-budget"></a><a class="anchor" name="tune.sched.remote-work-budget (Global section)"></a><a class="anchor" name="tune.sched.remote-work-budget (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sched.remote-work-budget"></a><a href="#3.2-tune.sched.remote-work-budget">tune.sched.remote-work-budget</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of deferred work items that a thread processes in a
+row on behalf of other threads or thread groups (for instance the file
+descriptor operations delegated between thread groups when FD tables are not
+shared) before letting other tasks run. Larger values reduce the scheduling
+overhead when such requests come in bursts, smaller ones limit the latency
+they may inflict on regular traffic. The default value is 16.
 </pre><a class="anchor" name="tune.sndbuf.backend"></a><a class="anchor" name="3-tune.sndbuf.backend"></a><a class="anchor" name="3.2-tune.sndbuf.backend"></a><a class="anchor" name="tune.sndbuf.backend (Global section)"></a><a class="anchor" name="tune.sndbuf.backend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.backend"></a><a href="#3.2-tune.sndbuf.backend">tune.sndbuf.backend</a></b>  <span style="color: #080">&lt;size&gt;</span></div><a class="anchor" name="tune.sndbuf.frontend"></a><a class="anchor" name="3-tune.sndbuf.frontend"></a><a class="anchor" name="3.2-tune.sndbuf.frontend"></a><a class="anchor" name="tune.sndbuf.frontend (Global section)"></a><a class="anchor" name="tune.sndbuf.frontend (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sndbuf.frontend"></a><a href="#3.2-tune.sndbuf.frontend">tune.sndbuf.frontend</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">For the kernel socket send buffer size on non-connected sockets to this size.
 This can be used for UNIX socket and UDP logging on the backend side, and for
 QUIC in listener mode on the frontend. The default system buffers might
@@ -25477,6 +25494,56 @@ Some sample fetch methods have deprecated aliases that are used to maintain
 compatibility with existing configurations. They are then explicitly marked as
 deprecated and should not be used in new setups.
 
+Samples are typed. A sample's type determines how it may be matched against
+patterns, which converters may be applied to it, and how it is converted when
+another type is expected. The following types are used:
+
+  - boolean: a true or false value, as returned by the fetch methods which
+    only report a condition. Such samples are matched without any &quot;-m&quot; option.
+    An integer is considered true when it is not zero, and a string is first
+    parsed as an integer.
+
+  - integer: a signed 64-bit integer, that is a value between -2^63 and 2^63-1
+    (-9223372036854775808 and 9223372036854775807). When a string is cast to an
+    integer, the conversion stops at the first non-digit character that is not
+    the leading sign character ('+' or '-'). The value formed by the digits
+    read is used, which is zero if there was none, but empty strings fail to
+    convert. Values which do not fit are bound to the smallest or the largest
+    representable integer.
+
+  - IPv4 address and IPv6 address: these are two distinct types, even though
+    most places which accept one also accept the other and are simply
+    documented as taking an address. An IPv4 address may be cast to an
+    integer, which gives the 32-bit value of the address, and to an IPv6
+    address, which gives its IPv4-mapped form (&quot;::ffff:a.b.c.d&quot;). The reverse
+    casts are more limited: an IPv6 address has no integer form at all, and it
+    only converts to an IPv4 address if it is an IPv4-mapped, IPv4-compatible
+    or 6to4 address.
+
+  - string: a series of bytes stopping at the first NUL character (0x00), which
+    is not part of the string (use the binary type if an embedded NUL character
+    is needed). No encoding is inferred: haproxy does not try to interpret
+    these bytes as characters, and whether they represent text at all, in which
+    charset, and how they are rendered, solely depends on what the string is
+    used for. Casting a binary sample to a string therefore silently drops
+    everything from the first NUL character on, whether the cast is explicit or
+    implicit.
+
+  - binary: a block of bytes whose length is known, each byte being able to
+    take any value from 0 to 255, NUL included. This is what the fetch methods
+    extracting raw data return, such as a request body or the contents of a
+    binary protocol. Such a sample cannot be cast to a boolean, an integer nor
+    an address, and must either be matched as a binary block using &quot;-m bin&quot;
+    (see <a href="#7.1.5">section 7.1.5</a>) or be turned into a printable form first, for instance
+    using the &quot;<a href="#hex">hex</a>&quot; converter. The opposite cast is free, since a string is
+    always a valid binary block.
+
+  - method: an HTTP method. The methods known to haproxy are represented by
+    an identifier, the others keep their original string.
+
+The converters table below also uses &quot;any&quot; to designate the converters which
+accept any input type.
+
 The ACL derivatives are also indicated when available, with their respective
 matching methods. These ones all have a well defined default pattern matching
 method, so it is never necessary (though allowed) to pass the &quot;-m&quot; option to
@@ -26511,8 +26578,12 @@ contents.
  | PS256        | RSASSA-PSS using SHA-256 and MGF1 with SHA-256          |
  | PS384        | RSASSA-PSS using SHA-384 and MGF1 with SHA-384          |
  | PS512        | RSASSA-PSS using SHA-512 and MGF1 with SHA-512          |
- | none         | No digital signature or MAC performed                   |
+ | none         | No digital signature or MAC performed (see note below)  |
  +--------------+---------------------------------------------------------+
+
+ Please note that the &quot;none&quot; algorithm is not allowed by default to follow
+ the recommendations in RFC8725 <a href="#3.2">section 3.2</a>. Set global option
+ 'jwt.allow_none_alg' to explicitely allow it.
 
 - &lt;key&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
   holds a secret or a public key path.
@@ -35965,7 +36036,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev6-36 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev6-67 &ndash; Configuration Manual<br>
 							<small>, 2026/09/03</small>
 						</div>
 					</div>
