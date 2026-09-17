@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev6-71 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev6-82 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2121,8 +2121,6 @@
 							
 							<a class="list-group-item" href="#filter trace">filter trace</a>
 							
-							<a class="list-group-item" href="#filter-sequence">filter-sequence</a>
-							
 							<a class="list-group-item" href="#fix_is_valid">fix_is_valid</a>
 							
 							<a class="list-group-item" href="#fix_tag_value">fix_tag_value</a>
@@ -2553,6 +2551,8 @@
 							<a class="list-group-item" href="#master-worker">master-worker</a>
 							
 							<a class="list-group-item" href="#master-worker no-exit-on-failure">master-worker no-exit-on-failure</a>
+							
+							<a class="list-group-item" href="#master_id">master_id</a>
 							
 							<a class="list-group-item" href="#max-age">max-age</a>
 							
@@ -4882,6 +4882,10 @@
 							
 							<a class="list-group-item" href="#word">word</a>
 							
+							<a class="list-group-item" href="#worker-id">worker-id</a>
+							
+							<a class="list-group-item" href="#worker_id">worker_id</a>
+							
 							<a class="list-group-item" href="#ws">ws</a>
 							
 							<a class="list-group-item" href="#wt6">wt6</a>
@@ -4924,7 +4928,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/11</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4935,7 +4939,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev6-71</strong></p>
+							<p><strong>version 3.5-dev6-82</strong></p>
 							<p>
 								2026/09/03<br>
 								
@@ -7052,6 +7056,8 @@ Some variables are marked as not usable and not modifiable:
   * HAPROXY_MWORKER
   * HAPROXY_CLI
   * HAPROXY_MASTER_CLI
+  * HAPROXY_MASTER_ID
+  * HAPROXY_WORKER_ID
   * HAPROXY_LOCALPEER
 
 Their values are undefined during configuration parsing, they are set later
@@ -7073,6 +7079,8 @@ modes:
   | HAPROXY_MWORKER           |    |    |      |     |  X  |  X  |
   | HAPROXY_CLI               |    |    |      |     |     |  X  |
   | HAPROXY_MASTER_CLI        |    |    |      |     |  X  |     |
+  | HAPROXY_MASTER_ID         |    | X  |      |     |  X  |  X  |
+  | HAPROXY_WORKER_ID         |    | X  |      |     |     |  X  |
   | HAPROXY_LOCALPEER         |    | X  |      |     |     |  X  |
   | HAPROXY_HTTP_LOG_FMT      |    | X  |      |  X  |     |     |
   | HAPROXY_HTTP_CLF_LOG_FMT  |    | X  |      |  X  |     |     |
@@ -7132,6 +7140,28 @@ log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=%[last_rule_file]:%[last_rule_line]&q
 
   * HAPROXY_MASTER_CLI: In master-worker mode, listeners addresses of the master
     CLI, separated by semicolons.
+
+  * HAPROXY_MASTER_ID: In master-worker mode, unique identifier of the master
+    process. A time-ordered UUID (version 7) is generated when the master
+    starts, unless a valid identifier is already present in the environment; an
+    invalid one is simply replaced by a generated one. It is then passed to the
+    next master upon reload, so that it remains stable for the whole life of
+    the master, and it is also exposed to the worker. Its format is the same as
+    the one of the proxies' and servers' &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;: at most 127 characters among
+    letters, digits, '.', ':', '-' and '_'. See also the &quot;<a href="#master_id">master_id</a>&quot; sample
+    fetch function.
+
+  * HAPROXY_WORKER_ID: unique identifier of the worker process. It is randomly
+    generated at boot on the worker process, and may be overwritten by the
+    &quot;<a href="#worker-id">worker-id</a>&quot; keyword in the global section. The generated random is changed
+    on every reload.
+
+ Its format is the same as the one of HAPROXY_MASTER_ID above. It is
+    set before the worker reads the rest of its configuration, so it may be
+    referenced from there, and being part of the process' environment it is
+    also visible to Lua (os.getenv()) and inherited by the processes launched
+    from the worker, such as external health checks. See also the &quot;<a href="#worker_id">worker_id</a>&quot;
+    sample fetch function.
 
   * HAPROXY_STARTUP_VERSION: contains the version used to start, in master-
     worker mode this is the version which was used to start the master, even
@@ -7908,6 +7938,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#unix-bind">unix-bind</a>
    - <a href="#unsetenv">unsetenv</a>
    - <a href="#user">user</a>
+   - <a href="#worker-id">worker-id</a>
    - <a href="#wurfl-cache-size">wurfl-cache-size</a>
    - <a href="#wurfl-data-file">wurfl-data-file</a>
    - <a href="#wurfl-information-list">wurfl-information-list</a>
@@ -9630,6 +9661,30 @@ This statement is useful in HA configurations where two or more processes or
 servers share the same IP address. By setting a different node-name on all
 nodes, it becomes easy to immediately spot what server is handling the
 traffic.
+</pre><a class="anchor" name="worker-id"></a><a class="anchor" name="3-worker-id"></a><a class="anchor" name="3.1-worker-id"></a><a class="anchor" name="worker-id (Global section)"></a><a class="anchor" name="worker-id (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="worker-id"></a><a href="#3.1-worker-id">worker-id</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Replaces the default worker process identifier with &lt;id&gt;. The format rules
+are identical to the proxy and server &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; attributes: up to 127 characters
+containing only alphanumeric values, &quot;.&quot;, &quot;:&quot;, &quot;-&quot;, and &quot;_&quot;.
+
+HAProxy generates a time-ordered UUIDv7 for the worker at boot before parsing
+the configuration. This default identifier changes on every reload, embedding
+the process start time to enable chronological sorting of workers in logs for
+example.
+
+Using worker-id overwrites this identifier and instantly updates the
+HAPROXY_WORKER_ID environment variable. Any subsequent configuration
+directive (e.g. &quot;<a href="#log-format">log-format</a>&quot;) will use the replaced value. The directive
+itself can reference HAPROXY_WORKER_ID before it is overwritten, allowing
+to combine for example a node name with the generated UUID.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>worker-id &quot;pop7-node1-inst3-${HAPROXY_WORKER_ID}&quot;
+</code></pre>
+</div><pre class="text">The identifier is exported as the HAPROXY_WORKER_ID environment variable (see
+<a href="#2.3">section 2.3</a>), is returned by the &quot;<a href="#worker_id">worker_id</a>&quot; sample fetch function, appears
+on the output of the &quot;show info&quot; CLI command and on the HTML stats page when
+&quot;<a href="#stats%20show-node">stats show-node</a>&quot; is enabled. See also the &quot;HAPROXY_MASTER_ID&quot; environment
+variable in <a href="#2.3">section 2.3</a>, and the &quot;<a href="#worker_id">worker_id</a>&quot; sample fetch function.
 </pre><a class="anchor" name="wurfl-cache-size"></a><a class="anchor" name="3-wurfl-cache-size"></a><a class="anchor" name="3.1-wurfl-cache-size"></a><a class="anchor" name="wurfl-cache-size (Global section)"></a><a class="anchor" name="wurfl-cache-size (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="wurfl-cache-size"></a><a href="#3.1-wurfl-cache-size">wurfl-cache-size</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the WURFL Useragent cache size. For faster lookups, already processed user
 agents are kept in a LRU cache :
 - &quot;0&quot;     : no cache is used.
@@ -11598,11 +11653,10 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-force-persist">force-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-force-be-switch">force-be-switch</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-filter">filter</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-filter-sequence">filter-sequence</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11622,8 +11676,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-id">id</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11643,8 +11697,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20dontlog-normal"><span class="pull-right"><span>(*)</span></span>option dontlog-normal</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20external-check">option external-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11664,8 +11718,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20httpslog">option httpslog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20independent-streams"><span class="pull-right"><span>(*)</span></span>option independent-streams</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11685,8 +11739,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11706,8 +11760,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-srvtcpka-idle">srvtcpka-idle</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-intvl">srvtcpka-intvl</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11727,8 +11781,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-tcp-check%20comment">tcp-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11748,8 +11802,8 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20http-keep-alive">timeout http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -12815,7 +12869,8 @@ for use in the response.
 implicitly enable decompression filter (&quot;decomp-req&quot; or &quot;decomp-res&quot; whether
 the decompression option targets request, response) automatically. However to
 prevent misconfiguration, it is recommended to explicitly declare filters
-when multiple filters are involved on the proxy. See also &quot;<a href="#filter-sequence">filter-sequence</a>&quot;.
+when multiple filters are involved on the proxy, because filters are
+evaluated in their declaration order.
 
 May be used in the following contexts: http, tcp
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -12917,8 +12972,8 @@ When decompression is set to a mode other than &quot;none&quot; in a direction, 
 associated decompression filter is automatically enabled. For requests, the
 filter is called &quot;decomp-req&quot;, and for responses, the filter is &quot;decomp-res&quot;.
 In order to prevent misconfigurations, particularly when combining multiple
-filters, it is highly recommended to explicitly declare the filters sequence
-via the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive in the proxy.
+filters, it is highly recommended to explicitly declare the filters, because
+they are evaluated in their declaration order.
 
 Mode &quot;auto&quot;, which is only available for HTTP, means haproxy will try to find
 a compatible algorithms in algo-req or algo-res list to be able to decompress
@@ -12952,8 +13007,7 @@ decompression mode-res always
            a hostile agent could trivially amplify its traffic 1000x by
            sending it compressed.
 
-See also &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, &quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;, and
-         &quot;<a href="#filter-sequence">filter-sequence</a>&quot;.
+See also &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, &quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;, and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Changes a set of options reusable for future server declarations.
 
 May be used in the following contexts: tcp, http
@@ -13385,6 +13439,13 @@ will have the string value &quot;NOT_USED&quot;.
 Some values are also provided through environment variables.
 
 Environment variables :
+  HAPROXY_MASTER_ID       The unique identifier of the master process, or
+                          empty when not running in master-worker mode. See
+                          <a href="#2.3">section 2.3</a>.
+
+  HAPROXY_WORKER_ID       The unique identifier of the worker process. See
+                          <a href="#2.3">section 2.3</a> and the &quot;<a href="#worker-id">worker-id</a>&quot; global keyword.
+
   HAPROXY_PROXY_ADDR      The first bind address if available (or empty if not
                           applicable, for example in a &quot;backend&quot; section).
 
@@ -13489,39 +13550,7 @@ same filter can be referenced many times if needed.
 
   server srv1 192.168.0.1:80
 </code></pre>
-</div><div class="page-header"><b>See also :</b> <a href="#9">section 9</a>., &quot;<a href="#filter-sequence">filter-sequence</a>&quot;</div>
-<a class="anchor" name="filter-sequence"></a><a class="anchor" name="4-filter-sequence"></a><a class="anchor" name="4.2-filter-sequence"></a><a class="anchor" name="filter-sequence (Proxies)"></a><a class="anchor" name="filter-sequence (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter-sequence"></a><a href="#4.2-filter-sequence">filter-sequence</a></b> <span style="color: #800">{ request | response }</span> <span style="color: #080">&lt;filter_list&gt;</span></div><pre class="text">Specifies in which order filters declared on the proxy should be
-executed.
-
-May be used in the following contexts: tcp, http
-</pre><div><p>  May be used in sections :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
-<tr><td class="alert-error pagination-centered">no<br /><img src="../css/cross.png" alt="no" title="no" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
-</table></div>
-<pre class="text">Comma-separated list of filter names (&lt;filter_list&gt;) to specify in which
-order filters declared on the proxy should be executed, for request
-or response path, respectively.
-
-When filter-sequence is not specified for a given path (ie: request vs
-response), the order in which filters are declared on the proxy is used.
-
-If filter-sequence omits some filters that were declared on the proxy,
-they will not be executed. This is an effective way of temporarily
-disabling a filter without removing it from the configuration.
-</pre><div class="separator">
-<span class="label label-success">Example:</span>
-<pre class="prettyprint">
-<code>global
-   lua-load my-filter.lua <span class="comment"># defines custom &quot;lua.my-filter&quot;</span>
-frontend myfront
-   filter comp-req
-   filter comp-res
-   filter lua.my-filter
-
-   filter-sequence request lua.my-filter,comp-req
-   filter-sequence response lua.my-filter,comp-res
-</code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;</div>
+</div><div class="page-header"><b>See also :</b> <a href="#9">section 9</a>.</div>
 <a class="anchor" name="fullconn"></a><a class="anchor" name="4-fullconn"></a><a class="anchor" name="4.2-fullconn"></a><a class="anchor" name="fullconn (Proxies)"></a><a class="anchor" name="fullconn (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="fullconn"></a><a href="#4.2-fullconn">fullconn</a></b> <span style="color: #080">&lt;conns&gt;</span></div><pre class="text">Specify at what backend load the servers will reach their maxconn
 
 May be used in the following contexts: tcp, http
@@ -18475,6 +18504,9 @@ May be used in the following contexts: http
 <pre class="text">This statement is useful for users that offer shared services to their
 customers, where node or description might be different on a stats page
 provided for each customer. Default behavior is not to show host name.
+When enabled, the identifiers of the master process (when present) and the
+worker process are also shown. This can be useful to more easily detect
+reloads for example. See &quot;<a href="#worker-id">worker-id</a>&quot; in the global section.
 
 Though this statement alone is enough to enable statistics reporting, it is
 recommended to set all other settings in order to avoid relying on default
@@ -18489,7 +18521,7 @@ backend private_monitoring
     stats uri       /admin?stats
     stats refresh   5s
 </code></pre>
-</div><div class="page-header"><b>See also:</b> &quot;show-desc&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;, and &quot;<a href="#node">node</a>&quot; in global section.</div>
+</div><div class="page-header"><b>See also:</b> &quot;show-desc&quot;, &quot;<a href="#stats%20enable">stats enable</a>&quot;, &quot;<a href="#stats%20uri">stats uri</a>&quot;, &quot;<a href="#worker-id">worker-id</a>&quot; and &quot;<a href="#node">node</a>&quot; in global section.</div>
 <a class="anchor" name="stats"></a><a class="anchor" name="4-stats"></a><a class="anchor" name="4.2-stats"></a><a class="anchor" name="stats (Proxies)"></a><a class="anchor" name="stats (Alphabetically sorted keywords reference)"></a><a class="anchor" name="stats show-version"></a><a class="anchor" name="4-stats show-version"></a><a class="anchor" name="4.2-stats show-version"></a><a class="anchor" name="stats show-version (Proxies)"></a><a class="anchor" name="stats show-version (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="stats show-version"></a><a href="#4.2-stats%20show-version">stats show-version</a></b></div><pre class="text">Enable statistics and show HAProxy version reporting
 
 May be used in the following contexts: http
@@ -27972,6 +28004,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-last_rule_line">last_rule_line</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-lat_ns_avg">lat_ns_avg</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-lat_ns_tot">lat_ns_tot</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-master_id">master_id</a></td><td >string</td></tr>
 <tr><td ><a href="#7-meth">meth(&lt;method&gt;)</a></td><td >method</td></tr>
 <tr><td ><a href="#7-nbsrv">nbsrv([&lt;backend&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-pid">pid</a></td><td >integer</td></tr>
@@ -27982,8 +28015,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-quic_enabled">quic_enabled</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-rand">rand([&lt;range&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_conn">srv_conn([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-srv_conn_free">srv_conn_free([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_conn_free">srv_conn_free([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_iweight">srv_iweight([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_queue">srv_queue([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
@@ -28003,6 +28036,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
 <tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-waiting_entity">waiting_entity</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-worker_id">worker_id</a></td><td >string</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
 returns false. Up to 12 ACLs may be provided, each delimited by comma. Each
@@ -28303,6 +28338,13 @@ continue to fill up and the next call will process more at once. The value
 may be artificially high due to a high cpu_calls count, for example when
 processing many HTTP chunks, and for this reason it is often preferred to log
 lat_ns_avg instead, which is a more relevant performance indicator.
+</pre><a class="anchor" name="master_id"></a><a class="anchor" name="7-master_id"></a><a class="anchor" name="7.3.2-master_id"></a><a class="anchor" name="master_id (Using ACLs and fetching samples)"></a><a class="anchor" name="master_id (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="master_id"></a><a href="#7.3.2-master_id">master_id</a></b> : string</div><pre class="text">Returns the unique identifier of the master process, as found in the
+HAPROXY_MASTER_ID environment variable (see <a href="#2.3">section 2.3</a>). This identifier is
+preserved across reloads, so it designates this installation for as long as
+the master lives. This sample fetch function returns nothing when there is no
+master, i.e. when not running in master-worker mode. See also &quot;<a href="#worker_id">worker_id</a>&quot;.
+Note that this string has its own storage, and that changing the contents of
+HAPROXY_MASTER_ID via &quot;<a href="#setenv">setenv</a>&quot; will not affect it.
 </pre><a class="anchor" name="meth"></a><a class="anchor" name="7-meth"></a><a class="anchor" name="7.3.2-meth"></a><a class="anchor" name="meth (Using ACLs and fetching samples)"></a><a class="anchor" name="meth (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="meth"></a><a href="#7.3.2-meth">meth</a></b>(<span style="color: #080">&lt;method&gt;</span>) : method</div><pre class="text">Returns a method.
 </pre><a class="anchor" name="nbsrv"></a><a class="anchor" name="7-nbsrv"></a><a class="anchor" name="7.3.2-nbsrv"></a><a class="anchor" name="nbsrv (Using ACLs and fetching samples)"></a><a class="anchor" name="nbsrv (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="nbsrv"></a><a href="#7.3.2-nbsrv">nbsrv</a></b>(<span style="color: #008">[<span style="color: #080">&lt;backend&gt;</span>]</span>) : integer</div><pre class="text">Returns an integer value corresponding to the number of usable servers of
 either the current backend or the named backend. This is mostly used with
@@ -28579,7 +28621,20 @@ something else than debugging.
 <code><span class="comment"># Log the waiting entity, if any, and only if an error is reported</span>
 log-format &quot;$HAPROXY_HTTP_LOG_FMT %{Q}[waiting_entity,when(error)]
 </code></pre>
-</div></div>
+</div><a class="anchor" name="worker_id"></a><a class="anchor" name="7-worker_id"></a><a class="anchor" name="7.3.2-worker_id"></a><a class="anchor" name="worker_id (Using ACLs and fetching samples)"></a><a class="anchor" name="worker_id (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="worker_id"></a><a href="#7.3.2-worker_id">worker_id</a></b> : string</div><pre class="text">Returns the unique identifier of the current worker process, either the one
+set with the &quot;<a href="#worker-id">worker-id</a>&quot; keyword in the global section, or the random one
+which was generated at boot. In the latter case it changes on every reload,
+so that a newly started worker may be told from the previous ones. Combined
+with &quot;<a href="#master_id">master_id</a>&quot;, which does not change across reloads, this permits an
+external monitoring system to correlate the traffic it sees with the process
+it collects its metrics from, for example:
+
+    log-format &quot;$HAPROXY_HTTP_LOG_FMT mid=%[master_id] wid=%[worker_id]&quot;
+
+Note that this string has its own storage, and that changing the contents of
+HAPROXY_WORKER_ID via &quot;<a href="#setenv">setenv</a>&quot; will not affect it. See also the &quot;<a href="#master_id">master_id</a>&quot;
+sample fetch function, and the &quot;<a href="#worker-id">worker-id</a>&quot; global keyword.
+</pre></div>
 <a class="anchor" id="7.3.3" name="7.3.3"></a>
 <h3 id="chapter-7.3.3" data-target="7.3.3"><small><a class="small" href="#7.3.3">7.3.3.</a></small> Fetching samples at Layer 4</h3>
 <div><pre class="text">The layer 4 usually describes just the transport layer which in HAProxy is
@@ -36036,7 +36091,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev6-71 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev6-82 &ndash; Configuration Manual<br>
 							<small>, 2026/09/03</small>
 						</div>
 					</div>
