@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev6-82 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev6-85 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1540,6 +1540,8 @@
 							<a class="list-group-item" href="#be_server_timeout">be_server_timeout</a>
 							
 							<a class="list-group-item" href="#be_sess_rate">be_sess_rate</a>
+							
+							<a class="list-group-item" href="#be_sort">be_sort</a>
 							
 							<a class="list-group-item" href="#be_tarpit_timeout">be_tarpit_timeout</a>
 							
@@ -4928,7 +4930,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4939,7 +4941,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev6-82</strong></p>
+							<p><strong>version 3.5-dev6-85</strong></p>
 							<p>
 								2026/09/03<br>
 								
@@ -7154,14 +7156,12 @@ log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=%[last_rule_file]:%[last_rule_line]&q
   * HAPROXY_WORKER_ID: unique identifier of the worker process. It is randomly
     generated at boot on the worker process, and may be overwritten by the
     &quot;<a href="#worker-id">worker-id</a>&quot; keyword in the global section. The generated random is changed
-    on every reload.
-
- Its format is the same as the one of HAPROXY_MASTER_ID above. It is
-    set before the worker reads the rest of its configuration, so it may be
-    referenced from there, and being part of the process' environment it is
-    also visible to Lua (os.getenv()) and inherited by the processes launched
-    from the worker, such as external health checks. See also the &quot;<a href="#worker_id">worker_id</a>&quot;
-    sample fetch function.
+    on every reload. Its format is the same as the one of HAPROXY_MASTER_ID
+    above. It is set before the worker reads the rest of its configuration, so
+    it may be referenced from there, and being part of the process' environment
+    it is also visible to Lua (os.getenv()) and inherited by the processes
+    launched from the worker, such as external health checks. See also the
+    &quot;<a href="#worker_id">worker_id</a>&quot; sample fetch function.
 
   * HAPROXY_STARTUP_VERSION: contains the version used to start, in master-
     worker mode this is the version which was used to start the master, even
@@ -25637,13 +25637,14 @@ The following keywords are supported:
 <tr><td ><a href="#7-be2dec">be2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-le2dec">le2dec(separator,chunk_size[,truncate])</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-be2hex">be2hex([separator[,chunk_size[,truncate]]])</a></td><td >binary</td><td >string</td></tr>
+<tr><td ><a href="#7-be_sort">be_sort(elem_size)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-bool">bool</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-bytes">bytes(offset[,length])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-capture-req">capture-req(id)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-capture-res">capture-res(id)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-concat">concat([start[,var[,end]]])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32">crc32([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
@@ -25663,8 +25664,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-fe_exists">fe_exists</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-field">field(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
-<tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-has_ctl">has_ctl([mask])</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
@@ -25684,8 +25685,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ip.tos">ip.tos</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ip.ttl">ip.ttl</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
 <tr><td ><a href="#7-jwt_decrypt_jwk">jwt_decrypt_jwk(&lt;jwk&gt;)</a></td><td >string</td><td >binary</td></tr>
@@ -25705,8 +25706,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-map_match_output">map_match_output(map_name[,default_value])</a></td><td >_match_</td><td >_output_</td></tr>
 <tr><td ><a href="#7-mod">mod(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
-<tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-mul">mul(value)</a></td><td >integer</td><td >integer</td></tr>
@@ -25726,8 +25727,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
 <tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
 <tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
-<tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rtrim">rtrim(chars)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-secure_memcmp">secure_memcmp(var)</a></td><td >string</td><td >boolean</td></tr>
@@ -25747,8 +25748,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_rate">table_glitch_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc0">table_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25768,8 +25769,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_out">table_kbytes_out([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_sess_cnt">table_sess_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25789,8 +25790,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-url_dec">url_dec([in_form])</a></td><td >string</td><td >string</td></tr>
@@ -25961,6 +25962,24 @@ truncated at &lt;chunk_size&gt; boundaries.
 bin(01020304050607),be2hex(:,2)    <span class="comment"># 0102:0304:0506:07</span>
 bin(01020304050607),be2hex(--,2,1) <span class="comment"># 0102--0304--0506</span>
 bin(0102030405060708),be2hex(,3,1) <span class="comment"># 010203040506</span>
+</code></pre>
+</div><a class="anchor" name="be_sort"></a><a class="anchor" name="7-be_sort"></a><a class="anchor" name="7.3.1-be_sort"></a><a class="anchor" name="be_sort (Using ACLs and fetching samples)"></a><a class="anchor" name="be_sort (Converters)"></a><div class="keyword"><b><a class="anchor" name="be_sort"></a><a href="#7.3.1-be_sort">be_sort</a></b>(<span style="color: #080">&lt;elem_size&gt;</span>)</div><pre class="text">Sorts in ascending numerical order the big-endian unsigned integers of
+&lt;elem_size&gt; bytes stored in the binary input sample, and returns the
+resulting binary sample. &lt;elem_size&gt; must be 1, 2, 4 or 8, and the length of
+the input sample must be a multiple of &lt;elem_size&gt;, otherwise the conversion
+fails. This is typically used to normalize a list of binary values whose
+order may vary from one client to another before hashing it, such as the
+cipher list or the extension list of a TLS client hello.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>bin(0302000104),be_sort(1)       <span class="comment"># 0001020304</span>
+bin(1302130113031304),be_sort(2) <span class="comment"># 1301130213031304</span>
+bin(010203),be_sort(2)           <span class="comment"># fails, not a multiple of 2</span>
+
+<span class="comment"># hash of the client's cipher list, independent of the cipher order</span>
+http-request set-var(txn.ciphers) \
+    ssl_fc_cipherlist_bin(1),be_sort(2),xxh64
 </code></pre>
 </div><a class="anchor" name="bool"></a><a class="anchor" name="7-bool"></a><a class="anchor" name="7.3.1-bool"></a><a class="anchor" name="bool (Using ACLs and fetching samples)"></a><a class="anchor" name="bool (Converters)"></a><div class="keyword"><b><a class="anchor" name="bool"></a><a href="#7.3.1-bool">bool</a></b></div><pre class="text">Returns a boolean TRUE if the input value of type signed integer is
 non-null, otherwise returns FALSE. Used in conjunction with and(), it can be
@@ -36091,7 +36110,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev6-82 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev6-85 &ndash; Configuration Manual<br>
 							<small>, 2026/09/03</small>
 						</div>
 					</div>
