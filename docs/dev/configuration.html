@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev7-50 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev7-55 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2866,6 +2866,8 @@
 							
 							<a class="list-group-item" href="#ocsp-update.mode">ocsp-update.mode</a>
 							
+							<a class="list-group-item" href="#ocsp-update.timeout">ocsp-update.timeout</a>
+							
 							<a class="list-group-item" href="#odd">odd</a>
 							
 							<a class="list-group-item" href="#on">on</a>
@@ -4930,7 +4932,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4941,7 +4943,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev7-50</strong></p>
+							<p><strong>version 3.5-dev7-55</strong></p>
 							<p>
 								2026/09/18<br>
 								
@@ -9092,6 +9094,14 @@ configuration. This global option can be superseded by the crt-list
 &quot;<a href="#ocsp-update">ocsp-update</a>&quot; option. This option is set to &quot;off&quot; by default.
 See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
 mechanism.
+</pre><a class="anchor" name="ocsp-update.timeout"></a><a class="anchor" name="3-ocsp-update.timeout"></a><a class="anchor" name="3.1-ocsp-update.timeout"></a><a class="anchor" name="ocsp-update.timeout (Global section)"></a><a class="anchor" name="ocsp-update.timeout (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.timeout"></a><a href="#3.1-ocsp-update.timeout">ocsp-update.timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the timeout applied to the request used to fetch an OCSP response
+during an automatic update. This timeout covers the whole request, from
+the connection attempt to the reception of the full response. If it is
+reached, the update is considered a failure and is logged as such. The
+timeout value is specified in milliseconds by default, but can be in any
+other unit if the number is suffixed by the unit, as explained at the top
+of this document. It defaults to 10s. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
+information about the auto update mechanism.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global section)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
@@ -36112,7 +36122,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev7-50 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev7-55 &ndash; Configuration Manual<br>
 							<small>, 2026/09/18</small>
 						</div>
 					</div>
