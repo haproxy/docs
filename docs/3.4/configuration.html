@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4.4-67 - Configuration Manual</title>
+		<title>HAProxy version 3.4.4-80 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4930,7 +4930,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4941,7 +4941,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4.4-67</strong></p>
+							<p><strong>version 3.4.4-80</strong></p>
 							<p>
 								2026/08/27<br>
 								
@@ -20464,8 +20464,11 @@ automatically appear in the logs, and it will be possible to extract it using
 sample fetch methods to feed it into headers or anything. The length should
 be limited given that this size will be allocated for each capture during the
 whole stream life. Note that the length is only usable with &quot;<a href="#http-request">http-request</a>&quot;
-rules. Please check <a href="#7.3">section 7.3</a> (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot;
-and &quot;<a href="#capture%20response%20header">capture response header</a>&quot; for more information.
+rules. Such a slot only exists in the section which declares it, so when this
+rule is placed in a &quot;listen&quot; section which is also used as the backend of
+another frontend, it is ignored for the streams coming from that frontend.
+Please check <a href="#7.3">section 7.3</a> (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot; and
+&quot;<a href="#capture%20response%20header">capture response header</a>&quot; for more information.
 
 If the keyword &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is used instead of &quot;len&quot;, the action tries to store the
 captured string in a previously declared capture slot. This is useful to run
@@ -35865,7 +35868,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4.4-67 &ndash; Configuration Manual<br>
+							HAProxy 3.4.4-80 &ndash; Configuration Manual<br>
 							<small>, 2026/08/27</small>
 						</div>
 					</div>
