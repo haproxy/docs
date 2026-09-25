@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.6.33-21 - Configuration Manual</title>
+		<title>HAProxy version 2.6.34 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4145,7 +4145,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4156,9 +4156,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.6.33-21</strong></p>
+							<p><strong>version 2.6.34</strong></p>
 							<p>
-								2026/08/27<br>
+								2026/09/24<br>
 								
 							</p>
 						</div>
@@ -11289,9 +11289,12 @@ stored into the next request &quot;<a href="#capture">capture</a>&quot; slot, so
 to some captured HTTP headers. It will then automatically appear in the logs,
 and it will be possible to extract it using sample fetch rules to feed it
 into headers or anything. The length should be limited given that this size
-will be allocated for each capture during the whole session life.
-Please check <a href="#7.3">section 7.3</a> (Fetching samples) and &quot;<a href="#capture%20request%20header">capture request header</a>&quot; for
-more information.
+will be allocated for each capture during the whole session life. Such a slot
+only exists in the section which declares it, so when this rule is placed in
+a &quot;listen&quot; section which is also used as the backend of another frontend, it
+is ignored for the streams coming from that frontend.  Please check section
+7.3 (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot; and &quot;capture response
+header&quot; for more information.
 
 If the keyword &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is used instead of &quot;len&quot;, the action tries to store the
 captured string in a previously declared capture slot. This is useful to run
@@ -12247,7 +12250,10 @@ converts it to a string. The resulting string is stored into the next request
 &quot;<a href="#capture">capture</a>&quot; slot, so it will possibly appear next to some captured HTTP
 headers. It will then automatically appear in the logs, and it will be
 possible to extract it using sample fetch rules to feed it into headers or
-anything. Please check <a href="#7.3">section 7.3</a> (Fetching samples) and
+anything. Such a slot only exists in the section which declares it, so when
+this rule is placed in a &quot;listen&quot; section which is also used as the backend
+of another frontend, it is ignored for the streams coming from that frontend.
+Please check <a href="#7.3">section 7.3</a> (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot; and
 &quot;<a href="#capture%20response%20header">capture response header</a>&quot; for more information.
 
 The keyword &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">id<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#id%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#id%20%28Bind%20options%29">Bind options</a></li><li><a href="#id%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; is the id of the capture slot which is used for storing the
@@ -17190,9 +17196,12 @@ stored into the next request &quot;<a href="#capture">capture</a>&quot; slot, so
 to some captured HTTP headers. It will then automatically appear in the logs,
 and it will be possible to extract it using sample fetch rules to feed it
 into headers or anything. The length should be limited given that this size
-will be allocated for each capture during the whole session life. Please
-check <a href="#7.3">section 7.3</a> (Fetching samples) and &quot;<a href="#capture%20request%20header">capture request header</a>&quot; for more
-information.
+will be allocated for each capture during the whole session life. Such a slot
+only exists in the section which declares it, so when this rule is placed in
+a &quot;listen&quot; section which is also used as the backend of another frontend, it
+is ignored for the streams coming from that frontend.  Please check section
+7.3 (Fetching samples), &quot;<a href="#capture%20request%20header">capture request header</a>&quot; and &quot;capture response
+header&quot; for more information.
 </pre><a class="anchor" name="tcp-request"></a><a class="anchor" name="4-tcp-request"></a><a class="anchor" name="4.2-tcp-request"></a><a class="anchor" name="tcp-request (Proxies)"></a><a class="anchor" name="tcp-request (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content"></a><a class="anchor" name="4-tcp-request content"></a><a class="anchor" name="4.2-tcp-request content"></a><a class="anchor" name="tcp-request content (Proxies)"></a><a class="anchor" name="tcp-request content (Alphabetically sorted keywords reference)"></a><a class="anchor" name="tcp-request content do-resolve"></a><a class="anchor" name="4-tcp-request content do-resolve"></a><a class="anchor" name="4.2-tcp-request content do-resolve"></a><a class="anchor" name="tcp-request content do-resolve (Proxies)"></a><a class="anchor" name="tcp-request content do-resolve (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="tcp-request content do-resolve"></a><a href="#4.2-tcp-request%20content%20do-resolve">tcp-request content do-resolve</a></b>(<span style="color: #080">&lt;var&gt;</span>,<span style="color: #080">&lt;resolvers&gt;</span>,<span style="color: #008">[ipv4,ipv6]</span>) <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">This action performs a DNS resolution of the output of &lt;expr&gt; and stores the
 result in the variable &lt;var&gt;. Please refer to &quot;<a href="#http-request%20do-resolve">http-request do-resolve</a>&quot; for a
 complete description.
@@ -26642,8 +26651,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.6.33-21 &ndash; Configuration Manual<br>
-							<small>, 2026/08/27</small>
+							HAProxy 2.6.34 &ndash; Configuration Manual<br>
+							<small>, 2026/09/24</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
