@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev7-96 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev7-184 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4932,7 +4932,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/28</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/30</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4943,7 +4943,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev7-96</strong></p>
+							<p><strong>version 3.5-dev7-184</strong></p>
 							<p>
 								2026/09/18<br>
 								
@@ -8201,13 +8201,13 @@ creates an anonymous temporary directory, unlinks it, and chroots into it.
 The resulting jail has no name in the filesystem and is empty and read-only,
 removing the need to prepare a dedicated jail directory.
 
-When starting with sufficient privileges, haproxy will automatically apply
-&quot;chroot auto&quot; if no &quot;<a href="#chroot">chroot</a>&quot; directive is used, i.e. it will isolate itself
-in a chroot jail, and will emit a warning if it fails to do so. If there is
-a compelling reason not to use chroot (e.g. access to a server via a UNIX
-socket outside of the jail), it remains possible to silence the warning by
-adding an explicit &quot;chroot /&quot;, which has the benefit of being visible in a
-configuration.
+When starting with sufficient privileges and when &quot;<a href="#set-dumpable">set-dumpable</a>&quot; is not set,
+haproxy will automatically apply &quot;chroot auto&quot; if no &quot;<a href="#chroot">chroot</a>&quot; directive is
+used, i.e. it will isolate itself in a chroot jail, and will emit a warning
+if it fails to do so. If there is a compelling reason not to use chroot (e.g.
+access to a server via a UNIX socket outside of the jail), it remains
+possible to silence the warning by adding an explicit &quot;chroot /&quot;, which has
+the benefit of being visible in a configuration.
 </pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global section)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
 closing is spread in case of soft-stop. After a SIGUSR1 is received and the
 grace period is over (if any), the idle connections will all be closed at
@@ -9166,20 +9166,21 @@ Available options are:
 
 This option is better left disabled by default and enabled only upon a
 developer's request. By default it is disabled. Without argument, it defaults
-to &quot;<a href="#on">on</a>&quot;. If it has been enabled, it may still be forcibly disabled by prefixing
-it with the &quot;no&quot; keyword or by setting it to &quot;off&quot;. It has no impact on
-performance nor stability but will try hard to re-enable core dumps that were
-possibly disabled by file size limitations (ulimit -f), core size limitations
-(ulimit -c), or &quot;dumpability&quot; of a process after changing its UID/GID (such
-as /proc/sys/fs/suid_dumpable on Linux). Core dumps might still be limited by
+to &quot;<a href="#on">on</a>&quot;. If it has been enabled, it may still be forcibly disabled by
+prefixing it with the &quot;no&quot; keyword or by setting it to &quot;off&quot;. It has no
+impact on performance nor stability but will try hard to re-enable core dumps
+that were possibly disabled by file size limitations (ulimit -f), core size
+limitations (ulimit -c), or &quot;dumpability&quot; of a process after changing its
+UID/GID (such as /proc/sys/fs/suid_dumpable on Linux), and disables the
+default automatic chroot when not set. Core dumps might still be limited by
 the current directory's permissions (check what directory the file is started
 from), the chroot directory's permission (it may be needed to temporarily
 disable the chroot directive or to move it to a dedicated writable location),
 or any other system-specific constraint. For example, some Linux flavours are
 notorious for replacing the default core file with a path to an executable
-not even installed on the system (check /proc/sys/kernel/core_pattern). Often,
-simply writing &quot;core&quot;, &quot;core.%p&quot; or &quot;/var/log/core/core.%p&quot; addresses the
-issue. When trying to enable this option waiting for a rare issue to
+not even installed on the system (check /proc/sys/kernel/core_pattern).
+Often, simply writing &quot;core&quot;, &quot;core.%p&quot; or &quot;/var/log/core/core.%p&quot; addresses
+the issue. When trying to enable this option waiting for a rare issue to
 re-appear, it's often a good idea to first try to obtain such a dump by
 issuing, for example, &quot;kill -11&quot; to the &quot;haproxy&quot; process and verify that it
 leaves a core where expected when dying.
@@ -15498,6 +15499,10 @@ to the client are :
   - those with a 'Cache-control: no-cache=&quot;<a href="#set-cookie">set-cookie</a>&quot;' header
   - those with a 'Cache-control: no-cache=&quot;set-cookie,' header
     (allowing other fields after set-cookie)
+  - those which carry neither freshness information (&quot;Cache-control&quot; with a
+    &quot;<a href="#max-age">max-age</a>&quot; or an &quot;s-maxage&quot;, or an &quot;Expires&quot; header) nor a validator (an
+    &quot;ETag&quot; or a &quot;Last-Modified&quot; header), since such a response is not
+    stored by a compliant cache.
 
 If a response doesn't respect these requirements, then it will be blocked
 just as if it was from an &quot;http-response deny&quot; rule, with an &quot;HTTP 502 bad
@@ -26252,7 +26257,9 @@ input byte. It is used to log or transfer hex dumps of some binary input data
 in a way that can be reliably transferred (e.g. an SSL ID can be copied in a
 header).
 </pre><a class="anchor" name="hex2i"></a><a class="anchor" name="7-hex2i"></a><a class="anchor" name="7.3.1-hex2i"></a><a class="anchor" name="hex2i (Using ACLs and fetching samples)"></a><a class="anchor" name="hex2i (Converters)"></a><div class="keyword"><b><a class="anchor" name="hex2i"></a><a href="#7.3.1-hex2i">hex2i</a></b></div><pre class="text">Converts a hex string containing two hex digits per input byte to an
-integer. If the input value cannot be converted, then zero is returned.
+integer. If the input value contains a character which is not a
+hexadecimal digit, the converter fails and returns nothing, which makes it
+possible to differentiate an invalid input from a valid zero.
 </pre><a class="anchor" name="hmac"></a><a class="anchor" name="7-hmac"></a><a class="anchor" name="7.3.1-hmac"></a><a class="anchor" name="hmac (Using ACLs and fetching samples)"></a><a class="anchor" name="hmac (Converters)"></a><div class="keyword"><b><a class="anchor" name="hmac"></a><a href="#7.3.1-hmac">hmac</a></b>(<span style="color: #080">&lt;algorithm&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Converts a binary input sample to a message authentication code with the given
 key. The result is a binary sample. The &lt;algorithm&gt; must be one of the
 registered OpenSSL message digest names (e.g. sha256). The &lt;key&gt; parameter must
@@ -31749,13 +31756,16 @@ is an unsigned integer.
 resulting type is of type binary, with a size of 8 or 20 bytes depending on
 the source address family. This can be used to track per-IP, per-URL counters.
 </pre><a class="anchor" name="url_ip"></a><a class="anchor" name="7-url_ip"></a><a class="anchor" name="7.3.6-url_ip"></a><a class="anchor" name="url_ip (Using ACLs and fetching samples)"></a><a class="anchor" name="url_ip (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_ip"></a><a href="#7.3.6-url_ip">url_ip</a></b> : ip</div><pre class="text">This extracts the IP address from the request's URL when the host part is
-presented as an IP address. Its use is very limited. For instance, a
+presented as an IP address. The fetch fails when the host part is a name,
+as no resolution is performed. Its use is very limited. For instance, a
 monitoring system might use this field as an alternative for the source IP in
 order to test what path a given source address would follow, or to force an
 entry in a table for a given source address. It may be used in combination
 with 'http-request set-dst' to emulate the older 'option http_proxy'.
 </pre><a class="anchor" name="url_port"></a><a class="anchor" name="7-url_port"></a><a class="anchor" name="7.3.6-url_port"></a><a class="anchor" name="url_port (Using ACLs and fetching samples)"></a><a class="anchor" name="url_port (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_port"></a><a href="#7.3.6-url_port">url_port</a></b> : integer</div><pre class="text">This extracts the port part from the request's URL. Note that if the port is
-not specified in the request, port 80 is assumed..
+not specified in the request, port 80 is assumed. As for &quot;<a href="#url_ip">url_ip</a>&quot;, this only
+works when the authority of the URL is presented as an address, the fetch
+fails when it is a host name since no resolution is performed here.
 </pre><a class="anchor" name="urlp"></a><a class="anchor" name="7-urlp"></a><a class="anchor" name="7.3.6-urlp"></a><a class="anchor" name="urlp (Using ACLs and fetching samples)"></a><a class="anchor" name="urlp (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="urlp"></a><a href="#7.3.6-urlp">urlp</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span><span style="color: #008">[,i]</span>]</span>]</span>) : string</div><a class="anchor" name="url_param"></a><a class="anchor" name="7-url_param"></a><a class="anchor" name="7.3.6-url_param"></a><a class="anchor" name="url_param (Using ACLs and fetching samples)"></a><a class="anchor" name="url_param (Fetching HTTP samples (Layer 7))"></a><div class="keyword"><b><a class="anchor" name="url_param"></a><a href="#7.3.6-url_param">url_param</a></b>(<span style="color: #008">[<span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;delim&gt;</span><span style="color: #008">[,i]</span>]</span>]</span>) : string</div><pre class="text">This extracts the first occurrence of the parameter &lt;name&gt; in the query
 string, which begins after either '?' or &lt;delim&gt;, and which ends before '&amp;',
 ';' or &lt;delim&gt;. The parameter name is case-sensitive, unless&quot;i&quot; is added as a
@@ -36148,7 +36158,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev7-96 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev7-184 &ndash; Configuration Manual<br>
 							<small>, 2026/09/18</small>
 						</div>
 					</div>
