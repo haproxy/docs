@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev7-184 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev8-10 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -3732,6 +3732,8 @@
 							
 							<a class="list-group-item" href="#set-var-fmt (Alphabetically sorted actions reference)">set-var-fmt (Alphabetically sorted actions reference)</a>
 							
+							<a class="list-group-item" href="#set-vars-from-map">set-vars-from-map</a>
+							
 							<a class="list-group-item" href="#setcap">setcap</a>
 							
 							<a class="list-group-item" href="#setenv">setenv</a>
@@ -4493,7 +4495,11 @@
 							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
+							<a class="list-group-item" href="#tune.debug-file-directory">tune.debug-file-directory</a>
+							
 							<a class="list-group-item" href="#tune.defaults.purge">tune.defaults.purge</a>
+							
+							<a class="list-group-item" href="#tune.disable-elf-symbols">tune.disable-elf-symbols</a>
 							
 							<a class="list-group-item" href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
 							
@@ -4743,6 +4749,8 @@
 							
 							<a class="list-group-item" href="#tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a>
 							
+							<a class="list-group-item" href="#tune.vars.from-map.max">tune.vars.from-map.max</a>
+							
 							<a class="list-group-item" href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
 							
 							<a class="list-group-item" href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
@@ -4932,7 +4940,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/09/30</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/01</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4943,9 +4951,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev7-184</strong></p>
+							<p><strong>version 3.5-dev8-10</strong></p>
 							<p>
-								2026/09/18<br>
+								2026/10/01<br>
 								
 							</p>
 						</div>
@@ -7982,7 +7990,9 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize.small">tune.bufsize.small</a>
    - <a href="#tune.cli.max-payload-size">tune.cli.max-payload-size</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
+   - <a href="#tune.debug-file-directory">tune.debug-file-directory</a>
    - <a href="#tune.defaults.purge">tune.defaults.purge</a>
+   - <a href="#tune.disable-elf-symbols">tune.disable-elf-symbols</a>
    - <a href="#tune.disable-fast-forward">tune.disable-fast-forward</a>
    - <a href="#tune.disable-zero-copy-forwarding">tune.disable-zero-copy-forwarding</a>
    - <a href="#tune.epoll.mask-events">tune.epoll.mask-events</a>
@@ -8101,6 +8111,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - tune.ssl.ocsp-update.maxdelay (deprecated)
    - tune.ssl.ocsp-update.mindelay (deprecated)
    - <a href="#tune.takeover-other-tg-connections">tune.takeover-other-tg-connections</a>
+   - <a href="#tune.vars.from-map.max">tune.vars.from-map.max</a>
    - <a href="#tune.vars.global-max-size">tune.vars.global-max-size</a>
    - <a href="#tune.vars.proc-max-size">tune.vars.proc-max-size</a>
    - <a href="#tune.vars.reqres-max-size">tune.vars.reqres-max-size</a>
@@ -10055,6 +10066,13 @@ Please consult the management manual for details about the CLI.
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
+</pre><a class="anchor" name="tune.debug-file-directory"></a><a class="anchor" name="3-tune.debug-file-directory"></a><a class="anchor" name="3.2-tune.debug-file-directory"></a><a class="anchor" name="tune.debug-file-directory (Global section)"></a><a class="anchor" name="tune.debug-file-directory (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.debug-file-directory"></a><a href="#3.2-tune.debug-file-directory">tune.debug-file-directory</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Adds &lt;dir&gt; to the list of directories searched for the separate debug files
+of stripped executables and libraries, whose symbols are used to name
+functions in backtraces. Files are looked up by GNU build-id
+(&lt;dir&gt;/.build-id/xx/yyyy.debug) and by .gnu_debuglink name, exactly like gdb
+does with its debug-file-directory setting. &quot;/usr/lib/debug&quot; is always
+searched first. This directive may be used several times to add several
+directories.
 </pre><a class="anchor" name="tune.defaults.purge"></a><a class="anchor" name="3-tune.defaults.purge"></a><a class="anchor" name="3.2-tune.defaults.purge"></a><a class="anchor" name="tune.defaults.purge (Global section)"></a><a class="anchor" name="tune.defaults.purge (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.defaults.purge"></a><a href="#3.2-tune.defaults.purge">tune.defaults.purge</a></b> <span style="color: #008">[<span style="color: #800">{ all | none | <span style="color: #080">&lt;element<span style="color: #008">[,...]</span>&gt;</span> }</span>]</span></div><pre class="text">Define what default instances to purge after configuration parsing.
 
 Default-server instances are kept in memory after parsing as they may be
@@ -10094,7 +10112,14 @@ tune.defaults.purge proxies,servers
 tune.defaults.purge
 tune.defaults.purge proxies
 </code></pre>
-</div><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global section)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
+</div><a class="anchor" name="tune.disable-elf-symbols"></a><a class="anchor" name="3-tune.disable-elf-symbols"></a><a class="anchor" name="3.2-tune.disable-elf-symbols"></a><a class="anchor" name="tune.disable-elf-symbols (Global section)"></a><a class="anchor" name="tune.disable-elf-symbols (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-elf-symbols"></a><a href="#3.2-tune.disable-elf-symbols">tune.disable-elf-symbols</a></b></div><pre class="text">Disables the in-process symbol table used to name functions in backtraces,
+thread dumps and pointer dumps. It is built at startup from the symbols known
+to the dynamic linker for the executable and all loaded libraries, and lets
+more functions be named than dladdr() alone. When disabled, only dladdr() and
+a small built-in list of functions are used, as in older versions. This
+command is not meant for regular use, it will generally only be suggested by
+developers along complex debugging sessions.
+</pre><a class="anchor" name="tune.disable-fast-forward"></a><a class="anchor" name="3-tune.disable-fast-forward"></a><a class="anchor" name="3.2-tune.disable-fast-forward"></a><a class="anchor" name="tune.disable-fast-forward (Global section)"></a><a class="anchor" name="tune.disable-fast-forward (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.disable-fast-forward"></a><a href="#3.2-tune.disable-fast-forward">tune.disable-fast-forward</a></b></div><pre class="text">Disables the data fast-forwarding. It is a mechanism to optimize the data
 forwarding by passing data directly from a side to the other one without
 waking the stream up. Thanks to this directive, it is possible to disable
 this optimization. Note it also disable any kernel tcp splicing but also the
@@ -11326,6 +11351,11 @@ all available space is consumed.
 Notice that exceeding the limits at runtime will not result in an error
 message, but values might be cut off or corrupted. So make sure to accurately
 plan for the amount of space needed to store all your variables.
+</pre><a class="anchor" name="tune.vars.from-map.max"></a><a class="anchor" name="3-tune.vars.from-map.max"></a><a class="anchor" name="3.2-tune.vars.from-map.max"></a><a class="anchor" name="tune.vars.from-map.max (Global section)"></a><a class="anchor" name="tune.vars.from-map.max (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.vars.from-map.max"></a><a href="#3.2-tune.vars.from-map.max">tune.vars.from-map.max</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of map entries that the &quot;<a href="#set-vars-from-map">set-vars-from-map</a>&quot; action
+processes in a single rule evaluation. Once this number of entries has been
+handled, the remaining entries of the map are silently ignored. This bounds
+the amount of work performed by the action and prevents a large map from
+stalling the processing of a stream. The default value is 100.
 </pre><a class="anchor" name="tune.zlib.memlevel"></a><a class="anchor" name="3-tune.zlib.memlevel"></a><a class="anchor" name="3.2-tune.zlib.memlevel"></a><a class="anchor" name="tune.zlib.memlevel (Global section)"></a><a class="anchor" name="tune.zlib.memlevel (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.zlib.memlevel"></a><a href="#3.2-tune.zlib.memlevel">tune.zlib.memlevel</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the memLevel parameter in zlib initialization for each stream. It
 defines how much memory should be allocated for the internal compression
 state. A value of 1 uses minimum memory but is slow and reduces compression
@@ -20423,6 +20453,7 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-set-uri">set-uri</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-var">set-var</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-set-var-fmt">set-var-fmt</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-set-vars-from-map">set-vars-from-map</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-silent-drop">silent-drop</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-strict-mode">strict-mode</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-switch-mode">switch-mode</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -20433,6 +20464,7 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-unset-var">unset-var</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-use-service">use-service</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-wait-for-body">wait-for-body</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td ><a href="#4-wait-for-handshake">wait-for-handshake</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
 <a class="anchor" id="4.4" name="4.4"></a>
@@ -21812,6 +21844,50 @@ only usable ones in rule sets which do not have access to contents such as
 <pre class="prettyprint">
 <code>http-request set-var(req.my_var) req.fhdr(user-agent),lower
 http-request set-var-fmt(txn.from) %[src]:%[src_port]
+</code></pre>
+</div><a class="anchor" name="set-vars-from-map"></a><a class="anchor" name="4-set-vars-from-map"></a><a class="anchor" name="4.4-set-vars-from-map"></a><a class="anchor" name="set-vars-from-map (Proxies)"></a><a class="anchor" name="set-vars-from-map (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-vars-from-map"></a><a href="#4.4-set-vars-from-map">set-vars-from-map</a></b>(<span style="color: #080">&lt;scope&gt;</span>,<span style="color: #080">&lt;map-file&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;type&gt;</span>]</span>)</div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+</table></div>
+<pre class="text">This action loads the two-column map file &lt;map-file&gt; and sets one variable
+per entry. The first column of each entry holds the unqualified variable
+name and the second column holds the value. For every entry, a variable named
+&quot;&lt;scope&gt;.&lt;name&gt;&quot; is set, so all entries share the same &lt;scope&gt;, which must be
+one of &quot;sess&quot;, &quot;txn&quot;, &quot;req&quot;, &quot;res&quot; or &quot;<a href="#check">check</a>&quot;.
+The number of entries processed will never exceed &quot;<a href="#tune.vars.from-map.max">tune.vars.from-map.max</a>&quot;
+(defaults to 100).
+
+The optional &lt;type&gt; argument states how the values must be parsed. It
+defaults to &quot;<a href="#str">str</a>&quot; and accepts:
+  - &quot;<a href="#str">str</a>&quot;:  values are kept as strings, including any embedded space;
+  - &quot;<a href="#int">int</a>&quot;:  values are parsed as strict integers, meaning that an
+            entry with trailing garbage is rejected instead of being silently
+            truncated. This is what makes the resulting variables usable by
+            arithmetic converters such as add() or sub();
+  - &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bool<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bool%20%28Converters%29">Converters</a></li><li><a href="#bool%20%28Fetching%20samples%20from%20internal%20states%29">Fetching samples from internal states</a></li></ul></span>&quot;: values are parsed as booleans. The &quot;true&quot; and &quot;false&quot; spellings
+            are accepted in any case, as are the integers 0 and 1.
+
+An entry whose name is not a valid variable name, i.e. an empty name or a
+name containing characters other than 'a-z', 'A-Z', '0-9', '_' and '.', is
+silently ignored. Likewise, an entry whose value cannot be parsed with the
+requested &lt;type&gt; is silently skipped. In both cases the processing of the
+remaining entries continues normally.
+
+The map file is loaded at configuration parsing time using the same mechanism
+as the &quot;map()&quot; converter, so it may also be shared with map lookups. Reusing
+a file already loaded elsewhere is allowed as long as it was loaded as a
+two-column file too; a one-column file cannot be used. Because the current
+generation of entries is evaluated on every rule execution, the variables
+follow runtime updates performed through the stats socket.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># content of vars.map:</span>
+<span class="comment">#   str1 this is a string</span>
+<span class="comment">#   int1 12</span>
+<span class="comment">#   bool1 true</span>
+http-request set-vars-from-map(txn,/etc/haproxy/vars.map)
+http-request set-vars-from-map(req,/etc/haproxy/limits.map,int)
 </code></pre>
 </div><a class="anchor" name="silent-drop"></a><a class="anchor" name="4-silent-drop"></a><a class="anchor" name="4.4-silent-drop"></a><a class="anchor" name="silent-drop (Proxies)"></a><a class="anchor" name="silent-drop (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="silent-drop"></a><a href="#4.4-silent-drop">silent-drop</a></b> <span style="color: #008">[ rst-ttl <span style="color: #080">&lt;ttl&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
@@ -36158,8 +36234,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev7-184 &ndash; Configuration Manual<br>
-							<small>, 2026/09/18</small>
+							HAProxy 3.5-dev8-10 &ndash; Configuration Manual<br>
+							<small>, 2026/10/01</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
