@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev8-10 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev8-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1891,6 +1891,10 @@
 							
 							<a class="list-group-item" href="#do-log">do-log</a>
 							
+							<a class="list-group-item" href="#do-ocsp-request">do-ocsp-request</a>
+							
+							<a class="list-group-item" href="#do-ocsp-request status-var">do-ocsp-request status-var</a>
+							
 							<a class="list-group-item" href="#do-resolve">do-resolve</a>
 							
 							<a class="list-group-item" href="#docroot">docroot</a>
@@ -2867,6 +2871,8 @@
 							<a class="list-group-item" href="#ocsp-update.mode">ocsp-update.mode</a>
 							
 							<a class="list-group-item" href="#ocsp-update.timeout">ocsp-update.timeout</a>
+							
+							<a class="list-group-item" href="#ocsp_check_err_str">ocsp_check_err_str</a>
 							
 							<a class="list-group-item" href="#odd">odd</a>
 							
@@ -4940,7 +4946,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/01</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4951,7 +4957,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev8-10</strong></p>
+							<p><strong>version 3.5-dev8-29</strong></p>
 							<p>
 								2026/10/01<br>
 								
@@ -20400,8 +20406,9 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-dgram-drop">dgram-drop</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-disable-l7-retry">disable-l7-retry</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-do-log">do-log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-do-resolve">do-resolve</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+<tr><td ><a href="#4-do-ocsp-request">do-ocsp-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td ><a href="#4-do-resolve">do-resolve</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-early-hint">early-hint</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-expect-netscaler-cip">expect-netscaler-cip</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-expect-proxy%20layer4">expect-proxy layer4</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -20421,8 +20428,8 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-sc-inc-gpc1">sc-inc-gpc1</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-sc-set-gpt">sc-set-gpt</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-sc-set-gpt0">sc-set-gpt0</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<tr><td ><a href="#4-send-retry">send-retry</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td ><a href="#4-send-retry">send-retry</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-send-spoe-group">send-spoe-group</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-bandwidth-limit">set-bandwidth-limit</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-bc-mark">set-bc-mark</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -20442,8 +20449,8 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-set-pathq">set-pathq</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-priority-class">set-priority-class</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-priority-offset">set-priority-offset</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-set-query">set-query</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td ><a href="#4-set-query">set-query</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-retries">set-retries</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-src">set-src</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-set-src-port">set-src-port</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -20463,8 +20470,8 @@ The same abbreviations are used in the reference <a href="#4.4">section 4.4</a> 
 <tr><td ><a href="#4-track-sc2">track-sc2</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-unset-var">unset-var</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-use-service">use-service</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
-<tr><td ><a href="#4-wait-for-body">wait-for-body</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <thead><tr><th>keyword</th><th>QUIC: Ini</th><th>TCP: RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP: Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td ><a href="#4-wait-for-body">wait-for-body</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-wait-for-handshake">wait-for-handshake</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
 <a class="anchor" id="4.4" name="4.4"></a>
@@ -20758,7 +20765,86 @@ frontend myfront
   <span class="comment"># in my-dft-prof</span>
   tcp-request content do-log
 </code></pre>
-</div><a class="anchor" name="do-resolve"></a><a class="anchor" name="4-do-resolve"></a><a class="anchor" name="4.4-do-resolve"></a><a class="anchor" name="do-resolve (Proxies)"></a><a class="anchor" name="do-resolve (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="do-resolve"></a><a href="#4.4-do-resolve">do-resolve</a></b>(<span style="color: #080">&lt;var&gt;</span>,<span style="color: #080">&lt;resolvers&gt;</span><span style="color: #008">[,ipv4|ipv6]</span>) <span style="color: #080">&lt;expr&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="do-ocsp-request"></a><a class="anchor" name="4-do-ocsp-request"></a><a class="anchor" name="4.4-do-ocsp-request"></a><a class="anchor" name="do-ocsp-request (Proxies)"></a><a class="anchor" name="do-ocsp-request (Alphabetically sorted actions reference)"></a><a class="anchor" name="do-ocsp-request status-var"></a><a class="anchor" name="4-do-ocsp-request status-var"></a><a class="anchor" name="4.4-do-ocsp-request status-var"></a><a class="anchor" name="do-ocsp-request status-var (Proxies)"></a><a class="anchor" name="do-ocsp-request status-var (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="do-ocsp-request status-var"></a><a href="#4.4-do-ocsp-request%20status-var">do-ocsp-request status-var</a></b> <span style="color: #080">&lt;varname&gt;</span> <span style="color: #008">[ reason-var <span style="color: #080">&lt;varname&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
+<tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
+</table></div>
+<pre class="text">This action performs an OCSP check on the client certificate presented during
+the TLS handshake. It contacts the OCSP responder whose URL is extracted from
+the certificate's Authority Information Access extension, then verifies the
+response against an issuer certificate that must be provided via the
+'issuers-chain-path' option.
+This action delays all other processing of the request until an OCSP status
+is retrieved, an error occurs during the OCSP request/response process or a
+timeout is reached.
+
+If the client certificate has no OCSP URI, or no client certificate was
+presented, the action continues without performing any check and sets the
+'status-var' to &quot;inapplicable&quot;.
+
+This action never denies the request by itself, it only exposes the outcome
+of the check through the &quot;status-var&quot; and &quot;reason-var&quot; variables. It is up
+to the configuration to decide what to do with the result, which is why the
+&quot;status-var&quot; argument is mandatory.
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">status-var &lt;varname&gt;
+          Mandatory. The name of a variable where the OCSP certificate
+          status will be stored as a string. The value will be one of
+          &quot;good&quot;, &quot;revoked&quot;, &quot;unknown&quot;, or &quot;inapplicable&quot; (no client
+          certificate was presented, or it had no OCSP URI). The variable
+          scope must be specified as part of the name (e.g.
+          &quot;txn.ocsp_status&quot;).
+
+reason-var &lt;varname&gt;
+          Optional. The name of a variable where the OCSP check error
+          code will be stored as an integer. The value is 0 when no error
+          occurred (including an &quot;inapplicable&quot; status), and non-zero
+          on failure. The &quot;<a href="#ocsp_check_err_str">ocsp_check_err_str</a>&quot; converter can be
+          used to obtain a human-readable description of this code. The
+          variable scope must be specified as part of the name (e.g.
+          &quot;txn.ocsp_reason&quot;).</pre>
+</div>
+<pre class="text">The following table lists all error codes stored in &quot;reason-var&quot; and the
+corresponding messages returned by &quot;<a href="#ocsp_check_err_str">ocsp_check_err_str</a>&quot;.
+
++----+-----------------------------------------------------------------------+
+| ID | message                                                               |
++----+-----------------------------------------------------------------------+
+| 0  | &quot;&quot;                                                                    |
+| 1  | &quot;OCSP verification failed&quot;                                            |
+| 2  | &quot;OCSP unknown cert&quot;                                                   |
+| 3  | &quot;OCSP response(s) invalid&quot;                                            |
+| 4  | &quot;OCSP response signature verification failure&quot;                        |
+| 5  | &quot;OCSP response not yet valid (contains a date in the future)&quot;         |
+| 6  | &quot;OCSP response has expired&quot;                                           |
+| 7  | &quot;no OCSP response available for certificate or responder unreachable&quot; |
+| 8  | &quot;unable to get issuer certificate&quot;                                    |
+| 9  | &quot;CID mismatch&quot;                                                        |
+| 10 | &quot;Memory allocation failed&quot;                                            |
+| 11 | &quot;Timeout&quot;                                                             |
++----+-----------------------------------------------------------------------+
+
+This action requires HAProxy to be built with SSL support and is only
+available when the OpenSSL library supports OCSP.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Expose the OCSP result of the client certificate in variables</span>
+tcp-request inspect-delay 5s
+tcp-request content do-ocsp-request status-var txn.ocsp_status \
+                                  reason-var txn.ocsp_reason
+
+<span class="comment"># Perform the OCSP check and let the config decide what to do with the</span>
+<span class="comment"># result</span>
+http-request do-ocsp-request status-var txn.ocsp_status \
+                           reason-var txn.ocsp_reason
+http-request deny if { var(txn.ocsp_status) -m str revoked }
+<span class="comment"># Also deny if no check could be performed (no client certificate, or</span>
+<span class="comment"># the certificate had no OCSP URI)</span>
+http-request deny if { var(txn.ocsp_status) -m str inapplicable }
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#wait-for-handshake">wait-for-handshake</a>&quot;, &quot;<a href="#issuers-chain-path">issuers-chain-path</a>&quot;, &quot;<a href="#ocsp_check_err_str">ocsp_check_err_str</a>&quot;</div>
+<a class="anchor" name="do-resolve"></a><a class="anchor" name="4-do-resolve"></a><a class="anchor" name="4.4-do-resolve"></a><a class="anchor" name="do-resolve (Proxies)"></a><a class="anchor" name="do-resolve (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="do-resolve"></a><a href="#4.4-do-resolve">do-resolve</a></b>(<span style="color: #080">&lt;var&gt;</span>,<span style="color: #080">&lt;resolvers&gt;</span><span style="color: #008">[,ipv4|ipv6]</span>) <span style="color: #080">&lt;expr&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -25808,6 +25894,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-nbsrv">nbsrv</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-neg">neg</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-not">not</a></td><td >integer</td><td >boolean</td></tr>
+<tr><td ><a href="#7-ocsp_check_err_str">ocsp_check_err_str</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-odd">odd</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-or">or(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-param">param(name[,delim])</a></td><td >string</td><td >string</td></tr>
@@ -25820,8 +25907,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
 <tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
-<tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rtrim">rtrim(chars)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-sdbm">sdbm([avalanche])</a></td><td >binary</td><td >integer</td></tr>
@@ -25841,8 +25928,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_conn_cnt">table_conn_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_rate">table_glitch_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_gpc">table_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
@@ -25862,8 +25949,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_idle">table_idle([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_out">table_kbytes_out([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_server_id">table_server_id([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25883,8 +25970,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
 <tr><td ><a href="#7-upper">upper</a></td><td >string</td><td >string</td></tr>
@@ -27128,7 +27215,22 @@ constant, simply perform a &quot;neg,add(value)&quot;.
 non-null, otherwise returns TRUE. Used in conjunction with and(), it can be
 used to report true/false for bit testing on input values (e.g. verify the
 absence of a flag).
-</pre><a class="anchor" name="odd"></a><a class="anchor" name="7-odd"></a><a class="anchor" name="7.3.1-odd"></a><a class="anchor" name="odd (Using ACLs and fetching samples)"></a><a class="anchor" name="odd (Converters)"></a><div class="keyword"><b><a class="anchor" name="odd"></a><a href="#7.3.1-odd">odd</a></b></div><pre class="text">Returns a boolean TRUE if the input value of type signed integer is odd
+</pre><a class="anchor" name="ocsp_check_err_str"></a><a class="anchor" name="7-ocsp_check_err_str"></a><a class="anchor" name="7.3.1-ocsp_check_err_str"></a><a class="anchor" name="ocsp_check_err_str (Using ACLs and fetching samples)"></a><a class="anchor" name="ocsp_check_err_str (Converters)"></a><div class="keyword"><b><a class="anchor" name="ocsp_check_err_str"></a><a href="#7.3.1-ocsp_check_err_str">ocsp_check_err_str</a></b></div><pre class="text">Converts an integer OCSP check error code, stored by the &quot;<a href="#do-ocsp-request">do-ocsp-request</a>&quot;
+action in its &quot;reason-var&quot; variable, to a human-readable string (e.g. &quot;OCSP
+response has expired&quot;, &quot;OCSP unknown cert&quot;). Returns an empty string for code
+0 (no error) or an unrecognized code. See &quot;<a href="#do-ocsp-request">do-ocsp-request</a>&quot; for the full list
+of error codes and their corresponding messages. This converter requires
+HAProxy to be built with SSL support and is only available when the OpenSSL
+library supports OCSP.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-request do-ocsp-request status-var txn.ocsp_status \
+                           reason-var txn.ocsp_reason
+http-after-response set-header X-OCSP-Reason \
+  %[var(txn.ocsp_reason),ocsp_check_err_str]
+</code></pre>
+</div><a class="anchor" name="odd"></a><a class="anchor" name="7-odd"></a><a class="anchor" name="7.3.1-odd"></a><a class="anchor" name="odd (Using ACLs and fetching samples)"></a><a class="anchor" name="odd (Converters)"></a><div class="keyword"><b><a class="anchor" name="odd"></a><a href="#7.3.1-odd">odd</a></b></div><pre class="text">Returns a boolean TRUE if the input value of type signed integer is odd
 otherwise returns FALSE. It is functionally equivalent to &quot;and(1),bool&quot;.
 </pre><a class="anchor" name="or"></a><a class="anchor" name="7-or"></a><a class="anchor" name="7.3.1-or"></a><a class="anchor" name="or (Using ACLs and fetching samples)"></a><a class="anchor" name="or (Converters)"></a><div class="keyword"><b><a class="anchor" name="or"></a><a href="#7.3.1-or">or</a></b>(<span style="color: #080">&lt;value&gt;</span>)</div><pre class="text">Performs a bitwise &quot;OR&quot; between &lt;value&gt; and the input value of type signed
 integer, and returns the result as an signed integer. &lt;value&gt; can be a
@@ -36234,7 +36336,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev8-10 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev8-29 &ndash; Configuration Manual<br>
 							<small>, 2026/10/01</small>
 						</div>
 					</div>
