@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev8-37 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev8-57 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1781,6 +1781,8 @@
 							<a class="list-group-item" href="#cur_tarpit_timeout">cur_tarpit_timeout</a>
 							
 							<a class="list-group-item" href="#cur_tunnel_timeout">cur_tunnel_timeout</a>
+							
+							<a class="list-group-item" href="#curve2name">curve2name</a>
 							
 							<a class="list-group-item" href="#curves (Load options)">curves (Load options)</a>
 							
@@ -4952,7 +4954,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4963,7 +4965,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev8-37</strong></p>
+							<p><strong>version 3.5-dev8-57</strong></p>
 							<p>
 								2026/10/01<br>
 								
@@ -7194,6 +7196,18 @@ log-format &quot;${HAPROXY_TCP_LOG_FMT} lr=%[last_rule_file]:%[last_rule_line]&q
     migration if resources (such as maps or certificates) are in a path
     containing the branch number.
 
+The following variables may be read by haproxy to adjust its behavior:
+
+  * HAPROXY_FORCE_DUMPABLE: this allows to preset the equivalent of what the
+    global &quot;<a href="#set-dumpable">set-dumpable</a>&quot; directive does, without having to touch the
+    configuration. This is essentially used with reg tests. The recognized
+    values are:
+       - libs: a copy of all dependencies is loaded into memory so as to be
+         preserved in core dumps
+       - off: does not enable dumpable (default)
+       - any other value (e.g. &quot;<a href="#on">on</a>&quot;, &quot;1&quot;, empty): enables set-dumpable, i.e.
+         will disable automatic chroot and try hard to enable core dumps.
+
 In addition, some pseudo-variables are internally resolved and may be used as
 regular variables. Pseudo-variables always start with a dot ('.'), and are the
 only ones where the dot is permitted. The current list of pseudo-variables is:
@@ -9206,7 +9220,12 @@ Often, simply writing &quot;core&quot;, &quot;core.%p&quot; or &quot;/var/log/co
 the issue. When trying to enable this option waiting for a rare issue to
 re-appear, it's often a good idea to first try to obtain such a dump by
 issuing, for example, &quot;kill -11&quot; to the &quot;haproxy&quot; process and verify that it
-leaves a core where expected when dying.
+leaves a core where expected when dying. Note that when debugging certain
+setups, it is not necessarily convenient to modify the configuration nor the
+command line to enable core dumps. This is for example the case with
+generated configurations and regression testing. In this case, it is possible
+to preset the set-dumpable argument in the HAPROXY_FORCE_DUMPABLE environment
+variable, which accepts the same values.
 </pre><a class="anchor" name="set-var"></a><a class="anchor" name="3-set-var"></a><a class="anchor" name="3.1-set-var"></a><a class="anchor" name="set-var (Global section)"></a><a class="anchor" name="set-var (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-var"></a><a href="#3.1-set-var">set-var</a></b> <span style="color: #080">&lt;var-name&gt;</span> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">Sets the process-wide variable '&lt;var-name&gt;' to the result of the evaluation
 of the sample expression &lt;expr&gt;. The variable '&lt;var-name&gt;' may only be a
 process-wide variable (using the 'proc.' prefix). It works exactly like the
@@ -25841,6 +25860,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-cpl">cpl</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32">crc32([avalanche])</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-crc32c">crc32c([avalanche])</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-curve2name">curve2name(format)</a></td><td >any</td><td >string</td></tr>
 <tr><td ><a href="#7-cut_crlf">cut_crlf</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-da-csv-conv">da-csv-conv(prop[,prop*])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-date">date</a></td><td >string</td><td >integer</td></tr>
@@ -25857,8 +25877,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-even">even</a></td><td >integer</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fe_exists">fe_exists</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-field">field(index,delimiters[,count])</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-has_ctl">has_ctl([mask])</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
@@ -25878,8 +25898,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ip.src">ip.src</a></td><td >binary</td><td >address</td></tr>
 <tr><td ><a href="#7-ip.tos">ip.tos</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ip.ttl">ip.ttl</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-json_query">json_query(json_path[,output_type])</a></td><td >string</td><td >_outtype_</td></tr>
@@ -25899,8 +25919,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-map_match">map_match(map_name[,default_value])</a></td><td >_match_</td><td >string</td></tr>
 <tr><td ><a href="#7-map_match_output">map_match_output(map_name[,default_value])</a></td><td >_match_</td><td >_output_</td></tr>
 <tr><td ><a href="#7-mod">mod(value)</a></td><td >integer</td><td >integer</td></tr>
-<tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-ms_utime">ms_utime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
@@ -25920,8 +25940,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-rfc7239_field">rfc7239_field(field)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
-<tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
 <tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rtrim">rtrim(chars)</a></td><td >string</td><td >string</td></tr>
@@ -25941,8 +25961,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_clr_gpc1">table_clr_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cnt">table_conn_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_rate">table_glitch_rate([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25962,8 +25982,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_http_req_rate">table_http_req_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_idle">table_idle([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_out">table_kbytes_out([table])</a></td><td >any</td><td >integer</td></tr>
@@ -25983,8 +26003,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.seq">tcp.seq</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
 <tr><td ><a href="#7-unset-var">unset-var(var)</a></td><td >any</td><td >same</td></tr>
@@ -26251,7 +26271,32 @@ It is provided for compatibility with other software which want a CRC32C to be
 computed on some input keys. It is slower than the other algorithms and it must
 not be used for security purposes as a 32-bit hash is trivial to break. See
 also &quot;<a href="#djb2">djb2</a>&quot;, &quot;<a href="#sdbm">sdbm</a>&quot;, &quot;<a href="#wt6">wt6</a>&quot;, &quot;<a href="#crc32">crc32</a>&quot; and the &quot;<a href="#hash-type">hash-type</a>&quot; directive.
-</pre><a class="anchor" name="cut_crlf"></a><a class="anchor" name="7-cut_crlf"></a><a class="anchor" name="7.3.1-cut_crlf"></a><a class="anchor" name="cut_crlf (Using ACLs and fetching samples)"></a><a class="anchor" name="cut_crlf (Converters)"></a><div class="keyword"><b><a class="anchor" name="cut_crlf"></a><a href="#7.3.1-cut_crlf">cut_crlf</a></b></div><pre class="text">Cuts the string representation of the input sample on the first carriage
+</pre><a class="anchor" name="curve2name"></a><a class="anchor" name="7-curve2name"></a><a class="anchor" name="7.3.1-curve2name"></a><a class="anchor" name="curve2name (Using ACLs and fetching samples)"></a><a class="anchor" name="curve2name (Converters)"></a><div class="keyword"><b><a class="anchor" name="curve2name"></a><a href="#7.3.1-curve2name">curve2name</a></b>(<span style="color: #080">&lt;format&gt;</span>)</div><pre class="text">Converts a curve name or an integer TLS Supported Group identifier to the
+naming convention selected by &lt;format&gt;. The following formats are supported:
+
+  - iana: registered TLS group name, such as &quot;secp256r1&quot; or &quot;x25519&quot;.
+    Names are listed in the IANA TLS Supported Groups registry:
+    https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-8
+  - ansi: ANSI X9.62 curve name, such as &quot;prime256v1&quot;.
+  - nist: NIST curve name, such as &quot;P-256&quot;.
+
+The format is mandatory and case-insensitive. Input names are matched
+case-insensitively against the known names and compatibility aliases. This
+converter requires SSL support.
+
+The original input is returned unchanged if it is unknown or the curve has
+no name in the requested convention. Integer inputs are returned as decimal
+strings in these cases. For example,
+&quot;prime256v1,curve2name(iana)&quot; produces &quot;secp256r1&quot;, and
+&quot;secp256r1,curve2name(nist)&quot; produces &quot;P-256&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>http-response set-header X-Curve %[ssl_fc_curve,curve2name(iana)]
+<span class="comment"># Convert an extracted two-byte TLS group identifier (0x0017 = 23).</span>
+http-response set-header X-Group %[bin(0017),hex,hex2i,curve2name(iana)]
+</code></pre>
+</div><a class="anchor" name="cut_crlf"></a><a class="anchor" name="7-cut_crlf"></a><a class="anchor" name="7.3.1-cut_crlf"></a><a class="anchor" name="cut_crlf (Using ACLs and fetching samples)"></a><a class="anchor" name="cut_crlf (Converters)"></a><div class="keyword"><b><a class="anchor" name="cut_crlf"></a><a href="#7.3.1-cut_crlf">cut_crlf</a></b></div><pre class="text">Cuts the string representation of the input sample on the first carriage
 return ('\r') or newline ('\n') character found. Only the string length is
 updated.
 </pre><a class="anchor" name="da-csv-conv"></a><a class="anchor" name="7-da-csv-conv"></a><a class="anchor" name="7.3.1-da-csv-conv"></a><a class="anchor" name="da-csv-conv (Using ACLs and fetching samples)"></a><a class="anchor" name="da-csv-conv (Converters)"></a><div class="keyword"><b><a class="anchor" name="da-csv-conv"></a><a href="#7.3.1-da-csv-conv">da-csv-conv</a></b>(<span style="color: #080">&lt;prop&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;prop&gt;</span>*]</span>)</div><pre class="text">Asks the DeviceAtlas converter to identify the User Agent string passed on
@@ -36371,7 +36416,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev8-37 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev8-57 &ndash; Configuration Manual<br>
 							<small>, 2026/10/01</small>
 						</div>
 					</div>
