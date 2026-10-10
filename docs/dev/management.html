@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev8-71 - Management Guide</title>
+		<title>HAProxy version 3.5-dev8-197 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -581,6 +581,14 @@
 							
 							<a class="list-group-item" href="#show fd">show fd</a>
 							
+							<a class="list-group-item" href="#show filter">show filter</a>
+							
+							<a class="list-group-item" href="#show filter classes">show filter classes</a>
+							
+							<a class="list-group-item" href="#show filter instance">show filter instance</a>
+							
+							<a class="list-group-item" href="#show filter instances">show filter instances</a>
+							
 							<a class="list-group-item" href="#show info">show info</a>
 							
 							<a class="list-group-item" href="#show libs">show libs</a>
@@ -698,7 +706,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -709,7 +717,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev8-71</strong></p>
+							<p><strong>version 3.5-dev8-197</strong></p>
 							<p>
 								<br>
 								
@@ -3928,6 +3936,32 @@ this output must not be parsed by tools designed to be durable. Some internal
 structure states may look suspicious to the function listing them, in this
 case the output line will be suffixed with an exclamation mark ('!'). This
 may help find a starting point when trying to diagnose an incident.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show filter"></a><a class="anchor" name="9-show filter"></a><a class="anchor" name="9.3-show filter"></a><a class="anchor" name="show filter (Statistics and monitoring)"></a><a class="anchor" name="show filter (Unix Socket commands)"></a><a class="anchor" name="show filter classes"></a><a class="anchor" name="9-show filter classes"></a><a class="anchor" name="9.3-show filter classes"></a><a class="anchor" name="show filter classes (Statistics and monitoring)"></a><a class="anchor" name="show filter classes (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show filter classes"></a><a href="#9.3-show%20filter%20classes">show filter classes</a></b> <span style="color: #008">[global|request|response]</span></div><pre class="text">Dump the list of the registered filter classes in the requested evaluation
+order. Without argument, the global, request and response orders are dumped,
+one per line. The classes are separated by &quot;&gt;&quot; characters and are dumped in
+their evaluation order. The global order is used for the side-independent
+filter operations (configuration checks, initialization and destruction),
+while the request and response orders define the order in which the filters
+are evaluated on the corresponding channel. See <a href="#9">section 9</a> of the
+configuration manual for details about the filter classes and their
+declaration modes.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show filter"></a><a class="anchor" name="9-show filter"></a><a class="anchor" name="9.3-show filter"></a><a class="anchor" name="show filter (Statistics and monitoring)"></a><a class="anchor" name="show filter (Unix Socket commands)"></a><a class="anchor" name="show filter instance"></a><a class="anchor" name="9-show filter instance"></a><a class="anchor" name="9.3-show filter instance"></a><a class="anchor" name="show filter instance (Statistics and monitoring)"></a><a class="anchor" name="show filter instance (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show filter instance"></a><a href="#9.3-show%20filter%20instance">show filter instance</a></b> <span style="color: #080">&lt;px&gt;</span> <span style="color: #080">&lt;class&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;id&gt;</span>]</span></div><pre class="text">Dump the configuration of the filter instance &lt;class&gt;[/&lt;id&gt;] attached to the
+proxy &lt;px&gt;, which may be a regular proxy or a named defaults section. The
+output reports the filter class, the instance id, its state (enabled or
+disabled, implicit or inherited), the sides its class is placed on, the
+location of its declaration and its raw arguments. An error is reported if
+the instance does not exist, or if no id is given while several instances of
+the class exist in the proxy. Only filter instances are reported; filters
+declared with the legacy &quot;filter&quot; directive are not listed.
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show filter"></a><a class="anchor" name="9-show filter"></a><a class="anchor" name="9.3-show filter"></a><a class="anchor" name="show filter (Statistics and monitoring)"></a><a class="anchor" name="show filter (Unix Socket commands)"></a><a class="anchor" name="show filter instances"></a><a class="anchor" name="9-show filter instances"></a><a class="anchor" name="9.3-show filter instances"></a><a class="anchor" name="show filter instances (Statistics and monitoring)"></a><a class="anchor" name="show filter instances (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show filter instances"></a><a href="#9.3-show%20filter%20instances">show filter instances</a></b> <span style="color: #080">&lt;px&gt;</span> <span style="color: #008">[global|request|response]</span></div><pre class="text">Dump the filter instances attached to the proxy &lt;px&gt; in the requested
+evaluation order. Without argument, one line is dumped for each of the
+global, request and response orders. The instances are separated by &quot;&gt;&quot;
+characters and the &quot;&lt;none&gt;&quot; string is printed for an empty order. Only
+filter instances are reported: in legacy mode, the filters declared with the
+&quot;filter&quot; directive are not listed. Only filters implicitly declared by other
+directives, which are mirrored as filter instances, may then appear. See
+<a href="#9">section 9</a> of the configuration manual for details about the filters
+declaration modes.
 </pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show info"></a><a class="anchor" name="9-show info"></a><a class="anchor" name="9.3-show info"></a><a class="anchor" name="show info (Statistics and monitoring)"></a><a class="anchor" name="show info (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show info"></a><a href="#9.3-show%20info">show info</a></b> <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[float]</span></div><pre class="text">Dump info about haproxy status on current process. If &quot;typed&quot; is passed as an
 optional argument, field numbers, names and types are emitted as well so that
 external monitoring products can easily retrieve, possibly aggregate, then
@@ -6005,7 +6039,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev8-71 &ndash; Management Guide<br>
+							HAProxy 3.5-dev8-197 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>

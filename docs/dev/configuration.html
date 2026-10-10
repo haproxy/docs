@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev8-71 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev8-197 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1050,7 +1050,7 @@
 					<td><small>9.3.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.3">Stream Processing Offload Engine (SPOE)</a>
+							<a href="#9.3">Decompression</a>
 							</div>
 					<td>
 				</tr>
@@ -1061,7 +1061,7 @@
 					<td><small>9.4.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.4">Cache</a>
+							<a href="#9.4">Stream Processing Offload Engine (SPOE)</a>
 							</div>
 					<td>
 				</tr>
@@ -1072,7 +1072,7 @@
 					<td><small>9.5.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.5">fcgi-app</a>
+							<a href="#9.5">Cache</a>
 							</div>
 					<td>
 				</tr>
@@ -1083,7 +1083,7 @@
 					<td><small>9.6.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.6">OpenTracing</a>
+							<a href="#9.6">fcgi-app</a>
 							</div>
 					<td>
 				</tr>
@@ -1094,7 +1094,18 @@
 					<td><small>9.7.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.7">Bandwidth limitation</a>
+							<a href="#9.7">OpenTracing</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>9.8.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#9.8">Bandwidth limitation</a>
 							</div>
 					<td>
 				</tr>
@@ -2099,6 +2110,8 @@
 							
 							<a class="list-group-item" href="#filter (HTTP compression)">filter (HTTP compression)</a>
 							
+							<a class="list-group-item" href="#filter (Decompression)">filter (Decompression)</a>
+							
 							<a class="list-group-item" href="#filter (Stream Processing Offload Engine (SPOE))">filter (Stream Processing Offload Engine (SPOE))</a>
 							
 							<a class="list-group-item" href="#filter (Cache)">filter (Cache)</a>
@@ -2128,6 +2141,56 @@
 							<a class="list-group-item" href="#filter spoe">filter spoe</a>
 							
 							<a class="list-group-item" href="#filter trace">filter trace</a>
+							
+							<a class="list-group-item" href="#filter-config (Alphabetically sorted keywords reference)">filter-config (Alphabetically sorted keywords reference)</a>
+							
+							<a class="list-group-item" href="#filter-config (Trace)">filter-config (Trace)</a>
+							
+							<a class="list-group-item" href="#filter-config (HTTP compression)">filter-config (HTTP compression)</a>
+							
+							<a class="list-group-item" href="#filter-config (Decompression)">filter-config (Decompression)</a>
+							
+							<a class="list-group-item" href="#filter-config (Stream Processing Offload Engine (SPOE))">filter-config (Stream Processing Offload Engine (SPOE))</a>
+							
+							<a class="list-group-item" href="#filter-config (Cache)">filter-config (Cache)</a>
+							
+							<a class="list-group-item" href="#filter-config (fcgi-app)">filter-config (fcgi-app)</a>
+							
+							<a class="list-group-item" href="#filter-config (Bandwidth limitation)">filter-config (Bandwidth limitation)</a>
+							
+							<a class="list-group-item" href="#filter-config bwlim-out">filter-config bwlim-out</a>
+							
+							<a class="list-group-item" href="#filter-config bwlim-out id">filter-config bwlim-out id</a>
+							
+							<a class="list-group-item" href="#filter-config cache-store">filter-config cache-store</a>
+							
+							<a class="list-group-item" href="#filter-config cache-store id">filter-config cache-store id</a>
+							
+							<a class="list-group-item" href="#filter-config decomp-req">filter-config decomp-req</a>
+							
+							<a class="list-group-item" href="#filter-config decomp-res">filter-config decomp-res</a>
+							
+							<a class="list-group-item" href="#filter-config fcgi">filter-config fcgi</a>
+							
+							<a class="list-group-item" href="#filter-config fcgi id">filter-config fcgi id</a>
+							
+							<a class="list-group-item" href="#filter-config http-comp-req">filter-config http-comp-req</a>
+							
+							<a class="list-group-item" href="#filter-config http-comp-res">filter-config http-comp-res</a>
+							
+							<a class="list-group-item" href="#filter-config spoe">filter-config spoe</a>
+							
+							<a class="list-group-item" href="#filter-config spoe id">filter-config spoe id</a>
+							
+							<a class="list-group-item" href="#filter-config trace">filter-config trace</a>
+							
+							<a class="list-group-item" href="#filter-config trace id">filter-config trace id</a>
+							
+							<a class="list-group-item" href="#filter-disable">filter-disable</a>
+							
+							<a class="list-group-item" href="#filter-enable">filter-enable</a>
+							
+							<a class="list-group-item" href="#filter-sequence">filter-sequence</a>
 							
 							<a class="list-group-item" href="#fix_is_valid">fix_is_valid</a>
 							
@@ -4954,7 +5017,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/08</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4965,7 +5028,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev8-71</strong></p>
+							<p><strong>version 3.5-dev8-197</strong></p>
 							<p>
 								2026/10/01<br>
 								
@@ -6000,7 +6063,7 @@ Note to documentation contributors :
 					<td><small>9.3.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.3">Stream Processing Offload Engine (SPOE)</a>
+							<a href="#9.3">Decompression</a>
 							</div>
 					<td>
 				</tr>
@@ -6011,7 +6074,7 @@ Note to documentation contributors :
 					<td><small>9.4.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.4">Cache</a>
+							<a href="#9.4">Stream Processing Offload Engine (SPOE)</a>
 							</div>
 					<td>
 				</tr>
@@ -6022,7 +6085,7 @@ Note to documentation contributors :
 					<td><small>9.5.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.5">fcgi-app</a>
+							<a href="#9.5">Cache</a>
 							</div>
 					<td>
 				</tr>
@@ -6033,7 +6096,7 @@ Note to documentation contributors :
 					<td><small>9.6.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.6">OpenTracing</a>
+							<a href="#9.6">fcgi-app</a>
 							</div>
 					<td>
 				</tr>
@@ -6044,7 +6107,18 @@ Note to documentation contributors :
 					<td><small>9.7.</small></td>
 					<td>
 							<div class="tab">
-							<a href="#9.7">Bandwidth limitation</a>
+							<a href="#9.7">OpenTracing</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>9.8.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#9.8">Bandwidth limitation</a>
 							</div>
 					<td>
 				</tr>
@@ -7902,6 +7976,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#expose-deprecated-directives">expose-deprecated-directives</a>
    - <a href="#expose-experimental-directives">expose-experimental-directives</a>
    - <a href="#external-check">external-check</a>
+   - filter-api
    - <a href="#fd-hard-limit">fd-hard-limit</a>
    - <a href="#gid">gid</a>
    - <a href="#grace">grace</a>
@@ -8658,19 +8733,38 @@ to benefit from the improvements made to that feature. In order to know if
 this directive is still needed, it's easy: if it is enabled without being
 used by any such feature, a warning will be emitted suggesting to turn it
 off. So without any warning, it means it's still needed.
-</pre><a class="anchor" name="external-check"></a><a class="anchor" name="3-external-check"></a><a class="anchor" name="3.1-external-check"></a><a class="anchor" name="external-check (Global section)"></a><a class="anchor" name="external-check (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="external-check"></a><a href="#3.1-external-check">external-check</a></b> <span style="color: #008">[preserve-env]</span></div><pre class="text">Allows the use of an external agent to perform health checks. This is
-disabled by default as a security precaution, and even when enabled, checks
-may still fail unless &quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot; is enabled as well. If the
-program launched makes use of a setuid executable (it should really not),
-you may also need to set &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot; in the global section.
-By default, the checks start with a clean environment which only contains
-variables defined in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">external-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#external-check%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#external-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; command in the backend section. It
-may sometimes be desirable to preserve the environment though, for example
-when complex scripts retrieve their extra paths or information there. This
-can be done by appending the &quot;preserve-env&quot; keyword. In this case however it
-is strongly advised not to run a setuid nor as a privileged user, as this
-exposes the check program to potential attacks. See &quot;<a href="#option%20external-check">option external-check</a>&quot;,
-and &quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot;, and &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot; for extra details.
+</pre><a class="anchor" name="external-check"></a><a class="anchor" name="3-external-check"></a><a class="anchor" name="3.1-external-check"></a><a class="anchor" name="external-check (Global section)"></a><a class="anchor" name="external-check (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="external-check"></a><a href="#3.1-external-check">external-check</a></b> <span style="color: #008">[preserve-env]</span></div><pre class="text">  Allows the use of an external agent to perform health checks. This is
+  disabled by default as a security precaution, and even when enabled, checks
+  may still fail unless &quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot; is enabled as well. If the
+  program launched makes use of a setuid executable (it should really not),
+  you may also need to set &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot; in the global section.
+  By default, the checks start with a clean environment which only contains
+  variables defined in the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">external-check<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#external-check%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#external-check%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; command in the backend section. It
+  may sometimes be desirable to preserve the environment though, for example
+  when complex scripts retrieve their extra paths or information there. This
+  can be done by appending the &quot;preserve-env&quot; keyword. In this case however it
+  is strongly advised not to run a setuid nor as a privileged user, as this
+  exposes the check program to potential attacks. See &quot;<a href="#option%20external-check">option external-check</a>&quot;,
+  and &quot;<a href="#insecure-fork-wanted">insecure-fork-wanted</a>&quot;, and &quot;<a href="#insecure-setuid-wanted">insecure-setuid-wanted</a>&quot; for extra details.
+
+filter-api default | downgrade-to-legacy
+  Set the default filter API to use for a proxy when no filter directives are
+  used (&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot; or
+  &quot;<a href="#filter-sequence">filter-sequence</a>&quot;).
+
+  This option is unset by default. So proxies without explicit filter
+  directives rely on the filter instance api. By setting it to
+  &quot;downgrade-to-legacy&quot;, it is possible to force proxies to use the legacy
+  filter API by default. It could be useful the time to convert outdated
+  filters still relying on the legacy API only. Indeed, such filters will be
+  silently ignored except if the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive is used to declare them.
+  This option can be set to &quot;default&quot; to restore the default behavior.
+
+  Note that it should be a temporary workaround. There is no warranty that all
+  filters will remain compatible with the legacy API. In that case, they will
+  be silently ignored if the filter API is downgraded.
+
+  See <a href="#9">section 9</a>.
 </pre><a class="anchor" name="fd-hard-limit"></a><a class="anchor" name="3-fd-hard-limit"></a><a class="anchor" name="3.1-fd-hard-limit"></a><a class="anchor" name="fd-hard-limit (Global section)"></a><a class="anchor" name="fd-hard-limit (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="fd-hard-limit"></a><a href="#3.1-fd-hard-limit">fd-hard-limit</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets an upper bound to the maximum number of file descriptors that the
 process will use, regardless of system limits. While &quot;<a href="#ulimit-n">ulimit-n</a>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">maxconn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#maxconn%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#maxconn%20%28Performance%20tuning%29">Performance tuning</a></li><li><a href="#maxconn%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#maxconn%20%28Bind%20options%29">Bind options</a></li><li><a href="#maxconn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 may be used to enforce a value, when they are not set, the process will be
@@ -11725,10 +11819,14 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-force-persist">force-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-force-be-switch">force-be-switch</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-filter">filter</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-filter-config">filter-config</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-filter-disable">filter-disable</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<tr><td ><a href="#4-filter-enable">filter-enable</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td ><a href="#4-filter-sequence">filter-sequence</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-fullconn">fullconn</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-guid">guid</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-balance-factor">hash-balance-factor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-hash-preserve-affinity">hash-preserve-affinity</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-hash-type">hash-type</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-after-response">http-after-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11745,11 +11843,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-http-response">http-response</a></td><td class="pagination-centered"><img src="../css/checkmark.png" alt="X (!)" title="yes (!)" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-reuse">http-reuse</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-http-send-name-header">http-send-name-header</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-id">id</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-ignore-persist">ignore-persist</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-load-server-state-from-file">load-server-state-from-file</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-log"><span class="pull-right"><span>(*)</span></span>log</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-log-format">log-format</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-format-sd">log-format-sd</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-log-tag">log-tag</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11766,11 +11864,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20clitcpka"><span class="pull-right"><span>(*)</span></span>option clitcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20contstats"><span class="pull-right"><span>(*)</span></span>option contstats</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20disable-h2-upgrade"><span class="pull-right"><span>(*)</span></span>option disable-h2-upgrade</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20dontlog-normal"><span class="pull-right"><span>(*)</span></span>option dontlog-normal</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20dontlognull"><span class="pull-right"><span>(*)</span></span>option dontlognull</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20external-check">option external-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20forwardfor">option forwardfor</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20forwarded"><span class="pull-right"><span>(*)</span></span>option forwarded</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-client"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-client</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20h1-case-adjust-bogus-server"><span class="pull-right"><span>(*)</span></span>option h1-case-adjust-bogus-server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11787,11 +11885,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20httpchk">option httpchk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20httpclose"><span class="pull-right"><span>(*)</span></span>option httpclose</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20httplog">option httplog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20httpslog">option httpslog</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20idle-close-on-response"><span class="pull-right"><span>(*)</span></span>option idle-close-on-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20independent-streams"><span class="pull-right"><span>(*)</span></span>option independent-streams</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ldap-check">option ldap-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20log-health-checks"><span class="pull-right"><span>(*)</span></span>option log-health-checks</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20log-separate-errors"><span class="pull-right"><span>(*)</span></span>option log-separate-errors</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20logasap"><span class="pull-right"><span>(*)</span></span>option logasap</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
@@ -11808,11 +11906,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-option%20splice-auto"><span class="pull-right"><span>(*)</span></span>option splice-auto</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20splice-request"><span class="pull-right"><span>(*)</span></span>option splice-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20splice-response"><span class="pull-right"><span>(*)</span></span>option splice-response</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20spop-check">option spop-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20srvtcpka"><span class="pull-right"><span>(*)</span></span>option srvtcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20ssl-hello-chk">option ssl-hello-chk</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcp-check">option tcp-check</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-option%20tcp-smart-accept"><span class="pull-right"><span>(*)</span></span>option tcp-smart-accept</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-option%20tcp-smart-connect"><span class="pull-right"><span>(*)</span></span>option tcp-smart-connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-option%20tcpka">option tcpka</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11829,11 +11927,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-server-template">server-template</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-source">source</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-cnt">srvtcpka-cnt</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-srvtcpka-idle">srvtcpka-idle</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-srvtcpka-intvl">srvtcpka-intvl</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20admin">stats admin</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20auth">stats auth</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-stats%20enable">stats enable</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20hide-version">stats hide-version</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stats%20http-request">stats http-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11850,11 +11948,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-stick%20store-request">stick store-request</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick%20store-response">stick store-response</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-stick-table">stick-table</a></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-check%20comment">tcp-check comment</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20connect">tcp-check connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20expect">tcp-check expect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send">tcp-check send</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-tcp-check%20send-lf">tcp-check send-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary">tcp-check send-binary</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -11871,11 +11969,11 @@ Note: Some dangerous and not recommended directives are intentionnaly not
 <tr><td ><a href="#4-timeout%20client-fin">timeout client-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20client-hs">timeout client-hs</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 <tr><td ><a href="#4-timeout%20connect">timeout connect</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
+<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-timeout%20http-keep-alive">timeout http-keep-alive</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20http-request">timeout http-request</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20queue">timeout queue</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20server">timeout server</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
-<thead><tr><th>keyword</th><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
 <tr><td ><a href="#4-timeout%20server-fin">timeout server-fin</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tarpit">timeout tarpit</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
 <tr><td ><a href="#4-timeout%20tunnel">timeout tunnel</a></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -13079,7 +13177,7 @@ decompression mode-res always
            a hostile agent could trivially amplify its traffic 1000x by
            sending it compressed.
 
-See also &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, &quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;, and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;.
+See also &quot;<a href="#decompression%20algo-req">decompression algo-req</a>&quot;, &quot;<a href="#decompression%20algo-res">decompression algo-res</a>&quot;, and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="default-server"></a><a class="anchor" name="4-default-server"></a><a class="anchor" name="4.2-default-server"></a><a class="anchor" name="default-server (Proxies)"></a><a class="anchor" name="default-server (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="default-server"></a><a href="#4.2-default-server">default-server</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[from <span style="color: #080">&lt;origin&gt;</span>]</span> <span style="color: #008">[param*]</span></div><pre class="text">Changes a set of options reusable for future server declarations.
 
 May be used in the following contexts: tcp, http
@@ -13607,10 +13705,17 @@ May be used in the following contexts: tcp, http
 </div>
 <pre class="text">Multiple occurrences of the filter line can be used for the same proxy. The
 same filter can be referenced many times if needed.
+
+Using this directive selects the legacy filter declaration mode for the
+proxy. It must not be used together with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;,
+&quot;<a href="#filter-disable">filter-disable</a>&quot; or &quot;<a href="#filter-sequence">filter-sequence</a>&quot; in the same proxy, including when
+these directives are inherited from a defaults section. Conversely, this
+directive is rejected in a proxy inheriting filter instances from its
+defaults section. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; for the new declaration mode.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>listen
+<code>listen li
   bind *:80
 
   filter trace name BEFORE-HTTP-COMP
@@ -13622,7 +13727,192 @@ same filter can be referenced many times if needed.
 
   server srv1 192.168.0.1:80
 </code></pre>
-</div><div class="page-header"><b>See also :</b> <a href="#9">section 9</a>.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot;, &quot;<a href="#filter-sequence">filter-sequence</a>&quot; and <a href="#9">section 9</a>.</div>
+<a class="anchor" name="filter-config"></a><a class="anchor" name="4-filter-config"></a><a class="anchor" name="4.2-filter-config"></a><a class="anchor" name="filter-config (Proxies)"></a><a class="anchor" name="filter-config (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter-config"></a><a href="#4.2-filter-config">filter-config</a></b> <span style="color: #080">&lt;class&gt;</span> <span style="color: #008">[id <span style="color: #080">&lt;id&gt;</span>]</span> <span style="color: #008">[enabled]</span> <span style="color: #008">[<span style="color: #080">&lt;parameters&gt;</span>]</span></div><pre class="text">Declare a filter instance of the class &lt;class&gt; attached to the proxy.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-info pagination-centered">yes(!)<br /><img src="../css/checkmark.png" alt="yes(!)" title="yes(!)" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;class&gt;      is the filter class name. The supported classes are listed
+             in <a href="#9">section 9</a>.
+
+&lt;id&gt;        declares the instance identifier. It is mandatory for filter
+             classes allowing several instances in the same proxy (the id
+             must be unique for its class) and optional otherwise. Ids
+             may only contain alphanumeric characters, '.', '_' and '-'.
+             In the other &quot;filter-*&quot; directives and in the CLI, an
+             instance is referred to as &lt;class&gt;/&lt;id&gt;.
+
+enabled      activates the filter instance. Without it, the instance is
+             declared but disabled and will not be instantiated on
+             streams. It can be activated later with the &quot;<a href="#filter-enable">filter-enable</a>&quot;
+             directive.
+
+&lt;parameters&gt; are the parameters accepted by the filter class, as
+             documented in <a href="#9">section 9</a>.</pre>
+</div>
+<pre class="text">The optional &quot;id &lt;id&gt;&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">enabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#enabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#enabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#enabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; tokens must come first, in this order,
+before the filter parameters.
+
+This directive is only available from named defaults sections, not anonymous
+ones.
+
+A filter instance is the configuration of a filter in the proxy, shared by
+all the streams on which it is instantiated. The directive may be used
+several times for the same proxy, including to declare several instances of
+the same class when the class allows it.
+
+The instances declared in a defaults section are inherited by the proxies
+using this section. A local instance with the same class and id replaces the
+inherited one. Likewise, an explicit instance replaces an instance
+implicitly declared by another directive, for instance by the &quot;<a href="#compression">compression</a>&quot;
+options or the &quot;<a href="#cache-store">cache-store</a>&quot; rules. The evaluation order of the instances
+may be inspected with the &quot;show filter instances&quot; CLI command and adjusted
+with the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive.
+
+Using this directive selects the new filter declaration mode for the proxy.
+It must not be used together with the legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive in the same
+proxy. A defaults section defining filter instances may not be inherited by
+a &quot;listen&quot; section, nor by both frontends and backends.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>listen li
+  bind *:80
+
+  filter-config trace id BEFORE-HTTP-COMP enabled
+  filter-config http-comp-req enabled
+  filter-config http-comp-res enabled
+  filter-config trace id AFTER-HTTP-COMP enabled
+  filter-sequence response trace/AFTER-HTTP-COMP:after(http-comp-res)
+
+  compression algo gzip
+  compression offload
+
+  server srv1 192.168.0.1:80
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot;, &quot;<a href="#filter-sequence">filter-sequence</a>&quot; and <a href="#9">section 9</a>.</div>
+<a class="anchor" name="filter-disable"></a><a class="anchor" name="4-filter-disable"></a><a class="anchor" name="4.2-filter-disable"></a><a class="anchor" name="filter-disable (Proxies)"></a><a class="anchor" name="filter-disable (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter-disable"></a><a href="#4.2-filter-disable">filter-disable</a></b> <span style="color: #080">&lt;class&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;id&gt;</span>]</span> <span style="color: #008">[<span style="color: #080">&lt;class&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;id&gt;</span>]</span> ...]</span></div><pre class="text">Disable the filter instances matching the arguments.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-info pagination-centered">yes(!)<br /><img src="../css/checkmark.png" alt="yes(!)" title="yes(!)" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;class&gt;[/&lt;id&gt;]  references a filter instance. Without an id, all the
+                instances of the filter class are concerned.</pre>
+</div>
+<pre class="text">This directive is only available from named defaults sections, not anonymous
+ones.
+
+All the referenced instances must exist at the end of the configuration
+parsing, otherwise an error is reported. An instance may be declared after
+the directive enabling or disabling it. When several &quot;<a href="#filter-enable">filter-enable</a>&quot; and
+&quot;<a href="#filter-disable">filter-disable</a>&quot; directives reference the same instance, the last one wins.
+
+A disabled instance is not instantiated on streams. Its state is reported by
+the &quot;show filter instance&quot; CLI command. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; and <a href="#9">section 9</a>.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code>defaults def-fe
+  filter-config trace id TR1 enabled
+  filter-config trace id TR2 enabled
+
+frontend fe from def-fe
+  bind *:80
+  filter-disable trace/TR2
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;</div>
+<a class="anchor" name="filter-enable"></a><a class="anchor" name="4-filter-enable"></a><a class="anchor" name="4.2-filter-enable"></a><a class="anchor" name="filter-enable (Proxies)"></a><a class="anchor" name="filter-enable (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter-enable"></a><a href="#4.2-filter-enable">filter-enable</a></b> <span style="color: #080">&lt;class&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;id&gt;</span>]</span> <span style="color: #008">[<span style="color: #080">&lt;class&gt;</span><span style="color: #008">[/<span style="color: #080">&lt;id&gt;</span>]</span> ...]</span></div><pre class="text">Enable the filter instances matching the arguments.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-info pagination-centered">yes(!)<br /><img src="../css/checkmark.png" alt="yes(!)" title="yes(!)" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;class&gt;[/&lt;id&gt;]  references a filter instance. Without an id, all the
+                instances of the filter class are concerned.</pre>
+</div>
+<pre class="text">This directive is only available from named defaults sections, not anonymous
+ones.
+
+All the referenced instances must exist at the end of the configuration
+parsing, otherwise an error is reported. An instance may be declared after
+the directive enabling or disabling it. When several &quot;<a href="#filter-enable">filter-enable</a>&quot; and
+&quot;<a href="#filter-disable">filter-disable</a>&quot; directives reference the same instance, the last one wins.
+
+An enabled instance is instantiated on the streams of the proxy, unless the
+filter itself declines it or it is not supported, for instance a filter
+requiring HTX on a TCP stream. See &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; and <a href="#9">section 9</a>.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>defaults def-fe
+  filter-config trace id TR1
+  filter-config trace id TR2
+
+frontend fe from def-fe
+  bind *:80
+  filter-enable trace
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot;</div>
+<a class="anchor" name="filter-sequence"></a><a class="anchor" name="4-filter-sequence"></a><a class="anchor" name="4.2-filter-sequence"></a><a class="anchor" name="filter-sequence (Proxies)"></a><a class="anchor" name="filter-sequence (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="filter-sequence"></a><a href="#4.2-filter-sequence">filter-sequence</a></b> <span style="color: #800">{global|request|response}</span> <span style="color: #080">&lt;instance&gt;</span>:before(<span style="color: #080">&lt;entity&gt;</span>) <span style="color: #008">[<span style="color: #080">&lt;instance&gt;</span>:after(<span style="color: #080">&lt;entity&gt;</span>) ...]</span></div><pre class="text">Change the evaluation order of the filter instances of the proxy.
+
+May be used in the following contexts: tcp, http
+</pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>defaults</th><th>frontend</th><th>listen</th><th>backend</th></tr></thead>
+<tr><td class="alert-info pagination-centered">yes(!)<br /><img src="../css/checkmark.png" alt="yes(!)" title="yes(!)" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td><td class="alert-success pagination-centered">yes<br /><img src="../css/check.png" alt="yes" title="yes" /></td></tr>
+</table></div>
+<div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">{global|request|response}  is the order to update. The request and
+                           response orders define the evaluation order of
+                           the filters on the corresponding channel and
+                           may be changed independently. The global order
+                           only drives the side-independent operations
+                           (configuration checks, initialization and
+                           destruction); changing it does not change the
+                           request or the response order.
+
+&lt;instance&gt;                 is the filter instance to move, as
+                           &lt;class&gt;[/&lt;id&gt;]. An id must be given if the
+                           class of the instance allows several instances
+                           in the proxy.
+
+before(&lt;entity&gt;)           moves the instance before the entity.
+after(&lt;entity&gt;)            moves the instance after the entity.
+
+&lt;entity&gt;                   is a filter class or a filter instance, as
+                           &lt;class&gt;[/&lt;id&gt;]. When a class is referenced, all
+                           its instances are concerned. The reference
+                           class must be placed on the selected side and
+                           the referenced instance, if any, must exist.</pre>
+</div>
+<pre class="text">This directive is only available from named defaults sections, not anonymous
+ones.
+
+By default, the instances are evaluated following the order of their class
+on the selected side (see <a href="#9">section 9</a>). This directive changes this order.
+Several sequences may be given in the same directive and the directive may
+be used several times; the sequences are applied in configuration order. A
+sequence moving an instance that does not exist is ignored. Sequences
+creating a loop are rejected.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>listen
+  bind *:80
+  filter-config trace id T1 enabled
+  filter-config trace id T2 enabled
+  filter-sequence response trace/T2:before(trace/T1)
+  server srv1 192.168.0.1:80
+</code></pre>
+</div><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot; and <a href="#9">section 9</a>.</div>
 <a class="anchor" name="fullconn"></a><a class="anchor" name="4-fullconn"></a><a class="anchor" name="4.2-fullconn"></a><a class="anchor" name="fullconn (Proxies)"></a><a class="anchor" name="fullconn (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="fullconn"></a><a href="#4.2-fullconn">fullconn</a></b> <span style="color: #080">&lt;conns&gt;</span></div><pre class="text">Specify at what backend load the servers will reach their maxconn
 
 May be used in the following contexts: tcp, http
@@ -21532,7 +21822,7 @@ the HTTP payload transfer is limited. The HTTP headers are not considered.
 <code>http-request set-bandwidth-limit global-limit
 http-request set-bandwidth-limit my-limit limit 1m period 10s
 </code></pre>
-</div><pre class="text">See <a href="#9.7">section 9.7</a> about bandwidth limitation filter setup.
+</div><pre class="text">See <a href="#9.8">section 9.8</a> about bandwidth limitation filter setup.
 </pre><a class="anchor" name="set-bc-mark"></a><a class="anchor" name="4-set-bc-mark"></a><a class="anchor" name="4.4-set-bc-mark"></a><a class="anchor" name="set-bc-mark (Proxies)"></a><a class="anchor" name="set-bc-mark (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="set-bc-mark"></a><a href="#4.4-set-bc-mark">set-bc-mark</a></b> <span style="color: #800">{ <span style="color: #080">&lt;mark&gt;</span> | <span style="color: #080">&lt;expr&gt;</span> }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -34247,16 +34537,64 @@ reading. Their sole purpose is to explain how to decipher them.
 <div class="page-header"><h1 id="chapter-9" data-target="9"><small><a class="small" href="#9">9.</a></small> Supported filters</h1>
 </div><div><pre class="text">Here are listed officially supported filters with the list of parameters they
 accept. Depending on compile options, some of these filters might be
-unavailable. The list of available filters is reported in haproxy -vv.
-</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;</div>
+unavailable. The list of available filter classes is reported in haproxy -vv.
+
+A filter is declared on a proxy in one of two modes:
+
+  * The legacy mode relies on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive. Each &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; line
+    declares an independent filter configuration and the declaration order
+    defines the evaluation order. This mode is kept for backward
+    compatibility.
+
+  * The new mode relies on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive. Each declaration is
+    a filter instance, attached to its filter class. The evaluation order is
+    defined by the class placement and can be adjusted per proxy with the
+    &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive. The instances are disabled by default and
+    are activated with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">enabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#enabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#enabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#enabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; token or the &quot;<a href="#filter-enable">filter-enable</a>&quot; directive.
+
+The mode is selected by the configuration itself: as soon as a legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;
+directive is used in a proxy, the proxy works in legacy mode and the
+&quot;filter-*&quot; directives must not be used in the same proxy, including when they
+are inherited from a defaults section. Conversely, a legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive
+is rejected in a proxy inheriting filter instances from its defaults
+section. Filters implicitly declared by other directives (for instance by the
+&quot;<a href="#compression">compression</a>&quot; options, the &quot;<a href="#cache-store">cache-store</a>&quot; rules or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;) do not
+select a mode: a proxy using only such filters works in the new mode.
+The &quot;filter-api&quot; global option changes this last rule: when it is set to
+&quot;downgrade-to-legacy&quot;, the proxies using only implicitly declared filters work
+in the legacy mode, so the filters not supporting the new mode keep
+working. Explicit filter declarations always win, in both modes.
+
+All the filters documented below support the new mode. The &lt;class&gt; name to use
+with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; may differ from the legacy filter name; it is given in
+the documentation of each filter. The &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; syntax is documented
+below the legacy one.
+
+The Lua filters are not documented here: they are registered by Lua scripts
+with core.register_filter() and are declared with the &quot;lua&quot; filter class.
+See the Lua API documentation for their declaration syntax.
+
+The filter instances of a proxy may be inspected with the &quot;show filter
+classes&quot; and &quot;show filter instances&quot; CLI commands (see the management
+manual).
+</pre><div class="page-header"><b>See also :</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot; and &quot;<a href="#filter-sequence">filter-sequence</a>&quot;.</div>
 </div>
 <a class="anchor" id="9.1" name="9.1"></a>
 <h2 id="chapter-9.1" data-target="9.1"><small><a class="small" href="#9.1">9.1.</a></small> Trace</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.1-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Trace)"></a><a class="anchor" name="filter trace"></a><a class="anchor" name="9-filter trace"></a><a class="anchor" name="9.1-filter trace"></a><a class="anchor" name="filter trace (Supported filters)"></a><a class="anchor" name="filter trace (Trace)"></a><div class="keyword"><b><a class="anchor" name="filter trace"></a><a href="#9.1-filter%20trace">filter trace</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[random-forwarding]</span> <span style="color: #008">[max-fwd <span style="color: #080">&lt;max&gt;</span>]</span> <span style="color: #008">[hexdump]</span></div><div class="separator">
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.1-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Trace)"></a><a class="anchor" name="filter trace"></a><a class="anchor" name="9-filter trace"></a><a class="anchor" name="9.1-filter trace"></a><a class="anchor" name="filter trace (Supported filters)"></a><a class="anchor" name="filter trace (Trace)"></a><div class="keyword"><b><a class="anchor" name="filter trace"></a><a href="#9.1-filter%20trace">filter trace</a></b> <span style="color: #008">[name <span style="color: #080">&lt;name&gt;</span>]</span> <span style="color: #008">[quiet]</span> <span style="color: #008">[random-parsing]</span> <span style="color: #008">[random-forwarding]</span>
+             <span style="color: #008">[max-fwd <span style="color: #080">&lt;max&gt;</span>]</span> <span style="color: #008">[hexdump]</span></div><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.1-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Trace)"></a><a class="anchor" name="filter-config trace"></a><a class="anchor" name="9-filter-config trace"></a><a class="anchor" name="9.1-filter-config trace"></a><a class="anchor" name="filter-config trace (Supported filters)"></a><a class="anchor" name="filter-config trace (Trace)"></a><a class="anchor" name="filter-config trace id"></a><a class="anchor" name="9-filter-config trace id"></a><a class="anchor" name="9.1-filter-config trace id"></a><a class="anchor" name="filter-config trace id (Supported filters)"></a><a class="anchor" name="filter-config trace id (Trace)"></a><div class="keyword"><b><a class="anchor" name="filter-config trace id"></a><a href="#9.1-filter-config%20trace%20id">filter-config trace id</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[enabled]</span> <span style="color: #008">[quiet]</span> <span style="color: #008">[random-parsing]</span>
+             <span style="color: #008">[random-forwarding]</span> <span style="color: #008">[max-fwd <span style="color: #080">&lt;max&gt;</span>]</span> <span style="color: #008">[hexdump]</span></div><div class="separator">
 <span class="label label-info">Arguments:</span><pre class="prettyprint arguments">&lt;name&gt;               is an arbitrary name that will be reported in
                      messages. If no name is provided, &quot;TRACE&quot; is used.
+                     With &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, the instance id is mandatory
+                     and is used as the name.
 
 &lt;quiet&gt;              inhibits trace messages.
+
+&lt;random-parsing&gt;     enables the random parsing of data. By default, this
+                     filter parses all available data. With this
+                     parameter, it only parses a random amount of the
+                     available data.
 
 &lt;random-forwarding&gt;  enables the random forwarding of parsed data. By
                      default, this filter forwards all previously parsed
@@ -34271,13 +34609,16 @@ unavailable. The list of available filters is reported in haproxy -vv.
 &lt;hexdump&gt;             dumps all forwarded data to the server and the client.</pre>
 </div>
 <pre class="text">This filter can be used as a base to develop new filters. It defines all
-callbacks and print a message on the standard error stream (stderr) with useful
-information for all of them. It may be useful to debug the activity of other
-filters or, quite simply, HAProxy's activity.
+callbacks and prints a message on the standard error stream (stderr) with
+useful information for all of them. It may be useful to debug the activity
+of other filters or, quite simply, HAProxy's activity.
 
-Using &lt;random-parsing&gt; and/or &lt;random-forwarding&gt; parameters is a good way to
-tests the behavior of a filter that parses data exchanged between a client and
-a server by adding some latencies in the processing.
+Using &lt;random-parsing&gt; and/or &lt;random-forwarding&gt; parameters is a good way
+to test the behavior of a filter that parses data exchanged between a
+client and a server by adding some latencies in the processing.
+
+With the new mode, the filter class is &quot;<a href="#trace">trace</a>&quot;. Several instances may be
+declared in the same proxy, each one with its own id.
 </pre></div>
 <a class="anchor" id="9.2" name="9.2"></a>
 <h2 id="chapter-9.2" data-target="9.2"><small><a class="small" href="#9.2">9.2.</a></small> HTTP compression</h2>
@@ -34288,6 +34629,18 @@ a server by adding some latencies in the processing.
 </pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter compression"></a><a class="anchor" name="9-filter compression"></a><a class="anchor" name="9.2-filter compression"></a><a class="anchor" name="filter compression (Supported filters)"></a><a class="anchor" name="filter compression (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter compression"></a><a href="#9.2-filter%20compression">filter compression</a></b> <span class="label label-warning">(deprecated)</span></div><pre class="text">Alias for backward compatibility purposes that is functionally equivalent to
 enabling both &quot;comp-req&quot; and &quot;comp-res&quot; filter. &quot;<a href="#compression">compression</a>&quot; keyword must be
 used to configure appropriate behavior:
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.2-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (HTTP compression)"></a><a class="anchor" name="filter-config http-comp-req"></a><a class="anchor" name="9-filter-config http-comp-req"></a><a class="anchor" name="9.2-filter-config http-comp-req"></a><a class="anchor" name="filter-config http-comp-req (Supported filters)"></a><a class="anchor" name="filter-config http-comp-req (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter-config http-comp-req"></a><a href="#9.2-filter-config%20http-comp-req">filter-config http-comp-req</a></b></div><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.2-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (HTTP compression)"></a><a class="anchor" name="filter-config http-comp-res"></a><a class="anchor" name="9-filter-config http-comp-res"></a><a class="anchor" name="9.2-filter-config http-comp-res"></a><a class="anchor" name="filter-config http-comp-res (Supported filters)"></a><a class="anchor" name="filter-config http-comp-res (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter-config http-comp-res"></a><a href="#9.2-filter-config%20http-comp-res">filter-config http-comp-res</a></b></div><pre class="text">  Explicitly declare the request or the response compression filter with the
+  new mode. These classes do not accept an id. Like their legacy counterparts
+  &quot;<a href="#filter%20comp-req">filter comp-req</a>&quot; and &quot;<a href="#filter%20comp-res">filter comp-res</a>&quot;, they are configured with the
+  &quot;<a href="#compression">compression</a>&quot; directives. Declaring &quot;<a href="#filter-config%20http-comp-req">filter-config http-comp-req</a>&quot;
+  implicitly sets &quot;compression direction request&quot; and declaring
+  &quot;<a href="#filter-config%20http-comp-res">filter-config http-comp-res</a>&quot; implicitly sets &quot;compression direction
+  response&quot;.
+
+  Note that the legacy mode rules above about implicit declarations do not
+  apply in the new mode. The evaluation order of these filters relative to the
+  other ones is defined by the class placement and can be adjusted with the
+  &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive.
 
 The HTTP compression has been moved in a filter in HAProxy 1.7. &quot;<a href="#compression">compression</a>&quot;
 keyword must still be used to enable and configure the HTTP compression. And
@@ -34298,23 +34651,33 @@ explicitly use a filter line to enable the HTTP compression when at least one
 filter other than the cache or the fcgi-app is used for the same
 listener/frontend/backend. This is important to know the filters evaluation
 order.
-</pre><div class="page-header"><b>See also :</b> &quot;<a href="#compression">compression</a>&quot;, <a href="#9.4">section 9.4</a> about the cache filter and <a href="#9.5">section 9.5</a> about the fcgi-app filter.</div>
-<a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter decomp-req"></a><a class="anchor" name="9-filter decomp-req"></a><a class="anchor" name="9.2-filter decomp-req"></a><a class="anchor" name="filter decomp-req (Supported filters)"></a><a class="anchor" name="filter decomp-req (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-req"></a><a href="#9.2-filter%20decomp-req">filter decomp-req</a></b></div><pre class="text">Enables filter that explicitly tries to decompress requests according to
+</pre><div class="page-header"><b>See also :</b> &quot;<a href="#compression">compression</a>&quot;, <a href="#9.5">section 9.5</a> about the cache filter and <a href="#9.6">section 9.6</a> about the fcgi-app filter.</div>
+</div>
+<a class="anchor" id="9.3" name="9.3"></a>
+<h2 id="chapter-9.3" data-target="9.3"><small><a class="small" href="#9.3">9.3.</a></small> Decompression</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.3-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Decompression)"></a><a class="anchor" name="filter decomp-req"></a><a class="anchor" name="9-filter decomp-req"></a><a class="anchor" name="9.3-filter decomp-req"></a><a class="anchor" name="filter decomp-req (Supported filters)"></a><a class="anchor" name="filter decomp-req (Decompression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-req"></a><a href="#9.3-filter%20decomp-req">filter decomp-req</a></b></div><pre class="text">Enables filter that explicitly tries to decompress requests according to
 &quot;<a href="#decompression">decompression</a>&quot; settings (setting algo is mandatory). It is only allowed on
 proxies with frontend capability. It supports both TCP and HTTP compressed
 streams. The filter runs during the stream forwarding phase, thus it will not
-be possible to perform TCP/HTTP rules on the decompressed stream (ie: req.body
-won't work).
-</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.2-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (HTTP compression)"></a><a class="anchor" name="filter decomp-res"></a><a class="anchor" name="9-filter decomp-res"></a><a class="anchor" name="9.2-filter decomp-res"></a><a class="anchor" name="filter decomp-res (Supported filters)"></a><a class="anchor" name="filter decomp-res (HTTP compression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-res"></a><a href="#9.2-filter%20decomp-res">filter decomp-res</a></b></div><pre class="text">Enables filter that explicitly tries to decompress responses according to
+be possible to perform TCP/HTTP rules on the decompressed stream (ie:
+req.body won't work).
+</pre><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.3-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Decompression)"></a><a class="anchor" name="filter decomp-res"></a><a class="anchor" name="9-filter decomp-res"></a><a class="anchor" name="9.3-filter decomp-res"></a><a class="anchor" name="filter decomp-res (Supported filters)"></a><a class="anchor" name="filter decomp-res (Decompression)"></a><div class="keyword"><b><a class="anchor" name="filter decomp-res"></a><a href="#9.3-filter%20decomp-res">filter decomp-res</a></b></div><pre class="text">Enables filter that explicitly tries to decompress responses according to
 &quot;<a href="#decompression">decompression</a>&quot; settings (setting algo is mandatory). It is only allowed on
 proxies with backend capability. It supports both TCP and HTTP compressed
 streams. The filter runs during the stream forwarding phase, thus it will not
-be possible to perform TCP/HTTP rules on the decompressed stream (ie: res.body
-won't work).
+be possible to perform TCP/HTTP rules on the decompressed stream (ie:
+res.body won't work).
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.3-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Decompression)"></a><a class="anchor" name="filter-config decomp-req"></a><a class="anchor" name="9-filter-config decomp-req"></a><a class="anchor" name="9.3-filter-config decomp-req"></a><a class="anchor" name="filter-config decomp-req (Supported filters)"></a><a class="anchor" name="filter-config decomp-req (Decompression)"></a><div class="keyword"><b><a class="anchor" name="filter-config decomp-req"></a><a href="#9.3-filter-config%20decomp-req">filter-config decomp-req</a></b></div><pre class="text">Explicitly declare the request decompression filter with the new mode. This
+class does not accept an id. Like its legacy counterparts &quot;filter
+decomp-req&quot;, it is configured with the &quot;<a href="#decompression">decompression</a>&quot; directives.
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.3-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Decompression)"></a><a class="anchor" name="filter-config decomp-res"></a><a class="anchor" name="9-filter-config decomp-res"></a><a class="anchor" name="9.3-filter-config decomp-res"></a><a class="anchor" name="filter-config decomp-res (Supported filters)"></a><a class="anchor" name="filter-config decomp-res (Decompression)"></a><div class="keyword"><b><a class="anchor" name="filter-config decomp-res"></a><a href="#9.3-filter-config%20decomp-res">filter-config decomp-res</a></b></div><pre class="text">Explicitly declare the response decompression filter with the new mode. This
+class does not accept an id. Like its legacy counterparts &quot;filter
+decomp-res&quot;, it is configured with the &quot;<a href="#decompression">decompression</a>&quot; directives.
 </pre></div>
-<a class="anchor" id="9.3" name="9.3"></a>
-<h2 id="chapter-9.3" data-target="9.3"><small><a class="small" href="#9.3">9.3.</a></small> Stream Processing Offload Engine (SPOE)</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.3-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Stream Processing Offload Engine (SPOE))"></a><a class="anchor" name="filter spoe"></a><a class="anchor" name="9-filter spoe"></a><a class="anchor" name="9.3-filter spoe"></a><a class="anchor" name="filter spoe (Supported filters)"></a><a class="anchor" name="filter spoe (Stream Processing Offload Engine (SPOE))"></a><div class="keyword"><b><a class="anchor" name="filter spoe"></a><a href="#9.3-filter%20spoe">filter spoe</a></b> <span style="color: #008">[engine <span style="color: #080">&lt;name&gt;</span>]</span> config <span style="color: #080">&lt;file&gt;</span></div><div class="separator">
+<a class="anchor" id="9.4" name="9.4"></a>
+<h2 id="chapter-9.4" data-target="9.4"><small><a class="small" href="#9.4">9.4.</a></small> Stream Processing Offload Engine (SPOE)</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.4-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Stream Processing Offload Engine (SPOE))"></a><a class="anchor" name="filter spoe"></a><a class="anchor" name="9-filter spoe"></a><a class="anchor" name="9.4-filter spoe"></a><a class="anchor" name="filter spoe (Supported filters)"></a><a class="anchor" name="filter spoe (Stream Processing Offload Engine (SPOE))"></a><div class="keyword"><b><a class="anchor" name="filter spoe"></a><a href="#9.4-filter%20spoe">filter spoe</a></b> <span style="color: #008">[engine <span style="color: #080">&lt;name&gt;</span>]</span> config <span style="color: #080">&lt;file&gt;</span></div><pre class="text">Enables the SPOE filter
+</pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is the engine name that will be used to find the right scope in
             the configuration file. If not provided, all the file will be
             parsed.
@@ -34323,7 +34686,13 @@ won't work).
             contain configuration of several engines. In this case, each
             part must be placed in its own scope.</pre>
 </div>
-<pre class="text">The Stream Processing Offload Engine (SPOE) is a filter communicating with
+<a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.4-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Stream Processing Offload Engine (SPOE))"></a><a class="anchor" name="filter-config spoe"></a><a class="anchor" name="9-filter-config spoe"></a><a class="anchor" name="9.4-filter-config spoe"></a><a class="anchor" name="filter-config spoe (Supported filters)"></a><a class="anchor" name="filter-config spoe (Stream Processing Offload Engine (SPOE))"></a><a class="anchor" name="filter-config spoe id"></a><a class="anchor" name="9-filter-config spoe id"></a><a class="anchor" name="9.4-filter-config spoe id"></a><a class="anchor" name="filter-config spoe id (Supported filters)"></a><a class="anchor" name="filter-config spoe id (Stream Processing Offload Engine (SPOE))"></a><div class="keyword"><b><a class="anchor" name="filter-config spoe id"></a><a href="#9.4-filter-config%20spoe%20id">filter-config spoe id</a></b> <span style="color: #080">&lt;id&gt;</span> <span style="color: #008">[enabled]</span> <span style="color: #008">[engine <span style="color: #080">&lt;name&gt;</span>]</span> config <span style="color: #080">&lt;file&gt;</span></div><pre class="text">  Declare a SPOE filter with the new mode. The instance id is mandatory, as
+  the class allows several instances in the same proxy, but it is only used by
+  the &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot; and &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directives.
+  The &quot;engine&quot; and &quot;config&quot; parameters are the same as for the legacy
+  syntax.
+
+The Stream Processing Offload Engine (SPOE) is a filter communicating with
 external components. It allows the offload of some specifics processing on the
 streams in tiered applications. These external components and information
 exchanged with them are configured in dedicated files, for the main part. It
@@ -34341,49 +34710,68 @@ details.
 For all information about the SPOE configuration and the SPOP specification, see
 &quot;doc/SPOE.txt&quot;.
 </pre></div>
-<a class="anchor" id="9.4" name="9.4"></a>
-<h2 id="chapter-9.4" data-target="9.4"><small><a class="small" href="#9.4">9.4.</a></small> Cache</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.4-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Cache)"></a><a class="anchor" name="filter cache"></a><a class="anchor" name="9-filter cache"></a><a class="anchor" name="9.4-filter cache"></a><a class="anchor" name="filter cache (Supported filters)"></a><a class="anchor" name="filter cache (Cache)"></a><div class="keyword"><b><a class="anchor" name="filter cache"></a><a href="#9.4-filter%20cache">filter cache</a></b> <span style="color: #080">&lt;name&gt;</span></div><div class="separator">
+<a class="anchor" id="9.5" name="9.5"></a>
+<h2 id="chapter-9.5" data-target="9.5"><small><a class="small" href="#9.5">9.5.</a></small> Cache</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.5-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Cache)"></a><a class="anchor" name="filter cache"></a><a class="anchor" name="9-filter cache"></a><a class="anchor" name="9.5-filter cache"></a><a class="anchor" name="filter cache (Supported filters)"></a><a class="anchor" name="filter cache (Cache)"></a><div class="keyword"><b><a class="anchor" name="filter cache"></a><a href="#9.5-filter%20cache">filter cache</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Enables the cache filter
+</pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is name of the cache section this filter will use.</pre>
 </div>
 <pre class="text">The cache uses a filter to store cacheable responses. The HTTP rules
 &quot;<a href="#cache-store">cache-store</a>&quot; and &quot;<a href="#cache-use">cache-use</a>&quot; must be used to define how and when to use a
 cache. By default the corresponding filter is implicitly defined. And when no
 other filters than fcgi-app or compression are used, it is enough. In such
-case, the compression filter is always evaluated after the cache filter. But it
-is mandatory to explicitly use a filter line to use a cache when at least one
-filter other than the compression or the fcgi-app is used for the same
+case, the compression filter is always evaluated after the cache filter. But
+it is mandatory to explicitly use a filter line to use a cache when at least
+one filter other than the compression or the fcgi-app is used for the same
 listener/frontend/backend. This is important to know the filters evaluation
 order.
-</pre><div class="page-header"><b>See also :</b> <a href="#9.2">section 9.2</a> about the compression filter, <a href="#9.5">section 9.5</a> about the fcgi-app filter and <a href="#6">section 6</a> about cache.</div>
-</div>
-<a class="anchor" id="9.5" name="9.5"></a>
-<h2 id="chapter-9.5" data-target="9.5"><small><a class="small" href="#9.5">9.5.</a></small> Fcgi-app</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.5-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (fcgi-app)"></a><a class="anchor" name="filter fcgi-app"></a><a class="anchor" name="9-filter fcgi-app"></a><a class="anchor" name="9.5-filter fcgi-app"></a><a class="anchor" name="filter fcgi-app (Supported filters)"></a><a class="anchor" name="filter fcgi-app (fcgi-app)"></a><div class="keyword"><b><a class="anchor" name="filter fcgi-app"></a><a href="#9.5-filter%20fcgi-app">filter fcgi-app</a></b> <span style="color: #080">&lt;name&gt;</span></div><div class="separator">
-<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is name of the fcgi-app section this filter will use.</pre>
-</div>
-<pre class="text">The FastCGI application uses a filter to evaluate all custom parameters on the
-request path, and to process the headers on the response path. the &lt;name&gt; must
-reference an existing fcgi-app section. The directive &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; should be
-used to define the application to use. By default the corresponding filter is
-implicitly defined. And when no other filters than cache or compression are
-used, it is enough. But it is mandatory to explicitly use a filter line to a
-fcgi-app when at least one filter other than the compression or the cache is
-used for the same backend. This is important to know the filters evaluation
-order.
-</pre><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, <a href="#9.2">section 9.2</a> about the compression filter, <a href="#9.4">section 9.4</a> about the cache filter and <a href="#10">section 10</a> about FastCGI application.</div>
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.5-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Cache)"></a><a class="anchor" name="filter-config cache-store"></a><a class="anchor" name="9-filter-config cache-store"></a><a class="anchor" name="9.5-filter-config cache-store"></a><a class="anchor" name="filter-config cache-store (Supported filters)"></a><a class="anchor" name="filter-config cache-store (Cache)"></a><a class="anchor" name="filter-config cache-store id"></a><a class="anchor" name="9-filter-config cache-store id"></a><a class="anchor" name="9.5-filter-config cache-store id"></a><a class="anchor" name="filter-config cache-store id (Supported filters)"></a><a class="anchor" name="filter-config cache-store id (Cache)"></a><div class="keyword"><b><a class="anchor" name="filter-config cache-store id"></a><a href="#9.5-filter-config%20cache-store%20id">filter-config cache-store id</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[enabled]</span></div><pre class="text">Declare a cache filter with the new mode. The instance id is mandatory and
+is the name of the cache section, like the &lt;name&gt; parameter of the legacy
+syntax. The rules above about implicit declarations only apply to the legacy
+mode. In the new mode, a cache filter instance is implicitly created by the
+&quot;<a href="#cache-store">cache-store</a>&quot; and &quot;<a href="#cache-use">cache-use</a>&quot; rules when needed, and its evaluation order
+can be adjusted with the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive.
+</pre><div class="page-header"><b>See also :</b> <a href="#9.2">section 9.2</a> about the compression filter, <a href="#9.6">section 9.6</a> about the fcgi-app filter and <a href="#6">section 6</a> about cache.</div>
 </div>
 <a class="anchor" id="9.6" name="9.6"></a>
-<h2 id="chapter-9.6" data-target="9.6"><small><a class="small" href="#9.6">9.6.</a></small> OpenTracing</h2>
+<h2 id="chapter-9.6" data-target="9.6"><small><a class="small" href="#9.6">9.6.</a></small> Fcgi-app</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.6-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (fcgi-app)"></a><a class="anchor" name="filter fcgi-app"></a><a class="anchor" name="9-filter fcgi-app"></a><a class="anchor" name="9.6-filter fcgi-app"></a><a class="anchor" name="filter fcgi-app (Supported filters)"></a><a class="anchor" name="filter fcgi-app (fcgi-app)"></a><div class="keyword"><b><a class="anchor" name="filter fcgi-app"></a><a href="#9.6-filter%20fcgi-app">filter fcgi-app</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Enables the fcgi filter
+</pre><div class="separator">
+<span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is name of the fcgi-app section this filter will use.</pre>
+</div>
+<pre class="text">The FastCGI application uses a filter to evaluate all custom parameters on
+the request path, and to process the headers on the response path. the &lt;name&gt;
+must reference an existing fcgi-app section. The directive &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+should be used to define the application to use. By default the corresponding
+filter is implicitly defined. And when no other filters than cache or
+compression are used, it is enough. But it is mandatory to explicitly use a
+filter line to a fcgi-app when at least one filter other than the compression
+or the cache is used for the same backend. This is important to know the
+filters evaluation order.
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.6-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (fcgi-app)"></a><a class="anchor" name="filter-config fcgi"></a><a class="anchor" name="9-filter-config fcgi"></a><a class="anchor" name="9.6-filter-config fcgi"></a><a class="anchor" name="filter-config fcgi (Supported filters)"></a><a class="anchor" name="filter-config fcgi (fcgi-app)"></a><a class="anchor" name="filter-config fcgi id"></a><a class="anchor" name="9-filter-config fcgi id"></a><a class="anchor" name="9.6-filter-config fcgi id"></a><a class="anchor" name="filter-config fcgi id (Supported filters)"></a><a class="anchor" name="filter-config fcgi id (fcgi-app)"></a><div class="keyword"><b><a class="anchor" name="filter-config fcgi id"></a><a href="#9.6-filter-config%20fcgi%20id">filter-config fcgi id</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[enabled]</span></div><pre class="text">Declare a fcgi-app filter with the new mode. The instance id is mandatory
+and is the name of the fcgi-app section, like the &lt;name&gt; parameter of the
+legacy syntax. The rules above about implicit declarations only apply to the
+legacy mode. In the new mode, a filter instance is implicitly created by
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; when needed, and its evaluation order can be adjusted with
+the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive.
+</pre><div class="page-header"><b>See also:</b> &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;, <a href="#9.2">section 9.2</a> about the compression filter, <a href="#9.5">section 9.5</a> about the cache filter and <a href="#10">section 10</a> about FastCGI application.</div>
+</div>
+<a class="anchor" id="9.7" name="9.7"></a>
+<h2 id="chapter-9.7" data-target="9.7"><small><a class="small" href="#9.7">9.7.</a></small> OpenTracing</h2>
 <div><pre class="text">The OpenTracing filter was removed in version 3.5. A replacement filter based
 on OpenTelemetry is available since 3.4 with complete build instructions
 currently at:
 
           https://github.com/haproxytech/haproxy-opentelemetry/
 </pre></div>
-<a class="anchor" id="9.7" name="9.7"></a>
-<h2 id="chapter-9.7" data-target="9.7"><small><a class="small" href="#9.7">9.7.</a></small> Bandwidth limitation</h2>
-<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.7-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.7-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.7-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.7-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.7-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.7-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.7-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.7-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.7-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><div class="separator">
+<a class="anchor" id="9.8" name="9.8"></a>
+<h2 id="chapter-9.8" data-target="9.8"><small><a class="small" href="#9.8">9.8.</a></small> Bandwidth limitation</h2>
+<div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.8-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.8-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.8-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.8-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.8-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.8-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.8-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-in"></a><a class="anchor" name="9-filter bwlim-in"></a><a class="anchor" name="9.8-filter bwlim-in"></a><a class="anchor" name="filter bwlim-in (Supported filters)"></a><a class="anchor" name="filter bwlim-in (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-in"></a><a href="#9.8-filter%20bwlim-in">filter bwlim-in</a></b>  <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><a class="anchor" name="filter"></a><a class="anchor" name="9-filter"></a><a class="anchor" name="9.8-filter"></a><a class="anchor" name="filter (Supported filters)"></a><a class="anchor" name="filter (Bandwidth limitation)"></a><a class="anchor" name="filter bwlim-out"></a><a class="anchor" name="9-filter bwlim-out"></a><a class="anchor" name="9.8-filter bwlim-out"></a><a class="anchor" name="filter bwlim-out (Supported filters)"></a><a class="anchor" name="filter bwlim-out (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter bwlim-out"></a><a href="#9.8-filter%20bwlim-out">filter bwlim-out</a></b> <span style="color: #080">&lt;name&gt;</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><pre class="text">filter-config bwlim-in  id &lt;name&gt; [enabled] default-limit &lt;size&gt; default-period &lt;time&gt; [min-size &lt;sz&gt;]
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.8-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Bandwidth limitation)"></a><a class="anchor" name="filter-config bwlim-out"></a><a class="anchor" name="9-filter-config bwlim-out"></a><a class="anchor" name="9.8-filter-config bwlim-out"></a><a class="anchor" name="filter-config bwlim-out (Supported filters)"></a><a class="anchor" name="filter-config bwlim-out (Bandwidth limitation)"></a><a class="anchor" name="filter-config bwlim-out id"></a><a class="anchor" name="9-filter-config bwlim-out id"></a><a class="anchor" name="9.8-filter-config bwlim-out id"></a><a class="anchor" name="filter-config bwlim-out id (Supported filters)"></a><a class="anchor" name="filter-config bwlim-out id (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter-config bwlim-out id"></a><a href="#9.8-filter-config%20bwlim-out%20id">filter-config bwlim-out id</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[enabled]</span> default-limit <span style="color: #080">&lt;size&gt;</span> default-period <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><pre class="text">filter-config bwlim-in  id &lt;name&gt; [enabled] limit &lt;size&gt; key &lt;pattern&gt; [table &lt;table&gt;] [min-size &lt;sz&gt;]
+</pre><a class="anchor" name="filter-config"></a><a class="anchor" name="9-filter-config"></a><a class="anchor" name="9.8-filter-config"></a><a class="anchor" name="filter-config (Supported filters)"></a><a class="anchor" name="filter-config (Bandwidth limitation)"></a><a class="anchor" name="filter-config bwlim-out"></a><a class="anchor" name="9-filter-config bwlim-out"></a><a class="anchor" name="9.8-filter-config bwlim-out"></a><a class="anchor" name="filter-config bwlim-out (Supported filters)"></a><a class="anchor" name="filter-config bwlim-out (Bandwidth limitation)"></a><a class="anchor" name="filter-config bwlim-out id"></a><a class="anchor" name="9-filter-config bwlim-out id"></a><a class="anchor" name="9.8-filter-config bwlim-out id"></a><a class="anchor" name="filter-config bwlim-out id (Supported filters)"></a><a class="anchor" name="filter-config bwlim-out id (Bandwidth limitation)"></a><div class="keyword"><b><a class="anchor" name="filter-config bwlim-out id"></a><a href="#9.8-filter-config%20bwlim-out%20id">filter-config bwlim-out id</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[enabled]</span> limit <span style="color: #080">&lt;size&gt;</span> key <span style="color: #080">&lt;pattern&gt;</span> <span style="color: #008">[table <span style="color: #080">&lt;table&gt;</span>]</span> <span style="color: #008">[min-size <span style="color: #080">&lt;sz&gt;</span>]</span></div><pre class="text">With the new mode, the instance id is mandatory and is the filter name used
+by the &quot;<a href="#set-bandwidth-limit">set-bandwidth-limit</a>&quot; actions, like the &lt;name&gt; parameter of the
+legacy syntax. The other parameters are the same.
+</pre><div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;name&gt;      is the filter name that will be used by 'set-bandwidth-limit'
             actions to reference a specific bandwidth limitation filter.
 
@@ -35283,7 +35671,7 @@ is mentioned below for each type between brackets after the argument.
 <span class="comment"># computed over a sliding window of 30 seconds.</span>
 stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 </code></pre>
-</div><div class="page-header"><b>See also :</b> &quot;<a href="#stick%20match">stick match</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, &quot;<a href="#stick%20store-request">stick store-request</a>&quot;, &quot;track-sc&quot;, <a href="#2.5">section 2.5</a> about time format, <a href="#11.2">section 11.2</a> about peers, <a href="#9.7">section 9.7</a> about bandwidth limitations, and <a href="#7">section 7</a> about ACLs.</div>
+</div><div class="page-header"><b>See also :</b> &quot;<a href="#stick%20match">stick match</a>&quot;, &quot;<a href="#stick%20on">stick on</a>&quot;, &quot;<a href="#stick%20store-request">stick store-request</a>&quot;, &quot;track-sc&quot;, <a href="#2.5">section 2.5</a> about time format, <a href="#11.2">section 11.2</a> about peers, <a href="#9.8">section 9.8</a> about bandwidth limitations, and <a href="#7">section 7</a> about ACLs.</div>
 </div>
 <a class="anchor" id="11.2" name="11.2"></a>
 <h2 id="chapter-11.2" data-target="11.2"><small><a class="small" href="#11.2">11.2.</a></small> Peers declaration</h2>
@@ -36416,7 +36804,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev8-71 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev8-197 &ndash; Configuration Manual<br>
 							<small>, 2026/10/01</small>
 						</div>
 					</div>
