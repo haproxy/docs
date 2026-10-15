@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev8-217 - Management Guide</title>
+		<title>HAProxy version 3.5-dev9 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -462,6 +462,16 @@
 							
 							<a class="list-group-item" href="#publish backend">publish backend</a>
 							
+							<a class="list-group-item" href="#purge">purge</a>
+							
+							<a class="list-group-item" href="#purge all">purge all</a>
+							
+							<a class="list-group-item" href="#purge all servers">purge all servers</a>
+							
+							<a class="list-group-item" href="#purge backend">purge backend</a>
+							
+							<a class="list-group-item" href="#purge server">purge server</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-Q"><h4>Q</h4>
 								
@@ -706,7 +716,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/14</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -717,7 +727,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev8-217</strong></p>
+							<p><strong>version 3.5-dev9</strong></p>
 							<p>
 								<br>
 								
@@ -3358,6 +3368,22 @@ Note that the non-interactive mode is not available for the master socket.
 </pre><a class="anchor" name="publish"></a><a class="anchor" name="9-publish"></a><a class="anchor" name="9.3-publish"></a><a class="anchor" name="publish (Statistics and monitoring)"></a><a class="anchor" name="publish (Unix Socket commands)"></a><a class="anchor" name="publish backend"></a><a class="anchor" name="9-publish backend"></a><a class="anchor" name="9.3-publish backend"></a><a class="anchor" name="publish backend (Statistics and monitoring)"></a><a class="anchor" name="publish backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="publish backend"></a><a href="#9.3-publish%20backend">publish backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Activates content switching to a backend instance. This is the reverse
 operation of &quot;<a href="#unpublish%20backend">unpublish backend</a>&quot; command. This command is restricted and can
 only be issued on sockets configured for levels &quot;<a href="#operator">operator</a>&quot; or &quot;admin&quot;.
+</pre><a class="anchor" name="purge"></a><a class="anchor" name="9-purge"></a><a class="anchor" name="9.3-purge"></a><a class="anchor" name="purge (Statistics and monitoring)"></a><a class="anchor" name="purge (Unix Socket commands)"></a><a class="anchor" name="purge backend"></a><a class="anchor" name="9-purge backend"></a><a class="anchor" name="9.3-purge backend"></a><a class="anchor" name="purge backend (Statistics and monitoring)"></a><a class="anchor" name="purge backend (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="purge backend"></a><a href="#9.3-purge%20backend">purge backend</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">This is an alternative command to &quot;<a href="#del%20backend">del backend</a>&quot;. Its main difference is that
+if the backend cannot be immediately removed due to remaining connections, it
+is flagged for background deletion instead of rejecting the command. This
+requires that all remaining servers in it are already removed or at least
+also flagged for background deletion (see &quot;<a href="#purge%20all%20servers">purge all servers</a>&quot;). A scheduled
+backend deletion is cancelled if publish/unpublish operations are performed
+again on it.
+</pre><a class="anchor" name="purge"></a><a class="anchor" name="9-purge"></a><a class="anchor" name="9.3-purge"></a><a class="anchor" name="purge (Statistics and monitoring)"></a><a class="anchor" name="purge (Unix Socket commands)"></a><a class="anchor" name="purge all"></a><a class="anchor" name="9-purge all"></a><a class="anchor" name="9.3-purge all"></a><a class="anchor" name="purge all (Statistics and monitoring)"></a><a class="anchor" name="purge all (Unix Socket commands)"></a><a class="anchor" name="purge all servers"></a><a class="anchor" name="9-purge all servers"></a><a class="anchor" name="9.3-purge all servers"></a><a class="anchor" name="purge all servers (Statistics and monitoring)"></a><a class="anchor" name="purge all servers (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="purge all servers"></a><a href="#9.3-purge%20all%20servers">purge all servers</a></b> <span style="color: #080">&lt;backend&gt;</span></div><pre class="text">Removes or schedules deletion of all servers in a target backend. This is
+equivalent to using &quot;<a href="#purge%20server">purge server</a>&quot; on each entry. If a server cannot be
+removed due to configuration limitation, it is skipped.
+</pre><a class="anchor" name="purge"></a><a class="anchor" name="9-purge"></a><a class="anchor" name="9.3-purge"></a><a class="anchor" name="purge (Statistics and monitoring)"></a><a class="anchor" name="purge (Unix Socket commands)"></a><a class="anchor" name="purge server"></a><a class="anchor" name="9-purge server"></a><a class="anchor" name="9.3-purge server"></a><a class="anchor" name="purge server (Statistics and monitoring)"></a><a class="anchor" name="purge server (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="purge server"></a><a href="#9.3-purge%20server">purge server</a></b> <span style="color: #080">&lt;backend&gt;</span>/<span style="color: #080">&lt;server&gt;</span></div><pre class="text">This is an alternative command to &quot;<a href="#del%20server">del server</a>&quot;. Its main difference is that
+if the server cannot be immediately removed due to remaining active or idle
+connections, the server is flagged for background deletion instead of
+rejecting the command. To succeed, this also automatically puts the server
+into maintenance if needed. A scheduled deletion is cancelled if the server
+state is explicitly reset, even if still in maintenance mode.
 </pre><a class="anchor" name="quit"></a><a class="anchor" name="9-quit"></a><a class="anchor" name="9.3-quit"></a><a class="anchor" name="quit (Statistics and monitoring)"></a><a class="anchor" name="quit (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="quit"></a><a href="#9.3-quit">quit</a></b></div><pre class="text">Close the connection when in interactive mode.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon"></a><a href="#9.3-set%20anon">set anon</a></b> <span style="color: #008">[on|off]</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>]</span></div><pre class="text">This command enables or disables the &quot;anonymized mode&quot; for the current CLI
 session, which replaces certain fields considered sensitive or confidential
@@ -5343,6 +5369,12 @@ unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
   not met. If everything is OK before the delay, a success is returned and
   the operation is terminated.
 
+- be-unknown &lt;proxy&gt; : this will wait for the specified backend name to be
+  available for a new instance to be created. This will fail if a proxy with
+  this name already exists, unless if this is a backend flagged for
+  background deletion, in which case a success will be returned if the
+  deletion is completed before the delay.
+
 - srv-removable &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server to
   be removable by the &quot;<a href="#del%20server">del server</a>&quot; command, i.e. be in maintenance and no
   longer have any connection on it (neither active or idle). Some conditions
@@ -5351,6 +5383,12 @@ unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
   server might even have been removed in parallel and no longer exit. If
   everything is OK before the delay, a success is returned and the operation
   is terminated.
+
+- srv-unknown &lt;proxy&gt;/&lt;server&gt; : this will wait for the specified server name
+  to be available for a new instance to be created. This will fail if the
+  server already exists, unless if it is flagged for background deletion, in
+  which case a success will be returned if the deletion is completed before
+  the delay.
 
 The default unit for the delay is milliseconds, though other units are
 accepted if suffixed with the usual timer units (us, ms, s, m, h, d). When
@@ -6039,7 +6077,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev8-217 &ndash; Management Guide<br>
+							HAProxy 3.5-dev9 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
