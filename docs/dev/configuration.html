@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev9-74 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev9-97 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5017,7 +5017,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5028,7 +5028,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev9-74</strong></p>
+							<p><strong>version 3.5-dev9-97</strong></p>
 							<p>
 								2026/10/14<br>
 								
@@ -13053,10 +13053,10 @@ for use in the response.
 </pre><div class="page-header"><b>See also:</b> &quot;<a href="#capture-req">capture-req</a>&quot;, &quot;<a href="#capture-res">capture-res</a>&quot; (sample converters), &quot;<a href="#capture.req.hdr">capture.req.hdr</a>&quot;, &quot;<a href="#capture.res.hdr">capture.res.hdr</a>&quot; (sample fetches), &quot;http-request capture&quot; and &quot;http-response capture&quot;.</div>
 <a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression algo-req"></a><a class="anchor" name="4-decompression algo-req"></a><a class="anchor" name="4.2-decompression algo-req"></a><a class="anchor" name="decompression algo-req (Proxies)"></a><a class="anchor" name="decompression algo-req (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression algo-req"></a><a href="#4.2-decompression%20algo-req">decompression algo-req</a></b> <span style="color: #080">&lt;algorithms&gt;</span> ...</div><a class="anchor" name="decompression"></a><a class="anchor" name="4-decompression"></a><a class="anchor" name="4.2-decompression"></a><a class="anchor" name="decompression (Proxies)"></a><a class="anchor" name="decompression (Alphabetically sorted keywords reference)"></a><a class="anchor" name="decompression algo-res"></a><a class="anchor" name="4-decompression algo-res"></a><a class="anchor" name="4.2-decompression algo-res"></a><a class="anchor" name="decompression algo-res (Proxies)"></a><a class="anchor" name="decompression algo-res (Alphabetically sorted keywords reference)"></a><div class="keyword"><b><a class="anchor" name="decompression algo-res"></a><a href="#4.2-decompression%20algo-res">decompression algo-res</a></b> <span style="color: #080">&lt;algorithms&gt;</span> ...</div><pre class="text">Configures the decompression algorithms supported by the proxy.  It will
 implicitly enable decompression filter (&quot;decomp-req&quot; or &quot;decomp-res&quot; whether
-the decompression option targets request, response) automatically. However to
-prevent misconfiguration, it is recommended to explicitly declare filters
-when multiple filters are involved on the proxy, because filters are
-evaluated in their declaration order.
+the decompression option targets request, response) automatically. When
+implicitly enabled in the legacy filter mode, the decompression filter is
+automatically placed at the beginning of the filter list, before the cache
+and compression filters.
 
 May be used in the following contexts: http, tcp
 </pre><div><p>  May be used in sections  :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -13157,9 +13157,9 @@ defaults section.
 When decompression is set to a mode other than &quot;none&quot; in a direction, the
 associated decompression filter is automatically enabled. For requests, the
 filter is called &quot;decomp-req&quot;, and for responses, the filter is &quot;decomp-res&quot;.
-In order to prevent misconfigurations, particularly when combining multiple
-filters, it is highly recommended to explicitly declare the filters, because
-they are evaluated in their declaration order.
+When implicitly enabled in the legacy filter mode, the decompression filter
+is automatically placed at the beginning of the filter list, before the
+cache and compression filters.
 
 Mode &quot;auto&quot;, which is only available for HTTP, means haproxy will try to find
 a compatible algorithms in algo-req or algo-res list to be able to decompress
@@ -34573,14 +34573,20 @@ reading. Their sole purpose is to explain how to decipher them.
 <div class="page-header"><h1 id="chapter-9" data-target="9"><small><a class="small" href="#9">9.</a></small> Supported filters</h1>
 </div><div><pre class="text">Here are listed officially supported filters with the list of parameters they
 accept. Depending on compile options, some of these filters might be
-unavailable. The list of available filter classes is reported in haproxy -vv.
+unavailable. The list of available filter classes, including the ones added by
+the addons built into the binary, is reported in haproxy -vv.
 
 A filter is declared on a proxy in one of two modes:
 
   * The legacy mode relies on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive. Each &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; line
     declares an independent filter configuration and the declaration order
-    defines the evaluation order. This mode is kept for backward
-    compatibility.
+    defines the evaluation order. However, the filters implicitly declared
+    by other directives (the decompression options, the compression options,
+    the &quot;<a href="#cache-store">cache-store</a>&quot; rules and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;) are automatically ordered,
+    independently on each direction, and an explicitly declared filter is
+    never moved: it keeps its declared position and the implicitly declared
+    ones are ordered inside the segments it delimits (see the default orders
+    below). This mode is kept for backward compatibility.
 
   * The new mode relies on the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive. Each declaration is
     a filter instance, attached to its filter class. The evaluation order is
@@ -34588,15 +34594,49 @@ A filter is declared on a proxy in one of two modes:
     &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive. The instances are disabled by default and
     are activated with the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">enabled<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#enabled%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#enabled%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#enabled%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; token or the &quot;<a href="#filter-enable">filter-enable</a>&quot; directive.
 
-Each filter class is placed in three independent orders: a global one, used
-for the side-independent operations (configuration checks, initialization and
+For each mode, three orders exist: a global one, used for the
+side-independent operations (configuration checks, initialization and
 destruction), and a request and a response one, used for the evaluation order
-of the instances on the corresponding channel. The request and the response
-orders are independent, so a class may be evaluated at a different position
+of the filters on the corresponding channel. The request and the response
+orders are independent, so a filter may be evaluated at a different position
 depending on the direction, and the global order may be changed without
 affecting them. The resulting orders of a proxy may be inspected with the
 &quot;show filter classes&quot; CLI command, and the &quot;show filter instances&quot; one reports
 the resulting order of the instances.
+
+The default orders are informational only: they describe the current placement
+of the classes and of the implicitly declared filters, and they may be changed
+by the build options or by a future version. Only the placements explicitly
+requested by a filter, and the position of an implicitly declared legacy filter
+relative to the explicitly declared ones, should be relied upon.
+
+In the new mode, the orders follow the class placement, which can be adjusted
+per proxy with the &quot;<a href="#filter-sequence">filter-sequence</a>&quot; directive. The built-in classes are
+placed, when no explicit placement is requested, as follows:
+
+  * global order: trace &gt; decomp-req &gt; decomp-res &gt; cache-store &gt; spoe &gt;
+    lua &gt; http-comp-req &gt; http-comp-res &gt; bwlim-in &gt; bwlim-out &gt; fcgi
+
+  * request order: trace &gt; decomp-req &gt; lua &gt; spoe &gt; http-comp-res &gt;
+    decomp-res &gt; http-comp-req &gt; bwlim-in &gt; fcgi
+
+  * response order: fcgi &gt; trace &gt; decomp-res &gt; cache-store &gt; spoe &gt; lua &gt;
+    http-comp-res &gt; decomp-req &gt; bwlim-out
+
+In the legacy mode, the automatically ordered filters are the implicit core
+filters: the decompression filters, the cache filters, the compression
+filters and the fcgi filter. They are placed, when implicitly declared, as
+follows, where &quot;any other filter&quot; stands for the explicitly declared filters
+and the other legacy filters in their declaration order:
+
+  * global order: decomp-req &gt; decomp-res &gt; cache-store &gt; any other filter &gt;
+    http-comp-req &gt; http-comp-res &gt; fcgi
+
+  * request order: decomp-req &gt; any other filter &gt; http-comp-res &gt; decomp-res &gt;
+    http-comp-req &gt; fcgi
+
+  * response order: fcgi &gt; decomp-res &gt; cache-store &gt; any other filter &gt;
+    decomp-req &gt; http-comp-res
 
 The mode is selected by the configuration itself: as soon as a legacy &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;
 directive is used in a proxy, the proxy works in legacy mode and the
@@ -36850,7 +36890,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev9-74 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev9-97 &ndash; Configuration Manual<br>
 							<small>, 2026/10/14</small>
 						</div>
 					</div>
