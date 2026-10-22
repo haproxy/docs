@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev9-97 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev9-117 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1386,6 +1386,10 @@
 							<a class="list-group-item" href="#accept-proxy">accept-proxy</a>
 							
 							<a class="list-group-item" href="#accept_date">accept_date</a>
+							
+							<a class="list-group-item" href="#acceptable-http-request-violations">acceptable-http-request-violations</a>
+							
+							<a class="list-group-item" href="#acceptable-http-response-violations">acceptable-http-response-violations</a>
 							
 							<a class="list-group-item" href="#accepted_payload_size">accepted_payload_size</a>
 							
@@ -2840,6 +2844,8 @@
 							
 							<a class="list-group-item" href="#no-memory-trimming">no-memory-trimming</a>
 							
+							<a class="list-group-item" href="#no-pha">no-pha</a>
+							
 							<a class="list-group-item" href="#no-renegotiate">no-renegotiate</a>
 							
 							<a class="list-group-item" href="#no-send-proxy">no-send-proxy</a>
@@ -3121,6 +3127,8 @@
 							<a class="list-group-item" href="#persist">persist</a>
 							
 							<a class="list-group-item" href="#persist rdp-cookie">persist rdp-cookie</a>
+							
+							<a class="list-group-item" href="#pha">pha</a>
 							
 							<a class="list-group-item" href="#pid">pid</a>
 							
@@ -5017,7 +5025,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/21</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5028,7 +5036,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev9-97</strong></p>
+							<p><strong>version 3.5-dev9-117</strong></p>
 							<p>
 								2026/10/14<br>
 								
@@ -7957,6 +7965,9 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#51degrees-property-separator">51degrees-property-separator</a>
    - <a href="#51degrees-use-performance-graph">51degrees-use-performance-graph</a>
    - <a href="#51degrees-use-predictive-graph">51degrees-use-predictive-graph</a>
+   - <a href="#acceptable-http-request-violations">acceptable-http-request-violations</a>
+   - <a href="#acceptable-http-response-violations">acceptable-http-response-violations</a>
+   - <a href="#acme.scheduler">acme.scheduler</a>
    - <a href="#ca-base">ca-base</a>
    - <a href="#chroot">chroot</a>
    - <a href="#cluster-secret">cluster-secret</a>
@@ -8285,7 +8296,170 @@ detection process. The default value depends on 51Degrees library.
 
 Please note that this option is only available when HAProxy has been
 compiled with USE_51DEGREES and 51DEGREES_VER=4.
-</pre><a class="anchor" name="acme.scheduler"></a><a class="anchor" name="3-acme.scheduler"></a><a class="anchor" name="3.1-acme.scheduler"></a><a class="anchor" name="acme.scheduler (Global section)"></a><a class="anchor" name="acme.scheduler (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="acme.scheduler"></a><a href="#3.1-acme.scheduler">acme.scheduler</a></b> <span style="color: #800">{ auto | off }</span></div><pre class="text">Enable or disable the ACME scheduler.
+</pre><a class="anchor" name="acceptable-http-request-violations"></a><a class="anchor" name="3-acceptable-http-request-violations"></a><a class="anchor" name="3.1-acceptable-http-request-violations"></a><a class="anchor" name="acceptable-http-request-violations (Global section)"></a><a class="anchor" name="acceptable-http-request-violations (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="acceptable-http-request-violations"></a><a href="#3.1-acceptable-http-request-violations">acceptable-http-request-violations</a></b>  <span style="color: #800">{ <span style="color: #008">[-+]</span><span style="color: #080">&lt;http-violation&gt;</span><span style="color: #008">[,...]</span> }</span></div><a class="anchor" name="acceptable-http-response-violations"></a><a class="anchor" name="3-acceptable-http-response-violations"></a><a class="anchor" name="3.1-acceptable-http-response-violations"></a><a class="anchor" name="acceptable-http-response-violations (Global section)"></a><a class="anchor" name="acceptable-http-response-violations (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="acceptable-http-response-violations"></a><a href="#3.1-acceptable-http-response-violations">acceptable-http-response-violations</a></b> <span style="color: #800">{ <span style="color: #008">[-+]</span><span style="color: #080">&lt;http-violation&gt;</span><span style="color: #008">[,...]</span> }</span></div><pre class="text">Finely tune which HTTP violations are acceptable when explicitly requested
+
+Proxy options &quot;<a href="#option%20accept-unsafe-violations-in-http-request">accept-unsafe-violations-in-http-request</a>&quot; and
+&quot;<a href="#option%20accept-unsafe-violations-in-http-response">accept-unsafe-violations-in-http-response</a>&quot; allow to relax some controles in
+the HTTP parsers to explicitly accept certain violations of the protocol
+specification that may be needed to integrate into some environments where a
+non-compliant (and possibly vulnerable) component resides, for the time it
+takes to fix it. However, by default these options relax all controls, which
+can become particularly dangerous when only a specific one is needed.
+
+These two global directives permit to refine exactly which of the violations
+are permitted when the aformentioned options are used. Note that these rules
+apply to all frontends and backends that use the options above, because these
+options are meant to only be used under exceptional circumstances and not to
+be widely deployed all over a configuration. When a frontend rejects a
+request based on such a violation, a &quot;400 Bad Request&quot; response is sent to
+the client. When a backend rejects such a response, a &quot;502 Bad Gateway&quot;
+status is returned.
+
+Both directives adopt the same syntax: the argument is a comma-delimited list
+of names, each designating a specific violation to act on. There are 3 ways
+to use these directives:
+  - set the list of acceptable violations: the existing list is replaced with
+    the new one. This is the recommended way to use the options, guaranteeing
+    that the minimal set of required exceptions is allowed.
+
+  - remove some violations from the existing list: after a '-' sign, all
+    designated violations will be removed from the currently permitted set.
+    This may be used to work around a non-recurring problem in emergency, by
+    accepting all violations except the most dangerous ones.
+
+  - add some violations to the existing list: after a '+' sign, all
+    designated violations will be added to the currently permitted set. This
+    may be used when cumulating multiple statements that need to be commented
+    out once in a while for example.
+
+Special violation names &quot;none&quot; and &quot;all&quot; designate and empty and a full set,
+respectively, and are usable both in the request list and in the response
+list.
+
+The currently defined list of configurable violations is listed below, with
+the direction they each apply to (request, response, both). Unless otherwise
+noted, they apply to HTTP/1 only.
+
+  - &quot;fragment-in-url&quot; (request) : this controls the acceptance of character
+    '#' in the path component of a request, which designates a fragment
+    identifier and is not permitted in HTTP URIs transiting over the network.
+    The risk is moderate (improper suffix match leading to bad routing). This
+    exception applies to HTTP/1, HTTP/2 and HTTP/3.
+
+  - &quot;non-ascii-in-url&quot; (request): this controls the acceptance of non-ASCII
+    characters in the URI (characters of code 128 to 255 included). These may
+    stem from accentuated letters or emojis leaked directly into the request
+    without the mandatory URL-encoding. The risk is somewhat low.
+
+  - &quot;long-status-code&quot; (response): this controls acceptance of status codes
+    longer than 3 characters (e.g. &quot;0200&quot; or &quot;9999&quot;). In any case, status
+    codes greater than 65535 will always be blocked, but below this, they are
+    controled by this setting. A lazy parser in a client may get confused and
+    even confuse &quot;2040&quot; with &quot;204&quot; for example and get desynchronized, so the
+    risk is moderate. Only ever enable this with known clients if absolutely
+    needed.
+
+  - &quot;short-status-code&quot; (response): this controls acceptance of status codes
+    shorter than 3 characters (e.g. &quot;0&quot; or &quot;99&quot;). A lazy regex-based parser
+    in a client may get confused. The risk is low. Only ever enable this with
+    known clients if really needed.
+
+  - &quot;non-token-in-header-name&quot; (both): this controls the acceptance of
+    forbidden characters in header field names. It is often used to adapt to
+    internally developed non-standard applications which use forbidden
+    characters in header names (e.g. '/'). The risk is low on responses but
+    can be moderate on requests.
+
+  - &quot;nul-in-header-value&quot; (both): this controls the acceptance of the NUL
+    character (0x00) in header field values. The risk is high in both
+    directions and this option must never be used outside of two fully
+    trusted endpoints.
+
+  - &quot;inconsistent-transfer-encoding&quot; (response): transfer codings must
+    respect a strict ordering and always be finished by &quot;chunked&quot; which may
+    only appear once. This setting allows to relax strict controls on the
+    response only, offering tolerance for empty values and duplicate
+    &quot;chunked&quot;, which may occasionally appear in responses from very old
+    poorly implemented servers or caches where compression is enabled. These
+    are never allowed on the request and it is never allowed to have anything
+    other token after &quot;chunked&quot; though. The risk is low for trusted servers
+    but moderate with untrusted ones.
+
+  - &quot;unparsable-authority&quot; (request): this controls the acceptance of
+    characters outside the list of permitted ones in the authority component
+    of the URI, or uneven brackets in IPv6 addresses. The risk is high as
+    certain characters may be used to confuse a URI parser on a backend
+    server.
+
+  - &quot;invalid-connect-authority&quot; (request): this controls the acceptance of a
+    URL that isn't strictly in the &quot;host[:port]&quot; format in a CONNECT request.
+    The risk is moderate, and this should never be needed.
+
+  - &quot;empty-authority-host&quot; (request): this controls the acceptance of a
+    request having a scheme but no authority. The risk is moderate and this
+    should never be needed.
+
+  - &quot;mismatch-authority-host&quot; (request): this controls the acceptance of a
+    request whose host and authority component are both present and differ.
+    This is common in environments playing URL rewriting games, and may be
+    used to work around failures to do it properly, but only if the request
+    is also fixed in the configuration via &quot;http-request set-header host&quot; or
+    &quot;http-request set-uri&quot;. The risk is high, particularly for requests
+    originating from untrusted clients.
+
+  - &quot;invalid-version-string&quot; (both): this controls the acceptance of an HTTP
+    version that is not strictly made of one digit, a dot, and another digit.
+    It should not be needed but might help to work around scripts emittng a
+    version based on an improperly rounded floating point number, such as
+    &quot;HTTP/1.099999875&quot; or &quot;HTTP/0.9999999&quot;. This should never be needed, but
+    the risk is low (the string is rebuilt on output).
+
+  - &quot;invalid-websocket-key&quot; (both): this controls the acceptance of WebSocket
+    protocol Upgrade requests lacking a valid &quot;sec-websocket-key&quot; header, or
+    upgrade responses lacking a valid &quot;sec-websocket-accept&quot; header. This
+    should only be used between trusted WebSocket endpoints, and the risk is
+    moderate.
+
+By default, for backward compatibility, all violations above are flagged as
+acceptable, meaning that a proxy having &quot;option accept-unsafe-http-*&quot; will
+accept them all. It may be a good practice to explicitly reset them to &quot;none&quot;
+before redefining them so that commenting their definition clears all of
+them. It is also important to systematically indicate in a comment why it is
+being used and for how long.
+</pre><div class="separator">
+<span class="label label-success">Examples:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Below we add one exception per bogus application</span>
+global
+    acceptable-http-request-violations none
+    acceptable-http-response-violations none
+
+    <span class="comment"># application &quot;marketplace&quot; has a problem with redirects that some</span>
+    <span class="comment"># browsers follow without encoding. Fix planned for 2026Q4, remove</span>
+    <span class="comment"># option accept-unsafe-... from their frontend.</span>
+    acceptable-http-request-violations +non-ascii-in-url
+
+    <span class="comment"># the SMS gateway client is unable to set the port in the host header,</span>
+    <span class="comment"># this requires &quot;option accept-unsafe-...&quot; in their frontend</span>
+    acceptable-http-request-violations +mismatch-authority-host
+
+<span class="comment"># Below we allow all request exceptions except the most dangerous ones.</span>
+<span class="comment"># Anything after a &quot;-&quot; is removed from the set.</span>
+global
+    <span class="comment"># customer complains the site is broken, relax most controls</span>
+    acceptable-http-request-violations all,-nul-in-header-value,unparsable-authority
+    <span class="comment"># also try to without this one</span>
+    acceptable-http-request-violations -unparsable-authority
+
+<span class="comment"># Below we preset the exact list of what is acceptable in the response so</span>
+<span class="comment"># that hosted customers can provide their own options in the backend to</span>
+<span class="comment"># enable or disable these.</span>
+global
+    <span class="comment"># acceptable violations that may be enabled per frontend/backend</span>
+    acceptable-http-request-violations non-ascii-in-url
+    acceptable-http-response-violations inconsistent-transfer-encoding
+</code></pre>
+</div><a class="anchor" name="acme.scheduler"></a><a class="anchor" name="3-acme.scheduler"></a><a class="anchor" name="3.1-acme.scheduler"></a><a class="anchor" name="acme.scheduler (Global section)"></a><a class="anchor" name="acme.scheduler (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="acme.scheduler"></a><a href="#3.1-acme.scheduler">acme.scheduler</a></b> <span style="color: #800">{ auto | off }</span></div><pre class="text">Enable or disable the ACME scheduler.
 
 The ACME scheduler starts at HAProxy startup, it will loop over the
 certificates and start an ACME renewal task when the notAfter value is past
@@ -24363,6 +24537,13 @@ setting which would have been inherited from &quot;<span class="dropdown"><a cla
 default value.
 It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#check-ssl">check-ssl</a>&quot; setting.
+</pre><a class="anchor" name="no-pha"></a><a class="anchor" name="5-no-pha"></a><a class="anchor" name="5.2-no-pha"></a><a class="anchor" name="no-pha (Bind and server options)"></a><a class="anchor" name="no-pha (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-pha"></a><a href="#5.2-no-pha">no-pha</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+This option may be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any &quot;<a href="#pha">pha</a>&quot; setting
+which would have been inherited from &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; directive as default
+value.
+It may also be used as &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; setting to reset any previous
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; &quot;<a href="#pha">pha</a>&quot; setting.
 </pre><a class="anchor" name="no-renegotiate"></a><a class="anchor" name="5-no-renegotiate"></a><a class="anchor" name="5.2-no-renegotiate"></a><a class="anchor" name="no-renegotiate (Bind and server options)"></a><a class="anchor" name="no-renegotiate (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="no-renegotiate"></a><a href="#5.2-no-renegotiate">no-renegotiate</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 This setting is only available when support for OpenSSL was built in. It
@@ -24566,6 +24747,29 @@ Currently one action is available:
   with an 'U' termination code (for &quot;Up&quot;).
 
 Actions are disabled by default
+</pre><a class="anchor" name="pha"></a><a class="anchor" name="5-pha"></a><a class="anchor" name="5.2-pha"></a><a class="anchor" name="pha (Bind and server options)"></a><a class="anchor" name="pha (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pha"></a><a href="#5.2-pha">pha</a></b></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
+
+This setting is only available when support for OpenSSL was built in. It is
+not supported by AWS-LC nor by WolfSSL. It enables post handshake
+authentication (RFC 8446) for the given backend. It is a TLS1.3 feature that
+consists in advertising the &quot;post_handshake_auth&quot; extension in the
+ClientHello sent to the server, telling it that post handshake authentication
+is supported. The certificate provided via the server's &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; parameter is
+then used to answer the &quot;CertificateRequest&quot; messages sent by the server
+after the handshake completes, so this option requires that a certificate be
+explicitly provided on the server line.
+Considering the limited support of this option, it is advised to enable it
+only when strictly necessary (to communicate with Windows Server 2022 IIS web
+site for instance)
+
+Post handshake authentication is not supported by HTTP/2 nor HTTP/3, so a
+warning will be raised if an alpn containing other protocols than &quot;http/1.1&quot;
+is specified, or if a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; option different than &quot;h1&quot; is used.
+This warning also applies to QUIC servers using the default &quot;h3&quot; ALPN.
+
+This option is disabled by default.
+
+See also &quot;<a href="#no-pha">no-pha</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="pool-conn-name"></a><a class="anchor" name="5-pool-conn-name"></a><a class="anchor" name="5.2-pool-conn-name"></a><a class="anchor" name="pool-conn-name (Bind and server options)"></a><a class="anchor" name="pool-conn-name (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-conn-name"></a><a href="#5.2-pool-conn-name">pool-conn-name</a></b> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">May be used in the following contexts: http
 
 When a backend connection is established, this expression is evaluated to
@@ -36890,7 +37094,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev9-97 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev9-117 &ndash; Configuration Manual<br>
 							<small>, 2026/10/14</small>
 						</div>
 					</div>
