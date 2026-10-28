@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev9-153 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev9-170 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5025,7 +5025,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/21</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5036,7 +5036,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev9-153</strong></p>
+							<p><strong>version 3.5-dev9-170</strong></p>
 							<p>
 								2026/10/14<br>
 								
@@ -7643,9 +7643,9 @@ amount of memory used by the variables by setting &quot;tune.vars&quot; global p
 
 Variables must be designated using the format &quot;&lt;scope&gt;.&lt;name&gt;&quot;. The &lt;scope&gt; is
 a single word indicating the life time of the variable. The &lt;name&gt; part, inside
-a scope, may only contain characters 'a-z', 'A-Z', '0-9' and '_'. It is unique
-in this scope but the same name in different scopes can be used and refers to
-different variables. Supported scopes are:
+a scope, may only contain characters 'a-z', 'A-Z', '0-9', '_' and '.'. It is
+unique in this scope but the same name in different scopes can be used and
+refers to different variables. Supported scopes are:
 
   * proc  : for variables known during the whole process lifespan and globally
             accessible. &quot;<a href="#proc">proc</a>&quot; variables can be manipulated from the CLI using
@@ -8926,13 +8926,19 @@ filter-api default | downgrade-to-legacy
   used (&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot;, &quot;<a href="#filter-enable">filter-enable</a>&quot;, &quot;<a href="#filter-disable">filter-disable</a>&quot; or
   &quot;<a href="#filter-sequence">filter-sequence</a>&quot;).
 
-  This option is unset by default. So proxies without explicit filter
-  directives rely on the filter instance api. By setting it to
-  &quot;downgrade-to-legacy&quot;, it is possible to force proxies to use the legacy
-  filter API by default. It could be useful the time to convert outdated
-  filters still relying on the legacy API only. Indeed, such filters will be
-  silently ignored except if the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive is used to declare them.
-  This option can be set to &quot;default&quot; to restore the default behavior.
+  This option is unset by default. The API used by a proxy without explicit
+  filter directives is deduced from the filters implied by its other
+  directives: a proxy implying only filters known as legacy filter
+  configurations, without any filter class, uses the legacy API, while a
+  proxy implying at least one filter class uses the filter instance API, and
+  the class-less filters it may also imply are ignored, with a warning on
+  each of their legacy filter configurations. By setting this option
+  to &quot;downgrade-to-legacy&quot;, it is possible to force the proxies without
+  explicit filter directives to use the legacy filter API, whatever they
+  imply. It could be useful the time to convert outdated filters still relying
+  on the legacy API only. Indeed, such filters will be silently ignored in
+  the filter instance API, except if the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter%20%28Trace%29">Trace</a></li><li><a href="#filter%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter%20%28Decompression%29">Decompression</a></li><li><a href="#filter%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter%20%28Cache%29">Cache</a></li><li><a href="#filter%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; directive is used to declare
+  them. This option can be set to &quot;default&quot; to restore the default behavior.
 
   Note that it should be a temporary workaround. There is no warranty that all
   filters will remain compatible with the legacy API. In that case, they will
@@ -9613,6 +9619,8 @@ TLSv1.3 only supports 5 ciphersuites:
 - TLS_AES_128_CCM_8_SHA256
 
 Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -9681,6 +9689,8 @@ explicitly define theirs. The format of the string is defined in
 cipher configuration for TLSv1.2 and earlier, please check the
 &quot;<a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for
 more information.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a class="anchor" name="3-ssl-default-server-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-server-client-sigalgs"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Global section)"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a href="#3.1-ssl-default-server-client-sigalgs">ssl-default-server-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of signature algorithms related to
 client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
@@ -11471,7 +11481,7 @@ compressed certificates.
 
 Configures both backend and frontend sides.
 
-This keyword is supported by OpenSSL &gt;= 3.2.0.
+Compatibility: OpenSSL &gt;= 3.2.0. Not supported with AWS-LC.
 
 The default value is auto.
 </pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global section)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
@@ -11532,6 +11542,8 @@ These fetches exists for frontend (fc) or backend (bc) sides, replace &quot;xx&q
 &quot;fc&quot; or &quot;bc&quot; to use the right side.
 
 This is only available with OpenSSL 1.1.1, and useful with TLS1.3 session.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 
 If you want to generate the content of a SSLKEYLOGFILE with TLS &lt; 1.3, you
 only need this line:
@@ -22861,7 +22873,8 @@ TLSv1.3 only supports 5 ciphersuites:
 <code>ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
 ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
 </code></pre>
-</div><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+</div><pre class="text">Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
+</pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of signature algorithms related to client
 authentication that are negotiated . The format of the string is defined in
 &quot;man 3 SSL_CTX_set1_client_sigalgs&quot; from the OpenSSL man pages. It is not
@@ -24114,6 +24127,8 @@ describing the list of cipher algorithms that is negotiated during the TLS
 &quot;man 1 ciphers&quot; from OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section.
 For cipher configuration for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 keyword.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.2-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.2-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This setting is only available when support for OpenSSL was built in. It sets
@@ -24768,6 +24783,8 @@ is specified, or if a &quot;<span class="dropdown"><a class="dropdown-toggle" da
 This warning also applies to QUIC servers using the default &quot;h3&quot; ALPN.
 
 This option is disabled by default.
+
+Compatibility: OpenSSL &gt;= 1.1.1. Not supported with AWS-LC.
 
 See also &quot;<a href="#no-pha">no-pha</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crt<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crt%20%28Load%20options%29">Load options</a></li><li><a href="#crt%20%28Bind%20options%29">Bind options</a></li><li><a href="#crt%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;.
 </pre><a class="anchor" name="pool-conn-name"></a><a class="anchor" name="5-pool-conn-name"></a><a class="anchor" name="5.2-pool-conn-name"></a><a class="anchor" name="pool-conn-name (Bind and server options)"></a><a class="anchor" name="pool-conn-name (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="pool-conn-name"></a><a href="#5.2-pool-conn-name">pool-conn-name</a></b> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">May be used in the following contexts: http
@@ -34849,11 +34866,16 @@ are inherited from a defaults section. Conversely, a legacy &quot;<span class="d
 is rejected in a proxy inheriting filter instances from its defaults
 section. Filters implicitly declared by other directives (for instance by the
 &quot;<a href="#compression">compression</a>&quot; options, the &quot;<a href="#cache-store">cache-store</a>&quot; rules or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">use-fcgi-app<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#use-fcgi-app%20%28Proxy%20section%29">Proxy section</a></li><li><a href="#use-fcgi-app%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;) do not
-select a mode: a proxy using only such filters works in the new mode.
+select a mode: a proxy using only such filters works in the new mode, unless
+the implied filters are only known as legacy filter configurations, without
+any filter class: a proxy implying only such filters works in the legacy
+mode, and a proxy implying filters of both kinds uses the new mode, where the
+class-less ones are ignored. All the filters documented in this section
+declare their classes, so they are always visible to the new mode.
 The &quot;filter-api&quot; global option changes this last rule: when it is set to
 &quot;downgrade-to-legacy&quot;, the proxies using only implicitly declared filters work
-in the legacy mode, so the filters not supporting the new mode keep
-working. Explicit filter declarations always win, in both modes.
+in the legacy mode, whatever they imply, so the filters not supporting the
+new mode keep working. Explicit filter declarations always win, in both modes.
 
 All the filters documented below support the new mode. The &lt;class&gt; name to use
 with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">filter-config<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#filter-config%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#filter-config%20%28Trace%29">Trace</a></li><li><a href="#filter-config%20%28HTTP%20compression%29">HTTP compression</a></li><li><a href="#filter-config%20%28Decompression%29">Decompression</a></li><li><a href="#filter-config%20%28Stream%20Processing%20Offload%20Engine%20%28SPOE%29%29">Stream Processing Offload Engine (SPOE)</a></li><li><a href="#filter-config%20%28Cache%29">Cache</a></li><li><a href="#filter-config%20%28fcgi-app%29">fcgi-app</a></li><li><a href="#filter-config%20%28Bandwidth%20limitation%29">Bandwidth limitation</a></li></ul></span>&quot; may differ from the legacy filter name; it is given in
@@ -37094,7 +37116,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev9-153 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev9-170 &ndash; Configuration Manual<br>
 							<small>, 2026/10/14</small>
 						</div>
 					</div>
