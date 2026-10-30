@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev9-170 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev10-5 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5025,7 +5025,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/27</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/29</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5036,9 +5036,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev9-170</strong></p>
+							<p><strong>version 3.5-dev10-5</strong></p>
 							<p>
-								2026/10/14<br>
+								2026/10/28<br>
 								
 							</p>
 						</div>
@@ -22958,6 +22958,10 @@ Transparency (RFC6962) TLS extension is enabled. The file must contain a
 valid Signed Certificate Timestamp List, as described in RFC. File is parsed
 to check basic syntax, but no signatures are verified.
 
+SCT delivery over TLS 1.2 and earlier is supported with OpenSSL 1.0.2 and
+later or AWS-LC. TLS 1.3 requires OpenSSL 1.1.1 and later or AWS-LC. SCT
+delivery over QUIC is not supported.
+
 There are cases where it is desirable to support multiple key types, e.g. RSA
 and ECDSA in the cipher suites offered to the clients. This allows clients
 that support EC certificates to be able to use EC ciphers, while
@@ -23979,6 +23983,10 @@ available.
 Optional application-level health checks can be configured with &quot;option
 httpchk&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot; &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;,
 &quot;<a href="#option%20ldap-check">option ldap-check</a>&quot;, or &quot;<a href="#option%20redis-check">option redis-check</a>&quot;.
+
+For log backends, although UDP endpoints are supported, TCP will be used
+for checks as implicit protocol, because there is no such thing as rax
+UDP checks, and ICMP checks are not available.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -37116,8 +37124,8 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev9-170 &ndash; Configuration Manual<br>
-							<small>, 2026/10/14</small>
+							HAProxy 3.5-dev10-5 &ndash; Configuration Manual<br>
+							<small>, 2026/10/28</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
