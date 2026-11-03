@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev10-10 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev10-20 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5025,7 +5025,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/29</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/02</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5036,7 +5036,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev10-10</strong></p>
+							<p><strong>version 3.5-dev10-20</strong></p>
 							<p>
 								2026/10/28<br>
 								
@@ -22664,27 +22664,34 @@ possible to write custom TCP and HTTP services in Lua.
 <pre class="prettyprint">
 <code>http-request use-service prometheus-exporter if { path /metrics }
 </code></pre>
-</div><a class="anchor" name="wait-for-body"></a><a class="anchor" name="4-wait-for-body"></a><a class="anchor" name="4.4-wait-for-body"></a><a class="anchor" name="wait-for-body (Proxies)"></a><a class="anchor" name="wait-for-body (Alphabetically sorted actions reference)"></a><a class="anchor" name="wait-for-body time"></a><a class="anchor" name="4-wait-for-body time"></a><a class="anchor" name="4.4-wait-for-body time"></a><a class="anchor" name="wait-for-body time (Proxies)"></a><a class="anchor" name="wait-for-body time (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-body time"></a><a href="#4.4-wait-for-body%20time">wait-for-body time</a></b> <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[ at-least <span style="color: #080">&lt;bytes&gt;</span> ]</span> <span style="color: #008">[use-large-buffer]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="wait-for-body"></a><a class="anchor" name="4-wait-for-body"></a><a class="anchor" name="4.4-wait-for-body"></a><a class="anchor" name="wait-for-body (Proxies)"></a><a class="anchor" name="wait-for-body (Alphabetically sorted actions reference)"></a><a class="anchor" name="wait-for-body time"></a><a class="anchor" name="4-wait-for-body time"></a><a class="anchor" name="4.4-wait-for-body time"></a><a class="anchor" name="wait-for-body time (Proxies)"></a><a class="anchor" name="wait-for-body time (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-body time"></a><a href="#4.4-wait-for-body%20time">wait-for-body time</a></b> <span style="color: #080">&lt;time&gt;</span> <span style="color: #008">[ at-least <span style="color: #080">&lt;bytes&gt;</span> ]</span> <span style="color: #008">[use-large-buffer]</span> <span style="color: #008">[no-fail]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
 <pre class="text">This will delay the processing of the request or response until one of the
 following conditions occurs:
-- The full request body is received, in which case processing proceeds
+- The full message body is received, in which case processing proceeds
   normally.
 - &lt;bytes&gt; bytes have been received, when the &quot;at-least&quot; argument is given and
   &lt;bytes&gt; is non-zero, in which case processing proceeds normally.
-- The request buffer is full, in which case processing proceeds normally. The
-  size of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
-- The request has been waiting for more than &lt;time&gt; milliseconds. In this
-  case HAProxy will respond with a 408 &quot;Request Timeout&quot; error to the client
-  and stop processing the request. Note that if any of the other conditions
+- The buffer is full, in which case processing proceeds normally. The size
+  of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
+- The message has been waiting for more than &lt;time&gt; milliseconds. In this
+  case HAProxy stops the processing and responds to the client with a 408
+  &quot;Request Timeout&quot; error if the timeout occurred while waiting for a
+  request body, or with a 504 &quot;Gateway Timeout&quot; error if it occurred while
+  waiting for a response body. Note that if any of the other conditions
   happens first, this timeout will not occur even if the full body has
   not yet been received.
 
 &quot;use-large-buffer&quot; option may be set to allocate a large buffer if regular
 one is to small to store the message body. To be used, &quot;<a href="#tune.bufsize.large">tune.bufsize.large</a>&quot;
 global option must be defined.
+
+&quot;no-fail&quot; option may be set to not return an error to the client at the end
+of the &lt;time&gt; timeout but to continue the message analysis with the body
+received so far. The remaining body bytes, if any, are forwarded once
+received.
 
 This action may be used as a replacement for &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot;.
 </pre><div class="separator">
@@ -22699,6 +22706,7 @@ This action may be used as a replacement for &quot;<a href="#option%20http-buffe
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
 <code>http-request wait-for-body time 1s at-least 1k if METH_POST
+http-response wait-for-body time 1s no-fail if { status eq 200 }
 </code></pre>
 </div><div class="page-header"><b>See also :</b> &quot;<a href="#option%20http-buffer-request">option http-buffer-request</a>&quot; and &quot;<a href="#tune.bufsize.large">tune.bufsize.large</a>&quot;</div>
 <a class="anchor" name="wait-for-handshake"></a><a class="anchor" name="4-wait-for-handshake"></a><a class="anchor" name="4.4-wait-for-handshake"></a><a class="anchor" name="wait-for-handshake (Proxies)"></a><a class="anchor" name="wait-for-handshake (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="wait-for-handshake"></a><a href="#4.4-wait-for-handshake">wait-for-handshake</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
@@ -37124,7 +37132,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev10-10 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev10-20 &ndash; Configuration Manual<br>
 							<small>, 2026/10/28</small>
 						</div>
 					</div>
