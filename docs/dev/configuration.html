@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev10-49 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev11 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -1343,6 +1343,17 @@
 					<td>
 				</tr>
 				
+			
+				
+				<tr>
+					<td><small>12.10.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#12.10">HTTP hardening</a>
+							</div>
+					<td>
+				</tr>
+				
 	</tbody>
 </table>
 
@@ -2353,6 +2364,12 @@
 							<a class="list-group-item" href="#http-errors">http-errors</a>
 							
 							<a class="list-group-item" href="#http-fail-codes">http-fail-codes</a>
+							
+							<a class="list-group-item" href="#http-hardening (HTTP hardening)">http-hardening (HTTP hardening)</a>
+							
+							<a class="list-group-item" href="#http-hardening (Bind options)">http-hardening (Bind options)</a>
+							
+							<a class="list-group-item" href="#http-hardening (Server and default-server options)">http-hardening (Server and default-server options)</a>
 							
 							<a class="list-group-item" href="#http-request">http-request</a>
 							
@@ -4818,6 +4835,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.keyupdate-rate-limit">tune.ssl.keyupdate-rate-limit</a>
 							
+							<a class="list-group-item" href="#tune.ssl.ktls-unsafe">tune.ssl.ktls-unsafe</a>
+							
 							<a class="list-group-item" href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
 							
 							<a class="list-group-item" href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
@@ -5025,7 +5044,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5036,9 +5055,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev10-49</strong></p>
+							<p><strong>version 3.5-dev11</strong></p>
 							<p>
-								2026/10/28<br>
+								2026/11/04<br>
 								
 							</p>
 						</div>
@@ -6364,6 +6383,17 @@ Note to documentation contributors :
 					<td>
 				</tr>
 				
+			
+				
+				<tr>
+					<td><small>12.10.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#12.10">HTTP hardening</a>
+							</div>
+					<td>
+				</tr>
+				
 	</tbody>
 </table>
 
@@ -6573,6 +6603,19 @@ Here are some definitions that apply to the current version of HAProxy:
     does not require a server, such as the stats page, the cache, or some Lua
     code to implement a small application. A service usually reads a request,
     performs some operations and produces a response.
+
+  - trusted: this is usually employed to designate a network that is under
+    control of a trusted authority (local, trusted customer or partner), or any
+    connection initiated from or to such a network. Protocol checks in such
+    contexts might often be relaxed without putting the overall security at
+    risk, or remediations are expected to be quickly deployed. See the
+    &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; bind and server settings for more info.
+
+  - untrusted: this is usually employed to designate a network that is out of
+    any local or trusted authority, typically a network directly exposed to the
+    internet. Protocol checks in such contexts will generally be stricter,
+    maximizing security over legacy compatibility. See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+    bind and server settings for more info.
 </pre></div>
 <a class="anchor" id="1.3" name="1.3"></a>
 <h2 id="chapter-1.3" data-target="1.3"><small><a class="small" href="#1.3">1.3.</a></small> HTTP request</h2>
@@ -11571,6 +11614,11 @@ before considering it flood, and killing the connection. Dealing with
 KeyUpdate is cpu-expensive, and there is little reason to receive a lot of
 them. Using a value of &quot;0&quot; disables the rate limiting.
 The default value is 100.
+</pre><a class="anchor" name="tune.ssl.ktls-unsafe"></a><a class="anchor" name="3-tune.ssl.ktls-unsafe"></a><a class="anchor" name="3.2-tune.ssl.ktls-unsafe"></a><a class="anchor" name="tune.ssl.ktls-unsafe (Global section)"></a><a class="anchor" name="tune.ssl.ktls-unsafe (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ktls-unsafe"></a><a href="#3.2-tune.ssl.ktls-unsafe">tune.ssl.ktls-unsafe</a></b></div><pre class="text">Use kTLS even on OpenSSL versions affected by a bug that corrupts streams
+when a pending record's buffer is reused (fixed in 3.4.6 and 3.5.7). On
+those versions kTLS is refused, and a notice reports it when &quot;ktls on&quot; is
+parsed, unless this option is set. It has no effect on fixed versions nor
+on other SSL libraries. Disabled by default.
 </pre><a class="anchor" name="tune.ssl.lifetime"></a><a class="anchor" name="3-tune.ssl.lifetime"></a><a class="anchor" name="3.2-tune.ssl.lifetime"></a><a class="anchor" name="tune.ssl.lifetime (Global section)"></a><a class="anchor" name="tune.ssl.lifetime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.lifetime"></a><a href="#3.2-tune.ssl.lifetime">tune.ssl.lifetime</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets how long a cached SSL session may remain valid. This time is expressed
 in seconds and defaults to 300 (5 min). It is important to understand that it
 does not guarantee that sessions will last that long, because if the cache is
@@ -23244,6 +23292,13 @@ allocated on this bind line. Prefix will be concatenated to listeners
 position index on the current bind line, with character '-' as separator. See
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">guid<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#guid%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#guid%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; proxy keyword description for more information on its format.
 See also &quot;<a href="#shm-stats-file">shm-stats-file</a>&quot;.
+</pre><a class="anchor" name="http-hardening"></a><a class="anchor" name="5-http-hardening"></a><a class="anchor" name="5.1-http-hardening"></a><a class="anchor" name="http-hardening (Bind and server options)"></a><a class="anchor" name="http-hardening (Bind options)"></a><div class="keyword"><b><a class="anchor" name="http-hardening"></a><a href="#5.1-http-hardening">http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">Selects the HTTP hardening profile that applies to the connections accepted
+on this bind line. The profile is looked up by name among those declared in
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; sections (see <a href="#12.10">section 12.10</a>), which must be declared before
+the bind line. The reserved name &quot;auto&quot; is also accepted to explcitly mean
+&quot;no http-hardening profile&quot;. When no profile is set, if the source of the
+incoming connection comes from a non-local IPv4/v6 address, the &quot;untrusted&quot;
+profile will be used, otherwise the &quot;trusted&quot; profile is used by default.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.1-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Bind options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.1-id">id</a></b> <span style="color: #080">&lt;id&gt;</span></div><pre class="text">Fixes the socket ID. By default, socket IDs are automatically assigned, but
 sometimes it is more convenient to fix them to ease monitoring. This value
 must be strictly positive and unique within the listener/frontend. This
@@ -24300,6 +24355,16 @@ Specify the health-check section to use to perform check on the server.
 <pre class="text">Thanks to this option, it is possible to use a pre-server health-check
 configuration instead of using the proxy configuration. See also &quot;healthcheck
 section&quot;.
+</pre><a class="anchor" name="http-hardening"></a><a class="anchor" name="5-http-hardening"></a><a class="anchor" name="5.2-http-hardening"></a><a class="anchor" name="http-hardening (Bind and server options)"></a><a class="anchor" name="http-hardening (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="http-hardening"></a><a href="#5.2-http-hardening">http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span></div><pre class="text">May be used in the following contexts: http
+
+Selects the HTTP hardening profile that applies to the traffic exchanged with
+this server. The profile is looked up by name among those declared in
+&quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; sections (see <a href="#12.10">section 12.10</a>), which must be declared before
+the server line. It is inherited from the default-server, server template or
+&quot;<a href="#from">from</a>&quot; server when not set. The name reserved &quot;auto&quot; is also accepted to
+explicitly mean &quot;no http-hardening profile&quot; and possibly reset one inherited
+from the default server. When no profile is set, the &quot;trusted&quot; profile is
+used by default.
 </pre><a class="anchor" name="id"></a><a class="anchor" name="5-id"></a><a class="anchor" name="5.2-id"></a><a class="anchor" name="id (Bind and server options)"></a><a class="anchor" name="id (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="id"></a><a href="#5.2-id">id</a></b> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log
 
 Set a persistent ID for the server. This ID must be a 32-bit positive number
@@ -37130,14 +37195,274 @@ documentation for details.
                  <span style="color: #008">[!]</span> <span style="color: #080">&lt;match&gt;</span> <span style="color: #080">&lt;pattern&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send"></a><a class="anchor" name="12-tcp-check send"></a><a class="anchor" name="12.9-tcp-check send"></a><a class="anchor" name="tcp-check send (Other sections)"></a><a class="anchor" name="tcp-check send (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send"></a><a href="#12.9-tcp-check%20send">tcp-check send</a></b> <span style="color: #080">&lt;data&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-lf"></a><a class="anchor" name="12-tcp-check send-lf"></a><a class="anchor" name="12.9-tcp-check send-lf"></a><a class="anchor" name="tcp-check send-lf (Other sections)"></a><a class="anchor" name="tcp-check send-lf (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-lf"></a><a href="#12.9-tcp-check%20send-lf">tcp-check send-lf</a></b> <span style="color: #080">&lt;fmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-binary"></a><a class="anchor" name="12-tcp-check send-binary"></a><a class="anchor" name="12.9-tcp-check send-binary"></a><a class="anchor" name="tcp-check send-binary (Other sections)"></a><a class="anchor" name="tcp-check send-binary (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary"></a><a href="#12.9-tcp-check%20send-binary">tcp-check send-binary</a></b> <span style="color: #080">&lt;hexstring&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check send-binary-lf"></a><a class="anchor" name="12-tcp-check send-binary-lf"></a><a class="anchor" name="12.9-tcp-check send-binary-lf"></a><a class="anchor" name="tcp-check send-binary-lf (Other sections)"></a><a class="anchor" name="tcp-check send-binary-lf (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check send-binary-lf"></a><a href="#12.9-tcp-check%20send-binary-lf">tcp-check send-binary-lf</a></b> <span style="color: #080">&lt;hexfmt&gt;</span> <span style="color: #008">[comment <span style="color: #080">&lt;msg&gt;</span>]</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check set-var"></a><a class="anchor" name="12-tcp-check set-var"></a><a class="anchor" name="12.9-tcp-check set-var"></a><a class="anchor" name="tcp-check set-var (Other sections)"></a><a class="anchor" name="tcp-check set-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var"></a><a href="#12.9-tcp-check%20set-var">tcp-check set-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;expr&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check set-var-fmt"></a><a class="anchor" name="12-tcp-check set-var-fmt"></a><a class="anchor" name="12.9-tcp-check set-var-fmt"></a><a class="anchor" name="tcp-check set-var-fmt (Other sections)"></a><a class="anchor" name="tcp-check set-var-fmt (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check set-var-fmt"></a><a href="#12.9-tcp-check%20set-var-fmt">tcp-check set-var-fmt</a></b>(<span style="color: #080">&lt;var-name&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;cond&gt;</span>...]</span>) <span style="color: #080">&lt;fmt&gt;</span></div><a class="anchor" name="tcp-check"></a><a class="anchor" name="12-tcp-check"></a><a class="anchor" name="12.9-tcp-check"></a><a class="anchor" name="tcp-check (Other sections)"></a><a class="anchor" name="tcp-check (Healthchecks)"></a><a class="anchor" name="tcp-check unset-var"></a><a class="anchor" name="12-tcp-check unset-var"></a><a class="anchor" name="12.9-tcp-check unset-var"></a><a class="anchor" name="tcp-check unset-var (Other sections)"></a><a class="anchor" name="tcp-check unset-var (Healthchecks)"></a><div class="keyword"><b><a class="anchor" name="tcp-check unset-var"></a><a href="#12.9-tcp-check%20unset-var">tcp-check unset-var</a></b>(<span style="color: #080">&lt;var-name&gt;</span>)</div><pre class="text">Add a specific tcp-check rule for a &quot;<a href="#option%20tcp-check">tcp-check</a>&quot; healthcheck. The same syntax
 than the corresponding proxy's directives is used. See the corresponding proxy
 documentation for details.
+</pre></div>
+<a class="anchor" id="12.10" name="12.10"></a>
+<h2 id="chapter-12.10" data-target="12.10"><small><a class="small" href="#12.10">12.10.</a></small> HTTP hardening</h2>
+<div><pre class="text">HTTP is a very tolerant protocol. Over the years, its specifications have
+accumulated many optional features, alternate syntaxes and compatibility
+exceptions, and HAProxy, like most implementations, accepts the vast majority
+of them in order to remain interoperable with the widest possible range of
+clients and servers. This tolerance comes at a cost: some of these constructs
+are almost never met in normal traffic, and when they are, they are more often
+associated with attack attempts (request smuggling, cache poisoning, evasion of
+filtering rules, exploitation of fragile applications) than with legitimate
+use. Others are perfectly valid but may cause information to leak, such as
+internal headers or details accidentally sent to the other side. While HAProxy
+tends to be robust against these variations, passing valid certain but unusual
+constructs can needlessly expose potentially fragile internal implementations.
+
+Not every deployment needs to accept everything. A frontend exposed to the
+internet usually has good reasons to be stricter than one serving internal
+users, and a backend protecting a fragile application may only want to receive
+a narrow subset of what the protocol permits. HTTP hardening profiles make it
+possible to decide, for each exposed side, which of these uncommon or risky
+constructs are rejected, removed or adjusted, and which ones are simply let
+through as usual.
+
+A profile is declared in an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section and applied to a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+and/or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line using the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">http-hardening<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#http-hardening%20%28HTTP%20hardening%29">HTTP hardening</a></li><li><a href="#http-hardening%20%28Bind%20options%29">Bind options</a></li><li><a href="#http-hardening%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; keyword. Each control in a
+profile comes with a default, that is usually off, but may be implicit (for
+certain sections, see below), or explicit (inherited from another existing
+section). Since the same profile may be used on either side, controls are
+expressed relative to the traffic received or sent by that side, and never in
+terms of requests or responses.
+</pre><a class="anchor" name="http-hardening"></a><a class="anchor" name="12-http-hardening"></a><a class="anchor" name="12.10-http-hardening"></a><a class="anchor" name="http-hardening (Other sections)"></a><a class="anchor" name="http-hardening (HTTP hardening)"></a><div class="keyword"><b><a class="anchor" name="http-hardening"></a><a href="#12.10-http-hardening">http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[from <span style="color: #080">&lt;name2&gt;</span>]</span></div><pre class="text">  Declares a new hardening profile &lt;name&gt;. A profile can only be declared once.
+  The name &quot;auto&quot; is reserved. When &quot;<a href="#from">from</a>&quot; is used, the profile starts with the
+  settings of the already declared profile &lt;name2&gt;, otherwise it starts with
+  the defaults. A profile must be declared before being referenced by a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+  or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line or by &quot;<a href="#from">from</a>&quot;, like for &quot;defaults&quot; sections.
+
+  The profiles &quot;untrusted&quot; and &quot;trusted&quot; always exist even if never declared.
+  They may be declared once to change their settings, in which case they start
+  from their defaults. They are supported in &quot;<a href="#from">from</a>&quot; to create new profiles. The
+  reserved name &quot;auto&quot; may not be defined nor used in &quot;<a href="#from">from</a>&quot;.
+
+&lt;keyword&gt; { on | off }
+  Enables or disables the hardening check designated by &lt;keyword&gt; in the
+  profile being declared. Keywords are processed in order, so a later line
+  overrides an earlier one. The keyword &quot;all&quot; designates all options at once,
+  which allows to preset or clear everything before adjusting some of them.
+  Each option applies to requests, responses, or both. The list of known
+  keywords is presented below, and may be listed from the command line using
+  &quot;haproxy -dKcfg&quot;.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>http-hardening untrusted
+    all on
+
+http-hardening trusted
+    all off
+
+frontend www
+    bind :80 http-hardening untrusted
+
+backend app
+    server app1 192.168.0.1:80 http-hardening trusted
+</code></pre>
+</div><pre class="text">All configurable checks try to follow the same naming scheme:
+- reject-xxxx: this applies to inbound traffic (request, response or both),
+  and rejects the whole request or response if a specific condition is
+  matched. An error is returned.
+
+- delete-xxxx: this applies to inbound traffic (request, response or both),
+  after the location where &quot;<a href="#reject">reject</a>&quot; checks are applied, so that &quot;<a href="#reject">reject</a>&quot;
+  checks always have precedence over &quot;delete&quot; ones. Such rules indicate that
+  the offending element (generally a header field) will be deleted very early
+  before the HTTP message enters the core HTTP processing. It will then not
+  be seen by processing rules. These actions may be used to fix up protocol
+  glitches without rejecting traffic.
+
+- adjust-xxxx: this applies to inbound traffic (request, response or both),
+  after the location where &quot;delete&quot; checks are applied, so that &quot;delete&quot;
+  checks always have precedence over &quot;adjust&quot; ones. Such rules indicate that
+  the offending element will be adjusted or reformatted very early before the
+  HTTP message enters the core HTTP processing. It will then not be seen in
+  its original form by processing rules. These actions may be used to fix up
+  protocol glitches without rejecting traffic.
+
+- block-outgoing-xxxx: this applies to outbound traffic (request, response,
+  or both). It will refuse to emit a message (request or response) that
+  violates the designated control. This is generally used to avoid emitting
+  possibly ambiguous protocol elements to a client or a server. An error will
+  be produced.
+
+- delete-outgoing-xxxx: this applies to outbound traffic (request, response
+  or both), after the location where &quot;block-outgoing&quot; checks are applied, so
+  that &quot;block-outgoing&quot; checks always have precedence over &quot;delete-outgoing&quot;
+  ones. Such rules indicate that the offending element (generally a header
+  field) will be deleted before the HTTP message is emitted so that nothing
+  ambiguous is emitted to a client or server. These actions may be used to
+  gracefully adapt to sensitive components, and to clean up private
+  information.
+
+- adjust-outgoing-xxxx: this applies to outbound traffic (request, response
+  or both), after the location where &quot;delete-outgoing&quot; checks are applied, so
+  that &quot;delete-outgoing&quot; checks always have precedence over &quot;adjust-outgoing&quot;
+  ones. Such rules indicate that the offending element will be adjusted or
+  reformatted before the HTTP message is emitted so that nothing ambiguous is
+  emitted to a client or server. These actions may be used to gracefully
+  adapt to with sensitive components, and to clean up private information.
+
+Supported http-hardening checks and descriptions:
+
+- all
+      This keyword covers all known keywords together. It is essentially used
+      to enable or disable all checks at once.
+
+- all-reject
+      This keyword covers all keywords below whose name starts with &quot;<a href="#reject">reject</a>&quot;.
+      It may be used on the CLI or in the config to quickly disable any rule
+      that rejects traffic in case of issues.
+
+- all-delete
+      This keyword covers all keywords below whose name starts with &quot;delete&quot;.
+      It may be used on the CLI or in the config to quickly disable any rule
+      that deletes elements in case of issues.
+
+- delete-all-trailer-fields (inbound, request and response)
+      Deletes from requests and responses any trailer field, regardless of
+      its content or syntax. This is done after syntactic checks though. The
+      vast majority of public facing applications do not use trailers because
+      they are not reliable (intermediaries are allowed to drop or fold them)
+      and their presence on public networks is generally associated with
+      attack attempts. It is generally safe to drop them by default on public
+      facing listeners, and even on servers meant to deliver public contents,
+      in order to avoid any information leakage. Note that gRPC services use
+      them, in responses only.
+
+- delete-underscore-in-header-name (inbound, request and response)
+      Deletes from requests and responses any header field whose name
+      contains an underscore character ('_' or \x5C). While this character is
+      perfectly permitted, some application frameworks which create automatic
+      variables already turn the dash ('-') into an underscore in variable
+      names, leading to an ambiguity with the underscore which can result in
+      the same variable name. This could be abused to bypass some
+      access-control policy for example. No standard HTTP header uses this,
+      so it is recommended to enable on untrusted listeners. Note that this
+      applies only after &quot;reject-underscore-in-header-name&quot; was accepted.
+
+- delete-underscore-in-trailer-name (inbound, request and response)
+      Deletes from requests and responses any trailer field whose name
+      contains an underscore character ('_' or \x5C). While this character is
+      perfectly permitted, some application frameworks which create automatic
+      variables already turn the dash ('-') into an underscore in variable
+      names, leading to an ambiguity with the underscore which can result in
+      the same variable name. No standard HTTP trailer uses this, so it is
+      recommended to enable on untrusted listeners. Note that this applies
+      only after &quot;reject-underscore-in-trailer-name&quot; was accepted.
+
+- delete-unregistered-header-fields (inbound, request and response)
+      Deletes from requests and responses any header field whose name starts
+      with 'x-' (upper or lower case). These header fields are not registered
+      with IANA and are not used across the internet by standard components.
+      They may appear in untrusted requests in attacks trying to exploit some
+      backend framework weaknesses however, as well as in old browsers that
+      were trying to work around known server bugs (e.G. &quot;X-Pad&quot;). While it
+      would be risky to block such requests, it is safe and even recommended
+      to delete such headers from inbound internet requests. It is preferable
+      not to do it on responses however when applications uses such header
+      fields to report information to HAProxy.
+
+- delete-unregistered-trailer-fields (inbound, request and response)
+      Deletes from requests and responses any trailer field whose name starts
+      with 'x-' (upper or lower case). These trailer fields are not
+      registered with IANA and are not used across the internet by standard
+      components. They may appear in untrusted requests in attacks trying to
+      exploit some backend framework weaknesses however, so it is generally
+      safe and even recommended to delete such trailers from inbound internet
+      requests.
+
+- reject-content-length-leading-zero (inbound request and response)
+      Rejects requests and responses having a Content-Length header field
+      whose value contains a leading zero before a digit. Some client and
+      server applications tend to parse this as an octal value giving a
+      different body size (e.g. &quot;0300&quot; = 192). This can be used in attacks
+      trying to desynchronize a client or server from the rest of the
+      communication, and for example for cache poisionning attacks. These may
+      seldom be seen on legacy applications but not on standard components
+      found on the internet, so it is generally safe to reject them on public
+      facing listeners. It is enabled by default on untrusted connections.
+
+- reject-content-length-with-te (inbound request and response)
+      Rejects requests and responses having both a Content-Length header
+      field and a Transfer-Encoding header field. While these are permitted
+      by HTTP/1.1 (Transfer-Encoding wins), it can cause problems when the
+      message first passed through an HTTP/1.0 gateway that does not
+      recognize Transfer-Encoding, and can desynchronize this gateway from
+      the rest of the communication. These are still seldom seen in legacy
+      client or server applications, sometimes in relation with compression
+      and/or caching. While HAProxy properly normalizes them, it is generally
+      safe to reject them on public facing listeners. It is enabled by
+      default on untrusted connections.
+
+- reject-ctl-in-header-trailer (inbound request and response)
+      Rejects requests and responses which contain control characters in
+      their header or trailer field values (codes 0-8,10-31,127). These ones
+      are forbidden but have long experienced a certain tolerance among
+      implementations, which has encouraged some rare applications to use
+      them as record delimiters for example. No standard component produces
+      them on the public internet, except attacks. By default, HAProxy only
+      blocks the strictly required ones (0,10,13) and lets other ones pass,
+      which can make certain backend applications trigger connection errors.
+      As such, it is both safe and recommended to block them on public facing
+      listeners. See also the has_ctl() converter used for detecting them.
+      It is enabled by default on untrusted connections.
+
+- reject-duplicate-host-header (inbound request)
+      Rejects requests containing more than one &quot;Host&quot; header field, even if
+      valid and identical. This is recommended on untrusted listeners. Note that
+      even if not rejected, duplicate host header fields are folded into a
+      single one.
+
+- reject-header-trailer-folding (inbound request and response)
+      Rejects requests and responses which contain folded header fields or
+      trailer fields. Folding consists in having a single field span multiple
+      lines. This practice is obsoleted by modern HTTP standards, absolutely
+      not seen anymore in valid messages over the internet but might still be
+      present in a few antique internal services dealing with large cookies.
+      On untrusted networks, they are always associated with attacks trying
+      to inject headers into non-compliant components, and should be rejected
+      as a sign of break-in attempt. Note that HAProxy does not have problems
+      with them and systematically unfolds these messages before forwarding
+      them. It is enabled by default on untrusted connections.
+
+- reject-lowercase-method (inbound request)
+      Rejects requests whose method contains a lower-case character. No
+      standard HTTP method uses lower-case characters and these ones are
+      essentially used in desynchronization attack scenarios, by trying to
+      exploit different case matching schemes along the chain. This is
+      recommended on untrusted listeners. It is enabled by default on
+      untrusted connections.
+
+- reject-underscore-in-header-name (inbound, request and response)
+      Rejects requests and responses in which one header field name contains
+      an underscore character ('_' or \x5C). This character is perfectly
+      permitted, but some application frameworks which create automatic
+      variables tend to already turn the dash ('-') into an underscore in
+      variable names, leading to an ambiguity with the underscore which can
+      result in the same variable name. This could be abused to bypass some
+      access-control policy for example. No standard HTTP header uses this,
+      so it is safe to enable on untrusted listeners. See also the
+      &quot;delete-underscore-in-header-name&quot; variant.
+
+- reject-underscore-in-trailer-name (inbound, request and response)
+      Rejects requests and responses in which one tailer field name contains
+      an underscore character ('_' or \x5C). This character is perfectly
+      permitted, but some application frameworks which create automatic
+      variables tend to already turn the dash ('-') into an underscore in
+      variable names, leading to an ambiguity with the underscore which can
+      result in the same variable name. No standard HTTP trailer uses this,
+      so it is safe to enable on untrusted listeners. See also the
+      &quot;delete-underscore-in-trailer-name&quot; variant.
 </pre>
 </div>
 
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev10-49 &ndash; Configuration Manual<br>
-							<small>, 2026/10/28</small>
+							HAProxy 3.5-dev11 &ndash; Configuration Manual<br>
+							<small>, 2026/11/04</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->

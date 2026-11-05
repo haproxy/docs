@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev10-49 - Management Guide</title>
+		<title>HAProxy version 3.5-dev11 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -495,6 +495,8 @@
 							
 							<a class="list-group-item" href="#set dynamic-cookie-key backend">set dynamic-cookie-key backend</a>
 							
+							<a class="list-group-item" href="#set http-hardening">set http-hardening</a>
+							
 							<a class="list-group-item" href="#set map">set map</a>
 							
 							<a class="list-group-item" href="#set maxconn">set maxconn</a>
@@ -598,6 +600,8 @@
 							<a class="list-group-item" href="#show filter instance">show filter instance</a>
 							
 							<a class="list-group-item" href="#show filter instances">show filter instances</a>
+							
+							<a class="list-group-item" href="#show http-hardening">show http-hardening</a>
 							
 							<a class="list-group-item" href="#show info">show info</a>
 							
@@ -716,7 +720,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/03</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/04</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -727,7 +731,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev10-49</strong></p>
+							<p><strong>version 3.5-dev11</strong></p>
 							<p>
 								<br>
 								
@@ -3404,6 +3408,17 @@ This will break the existing sessions.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set anon"></a><a class="anchor" name="9-set anon"></a><a class="anchor" name="9.3-set anon"></a><a class="anchor" name="set anon (Statistics and monitoring)"></a><a class="anchor" name="set anon (Unix Socket commands)"></a><a class="anchor" name="set anon global-key"></a><a class="anchor" name="9-set anon global-key"></a><a class="anchor" name="9.3-set anon global-key"></a><a class="anchor" name="set anon global-key (Statistics and monitoring)"></a><a class="anchor" name="set anon global-key (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set anon global-key"></a><a href="#9.3-set%20anon%20global-key">set anon global-key</a></b> <span style="color: #080">&lt;key&gt;</span></div><pre class="text">This sets the global anonymizing key to &lt;key&gt;, which must be a 32-bit
 integer between 0 and 4294967295 (0 disables the global key). This command
 requires admin privilege.
+</pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set http-hardening"></a><a class="anchor" name="9-set http-hardening"></a><a class="anchor" name="9.3-set http-hardening"></a><a class="anchor" name="set http-hardening (Statistics and monitoring)"></a><a class="anchor" name="set http-hardening (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set http-hardening"></a><a href="#9.3-set%20http-hardening">set http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #800">{ <span style="color: #080">&lt;option&gt;</span> | <span style="color: #080">&lt;number&gt;</span> }</span> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables or disables the hardening option &lt;option&gt; in the http-hardening
+profile &lt;name&gt;, which may be &quot;untrusted&quot; and &quot;trusted&quot; even if not declared.
+Alternately, the option may be designated by its &lt;number&gt; which corresponds
+to the one reported by &quot;<a href="#show%20http-hardening">show http-hardening</a>&quot;. The special option &quot;all&quot;
+changes all options at once, which may be used to quickly relax or restore
+everything in an emergency. The change applies to all connections and servers
+using this profile and is not persistent: it is lost on reload, so the
+configuration must be updated as well. The profile being only updated while
+all threads are isolated, this command may momentarily delay processing. This
+command requires the admin level. See also &quot;<a href="#show%20http-hardening">show http-hardening</a>&quot; and section
+12.10 of the configuration manual.
 </pre><a class="anchor" name="set"></a><a class="anchor" name="9-set"></a><a class="anchor" name="9.3-set"></a><a class="anchor" name="set (Statistics and monitoring)"></a><a class="anchor" name="set (Unix Socket commands)"></a><a class="anchor" name="set map"></a><a class="anchor" name="9-set map"></a><a class="anchor" name="9.3-set map"></a><a class="anchor" name="set map (Statistics and monitoring)"></a><a class="anchor" name="set map (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="set map"></a><a href="#9.3-set%20map">set map</a></b> <span style="color: #080">&lt;map&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;key&gt;</span>|#<span style="color: #080">&lt;ref&gt;</span>]</span> <span style="color: #080">&lt;value&gt;</span></div><pre class="text">Modify the value corresponding to each key &lt;key&gt; in a map &lt;map&gt;. &lt;map&gt; is the
 #&lt;id&gt; or &lt;name&gt; returned by &quot;<a href="#show%20map">show map</a>&quot;. If the &lt;ref&gt; is used in place of
 &lt;key&gt;, only the entry pointed by &lt;ref&gt; is changed. The new value is &lt;value&gt;.
@@ -3988,7 +4003,28 @@ filter instances are reported: in legacy mode, the filters declared with the
 directives, which are mirrored as filter instances, may then appear. See
 <a href="#9">section 9</a> of the configuration manual for details about the filters
 declaration modes.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show info"></a><a class="anchor" name="9-show info"></a><a class="anchor" name="9.3-show info"></a><a class="anchor" name="show info (Statistics and monitoring)"></a><a class="anchor" name="show info (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show info"></a><a href="#9.3-show%20info">show info</a></b> <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[float]</span></div><pre class="text">Dump info about haproxy status on current process. If &quot;typed&quot; is passed as an
+</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show http-hardening"></a><a class="anchor" name="9-show http-hardening"></a><a class="anchor" name="9.3-show http-hardening"></a><a class="anchor" name="show http-hardening (Statistics and monitoring)"></a><a class="anchor" name="show http-hardening (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show http-hardening"></a><a href="#9.3-show%20http-hardening">show http-hardening</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span>]</span></div><pre class="text">Without argument, lists the names of all known http-hardening profiles, the
+implicit &quot;untrusted&quot; and &quot;trusted&quot; ones being marked &quot;(implicit)&quot; when they were
+not declared in the configuration. When a profile name is passed, shows each
+known hardening option of this profile, followed by the direction it applies
+to (&quot;req&quot; for requests, &quot;res&quot; for responses, &quot;-&quot; for both), and by &quot;on&quot; or
+&quot;off&quot; depending on whether it is enabled. Options that cover a set of several
+options, such as &quot;all&quot;, are not shown. See also <a href="#12.10">section 12.10</a> of the
+configuration manual.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>$ echo &quot;<a href="#show%20http-hardening">show http-hardening</a>&quot; | socat - /tmp/haproxy.sock
+custom
+trusted
+untrusted
+
+$ echo &quot;show http-hardening custom&quot; | socat - /tmp/haproxy.sock
+ 1 reject-duplicate-host-header             req on
+ 2 reject-status-out-of-range               res off
+ 3 delete-underscore-in-header-name         -   on
+</code></pre>
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show info"></a><a class="anchor" name="9-show info"></a><a class="anchor" name="9.3-show info"></a><a class="anchor" name="show info (Statistics and monitoring)"></a><a class="anchor" name="show info (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show info"></a><a href="#9.3-show%20info">show info</a></b> <span style="color: #008">[typed|json]</span> <span style="color: #008">[desc]</span> <span style="color: #008">[float]</span></div><pre class="text">Dump info about haproxy status on current process. If &quot;typed&quot; is passed as an
 optional argument, field numbers, names and types are emitted as well so that
 external monitoring products can easily retrieve, possibly aggregate, then
 report information found in fields they don't know. Each field is dumped on
@@ -6077,7 +6113,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev10-49 &ndash; Management Guide<br>
+							HAProxy 3.5-dev11 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
