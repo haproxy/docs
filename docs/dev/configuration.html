@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev11-16 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev11-27 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5044,7 +5044,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/05</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/06</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5055,7 +5055,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev11-16</strong></p>
+							<p><strong>version 3.5-dev11-27</strong></p>
 							<p>
 								2026/11/04<br>
 								
@@ -8451,11 +8451,14 @@ noted, they apply to HTTP/1 only.
     originating from untrusted clients.
 
   - &quot;invalid-version-string&quot; (both): this controls the acceptance of an HTTP
-    version that is not strictly made of one digit, a dot, and another digit.
-    It should not be needed but might help to work around scripts emittng a
-    version based on an improperly rounded floating point number, such as
-    &quot;HTTP/1.099999875&quot; or &quot;HTTP/0.9999999&quot;. This should never be needed, but
-    the risk is low (the string is rebuilt on output).
+    version received on an HTTP/1 connection that is not strictly &quot;1.0&quot; or
+    &quot;1.1&quot;. The standard says a version is made of one digit, a dot, and
+    another digit, and since no versions strings other than &quot;1.0&quot; and &quot;1.1&quot;
+    have been standardized. It should not be needed but might help to work
+    around scripts emittng a version based on an improperly rounded floating
+    point number, such as &quot;HTTP/1.2&quot;, &quot;HTTP/1.099999875&quot; or &quot;HTTP/0.9999999&quot;.
+    This should never be needed, but the risk is low (the string is rebuilt
+    on output).
 
   - &quot;invalid-websocket-key&quot; (both): this controls the acceptance of WebSocket
     protocol Upgrade requests lacking a valid &quot;sec-websocket-key&quot; header, or
@@ -37478,7 +37481,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev11-16 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev11-27 &ndash; Configuration Manual<br>
 							<small>, 2026/11/04</small>
 						</div>
 					</div>
