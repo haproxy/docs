@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev11-28 - Management Guide</title>
+		<title>HAProxy version 3.5-dev11-56 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -423,6 +423,11 @@
 							<a class="list-group-item" href="#httpclient">httpclient</a>
 							
                                                                 </div> <!-- /letter -->
+								<div class="letter" id="letter-K"><h4>K</h4>
+								
+							<a class="list-group-item" href="#kill">kill</a>
+							
+                                                                </div> <!-- /letter -->
 								<div class="letter" id="letter-M"><h4>M</h4>
 								
 							<a class="list-group-item" href="#mcli-debug-mode">mcli-debug-mode</a>
@@ -720,7 +725,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/06</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/09</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -731,7 +736,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev11-28</strong></p>
+							<p><strong>version 3.5-dev11-56</strong></p>
 							<p>
 								<br>
 								
@@ -2585,6 +2590,16 @@ the pattern marking the end of the payload is part of this limit.
 When entering a payload while in interactive mode, the prompt will change from
 &quot;&gt; &quot; to &quot;+ &quot;.
 
+Most commands should run rapidly before reporting their final status. Some
+commands though may take longer to wait for external events. By default, the
+handler is interrupted as soon as the CLI client disconnects which is the
+safest behavior. However, this causes issues with utilities such as 'socat'
+which close their output channel only, as haproxy is unable to differentiate
+between a full and a partial close. These commands may support an extra
+argument to run in the so-called uninterruptible execution mode. To prevent
+excessive usage, the number of concurrent uninterruptible jobs is fixed to a
+low value and extra requests will be rejected with an error.
+
 It is important to understand that when multiple haproxy processes are started
 on the same sockets, any process may pick up the request and will output its
 own stats.
@@ -3320,6 +3335,11 @@ timeout, etc.), the status code will be set to 0.
 
 The --htx option allow to use the haproxy internal htx representation using
 the htx_dump() function, mainly used for debugging.
+</pre><a class="anchor" name="kill"></a><a class="anchor" name="9-kill"></a><a class="anchor" name="9.3-kill"></a><a class="anchor" name="kill (Statistics and monitoring)"></a><a class="anchor" name="kill (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="kill"></a><a href="#9.3-kill">kill</a></b> <span style="color: #080">&lt;target&gt;</span></div><pre class="text">Interrupts execution of currently running CLI commands. The mandatory
+argument acts as a filter on which jobs to stop. Only the value &quot;unintr&quot; is
+supported, which selects commands running as an uninterruptible job.
+
+This command requires level &quot;admin&quot;.
 </pre><a class="anchor" name="new"></a><a class="anchor" name="9-new"></a><a class="anchor" name="9.3-new"></a><a class="anchor" name="new (Statistics and monitoring)"></a><a class="anchor" name="new (Unix Socket commands)"></a><a class="anchor" name="new ssl"></a><a class="anchor" name="9-new ssl"></a><a class="anchor" name="9.3-new ssl"></a><a class="anchor" name="new ssl (Statistics and monitoring)"></a><a class="anchor" name="new ssl (Unix Socket commands)"></a><a class="anchor" name="new ssl ca-file"></a><a class="anchor" name="9-new ssl ca-file"></a><a class="anchor" name="9.3-new ssl ca-file"></a><a class="anchor" name="new ssl ca-file (Statistics and monitoring)"></a><a class="anchor" name="new ssl ca-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="new ssl ca-file"></a><a href="#9.3-new%20ssl%20ca-file">new ssl ca-file</a></b> <span style="color: #080">&lt;cafile&gt;</span></div><pre class="text">Create a new empty CA file tree entry to be filled with a set of CA
 certificates and added to a crt-list. This command should be used in
 combination with &quot;<a href="#set%20ssl%20ca-file">set ssl ca-file</a>&quot;, &quot;<a href="#add%20ssl%20ca-file">add ssl ca-file</a>&quot; and &quot;<a href="#add%20ssl%20crt-list">add ssl crt-list</a>&quot;.
@@ -3909,7 +3929,7 @@ total response length was 213 bytes when the error was detected, and the
 error was at byte 23. This is the slash ('/') in header name
 &quot;header/bizarre&quot;, which is not a valid HTTP character for a header name.
 </code></pre>
-</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show events"></a><a class="anchor" name="9-show events"></a><a class="anchor" name="9.3-show events"></a><a class="anchor" name="show events (Statistics and monitoring)"></a><a class="anchor" name="show events (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show events"></a><a href="#9.3-show%20events">show events</a></b>  <span style="color: #008">[-<span style="color: #008">[wn0rs]</span>*]</span> <span style="color: #008">[<span style="color: #080">&lt;sink&gt;</span>]</span></div><pre class="text">With no option, this lists all known event sinks and their types. Arguments
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show events"></a><a class="anchor" name="9-show events"></a><a class="anchor" name="9.3-show events"></a><a class="anchor" name="show events (Statistics and monitoring)"></a><a class="anchor" name="show events (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show events"></a><a href="#9.3-show%20events">show events</a></b>  <span style="color: #008">[-<span style="color: #008">[wun0rs]</span>*]</span> <span style="color: #008">[<span style="color: #080">&lt;sink&gt;</span>]</span></div><pre class="text">With no option, this lists all known event sinks and their types. Arguments
 not starting with &quot;-&quot; are taken for a sink name, whose events will be dumped
 if it is of type buffer. The command also supports a variety of options
 beginning with &quot;-&quot;, and optionally grouped together behind the same &quot;-&quot;:
@@ -3945,8 +3965,19 @@ beginning with &quot;-&quot;, and optionally grouped together behind the same &q
       events and display them. It is possible to stop the operation by
       entering any input (which will be discarded) or by closing the session.
       Note that using &quot;echo show events -w | socat ...&quot; does close the input
-      and interrupt the dump.
-</pre><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show fd"></a><a class="anchor" name="9-show fd"></a><a class="anchor" name="9.3-show fd"></a><a class="anchor" name="show fd (Statistics and monitoring)"></a><a class="anchor" name="show fd (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show fd"></a><a href="#9.3-show%20fd">show fd</a></b> <span style="color: #008">[-!plcfbs]</span>* <span style="color: #008">[<span style="color: #008">[<span style="color: #080">&lt;tgid&gt;</span>]</span>/<span style="color: #008">[<span style="color: #080">&lt;fd&gt;</span>]</span> | <span style="color: #080">&lt;fd&gt;</span>]</span></div><pre class="text">Dump the list of either all open file descriptors or just the one number &lt;fd&gt;
+      and interrupt the dump; see '-u' option instead in this case.
+
+  -u  executes the command as an uninterruptible job. This is useful when
+      using utilities such as 'socat' to continue running after a half-close
+      of the CLI input. The command will still be stopped in this case if a
+      send error occurs while dumping new events or if no events are detected
+      after a delay based on the configured stats timeout.
+</pre><div class="separator">
+<span class="label label-success">Example :</span>
+<pre class="prettyprint">
+<code>$ echo &quot;show events -u buf0&quot; | socat -t10 - /var/run/haproxy.sock
+</code></pre>
+</div><a class="anchor" name="show"></a><a class="anchor" name="9-show"></a><a class="anchor" name="9.3-show"></a><a class="anchor" name="show (Statistics and monitoring)"></a><a class="anchor" name="show (Unix Socket commands)"></a><a class="anchor" name="show fd"></a><a class="anchor" name="9-show fd"></a><a class="anchor" name="9.3-show fd"></a><a class="anchor" name="show fd (Statistics and monitoring)"></a><a class="anchor" name="show fd (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="show fd"></a><a href="#9.3-show%20fd">show fd</a></b> <span style="color: #008">[-!plcfbs]</span>* <span style="color: #008">[<span style="color: #008">[<span style="color: #080">&lt;tgid&gt;</span>]</span>/<span style="color: #008">[<span style="color: #080">&lt;fd&gt;</span>]</span> | <span style="color: #080">&lt;fd&gt;</span>]</span></div><pre class="text">Dump the list of either all open file descriptors or just the one number &lt;fd&gt;
 if specified. The form &quot;&lt;tgid&gt;/&lt;fd&gt;&quot; is also accepted, where either side may
 be empty as a wildcard (&quot;/&lt;fd&gt;&quot; for fd &lt;fd&gt; across thread groups, &quot;&lt;tgid&gt;/&quot;
 for all fds of &lt;tgid&gt;). The &lt;tgid&gt; is currently parsed but ignored, pending
@@ -5390,9 +5421,11 @@ ssl ocsp-response&quot; commands.
 If the received OCSP response is valid and was properly inserted into the
 local tree, its contents will be displayed on the standard output. The format
 is the same as the one described in &quot;<a href="#show%20ssl%20ocsp-response">show ssl ocsp-response</a>&quot;.
-</pre><a class="anchor" name="wait"></a><a class="anchor" name="9-wait"></a><a class="anchor" name="9.3-wait"></a><a class="anchor" name="wait (Statistics and monitoring)"></a><a class="anchor" name="wait (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="wait"></a><a href="#9.3-wait">wait</a></b> <span style="color: #800">{ -h | <span style="color: #080">&lt;delay&gt;</span> }</span> <span style="color: #008">[<span style="color: #080">&lt;condition&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;args&gt;</span>...]</span>]</span></div><pre class="text">In its simplest form without any condition, this simply waits for the
+</pre><a class="anchor" name="wait"></a><a class="anchor" name="9-wait"></a><a class="anchor" name="9.3-wait"></a><a class="anchor" name="wait (Statistics and monitoring)"></a><a class="anchor" name="wait (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="wait"></a><a href="#9.3-wait">wait</a></b> <span style="color: #800">{ -h | <span style="color: #008">[-u]</span> <span style="color: #080">&lt;delay&gt;</span> }</span> <span style="color: #008">[<span style="color: #080">&lt;condition&gt;</span> <span style="color: #008">[<span style="color: #080">&lt;args&gt;</span>...]</span>]</span></div><pre class="text">In its simplest form without any condition, this simply waits for the
 requested delay before continuing. This can be used to collect metrics around
 a specific interval.
+
+Passing &quot;-h&quot; as the first or second argument provides the command's usage.
 
 With a condition and optional arguments, the command will wait for the
 specified condition to be satisfied, to unrecoverably fail, or to remain
@@ -5427,19 +5460,24 @@ unsatisfied for the whole &lt;delay&gt; duration. The supported conditions are:
   the delay.
 
 The default unit for the delay is milliseconds, though other units are
-accepted if suffixed with the usual timer units (us, ms, s, m, h, d). When
-used with the 'socat' utility, do not forget to extend socat's close timeout
-to cover the wait time. Passing &quot;-h&quot; as the first or second argument provides
-the command's usage.
+accepted if suffixed with the usual timer units (us, ms, s, m, h, d).
+
+By default, the command handler is interrupted as soon as the CLI input has
+been closed which is the safest behavior. However, this causes issues with
+utilities such as 'socat' which close their output channel only, as haproxy
+is unable to differentiate between a full and a partial closure. Extra
+argument '-u' can be specified to run the command in uninterruptible
+execution mode. This is especially useful when using 'socat', at the
+condition of the 'socat' close timeout being extended to cover the wait time.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
-<code>$ socat -t20 /path/to/socket - &lt;&lt;&lt; &quot;show activity; wait 10s; show activity&quot;
+<code>$ socat -t20 /path/to/socket - &lt;&lt;&lt; &quot;show activity; wait -u 10s; show activity&quot;
 
 $ socat -t5 /path/to/socket - &lt;&lt;&lt; &quot;
     disable server px/srv1
     shutdown sessions server px/srv1
-    wait 2s srv-removable px/srv1
+    wait -u 2s srv-removable px/srv1
     del server px/srv1&quot;
 </code></pre>
 </div></div>
@@ -6113,7 +6151,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev11-28 &ndash; Management Guide<br>
+							HAProxy 3.5-dev11-56 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
