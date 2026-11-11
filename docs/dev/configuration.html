@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev11-56 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev11-85 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5044,7 +5044,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/09</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/10</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5055,7 +5055,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev11-56</strong></p>
+							<p><strong>version 3.5-dev11-85</strong></p>
 							<p>
 								2026/11/04<br>
 								
@@ -21545,8 +21545,8 @@ passed through by traffic coming from public hosts.
 </table></div>
 <pre class="text">Performs normalization of the request's URI.
 
-URI normalization in HAProxy 2.4 is currently available as an experimental
-technical preview. As such, it requires the global directive
+URI normalization is available as an experimental technical preview since
+HAProxy 2.4. As such, it requires the global directive
 'expose-experimental-directives' first to be able to invoke it. You should be
 prepared that the behavior of normalizers might change to fix possible
 issues, possibly breaking proper request processing in your infrastructure.
@@ -25602,6 +25602,11 @@ timeout and retry mechanism. Starting TCP fallback does not consume a retry
 or switch the query between A and AAAA. A truncated response received over
 TCP follows the normal resolver error path and does not start another
 fallback.
+
+The optional [param*] arguments are only supported with a stream address
+prefix: for a datagram nameserver (&quot;udp@&quot;, &quot;udp4@&quot;, &quot;udp6@&quot;, &quot;dgram+&quot; or a
+plain address), any argument following the address is ignored and a
+warning is emitted during the configuration parsing.
 
 If a stream protocol address prefix is used, the nameserver will be
 considered as a stream server (TCP for instance) and
@@ -37481,7 +37486,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev11-56 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev11-85 &ndash; Configuration Manual<br>
 							<small>, 2026/11/04</small>
 						</div>
 					</div>
