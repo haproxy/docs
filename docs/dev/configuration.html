@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev11-87 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev12-37 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -758,6 +758,17 @@
 					<td>
 							<div class="tab">
 							<a href="#7.4">Pre-defined ACLs</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>7.5.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#7.5">Secure filtering of HTTP requests</a>
 							</div>
 					<td>
 				</tr>
@@ -1593,6 +1604,10 @@
 							
 							<a class="list-group-item" href="#bs.debug_str">bs.debug_str</a>
 							
+							<a class="list-group-item" href="#bs.hdng.fixed">bs.hdng.fixed</a>
+							
+							<a class="list-group-item" href="#bs.hdng.found">bs.hdng.found</a>
+							
 							<a class="list-group-item" href="#bs.id">bs.id</a>
 							
 							<a class="list-group-item" href="#bs.rst_code">bs.rst_code</a>
@@ -2237,6 +2252,10 @@
 							
 							<a class="list-group-item" href="#fs.debug_str">fs.debug_str</a>
 							
+							<a class="list-group-item" href="#fs.hdng.fixed">fs.hdng.fixed</a>
+							
+							<a class="list-group-item" href="#fs.hdng.found">fs.hdng.found</a>
+							
 							<a class="list-group-item" href="#fs.id">fs.id</a>
 							
 							<a class="list-group-item" href="#fs.rst_code">fs.rst_code</a>
@@ -2296,6 +2315,8 @@
 							<a class="list-group-item" href="#hash-preserve-affinity">hash-preserve-affinity</a>
 							
 							<a class="list-group-item" href="#hash-type">hash-type</a>
+							
+							<a class="list-group-item" href="#hdng_rej_name">hdng_rej_name</a>
 							
 							<a class="list-group-item" href="#hdr">hdr</a>
 							
@@ -2977,6 +2998,8 @@
 							<a class="list-group-item" href="#on-marked-down">on-marked-down</a>
 							
 							<a class="list-group-item" href="#on-marked-up">on-marked-up</a>
+							
+							<a class="list-group-item" href="#on-unreliable-rules">on-unreliable-rules</a>
 							
 							<a class="list-group-item" href="#option">option</a>
 							
@@ -5044,7 +5067,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/10</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/13</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5055,9 +5078,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev11-87</strong></p>
+							<p><strong>version 3.5-dev12-37</strong></p>
 							<p>
-								2026/11/04<br>
+								2026/11/12<br>
 								
 							</p>
 						</div>
@@ -5798,6 +5821,17 @@ Note to documentation contributors :
 					<td>
 							<div class="tab">
 							<a href="#7.4">Pre-defined ACLs</a>
+							</div>
+					<td>
+				</tr>
+				
+			
+				
+				<tr>
+					<td><small>7.5.</small></td>
+					<td>
+							<div class="tab">
+							<a href="#7.5">Secure filtering of HTTP requests</a>
 							</div>
 					<td>
 				</tr>
@@ -8068,6 +8102,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#ocsp-update.mindelay">ocsp-update.mindelay</a>
    - <a href="#ocsp-update.httpproxy">ocsp-update.httpproxy</a>
    - <a href="#ocsp-update.mode">ocsp-update.mode</a>
+   - <a href="#on-unreliable-rules">on-unreliable-rules</a>
    - <a href="#pidfile">pidfile</a>
    - <a href="#pp2-never-send-local">pp2-never-send-local</a>
    - <a href="#presetenv">presetenv</a>
@@ -9459,6 +9494,18 @@ timeout value is specified in milliseconds by default, but can be in any
 other unit if the number is suffixed by the unit, as explained at the top
 of this document. It defaults to 10s. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
 information about the auto update mechanism.
+</pre><a class="anchor" name="on-unreliable-rules"></a><a class="anchor" name="3-on-unreliable-rules"></a><a class="anchor" name="3.1-on-unreliable-rules"></a><a class="anchor" name="on-unreliable-rules (Global section)"></a><a class="anchor" name="on-unreliable-rules (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="on-unreliable-rules"></a><a href="#3.1-on-unreliable-rules">on-unreliable-rules</a></b> <span style="color: #800">{ notice | warn | ignore }</span></div><pre class="text">Sets how to report the &quot;<a href="#http-request">http-request</a>&quot; access control rules which are easy to
+bypass because their condition relies on a match on the path, the URL, the
+query string or the parameters they convey (e.g. &quot;deny if { path_beg /x }&quot;).
+With &quot;notice&quot;, which is the default, a notice message will be emitted for
+each such rule. With &quot;warn&quot;, a warning is emitted for each of them, which
+when combined with &quot;<a href="#zero-warning">zero-warning</a>&quot;, may allow to detect them before deploying
+the configuration. Finally, &quot;ignore&quot; may be used to silence all of them, for
+example to reduce the noise when migrating from an old configuration. The
+default could change to &quot;warn&quot; in a future version. Rules marked with the
+&quot;no-warn&quot; keyword are assumed to be well understood and are never reported.
+See <a href="#7.5">section 7.5</a> &quot;Secure filtering of HTTP requests&quot; for more information,
+and how to write reliable rules.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global section)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
@@ -11453,13 +11500,11 @@ try to change it unless instructed to do so in order to try to address
 specific issues. Such a setting should not be left in the configuration
 across version upgrades because its optimal value may evolve over time.
 </pre><a class="anchor" name="tune.runqueue-depth"></a><a class="anchor" name="3-tune.runqueue-depth"></a><a class="anchor" name="3.2-tune.runqueue-depth"></a><a class="anchor" name="tune.runqueue-depth (Global section)"></a><a class="anchor" name="tune.runqueue-depth (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.runqueue-depth"></a><a href="#3.2-tune.runqueue-depth">tune.runqueue-depth</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum amount of task that can be processed at once when running
-tasks. The default value depends on the number of threads but sits between 35
-and 280, which tend to show the highest request rates and lowest latencies.
-Increasing it may incur latency when dealing with I/Os, making it too small
-can incur extra overhead. Higher thread counts benefit from lower values.
-When experimenting with much larger values, it may be useful to also enable
-tune.sched.low-latency and possibly tune.fd.edge-triggered to limit the
-maximum latency to the lowest possible.
+tasks. The default value is 280, which tends to show high request rates and
+low latencies. Increasing it may incur latency when dealing with I/Os, making
+it too small can incur extra overhead. When experimenting with much larger
+values, it may be useful to also enable tune.sched.low-latency and possibly
+tune.fd.edge-triggered to limit the maximum latency to the lowest possible.
 </pre><a class="anchor" name="tune.sched.low-latency"></a><a class="anchor" name="3-tune.sched.low-latency"></a><a class="anchor" name="3.2-tune.sched.low-latency"></a><a class="anchor" name="tune.sched.low-latency (Global section)"></a><a class="anchor" name="tune.sched.low-latency (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.sched.low-latency"></a><a href="#3.2-tune.sched.low-latency">tune.sched.low-latency</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the low-latency task scheduler. By default
 HAProxy processes tasks from several classes one class at a time as this is
 the most efficient. But when running with large values of tune.runqueue-depth
@@ -12502,6 +12547,15 @@ May be used in the following contexts: tcp, http, log
               to raise it to 3 or even 4. This algorithm is also known as
               the Power of Two Random Choices and is described here :
               http://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf
+
+              The servers are drawn on the consistent hash ring, where each
+              server gets 16 points per unit of weight. With the default
+              weight of 1, the share of the ring of each server is uneven:
+              in a farm of 32 servers it varies between about 2% and 4%,
+              and the servers with a larger share are drawn more often.
+              Using the same higher weight for all servers, such as 100,
+              makes the shares almost even and the distribution closer to a
+              uniform draw, at the expense of a larger tree.
 
               For backends in LOG mode, the number of draws is ignored and
               a single random is picked since there is no notion of server
@@ -15003,6 +15057,18 @@ The first keyword after &quot;<a href="#http-request">http-request</a>&quot; in 
 optionally followed by a varying number of arguments for the action. The
 supported actions and their respective syntaxes are enumerated in <a href="#4.3">section 4.3</a>
 &quot;Actions&quot; (look for actions which tick &quot;HTTP Req&quot;).
+
+Actions used to block requests (&quot;<a href="#auth">auth</a>&quot;, &quot;<a href="#deny">deny</a>&quot;, &quot;<a href="#reject">reject</a>&quot;, &quot;<a href="#silent-drop">silent-drop</a>&quot; and
+&quot;<a href="#tarpit">tarpit</a>&quot;) are reported when their condition may be true because of a
+pattern matching the path, the URL, the query string or the parameters they
+convey (e.g. &quot;deny if { path_beg /admin }&quot;), because such rules are easy to
+bypass. They are summarized in a notice by default, or reported as warnings
+depending on the global &quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot; setting. Please read section
+7.5 &quot;Secure filtering of HTTP requests&quot; to learn how to write reliable rules.
+When such a rule is only meant as an extra filter, it may be excluded from
+this report by placing the &quot;no-warn&quot; keyword right before &quot;if&quot; or &quot;unless&quot;
+(e.g. &quot;http-request deny no-warn if { ... }&quot;). This keyword is only
+supported by these actions.
 
 This directive is only available from named defaults sections, not anonymous
 ones. Rules defined in the defaults section are evaluated before ones in the
@@ -21164,7 +21230,7 @@ a line before this directive.
 
 Note that a very similar but independent protocol is under development. See
 https://www.ietf.org/archive/id/draft-bt-httpbis-reverse-http-00.html.
-</pre><a class="anchor" name="auth"></a><a class="anchor" name="4-auth"></a><a class="anchor" name="4.4-auth"></a><a class="anchor" name="auth (Proxies)"></a><a class="anchor" name="auth (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="auth"></a><a href="#4.4-auth">auth</a></b> <span style="color: #008">[realm <span style="color: #080">&lt;realm&gt;</span>]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="auth"></a><a class="anchor" name="4-auth"></a><a class="anchor" name="4.4-auth"></a><a class="anchor" name="auth (Proxies)"></a><a class="anchor" name="auth (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="auth"></a><a href="#4.4-auth">auth</a></b> <span style="color: #008">[realm <span style="color: #080">&lt;realm&gt;</span>]</span> <span style="color: #008">[no-warn]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -21181,6 +21247,15 @@ one with a basic authentication challenge for realm &quot;&lt;realm&gt;&quot;. F
 responses, the same is done on the Proxy-Authenticate header. If the error
 message must not be altered, consider to use &quot;http-request return&quot; rule
 instead.
+
+Except in specific cases, this rule shouldn't be used to intercept access to
+resources that may be aliased (path, query string etc), as it will not catch
+all possible forms. See 7.5 &quot;Secure filtering of HTTP requests&quot; for details.
+If this rule is used in an http-request statement conditionned by an ACL
+involving inputs that may be subject to aliasing, a warning will be emitted
+unless the &quot;no-warn&quot; option is placed before the &quot;if&quot; or &quot;unless&quot; keyword.
+The warning may be globally adjusted using the global &quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot;
+directive.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -21295,7 +21370,7 @@ HTTP request or response.
 </pre><a class="anchor" name="deny"></a><a class="anchor" name="4-deny"></a><a class="anchor" name="4.4-deny"></a><a class="anchor" name="deny (Proxies)"></a><a class="anchor" name="deny (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="deny"></a><a href="#4.4-deny">deny</a></b> <span style="color: #008">[ <span style="color: #800">{ status | deny_status }</span> <span style="color: #080">&lt;code&gt;</span> ]</span> <span style="color: #008">[ content-type <span style="color: #080">&lt;type&gt;</span> ]</span>
      <span style="color: #008">[ <span style="color: #800">{ default-errorfiles | errorfile <span style="color: #080">&lt;file&gt;</span> | errorfiles <span style="color: #080">&lt;name&gt;</span> |
        file <span style="color: #080">&lt;file&gt;</span> | lf-file <span style="color: #080">&lt;file&gt;</span> | string <span style="color: #080">&lt;str&gt;</span> | lf-string <span style="color: #080">&lt;fmt&gt;</span> }</span> ]</span>
-     <span style="color: #008">[ hdr <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> ]</span>*</div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+     <span style="color: #008">[ hdr <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;fmt&gt;</span> ]</span>* <span style="color: #008">[no-warn]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -21309,6 +21384,15 @@ the argument &quot;default-errorfiles&quot; is implied. It means &quot;deny [den
 action is final, i.e. no further rules from the same rule set are evaluated
 for the current section. See also the &quot;<a href="#return">return</a>&quot; action for the advanced
 syntax.
+
+Except in specific cases, this rule shouldn't be used to intercept access to
+resources that may be aliased (path, query string etc), as it will not catch
+all possible forms. See 7.5 &quot;Secure filtering of HTTP requests&quot; for details.
+If this rule is used in an http-request statement conditionned by an ACL
+involving inputs that may be subject to aliasing, a warning will be emitted
+unless the &quot;no-warn&quot; option is placed before the &quot;if&quot; or &quot;unless&quot; keyword.
+The warning may be globally adjusted using the global &quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot;
+directive.
 </pre><a class="anchor" name="dgram-drop"></a><a class="anchor" name="4-dgram-drop"></a><a class="anchor" name="4.4-dgram-drop"></a><a class="anchor" name="dgram-drop (Proxies)"></a><a class="anchor" name="dgram-drop (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="dgram-drop"></a><a href="#4.4-dgram-drop">dgram-drop</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
@@ -21543,7 +21627,9 @@ passed through by traffic coming from public hosts.
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
-<pre class="text">Performs normalization of the request's URI.
+<pre class="text">Performs normalization of the request's URI. Please read <a href="#7.5">section 7.5</a>, &quot;Secure
+filtering of HTTP requests&quot; before engaging into request normalization if the
+goal is to perform access control.
 
 URI normalization is available as an experimental technical preview since
 HAProxy 2.4. As such, it requires the global directive
@@ -21721,7 +21807,7 @@ interrupted so that no payload can be forwarded to the client. This may cause
 some connections to be closed on HTTP/1. This action is final, i.e. no
 further rules from the same rule set are evaluated for the current section.
 See the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">redirect<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#redirect%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li><li><a href="#redirect%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li></ul></span>&quot; keyword for the rule's syntax.
-</pre><a class="anchor" name="reject"></a><a class="anchor" name="4-reject"></a><a class="anchor" name="4.4-reject"></a><a class="anchor" name="reject (Proxies)"></a><a class="anchor" name="reject (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="reject"></a><a href="#4.4-reject">reject</a></b></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</pre><a class="anchor" name="reject"></a><a class="anchor" name="4-reject"></a><a class="anchor" name="4.4-reject"></a><a class="anchor" name="reject (Proxies)"></a><a class="anchor" name="reject (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="reject"></a><a href="#4.4-reject">reject</a></b> <span style="color: #008">[no-warn]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -21749,6 +21835,15 @@ with the &quot;<a href="#wait-for-body">wait-for-body</a>&quot; action.
 This action can also be used in &quot;<a href="#quic-initial">quic-initial</a>&quot; rules. The newly opened QUIC
 connection is immediately closed without any SSL handshake processing and the
 client is notified via a CONNECTION_REFUSED error code.
+
+Except in specific cases, this rule shouldn't be used to intercept access to
+resources that may be aliased (path, query string etc), as it will not catch
+all possible forms. See 7.5 &quot;Secure filtering of HTTP requests&quot; for details.
+If this rule is used in an http-request statement conditionned by an ACL
+involving inputs that may be subject to aliasing, a warning will be emitted
+unless the &quot;no-warn&quot; option is placed before the &quot;if&quot; or &quot;unless&quot; keyword.
+The warning may be globally adjusted using the global &quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot;
+directive.
 </pre><a class="anchor" name="replace-header"></a><a class="anchor" name="4-replace-header"></a><a class="anchor" name="4.4-replace-header"></a><a class="anchor" name="replace-header (Proxies)"></a><a class="anchor" name="replace-header (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="replace-header"></a><a href="#4.4-replace-header">replace-header</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;match-regex&gt;</span> <span style="color: #080">&lt;replace-fmt&gt;</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -22578,7 +22673,7 @@ follow runtime updates performed through the stats socket.
 http-request set-vars-from-map(txn,/etc/haproxy/vars.map)
 http-request set-vars-from-map(req,/etc/haproxy/limits.map,int)
 </code></pre>
-</div><a class="anchor" name="silent-drop"></a><a class="anchor" name="4-silent-drop"></a><a class="anchor" name="4.4-silent-drop"></a><a class="anchor" name="silent-drop (Proxies)"></a><a class="anchor" name="silent-drop (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="silent-drop"></a><a href="#4.4-silent-drop">silent-drop</a></b> <span style="color: #008">[ rst-ttl <span style="color: #080">&lt;ttl&gt;</span> ]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+</div><a class="anchor" name="silent-drop"></a><a class="anchor" name="4-silent-drop"></a><a class="anchor" name="4.4-silent-drop"></a><a class="anchor" name="silent-drop (Proxies)"></a><a class="anchor" name="silent-drop (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="silent-drop"></a><a href="#4.4-silent-drop">silent-drop</a></b> <span style="color: #008">[ rst-ttl <span style="color: #080">&lt;ttl&gt;</span> ]</span> <span style="color: #008">[no-warn]</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered">&nbsp;</td></tr>
 </table></div>
@@ -22603,6 +22698,15 @@ the client. Future packets from the client will then be dropped already by
 front equipment. These local RSTs protect local resources, but not the
 client's. This must not be used unless the consequences of doing this are
 fully understood.
+
+Except in specific cases, this rule shouldn't be used to intercept access to
+resources that may be aliased (path, query string etc), as it will not catch
+all possible forms. See 7.5 &quot;Secure filtering of HTTP requests&quot; for details.
+If this rule is used in an http-request statement conditionned by an ACL
+involving inputs that may be subject to aliasing, a warning will be emitted
+unless the &quot;no-warn&quot; option is placed before the &quot;if&quot; or &quot;unless&quot; keyword.
+The warning may be globally adjusted using the global &quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot;
+directive.
 </pre><a class="anchor" name="strict-mode"></a><a class="anchor" name="4-strict-mode"></a><a class="anchor" name="4.4-strict-mode"></a><a class="anchor" name="strict-mode (Proxies)"></a><a class="anchor" name="strict-mode (Alphabetically sorted actions reference)"></a><div class="keyword"><b><a class="anchor" name="strict-mode"></a><a href="#4.4-strict-mode">strict-mode</a></b> <span style="color: #800">{ on | off }</span></div><div><p>  Usable in :</p><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
 <thead><tr><th>QUIC Ini</th><th>TCP RqCon</th><th>RqSes</th><th>RqCnt</th><th>RsCnt</th><th>HTTP Req</th><th>Res</th><th>Aft</th></tr></thead>
 <tr><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered">&nbsp;</td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td><td class="pagination-centered"><img src="../css/check.png" alt="X" title="yes" /></td></tr>
@@ -26534,6 +26638,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-fix_is_valid">fix_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-fix_tag_value">fix_tag_value(tag)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-has_ctl">has_ctl([mask])</a></td><td >binary</td><td >boolean</td></tr>
+<tr><td ><a href="#7-hdng_rej_name">hdng_rej_name</a></td><td >integer</td><td >string</td></tr>
 <tr><td ><a href="#7-hex">hex</a></td><td >binary</td><td >string</td></tr>
 <tr><td ><a href="#7-hex2i">hex2i</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-hmac">hmac(algorithm,key)</a></td><td >binary</td><td >binary</td></tr>
@@ -26550,8 +26655,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ip.proto">ip.proto</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ip.src">ip.src</a></td><td >binary</td><td >address</td></tr>
 <tr><td ><a href="#7-ip.tos">ip.tos</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-ip.ttl">ip.ttl</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-ip.ttl">ip.ttl</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ip.ver">ip.ver</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ipmask">ipmask(mask4[,mask6])</a></td><td >address</td><td >address</td></tr>
 <tr><td ><a href="#7-json">json([input-code])</a></td><td >string</td><td >string</td></tr>
@@ -26571,8 +26676,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-map">map(map_name[,default_value])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-map_match">map_match(map_name[,default_value])</a></td><td >_match_</td><td >string</td></tr>
 <tr><td ><a href="#7-map_match_output">map_match_output(map_name[,default_value])</a></td><td >_match_</td><td >_output_</td></tr>
-<tr><td ><a href="#7-mod">mod(value)</a></td><td >integer</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-mod">mod(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
 <tr><td ><a href="#7-ms_ltime">ms_ltime(format[,offset])</a></td><td >integer</td><td >string</td></tr>
@@ -26592,8 +26697,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-reverse_dom">reverse_dom</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_field">rfc7239_field(field)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
-<tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
 <tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
 <tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_np">rfc7239_np</a></td><td >integer/str</td><td >string</td></tr>
@@ -26613,8 +26718,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_clr_gpc0">table_clr_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_clr_gpc1">table_clr_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cnt">table_conn_cnt([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_glitch_cnt">table_glitch_cnt([table])</a></td><td >any</td><td >integer</td></tr>
@@ -26634,8 +26739,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_http_req_cnt">table_http_req_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_req_rate">table_http_req_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_idle">table_idle([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_kbytes_in">table_kbytes_in([table])</a></td><td >any</td><td >integer</td></tr>
@@ -26655,8 +26760,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.options_list">tcp.options_list</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-tcp.seq">tcp.seq</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
@@ -27127,7 +27232,22 @@ http-request deny if { req.fhdr(referer),has_ctl(0x100002401) }
 <span class="comment"># reject presence of any control char but tab in any HTTP header value</span>
 http-request deny if { req.hdr(),has_ctl }
 </code></pre>
-</div><a class="anchor" name="hex"></a><a class="anchor" name="7-hex"></a><a class="anchor" name="7.3.1-hex"></a><a class="anchor" name="hex (Using ACLs and fetching samples)"></a><a class="anchor" name="hex (Converters)"></a><div class="keyword"><b><a class="anchor" name="hex"></a><a href="#7.3.1-hex">hex</a></b></div><pre class="text">Converts a binary input sample to a hex string containing two hex digits per
+</div><a class="anchor" name="hdng_rej_name"></a><a class="anchor" name="7-hdng_rej_name"></a><a class="anchor" name="7.3.1-hdng_rej_name"></a><a class="anchor" name="hdng_rej_name (Using ACLs and fetching samples)"></a><a class="anchor" name="hdng_rej_name (Converters)"></a><div class="keyword"><b><a class="anchor" name="hdng_rej_name"></a><a href="#7.3.1-hdng_rej_name">hdng_rej_name</a></b></div><pre class="text">Takes an integer made of HTTP hardening flags such as returned by the
+&quot;<a href="#fs.hdng.fixed">fs.hdng.fixed</a>&quot; or &quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot; sample fetches, and returns the name of
+the &quot;<a href="#reject">reject</a>&quot; rule it contains, as shown in <a href="#12.10">section 12.10</a> (e.g.
+&quot;reject-ctl-in-header-trailer&quot;). Other rules (e.g. &quot;delete&quot; ones) are
+ignored. Since a rejection stops the processing, at most one &quot;<a href="#reject">reject</a>&quot; rule
+is normally present. Should there be several, the one with the lowest bit
+is reported. The converter fails if the input contains no &quot;<a href="#reject">reject</a>&quot; rule,
+which makes it possible to log nothing when nothing was rejected. Note that
+it does not make much sense to use it with the &quot;.found&quot; variant of the sample
+fetches because multiple bits will often be set. Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT cli_hdng=%[fs.hdng.found,htonl,hex],\
+               %[fs.hdng.fixed,hdng_rej_name]&quot;
+
+See also &quot;<a href="#fs.hdng.fixed">fs.hdng.fixed</a>&quot;, &quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot;.
+</pre><a class="anchor" name="hex"></a><a class="anchor" name="7-hex"></a><a class="anchor" name="7.3.1-hex"></a><a class="anchor" name="hex (Using ACLs and fetching samples)"></a><a class="anchor" name="hex (Converters)"></a><div class="keyword"><b><a class="anchor" name="hex"></a><a href="#7.3.1-hex">hex</a></b></div><pre class="text">Converts a binary input sample to a hex string containing two hex digits per
 input byte. It is used to log or transfer hex dumps of some binary input data
 in a way that can be reliably transferred (e.g. an SSL ID can be copied in a
 header).
@@ -30687,10 +30807,14 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-51d.all">51d.all(&lt;prop&gt;[,&lt;prop&gt;*])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-bs.aborted">bs.aborted</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-bs.debug_str">bs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-bs.hdng.fixed">bs.hdng.fixed</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-bs.hdng.found">bs.hdng.found</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bs.id">bs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-bs.rst_code">bs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fs.aborted">fs.aborted</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-fs.debug_str">fs.debug_str([&lt;bitmap&gt;])</a></td><td >string</td></tr>
+<tr><td ><a href="#7-fs.hdng.fixed">fs.hdng.fixed</a></td><td >integer</td></tr>
+<tr><td ><a href="#7-fs.hdng.found">fs.hdng.found</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fs.id">fs.id</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fs.rst_code">fs.rst_code</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_bc">ssl_bc</a></td><td >boolean</td></tr>
@@ -30700,11 +30824,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_bc_client_early_traffic_secret">ssl_bc_client_early_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_client_handshake_traffic_secret">ssl_bc_client_handshake_traffic_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_client_random">ssl_bc_client_random</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_bc_client_traffic_secret_0">ssl_bc_client_traffic_secret_0</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_curve">ssl_bc_curve</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_early_exporter_secret">ssl_bc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_err">ssl_bc_err</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_bc_err_str">ssl_bc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_exporter_secret">ssl_bc_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_bc_is_resumed">ssl_bc_is_resumed</a></td><td >boolean</td></tr>
@@ -30721,11 +30845,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_c_ca_err">ssl_c_ca_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_ca_err_depth">ssl_c_ca_err_depth</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_chain_der">ssl_c_chain_der</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_der">ssl_c_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_c_err">ssl_c_err</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_c_i_dn">ssl_c_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_key_alg">ssl_c_key_alg</a></td><td >string</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_c_notafter">ssl_c_notafter</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_notbefore">ssl_c_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_c_policies">ssl_c_policies([&lt;oid&gt;])</a></td><td >string</td></tr>
@@ -30742,11 +30866,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_f_i_dn">ssl_f_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_key_alg">ssl_f_key_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_notafter">ssl_f_notafter</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_f_notbefore">ssl_f_notbefore</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_s_dn">ssl_f_s_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_serial">ssl_f_serial</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_f_sha1">ssl_f_sha1</a></td><td >binary</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_f_sig_alg">ssl_f_sig_alg</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_f_version">ssl_f_version</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-ssl_fc">ssl_fc</a></td><td >boolean</td></tr>
@@ -30763,11 +30887,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_client_traffic_secret_0">ssl_fc_client_traffic_secret_0</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_crtname">ssl_fc_crtname</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_curve">ssl_fc_curve</a></td><td >string</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_early_exporter_secret">ssl_fc_early_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_ecformats_bin">ssl_fc_ecformats_bin</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_eclist_bin">ssl_fc_eclist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_err">ssl_fc_err</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_err_str">ssl_fc_err_str</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_exporter_secret">ssl_fc_exporter_secret</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_extlist_bin">ssl_fc_extlist_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
@@ -30784,11 +30908,11 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-ssl_fc_session_id">ssl_fc_session_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_session_key">ssl_fc_session_key</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_sigalgs_bin">ssl_fc_sigalgs_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
+<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_fc_sni">ssl_fc_sni</a></td><td >string</td></tr>
 <tr><td ><a href="#7-ssl_fc_supported_versions_bin">ssl_fc_supported_versions_bin([&lt;filter_option&gt;])</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_unique_id">ssl_fc_unique_id</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_fc_use_keysize">ssl_fc_use_keysize</a></td><td >integer</td></tr>
-<thead><tr><th>keyword</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-ssl_s_chain_der">ssl_s_chain_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_der">ssl_s_der</a></td><td >binary</td></tr>
 <tr><td ><a href="#7-ssl_s_i_dn">ssl_s_i_dn([&lt;entry&gt;[,&lt;occ&gt;[,&lt;format&gt;]]])</a></td><td >string</td></tr>
@@ -30840,7 +30964,32 @@ within a stable branch, as the needs for increased details arise. One use
 typical use case is to concatenate these information at the very end of a
 log-format, along with fs.debug_str(). Example:
 
-   log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT \
+               fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="bs.hdng.fixed"></a><a class="anchor" name="7-bs.hdng.fixed"></a><a class="anchor" name="7.3.4-bs.hdng.fixed"></a><a class="anchor" name="bs.hdng.fixed (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.hdng.fixed (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.hdng.fixed"></a><a href="#7.3.4-bs.hdng.fixed">bs.hdng.fixed</a></b> : integer</div><pre class="text">Returns the mask of the HTTP hardening rules that were enforced on the
+traffic received from the server for the current stream, i.e. the elements
+that were rejected or deleted (see <a href="#12.10">section 12.10</a>). Each rule is designated
+by one bit, whose position starting at 1 is reported by &quot;haproxy -dKcfg&quot; and
+&quot;show http-hardening&quot;. Note that bit numbers are subject to change between
+major versions and that new options may occasionally be introduced in minor
+versions. The sample fetch fails if the server side does not use an HTTP
+multiplexer supporting HTTP hardening (H1, H2, H3). Since rejects stop the
+processing, at most one &quot;<a href="#reject">reject</a>&quot; rule may appear, which may then be turned
+into its name using the &quot;<a href="#hdng_rej_name">hdng_rej_name</a>&quot; converter. Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT srv_hdng=%[bs.hdng.found,htonl,hex],\
+               %[bs.hdng.fixed,hdng_rej_name]&quot;
+
+See also &quot;<a href="#bs.hdng.found">bs.hdng.found</a>&quot;, &quot;<a href="#fs.hdng.fixed">fs.hdng.fixed</a>&quot;.
+</pre><a class="anchor" name="bs.hdng.found"></a><a class="anchor" name="7-bs.hdng.found"></a><a class="anchor" name="7.3.4-bs.hdng.found"></a><a class="anchor" name="bs.hdng.found (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.hdng.found (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.hdng.found"></a><a href="#7.3.4-bs.hdng.found">bs.hdng.found</a></b> : integer</div><pre class="text">Returns the mask of the HTTP hardening conditions that were met on the
+traffic received from the server for the current stream, regardless of
+whether the corresponding rules were enabled or not (see <a href="#12.10">section 12.10</a>).
+This allows to figure what would be blocked or modified before enabling a
+rule. The bits are the same as for &quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot;. Note that bit numbers
+are subject to change between major versions and that new options may
+occasionally be introduced in minor versions. The sample fetch fails if the
+server side does not use an HTTP multiplexer supporting HTTP hardening (H1,
+H2, H3). See also &quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot;, &quot;<a href="#fs.hdng.found">fs.hdng.found</a>&quot;.
 </pre><a class="anchor" name="bs.id"></a><a class="anchor" name="7-bs.id"></a><a class="anchor" name="7.3.4-bs.id"></a><a class="anchor" name="bs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.id (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.id"></a><a href="#7.3.4-bs.id">bs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the server side. It is the
 multiplexer's responsibility to return the appropriate information.
 </pre><a class="anchor" name="bs.rst_code"></a><a class="anchor" name="7-bs.rst_code"></a><a class="anchor" name="7.3.4-bs.rst_code"></a><a class="anchor" name="bs.rst_code (Using ACLs and fetching samples)"></a><a class="anchor" name="bs.rst_code (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="bs.rst_code"></a><a href="#7.3.4-bs.rst_code">bs.rst_code</a></b> : integer</div><pre class="text">Returns the reset code received from the server for the current stream. The
@@ -30869,6 +31018,23 @@ typical use case is to concatenate these information at the very end of a
 log-format, along with bs.debug_str(). Example:
 
    log-format &quot;$HAPROXY_HTTP_LOG_FMT fs=&lt;%[fs.debug_str]&gt; bs=&lt;%[bs.debug_str]&gt;&quot;
+</pre><a class="anchor" name="fs.hdng.fixed"></a><a class="anchor" name="7-fs.hdng.fixed"></a><a class="anchor" name="7.3.4-fs.hdng.fixed"></a><a class="anchor" name="fs.hdng.fixed (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.hdng.fixed (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.hdng.fixed"></a><a href="#7.3.4-fs.hdng.fixed">fs.hdng.fixed</a></b> : integer</div><pre class="text">Returns the mask of the HTTP hardening rules that were enforced on the
+traffic received from the client for the current stream. This is the same as
+&quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot; but for the client side. Note that a request rejected before
+the stream is created (e.g. on its headers, or on trailers received at the
+same time) is handled and logged by the multiplexer alone, so that it can
+only be reported here when the rejection happens later (e.g. on trailers
+received after the headers). Example:
+
+   log-format &quot;$HAPROXY_HTTP_LOG_FMT cli_hdng=%[fs.hdng.found,htonl,hex],\
+               %[fs.hdng.fixed,hdng_rej_name]&quot;
+
+See also &quot;<a href="#fs.hdng.found">fs.hdng.found</a>&quot;, &quot;<a href="#bs.hdng.fixed">bs.hdng.fixed</a>&quot;.
+</pre><a class="anchor" name="fs.hdng.found"></a><a class="anchor" name="7-fs.hdng.found"></a><a class="anchor" name="7.3.4-fs.hdng.found"></a><a class="anchor" name="fs.hdng.found (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.hdng.found (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.hdng.found"></a><a href="#7.3.4-fs.hdng.found">fs.hdng.found</a></b> : integer</div><pre class="text">Returns the mask of the HTTP hardening conditions that were met on the
+traffic received from the client for the current stream, regardless of
+whether the corresponding rules were enabled or not. This is the same as
+&quot;<a href="#bs.hdng.found">bs.hdng.found</a>&quot; but for the client side. See also &quot;<a href="#fs.hdng.fixed">fs.hdng.fixed</a>&quot;,
+&quot;<a href="#bs.hdng.found">bs.hdng.found</a>&quot;.
 </pre><a class="anchor" name="fs.id"></a><a class="anchor" name="7-fs.id"></a><a class="anchor" name="7.3.4-fs.id"></a><a class="anchor" name="fs.id (Using ACLs and fetching samples)"></a><a class="anchor" name="fs.id (Fetching samples at Layer 5)"></a><div class="keyword"><b><a class="anchor" name="fs.id"></a><a href="#7.3.4-fs.id">fs.id</a></b> : integer</div><pre class="text">Returns the multiplexer's stream ID on the client side. It is the
 multiplexer's responsibility to return the appropriate information. For
 instance, on a raw TCP, 0 is always returned because there is no stream.
@@ -32832,6 +32998,143 @@ order to avoid confusion. Their equivalence is provided below.
 <tr><td >TRUE</td><td >always_true</td><td >always match</td></tr>
 <tr><td >WAIT_END</td><td >wait_end</td><td >wait for end of content analysis</td></tr>
 </table></div>
+<a class="anchor" id="7.5" name="7.5"></a>
+<h2 id="chapter-7.5" data-target="7.5"><small><a class="small" href="#7.5">7.5.</a></small> Secure filtering of HTTP requests</h2>
+<div><pre class="text">This section explains how to write secure filtering rules without falling into
+some of the common traps caused by the way various HTTP implementations will
+decode a request. From time to time some users are surprised to learn that a
+rule such as:
+
+    http-request deny if { path_beg /admin }
+
+can be bypassed by playing with various encoding, and ask why haproxy doesn't
+perform itself a form of decoding or normalization before processing the rule.
+The reason is that many forms exist and might be decoded differently by
+different server implementations, as not all will normalize everything exactly
+the same way. Please consider the variants below, some of which might target a
+different resource on some servers, or might alias to /admin on other servers:
+</pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+<thead><tr><th>Request path/Admin/admin///admin/./admin/x/../admin/admin//..//admin//a/..//%61dmin/%2e/admin/%u0061dmin/\admin/%5Cadmin/;x=1/admin/admin%00.png/admin%3ffoo/%2561dmin</th><th>Why it may reach the same resourcecase-insensitive file systems or applicationstrailing slash (when an exact match was used)repeated slashes are merged&quot;.&quot; segment is dropped&quot;..&quot; segment is resolvedwhen &quot;..&quot; is resolved before &quot;//&quot;, it gives &quot;/admin/&quot;when &quot;..&quot; is resolved after &quot;//&quot;, it gives &quot;/admin/&quot;%-encoded character, decoded by the server%-encoded &quot;.&quot; segment, decoded then droppednon-standard &quot;%u&quot; encoding, supported by some servers&quot;\&quot; used as a directory delimitersame as &quot;\&quot;, but %-encodedpath parameters, dropped by some frameworkstruncation at an encoded NUL by some servers%3f turned to '?' by some proxies, splitting the path%-encoded '%' before 'a', resolved by some proxies</th></tr></thead>
+</table><pre class="text">The possibilities are numerous, and given that different servers will see these
+as different resources, there's no universal way to decode and match such a
+request. This implies that the rule above does NOT protect against various
+possibilities to access &quot;/admin&quot;, and that no rule will ever do that.
+
+This is not a bug in the matching, and no option of the matching can solve it.
+HTTP is full of aliases, and which ones apply depends on what is behind
+HAProxy: the operating system and its file system, the web server, the
+framework, the application, a cache, another reverse-proxy, and even their
+respective versions or configurations. HAProxy cannot know that, and cannot
+guess which transformation will be applied after it, nor in which order (e.g.
+&quot;//&quot; before or after &quot;..&quot;). Except for the few cases where the administrator
+perfectly knows the application server and can carefully craft some rules for
+&quot;<a href="#normalize-uri">normalize-uri</a>&quot;, it cannot be solved by rewriting the request in HAProxy
+either, because the only valid normalization is the one done by the component
+which will interpret the request, and any other one will either leave some
+aliases or break legitimate requests (browsers, for example, do not normalize
+what they send, and some applications legitimately rely on encoded delimiters).
+Worse, blindly doing normalization without a precise understanding of how the
+server parses a request could even help an attacker abuse the rewrite performed
+at this normalization stage to hide a request from a front reverse-proxy. This
+limitation applies to every component in a chain, and not just to HAProxy.
+
+The same is true for the query string, which supports encoding as well : &quot;+&quot;
+and &quot;%20&quot; are equivalent for some applications and not for others (and some
+even resolve it in the path), and &quot;&lt;script&quot; can be sent as &quot;%3Cscript&quot; or
+&quot;%3cscript&quot;. The same is again true for any other part of a request which is
+decoded or interpreted on the other side, such as parameters extracted with
+&quot;<a href="#url_param">url_param</a>&quot;.
+
+The approach taken by HAProxy is and has always been to process RAW CONTENTS.
+This means that it can explicitly match the forms and patterns above to detect
+and block malicious requests, or simply route valid ones to the right backend
+or server.
+
+For this reason, A FILTERING POLICY CONSIDERING FIELDS SUBJECT TO ALIASING MUST
+ONLY BE BASED ON POSITIVE MATCHES WITH A DEFAULT DENY, NEVER THE OPPOSITE.
+
+Whatever form an unexpected request takes, it will not match what was
+explicitly authorized and will be rejected. This is the principle of an
+allow-list. The &quot;unless&quot; keyword is meant for this. Take the common need of
+restricting &quot;/admin&quot; to an internal network. The following is sometimes
+reported as insecure, because it is not reliable, since any alias of &quot;/admin&quot;
+will not be matched and will be served to anyone :
+
+    http-request deny if { path_beg /admin } !{ src 10.0.0.0/8 }
+
+What must be written instead is the list of what is accepted, with a strict
+syntax (here a restricted set of characters, with no &quot;%&quot;, &quot;.&quot;, &quot;\&quot; nor &quot;;&quot;),
+with everything else being rejected:
+
+    http-request allow if { path_beg /admin } { src 10.0.0.0/8 }
+    ...
+    http-request deny
+
+When there are many rules and many access possibilities, it can become more
+complicated. Also, since &quot;<a href="#allow">allow</a>&quot; is final, no other rule will be evaluated, so
+a finer redirect/return rule wouldn't match. One convenient way to express that
+a rule matched is to use a variable to mark the request as valid:
+
+    http-request set-var(req.ok) int(1) if { path_beg /admin } { src 10.0.0.0/8 }
+    http-request set-var(req.ok) int(1) if { path_beg /app }
+    http-request redirect location /auth if { path /login }
+    ...
+    http-request deny unless { var(req.ok) -m found }
+
+The final rule is the only one which blocks, and it does so for any request
+which was not recognized. Thus for a request not being denied at the end, it
+would have to either match a rule setting &quot;req.ok&quot;, or meet another final rule
+such as a redirect or return rule.
+
+What's nice with a deny-by-default approach like this is that it also
+automatically blocks access to resources that were not identified and that
+might be accessible on servers by default. Some servers will for example
+disclose some information on &quot;OPTIONS *&quot;, but most users never think about
+blocking the &quot;*&quot; path. Other application servers recognize certain internal
+paths dedicated to statistics or management, which are not well known, and
+stay exposed for years before being subject to a noisy CVE disclosure. All
+of these are stopped by the default deny at the end.
+
+Some patterns are worth learning to spot when reading a configuration,
+as they are the signs of a filter which is not reliable :
+
+  - a &quot;<a href="#deny">deny</a>&quot;, &quot;<a href="#tarpit">tarpit</a>&quot;, &quot;<a href="#silent-drop">silent-drop</a>&quot;, &quot;<a href="#reject">reject</a>&quot; or &quot;<a href="#auth">auth</a>&quot; action, which is
+    performed when a path, an URL, or a query string matches a pattern (i.e.
+    &quot;if&quot; with a positive match, or &quot;unless&quot; with a negated one).
+
+  - a list of paths or extensions which must not be served, such as
+    &quot;/admin&quot;, &quot;/.git&quot;, &quot;.php&quot;, &quot;.env&quot; etc, which are then matched by name.
+
+  - a rule which protects the access to a resource by comparing a path to the
+    path of that resource.
+
+  - an exception added to a deny rule for one source or one authenticated user.
+
+Rules of this type are not harmful per se when they are used in addition to
+a real allow-list or to the application's own access control, for example to
+cheaply block known scanners or well-known attack patterns before they reach
+the servers. They must just never be the only protection.
+
+In order to help spot such rules, HAProxy reports them when the condition
+of an &quot;<a href="#http-request">http-request</a>&quot; rule using one of the &quot;<a href="#auth">auth</a>&quot;, &quot;<a href="#deny">deny</a>&quot;, &quot;<a href="#reject">reject</a>&quot;,
+&quot;<a href="#silent-drop">silent-drop</a>&quot; or &quot;<a href="#tarpit">tarpit</a>&quot; actions may be true because of a match on contents
+which support multiple equivalent forms. These are the path, the URL, the
+query string and the parameters they convey, as returned by the &quot;<a href="#base">base</a>&quot;,
+&quot;<a href="#base32">base32</a>&quot;, &quot;<a href="#base32%2Bsrc">base32+src</a>&quot;, &quot;<a href="#baseq">baseq</a>&quot;, &quot;<a href="#capture.req.uri">capture.req.uri</a>&quot;, &quot;<a href="#path">path</a>&quot;, &quot;<a href="#pathq">pathq</a>&quot;, &quot;<a href="#query">query</a>&quot;,
+&quot;<a href="#req.body_param">req.body_param</a>&quot;, &quot;<a href="#url">url</a>&quot;, &quot;<a href="#url32">url32</a>&quot;, &quot;<a href="#url32%2Bsrc">url32+src</a>&quot;, &quot;<a href="#url_param">url_param</a>&quot;, &quot;<a href="#urlp">urlp</a>&quot; and
+&quot;<a href="#urlp_val">urlp_val</a>&quot; sample fetch functions and their derived ACL keywords, regardless
+of any converter applied to them. Only a term which makes the condition true
+when it matches is considered, i.e. a non-negated term after &quot;if&quot;, or a negated
+one after &quot;unless&quot;. This means that the allow-lists above are not reported. A
+notice or warning message will indicate affected rules, depending on the
+&quot;<a href="#on-unreliable-rules">on-unreliable-rules</a>&quot; setting. When such a rule is only meant as an extra
+filter, it may be excluded from this report by placing the &quot;no-warn&quot; keyword
+right before &quot;if&quot; or &quot;unless&quot;. It also serves as a reminder for whoever
+modifies the rule later that it is not reliable by itself :
+
+    http-request deny no-warn if { path_sub -i %2e %2f }
+    http-request deny no-warn if { query -m sub -i &lt;script }
+</pre></div>
 <a class="anchor" id="8" name="8"></a>
 <div class="page-header"><h1 id="chapter-8" data-target="8"><small><a class="small" href="#8">8.</a></small> Logging</h1>
 </div><div><pre class="text">One of HAProxy's strong points certainly lies is its precise logs. It probably
@@ -37486,8 +37789,8 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev11-87 &ndash; Configuration Manual<br>
-							<small>, 2026/11/04</small>
+							HAProxy 3.5-dev12-37 &ndash; Configuration Manual<br>
+							<small>, 2026/11/12</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
