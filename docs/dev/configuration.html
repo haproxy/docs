@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev12-37 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev12-52 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4620,6 +4620,8 @@
 							
 							<a class="list-group-item" href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
 							
+							<a class="list-group-item" href="#tune.comp.res.ring">tune.comp.res.ring</a>
+							
 							<a class="list-group-item" href="#tune.debug-file-directory">tune.debug-file-directory</a>
 							
 							<a class="list-group-item" href="#tune.defaults.purge">tune.defaults.purge</a>
@@ -5067,7 +5069,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/13</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5078,7 +5080,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev12-37</strong></p>
+							<p><strong>version 3.5-dev12-52</strong></p>
 							<p>
 								2026/11/12<br>
 								
@@ -8180,6 +8182,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.bufsize.small">tune.bufsize.small</a>
    - <a href="#tune.cli.max-payload-size">tune.cli.max-payload-size</a>
    - <a href="#tune.comp.maxlevel">tune.comp.maxlevel</a>
+   - <a href="#tune.comp.res.ring">tune.comp.res.ring</a>
    - <a href="#tune.debug-file-directory">tune.debug-file-directory</a>
    - <a href="#tune.defaults.purge">tune.defaults.purge</a>
    - <a href="#tune.disable-elf-symbols">tune.disable-elf-symbols</a>
@@ -10482,6 +10485,16 @@ Please consult the management manual for details about the CLI.
 usage during compression. This value affects CPU usage during compression.
 Each stream using compression initializes the compression algorithm with
 this value. The default value is 1.
+</pre><a class="anchor" name="tune.comp.res.ring"></a><a class="anchor" name="3-tune.comp.res.ring"></a><a class="anchor" name="3.2-tune.comp.res.ring"></a><a class="anchor" name="tune.comp.res.ring (Global section)"></a><a class="anchor" name="tune.comp.res.ring (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.comp.res.ring"></a><a href="#3.2-tune.comp.res.ring">tune.comp.res.ring</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') the allocation of a ring for compressed
+responses which benefit from a history kept between flushes, which is
+currently the case of server-sent events (&quot;text/event-stream&quot;) with the
+&quot;gzip&quot;, &quot;deflate&quot; and &quot;raw-deflate&quot; algorithms when haproxy is built with
+SLZ. Such events are flushed one at a time and usually repeat most of the
+previous ones, which the ring allows to compress to a few percent of their
+size instead of slightly inflating them. The ring costs about 4 kB per
+stream, which may be saved this way, in which case these responses are
+compressed as if their contents were of an unknown type. The ring is
+never allocated for requests. It is enabled by default.
 </pre><a class="anchor" name="tune.debug-file-directory"></a><a class="anchor" name="3-tune.debug-file-directory"></a><a class="anchor" name="3.2-tune.debug-file-directory"></a><a class="anchor" name="tune.debug-file-directory (Global section)"></a><a class="anchor" name="tune.debug-file-directory (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.debug-file-directory"></a><a href="#3.2-tune.debug-file-directory">tune.debug-file-directory</a></b> <span style="color: #080">&lt;dir&gt;</span></div><pre class="text">Adds &lt;dir&gt; to the list of directories searched for the separate debug files
 of stripped executables and libraries, whose symbols are used to name
 functions in backtraces. Files are looked up by GNU build-id
@@ -37789,7 +37802,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev12-37 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev12-52 &ndash; Configuration Manual<br>
 							<small>, 2026/11/12</small>
 						</div>
 					</div>
