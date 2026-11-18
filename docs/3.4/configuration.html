@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.4.7-57 - Configuration Manual</title>
+		<title>HAProxy version 3.4.7-141 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2848,6 +2848,8 @@
 							
 							<a class="list-group-item" href="#ocsp-update.mode">ocsp-update.mode</a>
 							
+							<a class="list-group-item" href="#ocsp-update.timeout">ocsp-update.timeout</a>
+							
 							<a class="list-group-item" href="#odd">odd</a>
 							
 							<a class="list-group-item" href="#on">on</a>
@@ -4731,6 +4733,8 @@
 							
 							<a class="list-group-item" href="#tune.ssl.keyupdate-rate-limit">tune.ssl.keyupdate-rate-limit</a>
 							
+							<a class="list-group-item" href="#tune.ssl.ktls-unsafe">tune.ssl.ktls-unsafe</a>
+							
 							<a class="list-group-item" href="#tune.ssl.lifetime">tune.ssl.lifetime</a>
 							
 							<a class="list-group-item" href="#tune.ssl.maxrecord">tune.ssl.maxrecord</a>
@@ -4932,7 +4936,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/10/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/16</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4943,7 +4947,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.4.7-57</strong></p>
+							<p><strong>version 3.4.7-141</strong></p>
 							<p>
 								2026/10/14<br>
 								
@@ -9104,6 +9108,14 @@ configuration. This global option can be superseded by the crt-list
 &quot;<a href="#ocsp-update">ocsp-update</a>&quot; option. This option is set to &quot;off&quot; by default.
 See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more information about the auto update
 mechanism.
+</pre><a class="anchor" name="ocsp-update.timeout"></a><a class="anchor" name="3-ocsp-update.timeout"></a><a class="anchor" name="3.1-ocsp-update.timeout"></a><a class="anchor" name="ocsp-update.timeout (Global section)"></a><a class="anchor" name="ocsp-update.timeout (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ocsp-update.timeout"></a><a href="#3.1-ocsp-update.timeout">ocsp-update.timeout</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets the timeout applied to the request used to fetch an OCSP response
+during an automatic update. This timeout covers the whole request, from
+the connection attempt to the reception of the full response. If it is
+reached, the update is considered a failure and is logged as such. The
+timeout value is specified in milliseconds by default, but can be in any
+other unit if the number is suffixed by the unit, as explained at the top
+of this document. It defaults to 10s. See option &quot;<a href="#ocsp-update">ocsp-update</a>&quot; for more
+information about the auto update mechanism.
 </pre><a class="anchor" name="pidfile"></a><a class="anchor" name="3-pidfile"></a><a class="anchor" name="3.1-pidfile"></a><a class="anchor" name="pidfile (Global section)"></a><a class="anchor" name="pidfile (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="pidfile"></a><a href="#3.1-pidfile">pidfile</a></b> <span style="color: #080">&lt;pidfile&gt;</span></div><pre class="text">Writes PIDs of all daemons into file &lt;pidfile&gt; when daemon mode or writes PID
 of master process into file &lt;pidfile&gt; when master-worker mode. This option is
 equivalent to the &quot;-p&quot; command line argument. The file must be accessible to
@@ -11205,6 +11217,11 @@ before considering it flood, and killing the connection. Dealing with
 KeyUpdate is cpu-expensive, and there is little reason to receive a lot of
 them. Using a value of &quot;0&quot; disables the rate limiting.
 The default value is 100.
+</pre><a class="anchor" name="tune.ssl.ktls-unsafe"></a><a class="anchor" name="3-tune.ssl.ktls-unsafe"></a><a class="anchor" name="3.2-tune.ssl.ktls-unsafe"></a><a class="anchor" name="tune.ssl.ktls-unsafe (Global section)"></a><a class="anchor" name="tune.ssl.ktls-unsafe (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.ktls-unsafe"></a><a href="#3.2-tune.ssl.ktls-unsafe">tune.ssl.ktls-unsafe</a></b></div><pre class="text">Use kTLS even on OpenSSL versions affected by a bug that corrupts streams
+when a pending record's buffer is reused (fixed in 3.4.6 and 3.5.7). On
+those versions kTLS is refused, and a notice reports it when &quot;ktls on&quot; is
+parsed, unless this option is set. It has no effect on fixed versions nor
+on other SSL libraries. Disabled by default.
 </pre><a class="anchor" name="tune.ssl.lifetime"></a><a class="anchor" name="3-tune.ssl.lifetime"></a><a class="anchor" name="3.2-tune.ssl.lifetime"></a><a class="anchor" name="tune.ssl.lifetime (Global section)"></a><a class="anchor" name="tune.ssl.lifetime (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.lifetime"></a><a href="#3.2-tune.ssl.lifetime">tune.ssl.lifetime</a></b> <span style="color: #080">&lt;timeout&gt;</span></div><pre class="text">Sets how long a cached SSL session may remain valid. This time is expressed
 in seconds and defaults to 300 (5 min). It is important to understand that it
 does not guarantee that sessions will last that long, because if the cache is
@@ -15220,7 +15237,13 @@ When this option is set, the following rules are observed:
     requests;
 
   * In H1 only, no check will be performed against the authority and the Host
-    header value.
+    header value;
+
+  * In H1 only, when a request has no Host header, a Host header is built
+    from the authority of its target (the request-target itself for CONNECT
+    requests). But it is not added when the authority contains characters
+    forbidden in the Host header or, for CONNECT requests, when the
+    authority is invalid.
 
   * In H1 only, tests on the HTTP version will be relaxed. It will allow
     HTTP/0.9 GET requests to pass through (no version specified), as well as
@@ -23157,6 +23180,10 @@ available.
 Optional application-level health checks can be configured with &quot;option
 httpchk&quot;, &quot;<a href="#option%20mysql-check">option mysql-check</a>&quot; &quot;<a href="#option%20smtpchk">option smtpchk</a>&quot;, &quot;<a href="#option%20pgsql-check">option pgsql-check</a>&quot;,
 &quot;<a href="#option%20ldap-check">option ldap-check</a>&quot;, or &quot;<a href="#option%20redis-check">option redis-check</a>&quot;.
+
+For log backends, although UDP endpoints are supported, TCP will be used
+for checks as implicit protocol, because there is no such thing as rax
+UDP checks, and ICMP checks are not available.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -35941,7 +35968,7 @@ documentation for details.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.4.7-57 &ndash; Configuration Manual<br>
+							HAProxy 3.4.7-141 &ndash; Configuration Manual<br>
 							<small>, 2026/10/14</small>
 						</div>
 					</div>
