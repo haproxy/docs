@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev12-52 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev12-83 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2300,6 +2300,8 @@
 							
 							<a class="list-group-item" href="#h2-workaround-bogus-websocket-clients">h2-workaround-bogus-websocket-clients</a>
 							
+							<a class="list-group-item" href="#h2_enabled">h2_enabled</a>
+							
 							<a class="list-group-item" href="#hard-stop-after">hard-stop-after</a>
 							
 							<a class="list-group-item" href="#harden.reject-privileged-ports.quic">harden.reject-privileged-ports.quic</a>
@@ -4590,6 +4592,8 @@
 							
 							<a class="list-group-item" href="#total-max-size">total-max-size</a>
 							
+							<a class="list-group-item" href="#tr">tr</a>
+							
 							<a class="list-group-item" href="#trace">trace</a>
 							
 							<a class="list-group-item" href="#traces">traces</a>
@@ -4661,6 +4665,8 @@
 							<a class="list-group-item" href="#tune.h2.be.max-frames-at-once">tune.h2.be.max-frames-at-once</a>
 							
 							<a class="list-group-item" href="#tune.h2.be.rxbuf">tune.h2.be.rxbuf</a>
+							
+							<a class="list-group-item" href="#tune.h2.fe.enabled">tune.h2.fe.enabled</a>
 							
 							<a class="list-group-item" href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
 							
@@ -5069,7 +5075,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/16</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/17</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5080,7 +5086,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev12-52</strong></p>
+							<p><strong>version 3.5-dev12-83</strong></p>
 							<p>
 								2026/11/12<br>
 								
@@ -8202,6 +8208,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.h2.be.max-concurrent-streams">tune.h2.be.max-concurrent-streams</a>
    - <a href="#tune.h2.be.max-frames-at-once">tune.h2.be.max-frames-at-once</a>
    - <a href="#tune.h2.be.rxbuf">tune.h2.be.rxbuf</a>
+   - <a href="#tune.h2.fe.enabled">tune.h2.fe.enabled</a>
    - <a href="#tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a>
    - <a href="#tune.h2.fe.initial-window-size">tune.h2.fe.initial-window-size</a>
    - <a href="#tune.h2.fe.max-concurrent-streams">tune.h2.fe.max-concurrent-streams</a>
@@ -10718,6 +10725,28 @@ required to touch tune.h2.be.initial-window-size. If less than the size
 required to deal with all streams is set, this minimum will be used. The
 default value is about 1600k (100 streams with 16kB buffers each).
 </pre><div class="page-header"><b>See also:</b> tune.h2.be.initial-window-size, tune.h2.fe.rxbuf, http-reuse.</div>
+<a class="anchor" name="tune.h2.fe.enabled"></a><a class="anchor" name="3-tune.h2.fe.enabled"></a><a class="anchor" name="3.2-tune.h2.fe.enabled"></a><a class="anchor" name="tune.h2.fe.enabled (Global section)"></a><a class="anchor" name="tune.h2.fe.enabled (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.enabled"></a><a href="#3.2-tune.h2.fe.enabled">tune.h2.fe.enabled</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Enables ('on') or disables ('off') HTTP/2 on all frontends. The default is
+'on'. This is meant as an emergency kill-switch to instantly stop serving
+HTTP/2 to clients (e.g. in case of a problem in the HTTP/2 stack) without
+having to modify every &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line. When set to 'off':
+  - &quot;h2&quot; is removed from the ALPN of &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines and crt-list entries,
+    whether it comes from the default ALPN list or from an explicit &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
+    setting. When &quot;h2&quot; was the only protocol listed, this is equivalent to
+    &quot;<a href="#no-alpn">no-alpn</a>&quot;. Clients offering other protocols such as &quot;http/1.1&quot; will
+    negotiate them instead, and those offering only &quot;h2&quot; will get no ALPN
+    at all, hence will be processed as HTTP/1;
+  - &quot;<a href="#option%20disable-h2-upgrade">option disable-h2-upgrade</a>&quot; is implicitly set on all frontends, so that
+    HTTP/1 connections starting with the HTTP/2 preface are not upgraded to
+    HTTP/2 anymore and receive a 405 error;
+  - incoming connections which would still be processed by the HTTP/2
+    multiplexer (e.g. on &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines forcing &quot;proto h2&quot;, or an &quot;h2&quot; chosen
+    via NPN) are immediately closed.
+
+Outgoing HTTP/2 connections to servers are not affected, since these are
+only enabled by explicit configuration. Since explicit &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; settings are
+adjusted when they are parsed, this setting must appear in the global
+section before the proxies, which is normally the case.
+</pre><div class="page-header"><b>See also:</b> &quot;<a href="#option%20disable-h2-upgrade">option disable-h2-upgrade</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#no-alpn">no-alpn</a>&quot;, &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">proto<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#proto%20%28Bind%20options%29">Bind options</a></li><li><a href="#proto%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, and the &quot;<a href="#h2_enabled">h2_enabled</a>&quot; sample fetch.</div>
 <a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="3.2-tune.h2.fe.glitches-threshold"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Global section)"></a><a class="anchor" name="tune.h2.fe.glitches-threshold (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.h2.fe.glitches-threshold"></a><a href="#3.2-tune.h2.fe.glitches-threshold">tune.h2.fe.glitches-threshold</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the threshold for the number of glitches on a frontend connection, where
 that connection will automatically be killed. This allows to automatically
 kill misbehaving connections without having to write explicit rules for them.
@@ -26775,6 +26804,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
 <tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
+<tr><td ><a href="#7-tr">tr([-flags,]set1[,set2])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ub64enc">ub64enc</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-ungrpc">ungrpc(field_number[,field_type])</a></td><td >binary</td><td >binary / int</td></tr>
@@ -28726,7 +28756,71 @@ returned by &quot;<a href="#ip.data">ip.data</a>&quot;. It returns an integer re
 advertised by the peer in the TCP header. The value is provided as-is, as a
 16-bit unsigned quantity, without applying the window scaling factor. See
 also &quot;<a href="#fc_saved_syn">fc_saved_syn</a>&quot;, &quot;<a href="#tcp-ss">tcp-ss</a>&quot;, and &quot;<a href="#ip.data">ip.data</a>&quot;.
-</pre><a class="anchor" name="ub64dec"></a><a class="anchor" name="7-ub64dec"></a><a class="anchor" name="7.3.1-ub64dec"></a><a class="anchor" name="ub64dec (Using ACLs and fetching samples)"></a><a class="anchor" name="ub64dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="ub64dec"></a><a href="#7.3.1-ub64dec">ub64dec</a></b></div><pre class="text">This converter is the base64url variant of b64dec converter. base64url
+</pre><a class="anchor" name="tr"></a><a class="anchor" name="7-tr"></a><a class="anchor" name="7.3.1-tr"></a><a class="anchor" name="tr (Using ACLs and fetching samples)"></a><a class="anchor" name="tr (Converters)"></a><div class="keyword"><b><a class="anchor" name="tr"></a><a href="#7.3.1-tr">tr</a></b>(<span style="color: #008">[-<span style="color: #080">&lt;flags&gt;</span>,]</span><span style="color: #080">&lt;set1&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;set2&gt;</span>]</span>)</div><pre class="text">Translates or deletes characters from the input sample, similarly to the
+unix &quot;<a href="#tr">tr</a>&quot; utility. It works on binary contents (e.g. a request body) as well
+as strings, and preserves the input sample's type. The sets are resolved
+once at configuration parsing time, so that the processing is very fast.
+As on the unix command line, the flags are optional and come first, and
+are distinguished from &lt;set1&gt; by their leading '-'.
+
+&lt;flags&gt;  is a '-' followed by one or more of the following letters:
+         - 'd': delete the characters from &lt;set1&gt; instead of translating
+                them. &lt;set2&gt; must not be set in this case.
+         - 'c': use the complement of &lt;set1&gt;, i.e. all the characters that
+                are not in &lt;set1&gt;, in ascending order.
+
+&lt;set1&gt;   is the set of characters to translate or delete. Since a first
+         argument starting with '-' designates flags, a &lt;set1&gt; starting
+         with '-' must be written with a backslash (e.g. '\-a'), unless it
+         is only &quot;-&quot; and flags are not used.
+
+&lt;set2&gt;   is the set of replacement characters, which is mandatory when the
+         'd' flag is not set. Each character from &lt;set1&gt; is replaced with
+         the character at the same position in &lt;set2&gt;. If &lt;set2&gt; is shorter
+         than &lt;set1&gt;, its last character is repeated as needed. If a
+         character appears multiple times in &lt;set1&gt;, the last mapping wins.
+
+As with the unix &quot;<a href="#tr">tr</a>&quot; utility, a set is a list of characters which may
+contain:
+  - ranges of characters in ascending order, such as &quot;a-z&quot; or &quot;0-9&quot;.
+    A '-' at the beginning or at the end of a set is a regular character ;
+
+  - character classes &quot;[:alnum:]&quot;, &quot;[:alpha:]&quot;, &quot;[:blank:]&quot;, &quot;[:cntrl:]&quot;,
+    &quot;[:digit:]&quot;, &quot;[:graph:]&quot;, &quot;[:lower:]&quot;, &quot;[:print:]&quot;, &quot;[:punct:]&quot;,
+    &quot;[:space:]&quot;, &quot;[:upper:]&quot;, &quot;[:xdigit:]&quot;, which only cover ASCII
+    characters, and whose characters are enumerated in ascending order
+    (e.g. &quot;[:lower:]&quot; may be translated to &quot;[:upper:]&quot;) ;
+
+  - backslash-escaped characters: &quot;\NNN&quot; for the character whose octal
+    value is NNN (1 to 3 digits), &quot;\a&quot;, &quot;\b&quot;, &quot;\f&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\t&quot;,
+    &quot;\v&quot;, and &quot;\&quot; followed by any other character stands for this
+    character (e.g. &quot;\\&quot; for a backslash, or &quot;\-&quot; for a dash).
+
+Note that, contrary to regular expressions, brackets do not enclose sets:
+&quot;[a-z]&quot; designates the 28 characters '[', 'a' to 'z', and ']'. It only
+works when translating to &quot;[A-Z]&quot; because '[' and ']' are then mapped to
+themselves.
+
+Since backslashes and some characters such as commas are also processed by
+the configuration and argument parsers, it is recommended to enclose sets
+within single quotes, and to double the backslashes when the whole
+expression is enclosed in double quotes, as in the examples below.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># upper-case the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">user<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#user%20%28Userlists%29">Userlists</a></li><li><a href="#user%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#user%20%28Bind%20options%29">Bind options</a></li></ul></span>&quot; query string parameter</span>
+http-request set-var(txn.user) &quot;url_param(user),tr('a-z','A-Z')&quot;
+
+<span class="comment"># replace all non-alphanumeric chars with underscores</span>
+http-request set-var(txn.id) &quot;req.hdr(x-id),tr(-c,'[:alnum:]',_)&quot;
+
+<span class="comment"># only keep digits and spaces from the request body</span>
+http-request set-var(txn.digits) &quot;req.body,tr(-dc,'[:digit:] ')&quot;
+
+<span class="comment"># delete control characters (0 to 31 and 127)</span>
+http-request set-var(txn.text) &quot;req.body,tr(-d,'\\0-\\37\\177')&quot;
+</code></pre>
+</div><a class="anchor" name="ub64dec"></a><a class="anchor" name="7-ub64dec"></a><a class="anchor" name="7.3.1-ub64dec"></a><a class="anchor" name="ub64dec (Using ACLs and fetching samples)"></a><a class="anchor" name="ub64dec (Converters)"></a><div class="keyword"><b><a class="anchor" name="ub64dec"></a><a href="#7.3.1-ub64dec">ub64dec</a></b></div><pre class="text">This converter is the base64url variant of b64dec converter. base64url
 encoding is the &quot;URL and Filename Safe Alphabet&quot; variant of base64 encoding.
 It is also the encoding used in JWT (JSON Web Token) standard.
 </pre><div class="separator">
@@ -29057,6 +29151,7 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-fe_req_rate">fe_req_rate([&lt;frontend&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-fe_sess_rate">fe_sess_rate([&lt;frontend&gt;])</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-h2_enabled">h2_enabled</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-hostname">hostname</a></td><td >string</td></tr>
 <tr><td ><a href="#7-int">int(&lt;integer&gt;)</a></td><td >signed</td></tr>
 <tr><td ><a href="#7-ipv4">ipv4(&lt;ipv4&gt;)</a></td><td >ipv4</td></tr>
@@ -29076,8 +29171,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-queue">queue([&lt;backend&gt;])</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-quic_enabled">quic_enabled</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-rand">rand([&lt;range&gt;])</a></td><td >integer</td></tr>
-<tr><td ><a href="#7-srv_conn">srv_conn([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-srv_conn">srv_conn([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_conn_free">srv_conn_free([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
 <tr><td ><a href="#7-srv_is_up">srv_is_up([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >boolean</td></tr>
 <tr><td ><a href="#7-srv_iweight">srv_iweight([&lt;backend&gt;/]&lt;server&gt;)</a></td><td >integer</td></tr>
@@ -29097,8 +29192,8 @@ Summary of sample fetch methods in this section and their respective types:
 <tr><td ><a href="#7-uuid">uuid([&lt;version&gt;])</a></td><td >string</td></tr>
 <tr><td ><a href="#7-var">var(&lt;var-name&gt;[,&lt;default&gt;])</a></td><td >undefined</td></tr>
 <tr><td ><a href="#7-wait_end">wait_end</a></td><td >boolean</td></tr>
-<tr><td ><a href="#7-waiting_entity">waiting_entity</a></td><td >string</td></tr>
 <thead><tr><th>keyword</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-waiting_entity">waiting_entity</a></td><td >string</td></tr>
 <tr><td ><a href="#7-worker_id">worker_id</a></td><td >string</td></tr>
 </table><pre class="text">Detailed list:
 </pre><a class="anchor" name="acl"></a><a class="anchor" name="7-acl"></a><a class="anchor" name="7.3.2-acl"></a><a class="anchor" name="acl (Using ACLs and fetching samples)"></a><a class="anchor" name="acl (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="acl"></a><a href="#7.3.2-acl">acl</a></b>(<span style="color: #008">[!]</span><span style="color: #080">&lt;name&gt;</span><span style="color: #008">[,...]</span>) : boolean</div><pre class="text">Returns true if the evaluation of all the named ACL(s) is true, otherwise
@@ -29308,7 +29403,12 @@ frontend mail
     tcp-request content accept if ! too_fast
     tcp-request content accept if WAIT_END
 </code></pre>
-</div><a class="anchor" name="hostname"></a><a class="anchor" name="7-hostname"></a><a class="anchor" name="7.3.2-hostname"></a><a class="anchor" name="hostname (Using ACLs and fetching samples)"></a><a class="anchor" name="hostname (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="hostname"></a><a href="#7.3.2-hostname">hostname</a></b> : string</div><pre class="text">Returns the system hostname.
+</div><a class="anchor" name="h2_enabled"></a><a class="anchor" name="7-h2_enabled"></a><a class="anchor" name="7.3.2-h2_enabled"></a><a class="anchor" name="h2_enabled (Using ACLs and fetching samples)"></a><a class="anchor" name="h2_enabled (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="h2_enabled"></a><a href="#7.3.2-h2_enabled">h2_enabled</a></b> : boolean</div><pre class="text">Returns true when the support for HTTP/2 was compiled and if HTTP/2 is not
+disabled on frontends by the &quot;<a href="#tune.h2.fe.enabled">tune.h2.fe.enabled</a>&quot; global option. This may be
+used to adapt some rules depending on whether HTTP/2 may be served to
+clients or not, such as filtering, headers, thresholds or redirects. See also
+the &quot;<a href="#tune.h2.fe.enabled">tune.h2.fe.enabled</a>&quot; global option.
+</pre><a class="anchor" name="hostname"></a><a class="anchor" name="7-hostname"></a><a class="anchor" name="7.3.2-hostname"></a><a class="anchor" name="hostname (Using ACLs and fetching samples)"></a><a class="anchor" name="hostname (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="hostname"></a><a href="#7.3.2-hostname">hostname</a></b> : string</div><pre class="text">Returns the system hostname.
 </pre><a class="anchor" name="int"></a><a class="anchor" name="7-int"></a><a class="anchor" name="7.3.2-int"></a><a class="anchor" name="int (Using ACLs and fetching samples)"></a><a class="anchor" name="int (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="int"></a><a href="#7.3.2-int">int</a></b>(<span style="color: #080">&lt;integer&gt;</span>) : signed integer</div><pre class="text">Returns a signed integer.
 </pre><a class="anchor" name="ipv4"></a><a class="anchor" name="7-ipv4"></a><a class="anchor" name="7.3.2-ipv4"></a><a class="anchor" name="ipv4 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv4 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv4"></a><a href="#7.3.2-ipv4">ipv4</a></b>(<span style="color: #080">&lt;ipv4&gt;</span>) : ipv4</div><pre class="text">Returns an ipv4.
 </pre><a class="anchor" name="ipv6"></a><a class="anchor" name="7-ipv6"></a><a class="anchor" name="7.3.2-ipv6"></a><a class="anchor" name="ipv6 (Using ACLs and fetching samples)"></a><a class="anchor" name="ipv6 (Fetching samples from internal states)"></a><div class="keyword"><b><a class="anchor" name="ipv6"></a><a href="#7.3.2-ipv6">ipv6</a></b>(<span style="color: #080">&lt;ipv6&gt;</span>) : ipv6</div><pre class="text">Returns an ipv6.
@@ -37802,7 +37902,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev12-52 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev12-83 &ndash; Configuration Manual<br>
 							<small>, 2026/11/12</small>
 						</div>
 					</div>
