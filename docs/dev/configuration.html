@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev13-31 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev13-70 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -2554,6 +2554,8 @@
 							
 							<a class="list-group-item" href="#jwt_verify_cert">jwt_verify_cert</a>
 							
+							<a class="list-group-item" href="#jwt_verify_secret">jwt_verify_secret</a>
+							
                                                                 </div> <!-- /letter -->
 								<div class="letter" id="letter-K"><h4>K</h4>
 								
@@ -4810,6 +4812,8 @@
 							
 							<a class="list-group-item" href="#tune.quic.fe.tx.udp-gso">tune.quic.fe.tx.udp-gso</a>
 							
+							<a class="list-group-item" href="#tune.quic.interop">tune.quic.interop</a>
+							
 							<a class="list-group-item" href="#tune.quic.listen">tune.quic.listen</a>
 							
 							<a class="list-group-item" href="#tune.quic.mem.tx-max">tune.quic.mem.tx-max</a>
@@ -5075,7 +5079,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/19</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/20</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5086,7 +5090,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev13-31</strong></p>
+							<p><strong>version 3.5-dev13-70</strong></p>
 							<p>
 								2026/11/18<br>
 								
@@ -8275,6 +8279,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#tune.quic.fe.stream.rxbuf">tune.quic.fe.stream.rxbuf</a>
    - <a href="#tune.quic.fe.tx.pacing">tune.quic.fe.tx.pacing</a>
    - <a href="#tune.quic.fe.tx.udp-gso">tune.quic.fe.tx.udp-gso</a>
+   - <a href="#tune.quic.interop">tune.quic.interop</a>
    - <a href="#tune.quic.listen">tune.quic.listen</a>
    - <a href="#tune.quic.mem.tx-max">tune.quic.mem.tx-max</a>
    - <a href="#tune.quic.sec.stateless-reset-rate">tune.quic.sec.stateless-reset-rate</a>
@@ -9297,10 +9302,10 @@ will share the chain in memory.
 
 The OCSP features are able to use the completed chain when no .issuer was
 used, or no chain was provided in the PEM.
-</pre><a class="anchor" name="jwt.allow_none_alg"></a><a class="anchor" name="3-jwt.allow_none_alg"></a><a class="anchor" name="3.1-jwt.allow_none_alg"></a><a class="anchor" name="jwt.allow_none_alg (Global section)"></a><a class="anchor" name="jwt.allow_none_alg (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.allow_none_alg"></a><a href="#3.1-jwt.allow_none_alg">jwt.allow_none_alg</a></b></div><pre class="text">Allow JWT signed token with the &quot;none&quot; algorithm in the 'jwt_verify'
-converter. They will always be considered valid when this option is set. By
-default unsigned tokens are rejected since they are considered unsafe (see
-RFC8725 <a href="#3.1">section 3.1</a>).
+</pre><a class="anchor" name="jwt.allow_none_alg"></a><a class="anchor" name="3-jwt.allow_none_alg"></a><a class="anchor" name="3.1-jwt.allow_none_alg"></a><a class="anchor" name="jwt.allow_none_alg (Global section)"></a><a class="anchor" name="jwt.allow_none_alg (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.allow_none_alg"></a><a href="#3.1-jwt.allow_none_alg">jwt.allow_none_alg</a></b></div><pre class="text">Allow JWT signed token with the &quot;none&quot; algorithm in the 'jwt_verify',
+'jwt_verify_secret' or 'jwt_verify_cert' converters. They will always be
+considered valid when this option is set. By default unsigned tokens are
+rejected since they are considered unsafe (see RFC8725 <a href="#3.1">section 3.1</a>).
 </pre><a class="anchor" name="jwt.decrypt_alg_list"></a><a class="anchor" name="3-jwt.decrypt_alg_list"></a><a class="anchor" name="3.1-jwt.decrypt_alg_list"></a><a class="anchor" name="jwt.decrypt_alg_list (Global section)"></a><a class="anchor" name="jwt.decrypt_alg_list (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="jwt.decrypt_alg_list"></a><a href="#3.1-jwt.decrypt_alg_list">jwt.decrypt_alg_list</a></b> <span style="color: #080">&lt;list&gt;</span></div><pre class="text">Set the list of algorithms allowed in the jwt_decrypt_XXX converters. JWT
 tokens using an unsupported or disabled algorithms will never be decrypted.
 The specified algorithms must have the same format as in <a href="#4.1">section 4.1</a> of
@@ -9602,7 +9607,8 @@ setups, it is not necessarily convenient to modify the configuration nor the
 command line to enable core dumps. This is for example the case with
 generated configurations and regression testing. In this case, it is possible
 to preset the set-dumpable argument in the HAPROXY_FORCE_DUMPABLE environment
-variable, which accepts the same values.
+variable, which accepts the same values. The forced debug mode on the command
+line (&quot;-d&quot;) also turns set-dumpable on.
 </pre><a class="anchor" name="set-var"></a><a class="anchor" name="3-set-var"></a><a class="anchor" name="3.1-set-var"></a><a class="anchor" name="set-var (Global section)"></a><a class="anchor" name="set-var (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="set-var"></a><a href="#3.1-set-var">set-var</a></b> <span style="color: #080">&lt;var-name&gt;</span> <span style="color: #080">&lt;expr&gt;</span></div><pre class="text">Sets the process-wide variable '&lt;var-name&gt;' to the result of the evaluation
 of the sample expression &lt;expr&gt;. The variable '&lt;var-name&gt;' may only be a
 process-wide variable (using the 'proc.' prefix). It works exactly like the
@@ -10454,6 +10460,9 @@ return an HTTP 400 (Bad Request) error. Similarly if the header block of an
 HTTP response is larger than this size, HAProxy will return an HTTP 502 (Bad
 Gateway) error. Note that the value set using this parameter will
 automatically be rounded up to the next multiple of 8 on 32-bit machines and
+16 on 64-bit machines. Since this value is already used while parsing
+proxies (e.g. to load &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;http-return&quot; payloads), it must be set
+in a global section placed before any other section, otherwise a warning is
 </pre><div class="page-header"><b>See also:</b> tune.bufsize.large, tune.bufsize.small.</div>
 <a class="anchor" name="tune.bufsize.large"></a><a class="anchor" name="3-tune.bufsize.large"></a><a class="anchor" name="3.2-tune.bufsize.large"></a><a class="anchor" name="tune.bufsize.large (Global section)"></a><a class="anchor" name="tune.bufsize.large (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.bufsize.large"></a><a href="#3.2-tune.bufsize.large">tune.bufsize.large</a></b> <span style="color: #080">&lt;size&gt;</span></div><pre class="text">Sets the size in bytes for large buffers. By defaults, support for large
 buffers is not enabled, it must explicitly be enable by setting this value.
@@ -10942,7 +10951,10 @@ is enough for all usages, considering that the widely deployed Apache server
 uses the same limit. It can be useful to push this limit further to
 temporarily allow a buggy application to work by the time it gets fixed. The
 accepted range is 1..32767. Keep in mind that each new header consumes 32bits
-of memory for each stream, so don't push this limit too high.
+of memory for each stream, so don't push this limit too high. Since this
+value is already used while parsing proxies (e.g. to load &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
+payloads), it must be set in a global section placed before any other
+section, otherwise a warning is emitted.
 
 Note that HTTP/1.1 is a text protocol, so there is no special limit when the
 message is sent. The limit during the message parsing is sufficient. HTTP/2
@@ -11199,7 +11211,9 @@ requests or responses. Setting it too low prevents addition of new headers
 to already large requests or to POST requests. It is generally wise to set it
 to about 1024. It is automatically readjusted to half of bufsize if it is
 larger than that. This means you don't have to worry about it when changing
-bufsize.
+bufsize. Since this value is already used while parsing proxies (e.g. to
+check &quot;http-return&quot; payloads), it must be set in a global section placed
+before any other section, otherwise a warning is emitted.
 </pre><a class="anchor" name="tune.max-rules-at-once"></a><a class="anchor" name="3-tune.max-rules-at-once"></a><a class="anchor" name="3.2-tune.max-rules-at-once"></a><a class="anchor" name="tune.max-rules-at-once (Global section)"></a><a class="anchor" name="tune.max-rules-at-once (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.max-rules-at-once"></a><a href="#3.2-tune.max-rules-at-once">tune.max-rules-at-once</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum number of rules that can be evaluated at once in ruleset
 evaluating functions, provided that they support yielding. Indeed, it is
 not rare to see configurations with a large number of &quot;<a href="#tcp-request%20content">tcp-request content</a>&quot;
@@ -11467,6 +11481,14 @@ default, it is active. This kernel feature allows to emit multiple datagrams
 via a single system call which is more efficient for large transfer. It may
 be useful to disable it on developers suggestion when suspecting an issue on
 emission.
+</pre><a class="anchor" name="tune.quic.interop"></a><a class="anchor" name="3-tune.quic.interop"></a><a class="anchor" name="3.2-tune.quic.interop"></a><a class="anchor" name="tune.quic.interop (Global section)"></a><a class="anchor" name="tune.quic.interop (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.interop"></a><a href="#3.2-tune.quic.interop">tune.quic.interop</a></b> <span style="color: #800">{ off | fe }</span> <span style="color: #008">[ EXPERIMENTAL ]</span></div><pre class="text">Activates support for QUIC interop testing. This is mandatory to be able to
+use &quot;hq-interop&quot; in ALPN configuration. This must never be activated for
+normal usage.
+
+The default value &quot;off&quot; disables QUIC interop testing. The &quot;fe&quot; value is used
+to run HAProxy as a server in the interop test suite.
+
+It requires &quot;<a href="#expose-experimental-directives">expose-experimental-directives</a>&quot; to be set.
 </pre><a class="anchor" name="tune.quic.listen"></a><a class="anchor" name="3-tune.quic.listen"></a><a class="anchor" name="3.2-tune.quic.listen"></a><a class="anchor" name="tune.quic.listen (Global section)"></a><a class="anchor" name="tune.quic.listen (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.quic.listen"></a><a href="#3.2-tune.quic.listen">tune.quic.listen</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">Disable QUIC transport protocol on the frontend side. All the QUIC listeners
 will still be created, but they won't listen for incoming datagrams. Hence,
 no QUIC traffic will be processed by haproxy on the frontend side.
@@ -23004,8 +23026,11 @@ HTTP/2 connections with this:
 
      bind :443 ssl crt pub.pem alpn h2  # explicitly disable HTTP/1.1
 
-QUIC supports only h3 and hq-interop as ALPN. h3 is for HTTP/3 and hq-interop
-is used for http/0.9 and QUIC interop runner (see https://interop.seemann.io).
+Only &quot;h3&quot; is officially supported as a QUIC ALPN for HTTP/3. The &quot;hq-interop&quot;
+value is reserved for QUIC interop testing (see https://interop.seemann.io).
+It cannot be used unless the experimental keyword &quot;<a href="#tune.quic.interop">tune.quic.interop</a>&quot; is set
+to the proper value.
+
 Each &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">alpn<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#alpn%20%28Bind%20options%29">Bind options</a></li><li><a href="#alpn%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; statement will replace a previous one. In order to remove them,
 use &quot;<a href="#no-alpn">no-alpn</a>&quot;.
 
@@ -26710,6 +26735,7 @@ The following keywords are supported:
 <tr><td ><a href="#7-jwt_payload_query">jwt_payload_query([json_path[,output_type]])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-jwt_verify">jwt_verify(alg,key)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-jwt_verify_cert">jwt_verify_cert(alg,cert)</a></td><td >string</td><td >integer</td></tr>
+<tr><td ><a href="#7-jwt_verify_secret">jwt_verify_secret(alg,cert)</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-language">language(value[,default])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-length">length</a></td><td >string</td><td >integer</td></tr>
 <tr><td ><a href="#7-lower">lower</a></td><td >string</td><td >string</td></tr>
@@ -26717,8 +26743,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-ltrim">ltrim(chars)</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-map">map(map_name[,default_value])</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-map_match">map_match(map_name[,default_value])</a></td><td >_match_</td><td >string</td></tr>
-<tr><td ><a href="#7-map_match_output">map_match_output(map_name[,default_value])</a></td><td >_match_</td><td >_output_</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-map_match_output">map_match_output(map_name[,default_value])</a></td><td >_match_</td><td >_output_</td></tr>
 <tr><td ><a href="#7-mod">mod(value)</a></td><td >integer</td><td >integer</td></tr>
 <tr><td ><a href="#7-mqtt_field_value">mqtt_field_value(pkt_type,fieldname_or_prop_ID)</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-mqtt_is_valid">mqtt_is_valid</a></td><td >binary</td><td >boolean</td></tr>
@@ -26738,8 +26764,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-reverse">reverse</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-reverse_dom">reverse_dom</a></td><td >string</td><td >string</td></tr>
 <tr><td ><a href="#7-rfc7239_field">rfc7239_field(field)</a></td><td >string</td><td >string</td></tr>
-<tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-rfc7239_is_valid">rfc7239_is_valid</a></td><td >string</td><td >boolean</td></tr>
 <tr><td ><a href="#7-rfc7239_n2nn">rfc7239_n2nn</a></td><td >string</td><td >address / str</td></tr>
 <tr><td ><a href="#7-rfc7239_n2np">rfc7239_n2np</a></td><td >string</td><td >integer / str</td></tr>
 <tr><td ><a href="#7-rfc7239_nn">rfc7239_nn</a></td><td >address/str</td><td >string</td></tr>
@@ -26759,8 +26785,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_clr_gpc">table_clr_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_clr_gpc0">table_clr_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_clr_gpc1">table_clr_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_conn_cnt">table_conn_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_conn_cnt">table_conn_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_cur">table_conn_cur([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_conn_rate">table_conn_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_expire">table_expire([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
@@ -26780,8 +26806,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-table_http_fail_rate">table_http_fail_rate([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_req_cnt">table_http_req_cnt([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_http_req_rate">table_http_req_rate([table])</a></td><td >any</td><td >integer</td></tr>
-<tr><td ><a href="#7-table_idle">table_idle([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-table_idle">table_idle([table[,default_value]])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc">table_inc_gpc(idx[,table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc0">table_inc_gpc0([table])</a></td><td >any</td><td >integer</td></tr>
 <tr><td ><a href="#7-table_inc_gpc1">table_inc_gpc1([table])</a></td><td >any</td><td >integer</td></tr>
@@ -26801,8 +26827,8 @@ The following keywords are supported:
 <tr><td ><a href="#7-tcp.options.wsopt">tcp.options.wsopt</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.options_list">tcp.options_list</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-tcp.seq">tcp.seq</a></td><td >binary</td><td >integer</td></tr>
-<tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
 <thead><tr><th>keyword</th><th>input type</th><th>output type</th></tr></thead>
+<tr><td ><a href="#7-tcp.src">tcp.src</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tcp.win">tcp.win</a></td><td >binary</td><td >integer</td></tr>
 <tr><td ><a href="#7-tr">tr([-flags,]set1[,set2])</a></td><td >binary</td><td >binary</td></tr>
 <tr><td ><a href="#7-ub64dec">ub64dec</a></td><td >string</td><td >string</td></tr>
@@ -27656,7 +27682,10 @@ parameters.
 
 Please note that this converter is only available when HAProxy has been
 compiled with USE_OPENSSL.
-</pre><a class="anchor" name="jwt_verify"></a><a class="anchor" name="7-jwt_verify"></a><a class="anchor" name="7.3.1-jwt_verify"></a><a class="anchor" name="jwt_verify (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify"></a><a href="#7.3.1-jwt_verify">jwt_verify</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;key&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
+</pre><a class="anchor" name="jwt_verify"></a><a class="anchor" name="7-jwt_verify"></a><a class="anchor" name="7.3.1-jwt_verify"></a><a class="anchor" name="jwt_verify (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify"></a><a href="#7.3.1-jwt_verify">jwt_verify</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;key&gt;</span>) <span class="label label-warning">(deprecated)</span></div><pre class="text">This converter is deprecated, use 'jwt_verify_secret' or 'jwt_verify_cert'
+instead.
+
+Performs a signature verification for the JSON Web Token (JWT) given in input
 by using the &lt;alg&gt; algorithm and the &lt;key&gt; parameter.
 For now, only JWS tokens using the Compact Serialization format can be
 processed (three dot-separated base64-url encoded strings).
@@ -27752,11 +27781,13 @@ a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519.
 ensure that the header and payload contents are fully valid JSONs once
 decoded for instance, and no checks are performed regarding their respective
 contents.
+This converter cannot be used to validate tokens signed with HMAC algorithm,
+it takes a certificate or a public key as second parameter.
 
 - &lt;alg&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
   holds the name of the algorithm used to verify. Unlike the &quot;<a href="#jwt_verify">jwt_verify</a>&quot;
-  converter, this converter only expects a certificate as second parameter so
-  it should not be used for tokens using HMAC algorithms.
+  converter, this converter only expects a certificate or a public key as
+  second parameter so it should not be used for tokens using HMAC algorithms.
 
   Algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518 are managed (apart from HMAC
   ones):
@@ -27778,7 +27809,7 @@ contents.
  +--------------+---------------------------------------------------------+
 
 - &lt;key&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
-  holds a certificate path.
+  holds a certificate or public key path.
 
   Certificates must be standard PEM certificates (starting with BEGIN
   CERTIFICATE). Their path can be passed directly to the converter or
@@ -27796,6 +27827,10 @@ contents.
   It is possible to update certificates dynamically and add new certificates
   using the stats socket. See also &quot;set ssl cert&quot; and &quot;new ssl cert&quot; in the
   management guide.
+
+  All the public keys that might be used to verify JWTs must be known during
+  init in order to be added into a dedicated cache so that no disk access is
+  required during runtime.
 
 Returns 1 in case of verification success, 0 in case of verification failure
 and a strictly negative value for any other error. Because of all those
@@ -27830,6 +27865,70 @@ http-request set-var(txn.bearer) http_auth_bearer
 http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
 http-request deny unless { var(txn.jwt_alg) -m str &quot;RS256&quot; }
 http-request deny unless { var(txn.bearer),jwt_verify_cert(txn.jwt_alg,&quot;/path/to/cert.pem&quot;) 1 }
+</code></pre>
+</div><a class="anchor" name="jwt_verify_secret"></a><a class="anchor" name="7-jwt_verify_secret"></a><a class="anchor" name="7.3.1-jwt_verify_secret"></a><a class="anchor" name="jwt_verify_secret (Using ACLs and fetching samples)"></a><a class="anchor" name="jwt_verify_secret (Converters)"></a><div class="keyword"><b><a class="anchor" name="jwt_verify_secret"></a><a href="#7.3.1-jwt_verify_secret">jwt_verify_secret</a></b>(<span style="color: #080">&lt;alg&gt;</span>,<span style="color: #080">&lt;secret&gt;</span>)</div><pre class="text">Performs a signature verification for the JSON Web Token (JWT) given in input
+by using the &lt;alg&gt; algorithm and the &lt;cert&gt; parameter.
+For now, only JWS tokens using the Compact Serialization format can be
+processed (three dot-separated base64-url encoded strings).
+This converter only verifies the signature of the token and does not perform
+a full JWT validation as specified in <a href="#7.2">section 7.2</a> of RFC7519. We do not
+ensure that the header and payload contents are fully valid JSONs once
+decoded for instance, and no checks are performed regarding their respective
+contents.
+This converter can only be used to validate tokens signed with HMAC
+algorithm.
+
+- &lt;alg&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;) that
+  holds the name of the algorithm used to verify.
+
+  Among the algorithms mentioned in <a href="#3.1">section 3.1</a> of RFC7518, only the HMAC
+  ones are supported in this converter and the &quot;none&quot; special case.
+
+ +--------------+---------------------------------------------------------+
+ | &quot;alg&quot; Param  | Digital Signature or MAC Algorithm                      |
+ | Value        |                                                         |
+ +--------------+---------------------------------------------------------+
+ | HS256        | HMAC using SHA-256                                      |
+ | HS384        | HMAC using SHA-384                                      |
+ | HS512        | HMAC using SHA-512                                      |
+ | none         | No digital signature or MAC performed (see note below)  |
+ +--------------+---------------------------------------------------------+
+
+- &lt;secret&gt; can be either a string or a variable name (See also &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">set-var<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#set-var%20%28Process%20management%20and%20security%29">Process management and security</a></li><li><a href="#set-var%20%28Alphabetically%20sorted%20actions%20reference%29">Alphabetically sorted actions reference</a></li><li><a href="#set-var%20%28Converters%29">Converters</a></li></ul></span>&quot;)
+  that holds the secret used to verify the token.
+
+Returns 1 in case of verification success, 0 in case of verification failure
+and a strictly negative value for any other error. Because of all those
+non-null error return values, the result of this converter should never be
+converted to a boolean. See below for a full list of the possible return
+values.
+
+The possible return values are the following :
+
++----+----------------------------------------------------------------------+
+| ID | message                                                              |
++----+----------------------------------------------------------------------+
+|  1 | &quot;Verification success&quot;                                               |
+|  0 | &quot;Verification failure&quot;                                               |
+| -1 | &quot;Unknown algorithm (not mentioned in RFC7518)&quot;                       |
+| -2 | &quot;Unmanaged algorithm&quot;                                                |
+| -3 | &quot;Invalid token&quot;                                                      |
+| -4 | &quot;Out of memory&quot;                                                      |
+| -6 | &quot;Internal error&quot;                                                     |
++----+----------------------------------------------------------------------+
+
+Please note that this converter is only available when HAProxy has been
+compiled with USE_OPENSSL.
+</pre><div class="separator">
+<span class="label label-success">Example:</span>
+<pre class="prettyprint">
+<code><span class="comment"># Get a JWT from the authorization header, extract the &quot;alg&quot; field of its</span>
+<span class="comment"># JOSE header and use a public certificate to verify a signature</span>
+http-request set-var(txn.bearer) http_auth_bearer
+http-request set-var(txn.jwt_alg) var(txn.bearer),jwt_header_query('$.alg')
+http-request deny unless { var(txn.jwt_alg) -m str &quot;HS256&quot; }
+http-request set-var(txn.secret) str(YQBiY2RlZg==),b64dec
+http-request return status 200 hdr x-res &quot;%[req.hdr(x-tok),jwt_verify_secret(txn.jwt_alg,txn.secret)]&quot;
 </code></pre>
 </div><a class="anchor" name="language"></a><a class="anchor" name="7-language"></a><a class="anchor" name="7.3.1-language"></a><a class="anchor" name="language (Using ACLs and fetching samples)"></a><a class="anchor" name="language (Converters)"></a><div class="keyword"><b><a class="anchor" name="language"></a><a href="#7.3.1-language">language</a></b>(<span style="color: #080">&lt;value&gt;</span><span style="color: #008">[,<span style="color: #080">&lt;default&gt;</span>]</span>)</div><pre class="text">Returns the value with the highest q-factor from a list as extracted from the
 &quot;accept-language&quot; header using &quot;<a href="#req.fhdr">req.fhdr</a>&quot;. Values with no q-factor have a
@@ -37905,7 +38004,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev13-31 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev13-70 &ndash; Configuration Manual<br>
 							<small>, 2026/11/18</small>
 						</div>
 					</div>
