@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev13-70 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev13-104 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5079,7 +5079,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/20</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/23</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5090,7 +5090,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev13-70</strong></p>
+							<p><strong>version 3.5-dev13-104</strong></p>
 							<p>
 								2026/11/18<br>
 								
@@ -8515,6 +8515,22 @@ noted, they apply to HTTP/1 only.
     upgrade responses lacking a valid &quot;sec-websocket-accept&quot; header. This
     should only be used between trusted WebSocket endpoints, and the risk is
     moderate.
+
+  - &quot;http-1.0-status-1xx&quot; (response): this controls the acceptance of HTTP
+    status codes below 200 in responses from or to HTTP/1.0 messages. These
+    ranges were specified as reserved and are not uniformly implemented
+    across implementations, and present a risk of smuggling. This should only
+    be used with confirmed valid endpoints, and the risk is low because
+    HTTP/1.0-only agents became rare.
+
+  - &quot;trace-with-content&quot; (request): this controls the acceptance of TRACE
+    HTTP requests containing a message body. This is forbidden by latest
+    updates of the specification because it can be used to build smuggling
+    attacks with certain servers. TRACE is exclusively used for attacks and
+    occasionally for debugging anyway. The risk is high, particularly for
+    requests originating from untrusted clients. Do not enable this without
+    verifying that servers support it and that the application absolutely
+    requires it.
 
 By default, for backward compatibility, all violations above are flagged as
 acceptable, meaning that a proxy having &quot;option accept-unsafe-http-*&quot; will
@@ -13698,7 +13714,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
+          411, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;file&gt;    designates a file containing the full HTTP response. It is
           recommended to follow the common practice of appending &quot;.http&quot; to
@@ -13749,8 +13765,8 @@ May be used in the following contexts: http
 
 &lt;code&gt;  is a HTTP status code. Several status code may be listed.
         Currently, HAProxy is capable of generating codes 200, 400, 401,
-        403, 404, 405, 407, 408, 410, 413, 414, 425, 429, 431, 500, 501,
-        502, 503, and 504.</pre>
+        403, 404, 405, 407, 408, 410, 411, 413, 414, 425, 429, 431, 500,
+        501, 502, 503, and 504.</pre>
 </div>
 <pre class="text">Errors defined in the http-errors section with the name &lt;name&gt; are imported
 in the current proxy. If no status code is specified, all error files of the
@@ -13776,7 +13792,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
+          411, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;url&gt;     it is the exact contents of the &quot;Location&quot; header. It may contain
           either a relative URI to an error page hosted on the same site,
@@ -13808,7 +13824,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">&lt;code&gt;    is the HTTP status code. Currently, HAProxy is capable of
           generating codes 200, 400, 401, 403, 404, 405, 407, 408, 410,
-          413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
+          411, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 &lt;url&gt;     it is the exact contents of the &quot;Location&quot; header. It may contain
           either a relative URI to an error page hosted on the same site,
@@ -15025,7 +15041,7 @@ May be used in the following contexts: http
 <div class="separator">
 <span class="label label-info">Arguments :</span><pre class="prettyprint arguments">status &lt;code&gt;        is the HTTP status code. It must be specified.
                      Currently, HAProxy is capable of generating codes
-                     200, 400, 401, 403, 404, 405, 407, 408, 410, 413,
+                     200, 400, 401, 403, 404, 405, 407, 408, 410, 411, 413,
                      414, 425, 429, 431, 500, 501, 502, 503, and 504.
 
 content-type &lt;type&gt;  is the response content type, for instance
@@ -17324,22 +17340,28 @@ post-80-sha2
            the only one enabled by default since MySQL 8.4. Example:
              CREATE USER 'haproxy'@'%' IDENTIFIED WITH caching_sha2_password BY '';</pre>
 </div>
-<pre class="text">The authentication plugin announced by the check must match the one of the
-check user. Otherwise the server either rejects the handshake (error 1251
-with pre-41 and post-41) or replies with an authentication method switch
-request that the check cannot answer (post-80, in which case the check is
-still reported as passed). In both cases the server aborts the handshake and
-counts it as a connection error for the HAProxy host. Once the host reaches
-MySQL &quot;max_connect_errors&quot;, the server refuses all connections from it,
-including proxied client connections, until &quot;FLUSH HOSTS&quot; is issued.
+<pre class="text">With pre-41 and post-41, the authentication plugin announced by the check
+must match the one of the check user. Otherwise the server rejects the
+handshake with error 1251, aborts it and counts it as a connection error
+for the HAProxy host. Once the host reaches MySQL &quot;max_connect_errors&quot;, the
+server refuses all connections from it, including proxied client
+connections, until &quot;FLUSH HOSTS&quot; is issued.
 
-If you specify a username, the check consists of sending two MySQL packet,
-one Client Authentication packet, and one QUIT packet, to correctly close
-MySQL session. We then parse the MySQL Handshake Initialization packet and/or
-Error packet. It is a basic but useful test which does not produce error nor
-aborted connect on the server. However, it requires an unlocked authorised
-user without a password. To create a basic limited user in MySQL with
-optional resource limits:
+With post-80 and post-80-sha2, if the plugin does not match the one of the
+check user, the server replies with an authentication method switch
+request. The check answers with an empty password for the requested plugin,
+reports the server as UP if the authentication succeeds and the session is
+cleanly closed with a QUIT command, so no connection error is recorded on
+the server. If the check user has a password, the full authentication
+required by the server cannot be performed and the check fails.
+
+If you specify a username, the check consists of sending an authentication
+packet followed by a QUIT packet to correctly close the MySQL session. We
+then parse the MySQL Handshake Initialization packet, the authentication
+result and any error packet. It is a basic but useful test which does not
+produce error nor aborted connect on the server. However, it requires an
+unlocked authorised user without a password. To create a basic limited user
+in MySQL with optional resource limits:
 
     CREATE USER '&lt;username&gt;'@'&lt;ip_of_haproxy|network_of_haproxy/netmask&gt;'
     /*!50701 WITH MAX_QUERIES_PER_HOUR 1 MAX_UPDATES_PER_HOUR 0 */
@@ -22082,23 +22104,23 @@ are followed to create the response :
 
 * If &quot;default-errorfiles&quot; argument is set, the proxy's errorfiles are
   considered.  If the &quot;<a href="#status">status</a>&quot; argument is defined, it must be one of the
-  status code handled by HAProxy (200, 400, 403, 404, 405, 408, 410, 413,
-  414, 425, 429, 431, 500, 501, 502, 503, and 504). The &quot;content-type&quot;
+  status code handled by HAProxy (200, 400, 403, 404, 405, 408, 410, 411,
+  413, 414, 425, 429, 431, 500, 501, 502, 503, and 504). The &quot;content-type&quot;
   argument, if any, is ignored.
 
 * If a specific errorfile is defined, with an &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">errorfile<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#errorfile%20%28HTTP-errors%29">HTTP-errors</a></li><li><a href="#errorfile%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; argument, the
   corresponding file, containing a full HTTP response, is returned. Only the
   &quot;<a href="#status">status</a>&quot; argument is considered. It must be one of the status code handled
-  by HAProxy (200, 400, 403, 404, 405, 408, 410, 413, 414, 425, 429, 431,
-  500, 501, 502, 503, and 504). The &quot;content-type&quot; argument, if any, is
+  by HAProxy (200, 400, 403, 404, 405, 408, 410, 411, 413, 414, 425, 429,
+  431, 500, 501, 502, 503, and 504). The &quot;content-type&quot; argument, if any, is
   ignored.
 
 * If an http-errors section is defined, with an &quot;<a href="#errorfiles">errorfiles</a>&quot; argument, the
   corresponding file in the specified http-errors section, containing a full
   HTTP response, is returned. Only the &quot;<a href="#status">status</a>&quot; argument is considered. It
   must be one of the status code handled by HAProxy (200, 400, 403, 404, 405,
-  408, 410, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504).
-  The &quot;content-type&quot; argument, if any, is ignored.
+  408, 410, 411, 413, 414, 425, 429, 431, 500, 501, 502, 503, and 504). The
+  &quot;content-type&quot; argument, if any, is ignored.
 
 * If a &quot;file&quot; or a &quot;lf-file&quot; argument is specified, the file's content is
   used as the response payload. If the file is not empty, its content-type
@@ -24009,12 +24031,17 @@ its settings.
       behavior for servers defined in the configuration file. This empty value
       is mostly useful for dynamic servers created on the CLI which by default
       ignore any default-server, which is equivalent to the &quot;none&quot; value.
+      Alternatively, a named defaults section can also be used as an argument
+      to reuse its unnamed default-server.
   - srv:[&lt;bename&gt;/]&lt;srvname&gt;
-      instructs to reuse the settings from the designated backend's server or named
-      default-server resulting from the processing of all its default-server
-      directives using the same name. The backend name is optional. If unset,
-      this designates the proxy where the currently newly defined server will
-      be attached.
+      instructs to reuse the settings from the designated backend's server or
+      named default-server resulting from the processing of all its
+      default-server directives using the same name. The backend name is
+      optional. If unset, this designates the proxy where the currently newly
+      defined server will be attached. Alternatively, a named defaults section
+      can also be specified to inherit from a named default-server. Only a
+      server or named default-server directly declared in the target backend or
+      defaults section can be specified; inherited entries are not resolved.
 
 The currently supported server settings are the following ones. Note that all
 these settings are supported both by &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; and &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">default-server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#default-server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#default-server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keywords,
@@ -37952,11 +37979,30 @@ Supported http-hardening checks and descriptions:
       listeners. See also the has_ctl() converter used for detecting them.
       It is enabled by default on untrusted connections.
 
+- reject-duplicate-content-length (inbound request and response)
+      Rejects requests and responses having a duplicate Content-Length header
+      field even if all values perfectly match. While these are tolerated by
+      the standard and is properly sanitized by HAProxy, it can still fool
+      some other reverse-proxies seeing the message before HAProxy and not
+      parsing it correctly. These are still seldom seen in legacy client or
+      server applications, sometimes in relation with compression and/or
+      caching. While HAProxy properly normalizes them, it is generally safe
+      to reject them on public facing listeners. It is enabled by default on
+      untrusted connections.
+
 - reject-duplicate-host-header (inbound request)
       Rejects requests containing more than one &quot;Host&quot; header field, even if
       valid and identical. This is recommended on untrusted listeners. Note that
       even if not rejected, duplicate host header fields are folded into a
       single one.
+
+- reject-forbidden-payload (inbound response)
+      Rejects responses with status codes 204 or below 200 that may never
+      contain any payload, if a &quot;content-length&quot; header field is present with
+      a value greater than zero or if a &quot;transfer-encoding&quot; header field is
+      present. These may only be caused by bugs or by attempts by servers to
+      inject contents (e.g. cache poisonning attacks). It is enabled by
+      default on untrusted connections.
 
 - reject-header-trailer-folding (inbound request and response)
       Rejects requests and responses which contain folded header fields or
@@ -37976,6 +38022,14 @@ Supported http-hardening checks and descriptions:
       essentially used in desynchronization attack scenarios, by trying to
       exploit different case matching schemes along the chain. This is
       recommended on untrusted listeners. It is enabled by default on
+      untrusted connections.
+
+- reject-out-of-range-status (inbound, response)
+      Rejects responses containing a status code lower than 100 or higher
+      than 599. These ones are not specified by the standard and are handled
+      differently by multiple implementations. They are never used over the
+      internet and usually only exist in local deployments. This is
+      recommended on public-facing backends. It is enabled by default on
       untrusted connections.
 
 - reject-underscore-in-header-name (inbound, request and response)
@@ -38004,7 +38058,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev13-70 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev13-104 &ndash; Configuration Manual<br>
 							<small>, 2026/11/18</small>
 						</div>
 					</div>
