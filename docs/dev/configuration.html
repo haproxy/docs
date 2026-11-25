@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev13-104 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev13-131 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5079,7 +5079,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5090,7 +5090,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev13-104</strong></p>
+							<p><strong>version 3.5-dev13-131</strong></p>
 							<p>
 								2026/11/18<br>
 								
@@ -8584,7 +8584,7 @@ The default value is &quot;auto&quot;.
 relative path is used with &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 directives. Absolute locations specified in &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ca-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ca-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#ca-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;, &quot;<a href="#ca-verify-file">ca-verify-file</a>&quot; and
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">crl-file<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#crl-file%20%28Bind%20options%29">Bind options</a></li><li><a href="#crl-file%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; prevail and ignore &quot;<a href="#ca-base">ca-base</a>&quot;.
-</pre><a class="anchor" name="chroot"></a><a class="anchor" name="3-chroot"></a><a class="anchor" name="3.1-chroot"></a><a class="anchor" name="chroot (Global section)"></a><a class="anchor" name="chroot (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="chroot"></a><a href="#3.1-chroot">chroot</a></b> <span style="color: #800">{ <span style="color: #080">&lt;jail dir&gt;</span> | auto }</span></div><pre class="text">Changes current directory to &lt;jail dir&gt; and performs a chroot() there before
+</pre><a class="anchor" name="chroot"></a><a class="anchor" name="3-chroot"></a><a class="anchor" name="3.1-chroot"></a><a class="anchor" name="chroot (Global section)"></a><a class="anchor" name="chroot (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="chroot"></a><a href="#3.1-chroot">chroot</a></b> <span style="color: #800">{ <span style="color: #080">&lt;jail dir&gt;</span> | auto | opportunistic }</span></div><pre class="text">Changes current directory to &lt;jail dir&gt; and performs a chroot() there before
 dropping privileges. This increases the security level in case an unknown
 vulnerability would be exploited, since it would make it very hard for the
 attacker to exploit the system. It is important to ensure that &lt;jail dir&gt;
@@ -8597,15 +8597,17 @@ unavailable the chroot() will fail with the usual error.
 As a special case, &lt;jail dir&gt; may be set to &quot;auto&quot;, in which case haproxy
 creates an anonymous temporary directory, unlinks it, and chroots into it.
 The resulting jail has no name in the filesystem and is empty and read-only,
-removing the need to prepare a dedicated jail directory.
+removing the need to prepare a dedicated jail directory. &quot;opportunistic&quot; is
+the same except that no error is displayed on failure.
 
 When starting with sufficient privileges and when &quot;<a href="#set-dumpable">set-dumpable</a>&quot; is not set,
-haproxy will automatically apply &quot;chroot auto&quot; if no &quot;<a href="#chroot">chroot</a>&quot; directive is
-used, i.e. it will isolate itself in a chroot jail, and will emit a warning
-if it fails to do so. If there is a compelling reason not to use chroot (e.g.
-access to a server via a UNIX socket outside of the jail), it remains
-possible to silence the warning by adding an explicit &quot;chroot /&quot;, which has
-the benefit of being visible in a configuration.
+haproxy will automatically apply &quot;chroot opportunistic&quot; if no &quot;<a href="#chroot">chroot</a>&quot;
+directive is used, i.e. it will try to isolate itself in a chroot jail, and
+will only emit a warning if it fails to do so while being started as root. If
+there is a compelling reason not to use chroot (e.g. access to a server via a
+UNIX socket outside of the jail), it remains possible to silence the warning
+by adding an explicit &quot;chroot /&quot;, which has the benefit of being visible in a
+configuration.
 </pre><a class="anchor" name="close-spread-time"></a><a class="anchor" name="3-close-spread-time"></a><a class="anchor" name="3.1-close-spread-time"></a><a class="anchor" name="close-spread-time (Global section)"></a><a class="anchor" name="close-spread-time (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="close-spread-time"></a><a href="#3.1-close-spread-time">close-spread-time</a></b> <span style="color: #080">&lt;time&gt;</span></div><pre class="text">Define a time window during which idle connections and active connections
 closing is spread in case of soft-stop. After a SIGUSR1 is received and the
 grace period is over (if any), the idle connections will all be closed at
@@ -33256,7 +33258,23 @@ different server implementations, as not all will normalize everything exactly
 the same way. Please consider the variants below, some of which might target a
 different resource on some servers, or might alias to /admin on other servers:
 </pre><table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
-<thead><tr><th>Request path/Admin/admin///admin/./admin/x/../admin/admin//..//admin//a/..//%61dmin/%2e/admin/%u0061dmin/\admin/%5Cadmin/;x=1/admin/admin%00.png/admin%3ffoo/%2561dmin</th><th>Why it may reach the same resourcecase-insensitive file systems or applicationstrailing slash (when an exact match was used)repeated slashes are merged&quot;.&quot; segment is dropped&quot;..&quot; segment is resolvedwhen &quot;..&quot; is resolved before &quot;//&quot;, it gives &quot;/admin/&quot;when &quot;..&quot; is resolved after &quot;//&quot;, it gives &quot;/admin/&quot;%-encoded character, decoded by the server%-encoded &quot;.&quot; segment, decoded then droppednon-standard &quot;%u&quot; encoding, supported by some servers&quot;\&quot; used as a directory delimitersame as &quot;\&quot;, but %-encodedpath parameters, dropped by some frameworkstruncation at an encoded NUL by some servers%3f turned to '?' by some proxies, splitting the path%-encoded '%' before 'a', resolved by some proxies</th></tr></thead>
+<thead><tr><th>Request path</th><th>Why it may reach the same resource</th></tr></thead>
+<tr><td >/Admin</td><td >case-insensitive file systems or applications</td></tr>
+<tr><td >/admin/</td><td >trailing slash (when an exact match was used)</td></tr>
+<tr><td >//admin</td><td >repeated slashes are merged</td></tr>
+<tr><td >/./admin</td><td >&quot;.&quot; segment is dropped</td></tr>
+<tr><td >/x/../admin</td><td >&quot;..&quot; segment is resolved</td></tr>
+<tr><td >/admin//../</td><td >when &quot;..&quot; is resolved before &quot;//&quot;, it gives &quot;/admin/&quot;</td></tr>
+<tr><td >/admin//a/../</td><td >when &quot;..&quot; is resolved after &quot;//&quot;, it gives &quot;/admin/&quot;</td></tr>
+<tr><td >/%61dmin</td><td >%-encoded character, decoded by the server</td></tr>
+<tr><td >/%2e/admin</td><td >%-encoded &quot;.&quot; segment, decoded then dropped</td></tr>
+<tr><td >/%u0061dmin</td><td >non-standard &quot;%u&quot; encoding, supported by some servers</td></tr>
+<tr><td >/\admin</td><td >&quot;\&quot; used as a directory delimiter</td></tr>
+<tr><td >/%5Cadmin</td><td >same as &quot;\&quot;, but %-encoded</td></tr>
+<tr><td >/;x=1/admin</td><td >path parameters, dropped by some frameworks</td></tr>
+<tr><td >/admin%00.png</td><td >truncation at an encoded NUL by some servers</td></tr>
+<tr><td >/admin%3ffoo</td><td >%3f turned to '?' by some proxies, splitting the path</td></tr>
+<tr><td >/%2561dmin</td><td >%-encoded '%' before 'a', resolved by some proxies</td></tr>
 </table><pre class="text">The possibilities are numerous, and given that different servers will see these
 as different resources, there's no universal way to decode and match such a
 request. This implies that the rule above does NOT protect against various
@@ -37529,17 +37547,17 @@ that a dns-01 challenge is ready to be validated. Accepted values are:
          It is also possible to signal the &quot;cli&quot; readiness using the
          ACME.challenge_ready() lua function.
 
-  dns  - perform a DNS pre-check by resolving the TXT record for
+  dns  - perform a DNS pre-check by resolving the TXT records for
          &quot;_acme-challenge.&lt;domain&gt;&quot; using the configured &quot;default&quot; resolvers
          section, not the authoritative name servers. The challenge is not
-         submitted until the TXT record matches the expected token. Results
+         submitted until a TXT record matches the expected token. Results
          may therefore be affected by DNS caching at the resolver level. The
          delay between resolution attempts is controlled by &quot;<a href="#dns-delay">dns-delay</a>&quot;. This
          option is independent of the CLI command, so no human intervention
          is required.
 
-         For dns-01, the TXT record at &quot;_acme-challenge.&lt;domain&gt;&quot; is
-         resolved and must match the expected token. For dns-persist-01,
+         For dns-01, the TXT records at &quot;_acme-challenge.&lt;domain&gt;&quot; are
+         resolved and one must match the expected token. For dns-persist-01,
          the TXT record at &quot;_validation-persist.&lt;domain&gt;&quot; is resolved and
          only its presence is checked.
 
@@ -37796,16 +37814,52 @@ certain sections, see below), or explicit (inherited from another existing
 section). Since the same profile may be used on either side, controls are
 expressed relative to the traffic received or sent by that side, and never in
 terms of requests or responses.
-</pre><a class="anchor" name="http-hardening"></a><a class="anchor" name="12-http-hardening"></a><a class="anchor" name="12.10-http-hardening"></a><a class="anchor" name="http-hardening (Other sections)"></a><a class="anchor" name="http-hardening (HTTP hardening)"></a><div class="keyword"><b><a class="anchor" name="http-hardening"></a><a href="#12.10-http-hardening">http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[from <span style="color: #080">&lt;name2&gt;</span>]</span></div><pre class="text">  Declares a new hardening profile &lt;name&gt;. A profile can only be declared once.
-  The name &quot;auto&quot; is reserved. When &quot;<a href="#from">from</a>&quot; is used, the profile starts with the
-  settings of the already declared profile &lt;name2&gt;, otherwise it starts with
-  the defaults. A profile must be declared before being referenced by a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot;
-  or &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line or by &quot;<a href="#from">from</a>&quot;, like for &quot;defaults&quot; sections.
+</pre><a class="anchor" name="http-hardening"></a><a class="anchor" name="12-http-hardening"></a><a class="anchor" name="12.10-http-hardening"></a><a class="anchor" name="http-hardening (Other sections)"></a><a class="anchor" name="http-hardening (HTTP hardening)"></a><div class="keyword"><b><a class="anchor" name="http-hardening"></a><a href="#12.10-http-hardening">http-hardening</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #008">[from <span style="color: #080">&lt;source&gt;</span>]</span></div><pre class="text">  Declares a new hardening profile &lt;name&gt;. A profile can only be declared once.
+  The name &quot;auto&quot; is reserved and may neither be defined nor referenced as a
+  source in &quot;<a href="#from">from</a>&quot;. When &quot;<a href="#from">from</a>&quot; is used, the profile starts with the settings
+  of the already existing profile &lt;source&gt;, otherwise it starts with the
+  defaults. A profile must be declared before being referenced by a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or
+  &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line or by &quot;<a href="#from">from</a>&quot;, like for &quot;defaults&quot; sections.
 
-  The profiles &quot;untrusted&quot; and &quot;trusted&quot; always exist even if never declared.
-  They may be declared once to change their settings, in which case they start
-  from their defaults. They are supported in &quot;<a href="#from">from</a>&quot; to create new profiles. The
-  reserved name &quot;auto&quot; may not be defined nor used in &quot;<a href="#from">from</a>&quot;.
+  The profiles &quot;untrusted&quot; and &quot;trusted&quot; always exist and are preset to their
+  respective default values so that they don't need to be declared for most
+  common use cases. Their default settings (the list of on/off controls) may be
+  displayed at boot time by passing &quot;-dHharden&quot; on the command line, and should
+  reflect the following values:
+
+    http-hardening trusted
+        all off
+
+    http-hardening untrusted
+        reject-duplicate-host-header off
+        reject-lowercase-method on
+        reject-underscore-in-header-name off
+        reject-underscore-in-trailer-name off
+        delete-underscore-in-header-name on
+        delete-underscore-in-trailer-name on
+        delete-unregistered-header-fields off
+        delete-unregistered-trailer-fields off
+        delete-all-trailer-fields off
+        reject-header-trailer-folding on
+        reject-ctl-in-header-trailer on
+        reject-content-length-with-te on
+        reject-content-length-leading-zero on
+        reject-duplicate-content-length on
+        reject-forbidden-payload on
+        reject-out-of-range-status on
+
+  It is possible to change their settings from the defaults, by declaring the
+  profiles once, along with the settings to change, in which case they will
+  inherit from their defaults first. They may even be declared with a &quot;<a href="#from">from</a>&quot;
+  keyword to ignore their defaults and start from another profile instead,
+  including one of them. For example, in order to simply apply all &quot;untrusted&quot;
+  settings to the &quot;trusted&quot; profile, just do this:
+
+    http-hardening trusted from untrusted
+
+  Like other profiles, they are supported as sources in &quot;<a href="#from">from</a>&quot; to create new
+  profiles. All enabled hardening profiles' settings may be consulted at run
+  time using &quot;show http-hardening&quot; on the CLI.
 
 &lt;keyword&gt; { on | off }
   Enables or disables the hardening check designated by &lt;keyword&gt; in the
@@ -38058,7 +38112,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev13-104 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev13-131 &ndash; Configuration Manual<br>
 							<small>, 2026/11/18</small>
 						</div>
 					</div>

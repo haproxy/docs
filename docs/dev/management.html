@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev13-104 - Management Guide</title>
+		<title>HAProxy version 3.5-dev13-131 - Management Guide</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -264,6 +264,8 @@
 							<a class="list-group-item" href="#abort ssl crl-file">abort ssl crl-file</a>
 							
 							<a class="list-group-item" href="#acme">acme</a>
+							
+							<a class="list-group-item" href="#acme challenge_ready">acme challenge_ready</a>
 							
 							<a class="list-group-item" href="#acme renew">acme renew</a>
 							
@@ -725,7 +727,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/23</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/24</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -736,7 +738,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Management Guide</h2>
-							<p><strong>version 3.5-dev13-104</strong></p>
+							<p><strong>version 3.5-dev13-131</strong></p>
 							<p>
 								<br>
 								
@@ -1173,6 +1175,10 @@ list of options is :
     This option was made available because many bogus implementations of
     getaddrinfo() exist on various systems and cause anomalies that are
     difficult to troubleshoot.
+
+  -dH[&lt;class&gt;[,...]] : dump HTTP specific settings. It can be used to dump HTTP
+   hardening profiles using &quot;-dHharden&quot;, all HTTP information using &quot;-dHall&quot;,
+   or help about other HTTP specific information using &quot;-dHhelp&quot;.
 
   -dI : enable the insecure fork. This is the equivalent of the
     &quot;insecure-fork-wanted&quot; in the global section. It can be useful when running
@@ -2624,6 +2630,19 @@ See also &quot;<a href="#set%20ssl%20cert">set ssl cert</a>&quot; and &quot;<a h
 </pre><a class="anchor" name="abort"></a><a class="anchor" name="9-abort"></a><a class="anchor" name="9.3-abort"></a><a class="anchor" name="abort (Statistics and monitoring)"></a><a class="anchor" name="abort (Unix Socket commands)"></a><a class="anchor" name="abort ssl"></a><a class="anchor" name="9-abort ssl"></a><a class="anchor" name="9.3-abort ssl"></a><a class="anchor" name="abort ssl (Statistics and monitoring)"></a><a class="anchor" name="abort ssl (Unix Socket commands)"></a><a class="anchor" name="abort ssl crl-file"></a><a class="anchor" name="9-abort ssl crl-file"></a><a class="anchor" name="9.3-abort ssl crl-file"></a><a class="anchor" name="abort ssl crl-file (Statistics and monitoring)"></a><a class="anchor" name="abort ssl crl-file (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="abort ssl crl-file"></a><a href="#9.3-abort%20ssl%20crl-file">abort ssl crl-file</a></b> <span style="color: #080">&lt;crlfile&gt;</span></div><pre class="text">Abort and destroy a temporary CRL file update transaction.
 
 See also &quot;<a href="#set%20ssl%20crl-file">set ssl crl-file</a>&quot; and &quot;<a href="#commit%20ssl%20crl-file">commit ssl crl-file</a>&quot;.
+</pre><a class="anchor" name="acme"></a><a class="anchor" name="9-acme"></a><a class="anchor" name="9.3-acme"></a><a class="anchor" name="acme (Statistics and monitoring)"></a><a class="anchor" name="acme (Unix Socket commands)"></a><a class="anchor" name="acme challenge_ready"></a><a class="anchor" name="9-acme challenge_ready"></a><a class="anchor" name="9.3-acme challenge_ready"></a><a class="anchor" name="acme challenge_ready (Statistics and monitoring)"></a><a class="anchor" name="acme challenge_ready (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="acme challenge_ready"></a><a href="#9.3-acme%20challenge_ready">acme challenge_ready</a></b> <span style="color: #080">&lt;certificate&gt;</span> domain <span style="color: #080">&lt;domain&gt;</span></div><pre class="text">Acknowledge deployment of one authorization for a certificate configured
+with &quot;challenge-ready cli&quot;. The domain is an exact identifier: &quot;example.com&quot;
+selects the non-wildcard authorization, while &quot;*.example.com&quot; selects only
+the wildcard authorization.
+
+For dns-01, publish the required TXT value before acknowledging it. When
+both authorizations are pending, preserve both values in the same
+&quot;_acme-challenge.example.com&quot; TXT RRset and acknowledge each separately.
+The response reports the number still awaiting acknowledgement. Configured
+delays and DNS pre-checks still apply after the final acknowledgement.
+
+Available on the master CLI and stats socket at admin level. Quote the
+command when passing it through a shell to prevent pathname expansion.
 </pre><a class="anchor" name="acme"></a><a class="anchor" name="9-acme"></a><a class="anchor" name="9.3-acme"></a><a class="anchor" name="acme (Statistics and monitoring)"></a><a class="anchor" name="acme (Unix Socket commands)"></a><a class="anchor" name="acme renew"></a><a class="anchor" name="9-acme renew"></a><a class="anchor" name="9.3-acme renew"></a><a class="anchor" name="acme renew (Statistics and monitoring)"></a><a class="anchor" name="acme renew (Unix Socket commands)"></a><div class="keyword"><b><a class="anchor" name="acme renew"></a><a href="#9.3-acme%20renew">acme renew</a></b> <span style="color: #080">&lt;certificate&gt;</span></div><pre class="text">Starts an ACME certificate generation task with the given certificate name.
 The certificate must be linked to an acme section, see <a href="#12.8">section 12.8</a> &quot;ACME&quot;
 of the configuration manual. See also &quot;<a href="#acme%20status">acme status</a>&quot;.
@@ -6154,7 +6173,7 @@ binary capabilities set.
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev13-104 &ndash; Management Guide<br>
+							HAProxy 3.5-dev13-131 &ndash; Management Guide<br>
 							<small>, </small>
 						</div>
 					</div>
