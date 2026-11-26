@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.32 - Configuration Manual</title>
+		<title>HAProxy version 2.8.32-2 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4182,6 +4182,8 @@
 							
 							<a class="list-group-item" href="#unix-bind">unix-bind</a>
 							
+							<a class="list-group-item" href="#unresolvable-server-fqdn">unresolvable-server-fqdn</a>
+							
 							<a class="list-group-item" href="#unset-var">unset-var</a>
 							
 							<a class="list-group-item" href="#unsetenv">unsetenv</a>
@@ -4296,7 +4298,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/18</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4307,7 +4309,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.32</strong></p>
+							<p><strong>version 2.8.32-2</strong></p>
 							<p>
 								2026/11/18<br>
 								
@@ -6486,6 +6488,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#presetenv">presetenv</a>
    - <a href="#prealloc-fd">prealloc-fd</a>
    - <a href="#resetenv">resetenv</a>
+   - <a href="#unresolvable-server-fqdn">unresolvable-server-fqdn</a>
    - <a href="#set-dumpable">set-dumpable</a>
    - <a href="#set-var">set-var</a>
    - <a href="#setenv">setenv</a>
@@ -7790,6 +7793,17 @@ itself, so they are absolute. The &lt;mode&gt;, &lt;user&gt;, &lt;uid&gt;, &lt;g
 all have the same meaning as their homonyms used by the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement. If
 both are specified, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement has priority, meaning that the
 &quot;<a href="#unix-bind">unix-bind</a>&quot; settings may be seen as process-wide default settings.
+</pre><a class="anchor" name="unresolvable-server-fqdn"></a><a class="anchor" name="3-unresolvable-server-fqdn"></a><a class="anchor" name="3.1-unresolvable-server-fqdn"></a><a class="anchor" name="unresolvable-server-fqdn (Global parameters)"></a><a class="anchor" name="unresolvable-server-fqdn (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unresolvable-server-fqdn"></a><a href="#3.1-unresolvable-server-fqdn">unresolvable-server-fqdn</a></b> <span style="color: #008">[ fail | warn ]</span></div><pre class="text">Server names with more than 63 characters per FQDN component cannot be
+resolved by DNS (this is a limitation of the DNS protocol, not haproxy). Any
+server with such a name will never work, and as any configuration error, will
+trigger a fatal error preventing it from starting. However, some bogus
+configuration generators may occasionally generate such invalid names without
+checking them, preventing haproxy from starting. Similarly, hosting providers
+might face the issue if their customers are free to choose any server name
+without and input control. If this happens, setting this option to &quot;warn&quot;
+will turn the error into a warning and will force the server into maintenance
+mode so that it never tries to resolve. The default setting is &quot;warn&quot; in
+versions 3.4 and earlier, and becomes &quot;fail&quot; in 3.5 and above.
 </pre><a class="anchor" name="unsetenv"></a><a class="anchor" name="3-unsetenv"></a><a class="anchor" name="3.1-unsetenv"></a><a class="anchor" name="unsetenv (Global parameters)"></a><a class="anchor" name="unsetenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unsetenv"></a><a href="#3.1-unsetenv">unsetenv</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span> ...]</span></div><pre class="text">Removes environment variables specified in arguments. This can be useful to
 hide some sensitive information that are occasionally inherited from the
 user's environment during some operations. Variables which did not exist are
@@ -28137,7 +28151,7 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.32 &ndash; Configuration Manual<br>
+							HAProxy 2.8.32-2 &ndash; Configuration Manual<br>
 							<small>, 2026/11/18</small>
 						</div>
 					</div>
