@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev13-131 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev14 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4943,6 +4943,8 @@
 							
 							<a class="list-group-item" href="#unix-bind">unix-bind</a>
 							
+							<a class="list-group-item" href="#unresolvable-server-fqdn">unresolvable-server-fqdn</a>
+							
 							<a class="list-group-item" href="#unset-var">unset-var</a>
 							
 							<a class="list-group-item" href="#unsetenv">unsetenv</a>
@@ -5079,7 +5081,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/24</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/25</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5090,9 +5092,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev13-131</strong></p>
+							<p><strong>version 3.5-dev14</strong></p>
 							<p>
-								2026/11/18<br>
+								2026/11/25<br>
 								
 							</p>
 						</div>
@@ -8120,6 +8122,7 @@ The following keywords are supported in the &quot;global&quot; section :
    - <a href="#presetenv">presetenv</a>
    - <a href="#prealloc-fd">prealloc-fd</a>
    - <a href="#resetenv">resetenv</a>
+   - <a href="#unresolvable-server-fqdn">unresolvable-server-fqdn</a>
    - <a href="#set-dumpable">set-dumpable</a>
    - <a href="#set-var">set-var</a>
    - <a href="#setenv">setenv</a>
@@ -10114,6 +10117,16 @@ itself, so they are absolute. The &lt;mode&gt;, &lt;user&gt;, &lt;uid&gt;, &lt;g
 all have the same meaning as their homonyms used by the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement. If
 both are specified, the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; statement has priority, meaning that the
 &quot;<a href="#unix-bind">unix-bind</a>&quot; settings may be seen as process-wide default settings.
+</pre><a class="anchor" name="unresolvable-server-fqdn"></a><a class="anchor" name="3-unresolvable-server-fqdn"></a><a class="anchor" name="3.1-unresolvable-server-fqdn"></a><a class="anchor" name="unresolvable-server-fqdn (Global section)"></a><a class="anchor" name="unresolvable-server-fqdn (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unresolvable-server-fqdn"></a><a href="#3.1-unresolvable-server-fqdn">unresolvable-server-fqdn</a></b> <span style="color: #008">[ fail | warn ]</span></div><pre class="text">Server names with more than 63 characters per FQDN component cannot be
+resolved by DNS (this is a limitation of the DNS protocol, not haproxy). Any
+server with such a name will never work, and as any configuration error, will
+trigger a fatal error preventing it from starting. However, some bogus
+configuration generators may occasionally generate such invalid names without
+checking them, preventing haproxy from starting. Similarly, hosting providers
+might face the issue if their customers are free to choose any server name
+without and input control. If this happens, setting this option to &quot;warn&quot;
+will turn the error into a warning and will force the server into maintenance
+mode so that it never tries to resolve. The default setting is &quot;fail&quot;.
 </pre><a class="anchor" name="unsetenv"></a><a class="anchor" name="3-unsetenv"></a><a class="anchor" name="3.1-unsetenv"></a><a class="anchor" name="unsetenv (Global section)"></a><a class="anchor" name="unsetenv (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="unsetenv"></a><a href="#3.1-unsetenv">unsetenv</a></b> <span style="color: #008">[<span style="color: #080">&lt;name&gt;</span> ...]</span></div><pre class="text">Removes environment variables specified in arguments. This can be useful to
 hide some sensitive information that are occasionally inherited from the
 user's environment during some operations. Variables which did not exist are
@@ -27567,8 +27580,10 @@ https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
 Note: depending on the context and the underlying implementation, extraction
       of duplicate JSON keys is undefined and might return the first, last,
       or any other occurrence of the same key from the input content, and if
-      key names are passed encoded, they might not always be matched. In
-      short, this converter is not suitable for content sanitization.
+      key names are passed encoded, they might not always be matched. The
+      parser also stops at elements nested deeper than 20 levels, and nothing
+      located after such an element is found. In short, this converter is
+      not suitable for content sanitization.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -37821,32 +37836,56 @@ terms of requests or responses.
   defaults. A profile must be declared before being referenced by a &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; or
   &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%20declaration%29">Peers declaration</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; line or by &quot;<a href="#from">from</a>&quot;, like for &quot;defaults&quot; sections.
 
-  The profiles &quot;untrusted&quot; and &quot;trusted&quot; always exist and are preset to their
-  respective default values so that they don't need to be declared for most
-  common use cases. Their default settings (the list of on/off controls) may be
-  displayed at boot time by passing &quot;-dHharden&quot; on the command line, and should
-  reflect the following values:
+  The profiles &quot;basic-web&quot;, &quot;untrusted&quot; and &quot;trusted&quot; always exist and are
+  preset to their respective default values so that they don't need to be
+  declared for most common use cases. Their default settings (the list of
+  on/off controls) may be displayed at boot time by passing &quot;-dHharden&quot; on the
+  command line, and should reflect the following values:
 
     http-hardening trusted
         all off
 
     http-hardening untrusted
-        reject-duplicate-host-header off
-        reject-lowercase-method on
-        reject-underscore-in-header-name off
-        reject-underscore-in-trailer-name off
-        delete-underscore-in-header-name on
-        delete-underscore-in-trailer-name on
-        delete-unregistered-header-fields off
-        delete-unregistered-trailer-fields off
-        delete-all-trailer-fields off
-        reject-header-trailer-folding on
-        reject-ctl-in-header-trailer on
-        reject-content-length-with-te on
-        reject-content-length-leading-zero on
-        reject-duplicate-content-length on
-        reject-forbidden-payload on
-        reject-out-of-range-status on
+        reject-duplicate-host-header         off
+        reject-lowercase-method              on
+        reject-underscore-in-header-name     off
+        reject-underscore-in-trailer-name    off
+        delete-underscore-in-header-name     on
+        delete-underscore-in-trailer-name    on
+        delete-unregistered-header-fields    off
+        delete-unregistered-trailer-fields   off
+        delete-all-trailer-fields            off
+        reject-header-trailer-folding        on
+        reject-ctl-in-header-trailer         on
+        reject-content-length-with-te        on
+        reject-content-length-leading-zero   on
+        reject-duplicate-content-length      on
+        reject-forbidden-payload             on
+        reject-out-of-range-status           on
+        reject-advanced-methods              off
+        reject-unexpected-request-payload    off
+        reject-unexpected-request-upgrade    off
+
+    http-hardening basic-web
+        reject-duplicate-host-header         off
+        reject-lowercase-method              on
+        reject-underscore-in-header-name     off
+        reject-underscore-in-trailer-name    off
+        delete-underscore-in-header-name     on
+        delete-underscore-in-trailer-name    on
+        delete-unregistered-header-fields    on
+        delete-unregistered-trailer-fields   on
+        delete-all-trailer-fields            on
+        reject-header-trailer-folding        on
+        reject-ctl-in-header-trailer         on
+        reject-content-length-with-te        on
+        reject-content-length-leading-zero   on
+        reject-duplicate-content-length      on
+        reject-forbidden-payload             on
+        reject-out-of-range-status           on
+        reject-advanced-methods              on
+        reject-unexpected-request-payload    on
+        reject-unexpected-request-upgrade    on
 
   It is possible to change their settings from the defaults, by declaring the
   profiles once, along with the settings to change, in which case they will
@@ -37856,6 +37895,12 @@ terms of requests or responses.
   settings to the &quot;trusted&quot; profile, just do this:
 
     http-hardening trusted from untrusted
+
+  The following will simply configure all untrusted connections to follow the
+  &quot;basic-web&quot; profile, and apply a high protection level by default that is
+  suitable for most applications :
+
+    http-hardening untrusted from basic-web
 
   Like other profiles, they are supported as sources in &quot;<a href="#from">from</a>&quot; to create new
   profiles. All enabled hardening profiles' settings may be consulted at run
@@ -37953,7 +37998,8 @@ Supported http-hardening checks and descriptions:
       attack attempts. It is generally safe to drop them by default on public
       facing listeners, and even on servers meant to deliver public contents,
       in order to avoid any information leakage. Note that gRPC services use
-      them, in responses only.
+      them, in responses only. It is enabled by default in the &quot;basic-web&quot;
+      profile.
 
 - delete-underscore-in-header-name (inbound, request and response)
       Deletes from requests and responses any header field whose name
@@ -37964,7 +38010,8 @@ Supported http-hardening checks and descriptions:
       the same variable name. This could be abused to bypass some
       access-control policy for example. No standard HTTP header uses this,
       so it is recommended to enable on untrusted listeners. Note that this
-      applies only after &quot;reject-underscore-in-header-name&quot; was accepted.
+      applies only after &quot;reject-underscore-in-header-name&quot; was accepted. It
+      is enabled by default in the &quot;basic-web&quot; profile.
 
 - delete-underscore-in-trailer-name (inbound, request and response)
       Deletes from requests and responses any trailer field whose name
@@ -37974,7 +38021,8 @@ Supported http-hardening checks and descriptions:
       names, leading to an ambiguity with the underscore which can result in
       the same variable name. No standard HTTP trailer uses this, so it is
       recommended to enable on untrusted listeners. Note that this applies
-      only after &quot;reject-underscore-in-trailer-name&quot; was accepted.
+      only after &quot;reject-underscore-in-trailer-name&quot; was accepted. It is
+      enabled by default in the &quot;basic-web&quot; profile.
 
 - delete-unregistered-header-fields (inbound, request and response)
       Deletes from requests and responses any header field whose name starts
@@ -37986,7 +38034,8 @@ Supported http-hardening checks and descriptions:
       would be risky to block such requests, it is safe and even recommended
       to delete such headers from inbound internet requests. It is preferable
       not to do it on responses however when applications uses such header
-      fields to report information to HAProxy.
+      fields to report information to HAProxy. It is enabled by default in the
+      &quot;basic-web&quot; profile.
 
 - delete-unregistered-trailer-fields (inbound, request and response)
       Deletes from requests and responses any trailer field whose name starts
@@ -37995,7 +38044,19 @@ Supported http-hardening checks and descriptions:
       components. They may appear in untrusted requests in attacks trying to
       exploit some backend framework weaknesses however, so it is generally
       safe and even recommended to delete such trailers from inbound internet
-      requests.
+      requests. It is enabled by default in the &quot;basic-web&quot; profile.
+
+- reject-advanced-methods (inbound, request)
+      Rejects requests whose method is not one of: HEAD, GET, POST, PUT,
+      DELETE, OPTIONS, PATCH, QUERY, or extended CONNECT (RFC8441). This
+      is amply sufficient for the vast majority of regular web sites and
+      applications accessed by browsers, but may not always be compatible
+      with API aimed at being joined directly by other applications. This can
+      block by default a significant number of backend vulnerabilities that
+      are not yet discovered and that are only triggered by less common
+      methods. Use only after verifying applications compatibility, though
+      this is safe for static web serving and simple internet-facing
+      applications. It is disabled by default.
 
 - reject-content-length-leading-zero (inbound request and response)
       Rejects requests and responses having a Content-Length header field
@@ -38006,7 +38067,8 @@ Supported http-hardening checks and descriptions:
       communication, and for example for cache poisionning attacks. These may
       seldom be seen on legacy applications but not on standard components
       found on the internet, so it is generally safe to reject them on public
-      facing listeners. It is enabled by default on untrusted connections.
+      facing listeners. It is enabled by default on untrusted connections and
+      in the &quot;basic-web&quot; profile.
 
 - reject-content-length-with-te (inbound request and response)
       Rejects requests and responses having both a Content-Length header
@@ -38018,7 +38080,7 @@ Supported http-hardening checks and descriptions:
       client or server applications, sometimes in relation with compression
       and/or caching. While HAProxy properly normalizes them, it is generally
       safe to reject them on public facing listeners. It is enabled by
-      default on untrusted connections.
+      default on untrusted connections and in the &quot;basic-web&quot; profile.
 
 - reject-ctl-in-header-trailer (inbound request and response)
       Rejects requests and responses which contain control characters in
@@ -38031,7 +38093,8 @@ Supported http-hardening checks and descriptions:
       which can make certain backend applications trigger connection errors.
       As such, it is both safe and recommended to block them on public facing
       listeners. See also the has_ctl() converter used for detecting them.
-      It is enabled by default on untrusted connections.
+      It is enabled by default on untrusted connections and in the
+      &quot;basic-web&quot; profile.
 
 - reject-duplicate-content-length (inbound request and response)
       Rejects requests and responses having a duplicate Content-Length header
@@ -38042,7 +38105,7 @@ Supported http-hardening checks and descriptions:
       server applications, sometimes in relation with compression and/or
       caching. While HAProxy properly normalizes them, it is generally safe
       to reject them on public facing listeners. It is enabled by default on
-      untrusted connections.
+      untrusted connections and in the &quot;basic-web&quot; profile.
 
 - reject-duplicate-host-header (inbound request)
       Rejects requests containing more than one &quot;Host&quot; header field, even if
@@ -38056,7 +38119,7 @@ Supported http-hardening checks and descriptions:
       a value greater than zero or if a &quot;transfer-encoding&quot; header field is
       present. These may only be caused by bugs or by attempts by servers to
       inject contents (e.g. cache poisonning attacks). It is enabled by
-      default on untrusted connections.
+      default on untrusted connections and in the &quot;basic-web&quot; profile.
 
 - reject-header-trailer-folding (inbound request and response)
       Rejects requests and responses which contain folded header fields or
@@ -38068,7 +38131,8 @@ Supported http-hardening checks and descriptions:
       to inject headers into non-compliant components, and should be rejected
       as a sign of break-in attempt. Note that HAProxy does not have problems
       with them and systematically unfolds these messages before forwarding
-      them. It is enabled by default on untrusted connections.
+      them. It is enabled by default on untrusted connections and in the
+      &quot;basic-web&quot; profile.
 
 - reject-lowercase-method (inbound request)
       Rejects requests whose method contains a lower-case character. No
@@ -38076,7 +38140,7 @@ Supported http-hardening checks and descriptions:
       essentially used in desynchronization attack scenarios, by trying to
       exploit different case matching schemes along the chain. This is
       recommended on untrusted listeners. It is enabled by default on
-      untrusted connections.
+      untrusted connections and in the &quot;basic-web&quot; profile.
 
 - reject-out-of-range-status (inbound, response)
       Rejects responses containing a status code lower than 100 or higher
@@ -38084,7 +38148,7 @@ Supported http-hardening checks and descriptions:
       differently by multiple implementations. They are never used over the
       internet and usually only exist in local deployments. This is
       recommended on public-facing backends. It is enabled by default on
-      untrusted connections.
+      untrusted connections and in the &quot;basic-web&quot; profile.
 
 - reject-underscore-in-header-name (inbound, request and response)
       Rejects requests and responses in which one header field name contains
@@ -38106,14 +38170,44 @@ Supported http-hardening checks and descriptions:
       result in the same variable name. No standard HTTP trailer uses this,
       so it is safe to enable on untrusted listeners. See also the
       &quot;delete-underscore-in-trailer-name&quot; variant.
+
+- reject-unexpected-request-payload (inbound, request)
+      Rejects requests which contain a payload on methods which have no
+      defined semantics with it (HEAD, GET, DELETE, OPTIONS, CONNECT, TRACE),
+      as well as any HTTP/1.1 request using the chunked Transfer-Encoding.
+      This protects backend servers having imperfect implementation against a
+      wide list of attacks that try to abuse their limited parsing to bypass
+      their inspection or desynchronize them with haproxy. The vast majority
+      of applications aimed at browsers will not experience any issue with
+      this setting, but some in-house or proprietary components might rely on
+      passing a payload to some of these methods, or uploading streamed data
+      using Transfer-Encoding. Note that other methods are assumed to support
+      payloads, and unknown methods might be handled similarly to GET by some
+      servers. As such, when using this to protect an application, it is wise
+      to also use 'reject-advanced-methods'. This is generally safe for
+      static web serving and simple internet-facing applications. It is
+      disabled by default.
+
+- reject-unexpected-request-upgrade (inbound, request)
+      Rejects Upgrade and RFC8441 Extended CONNECT for protocols other than
+      &quot;websocket&quot; and &quot;webtransport&quot;. For Upgrade, all offending tokens are
+      removed and the header will be removed if empty, so that it remains
+      harmless to clients sending tentative upgrades. Upgrade and CONNECT are
+      commonly abused to try to establish a tunnel with an application and
+      bypass the reverse-proxy layer, and most applications and browsers do
+      not implement other protocols, so there is no reason for letting them
+      pass through with common web applications. It is generally safe for
+      static web serving and simple internet-facing applications. This is
+      disabled by default. Note that tunnels established via standard CONNECT
+      are NOT blocked with this rule, see 'reject-advanced-methods' for this.
 </pre>
 </div>
 
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev13-131 &ndash; Configuration Manual<br>
-							<small>, 2026/11/18</small>
+							HAProxy 3.5-dev14 &ndash; Configuration Manual<br>
+							<small>, 2026/11/25</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
