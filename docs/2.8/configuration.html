@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 2.8.32-2 - Configuration Manual</title>
+		<title>HAProxy version 2.8.33 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4298,7 +4298,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4309,9 +4309,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 2.8.32-2</strong></p>
+							<p><strong>version 2.8.33</strong></p>
 							<p>
-								2026/11/18<br>
+								2026/11/26<br>
 								
 							</p>
 						</div>
@@ -21048,8 +21048,11 @@ Note: the maximum allowed value is 65535. Recommended value for UDP is
 </pre><a class="anchor" name="nameserver"></a><a class="anchor" name="5-nameserver"></a><a class="anchor" name="5.3.2-nameserver"></a><a class="anchor" name="nameserver (Bind and server options)"></a><a class="anchor" name="nameserver (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="nameserver"></a><a href="#5.3.2-nameserver">nameserver</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;address&gt;</span><span style="color: #008">[:port]</span> <span style="color: #008">[param*]</span></div><pre class="text">Used to configure a nameserver. &lt;name&gt; of the nameserver should ne unique.
 By default the &lt;address&gt; is considered of type datagram. This means if an
 IPv4 or IPv6 is configured without special address prefixes (paragraph 11.)
-the UDP protocol will be used.  If an stream protocol address prefix is used,
+the UDP protocol will be used. If an stream protocol address prefix is used,
 the nameserver will be considered as a stream server (TCP for instance) and
+the [param*] arguments are supported. For a datagram nameserver, any
+argument following the address is ignored and a warning is emitted during
+the configuration parsing.
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph which are relevant for DNS
 resolving will be considered.  Note: currently, in TCP mode, 4 queries are
 pipelined on the same connections. A batch of idle connections are removed
@@ -22346,8 +22349,10 @@ https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
 Note: depending on the context and the underlying implementation, extraction
       of duplicate JSON keys is undefined and might return the first, last,
       or any other occurrence of the same key from the input content, and if
-      key names are passed encoded, they might not always be matched. In
-      short, this converter is not suitable for content sanitization.
+      key names are passed encoded, they might not always be matched. The
+      parser also stops at elements nested deeper than 20 levels, and nothing
+      located after such an element is found. In short, this converter is
+      not suitable for content sanitization.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -28151,8 +28156,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 2.8.32-2 &ndash; Configuration Manual<br>
-							<small>, 2026/11/18</small>
+							HAProxy 2.8.33 &ndash; Configuration Manual<br>
+							<small>, 2026/11/26</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
