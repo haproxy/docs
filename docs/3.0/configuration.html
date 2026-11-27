@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.0.31-2 - Configuration Manual</title>
+		<title>HAProxy version 3.0.32 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -4335,7 +4335,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/26</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -4346,9 +4346,9 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.0.31-2</strong></p>
+							<p><strong>version 3.0.32</strong></p>
 							<p>
-								2026/11/18<br>
+								2026/11/26<br>
 								
 							</p>
 						</div>
@@ -7788,6 +7788,8 @@ TLSv1.3 only supports 5 ciphersuites:
 - TLS_AES_128_CCM_8_SHA256
 
 Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">bind<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#bind%20%28Log%20forwarding%29">Log forwarding</a></li><li><a href="#bind%20%28Peers%29">Peers</a></li><li><a href="#bind%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for more information.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -7856,6 +7858,8 @@ explicitly define theirs. The format of the string is defined in
 cipher configuration for TLSv1.2 and earlier, please check the
 &quot;<a href="#ssl-default-server-ciphers">ssl-default-server-ciphers</a>&quot; keyword. Please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; keyword for
 more information.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a class="anchor" name="3-ssl-default-server-client-sigalgs"></a><a class="anchor" name="3.1-ssl-default-server-client-sigalgs"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Global parameters)"></a><a class="anchor" name="ssl-default-server-client-sigalgs (Process management and security)"></a><div class="keyword"><b><a class="anchor" name="ssl-default-server-client-sigalgs"></a><a href="#3.1-ssl-default-server-client-sigalgs">ssl-default-server-client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the default string describing the list of signature algorithms related to
 client authentication for all &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; lines which do not explicitly define
@@ -9142,7 +9146,7 @@ compressed certificates.
 
 Configures both backend and frontend sides.
 
-This keyword is supported by OpenSSL &gt;= 3.2.0.
+Compatibility: OpenSSL &gt;= 3.2.0. Not supported with AWS-LC.
 
 The default value is auto.
 </pre><a class="anchor" name="tune.ssl.default-dh-param"></a><a class="anchor" name="3-tune.ssl.default-dh-param"></a><a class="anchor" name="3.2-tune.ssl.default-dh-param"></a><a class="anchor" name="tune.ssl.default-dh-param (Global parameters)"></a><a class="anchor" name="tune.ssl.default-dh-param (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.default-dh-param"></a><a href="#3.2-tune.ssl.default-dh-param">tune.ssl.default-dh-param</a></b> <span style="color: #080">&lt;number&gt;</span></div><pre class="text">Sets the maximum size of the Diffie-Hellman parameters used for generating
@@ -9203,6 +9207,8 @@ These fetches exists for frontend (fc) or backend (bc) sides, replace &quot;xx&q
 &quot;fc&quot; or &quot;bc&quot; to use the right side.
 
 This is only available with OpenSSL 1.1.1, and useful with TLS1.3 session.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 
 If you want to generate the content of a SSLKEYLOGFILE with TLS &lt; 1.3, you
 only need this line:
@@ -19133,8 +19139,8 @@ passed through by traffic coming from public hosts.
 </table></div>
 <pre class="text">Performs normalization of the request's URI.
 
-URI normalization in HAProxy 2.4 is currently available as an experimental
-technical preview. As such, it requires the global directive
+URI normalization is available as an experimental technical preview since
+HAProxy 2.4. As such, it requires the global directive
 'expose-experimental-directives' first to be able to invoke it. You should be
 prepared that the behavior of normalizers might change to fix possible
 issues, possibly breaking proper request processing in your infrastructure.
@@ -20206,15 +20212,17 @@ possible to write custom TCP and HTTP services in Lua.
 </table></div>
 <pre class="text">This will delay the processing of the request or response until one of the
 following conditions occurs:
-- The full request body is received, in which case processing proceeds
+- The full message body is received, in which case processing proceeds
   normally.
 - &lt;bytes&gt; bytes have been received, when the &quot;at-least&quot; argument is given and
   &lt;bytes&gt; is non-zero, in which case processing proceeds normally.
-- The request buffer is full, in which case processing proceeds normally. The
-  size of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
-- The request has been waiting for more than &lt;time&gt; milliseconds. In this
-  case HAProxy will respond with a 408 &quot;Request Timeout&quot; error to the client
-  and stop processing the request. Note that if any of the other conditions
+- The buffer is full, in which case processing proceeds normally. The size
+  of this buffer is determined by the &quot;<a href="#tune.bufsize">tune.bufsize</a>&quot; option.
+- The message has been waiting for more than &lt;time&gt; milliseconds. In this
+  case HAProxy stops the processing and responds to the client with a 408
+  &quot;Request Timeout&quot; error if the timeout occurred while waiting for a
+  request body, or with a 504 &quot;Gateway Timeout&quot; error if it occurred while
+  waiting for a response body. Note that if any of the other conditions
   happens first, this timeout will not occur even if the full body has
   not yet been received.
 
@@ -20385,7 +20393,8 @@ TLSv1.3 only supports 5 ciphersuites:
 <code>ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
 ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
 </code></pre>
-</div><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
+</div><pre class="text">Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
+</pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.1-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Bind options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.1-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">This setting is only available when support for OpenSSL was built in. It sets
 the string describing the list of signature algorithms related to client
 authentication that are negotiated . The format of the string is defined in
 &quot;man 3 SSL_CTX_set1_client_sigalgs&quot; from the OpenSSL man pages. It is not
@@ -21357,6 +21366,8 @@ describing the list of cipher algorithms that is negotiated during the TLS
 &quot;man 1 ciphers&quot; from OpenSSL man pages under the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphersuites<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphersuites%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphersuites%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot; section.
 For cipher configuration for TLSv1.2 and earlier, please check the &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ciphers<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#ciphers%20%28Bind%20options%29">Bind options</a></li><li><a href="#ciphers%20%28Server%20and%20default-server%20options%29">Server and default-server options</a></li></ul></span>&quot;
 keyword.
+
+Compatibility: OpenSSL &gt;= 1.1.1, AWS-LC &gt;= 1.22.0 (API &gt;= 22).
 </pre><a class="anchor" name="client-sigalgs"></a><a class="anchor" name="5-client-sigalgs"></a><a class="anchor" name="5.2-client-sigalgs"></a><a class="anchor" name="client-sigalgs (Bind and server options)"></a><a class="anchor" name="client-sigalgs (Server and default-server options)"></a><div class="keyword"><b><a class="anchor" name="client-sigalgs"></a><a href="#5.2-client-sigalgs">client-sigalgs</a></b> <span style="color: #080">&lt;sigalgs&gt;</span></div><pre class="text">May be used in the following contexts: tcp, http, log, peers, ring
 
 This setting is only available when support for OpenSSL was built in. It sets
@@ -22451,8 +22462,11 @@ Note: the maximum allowed value is 65535. Recommended value for UDP is
 </pre><a class="anchor" name="nameserver"></a><a class="anchor" name="5-nameserver"></a><a class="anchor" name="5.3.2-nameserver"></a><a class="anchor" name="nameserver (Bind and server options)"></a><a class="anchor" name="nameserver (The resolvers section)"></a><div class="keyword"><b><a class="anchor" name="nameserver"></a><a href="#5.3.2-nameserver">nameserver</a></b> <span style="color: #080">&lt;name&gt;</span> <span style="color: #080">&lt;address&gt;</span><span style="color: #008">[:port]</span> <span style="color: #008">[param*]</span></div><pre class="text">Used to configure a nameserver. &lt;name&gt; of the nameserver should ne unique.
 By default the &lt;address&gt; is considered of type datagram. This means if an
 IPv4 or IPv6 is configured without special address prefixes (paragraph 11.)
-the UDP protocol will be used.  If an stream protocol address prefix is used,
+the UDP protocol will be used. If an stream protocol address prefix is used,
 the nameserver will be considered as a stream server (TCP for instance) and
+the [param*] arguments are supported. For a datagram nameserver, any
+argument following the address is ignored and a warning is emitted during
+the configuration parsing.
 &quot;<span class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">server<span class="caret"></span></a><ul class="dropdown-menu"><li class="dropdown-header">This keyword is available in sections :</li><li><a href="#server%20%28Peers%29">Peers</a></li><li><a href="#server%20%28Rings%29">Rings</a></li><li><a href="#server%20%28Alphabetically%20sorted%20keywords%20reference%29">Alphabetically sorted keywords reference</a></li></ul></span>&quot; parameters found in 5.2 paragraph which are relevant for DNS
 resolving will be considered.  Note: currently, in TCP mode, 4 queries are
 pipelined on the same connections. A batch of idle connections are removed
@@ -23857,8 +23871,10 @@ https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
 Note: depending on the context and the underlying implementation, extraction
       of duplicate JSON keys is undefined and might return the first, last,
       or any other occurrence of the same key from the input content, and if
-      key names are passed encoded, they might not always be matched. In
-      short, this converter is not suitable for content sanitization.
+      key names are passed encoded, they might not always be matched. The
+      parser also stops at elements nested deeper than 20 levels, and nothing
+      located after such an element is found. In short, this converter is
+      not suitable for content sanitization.
 </pre><div class="separator">
 <span class="label label-success">Example:</span>
 <pre class="prettyprint">
@@ -31105,8 +31121,8 @@ QUIC which proposes stream transport based on socket of type &quot;datagram&quot
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.0.31-2 &ndash; Configuration Manual<br>
-							<small>, 2026/11/18</small>
+							HAProxy 3.0.32 &ndash; Configuration Manual<br>
+							<small>, 2026/11/26</small>
 						</div>
 					</div>
 					<!-- /.col-lg-12 -->
