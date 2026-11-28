@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>HAProxy version 3.5-dev14-15 - Configuration Manual</title>
+		<title>HAProxy version 3.5-dev14-29 - Configuration Manual</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="https://raw.githubusercontent.com/thomaspark/bootswatch/v3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" />
 		<link href="../css/page.css?0.4.2-15" rel="stylesheet" />
@@ -5081,7 +5081,7 @@
 					You can use <strong>left</strong> and <strong>right</strong> arrow keys to navigate between chapters.<br>
 				</p>
 				<p class="text-right">
-					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/25</b></small>
+					<small>Converted with <a href="https://github.com/cbonte/haproxy-dconv">haproxy-dconv</a> v<b>0.4.2-15</b> on <b>2026/11/27</b></small>
 				</p>
 			</div>
 			<!-- /.sidebar -->
@@ -5092,7 +5092,7 @@
 						<div class="text-center">
                             <h1><a href="http://www.haproxy.org/" title="HAProxy"><img src="../img/HAProxyCommunityEdition_60px.png?0.4.2-15" /></a></h1>
 							<h2>Configuration Manual</h2>
-							<p><strong>version 3.5-dev14-15</strong></p>
+							<p><strong>version 3.5-dev14-29</strong></p>
 							<p>
 								2026/11/25<br>
 								
@@ -11697,6 +11697,11 @@ throughput, but may be required when dealing with low-footprint clients.
 </pre><a class="anchor" name="tune.ssl.keylog"></a><a class="anchor" name="3-tune.ssl.keylog"></a><a class="anchor" name="3.2-tune.ssl.keylog"></a><a class="anchor" name="tune.ssl.keylog (Global section)"></a><a class="anchor" name="tune.ssl.keylog (Performance tuning)"></a><div class="keyword"><b><a class="anchor" name="tune.ssl.keylog"></a><a href="#3.2-tune.ssl.keylog">tune.ssl.keylog</a></b> <span style="color: #800">{ on | off }</span></div><pre class="text">This option activates the logging of the TLS keys. It should be used with
 care as it will consume more memory per SSL session and could decrease
 performances. This is disabled by default.
+
+The SSLKEYLOGFILE environment variable is not supported by HAProxy. It
+causes filesystem access and degrades performance. In master-worker mode,
+it also leaks file descriptors on each reload. Use &quot;tune.ssl.keylog on&quot;
+and the sample fetches below instead.
 
 These sample fetches should be used to generate the SSLKEYLOGFILE that is
 required to decipher traffic with wireshark.
@@ -38206,7 +38211,7 @@ Supported http-hardening checks and descriptions:
 						<br>
 						<hr>
 						<div class="text-right">
-							HAProxy 3.5-dev14-15 &ndash; Configuration Manual<br>
+							HAProxy 3.5-dev14-29 &ndash; Configuration Manual<br>
 							<small>, 2026/11/25</small>
 						</div>
 					</div>
